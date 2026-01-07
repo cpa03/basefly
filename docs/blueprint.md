@@ -262,22 +262,192 @@ await userDeletionService.softDeleteUser(userId);
 const summary = await userDeletionService.getUserSummary(userId);
 ```
 
+## Integration Patterns
+
+### External Service Integration
+
+#### Stripe Integration
+
+**Location**: `packages/stripe/src/`
+
+**Architecture**:
+- **Retry with Exponential Backoff**: All Stripe API calls wrapped in retry logic
+- **Timeouts**: 30-second timeout on all operations
+- **Circuit Breaker**: Prevents cascading failures when Stripe is unavailable
+- **Idempotency**: Keys ensure safe retries without duplicate charges
+
+**Resilience Features**:
+
+1. **Circuit Breaker Pattern**
+   ```typescript
+   const stripeCircuitBreaker = new CircuitBreaker("Stripe", 5, 60000);
+   ```
+   - Opens after 5 consecutive failures
+   - Resets after 60 seconds
+   - Fails fast when open
+
+2. **Retry Logic**
+   ```typescript
+   withRetry(fn, {
+     maxAttempts: 3,
+     baseDelay: 1000,  // 1 second
+     maxDelay: 10000,   // 10 seconds
+   })
+   ```
+   - Exponential backoff: 1s, 2s, 4s
+   - Retries only on transient errors (network, timeout, rate limits)
+
+3. **Timeout Protection**
+   ```typescript
+   withTimeout(promise, 30000, "Operation timed out")
+   ```
+   - 30-second default timeout
+   - Throws IntegrationError on timeout
+
+4. **Idempotency Keys**
+   ```typescript
+   createCheckoutSession(params, `checkout_${userId}_${planId}`)
+   ```
+   - Prevents duplicate charges
+   - Safe retry without side effects
+
+**Error Handling**:
+- `IntegrationError` for all integration failures
+- `CircuitBreakerOpenError` when circuit is open
+- Standardized error responses via `handleIntegrationError`
+- Webhook errors prevent retries only for unrecoverable issues
+
+**Usage Example**:
+```typescript
+import { createBillingSession, createCheckoutSession } from "@saasfly/stripe";
+
+// Safe Stripe call with all resilience patterns
+const session = await createCheckoutSession(
+  {
+    mode: "subscription",
+    line_items: [{ price: priceId, quantity: 1 }],
+    // ... other params
+  },
+  `checkout_${userId}_${planId}`, // Idempotency key
+);
+```
+
+#### Error Response Standardization
+
+**Location**: `packages/api/src/errors.ts`
+
+**Error Codes**:
+- `BAD_REQUEST` - Invalid input
+- `UNAUTHORIZED` - Not authenticated
+- `FORBIDDEN` - No permission
+- `NOT_FOUND` - Resource missing
+- `CONFLICT` - Resource conflict
+- `VALIDATION_ERROR` - Data validation failed
+- `INTEGRATION_ERROR` - External service error
+- `TIMEOUT_ERROR` - Operation timeout
+- `CIRCUIT_BREAKER_OPEN` - Service unavailable
+- `INTERNAL_SERVER_ERROR` - Unexpected error
+
+**API Response Format**:
+```typescript
+interface ApiErrorResponse {
+  error: {
+    code: ErrorCode;
+    message: string;
+    details?: unknown;
+    requestId?: string;
+  };
+}
+```
+
+**Usage in Routes**:
+```typescript
+import { createApiError, ErrorCode } from "../errors";
+
+throw createApiError(
+  ErrorCode.NOT_FOUND,
+  "Cluster not found"
+);
+```
+
+### Resilience Patterns Summary
+
+| Pattern | Purpose | Implementation |
+|---------|---------|----------------|
+| **Circuit Breaker** | Stop calling failing services | `CircuitBreaker` class |
+| **Retry with Backoff** | Handle transient failures | `withRetry()` function |
+| **Timeouts** | Prevent hanging calls | `withTimeout()` function |
+| **Idempotency** | Safe retry without side effects | Stripe idempotency keys |
+| **Error Standardization** | Consistent error handling | `ErrorCode` enum + `createApiError()` |
+
+### Integration Best Practices
+
+1. **Always Wrap External Calls**:
+   - Use `safeStripeCall()` for Stripe operations
+   - Never call external services directly in routes
+
+2. **Set Timeouts**:
+   - All external calls must have timeouts
+   - Default: 30 seconds for Stripe
+
+3. **Implement Retries**:
+   - Retry on transient failures (network, timeouts)
+   - Use exponential backoff
+   - Limit retry attempts (default: 3)
+
+4. **Use Circuit Breakers**:
+   - Prevent cascading failures
+   - Fail fast when service is down
+   - Auto-recover after timeout
+
+5. **Idempotency is Critical**:
+   - All write operations must be idempotent
+   - Use idempotency keys for Stripe
+   - Design database operations to be retry-safe
+
+6. **Standardize Errors**:
+   - Use `createApiError()` for all errors
+   - Return consistent error codes
+   - Include helpful error messages
+
+7. **Webhook Reliability**:
+   - Handle errors gracefully
+   - Log all webhook failures
+   - Only throw for unrecoverable errors
+   - Use `IntegrationError` for retryable issues
+
+### Anti-Patterns to Avoid
+
+❌ **Never**:
+- Call external services without timeouts
+- Retry indefinitely without limits
+- Let external failures cascade to users
+- Expose internal error details to clients
+- Skip idempotency for payment operations
+- Use infinite loops for retries
+
 ## Recommendations
 
 ### High Priority
 1. ~~Add foreign key constraints to User table~~ ✅ Completed
 2. ~~Implement proper migration strategy~~ ✅ Completed
 3. ~~Add cascade delete policies~~ ✅ Completed
+4. ~~Implement integration hardening~~ ✅ Completed
 
 ### Medium Priority
 1. ~~Implement proper soft delete pattern with partial unique indexes~~ ✅ Completed
 2. ~~Clarify unique constraint strategy for clusters~~ ✅ Completed
-3. Add data validation at application boundary
+3. ~~Standardize error responses~~ ✅ Completed
+4. Add data validation at application boundary
+5. Add rate limiting for API endpoints
+6. Implement request ID tracking for distributed tracing
 
 ### Low Priority
 1. Audit query patterns for N+1 issues
 2. Consider adding composite indexes for multi-column queries
 3. Implement read replicas if read-heavy workload
+4. Add integration tests for external services
+5. Set up monitoring for circuit breaker states
 
 ## Future Considerations
 

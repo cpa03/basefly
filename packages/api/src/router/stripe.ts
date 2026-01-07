@@ -3,11 +3,17 @@ import { z } from "zod";
 
 import { getCurrentUser } from "@saasfly/auth";
 import { Customer, db } from "@saasfly/db";
-import { stripe } from "@saasfly/stripe";
+import {
+  IntegrationError,
+  createBillingSession,
+  createCheckoutSession,
+  retrieveSubscription,
+} from "@saasfly/stripe";
 
 import { pricingData } from "../../../common/src/subscriptions";
 import { env } from "../env.mjs";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { handleIntegrationError } from "../errors";
 
 export interface SubscriptionPlan {
   title: string;
@@ -48,41 +54,43 @@ export const stripeRouter = createTRPCRouter({
 
       const returnUrl = env.NEXTAUTH_URL + "/dashboard";
 
-      if (customer && customer.plan !== "FREE") {
-        /**
-         * User is subscribed, create a billing portal session
-         */
-        const session = await stripe.billingPortal.sessions.create({
-          customer: customer.stripeCustomerId!,
-          return_url: returnUrl,
-        });
+      try {
+        if (customer && customer.plan !== "FREE") {
+          const session = await createBillingSession(
+            customer.stripeCustomerId!,
+            returnUrl,
+          );
+          return { success: true as const, url: session.url };
+        }
+
+        const user = await getCurrentUser();
+        if (!user) {
+          return null;
+        }
+        const email = user.email!;
+
+        const session = await createCheckoutSession(
+          {
+            mode: "subscription",
+            payment_method_types: ["card"],
+            customer_email: email,
+            client_reference_id: userId,
+            subscription_data: { metadata: { userId } },
+            cancel_url: returnUrl,
+            success_url: returnUrl,
+            line_items: [{ price: planId, quantity: 1 }],
+          },
+          `checkout_${userId}_${planId}`,
+        );
+
+        if (!session.url) return { success: false as const };
         return { success: true as const, url: session.url };
+      } catch (error) {
+        if (error instanceof IntegrationError) {
+          throw handleIntegrationError(error);
+        }
+        throw error;
       }
-
-      /**
-       * User is not subscribed, create a checkout session
-       * Use existing email address if available
-       */
-
-      const user = await getCurrentUser();
-      if (!user) {
-        return null;
-      }
-      const email = user.email!;
-
-      const session = await stripe.checkout.sessions.create({
-        mode: "subscription",
-        payment_method_types: ["card"],
-        customer_email: email,
-        client_reference_id: userId,
-        subscription_data: { metadata: { userId } },
-        cancel_url: returnUrl,
-        success_url: returnUrl,
-        line_items: [{ price: planId, quantity: 1 }],
-      });
-
-      if (!session.url) return { success: false as const };
-      return { success: true as const, url: session.url };
     }),
 
   // plans: protectedProcedure.query(async () => {
@@ -151,11 +159,15 @@ export const stripeRouter = createTRPCRouter({
             : null
         : null;
       let isCanceled = false;
-      if (isPaid && custom.stripeSubscriptionId) {
-        const stripePlan = await stripe.subscriptions.retrieve(
-          custom.stripeSubscriptionId,
-        );
-        isCanceled = stripePlan.cancel_at_period_end;
+      try {
+        if (isPaid && custom.stripeSubscriptionId) {
+          const stripePlan = await retrieveSubscription(custom.stripeSubscriptionId);
+          isCanceled = stripePlan.cancel_at_period_end;
+        }
+      } catch (error) {
+        if (error instanceof IntegrationError) {
+          throw handleIntegrationError(error);
+        }
       }
 
       return {

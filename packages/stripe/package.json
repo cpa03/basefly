@@ -5,7 +5,9 @@
   "exports": {
     ".": "./src/index.ts",
     "./plans": "./src/plans.ts",
-    "./env": "./src/env.mjs"
+    "./env": "./src/env.mjs",
+    "./client": "./src/client.ts",
+    "./integration": "./src/integration.ts"
   },
   "typesVersions": {
     "*": {

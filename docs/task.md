@@ -1,3 +1,111 @@
+# Integration Architecture Tasks
+
+## Integration Hardening Tasks
+
+### Task 1: Integration Hardening - Retries, Timeouts, Circuit Breakers
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Integration Resilience
+- **Files**: `packages/stripe/src/integration.ts`, `packages/stripe/src/client.ts`
+
+**Description**:
+Add resilience patterns to Stripe integration to prevent cascading failures and handle transient errors gracefully.
+
+**Steps**:
+1. ✅ Create retry wrapper with exponential backoff
+2. ✅ Add timeout configuration (30 seconds default)
+3. ✅ Implement circuit breaker pattern
+4. ✅ Add idempotency support for Stripe operations
+5. ✅ Update all Stripe API calls to use hardened client
+
+**Success Criteria**:
+- [x] Retry logic with exponential backoff implemented
+- [x] Timeouts configured for all external calls
+- [x] Circuit breaker prevents cascading failures
+- [x] Idempotency keys prevent duplicate charges
+- [x] All Stripe calls use hardened client
+- [x] Error handling standardized
+
+**Files Created**:
+- `packages/stripe/src/integration.ts` - Retry, timeout, circuit breaker utilities
+- `packages/stripe/src/client.ts` - Hardened Stripe client wrapper
+
+**Notes**:
+- Circuit breaker opens after 5 failures, resets after 60 seconds
+- Retry with exponential backoff: 1s, 2s, 4s (max 3 attempts)
+- Idempotency keys generated for checkout sessions
+- All patterns documented in docs/blueprint.md
+
+---
+
+### Task 2: Error Response Standardization
+- **Status**: ✅ Completed
+- **Priority**: Medium
+- **Type**: API Standardization
+- **Files**: `packages/api/src/errors.ts`
+
+**Description**:
+Standardize error responses across all API routes for consistent client experience and better debugging.
+
+**Steps**:
+1. ✅ Define error code enum
+2. ✅ Create error response interface
+3. ✅ Implement error mapping function
+4. ✅ Add integration error handler
+5. ✅ Update API routes to use standard errors
+
+**Success Criteria**:
+- [x] Error codes defined and documented
+- [x] Consistent error response format
+- [x] Integration errors handled gracefully
+- [x] Routes updated to use standard errors
+- [x] Documentation complete
+
+**Files Created**:
+- `packages/api/src/errors.ts` - Error code enum and utilities
+
+**Notes**:
+- Error codes: BAD_REQUEST, UNAUTHORIZED, FORBIDDEN, NOT_FOUND, CONFLICT, VALIDATION_ERROR, INTEGRATION_ERROR, TIMEOUT_ERROR, CIRCUIT_BREAKER_OPEN, INTERNAL_SERVER_ERROR
+- `createApiError()` function for creating standardized errors
+- `handleIntegrationError()` function for integration error handling
+- All k8s and stripe routes updated
+
+---
+
+### Task 3: Webhook Reliability
+- **Status**: ✅ Completed
+- **Priority**: Medium
+- **Type**: Webhook Error Handling
+- **Files**: `packages/stripe/src/webhooks.ts`
+
+**Description**:
+Add comprehensive error handling for Stripe webhooks to ensure reliable processing and prevent duplicate operations.
+
+**Steps**:
+1. ✅ Add try-catch to webhook handler
+2. ✅ Log all webhook failures
+3. ✅ Separate handler functions for each event type
+4. ✅ Use IntegrationError for retryable issues
+5. ✅ Add metadata validation
+
+**Success Criteria**:
+- [x] All webhook errors caught and logged
+- [x] Event types separated into handlers
+- [x] Retryable errors use IntegrationError
+- [x] Metadata validated before processing
+- [x] No silent failures
+
+**Files Modified**:
+- `packages/stripe/src/webhooks.ts` - Error handling and separation of concerns
+
+**Notes**:
+- `handleCheckoutSessionCompleted()` - Handles checkout completion
+- `handleInvoicePaymentSucceeded()` - Handles payment success
+- Webhook errors logged with console.error
+- Invalid metadata throws IntegrationError to prevent retry
+
+---
+
 # Data Architecture Tasks
 
 ## Task Queue

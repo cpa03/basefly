@@ -4,6 +4,7 @@ import { z } from "zod";
 import { getCurrentUser } from "@saasfly/auth";
 import { db, SubscriptionPlan, k8sClusterService } from "@saasfly/db";
 
+import { createApiError, ErrorCode } from "../errors";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 const k8sClusterCreateSchema = z.object({
@@ -32,10 +33,10 @@ export const k8sRouter = createTRPCRouter({
 
       const user = await getCurrentUser();
       if (!user) {
-        throw new TRPCError({
-          code: "UNAUTHORIZED",
-          message: "You must be logged in to create a cluster",
-        });
+        throw createApiError(
+          ErrorCode.UNAUTHORIZED,
+          "You must be logged in to create a cluster",
+        );
       }
       try {
         const newCluster = await db
@@ -51,10 +52,10 @@ export const k8sRouter = createTRPCRouter({
           .executeTakeFirst();
 
         if (!newCluster) {
-          throw new TRPCError({
-            code: "INTERNAL_SERVER_ERROR",
-            message: "Failed to create the cluster",
-          });
+          throw createApiError(
+            ErrorCode.INTERNAL_SERVER_ERROR,
+            "Failed to create the cluster",
+          );
         }
 
         return {
@@ -65,9 +66,20 @@ export const k8sRouter = createTRPCRouter({
         };
       } catch (error) {
         if (error instanceof z.ZodError) {
-          throw new TRPCError({ code: "BAD_REQUEST", cause: error });
+          throw createApiError(
+            ErrorCode.VALIDATION_ERROR,
+            "Invalid input data",
+            error.errors,
+          );
         }
-        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", cause: error });
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+        throw createApiError(
+          ErrorCode.INTERNAL_SERVER_ERROR,
+          "Failed to create cluster",
+          error,
+        );
       }
     }),
   updateCluster: protectedProcedure
@@ -80,17 +92,14 @@ export const k8sRouter = createTRPCRouter({
 
       const cluster = await k8sClusterService.findActive(id, userId);
       if (!cluster) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Cluster not found",
-        });
+        throw createApiError(ErrorCode.NOT_FOUND, "Cluster not found");
       }
 
       if (cluster.authUserId && cluster.authUserId !== userId) {
-        throw new TRPCError({
-          code: "FORBIDDEN",
-          message: "You don't have access to this cluster",
-        });
+        throw createApiError(
+          ErrorCode.FORBIDDEN,
+          "You don't have access to this cluster",
+        );
       }
       if (newName || newLocation) {
         const updateData: Record<string, string> = {};
@@ -114,16 +123,13 @@ export const k8sRouter = createTRPCRouter({
       const userId = opts.ctx.userId!;
       const cluster = await k8sClusterService.findActive(id, userId);
       if (!cluster) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: "Cluster not found",
-        });
+        throw createApiError(ErrorCode.NOT_FOUND, "Cluster not found");
       }
       if (cluster.authUserId && cluster.authUserId !== userId) {
-        throw new TRPCError({
-          code: "FORBIDDEN",
-          message: "You don't have access to this cluster",
-        });
+        throw createApiError(
+          ErrorCode.FORBIDDEN,
+          "You don't have access to this cluster",
+        );
       }
       await k8sClusterService.softDelete(id, userId);
       return { success: true };

@@ -12,6 +12,7 @@
         "@vitest/coverage-v8": "^4.0.16",
         "@vitest/ui": "^4.0.16",
         "check-dependency-version-consistency": "6.0.0",
+        "eslint-plugin-turbo": "1.13.2",
         "happy-dom": "^20.1.0",
         "prettier": "3.7.4",
         "tailwind-config-viewer": "^2.0.4",
@@ -34,8 +35,8 @@
         "eslint": "8.57.0",
         "h3": "1.11.1",
         "nitropack": "2.9.6",
-        "prettier": "3.2.5",
-        "typescript": "5.4.5",
+        "prettier": "3.7.4",
+        "typescript": "5.9.3",
       },
     },
     "apps/nextjs": {
@@ -48,8 +49,10 @@
         "@next/mdx": "14.2.5",
         "@saasfly/api": "workspace:*",
         "@saasfly/auth": "workspace:*",
+        "@saasfly/common": "workspace:*",
         "@saasfly/db": "workspace:*",
         "@saasfly/stripe": "workspace:*",
+        "@saasfly/ui": "workspace:*",
         "@t3-oss/env-nextjs": "0.8.0",
         "@tanstack/react-query": "5.36.0",
         "@tanstack/react-query-devtools": "5.36.0",
@@ -63,14 +66,17 @@
         "date-fns": "3.3.1",
         "fetch-ponyfill": "7.1.0",
         "framer-motion": "11.0.3",
+        "lucide-react": "0.323.0",
         "negotiator": "0.6.3",
         "next": "14.2.10",
+        "next-auth": "4.24.7",
         "next-themes": "0.2.1",
         "posthog-js": "1.105.0",
         "posthog-node": "3.6.2",
         "react": "18.3.1",
         "react-day-picker": "8.10.0",
         "react-dom": "18.3.1",
+        "react-hook-form": "7.50.1",
         "react-image-crop": "11.0.5",
         "react-wrap-balancer": "1.1.0",
         "recharts": "2.11.0",
@@ -97,7 +103,7 @@
         "eslint": "8.57.0",
         "mdast-util-toc": "7.0.0",
         "next-contentlayer2": "0.4.6",
-        "prettier": "3.2.5",
+        "prettier": "3.7.4",
         "rehype": "13.0.1",
         "rehype-autolink-headings": "7.1.0",
         "rehype-pretty-code": "0.12.3",
@@ -105,7 +111,7 @@
         "remark": "15.0.1",
         "remark-gfm": "4.0.0",
         "tailwindcss": "3.4.1",
-        "typescript": "5.4.5",
+        "typescript": "5.9.3",
         "unist-util-visit": "5.0.0",
       },
     },
@@ -116,6 +122,7 @@
         "@dinero.js/currencies": "2.0.0-alpha.14",
         "@saasfly/auth": "workspace:*",
         "@saasfly/db": "workspace:*",
+        "@saasfly/stripe": "workspace:*",
         "@t3-oss/env-nextjs": "0.8.0",
         "@trpc/client": "10.45.3",
         "@trpc/server": "10.45.3",
@@ -129,8 +136,8 @@
         "@saasfly/prettier-config": "workspace:*",
         "@saasfly/typescript-config": "workspace:*",
         "eslint": "8.57.0",
-        "prettier": "3.2.5",
-        "typescript": "5.4.5",
+        "prettier": "3.7.4",
+        "typescript": "5.9.3",
       },
     },
     "packages/auth": {
@@ -138,6 +145,7 @@
       "version": "0.1.0",
       "dependencies": {
         "@auth/kysely-adapter": "0.4.2",
+        "@saasfly/common": "workspace:*",
         "@saasfly/db": "workspace:*",
         "@t3-oss/env-nextjs": "0.8.0",
         "next": "14.2.10",
@@ -151,8 +159,8 @@
         "@saasfly/prettier-config": "workspace:*",
         "@saasfly/typescript-config": "workspace:*",
         "eslint": "8.57.0",
-        "prettier": "3.2.5",
-        "typescript": "5.4.5",
+        "prettier": "3.7.4",
+        "typescript": "5.9.3",
       },
     },
     "packages/common": {
@@ -160,15 +168,17 @@
       "version": "0.1.0",
       "dependencies": {
         "@saasfly/ui": "workspace:*",
+        "@t3-oss/env-nextjs": "0.8.0",
         "resend": "2.1.0",
+        "zod": "3.22.4",
       },
       "devDependencies": {
         "@saasfly/eslint-config": "workspace:*",
         "@saasfly/prettier-config": "workspace:*",
         "@saasfly/typescript-config": "workspace:*",
         "eslint": "8.57.0",
-        "prettier": "3.2.5",
-        "typescript": "5.4.5",
+        "prettier": "3.7.4",
+        "typescript": "5.9.3",
       },
     },
     "packages/db": {
@@ -185,10 +195,10 @@
         "@types/pg": "8.11.0",
         "dotenv-cli": "7.3.0",
         "eslint": "8.57.0",
-        "prettier": "3.2.5",
+        "prettier": "3.7.4",
         "prisma": "5.9.1",
         "prisma-kysely": "1.7.1",
-        "typescript": "5.4.5",
+        "typescript": "5.9.3",
       },
     },
     "packages/stripe": {
@@ -198,14 +208,15 @@
         "@saasfly/db": "workspace:*",
         "@t3-oss/env-nextjs": "0.8.0",
         "stripe": "14.15.0",
+        "zod": "3.22.4",
       },
       "devDependencies": {
         "@saasfly/eslint-config": "workspace:*",
         "@saasfly/prettier-config": "workspace:*",
         "@saasfly/typescript-config": "workspace:*",
         "eslint": "8.57.0",
-        "prettier": "3.2.5",
-        "typescript": "5.4.5",
+        "prettier": "3.7.4",
+        "typescript": "5.9.3",
       },
     },
     "packages/ui": {
@@ -251,6 +262,7 @@
         "class-variance-authority": "0.7.0",
         "clsx": "2.1.0",
         "cmdk": "0.2.1",
+        "framer-motion": "11.0.3",
         "lucide-react": "0.323.0",
         "tailwind-merge": "1.14.0",
         "three": "0.163.0",
@@ -266,14 +278,14 @@
         "@types/react": "18.3.3",
         "date-fns": "3.3.1",
         "eslint": "8.57.0",
-        "prettier": "3.2.5",
+        "prettier": "3.7.4",
         "react": "18.3.1",
         "react-day-picker": "8.10.0",
         "react-dom": "18.3.1",
         "react-hook-form": "7.50.1",
         "tailwindcss": "3.4.1",
         "tailwindcss-animate": "1.0.7",
-        "typescript": "5.4.5",
+        "typescript": "5.9.3",
       },
     },
     "tooling/eslint-config": {
@@ -295,7 +307,7 @@
         "@saasfly/prettier-config": "workspace:*",
         "@saasfly/typescript-config": "workspace:*",
         "eslint": "8.57.0",
-        "typescript": "5.4.5",
+        "typescript": "5.9.3",
       },
     },
     "tooling/prettier-config": {
@@ -303,12 +315,13 @@
       "version": "0.1.0",
       "dependencies": {
         "@ianvs/prettier-plugin-sort-imports": "4.2.1",
-        "prettier": "3.2.5",
+        "prettier": "3.7.4",
         "prettier-plugin-tailwindcss": "0.5.13",
       },
       "devDependencies": {
         "@saasfly/typescript-config": "workspace:*",
-        "typescript": "5.4.5",
+        "@types/node": "20.12.12",
+        "typescript": "5.9.3",
       },
     },
     "tooling/tailwind-config": {
@@ -318,14 +331,16 @@
         "autoprefixer": "10.4.17",
         "postcss": "8.4.34",
         "tailwindcss": "3.4.1",
+        "tailwindcss-animate": "1.0.7",
       },
       "devDependencies": {
         "@saasfly/eslint-config": "workspace:*",
         "@saasfly/prettier-config": "workspace:*",
         "@saasfly/typescript-config": "workspace:*",
+        "@types/node": "20.12.12",
         "eslint": "8.57.0",
-        "prettier": "3.2.5",
-        "typescript": "5.4.5",
+        "prettier": "3.7.4",
+        "typescript": "5.9.3",
       },
     },
     "tooling/typescript-config": {
@@ -1758,7 +1773,7 @@
 
     "dot-prop": ["dot-prop@8.0.2", "", { "dependencies": { "type-fest": "^3.8.0" } }, "sha512-xaBe6ZT4DHPkg0k4Ytbvn5xoxgpG0jOS1dYxSOwAHPuNLjP3/OzN0gH55SrLqpx8cBfSaVt91lXYkApjb+nYdQ=="],
 
-    "dotenv": ["dotenv@16.6.1", "", {}, "sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow=="],
+    "dotenv": ["dotenv@16.0.3", "", {}, "sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ=="],
 
     "dotenv-cli": ["dotenv-cli@7.3.0", "", { "dependencies": { "cross-spawn": "^7.0.3", "dotenv": "^16.3.0", "dotenv-expand": "^10.0.0", "minimist": "^1.2.6" }, "bin": { "dotenv": "cli.js" } }, "sha512-314CA4TyK34YEJ6ntBf80eUY+t1XaFLyem1k9P0sX1gn30qThZ5qZr/ZwE318gEnzyYP9yj9HJk6SqwE0upkfw=="],
 
@@ -3620,6 +3635,8 @@
 
     "@neondatabase/serverless/@types/pg": ["@types/pg@8.6.6", "", { "dependencies": { "@types/node": "*", "pg-protocol": "*", "pg-types": "^2.2.0" } }, "sha512-O2xNmXebtwVekJDD+02udOncjVcMZQuTEQEMpKJ0ZRf5E7/9JJX3izhKUcUifBkyKpljyUM6BTgy2trmviKlpw=="],
 
+    "@next-devtools/core/dotenv": ["dotenv@16.6.1", "", {}, "sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow=="],
+
     "@opentelemetry/api-logs/@opentelemetry/api": ["@opentelemetry/api@1.9.0", "", {}, "sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg=="],
 
     "@opentelemetry/core/@opentelemetry/semantic-conventions": ["@opentelemetry/semantic-conventions@1.28.0", "", {}, "sha512-lp4qAiMTD4sNWW4DbKLBkfiMZ4jbAboJIGOQr5DvciMRI494OapieI9qiODpOt0XBr1LjIDy1xAGAnVs5supTA=="],
@@ -3669,8 +3686,6 @@
     "@prisma/internals/@prisma/get-platform": ["@prisma/get-platform@5.3.1", "", { "dependencies": { "@prisma/debug": "5.3.1", "escape-string-regexp": "4.0.0", "execa": "5.1.1", "fs-jetpack": "5.1.0", "kleur": "4.1.5", "replace-string": "3.1.0", "strip-ansi": "6.0.1", "tempy": "1.0.1", "terminal-link": "2.1.1", "ts-pattern": "4.3.0" } }, "sha512-3IiZY2BUjKnAuZ0569zppZE6/rZbVAM09//c2nvPbbkGG9MqrirA8fbhhF7tfVmhyVfdmVCHnf/ujWPHJ8B46Q=="],
 
     "@prisma/internals/archiver": ["archiver@5.3.2", "", { "dependencies": { "archiver-utils": "^2.1.0", "async": "^3.2.4", "buffer-crc32": "^0.2.1", "readable-stream": "^3.6.0", "readdir-glob": "^1.1.2", "tar-stream": "^2.2.0", "zip-stream": "^4.1.0" } }, "sha512-+25nxyyznAXF7Nef3y0EbBeqmGZgeN/BxHX29Rs39djAfaFalmQ89SE6CWyDCHzGL0yt/ycBtNOmGTW0FyGWNw=="],
-
-    "@prisma/internals/dotenv": ["dotenv@16.0.3", "", {}, "sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ=="],
 
     "@prisma/internals/execa": ["execa@5.1.1", "", { "dependencies": { "cross-spawn": "^7.0.3", "get-stream": "^6.0.0", "human-signals": "^2.1.0", "is-stream": "^2.0.0", "merge-stream": "^2.0.0", "npm-run-path": "^4.0.1", "onetime": "^5.1.2", "signal-exit": "^3.0.3", "strip-final-newline": "^2.0.0" } }, "sha512-8uSpZZocAZRBAPIEINJj3Lo9HyGitllczc27Eh5YYojjMFMn8yHMDMaUHE2Jqfq05D/wucwI4JGURyXt1vchyg=="],
 
@@ -3850,48 +3865,6 @@
 
     "@rollup/pluginutils/estree-walker": ["estree-walker@2.0.2", "", {}, "sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w=="],
 
-    "@saasfly/api/prettier": ["prettier@3.2.5", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A=="],
-
-    "@saasfly/api/typescript": ["typescript@5.4.5", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ=="],
-
-    "@saasfly/auth/prettier": ["prettier@3.2.5", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A=="],
-
-    "@saasfly/auth/typescript": ["typescript@5.4.5", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ=="],
-
-    "@saasfly/auth-proxy/prettier": ["prettier@3.2.5", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A=="],
-
-    "@saasfly/auth-proxy/typescript": ["typescript@5.4.5", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ=="],
-
-    "@saasfly/common/prettier": ["prettier@3.2.5", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A=="],
-
-    "@saasfly/common/typescript": ["typescript@5.4.5", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ=="],
-
-    "@saasfly/db/prettier": ["prettier@3.2.5", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A=="],
-
-    "@saasfly/db/typescript": ["typescript@5.4.5", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ=="],
-
-    "@saasfly/eslint-config/typescript": ["typescript@5.4.5", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ=="],
-
-    "@saasfly/nextjs/prettier": ["prettier@3.2.5", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A=="],
-
-    "@saasfly/nextjs/typescript": ["typescript@5.4.5", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ=="],
-
-    "@saasfly/prettier-config/prettier": ["prettier@3.2.5", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A=="],
-
-    "@saasfly/prettier-config/typescript": ["typescript@5.4.5", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ=="],
-
-    "@saasfly/stripe/prettier": ["prettier@3.2.5", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A=="],
-
-    "@saasfly/stripe/typescript": ["typescript@5.4.5", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ=="],
-
-    "@saasfly/tailwind-config/prettier": ["prettier@3.2.5", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A=="],
-
-    "@saasfly/tailwind-config/typescript": ["typescript@5.4.5", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ=="],
-
-    "@saasfly/ui/prettier": ["prettier@3.2.5", "", { "bin": { "prettier": "bin/prettier.cjs" } }, "sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A=="],
-
-    "@saasfly/ui/typescript": ["typescript@5.4.5", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ=="],
-
     "@tsparticles/basic/@tsparticles/engine": ["@tsparticles/engine@3.9.1", "", {}, "sha512-DpdgAhWMZ3Eh2gyxik8FXS6BKZ8vyea+Eu5BC4epsahqTGY9V3JGGJcXC6lRJx6cPMAx1A0FaQAojPF3v6rkmQ=="],
 
     "@tsparticles/interaction-external-attract/@tsparticles/engine": ["@tsparticles/engine@3.9.1", "", {}, "sha512-DpdgAhWMZ3Eh2gyxik8FXS6BKZ8vyea+Eu5BC4epsahqTGY9V3JGGJcXC6lRJx6cPMAx1A0FaQAojPF3v6rkmQ=="],
@@ -4000,6 +3973,8 @@
 
     "bl/readable-stream": ["readable-stream@3.6.2", "", { "dependencies": { "inherits": "^2.0.3", "string_decoder": "^1.1.1", "util-deprecate": "^1.0.1" } }, "sha512-9u/sniCrY3D5WdsERHzHE4G2YCXqoG5FTHUiCC4SIbr6XcLZBY05ya9EKjYek9O5xOAwjGq+1JdGBAS7Q9ScoA=="],
 
+    "c12/dotenv": ["dotenv@16.6.1", "", {}, "sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow=="],
+
     "c12/pathe": ["pathe@1.1.2", "", {}, "sha512-whLdWMYL2TwI08hn8/ZqAbrVemu0LNaNNJZX73O6qaIdCTfXutsLhMkjdENX0qhsQ9uIimo4/aQOmXkoon2nDQ=="],
 
     "camel-case/pascal-case": ["pascal-case@3.1.2", "", { "dependencies": { "no-case": "^3.0.4", "tslib": "^2.0.3" } }, "sha512-uWlGT3YSnK9x3BQJaOdcZwrnV6hPpd8jFH1/ucpiLRPh/2zCVJKS19E4GvYHvaCcACn3foXZ0cLB9Wrx1KGe5g=="],
@@ -4046,6 +4021,8 @@
 
     "dot-prop/type-fest": ["type-fest@3.13.1", "", {}, "sha512-tLq3bSNx+xSpwvAJnzrK0Ep5CLNWjvFTOp71URMaAEWBfRb9nnJiBoUe0tF8bI4ZFO3omgBR6NvnbzVUT3Ly4g=="],
 
+    "dotenv-cli/dotenv": ["dotenv@16.6.1", "", {}, "sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow=="],
+
     "editorconfig/minimatch": ["minimatch@9.0.1", "", { "dependencies": { "brace-expansion": "^2.0.1" } }, "sha512-0jWhJpD/MdhPXwPuiRkCbfYfSKp2qnn2eOc279qI7f+osl/l+prKSrvhg157zSYvx/1nmgn2NqdT6k2Z7zSH9w=="],
 
     "enhanced-resolve/tapable": ["tapable@2.3.0", "", {}, "sha512-g9ljZiwki/LfxmQADO3dEY1CbpmXT5Hm2fJ+QaGKwSXUylMybePR7/67YW7jOrrvjEgL1Fmz5kzyAjWVWLlucg=="],
@@ -4077,8 +4054,6 @@
     "eslint-plugin-react/minimatch": ["minimatch@3.1.2", "", { "dependencies": { "brace-expansion": "^1.1.7" } }, "sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw=="],
 
     "eslint-plugin-react/semver": ["semver@6.3.1", "", { "bin": { "semver": "bin/semver.js" } }, "sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA=="],
-
-    "eslint-plugin-turbo/dotenv": ["dotenv@16.0.3", "", {}, "sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ=="],
 
     "external-editor/tmp": ["tmp@0.0.33", "", { "dependencies": { "os-tmpdir": "~1.0.2" } }, "sha512-jRCJlojKnZ3addtTOjdIqoRuPEKBvNXcGYqzO6zWZX8KfKEpnGY5jfggJQ3EjKuu8D4bJRr0y+cYJFmYbImXGw=="],
 

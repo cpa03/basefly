@@ -126,8 +126,6 @@ export const stripeRouter = createTRPCRouter({
         .where("authUserId", "=", userId)
         .executeTakeFirst();
       if (!custom) {
-        // throw new Error("Custom not found");
-        console.log("Custom not found:", userId);
         return;
       }
       // Check if user is on a paid plan.

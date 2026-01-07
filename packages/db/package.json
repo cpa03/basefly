@@ -13,6 +13,12 @@
     "format": "prisma format && prettier --check '**/*.{ts,json}' ",
     "db:generate": "prisma generate",
     "db:push": "bun with-env prisma db push --skip-generate",
+    "db:migrate:dev": "bun with-env prisma migrate dev",
+    "db:migrate:deploy": "bun with-env prisma migrate deploy",
+    "db:migrate:create": "bun with-env prisma migrate dev --create-only",
+    "db:migrate:reset": "bun with-env prisma migrate reset",
+    "db:migrate:resolve": "bun with-env prisma migrate resolve",
+    "db:studio": "bun with-env prisma studio",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env.local --"
   },

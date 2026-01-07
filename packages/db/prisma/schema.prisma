@@ -29,6 +29,8 @@ model Customer {
   createdAt              DateTime          @default(now())
   updatedAt              DateTime          @default(now())
 
+  user User @relation(fields: [authUserId], references: [id], onDelete: Restrict)
+
   @@index([authUserId])
 }
 
@@ -67,6 +69,8 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  customers     Customer[]
+  k8sClusters   K8sClusterConfig[]
 }
 
 model VerificationToken {
@@ -87,10 +91,13 @@ model K8sClusterConfig {
   createdAt  DateTime          @default(now())
   updatedAt  DateTime          @default(now())
   status     Status?           @default(PENDING)
-  delete     Boolean?          @default(false)
+  deletedAt  DateTime?
 
-  // @@unique([plan, authUserId])
+  user User @relation(fields: [authUserId], references: [id], onDelete: Restrict)
+
+  // @@unique([plan, authUserId]) - Partial index will be added via migration
   @@index([authUserId])
+  @@index([deletedAt])
 }
 
 enum Status {

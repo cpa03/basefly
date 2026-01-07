@@ -2,7 +2,7 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { getCurrentUser } from "@saasfly/auth";
-import { db, SubscriptionPlan } from "@saasfly/db";
+import { db, SubscriptionPlan, k8sClusterService } from "@saasfly/db";
 
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
@@ -23,11 +23,7 @@ export const k8sRouter = createTRPCRouter({
     if (!user) {
       return;
     }
-    return await db
-      .selectFrom("K8sClusterConfig")
-      .selectAll()
-      .where("authUserId", "=", userId)
-      .execute();
+    return await k8sClusterService.findAllActive(userId);
   }),
   createCluster: protectedProcedure
     .input(k8sClusterCreateSchema)
@@ -82,11 +78,7 @@ export const k8sRouter = createTRPCRouter({
       const newName = opts.input.name;
       const newLocation = opts.input.location;
 
-      const cluster = await db
-        .selectFrom("K8sClusterConfig")
-        .selectAll()
-        .where("id", "=", id)
-        .executeTakeFirst();
+      const cluster = await k8sClusterService.findActive(id, userId);
       if (!cluster) {
         throw new TRPCError({
           code: "NOT_FOUND",
@@ -120,11 +112,7 @@ export const k8sRouter = createTRPCRouter({
     .mutation(async (opts) => {
       const id = opts.input.id;
       const userId = opts.ctx.userId!;
-      const cluster = await db
-        .selectFrom("K8sClusterConfig")
-        .selectAll()
-        .where("id", "=", id)
-        .executeTakeFirst();
+      const cluster = await k8sClusterService.findActive(id, userId);
       if (!cluster) {
         throw new TRPCError({
           code: "NOT_FOUND",
@@ -137,7 +125,7 @@ export const k8sRouter = createTRPCRouter({
           message: "You don't have access to this cluster",
         });
       }
-      await db.deleteFrom("K8sClusterConfig").where("id", "=", id).execute();
+      await k8sClusterService.softDelete(id, userId);
       return { success: true };
     }),
 });

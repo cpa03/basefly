@@ -15,15 +15,22 @@
     "typecheck": "turbo typecheck",
     "postinstall": "bun run check-deps",
     "check-deps": "check-dependency-version-consistency .",
-    "gen": "turbo gen --config 'turbo/generators/config.ts'"
+    "gen": "turbo gen --config 'turbo/generators/config.ts'",
+    "test": "vitest run",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage"
   },
   "devDependencies": {
     "@turbo/gen": "1.13.3",
+    "@vitest/coverage-v8": "^4.0.16",
+    "@vitest/ui": "^4.0.16",
     "check-dependency-version-consistency": "4.1.0",
+    "happy-dom": "^20.1.0",
     "prettier": "3.2.5",
     "tailwind-config-viewer": "^2.0.4",
     "turbo": "1.13.3",
-    "typescript": "5.4.5"
+    "typescript": "5.4.5",
+    "vitest": "^4.0.16"
   },
   "engines": {
     "node": ">=18"

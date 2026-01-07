@@ -73,6 +73,7 @@ describe("handleEvent", () => {
       const mockSet = vi.fn().mockReturnThis();
       const mockExecute = vi.fn().mockResolvedValue(undefined);
 
+      // @ts-expect-error - Complex mock structure causes deep type instantiation (known Vitest limitation)
       vi.mocked(db.selectFrom).mockImplementation(
         () =>
           ({
@@ -82,6 +83,7 @@ describe("handleEvent", () => {
           }) as any,
       );
 
+      // @ts-expect-error - Complex mock structure causes deep type instantiation (known Vitest limitation)
       vi.mocked(db.updateTable).mockReturnValue({
         where: mockUpdateWhere,
         set: mockSet,
@@ -156,6 +158,7 @@ describe("handleEvent", () => {
 
       const mockWhere = vi.fn().mockReturnThis();
       const mockExecuteTakeFirst = vi.fn().mockResolvedValue(null);
+      // @ts-expect-error - Complex mock structure causes deep type instantiation
       vi.mocked(db.selectFrom).mockReturnValue({
         selectAll: vi.fn().mockReturnThis(),
         where: mockWhere,
@@ -212,12 +215,14 @@ describe("handleEvent", () => {
       const mockSet = vi.fn().mockReturnThis();
       const mockExecute = vi.fn().mockResolvedValue(undefined);
 
+      // @ts-expect-error - Complex mock structure causes deep type instantiation
       vi.mocked(db.selectFrom).mockReturnValue({
         selectAll: vi.fn().mockReturnThis(),
         where: mockWhere,
         executeTakeFirst: mockExecuteTakeFirst,
       } as any);
 
+      // @ts-expect-error - Complex mock structure causes deep type instantiation
       vi.mocked(db.updateTable).mockReturnValue({
         where: mockUpdateWhere,
         set: mockSet,

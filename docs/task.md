@@ -1,3 +1,42 @@
+# Documentation Tasks
+
+## Task Queue
+
+### High Priority Tasks
+
+#### Task 1: Fix Critical README Documentation Mismatch ✅
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Documentation Fix
+- **Files**: `README.md`
+
+**Description**:
+Fix critical documentation mismatch where README described project as generic "Saasfly" SaaS boilerplate when it's actually a Kubernetes cluster management platform.
+
+**Steps**:
+1. ✅ Updated project title from "Saasfly" to "Basefly" in main heading
+2. ✅ Updated project description to reflect Kubernetes cluster management functionality
+3. ✅ Updated Vercel deploy button with correct Clerk environment variables (replaced NextAuth)
+4. ✅ Updated Prerequisites to include Clerk and Stripe account requirements
+5. ✅ Added admin dashboard access instructions
+6. ✅ Updated Features section to remove NextAuth (uses Clerk)
+7. ✅ Updated Apps and Packages section with accurate package descriptions
+8. ✅ Added Key Features section highlighting Kubernetes management capabilities
+
+**Success Criteria**:
+- [x] README accurately describes project as Kubernetes cluster management platform
+- [x] All environment variables correctly documented (Clerk, Stripe, PostgreSQL, Resend)
+- [x] Admin dashboard access instructions included
+- [x] Package descriptions match actual functionality
+- [x] NextAuth references removed (replaced with Clerk)
+
+**Notes**:
+- Project name remains "Saasfly" in codebase (@saasfly/* packages) but is documented as "Basefly" platform
+- This clarifies the dual naming convention used in the project
+- README now correctly describes Kubernetes cluster creation, billing, and management features
+
+---
+
 # UI/UX Tasks
 
 ## Accessibility & Responsive Enhancements

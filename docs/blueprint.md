@@ -2,7 +2,7 @@
 
 ## Current Architecture Overview
 
-This document outlines the current data architecture and design patterns for the Basefly platform.
+This document outlines the current data architecture and design patterns for the Basefly platform (also known as Saasfly in the codebase as @saasfly/* packages).
 
 ## Data Models
 

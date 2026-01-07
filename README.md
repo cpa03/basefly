@@ -3,7 +3,7 @@
     <img src="./saasfly-logo.svg" width="128" alt="" />
 </div>
 
-# Saasfly </br>
+# Basefly </br>
 <a href="https://trendshift.io/repositories/8929" target="_blank"><img src="https://trendshift.io/api/badge/repositories/8929" alt="saasfly%2Fsaasfly | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
 [![GitHub Actions Workflow Status][check-workflow-badge]][check-workflow-badge-link] [![GitHub License][github-license-badge]][github-license-badge-link]  [![Discord][discord-badge]][discord-badge-link] [![Saasfly][made-by-nextify-badge]][made-by-nextify-badge-link]
@@ -13,9 +13,9 @@
 ![COMMIT_ACTIVITY](https://img.shields.io/github/commit-activity/m/saasfly/saasfly?style=for-the-badge">)
 [![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2Fsaasfly%2Fsaasfly&labelColor=%23f47373&countColor=%23263759)](https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2Fsaasfly%2Fsaasfly)
 
-An easy-to-use and enterprise-grade Next.js boilerplate.
+An enterprise-grade Kubernetes cluster management platform.
 
-You don't need to buy templates anymore; Saasfly provides a complete, open-source solution for building SaaS applications quickly and easily.
+Basefly simplifies Kubernetes cluster deployment and management with a modern web interface, subscription-based access tiers, and integrated billing through Stripe.
 
 > **[Nextify](https://nextify.ltd)** provides a complete Enterprise SaaS solution. Contact us at [contact@nextify.ltd](mailto:contact@nextify.ltd) if you're interested in discussing your project, or if you'd simply like to have a conversation with us, please feel free to reach out.
 
@@ -76,9 +76,9 @@ See more documentation at <https://document.saasfly.io>
 
 ## 🚀 Getting Started
 
-### 🖱 One Click Template
+### 🖱 One Click Deploy
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsaasfly%2Fsaasfly&env=NEXT_PUBLIC_APP_URL,NEXTAUTH_URL,NEXTAUTH_SECRET,STRIPE_API_KEY,STRIPE_WEBHOOK_SECRET,POSTGRES_URL,GITHUB_CLIENT_ID,GITHUB_CLIENT_SECRET,RESEND_API_KEY,RESEND_FROM&install-command=bun%20install&build-command=bun%20run%20build&root-directory=apps%2Fnextjs)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsaasfly%2Fsaasfly&env=NEXT_PUBLIC_APP_URL,CLERK_SECRET_KEY,CLERK_PUBLISHABLE_KEY,NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL,NEXT_PUBLIC_CLERK_AFTER_SIGN_OUT_URL,STRIPE_API_KEY,STRIPE_WEBHOOK_SECRET,POSTGRES_URL,RESEND_API_KEY,RESEND_FROM,ADMIN_EMAIL&install-command=bun%20install&build-command=bun%20run%20build&root-directory=apps%2Fnextjs)
 
 ### 📋 Prerequisites
 
@@ -101,11 +101,19 @@ Before you start, make sure you have the following installed:
       brew install nvm
     ```
 
-2. [PostgreSQL](https://www.postgresql.org/)
-   1. You can use Vercel Postgres or a local PostgreSQL server(add POSTGRES_URL env in .env.local)
+2. [PostgreSQL](https://www.postgresql.org/) - Required for cluster configuration and user data
+   1. You can use Vercel Postgres or a local PostgreSQL server (add POSTGRES_URL env in .env.local)
       ```bash
          POSTGRES_URL = ''
       ```
+
+3. [Clerk](https://clerk.com/) account - For authentication
+   1. Create a Clerk account and get API keys
+   2. Add Clerk application with Next.js configuration
+
+4. [Stripe](https://stripe.com/) account - For subscription billing
+   1. Create a Stripe account
+   2. Get API keys and set up webhook endpoint
 
 ### Installation
 
@@ -133,7 +141,8 @@ Follow these steps to set up your project:
 
 ```bash
 cp .env.example .env.local
-// (you must have a database prepared before running this command)
+# Configure required environment variables (see .env.example for details)
+# Required: Clerk keys, Stripe keys, PostgreSQL URL, Resend API key
 bun db:push
 ```
 
@@ -145,39 +154,65 @@ bun run dev:web
 
 3. Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
 
-4. (Optional alpha)`bun run tailwind-config-viewer` Open [http://localhost:3333](http://localhost:3333) in your browser to see your Tailwind CSS configuration
+4. (Optional alpha) `bun run tailwind-config-viewer` Open [http://localhost:3333](http://localhost:3333) in your browser to see your Tailwind CSS configuration
 
-### Other Notes
+5. Access the admin dashboard at `/admin/dashboard` using email addresses configured in `ADMIN_EMAIL` environment variable.
 
-We are using Clerk as the default authentication provider after 1st June 2025.
+## 🎯 Key Features
 
-You can find the NextAuth implementation here ( https://github.com/saasfly/saasfly/tree/feature-nextauth ) .
+### Kubernetes Cluster Management
+- Create and manage Kubernetes clusters through a web interface
+- Multiple subscription tiers (FREE, PRO, BUSINESS) with different resource limits
+- Cluster status tracking (PENDING, CREATING, INITING, RUNNING, STOPPED)
+- Soft delete support for cluster preservation
 
+### Subscription & Billing
+- Integrated Stripe subscription billing
+- Multiple pricing plans with automatic provisioning
+- Webhook-based subscription status synchronization
+- Customer portal for subscription management
+
+### Enterprise Features
+- Multi-language support (English, Chinese, German, Vietnamese)
+- Role-based access control (Admin dashboard)
+- Audit trail preservation with soft delete patterns
+- Type-safe API with tRPC
+- Comprehensive error handling with retry logic
 
 ## 🥺 Project Roadmap
 
-1. Admin Dashboard Page (in alpha !!!)
-    1. Only provide static page now and we plan to integrate with headless arch
-    2. You can provide your admin account and change **ADMIN_EMAIL="admin@saasfly.io,root@saasfly.io"** in .env.local and access host:port/admin/dashboard
-    3. Based on security concerns, we will not provide online demos for the time being.
-2. Consider integrating Payload CMS.
+1. Enhanced Admin Dashboard
+    1. Currently in alpha - provides basic administrative views
+    2. Configure admin emails in `ADMIN_EMAIL` environment variable
+    3. Access at `/admin/dashboard`
+    4. Security: No online admin demos available
+
+2. Advanced Kubernetes Features
+    1. Cluster monitoring and metrics integration
+    2. Node pool management
+    3. Auto-scaling configuration
+
+3. Additional Integrations
+    1. Consider integrating Payload CMS for content management
+    2. Enhanced notification system
+    3. Usage analytics and reporting
 
 ## ⭐ Features
 
-### 🐭 Frameworks
+### 🐭 Frameworks & Core
 
 - **[Next.js](https://nextjs.org/)** - The React Framework for the Web (with **App Directory**)
-- **[NextAuth.js](https://next-auth.js.org/)** - Authentication for Next.js
-- **[Kysely](https://kysely.dev/)** - The type-safe SQL query builder for TypeScript
+- **[Clerk](https://clerk.com/)** - Complete user management and authentication platform
+- **[Kysely](https://kysely.dev/)** - Type-safe SQL query builder for TypeScript
 - **[Prisma](https://www.prisma.io/)** - Next-generation ORM for Node.js and TypeScript, used as a schema management tool
 - **[React-email](https://react.email/)** - A React renderer for creating beautiful emails using React components
 
-### 🐮 Platforms
+### 🐮 Platforms & Integrations
 
-- **[Clerk](https://go.clerk.com/uKDp7Au)** - The most comprehensive User Management Platform
+- **[Clerk](https://go.clerk.com/uKDp7Au)** - Complete user authentication and management
 - **[Vercel](https://vercel.com/)** – Deploy your Next.js app with ease
-- **[Stripe](https://stripe.com/)** – Payment processing for internet businesses
-- **[Resend](https://resend.com/)** – Email marketing platform for developers
+- **[Stripe](https://stripe.com/)** – Payment processing and subscription billing
+- **[Resend](https://resend.com/)** – Email marketing platform for transactional emails
 
 ### 🐯 Enterprise Features
 
@@ -221,11 +256,14 @@ You can find the NextAuth implementation here ( https://github.com/saasfly/saasf
 
 ## 📦 Apps and Packages
 
-- `web`: The main Next.js application
-- `ui`: Shared UI components
-- `db`: Database schema and utilities
-- `auth`: Authentication utilities
-- `email`: Email templates and utilities
+- `web` (apps/nextjs): The main Next.js application with dashboard, cluster management, and admin interface
+- `ui`: Shared UI components built with Radix UI and Tailwind CSS
+- `db`: Database schema (Prisma), migrations, and data access utilities with Kysely
+- `auth`: Authentication utilities (Clerk integration)
+- `api`: tRPC routers and API endpoint handlers
+- `stripe`: Stripe integration with retry logic, circuit breaker, and webhook handlers
+- `common`: Shared utilities, types, and constants across packages
+- `email`: Email templates and utilities using React Email
 
 ## 📜 License
 

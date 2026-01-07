@@ -15,7 +15,7 @@ export default function LoginPage() {
   const [isGitHubLoading, setIsGitHubLoading] = React.useState<boolean>(false);
 
   return (
-    <div className="container flex h-screen w-screen flex-col items-center justify-center">
+    <main className="container flex min-h-screen w-screen flex-col items-center justify-center">
       {/*<Link*/}
       {/*  href={`/${lang}`}*/}
       {/*  className={cn(*/}
@@ -86,6 +86,6 @@ export default function LoginPage() {
           </div>
         </CardBody>
       </CardContainer>
-    </div>
+    </main>
   );
 }

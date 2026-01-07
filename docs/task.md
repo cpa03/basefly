@@ -1,3 +1,165 @@
+# UI/UX Tasks
+
+## Accessibility & Responsive Enhancements
+
+### Task 1: Login Page Accessibility Improvements ✅
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Accessibility Fix
+- **Files**: `apps/nextjs/src/app/[lang]/(auth)/login/page.tsx`
+
+**Description**:
+Fix accessibility issues in the login page including proper alt text, semantic HTML, and ARIA attributes.
+
+**Steps**:
+1. ✅ Changed `<div>` to `<main>` for semantic HTML
+2. ✅ Added descriptive alt text to logo image
+3. ✅ Added `aria-label` to navigation link
+4. ✅ Added `aria-hidden="true"` to decorative icons
+
+**Success Criteria**:
+- [x] Semantic HTML elements used appropriately
+- [x] All images have meaningful alt text
+- [x] ARIA labels provided for interactive elements
+- [x] Decorative elements marked as aria-hidden
+
+---
+
+### Task 2: Form Error Accessibility ✅
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Accessibility Fix
+- **Files**: `apps/nextjs/src/components/user-auth-form.tsx`, `apps/nextjs/src/components/user-name-form.tsx`
+
+**Description**:
+Add proper ARIA attributes to form error messages for screen reader compatibility.
+
+**Steps**:
+1. ✅ Added `aria-invalid` to inputs with errors
+2. ✅ Added `aria-describedby` to link errors with inputs
+3. ✅ Added `role="alert"` to error messages
+4. ✅ Added unique IDs to error messages
+
+**Success Criteria**:
+- [x] Screen readers announce form errors
+- [x] Error messages associated with input fields
+- [x] Proper error state communicated via ARIA
+- [x] Unique IDs for ARIA references
+
+---
+
+### Task 3: Input Component Error State ✅
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Component Enhancement
+- **Files**: `packages/ui/src/input.tsx`
+
+**Description**:
+Add error state styling to the Input component for better visual feedback.
+
+**Steps**:
+1. ✅ Added optional `error` prop to Input component
+2. ✅ Added error state styling (destructive border)
+3. ✅ Added error ring focus state
+4. ✅ Added `aria-invalid` support
+
+**Success Criteria**:
+- [x] Error prop added to Input component
+- [x] Visual error state styling implemented
+- [x] ARIA attributes for error state
+- [x] Backward compatible with existing usage
+
+---
+
+### Task 4: Loading Button ARIA Descriptions ✅
+- **Status**: ✅ Completed
+- **Priority**: Medium
+- **Type**: Accessibility Enhancement
+- **Files**: `apps/nextjs/src/components/user-auth-form.tsx`, `apps/nextjs/src/components/user-name-form.tsx`
+
+**Description**:
+Add ARIA descriptions to loading button states to inform screen readers about async operations.
+
+**Steps**:
+1. ✅ Added `aria-busy` to loading buttons
+2. ✅ Added `aria-hidden="true"` to spinner icons
+3. ✅ Wrapped button text in `<span>` for screen readers
+
+**Success Criteria**:
+- [x] Screen readers announce busy state
+- [x] Decorative icons hidden from screen readers
+- [x] Button text still readable during loading
+
+---
+
+### Task 5: Mobile Viewport Fixes ✅
+- **Status**: ✅ Completed
+- **Priority**: Medium
+- **Type**: Responsive Enhancement
+- **Files**: Multiple auth pages
+
+**Description**:
+Replace `h-screen` with `min-h-screen` to fix mobile browser viewport issues.
+
+**Steps**:
+1. ✅ Changed `h-screen` to `min-h-screen` in login pages
+2. ✅ Changed `h-screen` to `min-h-screen` in register page
+3. ✅ Changed `h-screen` to `min-h-screen` in admin login
+4. ✅ Added semantic `<main>` elements
+
+**Success Criteria**:
+- [x] All `h-screen` instances replaced with `min-h-screen`
+- [x] Mobile browser viewport issues resolved
+- [x] Semantic HTML elements used
+
+---
+
+### Task 6: Dashboard Table Accessibility ✅
+- **Status**: ✅ Completed
+- **Priority**: Medium
+- **Type**: Accessibility Enhancement
+- **Files**: `apps/nextjs/src/app/[lang]/(dashboard)/dashboard/page.tsx`
+
+**Description**:
+Improve table accessibility in the dashboard with proper semantic attributes.
+
+**Steps**:
+1. ✅ Added `<tbody>` wrapper for table rows
+2. ✅ Added `scope="col"` to table header cells
+3. ✅ Fixed table caption text (removed extra period)
+4. ✅ Improved column header styling consistency
+
+**Success Criteria**:
+- [x] Proper table structure with tbody
+- [x] Column scope attributes for screen readers
+- [x] Correct table caption text
+- [x] Semantically correct table structure
+
+---
+
+## Summary
+
+All UI/UX accessibility and responsive enhancements have been completed:
+
+- ✅ **Semantic HTML**: Used appropriate elements (main, tbody, scope)
+- ✅ **Accessibility (a11y)**: ARIA labels, roles, and states added
+- ✅ **Responsive Design**: Fixed mobile viewport issues
+- ✅ **Component Enhancement**: Input error states and styling
+- ✅ **Keyboard Navigation**: Focus states and proper tab order maintained
+- ✅ **Screen Reader Support**: All interactive elements properly labeled
+
+### Files Modified:
+- `apps/nextjs/src/app/[lang]/(auth)/login/page.tsx` - Login page accessibility
+- `apps/nextjs/src/app/[lang]/(auth)/login-clerk/[[...rest]]/page.tsx` - Clerk login accessibility
+- `apps/nextjs/src/app/[lang]/(auth)/register/page.tsx` - Register page accessibility
+- `apps/nextjs/src/app/[lang]/(dashboard)/dashboard/page.tsx` - Dashboard table accessibility
+- `apps/nextjs/src/app/admin/login/page.tsx` - Admin login viewport fix
+- `apps/nextjs/src/components/user-auth-form.tsx` - Form error accessibility
+- `apps/nextjs/src/components/user-name-form.tsx` - Name form error accessibility
+- `packages/ui/src/input.tsx` - Input component error state support
+
+---
+
 # Integration Architecture Tasks
 
 ## Integration Hardening Tasks

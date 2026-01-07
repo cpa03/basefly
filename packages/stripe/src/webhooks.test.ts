@@ -1,8 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-return, @typescript-eslint/unbound-method, @typescript-eslint/no-empty-function */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { handleEvent } from "./webhooks";
 import { db } from "@saasfly/db";
 import { stripe } from ".";
-import { getSubscriptionPlan } from "./plans";
 
 vi.mock("@saasfly/db", () => ({
   db: {
@@ -22,10 +22,6 @@ vi.mock(".", () => ({
       retrieve: vi.fn(),
     },
   },
-}));
-
-vi.mock("./plans", () => ({
-  getSubscriptionPlan: vi.fn(),
 }));
 
 describe("handleEvent", () => {
@@ -311,9 +307,9 @@ describe("handleEvent", () => {
         },
       } as any;
 
-      const consoleLogSpy = vi
-        .spyOn(console, "log")
-        .mockImplementation(() => {});
+      const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {
+        // Intentionally empty
+      });
 
       await handleEvent(mockEvent);
 
@@ -335,9 +331,9 @@ describe("handleEvent", () => {
         },
       } as any;
 
-      const consoleLogSpy = vi
-        .spyOn(console, "log")
-        .mockImplementation(() => {});
+      const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {
+        // Intentionally empty
+      });
 
       await handleEvent(mockEvent);
 

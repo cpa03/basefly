@@ -77,8 +77,13 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  const ClerkProviderWrapper = clerkKey
+    ? ClerkProvider
+    : ({ children }: { children: React.ReactNode }) => <>{children}</>;
+
   return (
-    <ClerkProvider>
+    <ClerkProviderWrapper publishableKey={clerkKey}>
       <html lang="en" suppressHydrationWarning>
         <head />
         {/*<Suspense>*/}
@@ -104,6 +109,6 @@ export default function RootLayout({
           </ThemeProvider>
         </body>
       </html>
-    </ClerkProvider>
+    </ClerkProviderWrapper>
   );
 }

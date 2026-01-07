@@ -6,7 +6,7 @@
     "build": "contentlayer2 build && bun with-env next build",
     "clean": "git clean -xdf .next .turbo node_modules",
     "dev": "bun with-env next dev",
-    "lint": " bun with-env next lint --quiet",
+    "lint": "bun with-env next lint",
     "format": "prettier --write '**/*.{js,cjs,mjs,ts,tsx,md,json}'  --ignore-path .prettierignore",
     "start": "bun with-env next start",
     "with-env": "dotenv -e ../../.env.local --"

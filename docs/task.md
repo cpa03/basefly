@@ -557,6 +557,108 @@ Add comprehensive validation at API boundaries to ensure data integrity before d
 
 ---
 
+## Code Quality Tasks
+
+### Task 9: Remove Dead Code and Duplicate Schema Definitions
+- **Status**: Pending
+- **Priority**: Medium
+- **Type**: Code Cleanup
+- **Files**: `packages/api/src/router/customer.ts`, `packages/api/src/router/stripe.ts`
+
+**Description**:
+Remove unused code and duplicate schema definitions that clutter the codebase.
+
+**Steps**:
+1. Remove duplicate z.object() in customer.ts (lines 16-18)
+2. Remove commented-out code block in stripe.ts (lines 96-120)
+3. Verify no imports are affected
+4. Test affected routes still work
+
+**Success Criteria**:
+- [ ] Dead code removed
+- [ ] No functional changes
+- [ ] Tests pass
+- [ ] Code is cleaner
+
+---
+
+### Task 10: Improve Type Safety - Remove "as any" Type Assertions
+- **Status**: Pending
+- **Priority**: High
+- **Type**: Type Safety
+- **Files**: `packages/db/*.ts`, `packages/api/src/router/*.ts`
+
+**Description**:
+Replace all "as any" type assertions (13 instances) with proper type definitions to improve type safety and catch bugs at compile time.
+
+**Steps**:
+1. Audit all "as any" usage in database operations
+2. Create proper Kysely table type definitions
+3. Replace type assertions with typed generics
+4. Update SoftDeleteService and UserDeletionService
+5. Verify TypeScript compilation
+6. Test all affected routes
+
+**Success Criteria**:
+- [ ] No "as any" type assertions remain
+- [ ] Proper types defined for all tables
+- [ ] TypeScript compiles without errors
+- [ ] Tests pass
+- [ ] Runtime behavior unchanged
+
+---
+
+### Task 11: Remove Redundant User Authentication Calls
+- **Status**: Pending
+- **Priority**: Medium
+- **Type**: Performance Refactoring
+- **Files**: `packages/api/src/router/k8s.ts`, `packages/api/src/router/stripe.ts`
+
+**Description**:
+Eliminate redundant `getCurrentUser()` calls when `ctx.userId` is already available from tRPC context, reducing unnecessary database queries.
+
+**Steps**:
+1. Audit all router files for redundant getCurrentUser() calls
+2. Replace with ctx.userId where appropriate
+3. Update type definitions to make userId non-nullable
+4. Remove unused imports if applicable
+5. Test authentication flows
+
+**Success Criteria**:
+- [ ] Redundant user queries eliminated
+- [ ] ctx.userId used consistently
+- [ ] Authentication still works correctly
+- [ ] Tests pass
+- [ ] Performance improved (fewer DB queries)
+
+---
+
+### Task 12: Standardize Logging - Replace Console Statements
+- **Status**: Pending
+- **Priority**: Medium
+- **Type**: Logging Standardization
+- **Files**: `packages/stripe/src/webhooks.ts`, `apps/nextjs/src/components/user-auth-form.tsx`
+
+**Description**:
+Replace console.log/console.error with proper structured logging library for better debugging and production monitoring.
+
+**Steps**:
+1. Identify all console.log/console.error statements
+2. Select appropriate logging library (e.g., pino, winston)
+3. Create logger instance with structured formatting
+4. Replace all console statements with logger
+5. Add log levels (error, warn, info, debug)
+6. Document logging patterns
+
+**Success Criteria**:
+- [ ] All console statements replaced
+- [ ] Structured logging implemented
+- [ ] Log levels properly used
+- [ ] Logs contain relevant context
+- [ ] Documentation updated
+
+---
+
 ## Completed Tasks
 
 ### Task 1: Add Foreign Key Constraints to User Table ✅

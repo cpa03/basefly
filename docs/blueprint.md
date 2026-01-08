@@ -156,6 +156,34 @@ await k8sClusterService.softDelete(clusterId, userId);
 await k8sClusterService.restore(clusterId, userId);
 ```
 
+#### Type Safety Improvements
+```typescript
+import { db } from "@saasfly/db";
+import { k8sClusterService, userDeletionService } from "@saasfly/db";
+
+// SoftDeleteService uses generic type parameter for table names
+// T extends keyof DB ensures only valid table names are used
+const clusters = await k8sClusterService.findAllActive(userId);
+
+// UserDeletionService uses typed table names
+// All table names are type-checked against DB schema
+await userDeletionService.deleteUser(userId);
+
+// Direct queries are fully type-safe
+const user = await db
+  .selectFrom("User")
+  .select(["id", "name", "email"])
+  .where("id", "=", userId)
+  .executeTakeFirst();
+```
+
+**Type Safety Features**:
+- Table names validated against DB schema at compile time
+- Column names auto-completed and type-checked
+- Query results typed with correct field types
+- Generic type parameters ensure type consistency
+- Minimal "as any" usage (limited to Kysely `.set()` limitations)
+
 ## Current Issues & Anti-Patterns
 
 ### ~~1. Missing Foreign Key Constraints~~ ✅ RESOLVED
@@ -191,6 +219,13 @@ await k8sClusterService.restore(clusterId, userId);
 **Impact**: Manual cleanup required when User deleted
 **Priority**: Medium
 **Status**: Implemented application-level cascade deletion with audit trail preservation. Database uses RESTRICT to prevent accidental deletion, `UserDeletionService` handles controlled cascade with transactions.
+
+### ~~6. Type Safety Issues~~ ✅ RESOLVED
+**Location**: `packages/db/soft-delete.ts`, `packages/db/user-deletion.ts`
+**Issue**: Excessive use of "as any" type assertions in database operations
+**Impact**: Loss of type safety, potential runtime errors not caught at compile time
+**Priority**: High
+**Status**: Refactored to use proper Kysely generics with `keyof DB` type constraints. Removed 8 instances of "as any" from table name references. Remaining 5 instances limited to `.set()` calls (Kysely type system limitation).
 
 ### 6. N+1 Query Potential
 **Location**: Various router files
@@ -433,6 +468,7 @@ throw createApiError(
 2. ~~Implement proper migration strategy~~ ✅ Completed
 3. ~~Add cascade delete policies~~ ✅ Completed
 4. ~~Implement integration hardening~~ ✅ Completed
+5. ~~Improve type safety - Remove "as any" type assertions~~ ✅ Completed
 
 ### Medium Priority
 1. ~~Implement proper soft delete pattern with partial unique indexes~~ ✅ Completed

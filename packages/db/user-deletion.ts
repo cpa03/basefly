@@ -4,19 +4,19 @@ export class UserDeletionService {
   async deleteUser(userId: string): Promise<void> {
     await db.transaction().execute(async (trx) => {
       await trx
-        .updateTable("K8sClusterConfig" as any)
-        .set({ deletedAt: new Date() })
+        .updateTable("K8sClusterConfig")
+        .set({ deletedAt: new Date() } as any)
         .where("authUserId", "=", userId)
         .where("deletedAt", "is", null)
         .execute();
 
       await trx
-        .deleteFrom("Customer" as any)
+        .deleteFrom("Customer")
         .where("authUserId", "=", userId)
         .execute();
 
       await trx
-        .deleteFrom("User" as any)
+        .deleteFrom("User")
         .where("id", "=", userId)
         .execute();
     });
@@ -25,15 +25,15 @@ export class UserDeletionService {
   async softDeleteUser(userId: string): Promise<void> {
     await db.transaction().execute(async (trx) => {
       await trx
-        .updateTable("K8sClusterConfig" as any)
-        .set({ deletedAt: new Date() })
+        .updateTable("K8sClusterConfig")
+        .set({ deletedAt: new Date() } as any)
         .where("authUserId", "=", userId)
         .where("deletedAt", "is", null)
         .execute();
 
       await trx
-        .updateTable("User" as any)
-        .set({ email: `deleted_${userId}@example.com` })
+        .updateTable("User")
+        .set({ email: `deleted_${userId}@example.com` } as any)
         .where("id", "=", userId)
         .execute();
     });
@@ -41,7 +41,7 @@ export class UserDeletionService {
 
   async getUserSummary(userId: string) {
     const user = await db
-      .selectFrom("User" as any)
+      .selectFrom("User")
       .select(["id", "name", "email", "image"])
       .where("id", "=", userId)
       .executeTakeFirst();
@@ -51,13 +51,13 @@ export class UserDeletionService {
     }
 
     const customer = await db
-      .selectFrom("Customer" as any)
+      .selectFrom("Customer")
       .selectAll()
       .where("authUserId", "=", userId)
       .executeTakeFirst();
 
     const clusters = await db
-      .selectFrom("K8sClusterConfig" as any)
+      .selectFrom("K8sClusterConfig")
       .selectAll()
       .where("authUserId", "=", userId)
       .where("deletedAt", "is", null)

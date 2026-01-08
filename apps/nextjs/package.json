@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "contentlayer2 build && npm run with-env next build",
+    "build": "contentlayer2 build && npm run with-env -- next build",
     "clean": "git clean -xdf .next .turbo node_modules",
-    "dev": "npm run with-env next dev",
-    "lint": "npm run with-env next lint",
+    "dev": "npm run with-env -- next dev",
+    "lint": "npm run with-env -- next lint",
     "format": "prettier --write '**/*.{js,cjs,mjs,ts,tsx,md,json}'  --ignore-path .prettierignore",
-    "start": "npm run with-env next start",
+    "start": "npm run with-env -- next start",
     "with-env": "dotenv -e ../../.env.local --"
   },
   "dependencies": {

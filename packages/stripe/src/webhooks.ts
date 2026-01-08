@@ -5,6 +5,7 @@ import { db, SubscriptionPlan } from "@saasfly/db";
 import { IntegrationError } from "./integration";
 import { retrieveSubscription } from "./client";
 import { getSubscriptionPlan } from "./plans";
+import { logger } from "./logger";
 
 export async function handleEvent(event: Stripe.Event) {
   try {
@@ -14,11 +15,11 @@ export async function handleEvent(event: Stripe.Event) {
     } else if (event.type === "invoice.payment_succeeded") {
       await handleInvoicePaymentSucceeded(session);
     } else if (event.type === "customer.subscription.updated") {
-      console.log("event.type: ", event.type);
+      logger.info(`Unhandled event type: ${event.type}`);
     }
-    console.log("✅ Stripe Webhook Processed");
+    logger.info("Stripe Webhook Processed", { eventType: event.type });
   } catch (error) {
-    console.error("❌ Stripe Webhook Failed:", error);
+    logger.error("Stripe Webhook Failed", error);
 
     if (error instanceof IntegrationError) {
       throw error;
@@ -94,7 +95,7 @@ async function handleInvoicePaymentSucceeded(
   if (customer) {
     const priceId = subscription.items.data[0]?.price.id;
     if (!priceId) {
-      console.warn("No priceId in subscription, skipping update");
+      logger.warn("No priceId in subscription, skipping update");
       return;
     }
 

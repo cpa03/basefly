@@ -11,7 +11,6 @@ import * as Icons from "@saasfly/ui/icons";
 import { Modal } from "~/components/modal";
 import { siteConfig } from "~/config/site";
 import { useSigninModal } from "~/hooks/use-signin-modal";
-import { logger } from "~/lib/logger";
 
 export const SignInClerkModal = ({
   dict,
@@ -36,12 +35,13 @@ export const SignInClerkModal = ({
         redirectUrlComplete: `${protocol}//${host}/dashboard`,
       })
       .then((res) => {
-        logger.info("SignIn result", { result: res });
+        console.log(res);
       })
       .catch((err: Error) => {
-        logger.error("SignIn failed", err, {
-          errors: (err as { errors?: unknown[] }).errors,
-        });
+        // See https://clerk.com/docs/custom-flows/error-handling
+        // for more info on error handling
+        console.log((err as { errors?: unknown[] }).errors);
+        console.error(err, null, 2);
       });
   };
 

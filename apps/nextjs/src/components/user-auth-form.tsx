@@ -14,6 +14,8 @@ import { Input } from "@saasfly/ui/input";
 import { Label } from "@saasfly/ui/label";
 import { toast } from "@saasfly/ui/use-toast";
 
+import { logger } from "~/lib/logger";
+
 type Dictionary = Record<string, string>;
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -54,7 +56,7 @@ export function UserAuthForm({
       redirect: false,
       callbackUrl: searchParams?.get("from") ?? `/${lang}/dashboard`,
     }).catch((error) => {
-      console.error("Error during sign in:", error);
+      logger.error("Error during sign in", error, { email: data.email });
     });
 
     setIsLoading(false);
@@ -125,7 +127,7 @@ export function UserAuthForm({
         onClick={() => {
           setIsGitHubLoading(true);
           signIn("github").catch((error) => {
-            console.error("GitHub signIn error:", error);
+            logger.error("GitHub signIn error", error);
           });
         }}
         disabled={isLoading || isGitHubLoading}

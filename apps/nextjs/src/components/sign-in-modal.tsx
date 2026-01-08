@@ -10,6 +10,7 @@ import * as Icons from "@saasfly/ui/icons";
 import { Modal } from "~/components/modal";
 import { siteConfig } from "~/config/site";
 import { useSigninModal } from "~/hooks/use-signin-modal";
+import { logger } from "~/lib/logger";
 
 export const SignInModal = ({ dict }: { dict: Record<string, string> }) => {
   const signInModal = useSigninModal();
@@ -45,7 +46,7 @@ export const SignInModal = ({ dict }: { dict: Record<string, string> }) => {
                   }, 1000),
                 )
                 .catch((error) => {
-                  console.error("signUp failed:", error);
+                  logger.error("signUp failed", error);
                 });
             }}
           >

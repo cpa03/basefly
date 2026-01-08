@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import * as Icons from "@saasfly/ui/icons";
+import { logger } from "~/lib/logger";
 
 export function CodeCopy() {
   const [copied, setCopied] = useState(false)
@@ -13,7 +14,7 @@ export function CodeCopy() {
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch (err) {
-      console.error("Failed to copy text: ", err)
+      logger.error("Failed to copy text", err, { command });
     }
   }
 

@@ -1,7 +1,6 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { z } from "zod";
 
-import { getCurrentUser } from "@saasfly/auth";
 import { Customer, db } from "@saasfly/db";
 import {
   IntegrationError,
@@ -63,11 +62,16 @@ export const stripeRouter = createTRPCRouter({
           return { success: true as const, url: session.url };
         }
 
-        const user = await getCurrentUser();
-        if (!user) {
+        const customer = await db
+          .selectFrom("User")
+          .select(["email"])
+          .where("id", "=", userId)
+          .executeTakeFirst();
+
+        if (!customer) {
           return null;
         }
-        const email = user.email!;
+        const email = customer.email!;
 
         const session = await createCheckoutSession(
           {
@@ -93,31 +97,6 @@ export const stripeRouter = createTRPCRouter({
       }
     }),
 
-  // plans: protectedProcedure.query(async () => {
-  //   const proPrice = await stripe.prices.retrieve(PLANS.PRO.priceId);
-  //   const stdPrice = await stripe.prices.retrieve(PLANS.STANDARD.priceId);
-  //
-  //   return [
-  //     {
-  //       ...PLANS.STANDARD,
-  //       price: dinero({
-  //         amount: stdPrice.unit_amount!,
-  //         currency:
-  //           currencies[stdPrice.currency as keyof typeof currencies] ??
-  //           currencies.USD,
-  //       }),
-  //     },
-  //     {
-  //       ...PLANS.PRO,
-  //       price: dinero({
-  //         amount: proPrice.unit_amount!,
-  //         currency:
-  //           currencies[proPrice.currency as keyof typeof currencies] ??
-  //           currencies.USD,
-  //       }),
-  //     },
-  //   ];
-  // }),
   userPlans: protectedProcedure
     // .output(Promise<UserSubscriptionPlan>)
     .query(async (opts) => {

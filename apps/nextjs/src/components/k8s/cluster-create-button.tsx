@@ -58,8 +58,6 @@ export function K8sCreateButton({
       if (cluster?.id) {
         router.push(`/editor/cluster/${cluster.id}`);
       }
-    } else {
-      // console.log("error ");
     }
   }
 

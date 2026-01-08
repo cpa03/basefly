@@ -9,6 +9,7 @@ import { cn } from "@saasfly/ui";
 import { CardBody, CardContainer, CardItem } from "@saasfly/ui/3d-card";
 import { buttonVariants } from "@saasfly/ui/button";
 import * as Icons from "@saasfly/ui/icons";
+import { logger } from "~/lib/logger";
 
 export default function LoginPage() {
   // const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -71,7 +72,7 @@ export default function LoginPage() {
                   redirect: true,
                   callbackUrl: "http://localhost:3000/admin/dashboard",
                 }).catch((error) => {
-                  console.error("GitHub signIn error:", error);
+                  logger.error("GitHub signIn error", error);
                 });
               }}
               disabled={isGitHubLoading}

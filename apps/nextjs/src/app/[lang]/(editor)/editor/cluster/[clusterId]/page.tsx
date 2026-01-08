@@ -31,7 +31,6 @@ export default async function EditorClusterPage({
     redirect(authOptions?.pages?.signIn ?? "/login-clerk");
   }
 
-  // console.log("EditorClusterPage user:" + user.id + "params:", params);
   const cluster = await getClusterForUser(params.clusterId, user.id);
 
   if (!cluster) {

@@ -6,6 +6,12 @@ import { IntegrationError } from "./integration";
 import { retrieveSubscription } from "./client";
 import { getSubscriptionPlan } from "./plans";
 
+const logger = {
+  info: (msg: string, meta?: Record<string, unknown>) => console.log(JSON.stringify({ level: "info", msg, ...meta })),
+  warn: (msg: string, meta?: Record<string, unknown>) => console.warn(JSON.stringify({ level: "warn", msg, ...meta })),
+  error: (msg: string, err?: Error | unknown, meta?: Record<string, unknown>) => console.error(JSON.stringify({ level: "error", msg, error: err, ...meta })),
+};
+
 export async function handleEvent(event: Stripe.Event) {
   try {
     const session = event.data.object as Stripe.Checkout.Session;
@@ -14,11 +20,11 @@ export async function handleEvent(event: Stripe.Event) {
     } else if (event.type === "invoice.payment_succeeded") {
       await handleInvoicePaymentSucceeded(session);
     } else if (event.type === "customer.subscription.updated") {
-      console.log("event.type: ", event.type);
+      logger.info("customer.subscription.updated", { eventType: event.type });
     }
-    console.log("✅ Stripe Webhook Processed");
+    logger.info("Stripe Webhook Processed", { eventType: event.type });
   } catch (error) {
-    console.error("❌ Stripe Webhook Failed:", error);
+    logger.error("Stripe Webhook Failed", error);
 
     if (error instanceof IntegrationError) {
       throw error;
@@ -94,7 +100,7 @@ async function handleInvoicePaymentSucceeded(
   if (customer) {
     const priceId = subscription.items.data[0]?.price.id;
     if (!priceId) {
-      console.warn("No priceId in subscription, skipping update");
+      logger.warn("No priceId in subscription, skipping update");
       return;
     }
 

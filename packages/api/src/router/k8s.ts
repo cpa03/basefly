@@ -1,7 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { getCurrentUser } from "@saasfly/auth";
 import { db, SubscriptionPlan, k8sClusterService } from "@saasfly/db";
 
 import { createApiError, ErrorCode } from "../errors";
@@ -19,25 +18,14 @@ const k8sClusterDeleteSchema = z.object({
 
 export const k8sRouter = createTRPCRouter({
   getClusters: protectedProcedure.query(async (opts) => {
-    const user = await getCurrentUser();
-    const userId = opts.ctx.userId! as string;
-    if (!user) {
-      return;
-    }
+    const userId = opts.ctx.userId!;
     return await k8sClusterService.findAllActive(userId);
   }),
   createCluster: protectedProcedure
     .input(k8sClusterCreateSchema)
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.userId! as string;
+      const userId = ctx.userId!;
 
-      const user = await getCurrentUser();
-      if (!user) {
-        throw createApiError(
-          ErrorCode.UNAUTHORIZED,
-          "You must be logged in to create a cluster",
-        );
-      }
       try {
         const newCluster = await db
           .insertInto("K8sClusterConfig")

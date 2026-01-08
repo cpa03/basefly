@@ -10,6 +10,12 @@ import type { GetServerSidePropsContext, NextApiRequest, NextApiResponse } from 
 import { db } from "./db";
 import { env } from "./env.mjs";
 
+const logger = {
+  info: (msg: string, meta?: Record<string, unknown>) => console.log(JSON.stringify({ level: "info", msg, ...meta })),
+  warn: (msg: string, meta?: Record<string, unknown>) => console.warn(JSON.stringify({ level: "warn", msg, ...meta })),
+  error: (msg: string, err?: Error | unknown, meta?: Record<string, unknown>) => console.error(JSON.stringify({ level: "error", msg, error: err, ...meta })),
+};
+
 type UserId = string;
 type IsAdmin = boolean;
 
@@ -75,7 +81,7 @@ export const authOptions: NextAuthOptions = {
             },
           });
         } catch (error) {
-          console.log(error);
+          logger.error("Failed to send verification email", error, { identifier });
         }
       },
     }),

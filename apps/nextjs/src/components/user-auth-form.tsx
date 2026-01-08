@@ -89,19 +89,21 @@ export function UserAuthForm({
               autoComplete="email"
               autoCorrect="off"
               disabled={isLoading || isGitHubLoading || disabled}
+              aria-invalid={!!errors?.email}
+              aria-describedby={errors?.email ? "email-error" : undefined}
               {...register("email")}
             />
             {errors?.email && (
-              <p className="px-1 text-xs text-red-600">
+              <p id="email-error" className="px-1 text-xs text-red-600" role="alert">
                 {errors.email.message}
               </p>
             )}
           </div>
-          <button className={cn(buttonVariants())} disabled={isLoading}>
+          <button className={cn(buttonVariants())} disabled={isLoading} type="submit">
             {isLoading && (
-              <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+              <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
             )}
-            {dict.signin_email}
+            <span>{dict.signin_email}</span>
             {/* Sign In with Email */}
           </button>
         </div>
@@ -127,13 +129,14 @@ export function UserAuthForm({
           });
         }}
         disabled={isLoading || isGitHubLoading}
+        aria-busy={isGitHubLoading}
       >
         {isGitHubLoading ? (
-          <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+          <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
         ) : (
-          <Icons.GitHub className="mr-2 h-4 w-4" />
+          <Icons.GitHub className="mr-2 h-4 w-4" aria-hidden="true" />
         )}{" "}
-        Github
+        <span>GitHub</span>
       </button>
     </div>
   );

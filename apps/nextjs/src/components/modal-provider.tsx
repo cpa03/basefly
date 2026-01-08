@@ -1,6 +1,5 @@
 "use client";
 
-import { SignInModal } from "~/components/sign-in-modal";
 import { SignInClerkModal } from "~/components/sign-in-modal-clerk";
 import { useMounted } from "~/hooks/use-mounted";
 

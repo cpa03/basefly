@@ -6,5 +6,7 @@ export { jsonArrayFrom, jsonObjectFrom } from "kysely/helpers/postgres";
 
 export * from "./prisma/types";
 export * from "./prisma/enums";
+export * from "./soft-delete";
+export * from "./user-deletion";
 
 export const db = createKysely<DB>();

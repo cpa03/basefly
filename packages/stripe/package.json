@@ -5,7 +5,9 @@
   "exports": {
     ".": "./src/index.ts",
     "./plans": "./src/plans.ts",
-    "./env": "./src/env.mjs"
+    "./env": "./src/env.mjs",
+    "./client": "./src/client.ts",
+    "./integration": "./src/integration.ts"
   },
   "typesVersions": {
     "*": {
@@ -24,15 +26,16 @@
   "dependencies": {
     "@saasfly/db": "workspace:*",
     "@t3-oss/env-nextjs": "0.8.0",
-    "stripe": "14.15.0"
+    "stripe": "14.15.0",
+    "zod": "3.22.4"
   },
   "devDependencies": {
     "@saasfly/eslint-config": "workspace:*",
     "@saasfly/prettier-config": "workspace:*",
     "@saasfly/typescript-config": "workspace:*",
     "eslint": "8.57.0",
-    "prettier": "3.2.5",
-    "typescript": "5.4.5"
+    "prettier": "3.7.4",
+    "typescript": "5.9.3"
   },
   "eslintConfig": {
     "extends": [

@@ -92,10 +92,14 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
               id="name"
               className="w-[400px]"
               size={32}
+              aria-invalid={!!errors?.name}
+              aria-describedby={errors?.name ? "name-error" : undefined}
               {...register("name")}
             />
             {errors?.name && (
-              <p className="px-1 text-xs text-red-600">{errors.name.message}</p>
+              <p id="name-error" className="px-1 text-xs text-red-600" role="alert">
+                {errors.name.message}
+              </p>
             )}
           </div>
         </CardContent>
@@ -104,9 +108,10 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
             type="submit"
             className={cn(buttonVariants(), className)}
             disabled={isSaving}
+            aria-busy={isSaving}
           >
             {isSaving && (
-              <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+              <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
             )}
             <span>Save</span>
           </button>

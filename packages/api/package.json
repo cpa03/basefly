@@ -27,9 +27,11 @@
   "dependencies": {
     "@saasfly/auth": "workspace:*",
     "@saasfly/db": "workspace:*",
-    "@trpc/client": "10.44.1",
-    "@trpc/server": "10.44.1",
+    "@saasfly/stripe": "workspace:*",
+    "@trpc/client": "10.45.3",
+    "@trpc/server": "10.45.3",
     "@t3-oss/env-nextjs": "0.8.0",
+    "next": "14.2.10",
     "superjson": "2.2.1",
     "dinero.js": "2.0.0-alpha.14",
     "@dinero.js/currencies": "2.0.0-alpha.14",
@@ -41,8 +43,8 @@
     "@saasfly/prettier-config": "workspace:*",
     "@saasfly/typescript-config": "workspace:*",
     "eslint": "8.57.0",
-    "prettier": "3.2.5",
-    "typescript": "5.4.5"
+    "prettier": "3.7.4",
+    "typescript": "5.9.3"
   },
   "eslintConfig": {
     "root": true,

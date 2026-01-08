@@ -63,23 +63,25 @@ export default async function DashboardPage({
             <div className="divide-y divide-border rounded-md border">
               <div className="flex items-center justify-between p-4">
                 <Table className="divide-y divide-gray-200">
-                  <TableCaption>A list of your k8s cluster .</TableCaption>
+                  <TableCaption>A list of your k8s cluster</TableCaption>
                   <TableHeader>
                     <TableRow className="hover:bg-gray-50">
-                      <TableHead className="w-[100px]">Name</TableHead>
-                      <TableHead>Location</TableHead>
-                      <TableHead>UpdatedAt</TableHead>
-                      <TableHead>Plan</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>ACTION</TableHead>
+                      <TableHead scope="col" className="w-[100px]">Name</TableHead>
+                      <TableHead scope="col">Location</TableHead>
+                      <TableHead scope="col">UpdatedAt</TableHead>
+                      <TableHead scope="col">Plan</TableHead>
+                      <TableHead scope="col">Status</TableHead>
+                      <TableHead scope="col" className="text-right">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
-                  {clusters.map((cluster) => (
-                    <ClusterItem
-                      key={String(cluster.id)}
-                      cluster={cluster}
-                    ></ClusterItem>
-                  ))}
+                  <tbody>
+                    {clusters.map((cluster) => (
+                      <ClusterItem
+                        key={String(cluster.id)}
+                        cluster={cluster}
+                      ></ClusterItem>
+                    ))}
+                  </tbody>
                 </Table>
               </div>
             </div>

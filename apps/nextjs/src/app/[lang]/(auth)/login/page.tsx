@@ -25,18 +25,17 @@ export default async function LoginPage({
 }) {
   const dict = await getDictionary(lang);
   return (
-    <div className="container flex h-screen w-screen flex-col items-center justify-center">
+    <main className="container flex min-h-screen w-screen flex-col items-center justify-center">
       <Link
         href={`/${lang}`}
         className={cn(
           buttonVariants({ variant: "ghost" }),
           "absolute left-4 top-4 md:left-8 md:top-8",
         )}
+        aria-label="Go to home page"
       >
-        <>
-          <Icons.ChevronLeft className="mr-2 h-4 w-4" />
-          {dict.login.back}
-        </>
+        <Icons.ChevronLeft className="mr-2 h-4 w-4" aria-hidden="true" />
+        {dict.login.back}
       </Link>
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
@@ -45,7 +44,7 @@ export default async function LoginPage({
             className="mx-auto"
             width="64"
             height="64"
-            alt=""
+            alt="Saasfly Logo"
           />
           <h1 className="text-2xl font-semibold tracking-tight">
             {dict.login.welcome_back}
@@ -64,6 +63,6 @@ export default async function LoginPage({
           </Link>
         </p> */}
       </div>
-    </div>
+    </main>
   );
 }

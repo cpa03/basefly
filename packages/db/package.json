@@ -13,6 +13,12 @@
     "format": "prisma format && prettier --check '**/*.{ts,json}' ",
     "db:generate": "prisma generate",
     "db:push": "bun with-env prisma db push --skip-generate",
+    "db:migrate:dev": "bun with-env prisma migrate dev",
+    "db:migrate:deploy": "bun with-env prisma migrate deploy",
+    "db:migrate:create": "bun with-env prisma migrate dev --create-only",
+    "db:migrate:reset": "bun with-env prisma migrate reset",
+    "db:migrate:resolve": "bun with-env prisma migrate resolve",
+    "db:studio": "bun with-env prisma studio",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env.local --"
   },
@@ -26,11 +32,11 @@
     "@saasfly/typescript-config": "workspace:*",
     "dotenv-cli": "7.3.0",
     "eslint": "8.57.0",
-    "prettier": "3.2.5",
+    "prettier": "3.7.4",
     "prisma": "5.9.1",
     "prisma-kysely": "1.7.1",
     "@types/pg": "8.11.0",
-    "typescript": "5.4.5"
+    "typescript": "5.9.3"
   },
   "eslintConfig": {
     "root": true,

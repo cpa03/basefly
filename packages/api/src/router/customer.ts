@@ -53,19 +53,6 @@ export const customerRouter = createTRPCRouter({
     .query(async ({ input }) => {
       noStore();
       const { userId } = input;
-      console.log("userId:", userId);
-      try {
-        console.log(
-          "result:",
-          await db
-            .selectFrom("Customer")
-            .where("authUserId", "=", userId)
-            .executeTakeFirst(),
-        );
-      } catch (e) {
-        console.error("e:", e);
-      }
-
       return await db
         .selectFrom("Customer")
         .where("authUserId", "=", userId)

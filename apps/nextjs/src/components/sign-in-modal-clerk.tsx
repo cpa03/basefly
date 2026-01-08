@@ -12,34 +12,38 @@ import { Modal } from "~/components/modal";
 import { siteConfig } from "~/config/site";
 import { useSigninModal } from "~/hooks/use-signin-modal";
 
-export const SignInClerkModal = ({ dict }: { dict: Record<string, string> }) => {
+export const SignInClerkModal = ({
+  dict,
+}: {
+  dict: Record<string, string>;
+}) => {
   const signInModal = useSigninModal();
   const [signInClicked, setSignInClicked] = useState(false);
   const { signIn } = useSignIn();
 
   if (!signIn) {
-    return null
+    return null;
   }
 
   const signInWith = (strategy: OAuthStrategy) => {
-    const protocol = window.location.protocol
-    const host = window.location.host
+    const protocol = window.location.protocol;
+    const host = window.location.host;
     return signIn
       .authenticateWithRedirect({
         strategy,
-        redirectUrl: '/sign-in/sso-callback',
+        redirectUrl: "/sign-in/sso-callback",
         redirectUrlComplete: `${protocol}//${host}/dashboard`,
       })
       .then((res) => {
-        console.log(res)
+        console.log(res);
       })
-      .catch((err: any) => {
+      .catch((err: Error) => {
         // See https://clerk.com/docs/custom-flows/error-handling
         // for more info on error handling
-        console.log(err.errors)
-        console.error(err, null, 2)
-      })
-  }
+        console.log((err as { errors?: unknown[] }).errors);
+        console.error(err, null, 2);
+      });
+  };
 
   return (
     <Modal showModal={signInModal.isOpen} setShowModal={signInModal.onClose}>
@@ -55,7 +59,9 @@ export const SignInClerkModal = ({ dict }: { dict: Record<string, string> }) => 
             />
           </a>
           <h3 className="font-urban text-2xl font-bold">{dict.signup}</h3>
-          <p className="text-sm text-gray-500 dark:text-zinc-400">{dict.privacy}</p>
+          <p className="text-sm text-gray-500 dark:text-zinc-400">
+            {dict.privacy}
+          </p>
         </div>
 
         <div className="flex flex-col space-y-4 px-4 py-8 md:px-16">
@@ -64,12 +70,11 @@ export const SignInClerkModal = ({ dict }: { dict: Record<string, string> }) => 
             disabled={signInClicked}
             onClick={() => {
               setSignInClicked(true);
-              void signInWith('oauth_github')
-                .then(() => {
-                  setTimeout(() => {
-                    signInModal.onClose();
-                  }, 1000)
-                })
+              void signInWith("oauth_github").then(() => {
+                setTimeout(() => {
+                  signInModal.onClose();
+                }, 1000);
+              });
             }}
           >
             {signInClicked ? (

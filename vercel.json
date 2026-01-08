@@ -2,8 +2,8 @@
   "github": {
     "silent": true
   },
-  "buildCommand": "npm run build",
-  "installCommand": "npm install",
+  "buildCommand": "cd apps/nextjs && npm install && npm run build",
+  "outputDirectory": "apps/nextjs/.next",
   "framework": "nextjs",
   "regions": ["iad1"],
   "functions": {

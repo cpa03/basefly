@@ -1,15 +1,5 @@
 {
   "github": {
     "silent": true
-  },
-  "buildCommand": "cd apps/nextjs && npm install && npm run build",
-  "outputDirectory": "apps/nextjs/.next",
-  "framework": "nextjs",
-  "regions": ["iad1"],
-  "functions": {
-    "app/api/**": {
-      "memory": 1024,
-      "maxDuration": 30
-    }
   }
 }

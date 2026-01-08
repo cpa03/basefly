@@ -94,33 +94,7 @@ export const stripeRouter = createTRPCRouter({
       }
     }),
 
-  // plans: protectedProcedure.query(async () => {
-  //   const proPrice = await stripe.prices.retrieve(PLANS.PRO.priceId);
-  //   const stdPrice = await stripe.prices.retrieve(PLANS.STANDARD.priceId);
-  //
-  //   return [
-  //     {
-  //       ...PLANS.STANDARD,
-  //       price: dinero({
-  //         amount: stdPrice.unit_amount!,
-  //         currency:
-  //           currencies[stdPrice.currency as keyof typeof currencies] ??
-  //           currencies.USD,
-  //       }),
-  //     },
-  //     {
-  //       ...PLANS.PRO,
-  //       price: dinero({
-  //         amount: proPrice.unit_amount!,
-  //         currency:
-  //           currencies[proPrice.currency as keyof typeof currencies] ??
-  //           currencies.USD,
-  //       }),
-  //     },
-  //   ];
-  // }),
   userPlans: protectedProcedure
-    // .output(Promise<UserSubscriptionPlan>)
     .query(async (opts) => {
       noStore();
       const userId = opts.ctx.userId! as string;

@@ -23,6 +23,7 @@
     "@saasfly/db": "workspace:*",
     "@saasfly/stripe": "workspace:*",
     "@saasfly/ui": "workspace:*",
+    "@clerk/nextjs": "^6.36.6",
     "@t3-oss/env-nextjs": "0.8.0",
     "@tanstack/react-query": "5.36.0",
     "@tanstack/react-query-devtools": "5.36.0",

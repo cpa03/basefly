@@ -1,5 +1,15 @@
 {
   "github": {
     "silent": true
+  },
+  "buildCommand": "bun install && bun run build",
+  "installCommand": "bun install",
+  "framework": "nextjs",
+  "regions": ["iad1"],
+  "functions": {
+    "app/api/**": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
   }
 }

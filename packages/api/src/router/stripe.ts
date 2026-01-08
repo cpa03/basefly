@@ -11,7 +11,11 @@ import {
 
 import { pricingData } from "../../../common/src/subscriptions";
 import { env } from "../env.mjs";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import {
+  createTRPCRouter,
+  createRateLimitedProtectedProcedure,
+  EndpointType,
+} from "../trpc";
 import { handleIntegrationError } from "../errors";
 
 export interface SubscriptionPlan {
@@ -40,7 +44,7 @@ export type UserSubscriptionPlan = SubscriptionPlan &
     isCanceled?: boolean;
   };
 export const stripeRouter = createTRPCRouter({
-  createSession: protectedProcedure
+  createSession: createRateLimitedProtectedProcedure("stripe")
     .input(z.object({ planId: z.string() }))
     .mutation(async (opts) => {
       const userId = opts.ctx.userId! as string;
@@ -94,7 +98,7 @@ export const stripeRouter = createTRPCRouter({
       }
     }),
 
-  userPlans: protectedProcedure
+  userPlans: createRateLimitedProtectedProcedure("read")
     .query(async (opts) => {
       noStore();
       const userId = opts.ctx.userId! as string;

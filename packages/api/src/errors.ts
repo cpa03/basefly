@@ -12,6 +12,7 @@ export enum ErrorCode {
   INTEGRATION_ERROR = "INTEGRATION_ERROR",
   TIMEOUT_ERROR = "TIMEOUT_ERROR",
   CIRCUIT_BREAKER_OPEN = "CIRCUIT_BREAKER_OPEN",
+  TOO_MANY_REQUESTS = "TOO_MANY_REQUESTS",
 }
 
 export interface ApiErrorResponse {
@@ -51,6 +52,8 @@ function mapErrorCodeToTRPC(code: ErrorCode): TRPCError["code"] {
       return "CONFLICT";
     case ErrorCode.VALIDATION_ERROR:
       return "BAD_REQUEST";
+    case ErrorCode.TOO_MANY_REQUESTS:
+      return "TOO_MANY_REQUESTS";
     case ErrorCode.INTEGRATION_ERROR:
       return "INTERNAL_SERVER_ERROR";
     case ErrorCode.TIMEOUT_ERROR:

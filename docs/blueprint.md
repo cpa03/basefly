@@ -460,8 +460,162 @@ throw createApiError(
 - Expose internal error details to clients
 - Skip idempotency for payment operations
 - Use infinite loops for retries
+- Bypass rate limits without proper authorization
 
-## Recommendations
+### Rate Limiting
+
+**Location**: `packages/api/src/rate-limiter.ts`, `packages/api/src/trpc.ts`
+
+**Purpose**: Protect API endpoints from abuse, DDoS attacks, and resource exhaustion
+
+**Algorithm**: Token Bucket
+
+**Rate Limits**:
+- **Read Operations** (queries): 100 requests/minute
+  - Endpoints: `getClusters`, `userPlans`, `queryCustomer`, `mySubscription`, `hello`
+- **Write Operations** (mutations): 20 requests/minute
+  - Endpoints: `createCluster`, `updateCluster`, `deleteCluster`, `updateUserName`, `insertCustomer`
+- **Stripe Operations**: 10 requests/minute
+  - Endpoints: `createSession`
+
+**Implementation**:
+
+1. **Rate Limiter Class**
+   ```typescript
+   const limiter = new RateLimiter({
+     maxRequests: 100,
+     windowMs: 60 * 1000, // 1 minute
+   });
+
+   const result = limiter.check(identifier);
+   // Returns: { success: boolean, remaining: number, resetAt: number }
+   ```
+
+2. **tRPC Middleware Integration**
+   ```typescript
+   const rateLimitedProcedure = procedure.use(rateLimit("read"));
+   const rateLimitedProtectedProcedure = protectedProcedure.use(rateLimit("write"));
+   ```
+
+3. **Error Response**
+   ```typescript
+   throw createApiError(
+     ErrorCode.TOO_MANY_REQUESTS,
+     "Rate limit exceeded. Please try again later.",
+     { resetAt: result.resetAt }
+   );
+   ```
+
+**Features**:
+
+1. **Token Bucket Algorithm**
+   - Each request consumes a token
+   - Tokens refill at end of window
+   - Automatic cleanup of expired entries
+
+2. **Identifier Strategy**
+   - Authenticated: `user:{userId}`
+   - Unauthenticated: `ip:{ipAddress}`
+
+3. **Automatic Cleanup**
+   - Removes entries older than 2x window duration
+   - Runs every window duration
+   - Prevents memory leaks
+
+4. **Redis-Ready**
+   - In-memory implementation for development
+   - Can be swapped for Redis for distributed systems
+   - Interface remains the same
+
+**Usage Example**:
+```typescript
+import { createRateLimitedProtectedProcedure, EndpointType } from "@saasfly/api";
+
+export const k8sRouter = createTRPCRouter({
+  getClusters: createRateLimitedProtectedProcedure("read").query(async (opts) => {
+    // Your query logic
+  }),
+
+  createCluster: createRateLimitedProtectedProcedure("write")
+    .input(createSchema)
+    .mutation(async ({ input }) => {
+      // Your mutation logic
+    }),
+});
+```
+
+**Best Practices**:
+
+1. **Handle Rate Limit Errors Client-Side**
+   ```typescript
+   try {
+     await client.k8s.createCluster.mutate(input);
+   } catch (error) {
+     if (error.data?.code === "TOO_MANY_REQUESTS") {
+       const resetAt = error.data?.details?.resetAt;
+       const waitTime = resetAt - Date.now();
+       await new Promise(resolve => setTimeout(resolve, waitTime));
+       // Retry after wait
+     }
+   }
+   ```
+
+2. **Monitor Rate Limit Usage**
+   ```typescript
+   const limiter = getLimiter("read");
+   const result = limiter.check(identifier);
+   console.log(`Remaining: ${result.remaining}, Reset: ${new Date(result.resetAt)}`);
+   ```
+
+3. **Choose Appropriate Limits**
+   - Read operations: Higher limits (less impact)
+   - Write operations: Lower limits (more impact)
+   - Expensive operations: Lowest limits (Stripe, external APIs)
+
+**Error Response Format**:
+```typescript
+interface ApiErrorResponse {
+  error: {
+    code: "TOO_MANY_REQUESTS";
+    message: "Rate limit exceeded. Please try again later.";
+    details?: {
+      resetAt: number; // Unix timestamp
+    };
+  };
+}
+```
+
+**Response Headers** (future enhancement):
+```
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 95
+X-RateLimit-Reset: 1704729600
+```
+
+**Production Considerations**:
+
+1. **Distributed Rate Limiting**
+   - Use Redis for multi-instance deployments
+   - Shared state across multiple API servers
+   - Consistent rate limiting regardless of which server handles the request
+
+2. **Monitoring and Alerts**
+   - Track rate limit violations
+   - Alert on unusual patterns (DDoS detection)
+   - Monitor token usage per user/IP
+
+3. **Dynamic Rate Limits**
+   - Adjust limits based on user subscription tier
+   - Higher limits for premium customers
+   - Lower limits for free tier users
+
+**Documentation**:
+- Complete API specification in `docs/api-spec.md`
+- Includes rate limits for all endpoints
+- Best practices for handling rate limit errors
+- Example implementations
+
+---
 
 ### High Priority
 1. ~~Add foreign key constraints to User table~~ ✅ Completed
@@ -469,13 +623,14 @@ throw createApiError(
 3. ~~Add cascade delete policies~~ ✅ Completed
 4. ~~Implement integration hardening~~ ✅ Completed
 5. ~~Improve type safety - Remove "as any" type assertions~~ ✅ Completed
+6. ~~Create API documentation~~ ✅ Completed
 
 ### Medium Priority
 1. ~~Implement proper soft delete pattern with partial unique indexes~~ ✅ Completed
 2. ~~Clarify unique constraint strategy for clusters~~ ✅ Completed
 3. ~~Standardize error responses~~ ✅ Completed
-4. Add data validation at application boundary
-5. Add rate limiting for API endpoints
+4. ~~Add rate limiting for API endpoints~~ ✅ Completed
+5. Add data validation at application boundary
 6. Implement request ID tracking for distributed tracing
 
 ### Low Priority

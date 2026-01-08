@@ -3,7 +3,11 @@ import { z } from "zod";
 
 import { db, SubscriptionPlan } from "@saasfly/db";
 
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import {
+  createTRPCRouter,
+  createRateLimitedProtectedProcedure,
+  EndpointType,
+} from "../trpc";
 
 const updateUserNameSchema = z.object({
   name: z.string(),
@@ -13,7 +17,7 @@ const insertCustomerSchema = z.object({
   userId: z.string(),
 });
 export const customerRouter = createTRPCRouter({
-  updateUserName: protectedProcedure
+  updateUserName: createRateLimitedProtectedProcedure("write")
     .input(updateUserNameSchema)
     .mutation(async ({ ctx, input }) => {
       const { userId } = input;
@@ -31,7 +35,7 @@ export const customerRouter = createTRPCRouter({
       return { success: true, reason: "" };
     }),
 
-  insertCustomer: protectedProcedure
+  insertCustomer: createRateLimitedProtectedProcedure("write")
     .input(insertCustomerSchema)
     .mutation(async ({ input }) => {
       const { userId } = input;
@@ -44,7 +48,7 @@ export const customerRouter = createTRPCRouter({
         .executeTakeFirst();
     }),
 
-  queryCustomer: protectedProcedure
+  queryCustomer: createRateLimitedProtectedProcedure("read")
     .input(insertCustomerSchema)
     .query(async ({ input }) => {
       noStore();

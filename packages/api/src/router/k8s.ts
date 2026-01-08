@@ -4,7 +4,11 @@ import { z } from "zod";
 import { db, SubscriptionPlan, k8sClusterService } from "@saasfly/db";
 
 import { createApiError, ErrorCode } from "../errors";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import {
+  createTRPCRouter,
+  createRateLimitedProtectedProcedure,
+  EndpointType,
+} from "../trpc";
 
 const k8sClusterCreateSchema = z.object({
   id: z.number().optional(),
@@ -17,11 +21,11 @@ const k8sClusterDeleteSchema = z.object({
 });
 
 export const k8sRouter = createTRPCRouter({
-  getClusters: protectedProcedure.query(async (opts) => {
+  getClusters: createRateLimitedProtectedProcedure("read").query(async (opts) => {
     const userId = opts.ctx.userId! as string;
     return await k8sClusterService.findAllActive(userId);
   }),
-  createCluster: protectedProcedure
+  createCluster: createRateLimitedProtectedProcedure("write")
     .input(k8sClusterCreateSchema)
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.userId! as string;
@@ -70,7 +74,7 @@ export const k8sRouter = createTRPCRouter({
         );
       }
     }),
-  updateCluster: protectedProcedure
+  updateCluster: createRateLimitedProtectedProcedure("write")
     .input(k8sClusterCreateSchema)
     .mutation(async (opts) => {
       const id = opts.input.id!;
@@ -104,7 +108,7 @@ export const k8sRouter = createTRPCRouter({
         success: true,
       };
     }),
-  deleteCluster: protectedProcedure
+  deleteCluster: createRateLimitedProtectedProcedure("write")
     .input(k8sClusterDeleteSchema)
     .mutation(async (opts) => {
       const id = opts.input.id;

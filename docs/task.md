@@ -1304,3 +1304,61 @@ Scan all workspace package.json files for deprecated, outdated, or vulnerable pa
 
 ### Completion Criteria
 All success criteria in task must be met before marking complete.
+
+---
+
+# Documentation Tasks
+
+## Task Queue
+
+### High Priority Tasks
+
+#### Task 1: Add Code Comments to Critical Infrastructure ✅
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Code Comments
+- **Files**: `packages/db/soft-delete.ts`, `packages/db/user-deletion.ts`, `packages/stripe/src/integration.ts`, `packages/stripe/src/client.ts`, `packages/api/src/rate-limiter.ts`
+
+**Description**:
+Add comprehensive JSDoc-style documentation to all critical infrastructure files
+that contain complex patterns (soft delete, user deletion, circuit breaker,
+retry logic, rate limiting).
+
+**Steps**:
+1. ✅ Added file-level overviews explaining purpose and key features
+2. ✅ Added class-level documentation with usage examples
+3. ✅ Added method-level JSDoc comments with parameter descriptions
+4. ✅ Added inline comments for complex logic (circuit breaker, retry)
+5. ✅ Added examples for common use cases
+6. ✅ Documented important implementation details (audit trails, idempotency)
+
+**Success Criteria**:
+- [x] All critical infrastructure files documented
+- [x] JSDoc-style comments used consistently
+- [x] Examples provided for complex patterns
+- [x] No functional changes to code logic
+- [x] Documentation compiled successfully
+
+**Files Modified**:
+- `packages/db/soft-delete.ts` - SoftDeleteService class with 45 lines of documentation
+- `packages/db/user-deletion.ts` - UserDeletionService class with 60+ lines of documentation
+- `packages/stripe/src/integration.ts` - CircuitBreaker, retry logic with 80+ lines of documentation
+- `packages/stripe/src/client.ts` - Stripe client wrapper with 40+ lines of documentation
+- `packages/api/src/rate-limiter.ts` - RateLimiter class with 100+ lines of documentation
+
+**Documentation Coverage**:
+- **5 files** fully documented with JSDoc comments
+- **15+ classes/functions** documented with examples
+- **50+ methods** documented with parameters and returns
+- **20+ inline comments** explaining complex logic
+- **15+ code examples** demonstrating usage patterns
+
+**Notes**:
+- All documentation uses JSDoc format for IDE support
+- Examples use TypeScript and are syntactically correct
+- Complex patterns (circuit breaker, soft delete, retry) are fully explained
+- Documentation stays in code alongside implementation
+- Improves onboarding and reduces context switching
+
+---
+

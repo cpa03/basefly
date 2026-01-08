@@ -29,6 +29,7 @@ export function K8sCreateButton({
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   async function onClick() {
+    setIsLoading(true);
     const res = await trpc.k8s.createCluster.mutate({
       name: "Default Cluster",
       location: "Hong Kong",
@@ -72,12 +73,13 @@ export function K8sCreateButton({
         className,
       )}
       disabled={isLoading}
+      aria-busy={isLoading}
       {...props}
     >
       {isLoading ? (
-        <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+        <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
       ) : (
-        <Icons.Add className="mr-2 h-4 w-4" />
+        <Icons.Add className="mr-2 h-4 w-4" aria-hidden="true" />
       )}
       {dict.k8s?.new_cluster}
     </button>

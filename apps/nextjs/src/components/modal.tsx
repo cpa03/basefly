@@ -45,7 +45,6 @@ export function Modal({
   }
   return (
     <Dialog open={showModal} onOpenChange={setShowModal}>
-      <DialogTitle></DialogTitle>
       <DialogContent className="overflow-hidden p-0 md:max-w-md md:rounded-2xl md:border border-neutral-200 dark:border-neutral-800">
         {children}
       </DialogContent>

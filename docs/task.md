@@ -273,16 +273,114 @@ Improve table accessibility in the dashboard with proper semantic attributes.
 
 ---
 
+### Task 7: Loading State Fixes - Form & Interaction Polish ✅
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Form Improvement / Interaction Polish
+- **Files**: `apps/nextjs/src/components/k8s/cluster-create-button.tsx`, `apps/nextjs/src/components/billing-form.tsx`
+
+**Description**:
+Fix broken loading states in form buttons that were preventing users from seeing loading feedback during async operations.
+
+**Steps**:
+1. ✅ Fixed `setIsLoading(true)` missing in cluster-create-button.tsx onClick handler
+2. ✅ Added `aria-busy` attribute to loading button in cluster-create-button.tsx
+3. ✅ Added `aria-hidden="true"` to spinner and add icons in cluster-create-button.tsx
+4. ✅ Fixed incorrect loading state logic in billing-form.tsx (changed `setIsLoading(!isLoading)` to `setIsLoading(true)`)
+5. ✅ Added `setIsLoading(false)` to error handling in billing-form.tsx
+6. ✅ Added `aria-busy` attribute to loading button in billing-form.tsx
+7. ✅ Added `aria-hidden="true"` to spinner icon in billing-form.tsx
+8. ✅ Wrapped button text in `<span>` for screen readers in billing-form.tsx
+
+**Success Criteria**:
+- [x] Loading states properly display during async operations
+- [x] Screen readers announce loading state via aria-busy
+- [x] Loading indicators hidden from screen readers via aria-hidden
+- [x] Error handling properly resets loading state
+- [x] Button text remains visible and readable during loading
+
+---
+
+### Task 8: Loading Button Accessibility - Cluster Operations ✅
+- **Status**: ✅ Completed
+- **Priority**: Medium
+- **Type**: Accessibility Enhancement
+- **Files**: `apps/nextjs/src/components/k8s/cluster-operation.tsx`
+
+**Description**:
+Add proper ARIA attributes to delete confirmation button loading state for accessibility.
+
+**Steps**:
+1. ✅ Added `aria-busy` attribute to AlertDialogAction button during loading
+2. ✅ Added `aria-hidden="true"` to Spinner icon during loading
+3. ✅ Added `aria-hidden="true"` to Trash icon when not loading
+
+**Success Criteria**:
+- [x] Screen readers announce loading state during delete operation
+- [x] Loading spinner hidden from screen readers
+- [x] Delete button text remains readable during loading
+- [x] No redundant ARIA announcements
+
+---
+
+### Task 9: Modal Accessibility Fixes ✅
+- **Status**: ✅ Completed
+- **Priority**: Medium
+- **Type**: Accessibility Fix
+- **Files**: `apps/nextjs/src/components/modal.tsx`
+
+**Description**:
+Remove empty DialogTitle that was causing accessibility issues in modal dialog.
+
+**Steps**:
+1. ✅ Removed empty `<DialogTitle></DialogTitle>` from Dialog component
+2. ✅ DialogContent now provides its own accessible structure
+3. ✅ Child components should provide proper titles when needed
+
+**Success Criteria**:
+- [x] No empty dialog titles in accessibility tree
+- [x] Modal dialog properly accessible without redundant elements
+- [x] Screen readers receive meaningful modal content
+
+---
+
+### Task 10: Semantic HTML Improvements - Mobile Navigation ✅
+- **Status**: ✅ Completed
+- **Priority**: Medium
+- **Type**: Semantic Structure
+- **Files**: `apps/nextjs/src/components/mobile-nav.tsx`
+
+**Description**:
+Improve semantic HTML structure in mobile navigation for better accessibility and SEO.
+
+**Steps**:
+1. ✅ Changed outer container `<div>` to `<section>` element
+2. ✅ Changed navigation container `<div>` to `<ul>` element
+3. ✅ Wrapped each navigation item in `<li>` element
+4. ✅ Added `aria-label="Main navigation"` to nav element
+5. ✅ Added `aria-disabled` attribute to disabled navigation links
+
+**Success Criteria**:
+- [x] Proper semantic HTML elements (section, nav, ul, li)
+- [x] Screen readers understand navigation structure
+- [x] Disabled items properly communicated via aria-disabled
+- [x] Navigation has descriptive aria-label
+- [x] SEO-friendly structure
+
+---
+
 ## Summary
 
 All UI/UX accessibility and responsive enhancements have been completed:
 
-- ✅ **Semantic HTML**: Used appropriate elements (main, tbody, scope)
+- ✅ **Semantic HTML**: Used appropriate elements (main, section, tbody, ul, li)
 - ✅ **Accessibility (a11y)**: ARIA labels, roles, and states added
 - ✅ **Responsive Design**: Fixed mobile viewport issues
 - ✅ **Component Enhancement**: Input error states and styling
+- ✅ **Loading States**: Fixed broken loading states in forms
 - ✅ **Keyboard Navigation**: Focus states and proper tab order maintained
 - ✅ **Screen Reader Support**: All interactive elements properly labeled
+- ✅ **Interaction Polish**: Loading indicators and ARIA busy states
 
 ### Files Modified:
 - `apps/nextjs/src/app/[lang]/(auth)/login/page.tsx` - Login page accessibility
@@ -292,6 +390,11 @@ All UI/UX accessibility and responsive enhancements have been completed:
 - `apps/nextjs/src/app/admin/login/page.tsx` - Admin login viewport fix
 - `apps/nextjs/src/components/user-auth-form.tsx` - Form error accessibility
 - `apps/nextjs/src/components/user-name-form.tsx` - Name form error accessibility
+- `apps/nextjs/src/components/k8s/cluster-create-button.tsx` - Loading state and ARIA fixes
+- `apps/nextjs/src/components/k8s/cluster-operation.tsx` - Loading button ARIA attributes
+- `apps/nextjs/src/components/billing-form.tsx` - Loading state logic and ARIA fixes
+- `apps/nextjs/src/components/modal.tsx` - Modal accessibility improvements
+- `apps/nextjs/src/components/mobile-nav.tsx` - Semantic HTML structure
 - `packages/ui/src/input.tsx` - Input component error state support
 
 ---

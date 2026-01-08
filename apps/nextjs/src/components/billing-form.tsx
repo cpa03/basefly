@@ -33,12 +33,13 @@ export function BillingForm({
 
   async function onSubmit(event: { preventDefault: () => void }) {
     event.preventDefault();
-    setIsLoading(!isLoading);
+    setIsLoading(true);
 
     // Get a Stripe session URL.
     const response = await fetch("/api/users/stripe");
 
     if (!response?.ok) {
+      setIsLoading(false);
       return toast({
         title: "Something went wrong.",
         description: "Please refresh the page and try again.",
@@ -71,13 +72,16 @@ export function BillingForm({
             type="submit"
             className={cn(buttonVariants())}
             disabled={isLoading}
+            aria-busy={isLoading}
           >
             {isLoading && (
-              <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+              <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
             )}
-            {subscriptionPlan?.isPaid
-              ? "Manage Subscription"
-              : "Upgrade to PRO"}
+            <span>
+              {subscriptionPlan?.isPaid
+                ? "Manage Subscription"
+                : "Upgrade to PRO"}
+            </span>
           </button>
           {subscriptionPlan?.isPaid ? (
             <p className="rounded-full text-xs font-medium">

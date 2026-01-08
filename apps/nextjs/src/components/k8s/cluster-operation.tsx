@@ -101,11 +101,12 @@ export function ClusterOperations({ cluster }: ClusterOperationsProps) {
                 }
               }}
               className="bg-red-600 focus:ring-red-600"
+              aria-busy={isDeleteLoading}
             >
               {isDeleteLoading ? (
-                <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+                <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
               ) : (
-                <Icons.Trash className="mr-2 h-4 w-4" />
+                <Icons.Trash className="mr-2 h-4 w-4" aria-hidden="true" />
               )}
               <span>Delete</span>
             </AlertDialogAction>

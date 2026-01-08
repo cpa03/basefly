@@ -1,7 +1,6 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { z } from "zod";
 
-import { getCurrentUser } from "@saasfly/auth";
 import { Customer, db } from "@saasfly/db";
 import {
   IntegrationError,
@@ -63,11 +62,13 @@ export const stripeRouter = createTRPCRouter({
           return { success: true as const, url: session.url };
         }
 
-        const user = await getCurrentUser();
-        if (!user) {
-          return null;
-        }
-        const email = user.email!;
+        const user = await db
+          .selectFrom("User")
+          .select(["email"])
+          .where("id", "=", userId)
+          .executeTakeFirst();
+
+        const email = user?.email;
 
         const session = await createCheckoutSession(
           {

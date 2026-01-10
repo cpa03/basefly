@@ -18,8 +18,6 @@ export const env = createEnv({
     NEXT_PUBLIC_STRIPE_BUSINESS_PRODUCT_ID: z.string().optional(),
     NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID: z.string().optional(),
     NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID: z.string().optional(),
-    NEXT_PUBLIC_POSTHOG_KEY: z.string().optional(),
-    NEXT_PUBLIC_POSTHOG_HOST: z.string().optional(),
   },
   runtimeEnv: {
     STRIPE_API_KEY: process.env.STRIPE_API_KEY,
@@ -41,9 +39,7 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_STRIPE_BUSINESS_PRODUCT_ID,
     NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID:
       process.env.NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID,
-    NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID:
-      process.env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID,
-    NEXT_PUBLIC_POSTHOG_KEY: process.env.NEXT_PUBLIC_POSTHOG_KEY,
-    NEXT_PUBLIC_POSTHOG_HOST: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-  },
-});
+     NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID:
+       process.env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID,
+   },
+ });

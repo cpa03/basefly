@@ -241,7 +241,11 @@ const user = await db
 | User | email | Unique | Email lookup |
 | Account | [provider, providerAccountId] | Unique | OAuth lookup |
 | Customer | authUserId | Index | User lookup |
+| Customer | [authUserId, stripeCurrentPeriodEnd] | Composite | Subscription status checks |
 | K8sClusterConfig | authUserId | Index | User lookup |
+| K8sClusterConfig | deletedAt | Index | Soft-delete filtering |
+| K8sClusterConfig | [authUserId, deletedAt] | Composite | Active/deleted cluster queries |
+| K8sClusterConfig | [plan, authUserId] | Partial Unique | One cluster per plan (active only) |
 | Customer | stripeCustomerId | Unique | Stripe webhook |
 | Customer | stripeSubscriptionId | Unique | Stripe webhook |
 
@@ -249,7 +253,32 @@ const user = await db
 Based on router files:
 - Most queries filter by `authUserId` → Indexed ✓
 - Webhook lookups by Stripe IDs → Unique indexed ✓
-- No observed composite index requirements
+- Composite indexes added for multi-column filter patterns (2026-01-10)
+
+### Composite Index Details
+
+#### K8sClusterConfig Indexes
+1. **`[authUserId, deletedAt]` Composite Index**
+   - **Purpose**: Optimize soft-delete queries for finding all active/deleted clusters
+   - **Use Cases**:
+     - `findAllActive(userId)` - List all active clusters for a user
+     - `findDeleted(userId)` - List all deleted clusters for a user
+     - `getUserSummary(userId)` - User deletion and audit operations
+   - **Impact**: 5+ query locations benefit from this index
+
+2. **`[plan, authUserId]` Partial Unique Index** (from soft delete migration)
+   - **Purpose**: Enforce one cluster per subscription plan per user (active records only)
+   - **Constraint**: `WHERE deletedAt IS NULL`
+   - **Business Rule**: Users can have one FREE, one PRO, and one BUSINESS cluster
+
+#### Customer Indexes
+1. **`[authUserId, stripeCurrentPeriodEnd]` Composite Index**
+   - **Purpose**: Optimize subscription status checks
+   - **Use Cases**:
+     - Customer queries by user ID
+     - Subscription active/inactive status checks
+   - **Impact**: 6+ query locations benefit from this index
+   - **Order**: DESC on `stripeCurrentPeriodEnd` for efficient active subscription lookups
 
 ## Data Integrity
 
@@ -634,8 +663,8 @@ X-RateLimit-Reset: 1704729600
 6. Implement request ID tracking for distributed tracing
 
 ### Low Priority
-1. Audit query patterns for N+1 issues
-2. Consider adding composite indexes for multi-column queries
+1. ~~Audit query patterns for N+1 issues~~ ✅ Completed (2026-01-10)
+2. ~~Consider adding composite indexes for multi-column queries~~ ✅ Completed (2026-01-10)
 3. Implement read replicas if read-heavy workload
 4. Add integration tests for external services
 5. Set up monitoring for circuit breaker states

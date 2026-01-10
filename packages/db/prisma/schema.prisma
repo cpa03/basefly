@@ -32,6 +32,7 @@ model Customer {
   user User @relation(fields: [authUserId], references: [id], onDelete: Restrict)
 
   @@index([authUserId])
+  @@index([authUserId, stripeCurrentPeriodEnd])
 }
 
 model Account {
@@ -98,6 +99,7 @@ model K8sClusterConfig {
   // @@unique([plan, authUserId]) - Partial index will be added via migration
   @@index([authUserId])
   @@index([deletedAt])
+  @@index([authUserId, deletedAt])
 }
 
 enum Status {

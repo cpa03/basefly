@@ -20,17 +20,32 @@ const k8sClusterDeleteSchema = z.object({
   id: z.number(),
 });
 
+async function verifyClusterOwnership(
+  clusterId: number,
+  userId: string,
+) {
+  const cluster = await k8sClusterService.findActive(clusterId, userId);
+  if (!cluster) {
+    throw createApiError(ErrorCode.NOT_FOUND, "Cluster not found");
+  }
+  if (cluster.authUserId && cluster.authUserId !== userId) {
+    throw createApiError(
+      ErrorCode.FORBIDDEN,
+      "You don't have access to this cluster",
+    );
+  }
+  return cluster;
+}
+
 export const k8sRouter = createTRPCRouter({
   getClusters: createRateLimitedProtectedProcedure("read").query(async (opts) => {
     const userId = opts.ctx.userId! as string;
-    const requestId = opts.ctx.requestId;
     return await k8sClusterService.findAllActive(userId);
   }),
   createCluster: createRateLimitedProtectedProcedure("write")
     .input(k8sClusterCreateSchema)
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.userId! as string;
-      const requestId = ctx.requestId;
 
       try {
         const newCluster = await db
@@ -81,21 +96,11 @@ export const k8sRouter = createTRPCRouter({
     .mutation(async (opts) => {
       const id = opts.input.id!;
       const userId = opts.ctx.userId!;
-      const requestId = opts.ctx.requestId;
       const newName = opts.input.name;
       const newLocation = opts.input.location;
 
-      const cluster = await k8sClusterService.findActive(id, userId);
-      if (!cluster) {
-        throw createApiError(ErrorCode.NOT_FOUND, "Cluster not found");
-      }
+      await verifyClusterOwnership(id, userId);
 
-      if (cluster.authUserId && cluster.authUserId !== userId) {
-        throw createApiError(
-          ErrorCode.FORBIDDEN,
-          "You don't have access to this cluster",
-        );
-      }
       if (newName || newLocation) {
         const updateData: Record<string, string> = {};
         if (newName) updateData.name = newName;
@@ -116,18 +121,10 @@ export const k8sRouter = createTRPCRouter({
     .mutation(async (opts) => {
       const id = opts.input.id;
       const userId = opts.ctx.userId!;
-      const requestId = opts.ctx.requestId;
-      const cluster = await k8sClusterService.findActive(id, userId);
-      if (!cluster) {
-        throw createApiError(ErrorCode.NOT_FOUND, "Cluster not found");
-      }
-      if (cluster.authUserId && cluster.authUserId !== userId) {
-        throw createApiError(
-          ErrorCode.FORBIDDEN,
-          "You don't have access to this cluster",
-        );
-      }
-      await k8sClusterService.softDelete(id, userId, { requestId });
+
+      await verifyClusterOwnership(id, userId);
+
+      await k8sClusterService.softDelete(id, userId);
       return { success: true };
     }),
 });

@@ -11,6 +11,7 @@
  * - Two deletion modes: hard delete (permanent) and soft delete (compliance)
  * - Pre-deletion summary to validate data before deletion
  * - Ownership checks via authUserId foreign keys
+ * - Request ID logging for distributed tracing
  * 
  * Deletion Strategy:
  * - Database level: ON DELETE RESTRICT prevents accidental data loss
@@ -30,18 +31,18 @@ import { db } from ".";
  * const summary = await userDeletionService.getUserSummary(userId);
  * console.log(`User has ${summary.activeClusters} active clusters`);
  * 
- * // Hard delete user with cascade
- * await userDeletionService.deleteUser(userId);
+ * // Hard delete user with cascade (with request tracking)
+ * await userDeletionService.deleteUser(userId, { requestId: "uuid" });
  * 
  * // Soft delete for compliance (keeps record)
- * await userDeletionService.softDeleteUser(userId);
+ * await userDeletionService.softDeleteUser(userId, { requestId: "uuid" });
  * ```
  */
 export class UserDeletionService {
   /**
    * Hard delete a user with cascading effects
    * 
-   * This performs a permanent deletion of the user and related data:
+   * This performs a permanent deletion of user and related data:
    * 1. Soft deletes all K8sClusterConfig records (preserves audit trail)
    * 2. Hard deletes Customer records (billing data removed)
    * 3. Hard deletes User record (permanent removal)
@@ -50,11 +51,16 @@ export class UserDeletionService {
    * If any operation fails, the entire transaction rolls back.
    * 
    * @param userId - The user ID to delete
+   * @param options - Optional request ID for distributed tracing
    * @throws Error if transaction fails or any deletion operation fails
    * 
    * @warning This operation is irreversible and permanently removes user data
    */
-  async deleteUser(userId: string): Promise<void> {
+  async deleteUser(userId: string, options?: { requestId?: string }): Promise<void> {
+    const { requestId } = options || {};
+    const context = requestId ? { requestId } : {};
+    
+    console.info(JSON.stringify({ level: "info", message: "Starting user deletion", userId, ...context }));
     await db.transaction().execute(async (trx) => {
       // Step 1: Soft delete all K8s clusters (preserves audit trail)
       // Using soft delete ensures we can track cluster history
@@ -91,12 +97,17 @@ export class UserDeletionService {
    * All operations run in a single transaction for atomicity.
    * 
    * @param userId - The user ID to soft delete
+   * @param options - Optional request ID for distributed tracing
    * @throws Error if transaction fails or any update operation fails
    * 
    * @note User email is anonymized to `deleted_{userId}@example.com` to prevent
    *       future login attempts while preserving the record for compliance
    */
-  async softDeleteUser(userId: string): Promise<void> {
+  async softDeleteUser(userId: string, options?: { requestId?: string }): Promise<void> {
+    const { requestId } = options || {};
+    const context = requestId ? { requestId } : {};
+    
+    console.info(JSON.stringify({ level: "info", message: "Starting soft delete user", userId, ...context }));
     await db.transaction().execute(async (trx) => {
       // Step 1: Soft delete all K8s clusters
       await trx
@@ -125,11 +136,12 @@ export class UserDeletionService {
    * - Validation checks (e.g., ensure no active subscriptions)
    * 
    * @param userId - The user ID to get summary for
+   * @param options - Optional request ID for distributed tracing
    * @returns Object containing user info, customer data, and cluster count, or null if user not found
    * 
    * @example
    * ```typescript
-   * const summary = await userDeletionService.getUserSummary(userId);
+   * const summary = await userDeletionService.getUserSummary(userId, { requestId: "uuid" });
    * if (summary) {
    *   console.log(`User: ${summary.user.name}`);
    *   console.log(`Plan: ${summary.customer?.plan || 'None'}`);
@@ -137,7 +149,11 @@ export class UserDeletionService {
    * }
    * ```
    */
-  async getUserSummary(userId: string) {
+  async getUserSummary(userId: string, options?: { requestId?: string }) {
+    const { requestId } = options || {};
+    const context = requestId ? { requestId } : {};
+    
+    console.info(JSON.stringify({ level: "info", message: "Getting user summary", userId, ...context }));
     const user = await db
       .selectFrom("User")
       .select(["id", "name", "email", "image"])

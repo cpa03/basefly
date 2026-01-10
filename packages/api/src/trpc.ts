@@ -6,6 +6,9 @@ import { ZodError } from "zod";
 import { transformer } from "./transformer";
 import { getLimiter, getIdentifier, EndpointType } from "./rate-limiter";
 import { createApiError, ErrorCode } from "./errors";
+import { getOrGenerateRequestId } from "./request-id";
+
+export { EndpointType } from "./rate-limiter";
 
 interface CreateContextOptions {
   req?: NextRequest;
@@ -17,8 +20,10 @@ export const createTRPCContext = async (opts: {
   headers: Headers;
   auth: AuthObject;
 }) => {
+  const requestId = getOrGenerateRequestId(opts.headers);
   return {
     userId: opts.auth.userId,
+    requestId,
     ...opts,
   };
 };
@@ -27,13 +32,14 @@ export type TRPCContext = Awaited<ReturnType<typeof createTRPCContext>>;
 
 export const t = initTRPC.context<TRPCContext>().create({
   transformer,
-  errorFormatter({ shape, error }) {
+  errorFormatter({ shape, error, ctx }) {
     return {
       ...shape,
       data: {
         ...shape.data,
         zodError:
           error.cause instanceof ZodError ? error.cause.flatten() : null,
+        requestId: ctx?.requestId,
       },
     };
   },

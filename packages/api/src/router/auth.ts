@@ -12,6 +12,7 @@ export const authRouter = createTRPCRouter({
   mySubscription: createRateLimitedProtectedProcedure("read").query(async (opts) => {
     noStore();
     const userId = opts.ctx.userId as string;
+    const requestId = opts.ctx.requestId;
     const customer = await db
       .selectFrom("Customer")
       .select(["plan", "stripeCurrentPeriodEnd"])

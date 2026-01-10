@@ -11,6 +11,7 @@
  * - Ownership validation via authUserId checks
  * - Automatic filtering of deleted records in queries
  * - Support for both soft delete and restore operations
+ * - Request ID logging for distributed tracing
  */
 
 import { db } from ".";
@@ -28,17 +29,17 @@ export interface SoftDeleteEntity {
 /**
  * Generic soft delete service for database entities
  * 
- * @template T - The database table name (must be a valid table in the DB schema)
+ * @template T - The database table name (must be a valid table in DB schema)
  * 
  * @example
  * ```typescript
  * const clusterService = new SoftDeleteService<"K8sClusterConfig">("K8sClusterConfig");
  * 
- * // Soft delete a cluster
- * await clusterService.softDelete(clusterId, userId);
+ * // Soft delete a cluster with request tracking
+ * await clusterService.softDelete(clusterId, userId, { requestId: "uuid" });
  * 
  * // Restore a deleted cluster
- * await clusterService.restore(clusterId, userId);
+ * await clusterService.restore(clusterId, userId, { requestId: "uuid" });
  * 
  * // Find active clusters only
  * const clusters = await clusterService.findAllActive(userId);
@@ -52,12 +53,40 @@ export class SoftDeleteService<T extends keyof DB & string> {
    * 
    * @param id - The record ID to delete
    * @param userId - The user ID for ownership validation
-   * @throws Error if the record doesn't exist or doesn't belong to the user
+   * @param options - Optional request ID for distributed tracing
+   * @throws Error if record doesn't exist or doesn't belong to user
    */
-  async softDelete(id: number, userId: string): Promise<void> {
+  async softDelete(id: number, userId: string, options?: { requestId?: string }): Promise<void> {
+    const { requestId } = options || {};
+    const context = requestId ? { requestId } : {};
+    
+    console.info(JSON.stringify({ level: "info", message: `Soft delete ${this.tableName}`, id, userId, ...context }));
+    
     await db
       .updateTable(this.tableName)
       .set({ deletedAt: new Date() } as any)
+      .where("id", "=", id)
+      .where("authUserId", "=", userId)
+      .execute();
+  }
+
+  /**
+   * Restore a soft-deleted record by setting deletedAt to null
+   * 
+   * @param id - The record ID to restore
+   * @param userId - The user ID for ownership validation
+   * @param options - Optional request ID for distributed tracing
+   * @throws Error if record doesn't exist or doesn't belong to user
+   */
+  async restore(id: number, userId: string, options?: { requestId?: string }): Promise<void> {
+    const { requestId } = options || {};
+    const context = requestId ? { requestId } : {};
+    
+    console.info(JSON.stringify({ level: "info", message: `Restore ${this.tableName}`, id, userId, ...context }));
+    
+    await db
+      .updateTable(this.tableName)
+      .set({ deletedAt: null } as any)
       .where("id", "=", id)
       .where("authUserId", "=", userId)
       .execute();

@@ -49,6 +49,7 @@ export const stripeRouter = createTRPCRouter({
     .mutation(async (opts) => {
       const userId = opts.ctx.userId! as string;
       const planId = opts.input.planId;
+      const requestId = opts.ctx.requestId;
       const customer = await db
         .selectFrom("Customer")
         .select(["id", "plan", "stripeCustomerId"])
@@ -62,6 +63,7 @@ export const stripeRouter = createTRPCRouter({
           const session = await createBillingSession(
             customer.stripeCustomerId!,
             returnUrl,
+            { requestId },
           );
           return { success: true as const, url: session.url };
         }
@@ -86,6 +88,7 @@ export const stripeRouter = createTRPCRouter({
             line_items: [{ price: planId, quantity: 1 }],
           },
           `checkout_${userId}_${planId}`,
+          { requestId },
         );
 
         if (!session.url) return { success: false as const };
@@ -102,6 +105,7 @@ export const stripeRouter = createTRPCRouter({
     .query(async (opts) => {
       noStore();
       const userId = opts.ctx.userId! as string;
+      const requestId = opts.ctx.requestId;
       const custom = await db
         .selectFrom("Customer")
         .select([
@@ -140,7 +144,7 @@ export const stripeRouter = createTRPCRouter({
       let isCanceled = false;
       try {
         if (isPaid && custom.stripeSubscriptionId) {
-          const stripePlan = await retrieveSubscription(custom.stripeSubscriptionId);
+          const stripePlan = await retrieveSubscription(custom.stripeSubscriptionId, { requestId });
           isCanceled = stripePlan.cancel_at_period_end;
         }
       } catch (error) {

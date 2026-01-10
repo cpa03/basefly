@@ -6,6 +6,15 @@ export { createTRPCContext } from "./trpc";
 
 export { t } from "./trpc";
 
+export {
+  generateRequestId,
+  extractRequestId,
+  getOrGenerateRequestId,
+  isValidRequestId,
+  createRequestContext,
+  REQUEST_ID_HEADER,
+} from "./request-id";
+
 export type { AppRouter } from "./root";
 
 /**

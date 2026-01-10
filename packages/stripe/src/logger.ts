@@ -1,8 +1,25 @@
+/**
+ * Logger with request ID support for distributed tracing in Stripe integration
+ * 
+ * @example
+ * ```ts
+ * import { logger } from "@saasfly/stripe/logger";
+ * 
+ * logger.info("Processing webhook", { requestId: "uuid" });
+ * logger.error("Stripe operation failed", error, { requestId: "uuid" });
+ * ```
+ */
+
 export enum LogLevel {
   DEBUG = "debug",
   INFO = "info",
   WARN = "warn",
   ERROR = "error",
+}
+
+interface LoggerMetadata {
+  requestId?: string;
+  [key: string]: unknown;
 }
 
 class Logger {
@@ -17,27 +34,27 @@ class Logger {
     return levels.indexOf(level) >= levels.indexOf(this.level);
   }
 
-  debug(message: string, data?: unknown) {
+  debug(message: string, data?: LoggerMetadata) {
     if (this.shouldLog(LogLevel.DEBUG)) {
-      console.debug(`[DEBUG] ${message}`, data ? JSON.stringify(data) : "");
+      console.debug(JSON.stringify({ level: "debug", message, ...data }));
     }
   }
 
-  info(message: string, data?: unknown) {
+  info(message: string, data?: LoggerMetadata) {
     if (this.shouldLog(LogLevel.INFO)) {
-      console.info(`[INFO] ${message}`, data ? JSON.stringify(data) : "");
+      console.info(JSON.stringify({ level: "info", message, ...data }));
     }
   }
 
-  warn(message: string, data?: unknown) {
+  warn(message: string, data?: LoggerMetadata) {
     if (this.shouldLog(LogLevel.WARN)) {
-      console.warn(`[WARN] ${message}`, data ? JSON.stringify(data) : "");
+      console.warn(JSON.stringify({ level: "warn", message, ...data }));
     }
   }
 
-  error(message: string, error?: unknown) {
+  error(message: string, error?: unknown, data?: LoggerMetadata) {
     if (this.shouldLog(LogLevel.ERROR)) {
-      console.error(`[ERROR] ${message}`, error);
+      console.error(JSON.stringify({ level: "error", message, error, ...data }));
     }
   }
 }

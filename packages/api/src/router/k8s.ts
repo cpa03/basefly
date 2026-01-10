@@ -23,12 +23,14 @@ const k8sClusterDeleteSchema = z.object({
 export const k8sRouter = createTRPCRouter({
   getClusters: createRateLimitedProtectedProcedure("read").query(async (opts) => {
     const userId = opts.ctx.userId! as string;
+    const requestId = opts.ctx.requestId;
     return await k8sClusterService.findAllActive(userId);
   }),
   createCluster: createRateLimitedProtectedProcedure("write")
     .input(k8sClusterCreateSchema)
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.userId! as string;
+      const requestId = ctx.requestId;
 
       try {
         const newCluster = await db
@@ -79,6 +81,7 @@ export const k8sRouter = createTRPCRouter({
     .mutation(async (opts) => {
       const id = opts.input.id!;
       const userId = opts.ctx.userId!;
+      const requestId = opts.ctx.requestId;
       const newName = opts.input.name;
       const newLocation = opts.input.location;
 
@@ -113,6 +116,7 @@ export const k8sRouter = createTRPCRouter({
     .mutation(async (opts) => {
       const id = opts.input.id;
       const userId = opts.ctx.userId!;
+      const requestId = opts.ctx.requestId;
       const cluster = await k8sClusterService.findActive(id, userId);
       if (!cluster) {
         throw createApiError(ErrorCode.NOT_FOUND, "Cluster not found");
@@ -123,7 +127,7 @@ export const k8sRouter = createTRPCRouter({
           "You don't have access to this cluster",
         );
       }
-      await k8sClusterService.softDelete(id, userId);
+      await k8sClusterService.softDelete(id, userId, { requestId });
       return { success: true };
     }),
 });

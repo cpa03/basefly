@@ -1,6 +1,6 @@
-import { BasicItemSkeleton } from "~/components/base-item";
 import { DashboardHeader } from "~/components/header";
 import { DashboardShell } from "~/components/shell";
+import { DashboardSkeleton } from "~/components/dashboard-skeleton";
 
 export default function DashboardLoading() {
   return (
@@ -9,11 +9,7 @@ export default function DashboardLoading() {
         heading="kubernetes"
         text="Create and manage clusters."
       ></DashboardHeader>
-      <div className="divide-border-200 divide-y rounded-md border">
-        <BasicItemSkeleton />
-        <BasicItemSkeleton />
-        <BasicItemSkeleton />
-      </div>
+      <DashboardSkeleton />
     </DashboardShell>
   );
 }

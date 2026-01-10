@@ -1,13 +1,14 @@
 import Link from "next/link";
 
 import { TableBody, TableCell, TableRow } from "@saasfly/ui/table";
+import { StatusBadge } from "@saasfly/ui/status-badge";
 
 import { ClusterOperations } from "~/components/k8s/cluster-operation";
 import { formatDate } from "~/lib/utils";
 import type { Cluster } from "~/types/k8s";
 
 interface ClusterItemProps {
-  cluster: Pick<Cluster, "id" | "name" | "location" | "plan" | "updatedAt">;
+  cluster: Pick<Cluster, "id" | "name" | "location" | "plan" | "status" | "updatedAt">;
 }
 
 export function ClusterItem({ cluster }: ClusterItemProps) {
@@ -26,8 +27,14 @@ export function ClusterItem({ cluster }: ClusterItemProps) {
         <TableCell className="text-left">
           {formatDate(cluster.updatedAt?.toDateString())}
         </TableCell>
-        <TableCell className="text-left">{cluster.plan}</TableCell>
-        <TableCell className="text-left">RUNNING</TableCell>
+        <TableCell className="text-left">{cluster.plan || "-"}</TableCell>
+        <TableCell className="text-left">
+          {cluster.status ? (
+            <StatusBadge status={cluster.status} size="sm" />
+          ) : (
+            <span className="text-muted-foreground text-sm">-</span>
+          )}
+        </TableCell>
         <TableCell className="text-right">
           {/*<k post={{ id: cluster.id, name: cluster.name }} />*/}
           <ClusterOperations cluster={{ id: cluster.id, name: cluster.name }} />

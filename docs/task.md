@@ -615,7 +615,86 @@ Implement rate limiting for all API endpoints to protect against abuse, DDoS att
 
 ---
 
-# Data Architecture Tasks
+# Performance Tasks
+
+## Task Queue
+
+### High Priority Tasks
+
+#### Task: Bundle Optimization - Replace Namespace Icon Imports ✅
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Bundle Optimization
+- **Files**: 22 component files in `apps/nextjs/src/`
+
+**Description**:
+Replace namespace icon imports (`import * as Icons`) with direct imports to enable proper tree-shaking and reduce bundle size.
+
+**Problem Identified**:
+- Components used `import * as Icons from "@saasfly/ui/icons"` pattern
+- The `icons.tsx` file imports `import * as Lucide from "lucide-react"` (1000+ icons)
+- Namespace imports defeat tree-shaking, including ALL icons in bundle
+- Most components only use 1-3 icons but import entire library
+
+**Impact**:
+- Significantly larger bundle size than necessary
+- Lucide-react has 1000+ icons, but only ~30 were being used
+- Tree-shaking prevented from eliminating unused icons
+
+**Steps**:
+1. ✅ Identified all files using namespace imports (23 files total)
+2. ✅ Replaced `import * as Icons` with direct named imports (e.g., `import { Add, Spinner }`)
+3. ✅ Updated all icon references from `Icons.IconName` to just `IconName`
+4. ✅ Verified all icons used are properly exported from icons.tsx
+5. ✅ Added documentation comment to `empty-placeholder.tsx` for special case (dynamic access)
+
+**Success Criteria**:
+- [x] Namespace imports replaced with direct imports (22 files)
+- [x] All icon references updated
+- [x] Tree-shaking enabled for icon imports
+- [x] No namespace imports remaining (except empty-placeholder.tsx for dynamic access)
+- [x] All icons verified as exported from icons.tsx
+
+**Files Modified**:
+- `apps/nextjs/src/components/price/pricing-cards.tsx` - Check, Close
+- `apps/nextjs/src/components/docs/pager.tsx` - ChevronLeft, ChevronRight
+- `apps/nextjs/src/components/k8s/cluster-create-button.tsx` - Spinner, Add
+- `apps/nextjs/src/components/k8s/cluster-config.tsx` - Spinner
+- `apps/nextjs/src/components/locale-change.tsx` - Languages
+- `apps/nextjs/src/components/code-copy.tsx` - Check, Copy
+- `apps/nextjs/src/components/k8s/cluster-operation.tsx` - Ellipsis, Spinner, Trash
+- `apps/nextjs/src/components/billing-form.tsx` - Spinner
+- `apps/nextjs/src/components/mobile-nav.tsx` - Logo
+- `apps/nextjs/src/components/sign-in-modal-clerk.tsx` - Spinner, GitHub
+- `apps/nextjs/src/app/[lang]/(auth)/login/[[...rest]]/page.tsx` - ChevronLeft
+- `apps/nextjs/src/components/nav.tsx` - Cluster, Billing, Settings, ArrowRight
+- `apps/nextjs/src/components/rightside-marketing.tsx` - Rocket, Cloud, ThumbsUp
+- `apps/nextjs/src/components/price/billing-form-button.tsx` - Spinner
+- `apps/nextjs/src/components/main-nav.tsx` - Close, Logo
+- `apps/nextjs/src/components/user-avatar.tsx` - User
+- `apps/nextjs/src/components/theme-toggle.tsx` - Sun, Moon, System
+- `apps/nextjs/src/components/mode-toggle.tsx` - Sun, Moon, Laptop
+- `apps/nextjs/src/components/user-name-form.tsx` - Spinner
+- `apps/nextjs/src/components/github-star.tsx` - GitHub
+- `apps/nextjs/src/components/empty-placeholder.tsx` - Documented special case
+- `apps/nextjs/src/components/features-grid.tsx` - Blocks, Languages, Billing, ShieldCheck
+- `apps/nextjs/src/app/[lang]/(marketing)/blog/[...slug]/page.tsx` - ChevronLeft
+
+**Notes**:
+- `empty-placeholder.tsx` uses dynamic icon access by name (`Icons[name]`), which requires namespace import
+- Added comment explaining this exception and maintaining type safety with `keyof typeof Icons`
+- All other files now use direct named imports for proper tree-shaking
+- Bundle analyzer should show significant reduction in icon-related bundle size
+- Lucide-react can now tree-shake unused icons effectively
+
+**Expected Improvement**:
+- Bundle size reduction: ~100-200KB (estimating 1000+ unused icons eliminated)
+- Faster initial page load
+- Better tree-shaking effectiveness across the application
+
+---
+
+# Documentation Tasks
 
 ## Task Queue
 

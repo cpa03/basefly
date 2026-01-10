@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@saasfly/ui";
-import * as Icons from "@saasfly/ui/icons";
+import { ArrowRight, Billing, Cluster, Settings } from "@saasfly/ui/icons";
 
 import type { SidebarNavItem } from "~/types";
 
@@ -16,9 +16,9 @@ interface DashboardNavProps {
 }
 
 const iconMapObj = new Map([
-  ["clusters", Icons.Cluster],
-  ["billing", Icons.Billing],
-  ["settings", Icons.Settings],
+  ["clusters", Cluster],
+  ["billing", Billing],
+  ["settings", Settings],
 ]);
 
 export function DashboardNav({ items, params: { lang } }: DashboardNavProps) {
@@ -32,7 +32,7 @@ export function DashboardNav({ items, params: { lang } }: DashboardNavProps) {
     <nav className="grid items-start gap-2">
       {items.map((item, index) => {
         // const Icon = item.icon;
-        const Icon = iconMapObj.get(item.id) ?? Icons.ArrowRight;
+        const Icon = iconMapObj.get(item.id) ?? ArrowRight;
         return (
           item.href && (
             <Link

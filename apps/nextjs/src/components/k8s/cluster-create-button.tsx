@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { cn } from "@saasfly/ui";
 //button self design
 import { buttonVariants, type ButtonProps } from "@saasfly/ui/button";
-import * as Icons from "@saasfly/ui/icons";
+import { Add, Spinner } from "@saasfly/ui/icons";
 import { toast } from "@saasfly/ui/use-toast";
 
 import { DEFAULT_CLUSTER_LOCATION } from "~/config/k8s";
@@ -68,9 +68,9 @@ export function K8sCreateButton({
       {...props}
     >
       {isLoading ? (
-        <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+        <Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
       ) : (
-        <Icons.Add className="mr-2 h-4 w-4" aria-hidden="true" />
+        <Add className="mr-2 h-4 w-4" aria-hidden="true" />
       )}
       {dict.k8s?.new_cluster}
     </button>

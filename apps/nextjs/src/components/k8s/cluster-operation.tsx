@@ -21,7 +21,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@saasfly/ui/dropdown-menu";
-import * as Icons from "@saasfly/ui/icons";
+import { Ellipsis, Spinner, Trash } from "@saasfly/ui/icons";
 import { toast } from "@saasfly/ui/use-toast";
 
 import { trpc } from "~/trpc/client";
@@ -54,7 +54,7 @@ export function ClusterOperations({ cluster }: ClusterOperationsProps) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md border transition-colors hover:bg-muted">
-          <Icons.Ellipsis className="h-4 w-4" />
+          <Ellipsis className="h-4 w-4" />
           <span className="sr-only">Open</span>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
@@ -104,9 +104,9 @@ export function ClusterOperations({ cluster }: ClusterOperationsProps) {
               aria-busy={isDeleteLoading}
             >
               {isDeleteLoading ? (
-                <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+                <Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
               ) : (
-                <Icons.Trash className="mr-2 h-4 w-4" aria-hidden="true" />
+                <Trash className="mr-2 h-4 w-4" aria-hidden="true" />
               )}
               <span>Delete</span>
             </AlertDialogAction>

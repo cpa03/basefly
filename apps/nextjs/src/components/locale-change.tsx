@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@saasfly/ui/dropdown-menu";
-import * as Icons from "@saasfly/ui/icons";
+import { Languages } from "@saasfly/ui/icons";
 
 import { i18n, localeMap } from "~/config/i18n-config";
 
@@ -25,7 +25,7 @@ export function LocaleChange({ url }: { url: string }) {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="h-8 w-8 px-0">
-          <Icons.Languages />
+          <Languages />
           <span className="sr-only"></span>
         </Button>
       </DropdownMenuTrigger>

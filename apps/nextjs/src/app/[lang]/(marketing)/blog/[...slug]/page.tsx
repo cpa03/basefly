@@ -12,7 +12,7 @@ import Balancer from "react-wrap-balancer";
 
 import { cn } from "@saasfly/ui";
 import { buttonVariants } from "@saasfly/ui/button";
-import * as Icons from "@saasfly/ui/icons";
+import { ChevronLeft } from "@saasfly/ui/icons";
 
 import { env } from "~/env.mjs";
 import { absoluteUrl, formatDate } from "~/lib/utils";
@@ -102,7 +102,7 @@ export default function PostPage({ params }: PostPageProps) {
           "absolute left-[-200px] top-14 hidden xl:inline-flex",
         )}
       >
-        <Icons.ChevronLeft className="mr-2 h-4 w-4" />
+          <ChevronLeft className="mr-2 h-4 w-4" />
         See all posts
       </Link>
       <div>
@@ -159,7 +159,7 @@ export default function PostPage({ params }: PostPageProps) {
       <hr className="mt-12" />
       <div className="flex justify-center py-6 lg:py-10">
         <Link href="/blog" className={cn(buttonVariants({ variant: "ghost" }))}>
-          <Icons.ChevronLeft className="mr-2 h-4 w-4" />
+        <ChevronLeft className="mr-2 h-4 w-4" />
           See all posts
         </Link>
       </div>

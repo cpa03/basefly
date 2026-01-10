@@ -2,7 +2,7 @@ import * as React from "react";
 import Link from "next/link";
 
 import { cn } from "@saasfly/ui";
-import * as Icons from "@saasfly/ui/icons";
+import { Logo } from "@saasfly/ui/icons";
 
 import { siteConfig } from "~/config/site";
 import { useLockBody } from "~/hooks/use-lock-body";
@@ -24,7 +24,7 @@ export function MobileNav({ items, children, menuItemClick }: MobileNavProps) {
     >
       <div className="relative z-20 grid gap-6 rounded-md bg-popover p-4 text-popover-foreground shadow-md">
         <Link href="/" className="flex items-center space-x-2">
-          <Icons.Logo />
+          <Logo />
           <span className="font-bold">{siteConfig.name}</span>
         </Link>
         <nav className="text-sm" aria-label="Main navigation">

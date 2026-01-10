@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import * as Icons from "@saasfly/ui/icons";
+import { Check, Copy } from "@saasfly/ui/icons";
 import { logger } from "~/lib/logger";
 
 export function CodeCopy() {
@@ -29,7 +29,7 @@ export function CodeCopy() {
         className="p-1.5 hover:bg-gray-200 dark:hover:bg-neutral-800 rounded-md transition-colors ml-2"
         aria-label="Copy to clipboard"
       >
-        {copied ? <Icons.Check className="w-4 h-4 text-neutral-700 dark:text-neutral-300" /> : <Icons.Copy className={`w-4 h-4 text-neutral-700 dark:text-neutral-300`} />}
+        {copied ? <Check className="w-4 h-4 text-neutral-700 dark:text-neutral-300" /> : <Copy className={`w-4 h-4 text-neutral-700 dark:text-neutral-300`} />}
       </button>
     </div>
   )

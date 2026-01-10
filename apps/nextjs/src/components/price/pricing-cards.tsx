@@ -9,7 +9,7 @@ import Link from "next/link";
 import Balancer from "react-wrap-balancer";
 
 import { Button, buttonVariants } from "@saasfly/ui/button";
-import * as Icons from "@saasfly/ui/icons";
+import { Check, Close } from "@saasfly/ui/icons";
 import { Switch } from "@saasfly/ui/switch";
 
 import { BillingFormButton } from "~/components/price/billing-form-button";
@@ -105,7 +105,7 @@ export function PricingCards({
                 <ul className="space-y-2 text-left text-sm font-medium leading-normal">
                   {offer?.benefits.map((feature) => (
                     <li className="flex items-start" key={feature}>
-                      <Icons.Check className="mr-3 h-5 w-5 shrink-0" />
+                      <Check className="mr-3 h-5 w-5 shrink-0" />
                       <p>{feature}</p>
                     </li>
                   ))}
@@ -116,7 +116,7 @@ export function PricingCards({
                         className="flex items-start text-muted-foreground"
                         key={feature}
                       >
-                        <Icons.Close className="mr-3 h-5 w-5 shrink-0" />
+                        <Close className="mr-3 h-5 w-5 shrink-0" />
                         <p>{feature}</p>
                       </li>
                     ))}

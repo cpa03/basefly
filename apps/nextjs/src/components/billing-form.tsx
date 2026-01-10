@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@saasfly/ui/card";
-import * as Icons from "@saasfly/ui/icons";
+import { Spinner } from "@saasfly/ui/icons";
 import { toast } from "@saasfly/ui/use-toast";
 
 import { formatDate } from "~/lib/utils";
@@ -75,7 +75,7 @@ export function BillingForm({
             aria-busy={isLoading}
           >
             {isLoading && (
-              <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+              <Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
             )}
             <span>
               {subscriptionPlan?.isPaid

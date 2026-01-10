@@ -6,7 +6,7 @@ import { OAuthStrategy } from "@clerk/types";
 import { useSignIn } from "@clerk/nextjs";
 
 import { Button } from "@saasfly/ui/button";
-import * as Icons from "@saasfly/ui/icons";
+import { GitHub, Spinner } from "@saasfly/ui/icons";
 
 import { Modal } from "~/components/modal";
 import { siteConfig } from "~/config/site";
@@ -79,9 +79,9 @@ export const SignInClerkModal = ({
             }}
           >
             {signInClicked ? (
-              <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+              <Spinner className="mr-2 h-4 w-4 animate-spin" />
             ) : (
-              <Icons.GitHub className="mr-2 h-4 w-4" />
+              <GitHub className="mr-2 h-4 w-4" />
             )}{" "}
             {dict.signup_github}
           </Button>

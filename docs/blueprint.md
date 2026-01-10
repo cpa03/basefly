@@ -669,6 +669,47 @@ X-RateLimit-Reset: 1704729600
 4. Add integration tests for external services
 5. Set up monitoring for circuit breaker states
 
+## Performance Best Practices
+
+### Import Patterns for Tree-Shaking
+
+**Rule: Never use namespace imports for large libraries**
+
+❌ **Anti-Pattern**:
+```typescript
+import * as Icons from "@saasfly/ui/icons";
+// This imports ALL icons, even if only 1-2 are used
+<Icons.Check />
+<Icons.Spinner />
+```
+
+✅ **Correct Pattern**:
+```typescript
+import { Check, Spinner } from "@saasfly/ui/icons";
+// Only imports the specific icons needed for tree-shaking
+<Check />
+<Spinner />
+```
+
+**Impact**:
+- Lucide-react has 1000+ icons
+- Namespace imports defeat tree-shaking
+- Direct imports allow bundlers to eliminate unused code
+- Estimated bundle savings: 100-200KB per unused icon set
+
+**Exceptions**:
+- Dynamic icon access (e.g., `Icons[name]`) requires namespace import
+- Document these exceptions with inline comments
+- Use `keyof typeof Icons` for type safety
+
+### Bundle Optimization Checklist
+
+- [x] Use direct imports instead of namespace imports for large libraries
+- [ ] Run bundle analyzer to identify large chunks
+- [ ] Enable code splitting for heavy routes
+- [ ] Lazy load components not immediately visible
+- [ ] Use `next/dynamic` for below-the-fold content
+
 ## Future Considerations
 
 ### Scaling

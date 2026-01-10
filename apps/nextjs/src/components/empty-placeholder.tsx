@@ -3,6 +3,9 @@ import * as React from "react";
 import { cn } from "@saasfly/ui";
 import * as Icons from "@saasfly/ui/icons";
 
+// Note: This component uses dynamic icon access by name, which requires namespace import
+// For type safety, the name prop is validated against: keyof typeof Icons
+
 type EmptyPlaceholderProps = React.HTMLAttributes<HTMLDivElement>;
 
 export function EmptyPlaceholder({

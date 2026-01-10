@@ -369,33 +369,113 @@ Improve semantic HTML structure in mobile navigation for better accessibility an
 
 ---
 
+### Task 11: Responsive Dashboard Enhancement ✅
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Responsive Enhancement / Component Extraction
+- **Files**: `apps/nextjs/src/app/[lang]/(dashboard)/dashboard/page.tsx`, `apps/nextjs/src/components/k8s/cluster-item.tsx`, `apps/nextjs/src/components/dashboard-skeleton.tsx`, `packages/ui/src/status-badge.tsx`
+
+**Description**:
+Improve dashboard responsive design with mobile-friendly card layout, dynamic status badges, and loading skeletons.
+
+**Steps**:
+1. ✅ Created StatusBadge component for cluster status indicators
+2. ✅ Created DashboardSkeleton component for loading states
+3. ✅ Updated dashboard to show table on desktop, cards on mobile
+4. ✅ Fixed cluster-item.tsx to use dynamic status from data
+5. ✅ Added missing icon exports (Clock, PauseCircle, XCircle, Loader2)
+6. ✅ Added status-badge export to UI package
+7. ✅ Updated loading.tsx to use DashboardSkeleton
+
+**Success Criteria**:
+- [x] StatusBadge component created with accessible ARIA labels
+- [x] Loading skeletons for better perceived performance
+- [x] Responsive design: table on desktop, cards on mobile
+- [x] Dynamic cluster status display (no more hardcoded "RUNNING")
+- [x] Mobile-friendly card layout with touch interactions
+- [x] Status badges with color-coded states and animated spinners
+- [x] All components properly exported and usable
+
+**Component Details**:
+
+**StatusBadge Component** (`packages/ui/src/status-badge.tsx`):
+- Supports all cluster statuses: PENDING, CREATING, INITING, RUNNING, STOPPED, DELETED
+- Color-coded backgrounds and text for each status
+- Animated spinners for CREATING and INITING states
+- Size variants: sm, default, lg
+- Proper ARIA labels and role="status"
+- Screen reader announcements for status changes
+
+**DashboardSkeleton Component** (`apps/nextjs/src/components/dashboard-skeleton.tsx`):
+- Table structure matching actual dashboard layout
+- 5 skeleton rows for consistent loading feel
+- Header and action button skeletons
+- Matches table and card layouts
+
+**Responsive Dashboard** (`apps/nextjs/src/app/[lang]/(dashboard)/dashboard/page.tsx`):
+- Table view on md+ screens (desktop/tablet)
+- Card view on mobile screens with article elements
+- Cards show: name, location, plan, status, updated date
+- Cards include cluster operations (edit/delete)
+- Proper touch-friendly spacing and layout
+
+**Files Modified**:
+- `packages/ui/src/status-badge.tsx` (new) - Status indicator component
+- `packages/ui/package.json` - Added status-badge export
+- `packages/ui/src/icons.tsx` - Added Clock, PauseCircle, XCircle, Loader2 exports
+- `apps/nextjs/src/components/dashboard-skeleton.tsx` (new) - Loading skeleton
+- `apps/nextjs/src/app/[lang]/(dashboard)/dashboard/page.tsx` - Responsive layout
+- `apps/nextjs/src/components/k8s/cluster-item.tsx` - Use dynamic status
+- `apps/nextjs/src/app/[lang]/(dashboard)/dashboard/loading.tsx` - Use new skeleton
+
+**Accessibility Improvements**:
+- Status badges have role="status" and aria-label
+- Screen reader announcements for all status changes
+- Semantic HTML (article elements for cards)
+- Proper heading hierarchy in mobile cards
+
+**Responsive Design**:
+- Breakpoint at md (768px)
+- Hidden: block, md: hidden for mobile cards
+- Hidden md: block for desktop table
+- Touch-friendly tap targets on mobile
+- Proper spacing and typography at all breakpoints
+
+---
+
 ## Summary
 
 All UI/UX accessibility and responsive enhancements have been completed:
 
-- ✅ **Semantic HTML**: Used appropriate elements (main, section, tbody, ul, li)
+- ✅ **Semantic HTML**: Used appropriate elements (main, section, tbody, ul, li, article)
 - ✅ **Accessibility (a11y)**: ARIA labels, roles, and states added
-- ✅ **Responsive Design**: Fixed mobile viewport issues
-- ✅ **Component Enhancement**: Input error states and styling
-- ✅ **Loading States**: Fixed broken loading states in forms
+- ✅ **Responsive Design**: Fixed mobile viewport issues, added table-to-card patterns
+- ✅ **Component Enhancement**: Input error states, status badges, skeleton loaders
+- ✅ **Loading States**: Fixed broken loading states in forms, added dashboard skeletons
 - ✅ **Keyboard Navigation**: Focus states and proper tab order maintained
 - ✅ **Screen Reader Support**: All interactive elements properly labeled
-- ✅ **Interaction Polish**: Loading indicators and ARIA busy states
+- ✅ **Interaction Polish**: Loading indicators, ARIA busy states, animated spinners
+- ✅ **Component Extraction**: Reusable StatusBadge and DashboardSkeleton components
 
 ### Files Modified:
 - `apps/nextjs/src/app/[lang]/(auth)/login/page.tsx` - Login page accessibility
 - `apps/nextjs/src/app/[lang]/(auth)/login-clerk/[[...rest]]/page.tsx` - Clerk login accessibility
 - `apps/nextjs/src/app/[lang]/(auth)/register/page.tsx` - Register page accessibility
-- `apps/nextjs/src/app/[lang]/(dashboard)/dashboard/page.tsx` - Dashboard table accessibility
+- `apps/nextjs/src/app/[lang]/(dashboard)/dashboard/page.tsx` - Dashboard responsive design
+- `apps/nextjs/src/app/[lang]/(dashboard)/dashboard/loading.tsx` - Loading skeleton
 - `apps/nextjs/src/app/admin/login/page.tsx` - Admin login viewport fix
 - `apps/nextjs/src/components/user-auth-form.tsx` - Form error accessibility
 - `apps/nextjs/src/components/user-name-form.tsx` - Name form error accessibility
 - `apps/nextjs/src/components/k8s/cluster-create-button.tsx` - Loading state and ARIA fixes
 - `apps/nextjs/src/components/k8s/cluster-operation.tsx` - Loading button ARIA attributes
+- `apps/nextjs/src/components/k8s/cluster-item.tsx` - Dynamic status display
 - `apps/nextjs/src/components/billing-form.tsx` - Loading state logic and ARIA fixes
 - `apps/nextjs/src/components/modal.tsx` - Modal accessibility improvements
 - `apps/nextjs/src/components/mobile-nav.tsx` - Semantic HTML structure
+- `apps/nextjs/src/components/dashboard-skeleton.tsx` (new) - Loading skeleton
 - `packages/ui/src/input.tsx` - Input component error state support
+- `packages/ui/src/status-badge.tsx` (new) - Reusable status indicator component
+- `packages/ui/src/icons.tsx` - Added Clock, PauseCircle, XCircle, Loader2 exports
 
 ---
 

@@ -669,6 +669,161 @@ X-RateLimit-Reset: 1704729600
 4. Add integration tests for external services
 5. Set up monitoring for circuit breaker states
 
+## UI/UX Patterns
+
+### Status Badge Component Pattern
+
+**Location**: `packages/ui/src/status-badge.tsx`
+
+**Purpose**: Reusable component for displaying status indicators with visual feedback and accessibility support.
+
+**Pattern**:
+```typescript
+export type ClusterStatus = "PENDING" | "CREATING" | "INITING" | "RUNNING" | "STOPPED" | "DELETED";
+
+const statusConfig = {
+  PENDING: { icon: Clock, label: "Pending", bgColor: "...", textColor: "..." },
+  CREATING: { icon: Loader2, label: "Creating", animate: true },
+  // ...
+};
+
+export function StatusBadge({ status, size = "default" }: StatusBadgeProps) {
+  const config = statusConfig[status];
+  const Icon = config.icon;
+  return (
+    <div role="status" aria-label={`${config.label} status`}>
+      <span className={styles.dot} />
+      <Icon className={config.animate ? "animate-spin" : ""} aria-hidden="true" />
+      <span className="sr-only">{config.label}</span>
+    </div>
+  );
+}
+```
+
+**Key Features**:
+- Configuration-based styling (centralized status definitions)
+- Animated spinners for in-progress states
+- Color-coded backgrounds for visual hierarchy
+- ARIA labels for screen readers
+- Size variants (sm, default, lg)
+- `sr-only` class for screen-reader-only text
+
+**Accessibility**:
+- `role="status"` - Announces as status region
+- `aria-label` - Describes status to screen readers
+- `aria-hidden="true"` - Hides decorative icons
+- `sr-only` class - Text only for screen readers
+
+**Usage Example**:
+```typescript
+<StatusBadge status="RUNNING" size="sm" />
+<StatusBadge status="CREATING" size="default" />
+```
+
+### Responsive Table to Card Pattern
+
+**Location**: `apps/nextjs/src/app/[lang]/(dashboard)/dashboard/page.tsx`
+
+**Purpose**: Transform table layouts to card-based layouts on mobile devices for better touch interaction.
+
+**Pattern**:
+```typescript
+<div className="space-y-4">
+  <div className="hidden md:block divide-y divide-border rounded-md border">
+    <Table>
+      {/* Table header and rows */}
+    </Table>
+  </div>
+
+  <div className="grid grid-cols-1 gap-4 md:hidden">
+    {clusters.map((cluster) => (
+      <article className="flex flex-col gap-3 rounded-md border p-4">
+        {/* Card content */}
+      </article>
+    ))}
+  </div>
+</div>
+```
+
+**Key Features**:
+- Table view on desktop (md breakpoint: 768px+)
+- Card view on mobile with touch-friendly layout
+- Semantic HTML (`<article>` elements)
+- Same data displayed in both views
+- Proper spacing for touch targets
+
+**Responsive Classes**:
+- `hidden md:block` - Table hidden on mobile, shown on desktop
+- `md:hidden` - Cards shown on mobile, hidden on desktop
+- `grid-cols-1 gap-4` - Single column cards with spacing
+- `flex flex-col gap-3` - Vertical card layout
+
+**Mobile Card Structure**:
+```typescript
+<article className="flex flex-col gap-3 rounded-md border p-4">
+  <div className="flex items-start justify-between">
+    <div className="space-y-1">
+      <h3 className="font-semibold"><Link>{cluster.name}</Link></h3>
+      <p className="text-sm text-muted-foreground">{cluster.location}</p>
+    </div>
+    <ClusterOperations cluster={cluster} />
+  </div>
+  <div className="flex flex-wrap gap-4 border-t pt-3">
+    <div><span>Plan:</span> {cluster.plan}</div>
+    <div><span>Status:</span> <StatusBadge status={cluster.status} /></div>
+    <div><span>Updated:</span> {formatDate(cluster.updatedAt)}</div>
+  </div>
+</article>
+```
+
+### Loading Skeleton Pattern
+
+**Location**: `apps/nextjs/src/components/dashboard-skeleton.tsx`
+
+**Purpose**: Provide visual feedback during data loading to improve perceived performance.
+
+**Pattern**:
+```typescript
+export function DashboardSkeleton() {
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <Skeleton className="h-10 w-40" />
+        <Skeleton className="h-10 w-32" />
+      </div>
+      <table className="w-full">
+        <thead>
+          <tr>{/* Skeleton header */}</tr>
+        </thead>
+        <tbody>
+          {Array.from({ length: 5 }).map((_, i) => (
+            <tr key={i}>{/* Skeleton cells */}</tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+```
+
+**Key Features**:
+- Matches actual content structure
+- Multiple skeleton rows for realistic feel
+- Header and action button skeletons
+- Animate-pulse for smooth animation
+
+**Usage**:
+```typescript
+export default function DashboardLoading() {
+  return (
+    <DashboardShell>
+      <DashboardHeader heading="kubernetes" />
+      <DashboardSkeleton />
+    </DashboardShell>
+  );
+}
+```
+
 ## Performance Best Practices
 
 ### Import Patterns for Tree-Shaking

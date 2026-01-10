@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@saasfly/ui/dropdown-menu";
-import * as Icons from "@saasfly/ui/icons";
+import { Moon, Sun, System } from "@saasfly/ui/icons";
 
 export default function ThemeToggle(props: {
   align?: "center" | "start" | "end";
@@ -19,9 +19,9 @@ export default function ThemeToggle(props: {
   const { setTheme, theme } = useTheme();
 
   const triggerIcon = {
-    light: <Icons.Sun className="h-6 w-6" />,
-    dark: <Icons.Moon className="h-6 w-6" />,
-    system: <Icons.System className="h-6 w-6" />,
+    light: <Sun className="h-6 w-6" />,
+    dark: <Moon className="h-6 w-6" />,
+    system: <System className="h-6 w-6" />,
   }[theme as "light" | "dark" | "system"];
 
   return (
@@ -39,15 +39,15 @@ export default function ThemeToggle(props: {
       </DropdownMenuTrigger>
       <DropdownMenuContent align={props.align} side={props.side}>
         <DropdownMenuItem onClick={() => setTheme("light")}>
-          <Icons.Sun className="mr-2 h-4 w-4" />
+          <Sun className="mr-2 h-4 w-4" />
           <span>Light</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("dark")}>
-          <Icons.Moon className="mr-2 h-4 w-4" />
+          <Moon className="mr-2 h-4 w-4" />
           <span>Dark</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
-          <Icons.System className="mr-2 h-4 w-4" />
+          <System className="mr-2 h-4 w-4" />
           <span>System</span>
         </DropdownMenuItem>
       </DropdownMenuContent>

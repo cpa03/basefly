@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 
-import * as Icons from "@saasfly/ui/icons";
+import { Close, Logo } from "@saasfly/ui/icons";
 import { DocumentGuide } from "~/components/document-guide";
 import { MobileNav } from "~/components/mobile-nav";
 
@@ -44,7 +44,7 @@ export function MainNav({ items, children, params: { lang }, marketing }: MainNa
         className="flex items-center space-x-2 md:hidden"
         onClick={() => setShowMobileMenu(!showMobileMenu)}
       >
-        {showMobileMenu ? <Icons.Close/> : <Icons.Logo/>}
+        {showMobileMenu ? <Close/> : <Logo/>}
         <span className="font-bold">Menu</span>
       </button>
       {showMobileMenu && items && (

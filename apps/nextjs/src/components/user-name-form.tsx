@@ -17,7 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@saasfly/ui/card";
-import * as Icons from "@saasfly/ui/icons";
+import { Spinner } from "@saasfly/ui/icons";
 import { Input } from "@saasfly/ui/input";
 import { Label } from "@saasfly/ui/label";
 import { toast } from "@saasfly/ui/use-toast";
@@ -111,7 +111,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
             aria-busy={isSaving}
           >
             {isSaving && (
-              <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+              <Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
             )}
             <span>Save</span>
           </button>

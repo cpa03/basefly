@@ -1,11 +1,14 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { getCurrentUser } from "@saasfly/auth";
 import { db, SubscriptionPlan, k8sClusterService } from "@saasfly/db";
 
 import { createApiError, ErrorCode } from "../errors";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import {
+  createTRPCRouter,
+  createRateLimitedProtectedProcedure,
+  EndpointType,
+} from "../trpc";
 
 const k8sClusterCreateSchema = z.object({
   id: z.number().optional(),
@@ -18,26 +21,17 @@ const k8sClusterDeleteSchema = z.object({
 });
 
 export const k8sRouter = createTRPCRouter({
-  getClusters: protectedProcedure.query(async (opts) => {
-    const user = await getCurrentUser();
+  getClusters: createRateLimitedProtectedProcedure("read").query(async (opts) => {
     const userId = opts.ctx.userId! as string;
-    if (!user) {
-      return;
-    }
+    const requestId = opts.ctx.requestId;
     return await k8sClusterService.findAllActive(userId);
   }),
-  createCluster: protectedProcedure
+  createCluster: createRateLimitedProtectedProcedure("write")
     .input(k8sClusterCreateSchema)
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.userId! as string;
+      const requestId = ctx.requestId;
 
-      const user = await getCurrentUser();
-      if (!user) {
-        throw createApiError(
-          ErrorCode.UNAUTHORIZED,
-          "You must be logged in to create a cluster",
-        );
-      }
       try {
         const newCluster = await db
           .insertInto("K8sClusterConfig")
@@ -82,11 +76,12 @@ export const k8sRouter = createTRPCRouter({
         );
       }
     }),
-  updateCluster: protectedProcedure
+  updateCluster: createRateLimitedProtectedProcedure("write")
     .input(k8sClusterCreateSchema)
     .mutation(async (opts) => {
       const id = opts.input.id!;
       const userId = opts.ctx.userId!;
+      const requestId = opts.ctx.requestId;
       const newName = opts.input.name;
       const newLocation = opts.input.location;
 
@@ -116,11 +111,12 @@ export const k8sRouter = createTRPCRouter({
         success: true,
       };
     }),
-  deleteCluster: protectedProcedure
+  deleteCluster: createRateLimitedProtectedProcedure("write")
     .input(k8sClusterDeleteSchema)
     .mutation(async (opts) => {
       const id = opts.input.id;
       const userId = opts.ctx.userId!;
+      const requestId = opts.ctx.requestId;
       const cluster = await k8sClusterService.findActive(id, userId);
       if (!cluster) {
         throw createApiError(ErrorCode.NOT_FOUND, "Cluster not found");
@@ -131,7 +127,7 @@ export const k8sRouter = createTRPCRouter({
           "You don't have access to this cluster",
         );
       }
-      await k8sClusterService.softDelete(id, userId);
+      await k8sClusterService.softDelete(id, userId, { requestId });
       return { success: true };
     }),
 });

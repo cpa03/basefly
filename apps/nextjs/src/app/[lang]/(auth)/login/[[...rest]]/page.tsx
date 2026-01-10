@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { cn } from "@saasfly/ui";
 import { buttonVariants } from "@saasfly/ui/button";
-import * as Icons from "@saasfly/ui/icons";
+import { ChevronLeft } from "@saasfly/ui/icons";
 
 import { UserClerkAuthForm } from "~/components/user-clerk-auth-form";
 import type { Locale } from "~/config/i18n-config";
@@ -34,7 +34,7 @@ export default async function LoginPage({
         )}
         aria-label="Go to home page"
       >
-        <Icons.ChevronLeft className="mr-2 h-4 w-4" aria-hidden="true" />
+        <ChevronLeft className="mr-2 h-4 w-4" aria-hidden="true" />
         {dict.login.back}
       </Link>
       <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[400px]">

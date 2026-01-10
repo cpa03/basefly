@@ -1,9 +1,13 @@
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import {
+  createTRPCRouter,
+  createRateLimitedProtectedProcedure,
+  EndpointType,
+} from "../trpc";
 
 export const helloRouter = createTRPCRouter({
-  hello: protectedProcedure
+  hello: createRateLimitedProtectedProcedure("read")
     .input(
       z.object({
         text: z.string(),

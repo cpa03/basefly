@@ -12,7 +12,6 @@ export const ModalProvider = ({ dict }: { dict: Record<string, string> }) => {
 
   return (
     <>
-      {/* <SignInModal dict={dict} /> */}
       <SignInClerkModal dict={dict} />
     </>
   );

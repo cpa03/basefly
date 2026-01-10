@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 "use client";
 
 import * as React from "react";
@@ -9,13 +7,13 @@ import { useRouter } from "next/navigation";
 import { cn } from "@saasfly/ui";
 //button self design
 import { buttonVariants, type ButtonProps } from "@saasfly/ui/button";
-import * as Icons from "@saasfly/ui/icons";
+import { Add, Spinner } from "@saasfly/ui/icons";
 import { toast } from "@saasfly/ui/use-toast";
 
+import { DEFAULT_CLUSTER_LOCATION } from "~/config/k8s";
 import { trpc } from "~/trpc/client";
 
 interface K8sCreateButtonProps extends ButtonProps {
-  customProp?: string;
   dict: Record<string, unknown>;
 }
 
@@ -29,20 +27,14 @@ export function K8sCreateButton({
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   async function onClick() {
+    setIsLoading(true);
     const res = await trpc.k8s.createCluster.mutate({
       name: "Default Cluster",
-      location: "Hong Kong",
+      location: DEFAULT_CLUSTER_LOCATION,
     });
     setIsLoading(false);
 
     if (!res?.success) {
-      // if (response.status === 402) {
-      //   return toast({
-      //     title: "Limit of 1 cluster reached.",
-      //     description: "Please upgrade to the PROD plan.",
-      //     variant: "destructive",
-      //   });
-      // }
       return toast({
         title: "Something went wrong.",
         description: "Your cluster was not created. Please try again.",
@@ -58,8 +50,6 @@ export function K8sCreateButton({
       if (cluster?.id) {
         router.push(`/editor/cluster/${cluster.id}`);
       }
-    } else {
-      // console.log("error ");
     }
   }
 
@@ -74,12 +64,13 @@ export function K8sCreateButton({
         className,
       )}
       disabled={isLoading}
+      aria-busy={isLoading}
       {...props}
     >
       {isLoading ? (
-        <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+        <Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
       ) : (
-        <Icons.Add className="mr-2 h-4 w-4" />
+        <Add className="mr-2 h-4 w-4" aria-hidden="true" />
       )}
       {dict.k8s?.new_cluster}
     </button>

@@ -1,5 +1,8 @@
 import Stripe from "stripe";
 
+/**
+ * Configuration options for retry logic
+ */
 interface RetryOptions {
   maxAttempts?: number;
   baseDelay?: number;
@@ -7,6 +10,10 @@ interface RetryOptions {
   retryableErrors?: string[];
 }
 
+/**
+ * Error thrown when integration with external services fails
+ * Used for wrapping external service errors with consistent error handling
+ */
 export class IntegrationError extends Error {
   constructor(
     message: string,
@@ -18,6 +25,10 @@ export class IntegrationError extends Error {
   }
 }
 
+/**
+ * Error thrown when circuit breaker is open
+ * Indicates the service is temporarily unavailable due to repeated failures
+ */
 export class CircuitBreakerOpenError extends IntegrationError {
   constructor(serviceName: string) {
     super(
@@ -28,6 +39,9 @@ export class CircuitBreakerOpenError extends IntegrationError {
   }
 }
 
+/**
+ * Internal state for circuit breaker
+ */
 interface CircuitBreakerState {
   isOpen: boolean;
   failureCount: number;
@@ -35,6 +49,31 @@ interface CircuitBreakerState {
   nextAttemptTime: number | null;
 }
 
+/**
+ * Circuit Breaker Pattern Implementation
+ * 
+ * Prevents cascading failures by stopping calls to failing services.
+ * After a threshold number of failures, the circuit "opens" and
+ * all calls immediately fail without attempting the service.
+ * 
+ * This pattern improves system resilience by:
+ * - Preventing resource exhaustion on failing services
+ * - Providing fast failures when services are down
+ * - Allowing services time to recover
+ * 
+ * @example
+ * ```typescript
+ * const stripeBreaker = new CircuitBreaker("Stripe", 5, 60000);
+ * 
+ * try {
+ *   const result = await stripeBreaker.execute(() => stripe.charges.create(params));
+ * } catch (error) {
+ *   if (error instanceof CircuitBreakerOpenError) {
+ *     console.log("Stripe is temporarily unavailable");
+ *   }
+ * }
+ * ```
+ */
 export class CircuitBreaker {
   private state: CircuitBreakerState = {
     isOpen: false,
@@ -43,12 +82,31 @@ export class CircuitBreaker {
     nextAttemptTime: null,
   };
 
+  /**
+   * Create a new circuit breaker
+   * 
+   * @param serviceName - Name of the service being protected (for error messages)
+   * @param threshold - Number of consecutive failures before opening circuit (default: 5)
+   * @param resetTimeoutMs - Time to wait before attempting to close circuit (default: 60000ms)
+   */
   constructor(
     private readonly serviceName: string,
     private readonly threshold: number = 5,
     private readonly resetTimeoutMs: number = 60000,
   ) {}
 
+  /**
+   * Execute a function with circuit breaker protection
+   * 
+   * If circuit is open and reset timeout hasn't passed, throws CircuitBreakerOpenError.
+   * If circuit is open but timeout has passed, attempts to reset and execute.
+   * If circuit is closed, executes function and tracks success/failure.
+   * 
+   * @param fn - Async function to execute with protection
+   * @returns Result of the function if successful
+   * @throws CircuitBreakerOpenError if circuit is open
+   * @throws Original error if function fails and circuit hasn't opened yet
+   */
   async execute<T>(fn: () => Promise<T>): Promise<T> {
     if (this.state.isOpen) {
       if (Date.now() < (this.state.nextAttemptTime ?? 0)) {
@@ -67,11 +125,19 @@ export class CircuitBreaker {
     }
   }
 
+  /**
+   * Handle successful execution
+   * Resets failure count on success
+   */
   private onSuccess(): void {
     this.state.failureCount = 0;
     this.state.lastFailureTime = null;
   }
 
+  /**
+   * Handle failed execution
+   * Increments failure count and potentially opens circuit
+   */
   private onFailure(): void {
     this.state.failureCount++;
     this.state.lastFailureTime = Date.now();
@@ -82,6 +148,10 @@ export class CircuitBreaker {
     }
   }
 
+  /**
+   * Reset the circuit breaker to closed state
+   * Called when timeout expires or manually
+   */
   private reset(): void {
     this.state = {
       isOpen: false,
@@ -91,6 +161,12 @@ export class CircuitBreaker {
     };
   }
 
+  /**
+   * Check if circuit breaker is currently open
+   * Auto-resets if timeout has expired
+   * 
+   * @returns true if circuit is open and timeout hasn't expired
+   */
   isOpen(): boolean {
     if (!this.state.isOpen) return false;
     if (Date.now() >= (this.state.nextAttemptTime ?? 0)) {
@@ -101,6 +177,10 @@ export class CircuitBreaker {
   }
 }
 
+/**
+ * Default list of retryable error codes
+ * Includes network errors and rate limits
+ */
 const defaultRetryableErrors = [
   "ECONNRESET",
   "ETIMEDOUT",
@@ -111,10 +191,31 @@ const defaultRetryableErrors = [
   "timeout",
 ];
 
+/**
+ * Sleep for specified milliseconds
+ */
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+/**
+ * Retry function with exponential backoff
+ * 
+ * Retries a function on failure with exponentially increasing delays.
+ * Useful for handling transient network errors and rate limits.
+ * 
+ * @example
+ * ```typescript
+ * const result = await withRetry(
+ *   () => fetchApi(),
+ *   {
+ *     maxAttempts: 3,
+ *     baseDelay: 1000,  // 1s, 2s, 4s delays
+ *     maxDelay: 10000,   // Cap at 10s
+ *   }
+ * );
+ * ```
+ */
 export async function withRetry<T>(
   fn: () => Promise<T>,
   options: RetryOptions = {},
@@ -148,6 +249,9 @@ export async function withRetry<T>(
   throw lastError;
 }
 
+/**
+ * Check if an error is retryable based on error codes
+ */
 function isRetryableError(error: unknown, retryableErrors: string[]): boolean {
   if (error instanceof Error) {
     return retryableErrors.some((code) =>
@@ -157,6 +261,23 @@ function isRetryableError(error: unknown, retryableErrors: string[]): boolean {
   return false;
 }
 
+/**
+ * Wrap a promise with timeout protection
+ * 
+ * Throws IntegrationError if promise doesn't resolve within timeout.
+ * Prevents operations from hanging indefinitely.
+ * 
+ * @example
+ * ```typescript
+ * try {
+ *   const result = await withTimeout(fetchApi(), 30000, "API call timed out");
+ * } catch (error) {
+ *   if (error instanceof IntegrationError && error.code === "TIMEOUT") {
+ *     console.log("Operation took too long");
+ *   }
+ * }
+ * ```
+ */
 export async function withTimeout<T>(
   promise: Promise<T>,
   timeoutMs: number,
@@ -171,6 +292,9 @@ export async function withTimeout<T>(
   return Promise.race([promise, timeoutPromise]);
 }
 
+/**
+ * Create a Stripe client with default configuration
+ */
 export function createStripeClientWithDefaults(
   apiKey: string,
   options: Stripe.StripeConfig = {},
@@ -184,6 +308,33 @@ export function createStripeClientWithDefaults(
   });
 }
 
+/**
+ * Safe Stripe API call with full resilience patterns
+ * 
+ * Combines circuit breaker, retry logic, and timeout protection.
+ * All Stripe API calls should use this wrapper.
+ * 
+ * Features:
+ * - Circuit breaker to prevent cascading failures
+ * - Retry with exponential backoff for transient errors
+ * - Timeout protection to prevent hanging calls
+ * - Standardized error handling with IntegrationError
+ * 
+ * @example
+ * ```typescript
+ * const stripeBreaker = new CircuitBreaker("Stripe", 5, 60000);
+ * 
+ * const session = await safeStripeCall(
+ *   () => stripe.checkout.sessions.create(params, { idempotencyKey }),
+ *   {
+ *     timeoutMs: 30000,
+ *     maxAttempts: 3,
+ *     serviceName: "Stripe Checkout",
+ *     circuitBreaker: stripeBreaker,
+ *   }
+ * );
+ * ```
+ */
 export async function safeStripeCall<T>(
   fn: () => Promise<T>,
   options: {

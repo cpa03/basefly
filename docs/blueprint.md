@@ -241,7 +241,11 @@ const user = await db
 | User | email | Unique | Email lookup |
 | Account | [provider, providerAccountId] | Unique | OAuth lookup |
 | Customer | authUserId | Index | User lookup |
+| Customer | [authUserId, stripeCurrentPeriodEnd] | Composite | Subscription status checks |
 | K8sClusterConfig | authUserId | Index | User lookup |
+| K8sClusterConfig | deletedAt | Index | Soft-delete filtering |
+| K8sClusterConfig | [authUserId, deletedAt] | Composite | Active/deleted cluster queries |
+| K8sClusterConfig | [plan, authUserId] | Partial Unique | One cluster per plan (active only) |
 | Customer | stripeCustomerId | Unique | Stripe webhook |
 | Customer | stripeSubscriptionId | Unique | Stripe webhook |
 
@@ -249,7 +253,32 @@ const user = await db
 Based on router files:
 - Most queries filter by `authUserId` → Indexed ✓
 - Webhook lookups by Stripe IDs → Unique indexed ✓
-- No observed composite index requirements
+- Composite indexes added for multi-column filter patterns (2026-01-10)
+
+### Composite Index Details
+
+#### K8sClusterConfig Indexes
+1. **`[authUserId, deletedAt]` Composite Index**
+   - **Purpose**: Optimize soft-delete queries for finding all active/deleted clusters
+   - **Use Cases**:
+     - `findAllActive(userId)` - List all active clusters for a user
+     - `findDeleted(userId)` - List all deleted clusters for a user
+     - `getUserSummary(userId)` - User deletion and audit operations
+   - **Impact**: 5+ query locations benefit from this index
+
+2. **`[plan, authUserId]` Partial Unique Index** (from soft delete migration)
+   - **Purpose**: Enforce one cluster per subscription plan per user (active records only)
+   - **Constraint**: `WHERE deletedAt IS NULL`
+   - **Business Rule**: Users can have one FREE, one PRO, and one BUSINESS cluster
+
+#### Customer Indexes
+1. **`[authUserId, stripeCurrentPeriodEnd]` Composite Index**
+   - **Purpose**: Optimize subscription status checks
+   - **Use Cases**:
+     - Customer queries by user ID
+     - Subscription active/inactive status checks
+   - **Impact**: 6+ query locations benefit from this index
+   - **Order**: DESC on `stripeCurrentPeriodEnd` for efficient active subscription lookups
 
 ## Data Integrity
 
@@ -460,8 +489,162 @@ throw createApiError(
 - Expose internal error details to clients
 - Skip idempotency for payment operations
 - Use infinite loops for retries
+- Bypass rate limits without proper authorization
 
-## Recommendations
+### Rate Limiting
+
+**Location**: `packages/api/src/rate-limiter.ts`, `packages/api/src/trpc.ts`
+
+**Purpose**: Protect API endpoints from abuse, DDoS attacks, and resource exhaustion
+
+**Algorithm**: Token Bucket
+
+**Rate Limits**:
+- **Read Operations** (queries): 100 requests/minute
+  - Endpoints: `getClusters`, `userPlans`, `queryCustomer`, `mySubscription`, `hello`
+- **Write Operations** (mutations): 20 requests/minute
+  - Endpoints: `createCluster`, `updateCluster`, `deleteCluster`, `updateUserName`, `insertCustomer`
+- **Stripe Operations**: 10 requests/minute
+  - Endpoints: `createSession`
+
+**Implementation**:
+
+1. **Rate Limiter Class**
+   ```typescript
+   const limiter = new RateLimiter({
+     maxRequests: 100,
+     windowMs: 60 * 1000, // 1 minute
+   });
+
+   const result = limiter.check(identifier);
+   // Returns: { success: boolean, remaining: number, resetAt: number }
+   ```
+
+2. **tRPC Middleware Integration**
+   ```typescript
+   const rateLimitedProcedure = procedure.use(rateLimit("read"));
+   const rateLimitedProtectedProcedure = protectedProcedure.use(rateLimit("write"));
+   ```
+
+3. **Error Response**
+   ```typescript
+   throw createApiError(
+     ErrorCode.TOO_MANY_REQUESTS,
+     "Rate limit exceeded. Please try again later.",
+     { resetAt: result.resetAt }
+   );
+   ```
+
+**Features**:
+
+1. **Token Bucket Algorithm**
+   - Each request consumes a token
+   - Tokens refill at end of window
+   - Automatic cleanup of expired entries
+
+2. **Identifier Strategy**
+   - Authenticated: `user:{userId}`
+   - Unauthenticated: `ip:{ipAddress}`
+
+3. **Automatic Cleanup**
+   - Removes entries older than 2x window duration
+   - Runs every window duration
+   - Prevents memory leaks
+
+4. **Redis-Ready**
+   - In-memory implementation for development
+   - Can be swapped for Redis for distributed systems
+   - Interface remains the same
+
+**Usage Example**:
+```typescript
+import { createRateLimitedProtectedProcedure, EndpointType } from "@saasfly/api";
+
+export const k8sRouter = createTRPCRouter({
+  getClusters: createRateLimitedProtectedProcedure("read").query(async (opts) => {
+    // Your query logic
+  }),
+
+  createCluster: createRateLimitedProtectedProcedure("write")
+    .input(createSchema)
+    .mutation(async ({ input }) => {
+      // Your mutation logic
+    }),
+});
+```
+
+**Best Practices**:
+
+1. **Handle Rate Limit Errors Client-Side**
+   ```typescript
+   try {
+     await client.k8s.createCluster.mutate(input);
+   } catch (error) {
+     if (error.data?.code === "TOO_MANY_REQUESTS") {
+       const resetAt = error.data?.details?.resetAt;
+       const waitTime = resetAt - Date.now();
+       await new Promise(resolve => setTimeout(resolve, waitTime));
+       // Retry after wait
+     }
+   }
+   ```
+
+2. **Monitor Rate Limit Usage**
+   ```typescript
+   const limiter = getLimiter("read");
+   const result = limiter.check(identifier);
+   console.log(`Remaining: ${result.remaining}, Reset: ${new Date(result.resetAt)}`);
+   ```
+
+3. **Choose Appropriate Limits**
+   - Read operations: Higher limits (less impact)
+   - Write operations: Lower limits (more impact)
+   - Expensive operations: Lowest limits (Stripe, external APIs)
+
+**Error Response Format**:
+```typescript
+interface ApiErrorResponse {
+  error: {
+    code: "TOO_MANY_REQUESTS";
+    message: "Rate limit exceeded. Please try again later.";
+    details?: {
+      resetAt: number; // Unix timestamp
+    };
+  };
+}
+```
+
+**Response Headers** (future enhancement):
+```
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 95
+X-RateLimit-Reset: 1704729600
+```
+
+**Production Considerations**:
+
+1. **Distributed Rate Limiting**
+   - Use Redis for multi-instance deployments
+   - Shared state across multiple API servers
+   - Consistent rate limiting regardless of which server handles the request
+
+2. **Monitoring and Alerts**
+   - Track rate limit violations
+   - Alert on unusual patterns (DDoS detection)
+   - Monitor token usage per user/IP
+
+3. **Dynamic Rate Limits**
+   - Adjust limits based on user subscription tier
+   - Higher limits for premium customers
+   - Lower limits for free tier users
+
+**Documentation**:
+- Complete API specification in `docs/api-spec.md`
+- Includes rate limits for all endpoints
+- Best practices for handling rate limit errors
+- Example implementations
+
+---
 
 ### High Priority
 1. ~~Add foreign key constraints to User table~~ ✅ Completed
@@ -469,21 +652,218 @@ throw createApiError(
 3. ~~Add cascade delete policies~~ ✅ Completed
 4. ~~Implement integration hardening~~ ✅ Completed
 5. ~~Improve type safety - Remove "as any" type assertions~~ ✅ Completed
+6. ~~Create API documentation~~ ✅ Completed
 
 ### Medium Priority
 1. ~~Implement proper soft delete pattern with partial unique indexes~~ ✅ Completed
 2. ~~Clarify unique constraint strategy for clusters~~ ✅ Completed
 3. ~~Standardize error responses~~ ✅ Completed
-4. Add data validation at application boundary
-5. Add rate limiting for API endpoints
+4. ~~Add rate limiting for API endpoints~~ ✅ Completed
+5. Add data validation at application boundary
 6. Implement request ID tracking for distributed tracing
 
 ### Low Priority
-1. Audit query patterns for N+1 issues
-2. Consider adding composite indexes for multi-column queries
+1. ~~Audit query patterns for N+1 issues~~ ✅ Completed (2026-01-10)
+2. ~~Consider adding composite indexes for multi-column queries~~ ✅ Completed (2026-01-10)
 3. Implement read replicas if read-heavy workload
 4. Add integration tests for external services
 5. Set up monitoring for circuit breaker states
+
+## UI/UX Patterns
+
+### Status Badge Component Pattern
+
+**Location**: `packages/ui/src/status-badge.tsx`
+
+**Purpose**: Reusable component for displaying status indicators with visual feedback and accessibility support.
+
+**Pattern**:
+```typescript
+export type ClusterStatus = "PENDING" | "CREATING" | "INITING" | "RUNNING" | "STOPPED" | "DELETED";
+
+const statusConfig = {
+  PENDING: { icon: Clock, label: "Pending", bgColor: "...", textColor: "..." },
+  CREATING: { icon: Loader2, label: "Creating", animate: true },
+  // ...
+};
+
+export function StatusBadge({ status, size = "default" }: StatusBadgeProps) {
+  const config = statusConfig[status];
+  const Icon = config.icon;
+  return (
+    <div role="status" aria-label={`${config.label} status`}>
+      <span className={styles.dot} />
+      <Icon className={config.animate ? "animate-spin" : ""} aria-hidden="true" />
+      <span className="sr-only">{config.label}</span>
+    </div>
+  );
+}
+```
+
+**Key Features**:
+- Configuration-based styling (centralized status definitions)
+- Animated spinners for in-progress states
+- Color-coded backgrounds for visual hierarchy
+- ARIA labels for screen readers
+- Size variants (sm, default, lg)
+- `sr-only` class for screen-reader-only text
+
+**Accessibility**:
+- `role="status"` - Announces as status region
+- `aria-label` - Describes status to screen readers
+- `aria-hidden="true"` - Hides decorative icons
+- `sr-only` class - Text only for screen readers
+
+**Usage Example**:
+```typescript
+<StatusBadge status="RUNNING" size="sm" />
+<StatusBadge status="CREATING" size="default" />
+```
+
+### Responsive Table to Card Pattern
+
+**Location**: `apps/nextjs/src/app/[lang]/(dashboard)/dashboard/page.tsx`
+
+**Purpose**: Transform table layouts to card-based layouts on mobile devices for better touch interaction.
+
+**Pattern**:
+```typescript
+<div className="space-y-4">
+  <div className="hidden md:block divide-y divide-border rounded-md border">
+    <Table>
+      {/* Table header and rows */}
+    </Table>
+  </div>
+
+  <div className="grid grid-cols-1 gap-4 md:hidden">
+    {clusters.map((cluster) => (
+      <article className="flex flex-col gap-3 rounded-md border p-4">
+        {/* Card content */}
+      </article>
+    ))}
+  </div>
+</div>
+```
+
+**Key Features**:
+- Table view on desktop (md breakpoint: 768px+)
+- Card view on mobile with touch-friendly layout
+- Semantic HTML (`<article>` elements)
+- Same data displayed in both views
+- Proper spacing for touch targets
+
+**Responsive Classes**:
+- `hidden md:block` - Table hidden on mobile, shown on desktop
+- `md:hidden` - Cards shown on mobile, hidden on desktop
+- `grid-cols-1 gap-4` - Single column cards with spacing
+- `flex flex-col gap-3` - Vertical card layout
+
+**Mobile Card Structure**:
+```typescript
+<article className="flex flex-col gap-3 rounded-md border p-4">
+  <div className="flex items-start justify-between">
+    <div className="space-y-1">
+      <h3 className="font-semibold"><Link>{cluster.name}</Link></h3>
+      <p className="text-sm text-muted-foreground">{cluster.location}</p>
+    </div>
+    <ClusterOperations cluster={cluster} />
+  </div>
+  <div className="flex flex-wrap gap-4 border-t pt-3">
+    <div><span>Plan:</span> {cluster.plan}</div>
+    <div><span>Status:</span> <StatusBadge status={cluster.status} /></div>
+    <div><span>Updated:</span> {formatDate(cluster.updatedAt)}</div>
+  </div>
+</article>
+```
+
+### Loading Skeleton Pattern
+
+**Location**: `apps/nextjs/src/components/dashboard-skeleton.tsx`
+
+**Purpose**: Provide visual feedback during data loading to improve perceived performance.
+
+**Pattern**:
+```typescript
+export function DashboardSkeleton() {
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <Skeleton className="h-10 w-40" />
+        <Skeleton className="h-10 w-32" />
+      </div>
+      <table className="w-full">
+        <thead>
+          <tr>{/* Skeleton header */}</tr>
+        </thead>
+        <tbody>
+          {Array.from({ length: 5 }).map((_, i) => (
+            <tr key={i}>{/* Skeleton cells */}</tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+```
+
+**Key Features**:
+- Matches actual content structure
+- Multiple skeleton rows for realistic feel
+- Header and action button skeletons
+- Animate-pulse for smooth animation
+
+**Usage**:
+```typescript
+export default function DashboardLoading() {
+  return (
+    <DashboardShell>
+      <DashboardHeader heading="kubernetes" />
+      <DashboardSkeleton />
+    </DashboardShell>
+  );
+}
+```
+
+## Performance Best Practices
+
+### Import Patterns for Tree-Shaking
+
+**Rule: Never use namespace imports for large libraries**
+
+❌ **Anti-Pattern**:
+```typescript
+import * as Icons from "@saasfly/ui/icons";
+// This imports ALL icons, even if only 1-2 are used
+<Icons.Check />
+<Icons.Spinner />
+```
+
+✅ **Correct Pattern**:
+```typescript
+import { Check, Spinner } from "@saasfly/ui/icons";
+// Only imports the specific icons needed for tree-shaking
+<Check />
+<Spinner />
+```
+
+**Impact**:
+- Lucide-react has 1000+ icons
+- Namespace imports defeat tree-shaking
+- Direct imports allow bundlers to eliminate unused code
+- Estimated bundle savings: 100-200KB per unused icon set
+
+**Exceptions**:
+- Dynamic icon access (e.g., `Icons[name]`) requires namespace import
+- Document these exceptions with inline comments
+- Use `keyof typeof Icons` for type safety
+
+### Bundle Optimization Checklist
+
+- [x] Use direct imports instead of namespace imports for large libraries
+- [ ] Run bundle analyzer to identify large chunks
+- [ ] Enable code splitting for heavy routes
+- [ ] Lazy load components not immediately visible
+- [ ] Use `next/dynamic` for below-the-fold content
 
 ## Future Considerations
 

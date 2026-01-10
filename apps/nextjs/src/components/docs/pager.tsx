@@ -3,7 +3,7 @@ import { Doc } from "contentlayer/generated";
 
 import { cn } from "@saasfly/ui";
 import { buttonVariants } from "@saasfly/ui/button";
-import * as Icons from "@saasfly/ui/icons";
+import { ChevronLeft, ChevronRight } from "@saasfly/ui/icons";
 
 import { getDocsConfig } from "~/config/ui/docs";
 
@@ -25,7 +25,7 @@ export function DocsPager({ doc }: DocsPagerProps) {
           href={pager.prev.href}
           className={cn(buttonVariants({ variant: "ghost" }))}
         >
-          <Icons.ChevronLeft className="mr-2 h-4 w-4" />
+          <ChevronLeft className="mr-2 h-4 w-4" />
           {pager.prev.title}
         </Link>
       )}
@@ -35,7 +35,7 @@ export function DocsPager({ doc }: DocsPagerProps) {
           className={cn(buttonVariants({ variant: "ghost" }), "ml-auto")}
         >
           {pager.next.title}
-          <Icons.ChevronRight className="ml-2 h-4 w-4" />
+          <ChevronRight className="ml-2 h-4 w-4" />
         </Link>
       )}
     </div>
@@ -62,13 +62,14 @@ export function getPagerForDoc(doc: Doc) {
   };
 }
 
-// @ts-ignore
-export function flatten(
-  links: {
-    items?: { items?: any }[];
-  }[],
-) {
-  return links.reduce((flat, link) => {
-    return flat.concat(link.items ? flatten(link.items) : link);
+interface DocLink {
+  items?: DocLink[];
+  title?: string;
+  href?: string;
+}
+
+export function flatten(links: DocLink[]) {
+  return links.reduce((flat: DocLink[], link) => {
+    return flat.concat(link.items ? flatten(link.items) : [link]);
   }, []);
 }

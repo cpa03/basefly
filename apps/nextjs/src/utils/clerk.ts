@@ -8,7 +8,7 @@ import { env } from "@saasfly/auth/env.mjs";
 
 const noNeedProcessRoute = [".*\\.png", ".*\\.jpg", ".*\\.opengraph-image.png"];
 
-const noRedirectRoute = ["/api(.*)", "/trpc(.*)", "/admin"];
+const noRedirectRoute = ["/api(.*)", "/trpc(.*)"];
 
 export const isPublicRoute = createRouteMatcher([
   new RegExp("/(\\w{2}/)?signin(.*)"),
@@ -76,16 +76,9 @@ export const middleware = clerkMiddleware(async (auth, req: NextRequest) => {
     return null;
   }
 
-  const { userId, sessionClaims } = await auth()
+  const { userId } = await auth()
 
   const isAuth = !!userId;
-  let isAdmin = false
-  if (env.ADMIN_EMAIL) {
-    const adminEmails = env.ADMIN_EMAIL.split(",");
-    if (sessionClaims?.user?.email) {
-      isAdmin = adminEmails.includes(sessionClaims?.user?.email);
-    }
-  }
 
   const isAuthPage = /^\/[a-zA-Z]{2,}\/(login|register|login-clerk)/.test(
     req.nextUrl.pathname,
@@ -93,11 +86,6 @@ export const middleware = clerkMiddleware(async (auth, req: NextRequest) => {
   const isAuthRoute = req.nextUrl.pathname.startsWith("/api/trpc/");
   const locale = getLocale(req);
   if (isAuthRoute && isAuth) {
-    return NextResponse.next();
-  }
-  if (req.nextUrl.pathname.startsWith("/admin/dashboard")) {
-    if (!isAuth || !isAdmin)
-      return NextResponse.redirect(new URL(`/admin/login`, req.url));
     return NextResponse.next();
   }
   if (isAuthPage) {

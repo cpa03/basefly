@@ -5,6 +5,8 @@ import {createTRPCContext} from "@saasfly/api";
 import {edgeRouter} from "@saasfly/api/edge";
 import {getAuth} from "@clerk/nextjs/server";
 
+import { logger } from "~/lib/logger";
+
 // export const runtime = "edge";
 const createContext = async (req: NextRequest) => {
     return createTRPCContext({
@@ -20,8 +22,7 @@ const handler = (req: NextRequest) =>
         req: req,
         createContext: () => createContext(req),
         onError: ({error, path}) => {
-            console.log("Error in tRPC handler (edge) on path", path);
-            console.error(error);
+            logger.error("Error in tRPC handler (edge)", error, { path });
         },
     });
 

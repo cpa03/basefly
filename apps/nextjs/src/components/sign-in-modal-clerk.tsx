@@ -6,11 +6,12 @@ import { OAuthStrategy } from "@clerk/types";
 import { useSignIn } from "@clerk/nextjs";
 
 import { Button } from "@saasfly/ui/button";
-import * as Icons from "@saasfly/ui/icons";
+import { GitHub, Spinner } from "@saasfly/ui/icons";
 
 import { Modal } from "~/components/modal";
 import { siteConfig } from "~/config/site";
 import { useSigninModal } from "~/hooks/use-signin-modal";
+import { logger } from "~/lib/logger";
 
 export const SignInClerkModal = ({
   dict,
@@ -35,13 +36,13 @@ export const SignInClerkModal = ({
         redirectUrlComplete: `${protocol}//${host}/dashboard`,
       })
       .then((res) => {
-        console.log(res);
+        logger.info("Sign in successful", { result: res });
       })
       .catch((err: Error) => {
         // See https://clerk.com/docs/custom-flows/error-handling
         // for more info on error handling
-        console.log((err as { errors?: unknown[] }).errors);
-        console.error(err, null, 2);
+        logger.info("Sign in errors", { errors: (err as { errors?: unknown[] }).errors });
+        logger.error("Sign in failed", err);
       });
   };
 
@@ -78,9 +79,9 @@ export const SignInClerkModal = ({
             }}
           >
             {signInClicked ? (
-              <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" />
+              <Spinner className="mr-2 h-4 w-4 animate-spin" />
             ) : (
-              <Icons.GitHub className="mr-2 h-4 w-4" />
+              <GitHub className="mr-2 h-4 w-4" />
             )}{" "}
             {dict.signup_github}
           </Button>

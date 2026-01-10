@@ -126,6 +126,7 @@
     "./sheet": "./src/sheet.tsx",
     "./skeleton": "./src/skeleton.tsx",
     "./sparkles": "./src/sparkles.tsx",
+    "./status-badge": "./src/status-badge.tsx",
     "./switch": "./src/switch.tsx",
     "./table": "./src/table.tsx",
     "./tabs": "./src/tabs.tsx",

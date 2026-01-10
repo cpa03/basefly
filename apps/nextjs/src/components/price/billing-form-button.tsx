@@ -3,7 +3,7 @@
 import { useTransition } from "react";
 
 import { Button } from "@saasfly/ui/button";
-import * as Icons from "@saasfly/ui/icons";
+import { Spinner } from "@saasfly/ui/icons";
 
 import { trpc } from "~/trpc/client";
 import type { SubscriptionPlan, UserSubscriptionPlan } from "~/types";
@@ -44,7 +44,7 @@ export function BillingFormButton({
     >
       {isPending ? (
         <>
-          <Icons.Spinner className="mr-2 h-4 w-4 animate-spin" /> Loading...
+          <Spinner className="mr-2 h-4 w-4 animate-spin" /> Loading...
         </>
       ) : (
         <>

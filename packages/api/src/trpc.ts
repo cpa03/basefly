@@ -4,6 +4,11 @@ import {auth, currentUser, getAuth} from "@clerk/nextjs/server";
 import { ZodError } from "zod";
 
 import { transformer } from "./transformer";
+import { getLimiter, getIdentifier, EndpointType } from "./rate-limiter";
+import { createApiError, ErrorCode } from "./errors";
+import { getOrGenerateRequestId } from "./request-id";
+
+export { EndpointType } from "./rate-limiter";
 
 interface CreateContextOptions {
   req?: NextRequest;
@@ -15,8 +20,10 @@ export const createTRPCContext = async (opts: {
   headers: Headers;
   auth: AuthObject;
 }) => {
+  const requestId = getOrGenerateRequestId(opts.headers);
   return {
     userId: opts.auth.userId,
+    requestId,
     ...opts,
   };
 };
@@ -25,13 +32,14 @@ export type TRPCContext = Awaited<ReturnType<typeof createTRPCContext>>;
 
 export const t = initTRPC.context<TRPCContext>().create({
   transformer,
-  errorFormatter({ shape, error }) {
+  errorFormatter({ shape, error, ctx }) {
     return {
       ...shape,
       data: {
         ...shape.data,
         zodError:
           error.cause instanceof ZodError ? error.cause.flatten() : null,
+        requestId: ctx?.requestId,
       },
     };
   },
@@ -51,3 +59,33 @@ const isAuthed = t.middleware(({ next, ctx }) => {
 
 
 export const protectedProcedure = procedure.use(isAuthed);
+
+export const rateLimit = (
+  endpointType: EndpointType,
+) =>
+  t.middleware(async ({ ctx, next }) => {
+    const limiter = getLimiter(endpointType);
+    const identifier = getIdentifier(ctx.userId, (ctx as any).req);
+
+    const result = limiter.check(identifier);
+
+    if (!result.success) {
+      throw createApiError(
+        ErrorCode.TOO_MANY_REQUESTS,
+        "Rate limit exceeded. Please try again later.",
+        {
+          resetAt: result.resetAt,
+        },
+      );
+    }
+
+    const response = await next();
+
+    return response;
+  });
+
+export const createRateLimitedProcedure = (endpointType: EndpointType) =>
+  procedure.use(rateLimit(endpointType));
+
+export const createRateLimitedProtectedProcedure = (endpointType: EndpointType) =>
+  protectedProcedure.use(rateLimit(endpointType));

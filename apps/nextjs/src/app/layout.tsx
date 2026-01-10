@@ -16,9 +16,6 @@ import { ThemeProvider } from "~/components/theme-provider";
 import { i18n } from "~/config/i18n-config";
 import { siteConfig } from "~/config/site";
 
-// import { Suspense } from "react";
-// import { PostHogPageview } from "~/config/providers";
-
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -65,11 +62,9 @@ export const metadata = {
   },
   icons: {
     icon: "/logo.svg",
-    // shortcut: "/favicon-16x16.png",
     apple: "/apple-touch-icon.png",
   },
   metadataBase: new URL("https://show.saasfly.io/"),
-  // manifest: `${siteConfig.url}/site.webmanifest`,
 };
 
 export default function RootLayout({
@@ -87,9 +82,6 @@ export default function RootLayout({
     <ClerkProviderWrapper publishableKey={isValidClerkKey ? clerkKey : ""}>
       <html lang="en" suppressHydrationWarning>
         <head />
-        {/*<Suspense>*/}
-        {/*  <PostHogPageview />*/}
-        {/*</Suspense>*/}
         <body
           className={cn(
             "min-h-screen bg-background font-sans antialiased",

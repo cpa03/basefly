@@ -13,6 +13,7 @@ import {
 } from "@saasfly/ui/dropdown-menu";
 
 import { UserAvatar } from "~/components/user-avatar";
+import { logger } from "~/lib/logger";
 
 interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
   user: Pick<User, "name" | "image" | "email">;
@@ -65,7 +66,7 @@ export function UserAccountNav({
             event.preventDefault();
             signOut({ redirectUrl: `/${lang}/login-clerk` })
               .catch((error) => {
-                console.error("Error during sign out:", error);
+                logger.error("Error during sign out", error);
               })
           }}
         >

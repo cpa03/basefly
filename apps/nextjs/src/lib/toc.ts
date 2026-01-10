@@ -1,11 +1,10 @@
-// @ts-nocheck
 import { toc } from "mdast-util-toc";
 import { remark } from "remark";
 import { visit } from "unist-util-visit";
 
 const textTypes = ["text", "emphasis", "strong", "inlineCode"];
 
-function flattenNode(node) {
+function flattenNode(node: { type?: string; value?: string }): string {
   const p = [];
   visit(node, (node) => {
     if (!textTypes.includes(node.type)) return;
@@ -24,7 +23,7 @@ interface Items {
   items?: Item[];
 }
 
-function getItems(node, current): Items {
+function getItems(node: unknown, current: Item = {}): Items {
   if (!node) {
     return {};
   }

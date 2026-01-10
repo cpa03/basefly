@@ -1,11 +1,6 @@
-// @ts-ignore
-// @ts-nocheck
 "use client";
 
 import {
-  JSXElementConstructor,
-  Key,
-  PromiseLikeOfReactNode,
   ReactElement,
   ReactNode,
   useState,
@@ -14,13 +9,14 @@ import Link from "next/link";
 import Balancer from "react-wrap-balancer";
 
 import { Button, buttonVariants } from "@saasfly/ui/button";
-import * as Icons from "@saasfly/ui/icons";
+import { Check, Close } from "@saasfly/ui/icons";
 import { Switch } from "@saasfly/ui/switch";
 
 import { BillingFormButton } from "~/components/price/billing-form-button";
 import { priceDataMap } from "~/config/price/price-data";
 import { useSigninModal } from "~/hooks/use-signin-modal";
 import { UserSubscriptionPlan } from "~/types";
+import type { SubscriptionPlanTranslation } from "~/config/price/price-data";
 
 interface PricingCardsProps {
   userId?: string;
@@ -67,32 +63,7 @@ export function PricingCards({
       </div>
 
       <div className="mx-auto grid max-w-screen-lg gap-5 bg-inherit py-5 md:grid-cols-3 lg:grid-cols-3">
-        {pricingData.map(
-          (offer: {
-            title:
-              | boolean
-              | Key
-              | ReactElement<any, string | JSXElementConstructor<any>>
-              | Iterable<ReactNode>
-              | PromiseLikeOfReactNode
-              | null
-              | undefined;
-            prices: {
-              monthly:
-                | string
-                | number
-                | boolean
-                | ReactElement<any, string | JSXElementConstructor<any>>
-                | Iterable<ReactNode>
-                | PromiseLikeOfReactNode
-                | null
-                | undefined;
-              yearly: number;
-            };
-            benefits: any[];
-            limitations: any[];
-            id: string;
-          }) => (
+        {pricingData.map((offer: SubscriptionPlanTranslation) => (
             <div
               className="relative flex flex-col overflow-hidden rounded-xl border"
               key={offer?.title}
@@ -134,7 +105,7 @@ export function PricingCards({
                 <ul className="space-y-2 text-left text-sm font-medium leading-normal">
                   {offer?.benefits.map((feature) => (
                     <li className="flex items-start" key={feature}>
-                      <Icons.Check className="mr-3 h-5 w-5 shrink-0" />
+                      <Check className="mr-3 h-5 w-5 shrink-0" />
                       <p>{feature}</p>
                     </li>
                   ))}
@@ -145,7 +116,7 @@ export function PricingCards({
                         className="flex items-start text-muted-foreground"
                         key={feature}
                       >
-                        <Icons.Close className="mr-3 h-5 w-5 shrink-0" />
+                        <Close className="mr-3 h-5 w-5 shrink-0" />
                         <p>{feature}</p>
                       </li>
                     ))}

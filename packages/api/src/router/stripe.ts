@@ -1,7 +1,6 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { z } from "zod";
 
-import { getCurrentUser } from "@saasfly/auth";
 import { Customer, db } from "@saasfly/db";
 import {
   IntegrationError,
@@ -12,7 +11,11 @@ import {
 
 import { pricingData } from "../../../common/src/subscriptions";
 import { env } from "../env.mjs";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import {
+  createTRPCRouter,
+  createRateLimitedProtectedProcedure,
+  EndpointType,
+} from "../trpc";
 import { handleIntegrationError } from "../errors";
 
 export interface SubscriptionPlan {
@@ -41,11 +44,12 @@ export type UserSubscriptionPlan = SubscriptionPlan &
     isCanceled?: boolean;
   };
 export const stripeRouter = createTRPCRouter({
-  createSession: protectedProcedure
+  createSession: createRateLimitedProtectedProcedure("stripe")
     .input(z.object({ planId: z.string() }))
     .mutation(async (opts) => {
       const userId = opts.ctx.userId! as string;
       const planId = opts.input.planId;
+      const requestId = opts.ctx.requestId;
       const customer = await db
         .selectFrom("Customer")
         .select(["id", "plan", "stripeCustomerId"])
@@ -59,15 +63,18 @@ export const stripeRouter = createTRPCRouter({
           const session = await createBillingSession(
             customer.stripeCustomerId!,
             returnUrl,
+            { requestId },
           );
           return { success: true as const, url: session.url };
         }
 
-        const user = await getCurrentUser();
-        if (!user) {
-          return null;
-        }
-        const email = user.email!;
+        const user = await db
+          .selectFrom("User")
+          .select(["email"])
+          .where("id", "=", userId)
+          .executeTakeFirst();
+
+        const email = user?.email;
 
         const session = await createCheckoutSession(
           {
@@ -81,6 +88,7 @@ export const stripeRouter = createTRPCRouter({
             line_items: [{ price: planId, quantity: 1 }],
           },
           `checkout_${userId}_${planId}`,
+          { requestId },
         );
 
         if (!session.url) return { success: false as const };
@@ -93,36 +101,11 @@ export const stripeRouter = createTRPCRouter({
       }
     }),
 
-  // plans: protectedProcedure.query(async () => {
-  //   const proPrice = await stripe.prices.retrieve(PLANS.PRO.priceId);
-  //   const stdPrice = await stripe.prices.retrieve(PLANS.STANDARD.priceId);
-  //
-  //   return [
-  //     {
-  //       ...PLANS.STANDARD,
-  //       price: dinero({
-  //         amount: stdPrice.unit_amount!,
-  //         currency:
-  //           currencies[stdPrice.currency as keyof typeof currencies] ??
-  //           currencies.USD,
-  //       }),
-  //     },
-  //     {
-  //       ...PLANS.PRO,
-  //       price: dinero({
-  //         amount: proPrice.unit_amount!,
-  //         currency:
-  //           currencies[proPrice.currency as keyof typeof currencies] ??
-  //           currencies.USD,
-  //       }),
-  //     },
-  //   ];
-  // }),
-  userPlans: protectedProcedure
-    // .output(Promise<UserSubscriptionPlan>)
+  userPlans: createRateLimitedProtectedProcedure("read")
     .query(async (opts) => {
       noStore();
       const userId = opts.ctx.userId! as string;
+      const requestId = opts.ctx.requestId;
       const custom = await db
         .selectFrom("Customer")
         .select([
@@ -161,7 +144,7 @@ export const stripeRouter = createTRPCRouter({
       let isCanceled = false;
       try {
         if (isPaid && custom.stripeSubscriptionId) {
-          const stripePlan = await retrieveSubscription(custom.stripeSubscriptionId);
+          const stripePlan = await retrieveSubscription(custom.stripeSubscriptionId, { requestId });
           isCanceled = stripePlan.cancel_at_period_end;
         }
       } catch (error) {

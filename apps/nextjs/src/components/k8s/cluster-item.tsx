@@ -6,9 +6,6 @@ import { ClusterOperations } from "~/components/k8s/cluster-operation";
 import { formatDate } from "~/lib/utils";
 import type { Cluster } from "~/types/k8s";
 
-// import { ClusterOperations } from "~/components/k8s/cluster-operation";
-// import { formatDate } from "~/lib/utils";
-
 interface ClusterItemProps {
   cluster: Pick<Cluster, "id" | "name" | "location" | "plan" | "updatedAt">;
 }

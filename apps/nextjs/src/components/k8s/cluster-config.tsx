@@ -39,6 +39,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@saasfly/ui/tabs";
 import { toast } from "@saasfly/ui/use-toast";
 
+import { CLUSTER_LOCATIONS, AVAILABLE_CLUSTER_REGIONS } from "~/config/k8s";
 import { trpc } from "~/trpc/client";
 import type { Cluster } from "~/types/k8s";
 
@@ -56,14 +57,12 @@ const FormSchema = z.object({
       message: "name must be at least 2 characters.",
     })
     .max(32, { message: "name must be at most 32 characters." }),
-  location: z.enum(["China", "Hong Kong", "Singapore", "Tokyo", "US-West"]),
+  location: z.enum(CLUSTER_LOCATIONS),
 });
 const isValidLocation = (
   location: string,
-): location is "China" | "Hong Kong" | "Singapore" | "Tokyo" | "US-West" => {
-  return ["China", "Hong Kong", "Singapore", "Tokyo", "US-West"].includes(
-    location,
-  );
+): location is (typeof CLUSTER_LOCATIONS)[number] => {
+  return AVAILABLE_CLUSTER_REGIONS.includes(location);
 };
 
 export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
@@ -158,14 +157,11 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
                               <SelectContent>
                                 <SelectGroup>
                                   <SelectLabel>Select Region</SelectLabel>
-                                  <SelectItem value="China">China</SelectItem>
-                                  <SelectItem value="Hong Kong">
-                                    Hong Kong
-                                  </SelectItem>
-                                  <SelectItem value="Tokyo">Tokyo</SelectItem>
-                                  <SelectItem value="Singapore">
-                                    Singapore
-                                  </SelectItem>
+                                  {AVAILABLE_CLUSTER_REGIONS.map((location) => (
+                                    <SelectItem key={location} value={location}>
+                                      {location}
+                                    </SelectItem>
+                                  ))}
                                 </SelectGroup>
                               </SelectContent>
                             </Select>

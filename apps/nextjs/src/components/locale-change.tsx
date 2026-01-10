@@ -33,7 +33,6 @@ export function LocaleChange({ url }: { url: string }) {
         <div>
           {i18n.locales.map((locale) => {
             return (
-              // <Link href={redirectedPathName(locale)}>{locale}</Link>
               <DropdownMenuItem key={locale} onClick={() => onClick(locale)}>
                 <span>{localeMap[locale]}</span>
               </DropdownMenuItem>

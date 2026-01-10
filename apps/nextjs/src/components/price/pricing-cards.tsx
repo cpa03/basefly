@@ -1,11 +1,6 @@
-// @ts-ignore
-// @ts-nocheck
 "use client";
 
 import {
-  JSXElementConstructor,
-  Key,
-  PromiseLikeOfReactNode,
   ReactElement,
   ReactNode,
   useState,
@@ -21,6 +16,7 @@ import { BillingFormButton } from "~/components/price/billing-form-button";
 import { priceDataMap } from "~/config/price/price-data";
 import { useSigninModal } from "~/hooks/use-signin-modal";
 import { UserSubscriptionPlan } from "~/types";
+import type { SubscriptionPlanTranslation } from "~/config/price/price-data";
 
 interface PricingCardsProps {
   userId?: string;
@@ -67,32 +63,7 @@ export function PricingCards({
       </div>
 
       <div className="mx-auto grid max-w-screen-lg gap-5 bg-inherit py-5 md:grid-cols-3 lg:grid-cols-3">
-        {pricingData.map(
-          (offer: {
-            title:
-              | boolean
-              | Key
-              | ReactElement<any, string | JSXElementConstructor<any>>
-              | Iterable<ReactNode>
-              | PromiseLikeOfReactNode
-              | null
-              | undefined;
-            prices: {
-              monthly:
-                | string
-                | number
-                | boolean
-                | ReactElement<any, string | JSXElementConstructor<any>>
-                | Iterable<ReactNode>
-                | PromiseLikeOfReactNode
-                | null
-                | undefined;
-              yearly: number;
-            };
-            benefits: any[];
-            limitations: any[];
-            id: string;
-          }) => (
+        {pricingData.map((offer: SubscriptionPlanTranslation) => (
             <div
               className="relative flex flex-col overflow-hidden rounded-xl border"
               key={offer?.title}

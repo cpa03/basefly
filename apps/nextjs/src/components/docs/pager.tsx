@@ -62,13 +62,14 @@ export function getPagerForDoc(doc: Doc) {
   };
 }
 
-// @ts-ignore
-export function flatten(
-  links: {
-    items?: { items?: any }[];
-  }[],
-) {
-  return links.reduce((flat, link) => {
-    return flat.concat(link.items ? flatten(link.items) : link);
+interface DocLink {
+  items?: DocLink[];
+  title?: string;
+  href?: string;
+}
+
+export function flatten(links: DocLink[]) {
+  return links.reduce((flat: DocLink[], link) => {
+    return flat.concat(link.items ? flatten(link.items) : [link]);
   }, []);
 }

@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
 "use client";
 
 import * as React from "react";
@@ -12,10 +10,10 @@ import { buttonVariants, type ButtonProps } from "@saasfly/ui/button";
 import * as Icons from "@saasfly/ui/icons";
 import { toast } from "@saasfly/ui/use-toast";
 
+import { DEFAULT_CLUSTER_LOCATION } from "~/config/k8s";
 import { trpc } from "~/trpc/client";
 
 interface K8sCreateButtonProps extends ButtonProps {
-  customProp?: string;
   dict: Record<string, unknown>;
 }
 
@@ -32,18 +30,11 @@ export function K8sCreateButton({
     setIsLoading(true);
     const res = await trpc.k8s.createCluster.mutate({
       name: "Default Cluster",
-      location: "Hong Kong",
+      location: DEFAULT_CLUSTER_LOCATION,
     });
     setIsLoading(false);
 
     if (!res?.success) {
-      // if (response.status === 402) {
-      //   return toast({
-      //     title: "Limit of 1 cluster reached.",
-      //     description: "Please upgrade to the PROD plan.",
-      //     variant: "destructive",
-      //   });
-      // }
       return toast({
         title: "Something went wrong.",
         description: "Your cluster was not created. Please try again.",

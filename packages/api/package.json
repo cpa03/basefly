@@ -10,7 +10,8 @@
     "./transformer": "./src/transformer.ts",
     "./resend": "./src/email.ts",
     "./MagicLinkEmail": "./src/emails/magic-link-email.tsx",
-    "./subscriptions": "./src/subscriptions.ts"
+    "./subscriptions": "./src/subscriptions.ts",
+    "./request-id": "./src/request-id.ts"
   },
   "typesVersions": {
     "*": {

@@ -865,6 +865,77 @@ import { Check, Spinner } from "@saasfly/ui/icons";
 - [ ] Lazy load components not immediately visible
 - [ ] Use `next/dynamic` for below-the-fold content
 
+## Security
+
+### Security Headers
+
+The application implements comprehensive security headers across all requests:
+
+**Response Headers (next.config.mjs)**:
+- `X-DNS-Prefetch-Control: on` - Controls DNS prefetching
+- `Strict-Transport-Security: max-age=63072000; includeSubDomains; preload` - Enforces HTTPS for 2 years
+- `X-Frame-Options: SAMEORIGIN` - Prevents clickjacking attacks
+- `X-Content-Type-Options: nosniff` - Prevents MIME type sniffing
+- `Referrer-Policy: origin-when-cross-origin` - Controls referrer information leakage
+- `Permissions-Policy: camera=(), microphone=(), geolocation=()` - Limits access to sensitive device features
+
+**Content Security Policy (middleware.ts)**:
+The CSP header is dynamically added via middleware to protect against XSS attacks:
+
+```typescript
+const cspHeader = `
+  default-src 'self';
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' cdn.jsdelivr.net;
+  style-src 'self' 'unsafe-inline' cdn.jsdelivr.net;
+  img-src 'self' blob: data: https://*.unsplash.com https://*.githubusercontent.com ...;
+  font-src 'self' data: cdn.jsdelivr.net;
+  connect-src 'self' https://*.clerk.accounts.dev https://*.stripe.com ...;
+  frame-src 'self' https://js.stripe.com;
+  object-src 'none';
+  base-uri 'self';
+  form-action 'self';
+  frame-ancestors 'none';
+  block-all-mixed-content;
+  upgrade-insecure-requests;
+`
+```
+
+**Key CSP Directives**:
+- `default-src 'self'` - Only load resources from same origin by default
+- `object-src 'none'` - Prevents loading plugins (Flash, PDF, etc.)
+- `script-src` - Allows only trusted sources for JavaScript
+- `style-src` - Controls stylesheet loading
+- `img-src` - Restricts image sources to approved domains
+- `connect-src` - Limits API calls to approved endpoints
+- `frame-src` - Allows only Stripe's iframe for payment flows
+- `upgrade-insecure-requests` - Forces HTTPS
+- `block-all-mixed-content` - Blocks mixed HTTP/HTTPS content
+
+**Clerk Authentication Security**:
+- CSRF protection built into Clerk middleware
+- Session tokens managed securely via Clerk
+- JWT-based authentication with proper validation
+- Automatic session refresh and management
+
+**Additional Security Measures**:
+- Environment variable validation with Zod (@t3-oss/env-nextjs)
+- Stripe webhook signature verification
+- Input validation with Zod schemas at API boundaries
+- Rate limiting on all API endpoints
+- Request ID tracking for distributed tracing and audit logs
+
+**Security in Development**:
+- ESLint and TypeScript checking enabled for production builds
+- No error suppression in build process
+- Strict type checking enforced
+
+### Webhook Security
+
+**Stripe Webhooks**:
+- Signature verification using STRIPE_WEBHOOK_SECRET
+- Prevents replay attacks and fake webhooks
+- Error handling ensures proper logging of suspicious events
+
 ## Future Considerations
 
 ### Scaling
@@ -880,3 +951,4 @@ import { Check, Spinner } from "@saasfly/ui/icons";
 - Row-level security for multi-tenant data
 - Audit logging for sensitive operations
 - Data encryption at rest
+- Implement security response headers ✅ Completed

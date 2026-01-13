@@ -23,7 +23,7 @@ const config = {
   ],
   pageExtensions: ["ts", "tsx", "mdx"],
   images: {
-    domains: ["images.unsplash.com", "avatars.githubusercontent.com", "www.twillot.com", "cdnv2.ruguoapp.com", "www.setupyourpay.com"],
+    domains: ["images.unsplash.com", "avatars.githubusercontent.com", "www.twillot.com", "cdnv2.ruguoapp.com", "www.setupyourpay.com", "cdn.sanity.io", "pbs.twimg.com"],
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60,
     remotePatterns: [
@@ -34,6 +34,22 @@ const config = {
       {
         protocol: "https",
         hostname: "**.githubusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "**.twillot.com",
+      },
+      {
+        protocol: "https",
+        hostname: "**.setupyourpay.com",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.sanity.io",
+      },
+      {
+        protocol: "https",
+        hostname: "**.twimg.com",
       },
     ],
   },

@@ -15,7 +15,7 @@ const cspHeader = `
   default-src 'self';
   script-src 'self' 'unsafe-eval' 'unsafe-inline' cdn.jsdelivr.net;
   style-src 'self' 'unsafe-inline' cdn.jsdelivr.net;
-  img-src 'self' blob: data: https://*.unsplash.com https://*.githubusercontent.com https://*.twil.lol https://*.twillot.com https://*.setupyourpay.com;
+  img-src 'self' blob: data: https://*.unsplash.com https://*.githubusercontent.com https://*.twil.lol https://*.twillot.com https://*.setupyourpay.com https://cdn.sanity.io https://*.twimg.com;
   font-src 'self' data: cdn.jsdelivr.net;
   connect-src 'self' https://*.clerk.accounts.dev https://*.stripe.com https://api.stripe.com https://*.posthog.com;
   frame-src 'self' https://js.stripe.com;

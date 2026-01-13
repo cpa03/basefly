@@ -22,11 +22,6 @@ const config = {
     "@saasfly/stripe",
   ],
   pageExtensions: ["ts", "tsx", "mdx"],
-  experimental: {
-    mdxRs: true,
-    // serverActions: true,
-    optimizePackageImports: ["@saasfly/ui", "lucide-react"],
-  },
   images: {
     domains: ["images.unsplash.com", "avatars.githubusercontent.com", "www.twillot.com", "cdnv2.ruguoapp.com", "www.setupyourpay.com"],
     formats: ["image/avif", "image/webp"],
@@ -50,6 +45,8 @@ const config = {
   swcMinify: true,
   poweredByHeader: false,
   experimental: {
+    mdxRs: true,
+    optimizePackageImports: ["@saasfly/ui", "lucide-react"],
     optimizeCss: true,
   },
   async headers() {

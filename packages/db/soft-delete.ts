@@ -57,11 +57,6 @@ export class SoftDeleteService<T extends keyof DB & string> {
    * @throws Error if record doesn't exist or doesn't belong to user
    */
   async softDelete(id: number, userId: string, options?: { requestId?: string }): Promise<void> {
-    const { requestId } = options || {};
-    const context = requestId ? { requestId } : {};
-    
-    console.info(JSON.stringify({ level: "info", message: `Soft delete ${this.tableName}`, id, userId, ...context }));
-    
     await db
       .updateTable(this.tableName)
       .set({ deletedAt: new Date() })
@@ -79,11 +74,6 @@ export class SoftDeleteService<T extends keyof DB & string> {
    * @throws Error if record doesn't exist or doesn't belong to user
    */
   async restore(id: number, userId: string, options?: { requestId?: string }): Promise<void> {
-    const { requestId } = options || {};
-    const context = requestId ? { requestId } : {};
-    
-    console.info(JSON.stringify({ level: "info", message: `Restore ${this.tableName}`, id, userId, ...context }));
-    
     await db
       .updateTable(this.tableName)
       .set({ deletedAt: null })

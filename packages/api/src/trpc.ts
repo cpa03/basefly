@@ -12,7 +12,7 @@ export { EndpointType } from "./rate-limiter";
 
 interface CreateContextOptions {
   req?: NextRequest;
-  auth?: any;
+  auth?: ReturnType<typeof getAuth>;
 }
 type AuthObject = ReturnType<typeof getAuth>;
 export const createTRPCContext = async (opts: {

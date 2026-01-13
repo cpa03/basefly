@@ -57,10 +57,6 @@ export class UserDeletionService {
    * @warning This operation is irreversible and permanently removes user data
    */
   async deleteUser(userId: string, options?: { requestId?: string }): Promise<void> {
-    const { requestId } = options || {};
-    const context = requestId ? { requestId } : {};
-    
-    console.info(JSON.stringify({ level: "info", message: "Starting user deletion", userId, ...context }));
     await db.transaction().execute(async (trx) => {
       // Step 1: Soft delete all K8s clusters (preserves audit trail)
       // Using soft delete ensures we can track cluster history
@@ -104,10 +100,6 @@ export class UserDeletionService {
    *       future login attempts while preserving the record for compliance
    */
   async softDeleteUser(userId: string, options?: { requestId?: string }): Promise<void> {
-    const { requestId } = options || {};
-    const context = requestId ? { requestId } : {};
-    
-    console.info(JSON.stringify({ level: "info", message: "Starting soft delete user", userId, ...context }));
     await db.transaction().execute(async (trx) => {
       // Step 1: Soft delete all K8s clusters
       await trx
@@ -150,10 +142,6 @@ export class UserDeletionService {
    * ```
    */
   async getUserSummary(userId: string, options?: { requestId?: string }) {
-    const { requestId } = options || {};
-    const context = requestId ? { requestId } : {};
-    
-    console.info(JSON.stringify({ level: "info", message: "Getting user summary", userId, ...context }));
     const user = await db
       .selectFrom("User")
       .select(["id", "name", "email", "image"])

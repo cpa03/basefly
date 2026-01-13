@@ -1,3 +1,4 @@
+import type { NextRequest } from "next/server";
 import { middleware as clerkMiddleware } from "./utils/clerk";
 import { getOrGenerateRequestId, REQUEST_ID_HEADER } from "@saasfly/api/request-id";
 
@@ -37,7 +38,7 @@ const contentSecurityPolicyHeaderValue = cspHeader.replace(/\s{2,}/g, ' ').trim(
  * - Enables distributed tracing across all requests
  * - Adds Content-Security-Policy header for XSS protection
  */
-export default async function middleware(req: any) {
+export default async function middleware(req: NextRequest) {
   const requestId = getOrGenerateRequestId(req.headers);
   
   const result = await clerkMiddleware(req);

@@ -95,6 +95,63 @@ Add comprehensive tests for integration resilience patterns including circuit br
 
 ---
 
+#### Task: Critical Path Testing - API Router Layer ✅
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Testing
+- **Files**: `packages/api/src/router/k8s.test.ts`, `packages/api/src/router/customer.test.ts`, `packages/api/src/router/stripe.test.ts`, `packages/api/src/router/auth.test.ts`
+
+**Description**:
+Add comprehensive integration tests for API router layer to ensure critical business logic is properly tested.
+
+**Steps**:
+1. ✅ Created k8s router tests (k8s.test.ts)
+2. ✅ Created customer router tests (customer.test.ts)
+3. ✅ Created stripe router tests (stripe.test.ts)
+4. ✅ Created auth router tests (auth.test.ts)
+5. ✅ Implemented AAA pattern throughout
+6. ✅ Mocked all external dependencies
+7. ✅ Added edge case coverage
+
+**Success Criteria**:
+- [x] k8sRouter methods tested (getClusters, createCluster, updateCluster, deleteCluster)
+- [x] customerRouter methods tested (updateUserName, insertCustomer, queryCustomer)
+- [x] stripeRouter methods tested (createSession, userPlans)
+- [x] authRouter methods tested (mySubscription)
+- [x] Happy path and sad path covered
+- [x] Authentication and authorization tested
+- [x] Error handling verified
+- [x] Ownership validation tested
+
+**Test Coverage**:
+- k8sRouter (k8s.test.ts): 12+ tests
+  - getClusters: 2 tests (success, empty array)
+  - createCluster: 4 tests (success, db failure, error handling, validation)
+  - updateCluster: 4 tests (success, partial update, not found, forbidden)
+  - deleteCluster: 3 tests (success, not found, forbidden)
+
+- customerRouter (customer.test.ts): 9+ tests
+  - updateUserName: 3 tests (success, auth failure, error handling)
+  - insertCustomer: 2 tests (success, error handling)
+  - queryCustomer: 4 tests (success, not found, error handling)
+
+- stripeRouter (stripe.test.ts): 9+ tests
+  - createSession: 4 tests (checkout new user, billing existing user, no url, error handling)
+  - userPlans: 5 tests (free plan, monthly sub, yearly sub, expired sub, no customer)
+
+- authRouter (auth.test.ts): 6+ tests
+  - mySubscription: 6 tests (pro plan, null customer, free plan, business plan, null period, error handling)
+
+**Notes**:
+- Tests use vitest with mocking for all external dependencies
+- All tests follow AAA pattern (Arrange, Act, Assert)
+- Comprehensive coverage of business logic including ownership checks
+- Tests verify both happy paths and sad paths
+- Error handling and edge cases covered
+- To run tests: `npm test` after installing dependencies
+
+---
+
 # Documentation Tasks
 
 ## Task Queue

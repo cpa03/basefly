@@ -5,6 +5,7 @@ import "@saasfly/auth/env.mjs";
 import { withNextDevtools } from "@next-devtools/core/plugin";
 // import "@saasfly/api/env"
 import withMDX from "@next/mdx";
+import withBundleAnalyzer from "@next/bundle-analyzer";
 
 !process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
 
@@ -48,6 +49,9 @@ const config = {
   compress: true,
   swcMinify: true,
   poweredByHeader: false,
+  experimental: {
+    optimizeCss: true,
+  },
   async headers() {
     return [
       {
@@ -92,4 +96,8 @@ const config = {
   },
 };
 
-export default withNextDevtools(withMDX()(config));
+const withBundleAnalyzerConfig = withBundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
+
+export default withNextDevtools(withMDX()(withBundleAnalyzerConfig(config)));

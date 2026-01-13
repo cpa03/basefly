@@ -28,7 +28,6 @@ import { trpc } from "~/trpc/client";
 import type { Cluster } from "~/types/k8s";
 
 async function deleteCluster(clusterId: number) {
-  // await trpc.k8s.deleteCluster.mutate({ id: clusterId });
   const res = await trpc.k8s.deleteCluster.mutate({ id: clusterId });
   if (!res?.success) {
     toast({

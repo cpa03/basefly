@@ -66,7 +66,7 @@ export class UserDeletionService {
       // Using soft delete ensures we can track cluster history
       await trx
         .updateTable("K8sClusterConfig")
-        .set({ deletedAt: new Date() } as any)
+        .set({ deletedAt: new Date() })
         .where("authUserId", "=", userId)
         .where("deletedAt", "is", null)
         .execute();
@@ -112,7 +112,7 @@ export class UserDeletionService {
       // Step 1: Soft delete all K8s clusters
       await trx
         .updateTable("K8sClusterConfig")
-        .set({ deletedAt: new Date() } as any)
+        .set({ deletedAt: new Date() })
         .where("authUserId", "=", userId)
         .where("deletedAt", "is", null)
         .execute();
@@ -121,7 +121,7 @@ export class UserDeletionService {
       // Email is set to a placeholder format to preserve uniqueness
       await trx
         .updateTable("User")
-        .set({ email: `deleted_${userId}@example.com` } as any)
+        .set({ email: `deleted_${userId}@example.com` })
         .where("id", "=", userId)
         .execute();
     });

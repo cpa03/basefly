@@ -15,15 +15,16 @@ interface CreateContextOptions {
   auth?: any;
 }
 type AuthObject = ReturnType<typeof getAuth>;
-// see: https://clerk.com/docs/references/nextjs/trpc
 export const createTRPCContext = async (opts: {
   headers: Headers;
   auth: AuthObject;
+  req?: NextRequest;
 }) => {
   const requestId = getOrGenerateRequestId(opts.headers);
   return {
     userId: opts.auth.userId,
     requestId,
+    req: opts.req,
     ...opts,
   };
 };
@@ -65,7 +66,8 @@ export const rateLimit = (
 ) =>
   t.middleware(async ({ ctx, next }) => {
     const limiter = getLimiter(endpointType);
-    const identifier = getIdentifier(ctx.userId, (ctx as any).req);
+    const req = "req" in ctx ? ctx.req as NextRequest | undefined : undefined;
+    const identifier = getIdentifier(ctx.userId, req);
 
     const result = limiter.check(identifier);
 

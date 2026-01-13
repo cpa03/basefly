@@ -64,7 +64,7 @@ export class SoftDeleteService<T extends keyof DB & string> {
     
     await db
       .updateTable(this.tableName)
-      .set({ deletedAt: new Date() } as any)
+      .set({ deletedAt: new Date() })
       .where("id", "=", id)
       .where("authUserId", "=", userId)
       .execute();
@@ -86,30 +86,14 @@ export class SoftDeleteService<T extends keyof DB & string> {
     
     await db
       .updateTable(this.tableName)
-      .set({ deletedAt: null } as any)
+      .set({ deletedAt: null })
       .where("id", "=", id)
       .where("authUserId", "=", userId)
       .execute();
   }
 
   /**
-   * Restore a soft-deleted record by setting deletedAt to null
-   * 
-   * @param id - The record ID to restore
-   * @param userId - The user ID for ownership validation
-   * @throws Error if the record doesn't exist or doesn't belong to the user
-   */
-  async restore(id: number, userId: string): Promise<void> {
-    await db
-      .updateTable(this.tableName)
-      .set({ deletedAt: null } as any)
-      .where("id", "=", id)
-      .where("authUserId", "=", userId)
-      .execute();
-  }
-
-  /**
-   * Find a single active (non-deleted) record by ID
+    * Find a single active (non-deleted) record by ID
    * 
    * @param id - The record ID to find
    * @param userId - The user ID for ownership validation

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { FollowerPointerCard } from "@saasfly/ui/following-pointer";
 
 export function XBlogArticle() {
@@ -13,10 +14,12 @@ export function XBlogArticle() {
       >
         <div className="group relative h-full overflow-hidden rounded-2xl border border-zinc-100 bg-white transition duration-200 hover:shadow-xl">
           <div className="aspect-w-16 aspect-h-10 xl:aspect-w-16 xl:aspect-h-10 relative w-full overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-100">
-            <img
-              src={blogContent.image}
-              alt="thumbnail"
-              className={`transform object-cover transition duration-200 group-hover:scale-95 group-hover:rounded-2xl `}
+            <Image
+               src={blogContent.image}
+               alt="thumbnail"
+               width={640}
+               height={400}
+               className={`transform object-cover transition duration-200 group-hover:scale-95 group-hover:rounded-2xl `}
             />
           </div>
           <div className=" p-4">
@@ -60,10 +63,10 @@ const TitleComponent = ({
   avatar: string;
 }) => (
   <div className="flex items-center space-x-2">
-    <img
+    <Image
       src={avatar}
-      height="20"
-      width="20"
+      height={20}
+      width={20}
       alt="thumbnail"
       className="rounded-full border-2 border-white"
     />

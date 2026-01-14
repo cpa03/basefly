@@ -4,8 +4,16 @@ import dynamic from "next/dynamic";
 import { getDictionary } from "~/lib/get-dictionary";
 
 import { CodeCopy } from "~/components/code-copy";
-import { FeaturesGrid } from "~/components/features-grid";
-import { RightsideMarketing } from "~/components/rightside-marketing";
+
+const FeaturesGrid = dynamic(() => import("~/components/features-grid").then(mod => ({ default: mod.FeaturesGrid })), {
+  ssr: true,
+  loading: () => <div className="w-full h-[400px] animate-pulse bg-muted rounded-lg" />
+});
+
+const RightsideMarketing = dynamic(() => import("~/components/rightside-marketing").then(mod => ({ default: mod.RightsideMarketing })), {
+  ssr: true,
+  loading: () => <div className="w-full h-full animate-pulse bg-muted rounded-lg" />
+});
 
 const Comments = dynamic(() => import("~/components/comments").then(mod => ({ default: mod.Comments })), {
   ssr: true,
@@ -140,7 +148,7 @@ export default async function IndexPage({
       </section>
 
       <section className="container mt-8 md:mt-[-180px] xl:mt-[-180px]">
-        <FeaturesGrid dict={dict.marketing.features_grid}/>
+        <FeaturesGrid dict={dict.marketing.features_grid} />
       </section>
 
       <section className="container pt-24">

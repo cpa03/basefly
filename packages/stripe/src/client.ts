@@ -87,42 +87,6 @@ export async function createBillingSession(customerId: string, returnUrl: string
 }
 
 /**
- * Create a Stripe Billing Portal session for managing subscriptions
- * 
- * Allows customers to manage their subscription (upgrade, downgrade, cancel)
- * through Stripe's hosted billing portal.
- * 
- * @example
- * ```typescript
- * const session = await createBillingSession(
- *   "cus_abc123",
- *   "https://app.example.com/dashboard"
- * );
- * const portalUrl = session.url;
- * window.location.href = portalUrl;
- * ```
- * 
- * @param customerId - Stripe customer ID
- * @param returnUrl - URL to redirect to after user finishes in portal
- * @returns Stripe billing portal session with URL
- */
-export async function createBillingSession(customerId: string, returnUrl: string) {
-  return safeStripeCall(
-    () =>
-      stripe.billingPortal.sessions.create({
-        customer: customerId,
-        return_url: returnUrl,
-      }),
-    {
-      serviceName: "Stripe Billing Portal",
-      circuitBreaker: stripeCircuitBreaker,
-      maxAttempts: 3,
-      timeoutMs: 30000,
-    },
-  );
-}
-
-/**
  * Create a Stripe Checkout session for subscription payment
  * 
  * Creates a secure checkout page where customers can subscribe to a plan.

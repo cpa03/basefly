@@ -57,14 +57,9 @@ export class SoftDeleteService<T extends keyof DB & string> {
    * @throws Error if record doesn't exist or doesn't belong to user
    */
   async softDelete(id: number, userId: string, options?: { requestId?: string }): Promise<void> {
-    const { requestId } = options || {};
-    const context = requestId ? { requestId } : {};
-    
-    console.info(JSON.stringify({ level: "info", message: `Soft delete ${this.tableName}`, id, userId, ...context }));
-    
     await db
       .updateTable(this.tableName)
-      .set({ deletedAt: new Date() } as any)
+      .set({ deletedAt: new Date() })
       .where("id", "=", id)
       .where("authUserId", "=", userId)
       .execute();
@@ -79,37 +74,16 @@ export class SoftDeleteService<T extends keyof DB & string> {
    * @throws Error if record doesn't exist or doesn't belong to user
    */
   async restore(id: number, userId: string, options?: { requestId?: string }): Promise<void> {
-    const { requestId } = options || {};
-    const context = requestId ? { requestId } : {};
-    
-    console.info(JSON.stringify({ level: "info", message: `Restore ${this.tableName}`, id, userId, ...context }));
-    
     await db
       .updateTable(this.tableName)
-      .set({ deletedAt: null } as any)
+      .set({ deletedAt: null })
       .where("id", "=", id)
       .where("authUserId", "=", userId)
       .execute();
   }
 
   /**
-   * Restore a soft-deleted record by setting deletedAt to null
-   * 
-   * @param id - The record ID to restore
-   * @param userId - The user ID for ownership validation
-   * @throws Error if the record doesn't exist or doesn't belong to the user
-   */
-  async restore(id: number, userId: string): Promise<void> {
-    await db
-      .updateTable(this.tableName)
-      .set({ deletedAt: null } as any)
-      .where("id", "=", id)
-      .where("authUserId", "=", userId)
-      .execute();
-  }
-
-  /**
-   * Find a single active (non-deleted) record by ID
+    * Find a single active (non-deleted) record by ID
    * 
    * @param id - The record ID to find
    * @param userId - The user ID for ownership validation

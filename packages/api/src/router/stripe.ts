@@ -76,7 +76,7 @@ export const stripeRouter = createTRPCRouter({
           .where("id", "=", userId)
           .executeTakeFirst();
 
-        const email = user?.email;
+        const email = user?.email ?? undefined;
 
         const session = await createCheckoutSession(
           {

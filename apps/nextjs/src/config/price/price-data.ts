@@ -1,6 +1,6 @@
 import { env } from "~/env.mjs";
 
-interface SubscriptionPlanTranslation {
+export interface SubscriptionPlanTranslation {
   id: string;
   title: string;
   description: string;

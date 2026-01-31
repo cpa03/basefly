@@ -98,7 +98,7 @@ describe("API Validation Tests", () => {
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(result.error.errors).toHaveLength(1);
-          expect(result.error.errors[0].path).toContain("location");
+          expect(result.error.errors[0]?.path).toContain("location");
         }
       });
 
@@ -185,7 +185,7 @@ describe("API Validation Tests", () => {
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(result.error.errors).toHaveLength(1);
-          expect(result.error.errors[0].path).toContain("id");
+          expect(result.error.errors[0]?.path).toContain("id");
         }
       });
 
@@ -476,7 +476,7 @@ describe("API Validation Tests", () => {
     });
 
     it("handles empty errors array", () => {
-      const errors = [];
+      const errors: any[] = [];
       const message = createValidationErrorMessage(errors);
       expect(message).toBe("Validation error");
     });

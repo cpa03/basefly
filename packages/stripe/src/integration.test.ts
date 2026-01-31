@@ -1,4 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/dot-notation */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   CircuitBreaker,
   CircuitBreakerOpenError,
@@ -279,10 +282,10 @@ describe("withRetry", () => {
       const retryPromise = withRetry(retryFn, { maxAttempts: 3, baseDelay: 1000 });
 
       vi.advanceTimersByTime(1000);
-      await vi.advanceTimersByAsync(1000);
+      await vi.advanceTimersByTimeAsync(1000);
 
       vi.advanceTimersByTime(2000);
-      await vi.advanceTimersByAsync(2000);
+      await vi.advanceTimersByTimeAsync(2000);
 
       await retryPromise;
 

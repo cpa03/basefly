@@ -27,7 +27,7 @@ export function ClusterItem({ cluster, lang }: ClusterItemProps) {
       <TableCell className="text-left">
         {formatDate(cluster.updatedAt?.toDateString())}
       </TableCell>
-      <TableCell className="text-left">{cluster.plan || "-"}</TableCell>
+      <TableCell className="text-left">{cluster.plan ?? "-"}</TableCell>
       <TableCell className="text-left">
         {cluster.status ? (
           <StatusBadge status={cluster.status} size="sm" />

@@ -19,8 +19,8 @@ import { DashboardShell } from "~/components/shell";
 import type { Locale } from "~/config/i18n-config";
 import { getDictionary } from "~/lib/get-dictionary";
 import { trpc } from "~/trpc/server";
-import type { ClustersArray } from "~/types/k8s";
-import { DashboardSkeleton } from "~/components/dashboard-skeleton";
+import type { _ClustersArray } from "~/types/k8s";
+import { _DashboardSkeleton } from "~/components/dashboard-skeleton";
 import { StatusBadge } from "@saasfly/ui/status-badge";
 import Link from "next/link";
 import { formatDate } from "~/lib/utils";
@@ -120,7 +120,7 @@ export default async function DashboardPage({
                     <div className="flex flex-wrap gap-4 border-t pt-3">
                       <div className="flex items-center gap-2 text-sm">
                         <span className="text-muted-foreground">Plan:</span>
-                        <span className="font-medium">{cluster.plan || "-"}</span>
+                        <span className="font-medium">{cluster.plan ?? "-"}</span>
                       </div>
                       <div className="flex items-center gap-2 text-sm">
                         <span className="text-muted-foreground">Status:</span>

@@ -14,13 +14,17 @@ vi.mock("@saasfly/stripe", () => ({
   createCheckoutSession: vi.fn(),
   retrieveSubscription: vi.fn(),
   IntegrationError: class IntegrationError extends Error {
+    public code?: string;
+    public details?: unknown;
     constructor(
       message: string,
-      public readonly code?: string,
-      public readonly details?: unknown
+      code?: string,
+      details?: unknown
     ) {
       super(message);
       this.name = "IntegrationError";
+      this.code = code;
+      this.details = details;
     }
   },
 }));
@@ -60,7 +64,7 @@ vi.mock("../errors", () => ({
     if (error instanceof IntegrationError) {
       const newError = new Error(error.message);
       (newError as any).code = error.code || "INTEGRATION_ERROR";
-      (newError as any).details = error.details;
+      (newError as any).details = (error as any).details;
       throw newError;
     }
     throw error;
@@ -75,6 +79,19 @@ describe("stripeRouter", () => {
     const { db } = require("@saasfly/db");
 
     mockCaller = stripeRouter.createCaller({
+      headers: new Headers(),
+      auth: {
+        userId: "test-user-id",
+        sessionClaims: null,
+        sessionId: null,
+        sessionStatus: null,
+        actor: null,
+        orgId: null,
+        orgRole: null,
+        orgPermissions: null,
+        orgSlug: null,
+      } as any,
+      req: undefined,
       userId: "test-user-id",
       requestId: "test-request-id",
     });

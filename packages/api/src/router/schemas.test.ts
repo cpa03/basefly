@@ -46,11 +46,11 @@ export const enhancedK8sClusterUpdateSchema = z
       .trim()
       .optional(),
   })
+  .strict()
   .refine(
     (data) => data.name !== undefined || data.location !== undefined,
     "At least one field (name or location) must be provided for update",
-  )
-  .strict();
+  );
 
 export const enhancedStripeCreateSessionSchema = z
   .object({

@@ -152,6 +152,68 @@ Add comprehensive integration tests for API router layer to ensure critical busi
 
 ---
 
+#### Task: Critical Path Testing - Rate Limiter ✅
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Testing
+- **Files**: `packages/api/src/rate-limiter.test.ts`
+
+**Description**:
+Add comprehensive tests for rate limiter to ensure API endpoint protection is properly tested.
+
+**Steps**:
+1. ✅ Created RateLimiter class tests (rate-limiter.test.ts)
+2. ✅ Tested token bucket algorithm logic
+3. ✅ Tested rate limit enforcement (exceed limits)
+4. ✅ Tested window refill logic
+5. ✅ Tested automatic cleanup of expired entries
+6. ✅ Tested reset functionality
+7. ✅ Tested getIdentifier function edge cases
+8. ✅ Tested pre-configured limiters
+
+**Success Criteria**:
+- [x] RateLimiter class methods tested (check, reset, destroy)
+- [x] Token bucket algorithm logic verified
+- [x] Rate limit enforcement tested
+- [x] Window refill logic tested
+- [x] Automatic cleanup tested
+- [x] Reset functionality tested
+- [x] getIdentifier function edge cases covered
+- [x] Pre-configured limiters tested
+- [x] All tests pass consistently
+
+**Test Coverage**:
+- RateLimiter: 23 test cases
+  - check() first request: 2 tests
+  - check() token bucket algorithm: 3 tests
+  - check() window refill: 3 tests
+  - check() multiple identifiers: 2 tests
+  - reset(): 3 tests
+  - destroy(): 2 tests
+  - automatic cleanup: 1 test
+  - resetAt calculation: 2 tests
+
+- getLimiter(): 4 tests
+- rateLimitConfigs: 3 tests
+- getIdentifier(): 8 tests
+- Edge Cases: 2 tests
+
+**Total Tests**: 40 test cases
+
+**Notes**:
+- Tests cover happy path, sad path, and edge cases
+- All tests use AAA pattern (Arrange, Act, Assert)
+- Token bucket algorithm fully tested including refill logic
+- Rate limit enforcement verified for exceeding limits
+- Automatic cleanup of expired entries tested
+- Reset functionality tested for individual and all identifiers
+- getIdentifier function tested for user IDs, IP headers, and edge cases
+- Pre-configured limiters (read, write, stripe) tested
+- Boundary conditions tested (maxRequests of 1, very large, short windows)
+- All 40 tests pass consistently
+
+---
+
 # BugLover Tasks
 
 ## Bugs and Errors

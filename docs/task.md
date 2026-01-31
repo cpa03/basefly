@@ -908,114 +908,11 @@ Replace namespace icon imports (`import * as Icons`) with direct imports to enab
 - **Type**: Security Hardening
 - **Files**: `apps/nextjs/next.config.mjs`, `apps/nextjs/src/middleware.ts`
 
-**Description**:
-Implement comprehensive security response headers to protect against XSS, clickjacking, MIME sniffing, and other web vulnerabilities.
-
-**Steps**:
-1. ✅ Added X-DNS-Prefetch-Control header
-2. ✅ Added Strict-Transport-Security (HSTS) header with preload
-3. ✅ Added X-Frame-Options: SAMEORIGIN to prevent clickjacking
-4. ✅ Added X-Content-Type-Options: nosniff to prevent MIME sniffing
-5. ✅ Added Referrer-Policy: origin-when-cross-origin
-6. ✅ Added Permissions-Policy to restrict access to sensitive device features
-7. ✅ Implemented Content Security Policy (CSP) in middleware
-8. ✅ Updated remotePatterns in next.config.mjs for images domain
-9. ✅ Documented all security headers in docs/blueprint.md
-
-**Security Headers Added**:
-
-**Response Headers**:
-```
-X-DNS-Prefetch-Control: on
-Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
-X-Frame-Options: SAMEORIGIN
-X-Content-Type-Options: nosniff
-Referrer-Policy: origin-when-cross-origin
-Permissions-Policy: camera=(), microphone=(), geolocation=()
-```
-
-**Content Security Policy**:
-```
-default-src 'self';
-script-src 'self' 'unsafe-eval' 'unsafe-inline' cdn.jsdelivr.net;
-style-src 'self' 'unsafe-inline' cdn.jsdelivr.net;
-img-src 'self' blob: data: https://*.unsplash.com https://*.githubusercontent.com ...;
-font-src 'self' data: cdn.jsdelivr.net;
-connect-src 'self' https://*.clerk.accounts.dev https://*.stripe.com https://api.stripe.com https://*.posthog.com;
-frame-src 'self' https://js.stripe.com;
-object-src 'none';
-base-uri 'self';
-form-action 'self';
-frame-ancestors 'none';
-block-all-mixed-content;
-upgrade-insecure-requests;
-```
-
-**Success Criteria**:
-- [x] All security headers implemented and tested
-- [x] CSP header protects against XSS attacks
-- [x] HSTS prevents downgrade attacks
-- [x] Frame options prevent clickjacking
-- [x] MIME sniffing protection enabled
-- [x] CSP allows only trusted domains for resources
-- [x] Security headers documented in blueprint.md
-- [x] Image domains configured as remotePatterns
-
-**Files Modified**:
-- `apps/nextjs/next.config.mjs` - Added security headers via async headers() function, updated image domains
-- `apps/nextjs/src/middleware.ts` - Added Content-Security-Policy header
-- `docs/blueprint.md` - Added Security section with comprehensive documentation
-
-**Security Impact**:
-- **XSS Prevention**: CSP restricts script sources, prevents inline script execution
-- **Clickjacking Protection**: X-Frame-Options prevents embedding in iframes
-- **MIME Sniffing Protection**: X-Content-Type-Options prevents content type guessing
-- **HTTPS Enforcement**: HSTS with preload enforces HTTPS for 2 years
-- **Mixed Content Blocking**: CSP blocks mixed HTTP/HTTPS content
-- **Device Feature Protection**: Permissions-Policy restricts access to camera, microphone, geolocation
-- **Clerk Integration**: CSP allows Clerk and Stripe domains for authentication and payments
-
-**Notes**:
-- CSP uses 'unsafe-inline' and 'unsafe-eval' for compatibility with existing code
-- Consider tightening CSP restrictions in future after refactoring
-- Image domains use both deprecated 'images.domains' and modern 'remotePatterns'
-- CSP allows Stripe iframe for payment processing
-- All external services (Clerk, Stripe, PostHog, Unsplash) are whitelisted
-
----
-
 ### Task 2: Enable Build Security Checks ✅
 - **Status**: ✅ Completed
 - **Priority**: High
 - **Type**: Security Hardening
 - **Files**: `apps/nextjs/next.config.mjs`
-
-**Description**:
-Enable ESLint and TypeScript error checking during production builds to catch security issues and bugs before deployment.
-
-**Steps**:
-1. ✅ Changed eslint: { ignoreDuringBuilds: true } to false
-2. ✅ Changed typescript: { ignoreBuildErrors: true } to false
-3. ✅ Ensured build process will fail on linting and type errors
-
-**Success Criteria**:
-- [x] ESLint enabled for production builds
-- [x] TypeScript type checking enabled for production builds
-- [x] Build process fails on security violations
-- [x] All linting rules enforced in CI/CD
-
-**Security Impact**:
-- **Type Safety**: TypeScript errors caught before deployment
-- **Code Quality**: ESLint rules enforced consistently
-- **Security**: Potential security issues detected during build
-- **Reliability**: Reduced risk of runtime errors in production
-
-**Files Modified**:
-- `apps/nextjs/next.config.mjs` - Removed build error suppression
-
-**Note**: The application already runs linting and type checking as separate tasks in CI, but enabling them during builds provides an additional layer of protection.
-
----
 
 ### Task 3: Document Clerk CSRF Protection ✅
 - **Status**: ✅ Completed
@@ -1023,38 +920,71 @@ Enable ESLint and TypeScript error checking during production builds to catch se
 - **Type**: Documentation
 - **Files**: `docs/blueprint.md`, `apps/nextjs/src/utils/clerk.ts`
 
-**Description**:
-Review and document Clerk's built-in CSRF protection mechanisms to ensure security posture is understood.
-
-**Findings**:
-- **Clerk Middleware**: Implements automatic CSRF protection via JWT-based session tokens
-- **Middleware Implementation**: `clerkMiddleware()` wraps all requests with authentication checks
-- **Token Management**: Clerk manages session tokens securely with automatic refresh
-- **Webhook Security**: Stripe webhooks bypass Clerk middleware but have signature verification
-
-**Clerk Security Features**:
-1. **CSRF Protection**: Built into Clerk's authentication middleware
-2. **JWT Session Tokens**: Securely signed tokens with proper validation
-3. **Automatic Token Refresh**: Seamless session management
-4. **Public Route Matching**: Protected routes require authentication
-5. **Authentication State**: userId available in all protected contexts
-
-**Success Criteria**:
-- [x] Clerk CSRF protection reviewed and verified
-- [x] Security mechanisms documented in blueprint.md
-- [x] Webhook security documented
-- [x] Authentication flow understood
-
-**Files Modified**:
-- `docs/blueprint.md` - Added Clerk Authentication Security section
-
----
-
 ### Task 4: Security Headers Documentation ✅
 - **Status**: ✅ Completed
 - **Priority**: Medium
 - **Type**: Documentation
 - **Files**: `docs/blueprint.md`
+
+### Task 5: Fix XSS Vulnerabilities ✅
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Security Fix
+- **Files**: `apps/nextjs/src/app/[lang]/(dashboard)/dashboard/billing/page.tsx`, `packages/api/src/router/health_check.ts`
+
+**Description**:
+Remove XSS vulnerabilities in billing page and hello endpoint.
+
+**Steps**:
+1. ✅ Removed `dangerouslySetInnerHTML` from billing page
+2. ✅ Replaced with safe React component rendering
+3. ✅ Added `escapeHtml()` function to hello endpoint
+4. ✅ Added max length constraint (1000) to hello endpoint input
+
+**Success Criteria**:
+- [x] XSS vulnerability in billing page fixed
+- [x] XSS vulnerability in hello endpoint fixed
+- [x] Input sanitization implemented
+- [x] DoS protection via max length constraint
+- [x] No hardcoded secrets found
+- [x] Input validation verified across all API endpoints
+
+**Security Impact**:
+- **Stored XSS**: Eliminated in billing page
+- **Reflected XSS**: Prevented in hello endpoint
+- **DoS Protection**: Added max length constraints
+
+---
+
+### Task 6: CSP Hardening ✅
+- **Status**: ✅ Completed
+- **Priority**: Medium
+- **Type**: Security Hardening
+- **Files**: `apps/nextjs/src/middleware.ts`
+
+**Description**:
+Remove unnecessary `unsafe-eval` directive from Content Security Policy after verifying no eval() usage in codebase.
+
+**Steps**:
+1. ✅ Searched for eval() and new Function() usage in codebase
+2. ✅ Confirmed no eval() or new Function() calls found
+3. ✅ Removed `unsafe-eval` from CSP
+4. ✅ Kept `unsafe-inline` for Tailwind CSS compatibility
+
+**Success Criteria**:
+- [x] No eval() usage found in codebase
+- [x] CSP tightened by removing unsafe-eval
+- [x] Backward compatibility maintained
+
+**Files Modified**:
+- `apps/nextjs/src/app/[lang]/(dashboard)/dashboard/billing/page.tsx` (+19, -7 lines)
+- `apps/nextjs/src/middleware.ts` (+2, -2 lines)
+- `packages/api/src/router/health_check.ts` (+14, -2 lines)
+
+**Pull Request**:
+- https://github.com/cpa03/basefly/pull/6
+
+---
 
 **Description**:
 Create comprehensive documentation for all security response headers and their purposes.

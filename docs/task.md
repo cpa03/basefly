@@ -1517,6 +1517,96 @@ Add check constraints to database schema for enforcing business rules and data v
 
 ---
 
+#### Task 10: Add Database Triggers for Automated Maintenance ✅
+- **Status**: ✅ Completed
+- **Priority**: Low
+- **Type**: Database Automation
+- **Files**: `packages/db/prisma/migrations/20260131_add_automated_triggers/`, `docs/blueprint.md`, `packages/db/prisma/README.md`
+
+**Description**:
+Add database triggers to automate common data maintenance tasks, reducing application code complexity and ensuring data consistency across operations.
+
+**Steps**:
+1. ✅ Identified maintenance tasks suitable for automation (updatedAt updates, user soft delete cascade)
+2. ✅ Created trigger functions for automated updatedAt timestamp updates
+3. ✅ Created trigger for user soft delete cascade (K8s clusters)
+4. ✅ Created migration with trigger definitions (20260131_add_automated_triggers)
+5. ✅ Created rollback SQL for safe migration reversal
+6. ✅ Updated blueprint.md with trigger documentation
+7. ✅ Updated Prisma README with migration history
+
+**Success Criteria**:
+- [x] Automatic updatedAt timestamp updates on K8sClusterConfig
+- [x] Automatic updatedAt timestamp updates on Customer
+- [x] Automatic soft delete cascade for K8s clusters on user soft delete
+- [x] Migration created with forward and rollback SQL
+- [x] Documentation updated (blueprint.md, README.md)
+- [x] Trigger functions properly defined with PL/pgSQL
+- [x] Triggers fire on appropriate events (UPDATE, AFTER UPDATE OF email)
+
+**Files Created**:
+- `packages/db/prisma/migrations/20260131_add_automated_triggers/migration.sql` - Forward migration with trigger definitions
+- `packages/db/prisma/migrations/20260131_add_automated_triggers/rollback.sql` - Rollback migration
+
+**Files Modified**:
+- `docs/blueprint.md` - Added Database Triggers section with trigger documentation
+- `packages/db/prisma/README.md` - Added migration to migration history table
+
+**Database Triggers Added**:
+
+**Trigger 1: Automatic updatedAt Timestamp Updates**
+
+**K8sClusterConfig:**
+- Function: `update_k8sclusterconfig_updated_at()`
+- Trigger: `trigger_update_k8sclusterconfig_updated_at`
+- Event: BEFORE UPDATE on K8sClusterConfig
+- Action: Sets `updatedAt = CURRENT_TIMESTAMP`
+
+**Customer:**
+- Function: `update_customer_updated_at()`
+- Trigger: `trigger_update_customer_updated_at`
+- Event: BEFORE UPDATE on Customer
+- Action: Sets `updatedAt = CURRENT_TIMESTAMP`
+
+**Benefits:**
+- No need to manually set updatedAt in application code
+- Guarantees timestamps are always accurate
+- Prevents human error (timestamps never forgotten)
+- Improves audit trail accuracy
+
+**Trigger 2: User Soft Delete Cascade**
+
+- Function: `soft_delete_user_clusters()`
+- Trigger: `trigger_soft_delete_user_clusters`
+- Event: AFTER UPDATE OF email on User
+- Condition: Email changes to `deleted_%@example.com` pattern
+- Action: Soft deletes all K8s clusters with `deletedAt = CURRENT_TIMESTAMP`
+
+**Benefits:**
+- Maintains data consistency across related tables
+- Works in tandem with UserDeletionService.softDeleteUser()
+- Ensures audit trail preservation when users are deleted for compliance
+- Automated cascade reduces application code complexity
+
+**Implementation Details:**
+- Triggers use PL/pgSQL (PostgreSQL stored procedure language)
+- Triggers execute within the same transaction as the update operation
+- Minimal performance overhead (simple timestamp assignment)
+- No impact on SELECT queries
+- Trigger uses WHEN clause to only fire on email changes
+- User soft delete trigger checks for `deleted_@example.com` email pattern
+
+**Data Automation Benefits:**
+- ✅ Reduced application code complexity (no manual updatedAt management)
+- ✅ Guaranteed data consistency (triggers always execute)
+- ✅ Prevented human error (timestamps never forgotten)
+- ✅ Improved audit trail accuracy (timestamps always reflect last update)
+- ✅ Automated cascade maintenance (K8s clusters soft deleted with users)
+
+**Migration:** `20260131_add_automated_triggers`
+
+---
+
 #### Task 2: Implement Request ID Tracking for Distributed Tracing ✅
 - **Status**: ✅ Completed
 - **Priority**: Medium

@@ -83,6 +83,7 @@ describe("handleEvent", () => {
           }) as any,
       );
 
+      // @ts-expect-error Type instantiation excessively deep
       vi.mocked(db.updateTable).mockReturnValue({
         where: mockUpdateWhere,
         set: mockSet,

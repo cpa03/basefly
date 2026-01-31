@@ -334,4 +334,7 @@ jobs:
 
 | Date | Migration | Description |
 |------|-----------|-------------|
+| 2026-01-31 | `20260131_add_check_constraints` | Added check constraints for data integrity (name/location length, Stripe ID formats) |
+| 2026-01-10 | `20260110_add_composite_indexes` | Added composite indexes for query performance optimization |
+| 2024-01-07 | `20240107_implement_soft_delete` | Implemented soft delete pattern with deletedAt timestamp and partial unique indexes |
 | 2024-01-07 | `20240107_add_foreign_key_constraints` | Added foreign key constraints to Customer and K8sClusterConfig tables |

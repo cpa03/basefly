@@ -1442,6 +1442,81 @@ Add comprehensive validation at API boundaries to ensure data integrity before d
 - Security features prevent common attack vectors
 - All schemas use strict mode for defense in depth
 
+---
+
+#### Task 9: Add Check Constraints for Data Integrity ✅
+- **Status**: ✅ Completed
+- **Priority**: Low
+- **Type**: Constraint Addition
+- **Files**: `packages/db/prisma/schema.prisma`, `packages/db/prisma/migrations/20260131_add_check_constraints/`
+
+**Description**:
+Add check constraints to database schema for enforcing business rules and data validation at database level, providing an additional layer of data integrity beyond application-level validation.
+
+**Steps**:
+1. ✅ Identified validation rules for K8sClusterConfig (name/location length, non-empty)
+2. ✅ Identified validation rules for Customer (Stripe ID formats)
+3. ✅ Created migration with check constraints (20260131_add_check_constraints)
+4. ✅ Created rollback SQL for safe migration reversal
+5. ✅ Updated Prisma schema with check constraint definitions
+6. ✅ Updated migration documentation in Prisma README
+7. ✅ Updated blueprint.md with check constraint documentation
+
+**Success Criteria**:
+- [x] K8sClusterConfig name validation (not empty, max 100 chars)
+- [x] K8sClusterConfig location validation (not empty, max 50 chars)
+- [x] Customer stripeCustomerId format validation (starts with 'cus_')
+- [x] Customer stripeSubscriptionId format validation (starts with 'sub_')
+- [x] Migration created with forward and rollback SQL
+- [x] Prisma schema updated with check constraint syntax
+- [x] Documentation updated (blueprint.md, README.md)
+
+**Files Created**:
+- `packages/db/prisma/migrations/20260131_add_check_constraints/migration.sql` - Forward migration with check constraints
+- `packages/db/prisma/migrations/20260131_add_check_constraints/rollback.sql` - Rollback migration
+
+**Files Modified**:
+- `packages/db/prisma/schema.prisma` - Added check constraints to K8sClusterConfig and Customer models
+- `packages/db/prisma/README.md` - Added migration to migration history table
+- `docs/blueprint.md` - Added Data Integrity section with check constraint documentation
+
+**Check Constraints Added**:
+
+**K8sClusterConfig**:
+- `name_not_empty`: `LENGTH(TRIM(name)) > 0` - Ensures cluster names are not empty or whitespace
+- `name_max_length`: `LENGTH(name) <= 100` - Limits cluster name length
+- `location_not_empty`: `LENGTH(TRIM(location)) > 0` - Ensures locations are not empty or whitespace
+- `location_max_length`: `LENGTH(location) <= 50` - Limits location length
+
+**Customer**:
+- `stripeCustomerId_format`: `stripeCustomerId IS NULL OR stripeCustomerId LIKE 'cus_%'` - Validates Stripe customer ID format
+- `stripeSubscriptionId_format`: `stripeSubscriptionId IS NULL OR stripeSubscriptionId LIKE 'sub_%'` - Validates Stripe subscription ID format
+
+**Benefits**:
+- Database-level validation prevents invalid data insertion
+- Complements application-level validation with last line of defense
+- Minimal performance overhead on INSERT/UPDATE operations
+- No impact on SELECT queries
+- Enforces business rules at data storage layer
+- Prevents data quality issues from propagating
+
+**Implementation Notes**:
+- Check constraints are evaluated on INSERT and UPDATE operations
+- NULL is allowed for Stripe IDs (user may not be subscribed yet)
+- Constraints use TRIM() to prevent whitespace-only strings
+- Constraint names follow naming convention: `TableName_fieldName_constraint`
+- Migration is fully reversible with rollback.sql
+- Prisma schema updated with `@@check()` directives for documentation
+
+**Data Integrity Improvements**:
+- ✅ Application-level validation (Zod schemas)
+- ✅ Database-level validation (check constraints)
+- ✅ Foreign key constraints (referential integrity)
+- ✅ Unique constraints (uniqueness)
+- ✅ Partial unique indexes (soft delete aware uniqueness)
+
+---
+
 #### Task 2: Implement Request ID Tracking for Distributed Tracing ✅
 - **Status**: ✅ Completed
 - **Priority**: Medium

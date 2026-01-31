@@ -1,6 +1,6 @@
-import { notFound } from "next/navigation";
+import { redirect } from "next/navigation";
 
-import { getCurrentUser } from "@saasfly/auth";
+import { authOptions, getCurrentUser } from "@saasfly/auth";
 
 import { LocaleChange } from "~/components/locale-change";
 import { MainNav } from "~/components/main-nav";
@@ -29,7 +29,7 @@ export default async function DashboardLayout({
   const user = await getCurrentUser();
   const dict = await getDictionary(lang);
   if (!user) {
-    return notFound();
+    redirect(authOptions?.pages?.signIn ?? "/login");
   }
   const dashboardConfig = await getDashboardConfig({ params: { lang } });
   return (

@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { authOptions, getCurrentUser } from "@saasfly/auth";
 import {
   Table,
+  TableBody,
   TableCaption,
   TableHead,
   TableHeader,
@@ -36,10 +37,10 @@ export default async function DashboardPage({
     lang: Locale;
   };
 }) {
-  //don't need to check auth here, because we have a global auth check in _app.tsx
+  // Auth check is handled by DashboardLayout, but we still need the user object
   const user = await getCurrentUser();
   if (!user) {
-    redirect(authOptions?.pages?.signIn ?? "/login-clerk");
+    redirect(authOptions?.pages?.signIn ?? "/login");
   }
   const customer = await trpc.customer.queryCustomer.query({
     userId: user.id,
@@ -50,17 +51,16 @@ export default async function DashboardPage({
     });
   }
   // const accout
-  const result: ClustersArray = await trpc.k8s.getClusters.query();
-  if (result) {
-    const clusters = result;
-    const dict = await getDictionary(lang);
-    return (
-      <DashboardShell>
+  const clusters = (await trpc.k8s.getClusters.query()) ?? [];
+  const dict = await getDictionary(lang);
+
+  return (
+    <DashboardShell>
         <DashboardHeader
           heading="kubernetes"
           text={dict.common.dashboard.title_text}
         >
-          <K8sCreateButton dict={dict.business} />
+          <K8sCreateButton dict={dict.business} lang={lang} />
         </DashboardHeader>
         <div>
           {clusters.length ? (
@@ -79,14 +79,15 @@ export default async function DashboardPage({
                         <TableHead scope="col" className="text-right">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
-                    <tbody>
+                    <TableBody>
                       {clusters.map((cluster) => (
                         <ClusterItem
                           key={String(cluster.id)}
                           cluster={cluster}
+                          lang={lang}
                         ></ClusterItem>
                       ))}
-                    </tbody>
+                    </TableBody>
                   </Table>
                 </div>
               </div>
@@ -101,7 +102,7 @@ export default async function DashboardPage({
                       <div className="space-y-1">
                         <h3 className="font-semibold">
                           <Link
-                            href={`/editor/cluster/${String(cluster.id)}`}
+                            href={`/${lang}/editor/cluster/${String(cluster.id)}`}
                             className="hover:underline"
                           >
                             {cluster.name}
@@ -111,7 +112,10 @@ export default async function DashboardPage({
                           {cluster.location}
                         </p>
                       </div>
-                      <ClusterOperations cluster={{ id: cluster.id, name: cluster.name }} />
+                      <ClusterOperations
+                        cluster={{ id: cluster.id, name: cluster.name }}
+                        lang={lang}
+                      />
                     </div>
                     <div className="flex flex-wrap gap-4 border-t pt-3">
                       <div className="flex items-center gap-2 text-sm">
@@ -144,11 +148,10 @@ export default async function DashboardPage({
               <EmptyPlaceholder.Description>
                 {dict.business.k8s.no_cluster_content}
               </EmptyPlaceholder.Description>
-              <K8sCreateButton variant="outline" dict={dict.business} />
+              <K8sCreateButton variant="outline" dict={dict.business} lang={lang} />
             </EmptyPlaceholder>
           )}
         </div>
       </DashboardShell>
-    );
-  }
+  );
 }

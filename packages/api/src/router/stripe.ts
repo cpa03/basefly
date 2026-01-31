@@ -43,9 +43,11 @@ export type UserSubscriptionPlan = SubscriptionPlan &
     interval: "month" | "year" | null;
     isCanceled?: boolean;
   };
+export const createSessionSchema = z.object({ planId: z.string().min(1) }).strict();
+
 export const stripeRouter = createTRPCRouter({
   createSession: createRateLimitedProtectedProcedure("stripe")
-    .input(z.object({ planId: z.string() }))
+    .input(createSessionSchema)
     .mutation(async (opts) => {
       const userId = opts.ctx.userId! as string;
       const planId = opts.input.planId;

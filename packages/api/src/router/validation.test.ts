@@ -2,11 +2,16 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 
-import { k8sRouter } from "@saasfly/api/src/router/k8s";
-import { stripeRouter } from "@saasfly/api/src/router/stripe";
-import { customerRouter } from "@saasfly/api/src/router/customer";
-import { authRouter } from "@saasfly/api/src/router/auth";
-import { ErrorCode, createApiError } from "@saasfly/api/src/errors";
+import { k8sRouter, k8sClusterCreateSchema, k8sClusterDeleteSchema } from "./k8s";
+import { stripeRouter, createSessionSchema } from "./stripe";
+import { customerRouter, updateUserNameSchema, insertCustomerSchema } from "./customer";
+import { authRouter } from "./auth";
+import {
+  ErrorCode,
+  createApiError,
+  handleIntegrationError,
+  createValidationErrorMessage,
+} from "../errors";
 
 vi.mock("@saasfly/db", () => ({
   db: {
@@ -63,16 +68,6 @@ vi.mock("../../common/src/subscriptions", () => ({
 
 describe("API Validation Tests", () => {
   describe("k8sRouter - Schema Validation", () => {
-    const k8sClusterCreateSchema = z.object({
-      id: z.number().optional(),
-      name: z.string(),
-      location: z.string(),
-    });
-
-    const k8sClusterDeleteSchema = z.object({
-      id: z.number(),
-    });
-
     describe("k8sClusterCreateSchema", () => {
       it("accepts valid cluster creation data", () => {
         const validData = {
@@ -233,10 +228,6 @@ describe("API Validation Tests", () => {
   });
 
   describe("stripeRouter - Schema Validation", () => {
-    const createSessionSchema = z.object({
-      planId: z.string(),
-    });
-
     describe("createSessionSchema", () => {
       it("accepts valid plan id", () => {
         const validData = { planId: "price_123abc" };
@@ -280,15 +271,6 @@ describe("API Validation Tests", () => {
   });
 
   describe("customerRouter - Schema Validation", () => {
-    const updateUserNameSchema = z.object({
-      name: z.string(),
-      userId: z.string(),
-    });
-
-    const insertCustomerSchema = z.object({
-      userId: z.string(),
-    });
-
     describe("updateUserNameSchema", () => {
       it("accepts valid user name update", () => {
         const validData = {
@@ -434,7 +416,6 @@ describe("API Validation Tests", () => {
 
   describe("Integration Error Handling", () => {
     it("handles CIRCUIT_BREAKER_OPEN errors", () => {
-      const { handleIntegrationError } = require("@saasfly/api/src/errors");
       const { IntegrationError } = require("@saasfly/stripe");
 
       const error = new IntegrationError("Service unavailable", "CIRCUIT_BREAKER_OPEN");
@@ -445,7 +426,6 @@ describe("API Validation Tests", () => {
     });
 
     it("handles TIMEOUT errors", () => {
-      const { handleIntegrationError } = require("@saasfly/api/src/errors");
       const { IntegrationError } = require("@saasfly/stripe");
 
       const error = new IntegrationError("Request timed out", "TIMEOUT");
@@ -456,7 +436,6 @@ describe("API Validation Tests", () => {
     });
 
     it("handles API_ERROR errors", () => {
-      const { handleIntegrationError } = require("@saasfly/api/src/errors");
       const { IntegrationError } = require("@saasfly/stripe");
 
       const error = new IntegrationError("External service error", "API_ERROR");
@@ -467,8 +446,6 @@ describe("API Validation Tests", () => {
     });
 
     it("handles unknown IntegrationError instances", () => {
-      const { handleIntegrationError } = require("@saasfly/api/src/errors");
-
       const error = new Error("Unknown error");
       const trpcError = handleIntegrationError(error);
       expect(trpcError).toBeInstanceOf(TRPCError);
@@ -476,8 +453,6 @@ describe("API Validation Tests", () => {
     });
 
     it("handles unknown error types", () => {
-      const { handleIntegrationError } = require("@saasfly/api/src/errors");
-
       const error = "string error";
       const trpcError = handleIntegrationError(error);
       expect(trpcError).toBeInstanceOf(TRPCError);
@@ -487,14 +462,12 @@ describe("API Validation Tests", () => {
 
   describe("Validation Error Message Creation", () => {
     it("creates single error message", () => {
-      const { createValidationErrorMessage } = require("@saasfly/api/src/errors");
       const errors = [{ message: "Name is required" }];
       const message = createValidationErrorMessage(errors);
       expect(message).toBe("Name is required");
     });
 
     it("creates multiple error message", () => {
-      const { createValidationErrorMessage } = require("@saasfly/api/src/errors");
       const errors = [
         { message: "Name is required" },
         { message: "Email is invalid" },
@@ -504,14 +477,12 @@ describe("API Validation Tests", () => {
     });
 
     it("handles errors with path", () => {
-      const { createValidationErrorMessage } = require("@saasfly/api/src/errors");
       const errors = [{ message: "Required", path: ["name"] }];
       const message = createValidationErrorMessage(errors);
       expect(message).toBe("Required");
     });
 
     it("handles empty errors array", () => {
-      const { createValidationErrorMessage } = require("@saasfly/api/src/errors");
       const errors = [];
       const message = createValidationErrorMessage(errors);
       expect(message).toBe("Validation error");

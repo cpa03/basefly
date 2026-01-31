@@ -3,6 +3,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { handleEvent } from "./webhooks";
 import { db } from "@saasfly/db";
 import { stripe } from ".";
+import { logger } from "./logger";
 
 vi.mock("@saasfly/db", () => ({
   db: {
@@ -307,18 +308,15 @@ describe("handleEvent", () => {
         },
       } as any;
 
-      const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {
-        // Intentionally empty
-      });
+      const loggerSpy = vi.spyOn(logger, "info").mockImplementation(() => {});
 
       await handleEvent(mockEvent);
 
-      expect(consoleLogSpy).toHaveBeenCalledWith(
-        "event.type: ",
-        "customer.subscription.updated",
+      expect(loggerSpy).toHaveBeenCalledWith(
+        expect.stringContaining("Unhandled event type: customer.subscription.updated"),
       );
 
-      consoleLogSpy.mockRestore();
+      loggerSpy.mockRestore();
     });
   });
 
@@ -331,15 +329,15 @@ describe("handleEvent", () => {
         },
       } as any;
 
-      const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {
-        // Intentionally empty
-      });
+      const loggerSpy = vi.spyOn(logger, "info").mockImplementation(() => {});
 
       await handleEvent(mockEvent);
 
-      expect(consoleLogSpy).toHaveBeenCalledWith("✅ Stripe Webhook Processed");
+      expect(loggerSpy).toHaveBeenCalledWith("Stripe Webhook Processed", {
+        eventType: "unknown.event",
+      });
 
-      consoleLogSpy.mockRestore();
+      loggerSpy.mockRestore();
     });
   });
 });

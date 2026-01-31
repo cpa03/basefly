@@ -1607,6 +1607,112 @@ Add database triggers to automate common data maintenance tasks, reducing applic
 
 ---
 
+#### Task 11: Add Row-Level Security for Multi-Tenant Data Protection ✅
+- **Status**: ✅ Completed
+- **Priority**: Low
+- **Type**: Security & Data Architecture
+- **Files**: `packages/db/prisma/migrations/20260131_add_row_level_security/`, `docs/blueprint.md`, `packages/db/prisma/README.md`
+
+**Description**:
+Implement PostgreSQL Row-Level Security (RLS) to enforce tenant isolation at database level, providing defense-in-depth by restricting data access beyond application-level checks.
+
+**Steps**:
+1. ✅ Identified tables requiring tenant isolation (K8sClusterConfig, Customer, User)
+2. ✅ Designed RLS policies for each table (SELECT, INSERT, UPDATE)
+3. ✅ Created migration with RLS policy definitions (20260131_add_row_level_security)
+4. ✅ Created rollback SQL for safe migration reversal
+5. ✅ Updated blueprint.md with RLS documentation and usage examples
+6. ✅ Updated Prisma README with migration history
+7. ✅ Documented session variable setup pattern for application integration
+
+**Success Criteria**:
+- [x] RLS enabled on K8sClusterConfig table with 4 policies
+- [x] RLS enabled on Customer table with 3 policies
+- [x] RLS enabled on User table with 2 policies
+- [x] Policies use current_setting('app.current_user_id') for context
+- [x] K8sClusterConfig policies respect soft delete (deletedAt checks)
+- [x] Migration created with forward and rollback SQL
+- [x] Documentation updated (blueprint.md, README.md)
+- [x] Session variable setup pattern documented
+
+**Files Created**:
+- `packages/db/prisma/migrations/20260131_add_row_level_security/migration.sql` - Forward migration with RLS policies
+- `packages/db/prisma/migrations/20260131_add_row_level_security/rollback.sql` - Rollback migration
+
+**Files Modified**:
+- `docs/blueprint.md` - Added Row-Level Security section with policy documentation
+- `packages/db/prisma/README.md` - Added migration to migration history table
+
+**RLS Policies Added**:
+
+**K8sClusterConfig (4 policies):**
+- `k8s_clusters_select_own_active`: Users can only read their own active clusters
+- `k8s_clusters_insert_own`: Users can only insert clusters for themselves
+- `k8s_clusters_update_own`: Users can only update their own clusters
+- `k8s_clusters_delete_own`: Users can only soft delete their own clusters
+
+**Customer (3 policies):**
+- `customers_select_own`: Users can only read their own customer data
+- `customers_insert_own`: Users can only insert customer data for themselves
+- `customers_update_own`: Users can only update their own customer data
+
+**User (2 policies):**
+- `users_select_own`: Users can only read their own user data
+- `users_update_own`: Users can only update their own user data (name, email, etc.)
+
+**Implementation Pattern** (Application Integration):
+```typescript
+// Before each transaction, set the session variable
+await db.executeQuery('SET LOCAL app.current_user_id = $1', [userId]);
+
+// All queries automatically filtered by RLS policies
+const clusters = await db
+  .selectFrom('K8sClusterConfig')
+  .selectAll()
+  .execute();
+// RLS automatically adds: WHERE authUserId = current_user_id AND deletedAt IS NULL
+```
+
+**Defense in Depth**:
+1. **Application-level validation** (Zod schemas, authUserId checks in code)
+2. **Database-level constraints** (foreign keys, check constraints)
+3. **Row-Level Security policies** (tenant isolation at database level)
+
+**Benefits**:
+- Enforces tenant isolation even if application-level checks fail
+- Prevents unauthorized data access at database level
+- Reduces risk of data leakage due to bugs
+- Provides security guarantee independent of application code
+- Simplifies application code (removes duplicate authUserId checks)
+- Database rejects queries that would access other users' data
+
+**Implementation Details**:
+- Policies reference `current_setting('app.current_user_id')` for context
+- RLS enabled on tables with `ENABLE ROW LEVEL SECURITY`
+- Application must set session variable before each transaction
+- All queries automatically filtered by RLS policies
+- RLS bypass requires elevated privileges (admin users)
+- K8sClusterConfig policies respect soft delete (deletedAt checks)
+- User table policies are read-only (no DELETE policy)
+
+**Security Impact**:
+- Database rejects queries that would access other users' data
+- RLS provides guarantee of tenant isolation
+- RLS bypass requires elevated privileges (superuser or table owner)
+- Application-level checks remain as first line of defense
+- Check constraints continue to validate data
+
+**Performance Considerations**:
+- Minimal overhead (policy evaluation is fast)
+- Indexes on authUserId columns optimize RLS policy filtering
+- No impact on SELECT queries that already filter by authUserId
+- RLS evaluation occurs after index lookup
+- Transaction-scoped settings (SET LOCAL) avoid cross-request contamination
+
+**Migration:** `20260131_add_row_level_security`
+
+---
+
 #### Task 2: Implement Request ID Tracking for Distributed Tracing ✅
 - **Status**: ✅ Completed
 - **Priority**: Medium

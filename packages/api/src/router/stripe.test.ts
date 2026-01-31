@@ -27,7 +27,7 @@ vi.mock("@saasfly/stripe", () => ({
 
 vi.mock("../env.mjs", () => ({
   env: {
-    NEXTAUTH_URL: "http://localhost:3000",
+    NEXT_PUBLIC_APP_URL: "http://localhost:3000",
   },
 }));
 

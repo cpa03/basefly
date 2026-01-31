@@ -14,11 +14,11 @@ export const k8sClusterCreateSchema = z.object({
   id: z.number().optional(),
   name: z.string().min(1),
   location: z.string().min(1),
-}).strict();
+});
 
 export const k8sClusterDeleteSchema = z.object({
   id: z.number().positive().int(),
-}).strict();
+});
 
 async function verifyClusterOwnership(
   clusterId: number,

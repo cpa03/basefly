@@ -12,10 +12,10 @@ import {
 export const updateUserNameSchema = z.object({
   name: z.string().min(1),
   userId: z.string().min(1),
-}).strict();
+});
 export const insertCustomerSchema = z.object({
   userId: z.string().min(1),
-}).strict();
+});
 export const customerRouter = createTRPCRouter({
   updateUserName: createRateLimitedProtectedProcedure("write")
     .input(updateUserNameSchema)

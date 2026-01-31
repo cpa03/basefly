@@ -1,11 +1,11 @@
 import { createKysely } from "@vercel/postgres-kysely";
 
-import type { DB } from "./prisma/types.js";
+import type { DB } from "./prisma/types";
 
 export { jsonArrayFrom, jsonObjectFrom } from "kysely/helpers/postgres";
 
-export * from "./prisma/types.js";
-export * from "./prisma/enums.js";
+export * from "./prisma/types";
+export * from "./prisma/enums";
 export * from "./soft-delete";
 export * from "./user-deletion";
 

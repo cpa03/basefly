@@ -116,3 +116,15 @@ enum Status {
   STOPPED
   DELETED
 }
+
+model StripeWebhookEvent {
+  id        String   @id
+  eventType String
+  processed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@unique([id])
+  @@index([processed])
+  @@index([createdAt])
+}

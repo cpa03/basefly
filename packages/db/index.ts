@@ -8,5 +8,6 @@ export * from "./prisma/types";
 export * from "./prisma/enums";
 export * from "./soft-delete";
 export * from "./user-deletion";
+export * from "./webhook-idempotency";
 
 export const db = createKysely<DB>();

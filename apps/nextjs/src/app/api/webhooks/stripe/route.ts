@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
+import type Stripe from "stripe";
 
-import { handleEvent, stripe, type Stripe } from "@saasfly/stripe";
+import { handleEvent, stripe } from "@saasfly/stripe";
 
 import { env } from "~/env.mjs";
 import { logger } from "~/lib/logger";
@@ -13,7 +14,7 @@ const handler = async (req: NextRequest) => {
       payload,
       signature,
       env.STRIPE_WEBHOOK_SECRET,
-    ) as Stripe.DiscriminatedEvent;
+    ) as Stripe.Event;
     await handleEvent(event);
 
     logger.info("Handled Stripe Event", { eventType: event.type });

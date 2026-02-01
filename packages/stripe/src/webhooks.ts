@@ -1,6 +1,7 @@
 import type Stripe from "stripe";
 
 import { db, SubscriptionPlan } from "@saasfly/db";
+import { executeIdempotentWebhook } from "@saasfly/db/webhook-idempotency";
 
 import { IntegrationError } from "./integration";
 import { retrieveSubscription } from "./client";
@@ -8,6 +9,17 @@ import { getSubscriptionPlan } from "./plans";
 import { logger } from "./logger";
 
 export async function handleEvent(event: Stripe.Event) {
+  const eventId = event.id;
+  const eventType = event.type;
+
+  await executeIdempotentWebhook(
+    eventId,
+    eventType,
+    async () => processEventInternal(event),
+  );
+}
+
+async function processEventInternal(event: Stripe.Event) {
   try {
     const session = event.data.object as Stripe.Checkout.Session;
     if (event.type === "checkout.session.completed") {

@@ -64,11 +64,19 @@ export type VerificationToken = {
   token: string;
   expires: Timestamp;
 };
+export type StripeWebhookEvent = {
+  id: string;
+  eventType: string;
+  processed: Generated<boolean>;
+  createdAt: Generated<Timestamp>;
+  updatedAt: Generated<Timestamp>;
+};
 export type DB = {
   Account: Account;
   Customer: Customer;
   K8sClusterConfig: K8sClusterConfig;
   Session: Session;
+  StripeWebhookEvent: StripeWebhookEvent;
   User: User;
   VerificationToken: VerificationToken;
 };

@@ -494,11 +494,84 @@ throw createApiError(
    - Return consistent error codes
    - Include helpful error messages
 
-7. **Webhook Reliability**:
-   - Handle errors gracefully
-   - Log all webhook failures
-   - Only throw for unrecoverable errors
-   - Use `IntegrationError` for retryable issues
+ 7. **Webhook Reliability**:
+    - Handle errors gracefully
+    - Log all webhook failures
+    - Only throw for unrecoverable errors
+    - Use `IntegrationError` for retryable issues
+    - **Idempotency**: Prevent duplicate processing with database tracking
+    - **Event Registration**: Track all processed Stripe webhook events
+    - **Duplicate Detection**: Unique constraint prevents reprocessing
+    - **Cleanup Strategy**: Periodically delete old processed events (90 days)
+
+**Webhook Idempotency Pattern**:
+
+Stripe webhooks may be delivered multiple times due to:
+- Network interruptions
+- Timeouts during processing
+- Manual retry by Stripe
+
+**Implementation**: `packages/db/webhook-idempotency.ts`
+
+**Database Schema**: `StripeWebhookEvent`
+```sql
+CREATE TABLE "StripeWebhookEvent" (
+  "id" TEXT NOT NULL PRIMARY KEY,
+  "eventType" TEXT NOT NULL,
+  "processed" BOOLEAN NOT NULL DEFAULT FALSE,
+  "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE("id")  -- Prevents duplicate events
+);
+```
+
+**Usage Pattern**:
+```typescript
+import { executeIdempotentWebhook } from "@saasfly/db/webhook-idempotency";
+
+export async function handleEvent(event: Stripe.Event) {
+  await executeIdempotentWebhook(
+    event.id,        // Stripe event ID (evt_*)
+    event.type,      // Event type (e.g., checkout.session.completed)
+    async () => processEventInternal(event)  // Handler function
+  );
+}
+```
+
+**Idempotency Workflow**:
+1. Webhook received with `event.id`
+2. Attempt to insert into `StripeWebhookEvent` table
+3. If unique constraint violation → event already processed → skip handler
+4. If insert succeeds → proceed to process event
+5. Mark `processed = true` after successful completion
+6. On error, throw to trigger Stripe retry (if retryable)
+
+**Key Functions**:
+- `executeIdempotentWebhook()` - Execute handler with idempotency protection
+- `registerWebhookEvent()` - Register event (fails if duplicate)
+- `markEventAsProcessed()` - Mark event as successfully processed
+- `hasEventBeenProcessed()` - Check if event was processed
+- `cleanupOldWebhookEvents()` - Delete old processed events
+
+**Error Handling**:
+- Duplicate key violation (code 23505) → Silently skip (already processed)
+- Other database errors → Throw IntegrationError (retryable)
+- Handler errors → Propagate (Stripe will retry)
+
+**Benefits**:
+- ✅ Prevents duplicate database updates
+- ✅ Prevents duplicate charges on checkout events
+- ✅ Provides audit trail of all processed webhooks
+- ✅ Enables cleanup of old events
+- ✅ Resilient to network issues and Stripe retries
+
+**Performance Considerations**:
+- Unique index check is O(1) for duplicate detection
+- Table grows linearly with webhook volume
+- Periodic cleanup recommended (e.g., keep 90 days)
+
+**Testing**: `packages/db/webhook-idempotency.test.ts`
+
 
 ### Anti-Patterns to Avoid
 

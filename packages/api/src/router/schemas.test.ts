@@ -46,12 +46,11 @@ export const enhancedK8sClusterUpdateSchema = z
       .trim()
       .optional(),
   })
+  .strict()
   .refine(
     (data) => data.name !== undefined || data.location !== undefined,
     "At least one field (name or location) must be provided for update",
-  )
-  // @ts-expect-error - .strict() method compatibility with Zod version
-  .strict();
+  );
 
 export const enhancedStripeCreateSessionSchema = z
   .object({

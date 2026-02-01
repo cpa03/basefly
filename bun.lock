@@ -179,6 +179,7 @@
       "name": "@saasfly/db",
       "version": "0.1.0",
       "dependencies": {
+        "@saasfly/stripe": "workspace:*",
         "@vercel/postgres-kysely": "0.8.0",
         "kysely": "0.27.3",
       },

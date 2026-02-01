@@ -1,7 +1,7 @@
 import type Stripe from "stripe";
 
 import { db, SubscriptionPlan } from "@saasfly/db";
-import { executeIdempotentWebhook } from "@saasfly/db/webhook-idempotency";
+import { executeIdempotentWebhook } from "./webhook-idempotency";
 
 import { IntegrationError } from "./integration";
 import { retrieveSubscription } from "./client";

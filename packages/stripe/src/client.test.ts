@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import type Stripe from "stripe";
 import {
   createBillingSession,
   createCheckoutSession,
@@ -85,7 +86,7 @@ describe("createBillingSession", () => {
 
     await createBillingSession("cus_123", "https://example.com");
 
-    const callOptions = vi.mocked(safeStripeCall).mock.calls[0][1];
+    const callOptions = vi.mocked(safeStripeCall).mock.calls[0]?.[1];
     expect(callOptions?.circuitBreaker).toBeDefined();
   });
 
@@ -94,7 +95,7 @@ describe("createBillingSession", () => {
 
     await createBillingSession("cus_123", "https://example.com");
 
-    const callOptions = vi.mocked(safeStripeCall).mock.calls[0][1];
+    const callOptions = vi.mocked(safeStripeCall).mock.calls[0]?.[1];
     expect(callOptions?.maxAttempts).toBe(3);
   });
 
@@ -103,7 +104,7 @@ describe("createBillingSession", () => {
 
     await createBillingSession("cus_123", "https://example.com");
 
-    const callOptions = vi.mocked(safeStripeCall).mock.calls[0][1];
+    const callOptions = vi.mocked(safeStripeCall).mock.calls[0]?.[1];
     expect(callOptions?.timeoutMs).toBe(30000);
   });
 });
@@ -119,14 +120,14 @@ describe("createCheckoutSession", () => {
 
     const params = {
       mode: "subscription" as const,
-      payment_method_types: ["card"] as const,
+      payment_method_types: ["card"],
       customer_email: "test@example.com",
       client_reference_id: "user_123",
       subscription_data: { metadata: { userId: "user_123" } },
       cancel_url: "https://example.com/dashboard",
       success_url: "https://example.com/success",
       line_items: [{ price: "price_123", quantity: 1 }],
-    };
+    } as Stripe.Checkout.SessionCreateParams;
 
     const result = await createCheckoutSession(params, "checkout_user_123_price_123");
 
@@ -217,7 +218,7 @@ describe("createCheckoutSession", () => {
 
     await createCheckoutSession({ mode: "subscription" as const, line_items: [] });
 
-    const callOptions = vi.mocked(safeStripeCall).mock.calls[0][1];
+    const callOptions = vi.mocked(safeStripeCall).mock.calls[0]?.[1];
     expect(callOptions?.circuitBreaker).toBeDefined();
   });
 
@@ -226,7 +227,7 @@ describe("createCheckoutSession", () => {
 
     await createCheckoutSession({ mode: "subscription" as const, line_items: [] });
 
-    const callOptions = vi.mocked(safeStripeCall).mock.calls[0][1];
+    const callOptions = vi.mocked(safeStripeCall).mock.calls[0]?.[1];
     expect(callOptions?.maxAttempts).toBe(3);
   });
 
@@ -235,7 +236,7 @@ describe("createCheckoutSession", () => {
 
     await createCheckoutSession({ mode: "subscription" as const, line_items: [] });
 
-    const callOptions = vi.mocked(safeStripeCall).mock.calls[0][1];
+    const callOptions = vi.mocked(safeStripeCall).mock.calls[0]?.[1];
     expect(callOptions?.timeoutMs).toBe(30000);
   });
 
@@ -251,14 +252,14 @@ describe("createCheckoutSession", () => {
 
     const params = {
       mode: "subscription" as const,
-      payment_method_types: ["card"] as const,
+      payment_method_types: ["card"],
       customer_email: "test@example.com",
       client_reference_id: "ref_123",
       subscription_data: { metadata: { userId: "user_123" } },
       cancel_url: "https://example.com/cancel",
       success_url: "https://example.com/success",
       line_items: [{ price: "price_abc", quantity: 2 }],
-    };
+    } as Stripe.Checkout.SessionCreateParams;
 
     await createCheckoutSession(params, "key_123");
 
@@ -327,7 +328,7 @@ describe("retrieveSubscription", () => {
 
     await retrieveSubscription("sub_123");
 
-    const callOptions = vi.mocked(safeStripeCall).mock.calls[0][1];
+    const callOptions = vi.mocked(safeStripeCall).mock.calls[0]?.[1];
     expect(callOptions?.circuitBreaker).toBeDefined();
   });
 
@@ -336,7 +337,7 @@ describe("retrieveSubscription", () => {
 
     await retrieveSubscription("sub_123");
 
-    const callOptions = vi.mocked(safeStripeCall).mock.calls[0][1];
+    const callOptions = vi.mocked(safeStripeCall).mock.calls[0]?.[1];
     expect(callOptions?.maxAttempts).toBe(3);
   });
 
@@ -345,7 +346,7 @@ describe("retrieveSubscription", () => {
 
     await retrieveSubscription("sub_123");
 
-    const callOptions = vi.mocked(safeStripeCall).mock.calls[0][1];
+    const callOptions = vi.mocked(safeStripeCall).mock.calls[0]?.[1];
     expect(callOptions?.timeoutMs).toBe(30000);
   });
 

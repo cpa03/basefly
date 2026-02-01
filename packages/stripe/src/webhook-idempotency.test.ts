@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { executeIdempotentWebhook, registerWebhookEvent, markEventAsProcessed, hasEventBeenProcessed } from "@saasfly/db/webhook-idempotency";
+import { executeIdempotentWebhook, registerWebhookEvent, markEventAsProcessed, hasEventBeenProcessed } from "./webhook-idempotency";
 import { db } from "@saasfly/db";
 
 vi.mock("@saasfly/db", () => ({
@@ -116,7 +116,7 @@ describe("Webhook Idempotency", () => {
       const mockExecute = vi.fn().mockResolvedValue({
         numUpdatedRows: 1n,
       });
-      vi.mocked(db.updateTable).mockReturnValue({
+      (vi.mocked(db.updateTable) as any).mockReturnValue({
         where: vi.fn().mockReturnValue({
           set: vi.fn().mockReturnValue({
             execute: mockExecute,
@@ -131,7 +131,7 @@ describe("Webhook Idempotency", () => {
     });
 
     it("should throw on database error", async () => {
-      vi.mocked(db.updateTable).mockReturnValue({
+      (vi.mocked(db.updateTable) as any).mockReturnValue({
         where: vi.fn().mockReturnValue({
           set: vi.fn().mockReturnValue({
             execute: vi.fn().mockRejectedValue(new Error("DB error")),
@@ -155,7 +155,7 @@ describe("Webhook Idempotency", () => {
         } as any),
       } as any);
 
-      vi.mocked(db.updateTable).mockReturnValue({
+      (vi.mocked(db.updateTable) as any).mockReturnValue({
         where: vi.fn().mockReturnValue({
           set: vi.fn().mockReturnValue({
             execute: mockMarkProcessed,

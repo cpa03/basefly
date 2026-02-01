@@ -3,8 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "exports": {
-    ".": "./index.ts",
-    "./webhook-idempotency": "./webhook-idempotency.ts"
+    ".": "./index.ts"
   },
   "main": "./index.ts",
   "types": "./index.ts",

@@ -1,7 +1,7 @@
-import { db } from "./index";
+import { db } from "@saasfly/db";
 
-import { IntegrationError } from "@saasfly/stripe/integration";
-import { logger } from "@saasfly/stripe/logger";
+import { IntegrationError } from "./integration";
+import { logger } from "./logger";
 
 /**
  * Check if a Stripe webhook event has already been processed

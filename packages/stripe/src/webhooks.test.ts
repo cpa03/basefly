@@ -74,7 +74,7 @@ describe("handleEvent", () => {
       const mockSet = vi.fn().mockReturnThis();
       const mockExecute = vi.fn().mockResolvedValue(undefined);
 
-      vi.mocked(db.selectFrom).mockImplementation(
+      (vi.mocked(db.selectFrom) as any).mockImplementation(
         () =>
           ({
             selectAll: mockSelectAll,
@@ -83,7 +83,7 @@ describe("handleEvent", () => {
           }) as any,
       );
 
-      vi.mocked(db.updateTable).mockReturnValue({
+      (vi.mocked(db.updateTable) as any).mockReturnValue({
         where: mockUpdateWhere,
         set: mockSet,
         execute: mockExecute,
@@ -157,7 +157,7 @@ describe("handleEvent", () => {
 
       const mockWhere = vi.fn().mockReturnThis();
       const mockExecuteTakeFirst = vi.fn().mockResolvedValue(null);
-      vi.mocked(db.selectFrom).mockReturnValue({
+      (vi.mocked(db.selectFrom) as any).mockReturnValue({
         selectAll: vi.fn().mockReturnThis(),
         where: mockWhere,
         executeTakeFirst: mockExecuteTakeFirst,
@@ -213,13 +213,13 @@ describe("handleEvent", () => {
       const mockSet = vi.fn().mockReturnThis();
       const mockExecute = vi.fn().mockResolvedValue(undefined);
 
-      vi.mocked(db.selectFrom).mockReturnValue({
+      (vi.mocked(db.selectFrom) as any).mockReturnValue({
         selectAll: vi.fn().mockReturnThis(),
         where: mockWhere,
         executeTakeFirst: mockExecuteTakeFirst,
       } as any);
 
-      vi.mocked(db.updateTable).mockReturnValue({
+      (vi.mocked(db.updateTable) as any).mockReturnValue({
         where: mockUpdateWhere,
         set: mockSet,
         execute: mockExecute,
@@ -287,7 +287,7 @@ describe("handleEvent", () => {
 
       const mockWhere = vi.fn().mockReturnThis();
       const mockExecuteTakeFirst = vi.fn().mockResolvedValue(mockCustomer);
-      vi.mocked(db.selectFrom).mockReturnValue({
+      (vi.mocked(db.selectFrom) as any).mockReturnValue({
         selectAll: vi.fn().mockReturnThis(),
         where: mockWhere,
         executeTakeFirst: mockExecuteTakeFirst,

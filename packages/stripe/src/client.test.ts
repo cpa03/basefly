@@ -133,7 +133,7 @@ describe("createCheckoutSession", () => {
       line_items: [{ price: "price_123", quantity: 1 }],
     };
 
-    const result = await createCheckoutSession(params as any, "checkout_user_123_price_123");
+    const result = await createCheckoutSession(params, "checkout_user_123_price_123");
 
     expect(result).toEqual(mockSession);
     expect(safeStripeCall).toHaveBeenCalledWith(

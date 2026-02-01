@@ -19,8 +19,6 @@ import { DashboardShell } from "~/components/shell";
 import type { Locale } from "~/config/i18n-config";
 import { getDictionary } from "~/lib/get-dictionary";
 import { trpc } from "~/trpc/server";
-import type { _ClustersArray } from "~/types/k8s";
-import { _DashboardSkeleton } from "~/components/dashboard-skeleton";
 import { StatusBadge } from "@saasfly/ui/status-badge";
 import Link from "next/link";
 import { formatDate } from "~/lib/utils";

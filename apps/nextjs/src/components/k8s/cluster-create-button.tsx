@@ -15,12 +15,14 @@ import { trpc } from "~/trpc/client";
 
 interface K8sCreateButtonProps extends ButtonProps {
   dict: Record<string, unknown>;
+  lang: string;
 }
 
 export function K8sCreateButton({
   className,
   variant,
   dict,
+  lang,
   ...props
 }: K8sCreateButtonProps) {
   const router = useRouter();
@@ -28,28 +30,34 @@ export function K8sCreateButton({
 
   async function onClick() {
     setIsLoading(true);
-    const res = await trpc.k8s.createCluster.mutate({
-      name: "Default Cluster",
-      location: DEFAULT_CLUSTER_LOCATION,
-    });
-    setIsLoading(false);
-
-    if (!res?.success) {
-      return toast({
-        title: "Something went wrong.",
-        description: "Your cluster was not created. Please try again.",
-        variant: "destructive",
+    try {
+      const res = await trpc.k8s.createCluster.mutate({
+        name: "Default Cluster",
+        location: DEFAULT_CLUSTER_LOCATION,
       });
-    }
-    if (res) {
-      const cluster = res;
+
+      if (!res?.success) {
+        return toast({
+          title: "Something went wrong.",
+          description: "Your cluster was not created. Please try again.",
+          variant: "destructive",
+        });
+      }
 
       // This forces a cache invalidation.
       router.refresh();
 
-      if (cluster?.id) {
-        router.push(`/editor/cluster/${cluster.id}`);
+      if (res.id) {
+        router.push(`/${lang}/editor/cluster/${res.id}`);
       }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
     }
   }
 

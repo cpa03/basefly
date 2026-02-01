@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { authRouter } from "./auth";
 
@@ -17,7 +18,7 @@ describe("authRouter", () => {
     mockCaller = authRouter.createCaller({
       userId: "test-user-id",
       requestId: "test-request-id",
-    });
+    } as any);
   });
 
   describe("mySubscription", () => {
@@ -127,7 +128,7 @@ describe("authRouter", () => {
       const callerWithRequestId = authRouter.createCaller({
         userId: "test-user-id",
         requestId: "custom-request-id",
-      });
+      } as any);
 
       await callerWithRequestId.mySubscription();
 

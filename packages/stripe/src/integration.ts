@@ -91,8 +91,8 @@ export class CircuitBreaker {
    */
   constructor(
     private readonly serviceName: string,
-    private readonly threshold: number = 5,
-    private readonly resetTimeoutMs: number = 60000,
+    private readonly threshold = 5,
+    private readonly resetTimeoutMs = 60000,
   ) {}
 
   /**
@@ -181,7 +181,7 @@ export class CircuitBreaker {
  * Default list of retryable error codes
  * Includes network errors and rate limits
  */
-const defaultRetryableErrors = [
+export const defaultRetryableErrors = [
   "ECONNRESET",
   "ETIMEDOUT",
   "ECONNREFUSED",
@@ -252,7 +252,7 @@ export async function withRetry<T>(
 /**
  * Check if an error is retryable based on error codes
  */
-function isRetryableError(error: unknown, retryableErrors: string[]): boolean {
+export function isRetryableError(error: unknown, retryableErrors: string[]): boolean {
   if (error instanceof Error) {
     return retryableErrors.some((code) =>
       error.message.toLowerCase().includes(code.toLowerCase()),

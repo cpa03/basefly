@@ -152,6 +152,16 @@ Add comprehensive integration tests for API router layer to ensure critical busi
 
 ---
 
+# BugLover Tasks
+
+## Bugs and Errors
+
+### Errors
+- [/] error: Build fails due to missing environment variables (STRIPE_API_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL) - *Known limitation in sandbox environment.*
+- [x] error: `DashboardPage` may return undefined if `trpc.k8s.getClusters.query()` returns undefined, causing React runtime error.
+
+---
+
 # Documentation Tasks
 
 ## Task Queue

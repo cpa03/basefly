@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect } from "vitest";
 import { z } from "zod";
 
@@ -161,7 +162,7 @@ describe("Enhanced API Schemas Validation", () => {
       const result = enhancedK8sClusterCreateSchema.safeParse(invalidData);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].code).toBe("unrecognized_keys");
+        expect(result.error.issues[0]?.code).toBe("unrecognized_keys");
       }
     });
 
@@ -202,7 +203,7 @@ describe("Enhanced API Schemas Validation", () => {
       const result = enhancedK8sClusterDeleteSchema.safeParse(invalidData);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toContain("positive");
+        expect(result.error.issues[0]?.message).toContain("positive");
       }
     });
 
@@ -211,7 +212,7 @@ describe("Enhanced API Schemas Validation", () => {
       const result = enhancedK8sClusterDeleteSchema.safeParse(invalidData);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toContain("positive");
+        expect(result.error.issues[0]?.message).toContain("positive");
       }
     });
 
@@ -220,7 +221,7 @@ describe("Enhanced API Schemas Validation", () => {
       const result = enhancedK8sClusterDeleteSchema.safeParse(invalidData);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toContain("integer");
+        expect(result.error.issues[0]?.message).toContain("integer");
       }
     });
 
@@ -279,7 +280,7 @@ describe("Enhanced API Schemas Validation", () => {
       const result = enhancedK8sClusterUpdateSchema.safeParse(invalidData);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toContain("At least one field");
+        expect(result.error.issues[0]?.message).toContain("At least one field");
       }
     });
 
@@ -344,7 +345,7 @@ describe("Enhanced API Schemas Validation", () => {
       const result = enhancedStripeCreateSessionSchema.safeParse(invalidData);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toContain("start with 'price_'");
+        expect(result.error.issues[0]?.message).toContain("start with 'price_'");
       }
     });
 
@@ -353,7 +354,7 @@ describe("Enhanced API Schemas Validation", () => {
       const result = enhancedStripeCreateSessionSchema.safeParse(invalidData);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toContain("cannot be empty");
+        expect(result.error.issues[0]?.message).toContain("cannot be empty");
       }
     });
 
@@ -409,7 +410,7 @@ describe("Enhanced API Schemas Validation", () => {
       const result = enhancedUpdateUserNameSchema.safeParse(invalidData);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toContain("cannot be empty");
+        expect(result.error.issues[0]?.message).toContain("cannot be empty");
       }
     });
 
@@ -430,7 +431,7 @@ describe("Enhanced API Schemas Validation", () => {
       const result = enhancedUpdateUserNameSchema.safeParse(invalidData);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toContain("exceed 100");
+        expect(result.error.issues[0]?.message).toContain("exceed 100");
       }
     });
 
@@ -509,7 +510,7 @@ describe("Enhanced API Schemas Validation", () => {
       const result = enhancedInsertCustomerSchema.safeParse(invalidData);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toContain("Invalid user ID");
+        expect(result.error.issues[0]?.message).toContain("Invalid user ID");
       }
     });
 

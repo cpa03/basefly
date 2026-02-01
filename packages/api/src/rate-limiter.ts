@@ -1,22 +1,24 @@
+import type { NextRequest } from "next/server";
+
 /**
  * Rate Limiter
- * 
+ *
  * Token bucket algorithm implementation for API rate limiting.
  * Protects endpoints from abuse, DDoS attacks, and resource exhaustion.
- * 
+ *
  * Features:
  * - In-memory storage (Redis-ready for distributed systems)
  * - Automatic cleanup of expired entries
  * - Token bucket algorithm for smooth rate limiting
  * - Per-user or per-IP rate limiting
- * 
+ *
  * @example
  * ```typescript
  * const limiter = new RateLimiter({
  *   maxRequests: 100,
  *   windowMs: 60 * 1000, // 1 minute
  * });
- * 
+ *
  * const result = limiter.check("user123");
  * if (result.success) {
  *   // Allow request
@@ -253,5 +255,3 @@ export function getIdentifier(userId: string | null, req?: NextRequest): string 
 
   return "unknown";
 }
-
-export type { NextRequest } from "next/server";

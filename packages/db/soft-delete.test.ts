@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { SoftDeleteService } from "./soft-delete";
 
@@ -136,7 +141,7 @@ describe("SoftDeleteService", () => {
     });
 
     it("excludes soft-deleted records from results", async () => {
-      const mockDeletedCluster = { id: 2, name: "deleted-cluster", deletedAt: new Date() };
+      const _mockDeletedCluster = { id: 2, name: "deleted-cluster", deletedAt: new Date() };
       mockSelectExecuteTakeFirst.mockResolvedValue(null);
 
       await service.findActive(2, "user_123");

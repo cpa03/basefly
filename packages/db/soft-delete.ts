@@ -59,9 +59,9 @@ export class SoftDeleteService<T extends keyof DB & string> {
   async softDelete(id: number, userId: string, options?: { requestId?: string }): Promise<void> {
     await db
       .updateTable(this.tableName)
-      .set({ deletedAt: new Date() })
-      .where("id", "=", id)
-      .where("authUserId", "=", userId)
+      .set({ deletedAt: new Date() } as any)
+      .where("id" as any, "=", id)
+      .where("authUserId" as any, "=", userId)
       .execute();
   }
 
@@ -76,9 +76,9 @@ export class SoftDeleteService<T extends keyof DB & string> {
   async restore(id: number, userId: string, options?: { requestId?: string }): Promise<void> {
     await db
       .updateTable(this.tableName)
-      .set({ deletedAt: null })
-      .where("id", "=", id)
-      .where("authUserId", "=", userId)
+      .set({ deletedAt: null } as any)
+      .where("id" as any, "=", id)
+      .where("authUserId" as any, "=", userId)
       .execute();
   }
 
@@ -93,9 +93,9 @@ export class SoftDeleteService<T extends keyof DB & string> {
     return db
       .selectFrom(this.tableName)
       .selectAll()
-      .where("id", "=", id)
-      .where("authUserId", "=", userId)
-      .where("deletedAt", "is", null)
+      .where("id" as any, "=", id)
+      .where("authUserId" as any, "=", userId)
+      .where("deletedAt" as any, "is", null)
       .executeTakeFirst();
   }
 
@@ -109,8 +109,8 @@ export class SoftDeleteService<T extends keyof DB & string> {
     return db
       .selectFrom(this.tableName)
       .selectAll()
-      .where("authUserId", "=", userId)
-      .where("deletedAt", "is", null)
+      .where("authUserId" as any, "=", userId)
+      .where("deletedAt" as any, "is", null)
       .execute();
   }
 
@@ -124,8 +124,8 @@ export class SoftDeleteService<T extends keyof DB & string> {
     return db
       .selectFrom(this.tableName)
       .selectAll()
-      .where("authUserId", "=", userId)
-      .where("deletedAt", "is not", null)
+      .where("authUserId" as any, "=", userId)
+      .where("deletedAt" as any, "is not", null)
       .execute();
   }
 }

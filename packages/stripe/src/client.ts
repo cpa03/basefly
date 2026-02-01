@@ -35,7 +35,7 @@ function generateIdempotencyKey(prefix: string): string {
  * @returns New metadata object with request ID
  */
 function addRequestMetadata(requestId?: string, existingMetadata?: Stripe.MetadataParam): Stripe.MetadataParam {
-  if (!requestId) return existingMetadata || undefined;
+  if (!requestId) return existingMetadata || {};
   return { ...existingMetadata, requestId };
 }
 
@@ -63,16 +63,15 @@ function addRequestMetadata(requestId?: string, existingMetadata?: Stripe.Metada
  */
 export async function createBillingSession(customerId: string, returnUrl: string, options?: { requestId?: string }) {
   const { requestId } = options || {};
-  
-  logger.info("Creating Stripe billing portal session", { requestId, customerId });
-  
-  const result = await safeStripeCall(
-    () =>
-      stripe.billingPortal.sessions.create({
-        customer: customerId,
-        return_url: returnUrl,
-        metadata: addRequestMetadata(requestId),
-      }),
+
+   logger.info("Creating Stripe billing portal session", { requestId, customerId });
+
+    const result = await safeStripeCall(
+     () =>
+       stripe.billingPortal.sessions.create({
+         customer: customerId,
+         return_url: returnUrl,
+       }),
     {
       serviceName: "Stripe Billing Portal",
       circuitBreaker: stripeCircuitBreaker,

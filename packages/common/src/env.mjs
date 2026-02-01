@@ -11,13 +11,11 @@ export const env = createEnv({
     NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID: z.string().optional(),
   },
   server: {
-    NEXTAUTH_SECRET: z.string().min(1),
     RESEND_API_KEY: z.string().optional(),
   },
   // Client side variables gets destructured here due to Next.js static analysis
   // Shared ones are also included here for good measure since the behavior has been inconsistent
   runtimeEnv: {
-    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     NEXT_PUBLIC_STRIPE_PRO_PRODUCT_ID:
       process.env.NEXT_PUBLIC_STRIPE_PRO_PRODUCT_ID,

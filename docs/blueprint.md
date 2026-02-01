@@ -292,8 +292,28 @@ Based on router files:
 - ✅ **Soft delete helper service** for consistent operations
 - ✅ **Application-level cascade deletion** with audit trail preservation (2024-01-07)
 - ✅ **Transaction-based user deletion** ensures data consistency
-- ❌ No check constraints
-- ❌ No triggers for automated cleanup
+- ✅ **Check constraints for data validation** (added 2026-01-31)
+- ✅ **Database triggers for automated maintenance** (added 2026-01-31)
+
+### Check Constraints (2026-01-31)
+
+**K8sClusterConfig Constraints:**
+- `name_not_empty`: `LENGTH(TRIM(name)) > 0` - Ensures cluster names are not empty or whitespace
+- `name_max_length`: `LENGTH(name) <= 100` - Limits cluster name length
+- `location_not_empty`: `LENGTH(TRIM(location)) > 0` - Ensures locations are not empty or whitespace
+- `location_max_length`: `LENGTH(location) <= 50` - Limits location length
+
+**Customer Constraints:**
+- `stripeCustomerId_format`: `stripeCustomerId IS NULL OR stripeCustomerId LIKE 'cus_%'` - Validates Stripe customer ID format
+- `stripeSubscriptionId_format`: `stripeSubscriptionId IS NULL OR stripeSubscriptionId LIKE 'sub_%'` - Validates Stripe subscription ID format
+
+**Benefits:**
+- Database-level validation prevents invalid data insertion
+- Complements application-level validation with last line of defense
+- Minimal performance overhead on INSERT/UPDATE operations
+- No impact on SELECT queries
+
+**Migration:** `20260131_add_check_constraints`
 
 ## Transaction Usage
 
@@ -474,11 +494,84 @@ throw createApiError(
    - Return consistent error codes
    - Include helpful error messages
 
-7. **Webhook Reliability**:
-   - Handle errors gracefully
-   - Log all webhook failures
-   - Only throw for unrecoverable errors
-   - Use `IntegrationError` for retryable issues
+ 7. **Webhook Reliability**:
+    - Handle errors gracefully
+    - Log all webhook failures
+    - Only throw for unrecoverable errors
+    - Use `IntegrationError` for retryable issues
+    - **Idempotency**: Prevent duplicate processing with database tracking
+    - **Event Registration**: Track all processed Stripe webhook events
+    - **Duplicate Detection**: Unique constraint prevents reprocessing
+    - **Cleanup Strategy**: Periodically delete old processed events (90 days)
+
+**Webhook Idempotency Pattern**:
+
+Stripe webhooks may be delivered multiple times due to:
+- Network interruptions
+- Timeouts during processing
+- Manual retry by Stripe
+
+**Implementation**: `packages/db/webhook-idempotency.ts`
+
+**Database Schema**: `StripeWebhookEvent`
+```sql
+CREATE TABLE "StripeWebhookEvent" (
+  "id" TEXT NOT NULL PRIMARY KEY,
+  "eventType" TEXT NOT NULL,
+  "processed" BOOLEAN NOT NULL DEFAULT FALSE,
+  "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE("id")  -- Prevents duplicate events
+);
+```
+
+**Usage Pattern**:
+```typescript
+import { executeIdempotentWebhook } from "@saasfly/db/webhook-idempotency";
+
+export async function handleEvent(event: Stripe.Event) {
+  await executeIdempotentWebhook(
+    event.id,        // Stripe event ID (evt_*)
+    event.type,      // Event type (e.g., checkout.session.completed)
+    async () => processEventInternal(event)  // Handler function
+  );
+}
+```
+
+**Idempotency Workflow**:
+1. Webhook received with `event.id`
+2. Attempt to insert into `StripeWebhookEvent` table
+3. If unique constraint violation → event already processed → skip handler
+4. If insert succeeds → proceed to process event
+5. Mark `processed = true` after successful completion
+6. On error, throw to trigger Stripe retry (if retryable)
+
+**Key Functions**:
+- `executeIdempotentWebhook()` - Execute handler with idempotency protection
+- `registerWebhookEvent()` - Register event (fails if duplicate)
+- `markEventAsProcessed()` - Mark event as successfully processed
+- `hasEventBeenProcessed()` - Check if event was processed
+- `cleanupOldWebhookEvents()` - Delete old processed events
+
+**Error Handling**:
+- Duplicate key violation (code 23505) → Silently skip (already processed)
+- Other database errors → Throw IntegrationError (retryable)
+- Handler errors → Propagate (Stripe will retry)
+
+**Benefits**:
+- ✅ Prevents duplicate database updates
+- ✅ Prevents duplicate charges on checkout events
+- ✅ Provides audit trail of all processed webhooks
+- ✅ Enables cleanup of old events
+- ✅ Resilient to network issues and Stripe retries
+
+**Performance Considerations**:
+- Unique index check is O(1) for duplicate detection
+- Table grows linearly with webhook volume
+- Periodic cleanup recommended (e.g., keep 90 days)
+
+**Testing**: `packages/db/webhook-idempotency.test.ts`
+
 
 ### Anti-Patterns to Avoid
 
@@ -665,9 +758,12 @@ X-RateLimit-Reset: 1704729600
 ### Low Priority
 1. ~~Audit query patterns for N+1 issues~~ ✅ Completed (2026-01-10)
 2. ~~Consider adding composite indexes for multi-column queries~~ ✅ Completed (2026-01-10)
-3. Implement read replicas if read-heavy workload
-4. Add integration tests for external services
-5. Set up monitoring for circuit breaker states
+3. ~~Add check constraints for data validation~~ ✅ Completed (2026-01-31)
+4. ~~Add database triggers for automated maintenance~~ ✅ Completed (2026-01-31)
+5. ~~Add row-level security for multi-tenant data~~ ✅ Completed (2026-01-31)
+6. Implement read replicas if read-heavy workload
+7. Add integration tests for external services
+8. Set up monitoring for circuit breaker states
 
 ## UI/UX Patterns
 
@@ -948,7 +1044,7 @@ const cspHeader = `
 - Consider materialized views for aggregations
 
 ### Security
-- Row-level security for multi-tenant data
+- ✅ Row-level security for multi-tenant data
 - Audit logging for sensitive operations
 - Data encryption at rest
 - Implement security response headers ✅ Completed

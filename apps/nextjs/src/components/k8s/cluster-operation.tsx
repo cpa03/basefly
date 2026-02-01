@@ -28,23 +28,33 @@ import { trpc } from "~/trpc/client";
 import type { Cluster } from "~/types/k8s";
 
 async function deleteCluster(clusterId: number) {
-  const res = await trpc.k8s.deleteCluster.mutate({ id: clusterId });
-  if (!res?.success) {
+  try {
+    const res = await trpc.k8s.deleteCluster.mutate({ id: clusterId });
+    if (!res?.success) {
+      toast({
+        title: "Something went wrong.",
+        description: "Your cluster was not deleted. Please try again.",
+        variant: "destructive",
+      });
+      return false;
+    }
+    return true;
+  } catch (error) {
     toast({
-      title: "Something went wrong.",
-      description: "Your cluster was not deleted. Please try again.",
+      title: "Error",
+      description: "An unexpected error occurred. Please try again.",
       variant: "destructive",
     });
+    return false;
   }
-
-  return true;
 }
 
 interface ClusterOperationsProps {
   cluster: Pick<Cluster, "id" | "name">;
+  lang: string;
 }
 
-export function ClusterOperations({ cluster }: ClusterOperationsProps) {
+export function ClusterOperations({ cluster, lang }: ClusterOperationsProps) {
   const router = useRouter();
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false);
   const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false);
@@ -59,11 +69,24 @@ export function ClusterOperations({ cluster }: ClusterOperationsProps) {
         <DropdownMenuContent align="end">
           <DropdownMenuItem>
             <Link
-              href={`/en/editor/cluster/${cluster.id}`}
+              href={`/${lang}/editor/cluster/${cluster.id}`}
               className="flex w-full"
             >
               Edit
             </Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            className="flex cursor-pointer items-center"
+            onSelect={() => {
+              void navigator.clipboard.writeText(String(cluster.id));
+              toast({
+                title: "Copied!",
+                description: "Cluster ID copied to clipboard.",
+              });
+            }}
+          >
+            Copy ID
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
@@ -90,13 +113,15 @@ export function ClusterOperations({ cluster }: ClusterOperationsProps) {
               onClick={async (event) => {
                 event.preventDefault();
                 setIsDeleteLoading(true);
+                try {
+                  const deleted = await deleteCluster(cluster.id);
 
-                const deleted = await deleteCluster(cluster.id);
-
-                if (deleted) {
+                  if (deleted) {
+                    setShowDeleteAlert(false);
+                    router.refresh();
+                  }
+                } finally {
                   setIsDeleteLoading(false);
-                  setShowDeleteAlert(false);
-                  router.refresh();
                 }
               }}
               className="bg-red-600 focus:ring-red-600"

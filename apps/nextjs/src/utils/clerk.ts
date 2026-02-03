@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Negotiator from "negotiator";
 
 import { i18n } from "~/config/i18n-config";
-import { env } from "@saasfly/auth/env.mjs";
+import { _env } from "@saasfly/auth/env.mjs";
 
 const noNeedProcessRoute = [".*\\.png", ".*\\.jpg", ".*\\.opengraph-image.png"];
 

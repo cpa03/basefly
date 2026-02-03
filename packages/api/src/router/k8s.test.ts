@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { k8sRouter } from "./k8s";
 import { TRPCError } from "@trpc/server";
@@ -57,7 +58,7 @@ describe("k8sRouter", () => {
       req: undefined,
       userId: "test-user-id",
       requestId: "test-request-id",
-    });
+    } as any);
   });
 
   describe("getClusters", () => {

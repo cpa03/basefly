@@ -91,8 +91,8 @@ export class CircuitBreaker {
    */
   constructor(
     private readonly serviceName: string,
-    private readonly threshold: number = 5,
-    private readonly resetTimeoutMs: number = 60000,
+    private readonly threshold = 5,
+    private readonly resetTimeoutMs = 60000,
   ) {}
 
   /**

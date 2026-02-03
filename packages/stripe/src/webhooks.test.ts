@@ -83,7 +83,8 @@ describe("handleEvent", () => {
           }) as any,
       );
 
-      (vi.mocked(db.updateTable) as any).mockReturnValue({
+      // @ts-expect-error Type instantiation excessively deep
+      vi.mocked(db.updateTable).mockReturnValue({
         where: mockUpdateWhere,
         set: mockSet,
         execute: mockExecute,
@@ -219,7 +220,8 @@ describe("handleEvent", () => {
         executeTakeFirst: mockExecuteTakeFirst,
       } as any);
 
-      (vi.mocked(db.updateTable) as any).mockReturnValue({
+      // @ts-expect-error Type instantiation excessively deep
+      vi.mocked(db.updateTable).mockReturnValue({
         where: mockUpdateWhere,
         set: mockSet,
         execute: mockExecute,

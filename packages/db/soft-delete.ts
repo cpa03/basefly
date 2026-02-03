@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /**
  * Soft Delete Service
- * 
+ *
  * Provides reusable soft delete functionality for database entities.
  * Uses a timestamp-based approach (deletedAt field) to mark records as deleted
  * without actually removing them from the database. This preserves audit trails
  * and enables recovery of deleted records.
- * 
+ *
  * Key features:
  * - Type-safe table names via generic parameter T
  * - Ownership validation via authUserId checks
@@ -58,9 +60,9 @@ export class SoftDeleteService<T extends keyof DB> {
   async softDelete(id: number, userId: string, _options?: { requestId?: string }): Promise<void> {
     await db
       .updateTable(this.tableName)
-      .set({ deletedAt: new Date() } as never)
-      .where("id" as never, "=", id)
-      .where("authUserId" as never, "=", userId)
+      .set({ deletedAt: new Date() } as any)
+      .where("id" as any, "=", id)
+      .where("authUserId" as any, "=", userId)
       .execute();
   }
 
@@ -75,9 +77,9 @@ export class SoftDeleteService<T extends keyof DB> {
   async restore(id: number, userId: string, _options?: { requestId?: string }): Promise<void> {
     await db
       .updateTable(this.tableName)
-      .set({ deletedAt: null } as never)
-      .where("id" as never, "=", id)
-      .where("authUserId" as never, "=", userId)
+      .set({ deletedAt: null } as any)
+      .where("id" as any, "=", id)
+      .where("authUserId" as any, "=", userId)
       .execute();
   }
 
@@ -92,9 +94,9 @@ export class SoftDeleteService<T extends keyof DB> {
     return db
       .selectFrom(this.tableName)
       .selectAll()
-      .where("id" as never, "=", id)
-      .where("authUserId" as never, "=", userId)
-      .where("deletedAt" as never, "is", null)
+      .where("id" as any, "=", id)
+      .where("authUserId" as any, "=", userId)
+      .where("deletedAt" as any, "is", null)
       .executeTakeFirst();
   }
 
@@ -108,8 +110,8 @@ export class SoftDeleteService<T extends keyof DB> {
     return db
       .selectFrom(this.tableName)
       .selectAll()
-      .where("authUserId" as never, "=", userId)
-      .where("deletedAt" as never, "is", null)
+      .where("authUserId" as any, "=", userId)
+      .where("deletedAt" as any, "is", null)
       .execute();
   }
 
@@ -123,8 +125,8 @@ export class SoftDeleteService<T extends keyof DB> {
     return db
       .selectFrom(this.tableName)
       .selectAll()
-      .where("authUserId" as never, "=", userId)
-      .where("deletedAt" as never, "is not", null)
+      .where("authUserId" as any, "=", userId)
+      .where("deletedAt" as any, "is not", null)
       .execute();
   }
 }

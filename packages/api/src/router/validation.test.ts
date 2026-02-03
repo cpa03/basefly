@@ -31,12 +31,12 @@ vi.mock("@saasfly/db", () => ({
   },
 }));
 
-const MockIntegrationError = class extends Error {
+class MockIntegrationError extends Error {
   constructor(message: string, public code: string) {
     super(message);
     this.name = "IntegrationError";
   }
-};
+}
 
 vi.mock("@saasfly/stripe", () => ({
   createBillingSession: vi.fn(),
@@ -476,7 +476,7 @@ describe("API Validation Tests", () => {
     });
 
     it("handles empty errors array", () => {
-      const errors: Array<{ message: string; path?: string[] }> = [];
+      const errors: any[] = [];
       const message = createValidationErrorMessage(errors);
       expect(message).toBe("Validation error");
     });

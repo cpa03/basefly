@@ -1,7 +1,5 @@
 import Link from "next/link";
 
-import React from "react";
-
 import { TableCell, TableRow } from "@saasfly/ui/table";
 import { StatusBadge } from "@saasfly/ui/status-badge";
 
@@ -12,12 +10,11 @@ import type { Cluster } from "~/types/k8s";
 interface ClusterItemProps {
   cluster: Pick<Cluster, "id" | "name" | "location" | "plan" | "status" | "updatedAt">;
   lang: string;
-  key?: string;
 }
 
-export const ClusterItem = React.memo(function ClusterItem({ cluster, lang, key }: ClusterItemProps) {
+export function ClusterItem({ cluster, lang }: ClusterItemProps) {
   return (
-    <TableRow key={key}>
+    <TableRow key={String(cluster.id)}>
       <TableCell className="font-medium">
         <Link
           href={`/${lang}/editor/cluster/${String(cluster.id)}`}

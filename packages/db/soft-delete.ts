@@ -16,7 +16,6 @@
 
 import { db } from ".";
 import type { DB } from "./prisma/types";
-import type { Selectable } from "kysely";
 
 /**
  * Interface for entities that support soft delete
@@ -45,7 +44,7 @@ export interface SoftDeleteEntity {
  * const clusters = await clusterService.findAllActive(userId);
  * ```
  */
-export class SoftDeleteService<T extends keyof DB & string> {
+export class SoftDeleteService<T extends keyof DB> {
   constructor(private tableName: T) {}
 
   /**
@@ -56,12 +55,12 @@ export class SoftDeleteService<T extends keyof DB & string> {
    * @param options - Optional request ID for distributed tracing
    * @throws Error if record doesn't exist or doesn't belong to user
    */
-  async softDelete(id: number, userId: string, options?: { requestId?: string }): Promise<void> {
+  async softDelete(id: number, userId: string, _options?: { requestId?: string }): Promise<void> {
     await db
       .updateTable(this.tableName)
-      .set({ deletedAt: new Date() } as any)
-      .where("id" as any, "=", id)
-      .where("authUserId" as any, "=", userId)
+      .set({ deletedAt: new Date() } as never)
+      .where("id" as never, "=", id)
+      .where("authUserId" as never, "=", userId)
       .execute();
   }
 
@@ -73,12 +72,12 @@ export class SoftDeleteService<T extends keyof DB & string> {
    * @param options - Optional request ID for distributed tracing
    * @throws Error if record doesn't exist or doesn't belong to user
    */
-  async restore(id: number, userId: string, options?: { requestId?: string }): Promise<void> {
+  async restore(id: number, userId: string, _options?: { requestId?: string }): Promise<void> {
     await db
       .updateTable(this.tableName)
-      .set({ deletedAt: null } as any)
-      .where("id" as any, "=", id)
-      .where("authUserId" as any, "=", userId)
+      .set({ deletedAt: null } as never)
+      .where("id" as never, "=", id)
+      .where("authUserId" as never, "=", userId)
       .execute();
   }
 
@@ -93,9 +92,9 @@ export class SoftDeleteService<T extends keyof DB & string> {
     return db
       .selectFrom(this.tableName)
       .selectAll()
-      .where("id" as any, "=", id)
-      .where("authUserId" as any, "=", userId)
-      .where("deletedAt" as any, "is", null)
+      .where("id" as never, "=", id)
+      .where("authUserId" as never, "=", userId)
+      .where("deletedAt" as never, "is", null)
       .executeTakeFirst();
   }
 
@@ -109,8 +108,8 @@ export class SoftDeleteService<T extends keyof DB & string> {
     return db
       .selectFrom(this.tableName)
       .selectAll()
-      .where("authUserId" as any, "=", userId)
-      .where("deletedAt" as any, "is", null)
+      .where("authUserId" as never, "=", userId)
+      .where("deletedAt" as never, "is", null)
       .execute();
   }
 
@@ -124,8 +123,8 @@ export class SoftDeleteService<T extends keyof DB & string> {
     return db
       .selectFrom(this.tableName)
       .selectAll()
-      .where("authUserId" as any, "=", userId)
-      .where("deletedAt" as any, "is not", null)
+      .where("authUserId" as never, "=", userId)
+      .where("deletedAt" as never, "is not", null)
       .execute();
   }
 }

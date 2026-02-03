@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { UserDeletionService } from "./user-deletion";
+import { db } from "../index";
 
 vi.mock("../index", () => ({
   db: {
@@ -10,7 +11,10 @@ vi.mock("../index", () => ({
 
 describe("UserDeletionService", () => {
   let service: UserDeletionService;
-  let mockTrx: any;
+  let mockTrx: {
+    updateTable: ReturnType<typeof vi.fn>,
+    deleteFrom: ReturnType<typeof vi.fn>,
+  };
   let mockUpdateWhere: ReturnType<typeof vi.fn>;
   let mockUpdateSet: ReturnType<typeof vi.fn>;
   let mockUpdateExecute: ReturnType<typeof vi.fn>;
@@ -23,8 +27,6 @@ describe("UserDeletionService", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-
-    const { db } = require("../index");
 
     mockUpdateWhere = vi.fn().mockReturnThis();
     mockUpdateSet = vi.fn().mockReturnThis();
@@ -50,30 +52,37 @@ describe("UserDeletionService", () => {
       }),
     };
 
-    vi.mocked(db.transaction).mockImplementation((callback: any) => {
-      return callback(mockTrx);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    vi.mocked(db.transaction).mockImplementation((callback: (trx: typeof mockTrx) => unknown) => {
+      return callback(mockTrx) as never;
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     vi.mocked(db.selectFrom).mockReturnValue({
       selectAll: mockSelectAll,
       where: mockSelectWhere,
       execute: mockSelectExecute,
       executeTakeFirst: mockSelectExecuteTakeFirst,
-    } as any);
+    } as {
+      selectAll: ReturnType<typeof vi.fn>,
+      where: ReturnType<typeof vi.fn>,
+      execute: ReturnType<typeof vi.fn>,
+      executeTakeFirst: ReturnType<typeof vi.fn>,
+    });
 
     service = new UserDeletionService();
   });
 
   describe("deleteUser", () => {
     it("soft deletes all K8s clusters before hard deleting user", async () => {
-      const { db } = require("../index");
-
       await service.deleteUser("user_123");
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       expect(db.transaction).toHaveBeenCalled();
       expect(mockTrx.updateTable).toHaveBeenCalledWith("K8sClusterConfig");
       expect(mockUpdateWhere).toHaveBeenCalledWith("authUserId", "=", "user_123");
       expect(mockUpdateWhere).toHaveBeenCalledWith("deletedAt", "is", null);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       expect(mockUpdateSet).toHaveBeenCalledWith({ deletedAt: expect.any(Date) });
       expect(mockUpdateExecute).toHaveBeenCalled();
     });
@@ -95,10 +104,9 @@ describe("UserDeletionService", () => {
     });
 
     it("executes all operations within a single transaction", async () => {
-      const { db } = require("../index");
-
       await service.deleteUser("user_123");
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       expect(db.transaction).toHaveBeenCalledTimes(1);
       expect(mockTrx.updateTable).toHaveBeenCalledTimes(1);
       expect(mockTrx.deleteFrom).toHaveBeenCalledTimes(2);
@@ -120,21 +128,22 @@ describe("UserDeletionService", () => {
       await service.deleteUser("user_123");
 
       expect(mockTrx.updateTable).toHaveBeenCalled();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       expect(mockUpdateSet).toHaveBeenCalledWith({ deletedAt: expect.any(Date) });
       expect(mockTrx.deleteFrom).toHaveBeenCalledTimes(2);
     });
   });
 
   describe("softDeleteUser", () => {
-    it("soft deletes all K8s clusters for the user", async () => {
-      const { db } = require("../index");
-
+    it("soft deletes all K8s clusters for user", async () => {
       await service.softDeleteUser("user_123");
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       expect(db.transaction).toHaveBeenCalled();
       expect(mockTrx.updateTable).toHaveBeenCalledWith("K8sClusterConfig");
       expect(mockUpdateWhere).toHaveBeenCalledWith("authUserId", "=", "user_123");
       expect(mockUpdateWhere).toHaveBeenCalledWith("deletedAt", "is", null);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       expect(mockUpdateSet).toHaveBeenCalledWith({ deletedAt: expect.any(Date) });
     });
 
@@ -154,10 +163,9 @@ describe("UserDeletionService", () => {
     });
 
     it("executes all operations within a single transaction", async () => {
-      const { db } = require("../index");
-
       await service.softDeleteUser("user_123");
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       expect(db.transaction).toHaveBeenCalledTimes(1);
       expect(mockTrx.updateTable).toHaveBeenCalledTimes(2);
       expect(mockTrx.deleteFrom).not.toHaveBeenCalled();

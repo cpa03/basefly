@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { SoftDeleteService } from "./soft-delete";
+import { db } from "../index";
 
 vi.mock("../index", () => ({
   db: {
@@ -28,8 +29,6 @@ describe("SoftDeleteService", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    const { db } = require("../index");
-
     mockUpdateWhere = vi.fn().mockReturnThis();
     mockUpdateSet = vi.fn().mockReturnThis();
     mockUpdateExecute = vi.fn().mockResolvedValue(undefined);
@@ -41,31 +40,42 @@ describe("SoftDeleteService", () => {
     mockSelectExecute = vi.fn().mockResolvedValue([]);
     mockSelectExecuteTakeFirst = vi.fn().mockResolvedValue(null);
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     vi.mocked(db.updateTable).mockReturnValue({
       where: mockUpdateWhere,
       set: mockUpdateSet,
       execute: mockUpdateExecute,
-    } as any);
+    } as {
+      where: ReturnType<typeof vi.fn>,
+      set: ReturnType<typeof vi.fn>,
+      execute: ReturnType<typeof vi.fn>,
+    });
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     vi.mocked(db.selectFrom).mockReturnValue({
       selectAll: mockSelectAll,
       where: mockSelectWhere1,
       execute: mockSelectExecute,
       executeTakeFirst: mockSelectExecuteTakeFirst,
-    } as any);
+    } as {
+      selectAll: ReturnType<typeof vi.fn>,
+      where: ReturnType<typeof vi.fn>,
+      execute: ReturnType<typeof vi.fn>,
+      executeTakeFirst: ReturnType<typeof vi.fn>,
+    });
 
     service = new SoftDeleteService("K8sClusterConfig");
   });
 
   describe("softDelete", () => {
     it("sets deletedAt timestamp when soft deleting a record", async () => {
-      const { db } = require("../index");
-
       await service.softDelete(1, "user_123");
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       expect(db.updateTable).toHaveBeenCalledWith("K8sClusterConfig");
       expect(mockUpdateWhere).toHaveBeenCalledWith("id", "=", 1);
       expect(mockUpdateWhere).toHaveBeenCalledWith("authUserId", "=", "user_123");
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       expect(mockUpdateSet).toHaveBeenCalledWith({ deletedAt: expect.any(Date) });
       expect(mockUpdateExecute).toHaveBeenCalled();
     });
@@ -87,10 +97,9 @@ describe("SoftDeleteService", () => {
 
   describe("restore", () => {
     it("sets deletedAt to null when restoring a record", async () => {
-      const { db } = require("../index");
-
       await service.restore(2, "user_789");
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       expect(db.updateTable).toHaveBeenCalledWith("K8sClusterConfig");
       expect(mockUpdateWhere).toHaveBeenCalledWith("id", "=", 2);
       expect(mockUpdateWhere).toHaveBeenCalledWith("authUserId", "=", "user_789");
@@ -136,7 +145,6 @@ describe("SoftDeleteService", () => {
     });
 
     it("excludes soft-deleted records from results", async () => {
-      const mockDeletedCluster = { id: 2, name: "deleted-cluster", deletedAt: new Date() };
       mockSelectExecuteTakeFirst.mockResolvedValue(null);
 
       await service.findActive(2, "user_123");

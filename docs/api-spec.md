@@ -742,7 +742,7 @@ Ensures safe retries without duplicate operations.
 
 ## Webhook Reliability
 
-Stripe webhooks are processed with error handling and logging:
+Stripe webhooks are processed with comprehensive error handling, logging, and idempotency protection:
 
 **Event Types**:
 - `checkout.session.completed` - Subscription created
@@ -753,6 +753,59 @@ Stripe webhooks are processed with error handling and logging:
 - `IntegrationError` for retryable issues
 - Invalid metadata prevents retry
 - No silent failures
+
+**Idempotency Protection**:
+- **Database Tracking**: All webhook events stored in `StripeWebhookEvent` table
+- **Duplicate Prevention**: Unique constraint prevents reprocessing same event
+- **Automatic Skip**: Handler not executed if event already processed
+- **Audit Trail**: Complete history of all processed webhook events
+
+**Idempotency Implementation**:
+
+The webhook handler uses idempotency to prevent duplicate processing:
+
+```typescript
+import { executeIdempotentWebhook } from "@saasfly/db/webhook-idempotency";
+
+export async function handleEvent(event: Stripe.Event) {
+  await executeIdempotentWebhook(
+    event.id,        // Stripe event ID (evt_*)
+    event.type,      // Event type (e.g., checkout.session.completed)
+    async () => processEventInternal(event)
+  );
+}
+```
+
+**How Idempotency Works**:
+
+1. Stripe sends webhook with `event.id` (unique globally)
+2. Handler attempts to register event in database
+3. If event already exists → skip processing (duplicate)
+4. If event is new → process the webhook
+5. Mark event as processed after successful completion
+6. On error → throw to trigger Stripe retry (if retryable)
+
+**Benefits**:
+- ✅ Prevents duplicate database updates
+- ✅ Prevents duplicate subscription records
+- ✅ Prevents duplicate charges on checkout
+- ✅ Resilient to network issues and Stripe retries
+- ✅ Provides complete audit trail
+
+**Database Schema**:
+
+```sql
+CREATE TABLE "StripeWebhookEvent" (
+  "id" TEXT NOT NULL PRIMARY KEY,
+  "eventType" TEXT NOT NULL,
+  "processed" BOOLEAN NOT NULL DEFAULT FALSE,
+  "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE UNIQUE INDEX "StripeWebhookEvent_id_key" ON "StripeWebhookEvent"("id");
+CREATE INDEX "StripeWebhookEvent_processed_idx" ON "StripeWebhookEvent"("processed");
+```
 
 ---
 

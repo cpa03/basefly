@@ -43,6 +43,19 @@ describe("k8sRouter", () => {
     const { db, k8sClusterService } = require("@saasfly/db");
 
     mockCaller = k8sRouter.createCaller({
+      headers: new Headers(),
+      auth: {
+        userId: "test-user-id",
+        sessionClaims: null,
+        sessionId: null,
+        sessionStatus: null,
+        actor: null,
+        orgId: null,
+        orgRole: null,
+        orgPermissions: null,
+        orgSlug: null,
+      } as any,
+      req: undefined,
       userId: "test-user-id",
       requestId: "test-request-id",
     } as any);

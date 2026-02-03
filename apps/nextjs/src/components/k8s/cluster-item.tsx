@@ -44,4 +44,4 @@ export function ClusterItem({ cluster, lang }: ClusterItemProps) {
       </TableCell>
     </TableRow>
   );
-}
+});

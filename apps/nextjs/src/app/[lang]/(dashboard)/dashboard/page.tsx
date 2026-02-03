@@ -19,8 +19,11 @@ import { DashboardShell } from "~/components/shell";
 import type { Locale } from "~/config/i18n-config";
 import { getDictionary } from "~/lib/get-dictionary";
 import { trpc } from "~/trpc/server";
-import { StatusBadge } from "@saasfly/ui/status-badge";
 import Link from "next/link";
+import { StatusBadge } from "@saasfly/ui/status-badge";
+>>>>>>> origin/main
+import Link from "next/link";
+import { StatusBadge } from "@saasfly/ui/status-badge";
 import { formatDate } from "~/lib/utils";
 import { ClusterOperations } from "~/components/k8s/cluster-operation";
 
@@ -80,10 +83,9 @@ export default async function DashboardPage({
                     <TableBody>
                       {clusters.map((cluster) => (
                         <ClusterItem
-                          key={String(cluster.id)}
                           cluster={cluster}
                           lang={lang}
-                        ></ClusterItem>
+                        />
                       ))}
                     </TableBody>
                   </Table>

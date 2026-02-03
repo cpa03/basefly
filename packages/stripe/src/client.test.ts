@@ -4,6 +4,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import type Stripe from "stripe";
 import {
   createBillingSession,
   createCheckoutSession,
@@ -131,7 +132,7 @@ describe("createCheckoutSession", () => {
       cancel_url: "https://example.com/dashboard",
       success_url: "https://example.com/success",
       line_items: [{ price: "price_123", quantity: 1 }],
-    };
+    } as Stripe.Checkout.SessionCreateParams;
 
     const result = await createCheckoutSession(params, "checkout_user_123_price_123");
 
@@ -263,7 +264,7 @@ describe("createCheckoutSession", () => {
       cancel_url: "https://example.com/cancel",
       success_url: "https://example.com/success",
       line_items: [{ price: "price_abc", quantity: 2 }],
-    };
+    } as Stripe.Checkout.SessionCreateParams;
 
     await createCheckoutSession(params, "key_123");
 

@@ -16,6 +16,19 @@ describe("authRouter", () => {
     const { db } = require("@saasfly/db");
 
     mockCaller = authRouter.createCaller({
+      headers: new Headers(),
+      auth: {
+        userId: "test-user-id",
+        sessionClaims: null,
+        sessionId: null,
+        sessionStatus: null,
+        actor: null,
+        orgId: null,
+        orgRole: null,
+        orgPermissions: null,
+        orgSlug: null,
+      } as any,
+      req: undefined,
       userId: "test-user-id",
       requestId: "test-request-id",
     } as any);
@@ -126,6 +139,19 @@ describe("authRouter", () => {
 
     it("passes requestId to database query", async () => {
       const callerWithRequestId = authRouter.createCaller({
+        headers: new Headers(),
+        auth: {
+          userId: "test-user-id",
+          sessionClaims: null,
+          sessionId: null,
+          sessionStatus: null,
+          actor: null,
+          orgId: null,
+          orgRole: null,
+          orgPermissions: null,
+          orgSlug: null,
+        } as any,
+        req: undefined,
         userId: "test-user-id",
         requestId: "custom-request-id",
       } as any);

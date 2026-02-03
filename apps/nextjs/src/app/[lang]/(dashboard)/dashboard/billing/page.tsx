@@ -43,22 +43,19 @@ export default async function BillingPage({
   );
 }
 
-function generateSubscriptionMessage(
-  dict: Record<string, string>,
-  subscription: Subscription,
-): string {
-  const content = String(dict.subscriptionInfo);
+function SubscriptionContent({ dict, subscription }: { dict: Record<string, string>, subscription: Subscription }) {
   if (subscription.plan && subscription.endsAt) {
-    return content
-      .replace("{plan}", subscription.plan)
-      .replace("{date}", subscription.endsAt.toLocaleDateString());
+    return (
+      <p>
+        You are currently on the <strong>{subscription.plan}</strong> plan.Your subscription will renew on <strong>{subscription.endsAt.toLocaleDateString()}</strong>.
+      </p>
+    );
   }
-  return "";
+  return null;
 }
 
 async function SubscriptionCard({ dict }: { dict: Record<string, string> }) {
   const subscription = (await trpc.auth.mySubscription.query()) as Subscription;
-  const content = generateSubscriptionMessage(dict, subscription);
   return (
     <Card>
       <CardHeader>
@@ -66,7 +63,7 @@ async function SubscriptionCard({ dict }: { dict: Record<string, string> }) {
       </CardHeader>
       <CardContent>
         {subscription ? (
-          <p dangerouslySetInnerHTML={{ __html: content }} />
+          <SubscriptionContent dict={dict} subscription={subscription} />
         ) : (
           <p>{dict.noSubscription}</p>
         )}

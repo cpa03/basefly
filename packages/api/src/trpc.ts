@@ -8,7 +8,7 @@ import { getLimiter, getIdentifier, EndpointType } from "./rate-limiter";
 import { createApiError, ErrorCode } from "./errors";
 import { getOrGenerateRequestId } from "./request-id";
 
-export { EndpointType } from "./rate-limiter";
+export type { EndpointType } from "./rate-limiter";
 
 interface CreateContextOptions {
   req?: NextRequest;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { stripeRouter } from "./stripe";
 import { IntegrationError } from "@saasfly/stripe";
@@ -27,7 +28,7 @@ vi.mock("@saasfly/stripe", () => ({
 
 vi.mock("../env.mjs", () => ({
   env: {
-    NEXTAUTH_URL: "http://localhost:3000",
+    NEXT_PUBLIC_APP_URL: "http://localhost:3000",
   },
 }));
 
@@ -60,7 +61,8 @@ vi.mock("../errors", () => ({
     if (error instanceof IntegrationError) {
       const newError = new Error(error.message);
       (newError as any).code = error.code || "INTEGRATION_ERROR";
-      (newError as any).details = error.details;
+      // @ts-expect-error - details property mock compatibility
+      (newError as any).details = error.details as any;
       throw newError;
     }
     throw error;
@@ -77,7 +79,7 @@ describe("stripeRouter", () => {
     mockCaller = stripeRouter.createCaller({
       userId: "test-user-id",
       requestId: "test-request-id",
-    });
+    } as any);
   });
 
   describe("createSession", () => {

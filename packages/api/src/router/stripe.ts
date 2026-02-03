@@ -43,9 +43,11 @@ export type UserSubscriptionPlan = SubscriptionPlan &
     interval: "month" | "year" | null;
     isCanceled?: boolean;
   };
+export const createSessionSchema = z.object({ planId: z.string().min(1) });
+
 export const stripeRouter = createTRPCRouter({
   createSession: createRateLimitedProtectedProcedure("stripe")
-    .input(z.object({ planId: z.string() }))
+    .input(createSessionSchema)
     .mutation(async (opts) => {
       const userId = opts.ctx.userId! as string;
       const planId = opts.input.planId;
@@ -56,7 +58,7 @@ export const stripeRouter = createTRPCRouter({
         .where("authUserId", "=", userId)
         .executeTakeFirst();
 
-      const returnUrl = env.NEXTAUTH_URL + "/dashboard";
+      const returnUrl = env.NEXT_PUBLIC_APP_URL + "/dashboard";
 
       try {
         if (customer && customer.plan !== "FREE") {
@@ -74,7 +76,7 @@ export const stripeRouter = createTRPCRouter({
           .where("id", "=", userId)
           .executeTakeFirst();
 
-        const email = user?.email;
+        const email = user?.email ?? undefined;
 
         const session = await createCheckoutSession(
           {

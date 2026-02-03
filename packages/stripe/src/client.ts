@@ -35,7 +35,7 @@ function generateIdempotencyKey(prefix: string): string {
  * @returns New metadata object with request ID
  */
 function addRequestMetadata(requestId?: string, existingMetadata?: Stripe.MetadataParam): Stripe.MetadataParam {
-  if (!requestId) return existingMetadata || undefined;
+  if (!requestId) return existingMetadata ?? {};
   return { ...existingMetadata, requestId };
 }
 
@@ -62,17 +62,16 @@ function addRequestMetadata(requestId?: string, existingMetadata?: Stripe.Metada
  * @returns Stripe billing portal session with URL
  */
 export async function createBillingSession(customerId: string, returnUrl: string, options?: { requestId?: string }) {
-  const { requestId } = options || {};
-  
-  logger.info("Creating Stripe billing portal session", { requestId, customerId });
-  
-  const result = await safeStripeCall(
-    () =>
-      stripe.billingPortal.sessions.create({
-        customer: customerId,
-        return_url: returnUrl,
-        metadata: addRequestMetadata(requestId),
-      }),
+  const { requestId } = options ?? {};
+
+   logger.info("Creating Stripe billing portal session", { requestId, customerId });
+
+    const result = await safeStripeCall(
+     () =>
+       stripe.billingPortal.sessions.create({
+         customer: customerId,
+         return_url: returnUrl,
+       }),
     {
       serviceName: "Stripe Billing Portal",
       circuitBreaker: stripeCircuitBreaker,
@@ -119,8 +118,8 @@ export async function createCheckoutSession(
   idempotencyKey?: string,
   options?: { requestId?: string },
 ) {
-  const { requestId } = options || {};
-  const key = idempotencyKey || generateIdempotencyKey("checkout_session");
+  const { requestId } = options ?? {};
+  const key = idempotencyKey ?? generateIdempotencyKey("checkout_session");
   
   logger.info("Creating Stripe checkout session", { requestId, idempotencyKey: key });
   
@@ -167,7 +166,7 @@ export async function createCheckoutSession(
  * @returns Stripe subscription object with full details
  */
 export async function retrieveSubscription(subscriptionId: string, options?: { requestId?: string }) {
-  const { requestId } = options || {};
+  const { requestId } = options ?? {};
   
   logger.info("Retrieving Stripe subscription", { requestId, subscriptionId });
   

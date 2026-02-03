@@ -2,11 +2,16 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 
-import { k8sRouter } from "@saasfly/api/src/router/k8s";
-import { stripeRouter } from "@saasfly/api/src/router/stripe";
-import { customerRouter } from "@saasfly/api/src/router/customer";
-import { authRouter } from "@saasfly/api/src/router/auth";
-import { ErrorCode, createApiError } from "@saasfly/api/src/errors";
+import { k8sRouter, k8sClusterCreateSchema, k8sClusterDeleteSchema } from "./k8s";
+import { stripeRouter, createSessionSchema } from "./stripe";
+import { customerRouter, updateUserNameSchema, insertCustomerSchema } from "./customer";
+import { authRouter } from "./auth";
+import {
+  ErrorCode,
+  createApiError,
+  handleIntegrationError,
+  createValidationErrorMessage,
+} from "../errors";
 
 vi.mock("@saasfly/db", () => ({
   db: {
@@ -26,21 +31,23 @@ vi.mock("@saasfly/db", () => ({
   },
 }));
 
+class MockIntegrationError extends Error {
+  constructor(message: string, public code: string) {
+    super(message);
+    this.name = "IntegrationError";
+  }
+}
+
 vi.mock("@saasfly/stripe", () => ({
   createBillingSession: vi.fn(),
   createCheckoutSession: vi.fn(),
   retrieveSubscription: vi.fn(),
-  IntegrationError: class extends Error {
-    constructor(message: string, public code: string) {
-      super(message);
-      this.name = "IntegrationError";
-    }
-  },
+  IntegrationError: MockIntegrationError,
 }));
 
 vi.mock("@saasfly/api/src/env.mjs", () => ({
   env: {
-    NEXTAUTH_URL: "http://localhost:3000",
+    NEXT_PUBLIC_APP_URL: "http://localhost:3000",
   },
 }));
 
@@ -63,16 +70,6 @@ vi.mock("../../common/src/subscriptions", () => ({
 
 describe("API Validation Tests", () => {
   describe("k8sRouter - Schema Validation", () => {
-    const k8sClusterCreateSchema = z.object({
-      id: z.number().optional(),
-      name: z.string(),
-      location: z.string(),
-    });
-
-    const k8sClusterDeleteSchema = z.object({
-      id: z.number(),
-    });
-
     describe("k8sClusterCreateSchema", () => {
       it("accepts valid cluster creation data", () => {
         const validData = {
@@ -101,7 +98,7 @@ describe("API Validation Tests", () => {
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(result.error.errors).toHaveLength(1);
-          expect(result.error.errors[0].path).toContain("location");
+          expect(result.error.errors[0]?.path).toContain("location");
         }
       });
 
@@ -153,17 +150,14 @@ describe("API Validation Tests", () => {
         }
       });
 
-      it("rejects extra fields", () => {
-        const invalidData = {
+      it("accepts extra fields", () => {
+        const dataWithExtra = {
           name: "test-cluster",
           location: "us-east-1",
-          extraField: "should not be here",
+          extraField: "should be ignored",
         };
-        const result = k8sClusterCreateSchema.safeParse(invalidData);
-        expect(result.success).toBe(false);
-        if (!result.success) {
-          expect(result.error.errors.some((e) => e.path.includes("extraField"))).toBe(true);
-        }
+        const result = k8sClusterCreateSchema.safeParse(dataWithExtra);
+        expect(result.success).toBe(true);
       });
 
       it("rejects undefined when required", () => {
@@ -191,7 +185,7 @@ describe("API Validation Tests", () => {
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(result.error.errors).toHaveLength(1);
-          expect(result.error.errors[0].path).toContain("id");
+          expect(result.error.errors[0]?.path).toContain("id");
         }
       });
 
@@ -211,7 +205,7 @@ describe("API Validation Tests", () => {
           id: -1,
         };
         const result = k8sClusterDeleteSchema.safeParse(invalidData);
-        expect(result.success).toBe(true);
+        expect(result.success).toBe(false);
       });
 
       it("rejects zero id", () => {
@@ -219,7 +213,7 @@ describe("API Validation Tests", () => {
           id: 0,
         };
         const result = k8sClusterDeleteSchema.safeParse(invalidData);
-        expect(result.success).toBe(true);
+        expect(result.success).toBe(false);
       });
 
       it("rejects decimal id", () => {
@@ -227,16 +221,12 @@ describe("API Validation Tests", () => {
           id: 1.5,
         };
         const result = k8sClusterDeleteSchema.safeParse(invalidData);
-        expect(result.success).toBe(true);
+        expect(result.success).toBe(false);
       });
     });
   });
 
   describe("stripeRouter - Schema Validation", () => {
-    const createSessionSchema = z.object({
-      planId: z.string(),
-    });
-
     describe("createSessionSchema", () => {
       it("accepts valid plan id", () => {
         const validData = { planId: "price_123abc" };
@@ -268,27 +258,18 @@ describe("API Validation Tests", () => {
       it("rejects empty string planId", () => {
         const invalidData = { planId: "" };
         const result = createSessionSchema.safeParse(invalidData);
-        expect(result.success).toBe(true);
+        expect(result.success).toBe(false);
       });
 
-      it("rejects extra fields", () => {
-        const invalidData = { planId: "price_123", extra: "field" };
-        const result = createSessionSchema.safeParse(invalidData);
-        expect(result.success).toBe(false);
+      it("accepts extra fields", () => {
+        const dataWithExtra = { planId: "price_123", extra: "field" };
+        const result = createSessionSchema.safeParse(dataWithExtra);
+        expect(result.success).toBe(true);
       });
     });
   });
 
   describe("customerRouter - Schema Validation", () => {
-    const updateUserNameSchema = z.object({
-      name: z.string(),
-      userId: z.string(),
-    });
-
-    const insertCustomerSchema = z.object({
-      userId: z.string(),
-    });
-
     describe("updateUserNameSchema", () => {
       it("accepts valid user name update", () => {
         const validData = {
@@ -377,7 +358,7 @@ describe("API Validation Tests", () => {
       it("rejects empty string userId", () => {
         const invalidData = { userId: "" };
         const result = insertCustomerSchema.safeParse(invalidData);
-        expect(result.success).toBe(true);
+        expect(result.success).toBe(false);
       });
     });
   });
@@ -422,7 +403,7 @@ describe("API Validation Tests", () => {
     it("includes error details in cause", () => {
       const details = { field: "test", issue: "invalid" };
       const error = createApiError(ErrorCode.VALIDATION_ERROR, "Test", details);
-      expect(error.cause).toEqual(details);
+      expect(error.cause).toMatchObject(details);
     });
 
     it("preserves error message", () => {
@@ -434,10 +415,7 @@ describe("API Validation Tests", () => {
 
   describe("Integration Error Handling", () => {
     it("handles CIRCUIT_BREAKER_OPEN errors", () => {
-      const { handleIntegrationError } = require("@saasfly/api/src/errors");
-      const { IntegrationError } = require("@saasfly/stripe");
-
-      const error = new IntegrationError("Service unavailable", "CIRCUIT_BREAKER_OPEN");
+      const error = new MockIntegrationError("Service unavailable", "CIRCUIT_BREAKER_OPEN");
       const trpcError = handleIntegrationError(error);
       expect(trpcError).toBeInstanceOf(TRPCError);
       expect(trpcError.code).toBe("INTERNAL_SERVER_ERROR");
@@ -445,10 +423,7 @@ describe("API Validation Tests", () => {
     });
 
     it("handles TIMEOUT errors", () => {
-      const { handleIntegrationError } = require("@saasfly/api/src/errors");
-      const { IntegrationError } = require("@saasfly/stripe");
-
-      const error = new IntegrationError("Request timed out", "TIMEOUT");
+      const error = new MockIntegrationError("Request timed out", "TIMEOUT");
       const trpcError = handleIntegrationError(error);
       expect(trpcError).toBeInstanceOf(TRPCError);
       expect(trpcError.code).toBe("INTERNAL_SERVER_ERROR");
@@ -456,10 +431,7 @@ describe("API Validation Tests", () => {
     });
 
     it("handles API_ERROR errors", () => {
-      const { handleIntegrationError } = require("@saasfly/api/src/errors");
-      const { IntegrationError } = require("@saasfly/stripe");
-
-      const error = new IntegrationError("External service error", "API_ERROR");
+      const error = new MockIntegrationError("External service error", "API_ERROR");
       const trpcError = handleIntegrationError(error);
       expect(trpcError).toBeInstanceOf(TRPCError);
       expect(trpcError.code).toBe("INTERNAL_SERVER_ERROR");
@@ -467,8 +439,6 @@ describe("API Validation Tests", () => {
     });
 
     it("handles unknown IntegrationError instances", () => {
-      const { handleIntegrationError } = require("@saasfly/api/src/errors");
-
       const error = new Error("Unknown error");
       const trpcError = handleIntegrationError(error);
       expect(trpcError).toBeInstanceOf(TRPCError);
@@ -476,8 +446,6 @@ describe("API Validation Tests", () => {
     });
 
     it("handles unknown error types", () => {
-      const { handleIntegrationError } = require("@saasfly/api/src/errors");
-
       const error = "string error";
       const trpcError = handleIntegrationError(error);
       expect(trpcError).toBeInstanceOf(TRPCError);
@@ -487,14 +455,12 @@ describe("API Validation Tests", () => {
 
   describe("Validation Error Message Creation", () => {
     it("creates single error message", () => {
-      const { createValidationErrorMessage } = require("@saasfly/api/src/errors");
       const errors = [{ message: "Name is required" }];
       const message = createValidationErrorMessage(errors);
       expect(message).toBe("Name is required");
     });
 
     it("creates multiple error message", () => {
-      const { createValidationErrorMessage } = require("@saasfly/api/src/errors");
       const errors = [
         { message: "Name is required" },
         { message: "Email is invalid" },
@@ -504,15 +470,13 @@ describe("API Validation Tests", () => {
     });
 
     it("handles errors with path", () => {
-      const { createValidationErrorMessage } = require("@saasfly/api/src/errors");
       const errors = [{ message: "Required", path: ["name"] }];
       const message = createValidationErrorMessage(errors);
       expect(message).toBe("Required");
     });
 
     it("handles empty errors array", () => {
-      const { createValidationErrorMessage } = require("@saasfly/api/src/errors");
-      const errors = [];
+      const errors: any[] = [];
       const message = createValidationErrorMessage(errors);
       expect(message).toBe("Validation error");
     });

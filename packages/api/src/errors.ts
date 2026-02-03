@@ -117,6 +117,9 @@ export class IntegrationError extends Error {
 }
 
 export function createValidationErrorMessage(errors: Array<{ message: string; path?: (string | number)[] }>): string {
+  if (errors.length === 0) {
+    return "Validation error";
+  }
   if (errors.length === 1) {
     return errors[0]?.message || "Validation error";
   }

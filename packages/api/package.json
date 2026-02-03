@@ -37,7 +37,8 @@
     "dinero.js": "2.0.0-alpha.14",
     "@dinero.js/currencies": "2.0.0-alpha.14",
     "zod": "3.22.4",
-    "zod-form-data": "2.0.2"
+    "zod-form-data": "2.0.2",
+    "pino": "9.0.0"
   },
   "devDependencies": {
     "@saasfly/eslint-config": "workspace:*",

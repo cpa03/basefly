@@ -9,12 +9,12 @@ import {
   EndpointType,
 } from "../trpc";
 
-const updateUserNameSchema = z.object({
-  name: z.string(),
-  userId: z.string(),
+export const updateUserNameSchema = z.object({
+  name: z.string().min(1),
+  userId: z.string().min(1),
 });
-const insertCustomerSchema = z.object({
-  userId: z.string(),
+export const insertCustomerSchema = z.object({
+  userId: z.string().min(1),
 });
 export const customerRouter = createTRPCRouter({
   updateUserName: createRateLimitedProtectedProcedure("write")

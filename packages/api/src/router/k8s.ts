@@ -10,14 +10,14 @@ import {
   EndpointType,
 } from "../trpc";
 
-const k8sClusterCreateSchema = z.object({
+export const k8sClusterCreateSchema = z.object({
   id: z.number().optional(),
-  name: z.string(),
-  location: z.string(),
+  name: z.string().min(1),
+  location: z.string().min(1),
 });
 
-const k8sClusterDeleteSchema = z.object({
-  id: z.number(),
+export const k8sClusterDeleteSchema = z.object({
+  id: z.number().positive().int(),
 });
 
 async function verifyClusterOwnership(

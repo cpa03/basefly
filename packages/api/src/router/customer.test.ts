@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { customerRouter } from "./customer";
 
@@ -24,7 +25,7 @@ describe("customerRouter", () => {
     mockCaller = customerRouter.createCaller({
       userId: "test-user-id",
       requestId: "test-request-id",
-    });
+    } as any);
   });
 
   describe("updateUserName", () => {

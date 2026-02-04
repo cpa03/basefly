@@ -21,9 +21,6 @@ import { getDictionary } from "~/lib/get-dictionary";
 import { trpc } from "~/trpc/server";
 import Link from "next/link";
 import { StatusBadge } from "@saasfly/ui/status-badge";
->>>>>>> origin/main
-import Link from "next/link";
-import { StatusBadge } from "@saasfly/ui/status-badge";
 import { formatDate } from "~/lib/utils";
 import { ClusterOperations } from "~/components/k8s/cluster-operation";
 

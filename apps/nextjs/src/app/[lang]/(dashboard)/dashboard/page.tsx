@@ -80,6 +80,7 @@ export default async function DashboardPage({
                     <TableBody>
                       {clusters.map((cluster) => (
                         <ClusterItem
+                          key={String(cluster.id)}
                           cluster={cluster}
                           lang={lang}
                         />

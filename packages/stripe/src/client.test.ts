@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type Stripe from "stripe";
@@ -11,6 +10,7 @@ import {
   retrieveSubscription,
 } from "./client";
 import { safeStripeCall } from "./integration";
+import { stripe } from "./index";
 
 vi.mock("./integration", () => ({
   safeStripeCall: vi.fn(),
@@ -59,7 +59,6 @@ describe("createBillingSession", () => {
   });
 
   it("passes customer ID and return URL to Stripe API", async () => {
-    const { stripe } = require("./index");
     const mockSession = { url: "https://billing.stripe.com/session/123" };
     let capturedFn: any;
 
@@ -151,7 +150,6 @@ describe("createCheckoutSession", () => {
   it("generates idempotency key if not provided", async () => {
     const mockSession = { url: "https://example.com" };
     let capturedFn: any;
-    const { stripe } = require("./index");
 
     vi.mocked(safeStripeCall).mockImplementation((fn: any, _options: any) => {
       capturedFn = fn;
@@ -171,7 +169,6 @@ describe("createCheckoutSession", () => {
   it("uses provided idempotency key", async () => {
     const mockSession = { url: "https://example.com" };
     let capturedFn: any;
-    const { stripe } = require("./index");
 
     vi.mocked(safeStripeCall).mockImplementation((fn: any) => {
       capturedFn = fn;
@@ -193,7 +190,6 @@ describe("createCheckoutSession", () => {
   it("includes idempotency key in Stripe API call", async () => {
     const mockSession = { url: "https://example.com" };
     let capturedFn: any;
-    const { stripe } = require("./index");
 
     vi.mocked(safeStripeCall).mockImplementation((fn: any) => {
       capturedFn = fn;
@@ -248,7 +244,6 @@ describe("createCheckoutSession", () => {
   it("passes all session parameters to Stripe API", async () => {
     const mockSession = { url: "https://example.com" };
     let capturedFn: any;
-    const { stripe } = require("./index");
 
     vi.mocked(safeStripeCall).mockImplementation((fn: any) => {
       capturedFn = fn;
@@ -270,7 +265,13 @@ describe("createCheckoutSession", () => {
 
     if (capturedFn) {
       await capturedFn();
-      expect(stripe.checkout.sessions.create).toHaveBeenCalledWith(params, expect.any(Object));
+      expect(stripe.checkout.sessions.create).toHaveBeenCalledWith(
+        {
+          ...params,
+          metadata: {},
+        },
+        { idempotencyKey: "key_123" }
+      );
     }
   });
 });
@@ -306,7 +307,6 @@ describe("retrieveSubscription", () => {
   it("passes subscription ID to Stripe API", async () => {
     const mockSubscription = { id: "sub_abc" };
     let capturedFn: any;
-    const { stripe } = require("./index");
 
     vi.mocked(safeStripeCall).mockImplementation((fn: any) => {
       capturedFn = fn;

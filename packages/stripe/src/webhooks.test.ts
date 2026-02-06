@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-return, @typescript-eslint/unbound-method, @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-return, @typescript-eslint/unbound-method, @typescript-eslint/no-empty-function, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { handleEvent } from "./webhooks";
 import { db } from "@saasfly/db";
@@ -9,6 +9,10 @@ vi.mock("@saasfly/db", () => ({
   db: {
     selectFrom: vi.fn(),
     updateTable: vi.fn(),
+    insertInto: vi.fn().mockReturnValue({
+      values: vi.fn().mockReturnThis(),
+      execute: vi.fn().mockResolvedValue(undefined),
+    }),
   },
   SubscriptionPlan: {
     FREE: "FREE",
@@ -220,7 +224,6 @@ describe("handleEvent", () => {
         executeTakeFirst: mockExecuteTakeFirst,
       } as any);
 
-      // @ts-expect-error Type instantiation excessively deep
       vi.mocked(db.updateTable).mockReturnValue({
         where: mockUpdateWhere,
         set: mockSet,

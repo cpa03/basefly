@@ -1,6 +1,7 @@
 import React, { type CSSProperties } from "react";
 
 import { cn } from "@saasfly/ui";
+import { ANIMATION } from "@saasfly/common";
 
 interface ShimmerButtonProps {
   shimmerColor?: string;
@@ -36,7 +37,7 @@ const ShimmerButton = ({
       }
       className={cn(
         "group relative flex cursor-pointer overflow-hidden whitespace-nowrap px-6 py-4 text-white [background:var(--bg)] [border-radius:var(--radius)] dark:text-black ",
-        "transition-all duration-300 hover:scale-105 hover:shadow-[0_0_40px_8px_rgba(62,61,117,0.7)]",
+        `transition-all ${ANIMATION.duration.medium} ${ANIMATION.scale.default} hover:shadow-[0_0_40px_8px_rgba(62,61,117,0.7)]`,
         className,
       )}
       {...props}

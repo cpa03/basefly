@@ -4,13 +4,16 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/unbound-method */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { UserDeletionService } from "./user-deletion";
-import { db } from "../index";
+import { db } from "./index";
 
-vi.mock("../index", () => ({
+vi.mock("./index", () => ({
   db: {
-    transaction: vi.fn(),
+    transaction: vi.fn().mockReturnValue({
+      execute: vi.fn(),
+    }),
     selectFrom: vi.fn(),
   },
 }));
@@ -58,18 +61,31 @@ describe("UserDeletionService", () => {
       }),
     };
 
+    // Mock db.transaction().execute(callback) pattern
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-    vi.mocked(db.transaction).mockImplementation((callback: (trx: typeof mockTrx) => unknown) => {
-      return callback(mockTrx) as never;
+    // @ts-expect-error Complex transaction mock type
+    vi.mocked(db.transaction).mockReturnValue({
+      execute: vi.fn().mockImplementation((callback: (trx: typeof mockTrx) => Promise<unknown>) => {
+        return callback(mockTrx);
+      }),
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-    vi.mocked(db.selectFrom).mockReturnValue({
+    // Create a chainable mock object for select queries
+    const createSelectChain = () => ({
       selectAll: mockSelectAll,
-      where: mockSelectWhere,
+      select: vi.fn().mockReturnThis(),
+      where: vi.fn((...args: unknown[]) => {
+        mockSelectWhere(...args);
+        return createSelectChain();
+      }),
       execute: mockSelectExecute,
       executeTakeFirst: mockSelectExecuteTakeFirst,
-    } as {
+    });
+    const selectChain = createSelectChain();
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    // @ts-expect-error Complex query builder mock type
+    vi.mocked(db.selectFrom).mockReturnValue(selectChain as unknown as {
       selectAll: ReturnType<typeof vi.fn>,
       where: ReturnType<typeof vi.fn>,
       execute: ReturnType<typeof vi.fn>,
@@ -242,8 +258,9 @@ describe("UserDeletionService", () => {
         { id: 3, name: "cluster-3", deletedAt: null },
       ];
 
-      mockSelectExecuteTakeFirst.mockResolvedValue(mockUser);
-      mockSelectExecute.mockResolvedValueOnce(null).mockResolvedValueOnce(mockClusters);
+      // First call (User) returns mockUser, second call (Customer) returns null
+      mockSelectExecuteTakeFirst.mockResolvedValueOnce(mockUser).mockResolvedValueOnce(null);
+      mockSelectExecute.mockResolvedValue(mockClusters);
 
       const result = await service.getUserSummary("user_123");
 
@@ -257,8 +274,9 @@ describe("UserDeletionService", () => {
         { id: 2, name: "cluster-2", deletedAt: null },
       ];
 
-      mockSelectExecuteTakeFirst.mockResolvedValue(mockUser);
-      mockSelectExecute.mockResolvedValueOnce(null).mockResolvedValueOnce(mockClusters);
+      // First call (User) returns mockUser, second call (Customer) returns null
+      mockSelectExecuteTakeFirst.mockResolvedValueOnce(mockUser).mockResolvedValueOnce(null);
+      mockSelectExecute.mockResolvedValue(mockClusters);
 
       const result = await service.getUserSummary("user_123");
 
@@ -272,8 +290,9 @@ describe("UserDeletionService", () => {
         { id: 1, name: "cluster-1", deletedAt: null },
       ];
 
-      mockSelectExecuteTakeFirst.mockResolvedValue(mockUser);
-      mockSelectExecute.mockResolvedValueOnce(null).mockResolvedValueOnce(mockActiveClusters);
+      // First call (User) returns mockUser, second call (Customer) returns null
+      mockSelectExecuteTakeFirst.mockResolvedValueOnce(mockUser).mockResolvedValueOnce(null);
+      mockSelectExecute.mockResolvedValue(mockActiveClusters);
 
       await service.getUserSummary("user_123");
 
@@ -325,8 +344,9 @@ describe("UserDeletionService", () => {
     it("returns zero active clusters count when no clusters exist", async () => {
       const mockUser = { id: "user_123", name: "Test", email: "test@example.com", image: null };
 
-      mockSelectExecuteTakeFirst.mockResolvedValue(mockUser);
-      mockSelectExecute.mockResolvedValueOnce(null).mockResolvedValueOnce([]);
+      // First call (User) returns mockUser, second call (Customer) returns null
+      mockSelectExecuteTakeFirst.mockResolvedValueOnce(mockUser).mockResolvedValueOnce(null);
+      mockSelectExecute.mockResolvedValue([]);
 
       const result = await service.getUserSummary("user_123");
 

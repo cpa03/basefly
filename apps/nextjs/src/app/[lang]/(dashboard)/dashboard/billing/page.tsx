@@ -43,7 +43,7 @@ export default async function BillingPage({
   );
 }
 
-function SubscriptionContent({ dict, subscription }: { dict: Record<string, string>, subscription: Subscription }) {
+function SubscriptionContent({ subscription }: { subscription: Subscription }) {
   if (subscription.plan && subscription.endsAt) {
     return (
       <p>
@@ -63,7 +63,7 @@ async function SubscriptionCard({ dict }: { dict: Record<string, string> }) {
       </CardHeader>
       <CardContent>
         {subscription ? (
-          <SubscriptionContent dict={dict} subscription={subscription} />
+          <SubscriptionContent subscription={subscription} />
         ) : (
           <p>{dict.noSubscription}</p>
         )}

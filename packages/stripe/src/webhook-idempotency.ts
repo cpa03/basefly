@@ -164,7 +164,7 @@ export async function executeIdempotentWebhook<T>(
  * @returns Number of events deleted
  */
 export async function cleanupOldWebhookEvents(
-  retentionDays: number = 90,
+  retentionDays = 90,
 ): Promise<number> {
   try {
     const cutoffDate = new Date();

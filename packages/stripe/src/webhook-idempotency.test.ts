@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-return, @typescript-eslint/unbound-method, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { executeIdempotentWebhook, registerWebhookEvent, markEventAsProcessed, hasEventBeenProcessed } from "./webhook-idempotency";
 import { db } from "@saasfly/db";

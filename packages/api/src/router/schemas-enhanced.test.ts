@@ -572,7 +572,7 @@ describe("Enhanced API Schemas Validation", () => {
       const result = enhancedK8sClusterCreateSchema.safeParse({
         name: "test",
         location: "us-east-1",
-        __proto__: "exploit",
+        unknownField: "exploit",
       });
       expect(result.success).toBe(false);
     });

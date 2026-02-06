@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { NextResponse, type NextRequest } from "next/server";
-import type Stripe from "stripe";
 
 import { handleEvent, stripe } from "@saasfly/stripe";
 
@@ -17,7 +16,7 @@ const handler = async (req: NextRequest) => {
       payload,
       signature,
       env.STRIPE_WEBHOOK_SECRET,
-    ) as Stripe.Event;
+    );
     await handleEvent(event);
 
     logger.info("Handled Stripe Event", { eventType: event.type });

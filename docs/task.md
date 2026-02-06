@@ -219,8 +219,14 @@ Add comprehensive tests for rate limiter to ensure API endpoint protection is pr
 ## Bugs and Errors
 
 ### Errors
-- [/] error: Build fails due to missing environment variables (STRIPE_API_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL) - *Known limitation in sandbox environment.*
+- [x] error: Build fails due to missing environment variables (STRIPE_API_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL) - *Fixed by creating .env.local file*
 - [x] error: `DashboardPage` may return undefined if `trpc.k8s.getClusters.query()` returns undefined, causing React runtime error.
+- [x] error: TypeScript import errors in test files (incorrect `../index` paths)
+- [x] error: Unused `@ts-expect-error` directive in webhooks.test.ts
+- [x] error: Syntax error in cluster-item.tsx (extra `});`)
+- [x] error: Missing `key` prop in dashboard cluster iterator
+- [x] error: Unused `dict` parameter in billing page components
+- [x] error: Unnecessary type assertion in stripe webhook route
 
 ---
 

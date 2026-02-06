@@ -5,18 +5,18 @@ export const enhancedK8sClusterCreateSchema = z
     id: z.number().optional(),
     name: z
       .string()
+      .trim()
       .min(1, "Cluster name cannot be empty")
       .max(100, "Cluster name cannot exceed 100 characters")
       .regex(
         /^[a-zA-Z0-9-]+$/,
         "Cluster name can only contain letters, numbers, and hyphens",
-      )
-      .transform((val) => val.trim()),
+      ),
     location: z
       .string()
+      .trim()
       .min(1, "Location cannot be empty")
-      .max(50, "Location cannot exceed 50 characters")
-      .transform((val) => val.trim()),
+      .max(50, "Location cannot exceed 50 characters"),
   })
   .strict();
 
@@ -31,19 +31,19 @@ export const enhancedK8sClusterUpdateSchema = z
     id: z.number().int("ID must be an integer").positive("ID must be positive"),
     name: z
       .string()
+      .trim()
       .min(1, "Cluster name cannot be empty")
       .max(100, "Cluster name cannot exceed 100 characters")
       .regex(
         /^[a-zA-Z0-9-]+$/,
         "Cluster name can only contain letters, numbers, and hyphens",
       )
-      .trim()
       .optional(),
     location: z
       .string()
+      .trim()
       .min(1, "Location cannot be empty")
       .max(50, "Location cannot exceed 50 characters")
-      .trim()
       .optional(),
   })
   .strict()
@@ -65,9 +65,9 @@ export const enhancedUpdateUserNameSchema = z
   .object({
     name: z
       .string()
+      .trim()
       .min(1, "Name cannot be empty")
-      .max(100, "Name cannot exceed 100 characters")
-      .transform((val) => val.trim()),
+      .max(100, "Name cannot exceed 100 characters"),
     userId: z.string().uuid("Invalid user ID format"),
   })
   .strict();

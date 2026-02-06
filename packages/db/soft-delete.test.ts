@@ -3,11 +3,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/unbound-method */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { SoftDeleteService } from "./soft-delete";
-import { db } from "../index";
+import { db } from "./index";
 
-vi.mock("../index", () => ({
+vi.mock("./index", () => ({
   db: {
     selectFrom: vi.fn(),
     updateTable: vi.fn(),
@@ -45,7 +46,33 @@ describe("SoftDeleteService", () => {
     mockSelectExecute = vi.fn().mockResolvedValue([]);
     mockSelectExecuteTakeFirst = vi.fn().mockResolvedValue(null);
 
+    // Create a chainable mock object for select queries
+    // Each where() call returns the same object to track all calls
+    let whereCallCount = 0;
+    const selectChain = {
+      selectAll: mockSelectAll,
+      select: vi.fn().mockReturnThis(),
+      where: vi.fn((...args: unknown[]) => {
+        // Track each where call on separate mocks based on call order
+        whereCallCount++;
+        if (whereCallCount === 1) {
+          // First where call is either "id" (findActive) or "authUserId" (findAllActive/findDeleted)
+          mockSelectWhere1(...args);
+        } else if (whereCallCount === 2) {
+          // Second where call is either "authUserId" (findActive) or "deletedAt" (findAllActive/findDeleted)
+          mockSelectWhere2(...args);
+        } else if (whereCallCount === 3) {
+          // Third where call is only "deletedAt" (findActive)
+          mockSelectWhere3(...args);
+        }
+        return selectChain;
+      }),
+      execute: mockSelectExecute,
+      executeTakeFirst: mockSelectExecuteTakeFirst,
+    };
+
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    // @ts-expect-error Type instantiation is excessively deep
     vi.mocked(db.updateTable).mockReturnValue({
       where: mockUpdateWhere,
       set: mockUpdateSet,
@@ -57,12 +84,8 @@ describe("SoftDeleteService", () => {
     });
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-    vi.mocked(db.selectFrom).mockReturnValue({
-      selectAll: mockSelectAll,
-      where: mockSelectWhere1,
-      execute: mockSelectExecute,
-      executeTakeFirst: mockSelectExecuteTakeFirst,
-    } as {
+    // @ts-expect-error Complex query builder mock type
+    vi.mocked(db.selectFrom).mockReturnValue(selectChain as unknown as {
       selectAll: ReturnType<typeof vi.fn>,
       where: ReturnType<typeof vi.fn>,
       execute: ReturnType<typeof vi.fn>,

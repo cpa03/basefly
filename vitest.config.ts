@@ -20,7 +20,13 @@ export default defineConfig({
       ],
     },
     include: ["packages/**/*.test.{ts,tsx}"],
-    exclude: ["node_modules/", "apps/", "tooling/"],
+    exclude: [
+      "node_modules/",
+      "apps/",
+      "tooling/",
+      "**/node_modules/**",
+      "packages/**/node_modules/**",
+    ],
     root: ".",
   },
   resolve: {

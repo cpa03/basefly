@@ -17,7 +17,7 @@ concurrency:
 jobs:
   ci:
     name: iterate
-    runs-on: self-hosted
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 60
 
     env:

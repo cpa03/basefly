@@ -1,4 +1,10 @@
 import { env } from "~/env.mjs";
+import {
+  LEGACY_PRICING_TIERS,
+  CLUSTER_LIMITS,
+  getLegacyPriceDisplayString,
+  type PlanTier,
+} from "@saasfly/common";
 
 export interface SubscriptionPlanTranslation {
   id: string;
@@ -16,30 +22,83 @@ export interface SubscriptionPlanTranslation {
   };
 }
 
-export const priceDataMap: Record<string, SubscriptionPlanTranslation[]> = {
-  zh: [
-    {
-      id: "starter",
+/**
+ * Helper function to generate cluster limit text for benefits
+ */
+function getClusterLimitText(limit: number, locale: "en" | "zh" | "ja" | "ko"): string {
+  const texts: Record<typeof locale, string> = {
+    en: `Up to ${limit} cluster${limit > 1 ? "s" : ""} per month`,
+    zh: `每月最多${limit}个集群`,
+    ja: `月に最大${limit}つのクラスター`,
+    ko: `월 최대 ${limit}개의 클러스터`,
+  };
+  return texts[locale];
+}
+
+/**
+ * Plan configuration with centralized pricing values
+ */
+const createPlanConfig = (
+  tier: PlanTier,
+  translations: {
+    title: string;
+    description: string;
+    benefits: string[];
+    limitations: string[];
+  },
+  locale: "en" | "zh" | "ja" | "ko"
+): SubscriptionPlanTranslation => {
+  const prices = LEGACY_PRICING_TIERS[tier];
+  const clusterLimit = CLUSTER_LIMITS[tier];
+  
+  // Update first benefit with cluster limit
+  const benefits = [...translations.benefits];
+  if (tier !== "BUSINESS") {
+    benefits[0] = getClusterLimitText(clusterLimit, locale);
+  }
+  
+  return {
+    id: tier.toLowerCase(),
+    title: translations.title,
+    description: translations.description,
+    benefits,
+    limitations: translations.limitations,
+    prices: {
+      monthly: prices.monthly,
+      yearly: prices.yearly,
+    },
+    stripeIds: {
+      monthly: tier === "STARTER" 
+        ? null 
+        : env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID ?? null,
+      yearly: tier === "STARTER" 
+        ? null 
+        : env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID ?? null,
+    },
+  };
+};
+
+/**
+ * Translations for each locale
+ */
+const translations = {
+  zh: {
+    starter: {
       title: "入门版",
       description: "适合初学者",
-      benefits: ["每月最多1个集群", "基础分析和报告", "访问基础功能"],
+      benefits: [
+        "每月最多1个集群",
+        "基础分析和报告",
+        "访问基础功能",
+      ],
       limitations: [
         "无法优先获取新功能",
         "有限的客户支持",
         "无法自定义品牌",
         "对商业资源的访问受限",
       ],
-      prices: {
-        monthly: 0,
-        yearly: 0,
-      },
-      stripeIds: {
-        monthly: null,
-        yearly: null,
-      },
     },
-    {
-      id: "pro",
+    pro: {
       title: "专业版",
       description: "解锁高级功能",
       benefits: [
@@ -50,17 +109,8 @@ export const priceDataMap: Record<string, SubscriptionPlanTranslation[]> = {
         "独家网络研讨会和培训",
       ],
       limitations: ["无法自定义品牌", "对商业资源的访问受限"],
-      prices: {
-        monthly: 30,
-        yearly: 288,
-      },
-      stripeIds: {
-        monthly: env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID,
-        yearly: env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID,
-      },
     },
-    {
-      id: "business",
+    business: {
       title: "商业版",
       description: "适合高级用户",
       benefits: [
@@ -71,19 +121,10 @@ export const priceDataMap: Record<string, SubscriptionPlanTranslation[]> = {
         "个性化的配置和账户管理",
       ],
       limitations: [],
-      prices: {
-        monthly: 60,
-        yearly: 600,
-      },
-      stripeIds: {
-        monthly: env.NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID,
-        yearly: env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID,
-      },
     },
-  ],
-  en: [
-    {
-      id: "starter",
+  },
+  en: {
+    starter: {
       title: "Starter",
       description: "For Beginners",
       benefits: [
@@ -97,17 +138,8 @@ export const priceDataMap: Record<string, SubscriptionPlanTranslation[]> = {
         "No custom branding",
         "Limited access to business resources",
       ],
-      prices: {
-        monthly: 0,
-        yearly: 0,
-      },
-      stripeIds: {
-        monthly: null,
-        yearly: null,
-      },
     },
-    {
-      id: "pro",
+    pro: {
       title: "Pro",
       description: "Unlock Advanced Features",
       benefits: [
@@ -121,17 +153,8 @@ export const priceDataMap: Record<string, SubscriptionPlanTranslation[]> = {
         "No custom branding",
         "Limited access to business resources",
       ],
-      prices: {
-        monthly: 30,
-        yearly: 288,
-      },
-      stripeIds: {
-        monthly: env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID,
-        yearly: env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID,
-      },
     },
-    {
-      id: "business",
+    business: {
       title: "Business",
       description: "For Power Users",
       benefits: [
@@ -142,19 +165,10 @@ export const priceDataMap: Record<string, SubscriptionPlanTranslation[]> = {
         "Personalized configuration and account management",
       ],
       limitations: [],
-      prices: {
-        monthly: 60,
-        yearly: 600,
-      },
-      stripeIds: {
-        monthly: env.NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID,
-        yearly: env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID,
-      },
     },
-  ],
-  ja: [
-    {
-      id: "starter",
+  },
+  ja: {
+    starter: {
       title: "スターター",
       description: "初心者向け",
       benefits: [
@@ -168,17 +182,8 @@ export const priceDataMap: Record<string, SubscriptionPlanTranslation[]> = {
         "カスタムブランディングなし",
         "ビジネスリソースへのアクセスが限定的",
       ],
-      prices: {
-        monthly: 0,
-        yearly: 0,
-      },
-      stripeIds: {
-        monthly: null,
-        yearly: null,
-      },
     },
-    {
-      id: "pro",
+    pro: {
       title: "プロ",
       description: "高度な機能のロックを解除",
       benefits: [
@@ -192,17 +197,8 @@ export const priceDataMap: Record<string, SubscriptionPlanTranslation[]> = {
         "カスタムブランディングなし",
         "ビジネスリソースへのアクセスが限定的",
       ],
-      prices: {
-        monthly: 30,
-        yearly: 288,
-      },
-      stripeIds: {
-        monthly: env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID,
-        yearly: env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID,
-      },
     },
-    {
-      id: "business",
+    business: {
       title: "ビジネス",
       description: "パワーユーザー向け",
       benefits: [
@@ -213,19 +209,10 @@ export const priceDataMap: Record<string, SubscriptionPlanTranslation[]> = {
         "パーソナライズされた設定とアカウント管理",
       ],
       limitations: [],
-      prices: {
-        monthly: 60,
-        yearly: 600,
-      },
-      stripeIds: {
-        monthly: env.NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID,
-        yearly: env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID,
-      },
     },
-  ],
-  ko: [
-    {
-      id: "starter",
+  },
+  ko: {
+    starter: {
       title: "스타터",
       description: "초보자를 위한",
       benefits: [
@@ -239,17 +226,8 @@ export const priceDataMap: Record<string, SubscriptionPlanTranslation[]> = {
         "맞춤 브랜딩 없음",
         "비즈니스 리소스에 대한 액세스 제한",
       ],
-      prices: {
-        monthly: 0,
-        yearly: 0,
-      },
-      stripeIds: {
-        monthly: null,
-        yearly: null,
-      },
     },
-    {
-      id: "pro",
+    pro: {
       title: "프로",
       description: "고급 기능 잠금 해제",
       benefits: [
@@ -260,17 +238,8 @@ export const priceDataMap: Record<string, SubscriptionPlanTranslation[]> = {
         "독점 웹 세미나 및 교육",
       ],
       limitations: ["맞춤 브랜딩 없음", "비즈니스 리소스에 대한 액세스 제한"],
-      prices: {
-        monthly: 30,
-        yearly: 288,
-      },
-      stripeIds: {
-        monthly: env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID,
-        yearly: env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID,
-      },
     },
-    {
-      id: "business",
+    business: {
       title: "비즈니스",
       description: "파워 사용자를 위한",
       benefits: [
@@ -281,14 +250,42 @@ export const priceDataMap: Record<string, SubscriptionPlanTranslation[]> = {
         "맞춤 설정 및 계정 관리",
       ],
       limitations: [],
-      prices: {
-        monthly: 60,
-        yearly: 600,
-      },
-      stripeIds: {
-        monthly: env.NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID,
-        yearly: env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID,
-      },
     },
+  },
+};
+
+/**
+ * Price data map with centralized pricing values
+ */
+export const priceDataMap: Record<string, SubscriptionPlanTranslation[]> = {
+  zh: [
+    createPlanConfig("STARTER", translations.zh.starter, "zh"),
+    createPlanConfig("PRO", translations.zh.pro, "zh"),
+    createPlanConfig("BUSINESS", translations.zh.business, "zh"),
+  ],
+  en: [
+    createPlanConfig("STARTER", translations.en.starter, "en"),
+    createPlanConfig("PRO", translations.en.pro, "en"),
+    createPlanConfig("BUSINESS", translations.en.business, "en"),
+  ],
+  ja: [
+    createPlanConfig("STARTER", translations.ja.starter, "ja"),
+    createPlanConfig("PRO", translations.ja.pro, "ja"),
+    createPlanConfig("BUSINESS", translations.ja.business, "ja"),
+  ],
+  ko: [
+    createPlanConfig("STARTER", translations.ko.starter, "ko"),
+    createPlanConfig("PRO", translations.ko.pro, "ko"),
+    createPlanConfig("BUSINESS", translations.ko.business, "ko"),
   ],
 };
+
+/**
+ * @deprecated Use getLegacyPriceDisplayString from @saasfly/common instead
+ */
+export function formatPrice(amount: number): string {
+  return getLegacyPriceDisplayString(
+    amount === 0 ? "STARTER" : amount === 30 ? "PRO" : "BUSINESS",
+    "monthly"
+  );
+}

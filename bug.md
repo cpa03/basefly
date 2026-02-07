@@ -5,3 +5,9 @@
 - [x] bug: Missing language prefix in `Link` to cluster editor in `DashboardPage`.
 - [x] bug: Inconsistent unauthorized access handling between `DashboardLayout` (returns 404) and `DashboardPage` (redirects to login).
 - [x] bug: `K8sCreateButton` and `deleteCluster` in `ClusterOperations` lack try-catch blocks, leading to potential stuck loading states and unhandled promise rejections.
+- [ ] bug: Missing environment variables causing lint to fail: STRIPE_API_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL
+- [ ] bug: TypeScript type errors in packages/stripe/src/client.test.ts (11 errors related to undefined checks and idempotencyKey)
+- [ ] bug: Test timeouts in packages/stripe/src/integration.test.ts (7 tests timing out after 5000ms)
+- [ ] bug: IntegrationError test throwing error instead of being caught
+- [ ] bug: SyntaxError in multiple API router test files - require("@saasfly/db") returning unexpected token
+- [ ] bug: Mock error in validation.test.ts - Cannot access 'MockIntegrationError' before initialization

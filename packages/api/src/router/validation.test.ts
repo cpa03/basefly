@@ -13,6 +13,9 @@ import {
   createValidationErrorMessage,
 } from "../errors";
 
+// Import mocked IntegrationError for testing
+import { IntegrationError as MockIntegrationError } from "@saasfly/stripe";
+
 vi.mock("@saasfly/db", () => ({
   db: {
     selectFrom: vi.fn(),
@@ -31,18 +34,16 @@ vi.mock("@saasfly/db", () => ({
   },
 }));
 
-class MockIntegrationError extends Error {
-  constructor(message: string, public code: string) {
-    super(message);
-    this.name = "IntegrationError";
-  }
-}
-
 vi.mock("@saasfly/stripe", () => ({
   createBillingSession: vi.fn(),
   createCheckoutSession: vi.fn(),
   retrieveSubscription: vi.fn(),
-  IntegrationError: MockIntegrationError,
+  IntegrationError: class MockIntegrationError extends Error {
+    constructor(message: string, public code: string) {
+      super(message);
+      this.name = "IntegrationError";
+    }
+  },
 }));
 
 vi.mock("@saasfly/api/src/env.mjs", () => ({
@@ -415,7 +416,7 @@ describe("API Validation Tests", () => {
 
   describe("Integration Error Handling", () => {
     it("handles CIRCUIT_BREAKER_OPEN errors", () => {
-      const error = new MockIntegrationError("Service unavailable", "CIRCUIT_BREAKER_OPEN");
+      const error = new MockIntegrationError("Service temporarily unavailable due to failures", "CIRCUIT_BREAKER_OPEN");
       const trpcError = handleIntegrationError(error);
       expect(trpcError).toBeInstanceOf(TRPCError);
       expect(trpcError.code).toBe("INTERNAL_SERVER_ERROR");

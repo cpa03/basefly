@@ -33,8 +33,6 @@ model Customer {
 
   @@index([authUserId])
   @@index([authUserId, stripeCurrentPeriodEnd])
-  @@check(raw: "stripeCustomerId IS NULL OR stripeCustomerId LIKE 'cus_%'")
-  @@check(raw: "stripeSubscriptionId IS NULL OR stripeSubscriptionId LIKE 'sub_%'")
 }
 
 model Account {
@@ -65,9 +63,9 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(dbgenerated("gen_random_uuid()"))
+  id            String             @id @default(dbgenerated("gen_random_uuid()"))
   name          String?
-  email         String?   @unique
+  email         String?            @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
@@ -102,10 +100,6 @@ model K8sClusterConfig {
   @@index([authUserId])
   @@index([deletedAt])
   @@index([authUserId, deletedAt])
-  @@check(raw: "LENGTH(TRIM(name)) > 0")
-  @@check(raw: "LENGTH(name) <= 100")
-  @@check(raw: "LENGTH(TRIM(location)) > 0")
-  @@check(raw: "LENGTH(location) <= 50")
 }
 
 enum Status {

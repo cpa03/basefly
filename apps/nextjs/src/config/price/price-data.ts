@@ -6,6 +6,37 @@ import {
   type PlanTier,
 } from "@saasfly/common";
 
+/**
+ * Get the tier based on price amount
+ * This replaces hardcoded logic with configuration-driven lookup
+ */
+function getTierFromAmount(amount: number): PlanTier {
+  // Check each tier's monthly price
+  for (const [tier, prices] of Object.entries(LEGACY_PRICING_TIERS)) {
+    if (prices.monthly === amount) {
+      return tier as PlanTier;
+    }
+  }
+  
+  // Fallback logic: 0 = STARTER, otherwise determine by price range
+  if (amount === 0) return "STARTER";
+  
+  // Get sorted prices to determine tiers
+  const tiers = Object.entries(LEGACY_PRICING_TIERS)
+    .filter(([_, prices]) => prices.monthly > 0)
+    .sort((a, b) => a[1].monthly - b[1].monthly);
+  
+  // Find appropriate tier based on price
+  for (const [tier, prices] of tiers) {
+    if (amount <= prices.monthly) {
+      return tier as PlanTier;
+    }
+  }
+  
+  // Default to highest tier if price exceeds all
+  return tiers[tiers.length - 1]?.[0] as PlanTier ?? "BUSINESS";
+}
+
 export interface SubscriptionPlanTranslation {
   id: string;
   title: string;
@@ -284,8 +315,6 @@ export const priceDataMap: Record<string, SubscriptionPlanTranslation[]> = {
  * @deprecated Use getLegacyPriceDisplayString from @saasfly/common instead
  */
 export function formatPrice(amount: number): string {
-  return getLegacyPriceDisplayString(
-    amount === 0 ? "STARTER" : amount === 30 ? "PRO" : "BUSINESS",
-    "monthly"
-  );
+  const tier = getTierFromAmount(amount);
+  return getLegacyPriceDisplayString(tier, "monthly");
 }

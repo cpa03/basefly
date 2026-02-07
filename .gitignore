@@ -50,3 +50,6 @@ package-lock.json
 .idea/
 
 .env
+
+# opencode
+.opencode/

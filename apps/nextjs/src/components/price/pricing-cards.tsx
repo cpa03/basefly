@@ -7,6 +7,7 @@ import Balancer from "react-wrap-balancer";
 import { Button, buttonVariants } from "@saasfly/ui/button";
 import { Check, Close } from "@saasfly/ui/icons";
 import { Switch } from "@saasfly/ui/switch";
+import { supportConfig } from "@saasfly/common/config/site";
 
 import { BillingFormButton } from "~/components/price/billing-form-button";
 import { priceDataMap } from "~/config/price/price-data";
@@ -188,9 +189,9 @@ export function PricingCards({
           Email{" "}
           <a
             className="font-medium text-primary hover:underline"
-            href="mailto:support@saasfly.io"
+            href={`mailto:${supportConfig.email}`}
           >
-            support@saasfly.io
+            {supportConfig.email}
           </a>{" "}
           {dict.contact}
           <br />

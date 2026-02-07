@@ -6,6 +6,7 @@ describe("RateLimiter", () => {
   let limiter: RateLimiter;
 
   beforeEach(() => {
+    vi.useFakeTimers();
     limiter = new RateLimiter({
       maxRequests: 5,
       windowMs: 1000,
@@ -14,6 +15,7 @@ describe("RateLimiter", () => {
 
   afterEach(() => {
     limiter.destroy();
+    vi.useRealTimers();
   });
 
   describe("check() - First request for identifier", () => {
@@ -69,12 +71,12 @@ describe("RateLimiter", () => {
   });
 
   describe("check() - Window refill logic", () => {
-    it("should refill tokens after window expires", async () => {
+    it("should refill tokens after window expires", () => {
       for (let i = 0; i < 5; i++) {
         limiter.check("user1");
       }
 
-      await new Promise((resolve) => setTimeout(resolve, 1100));
+      vi.advanceTimersByTime(1100);
 
       const result = limiter.check("user1");
 
@@ -82,12 +84,12 @@ describe("RateLimiter", () => {
       expect(result.remaining).toBe(4);
     });
 
-    it("should not refill tokens while window is active", async () => {
+    it("should not refill tokens while window is active", () => {
       for (let i = 0; i < 5; i++) {
         limiter.check("user1");
       }
 
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      vi.advanceTimersByTime(500);
 
       const result = limiter.check("user1");
 
@@ -95,9 +97,9 @@ describe("RateLimiter", () => {
       expect(result.remaining).toBe(0);
     });
 
-    it("should reset lastRefill timestamp when window expires", async () => {
+    it("should reset lastRefill timestamp when window expires", () => {
       const firstCheck = limiter.check("user1");
-      await new Promise((resolve) => setTimeout(resolve, 1100));
+      vi.advanceTimersByTime(1100);
 
       const secondCheck = limiter.check("user1");
 
@@ -197,7 +199,7 @@ describe("RateLimiter", () => {
   });
 
   describe("Automatic cleanup of expired entries", () => {
-    it("should clean up entries older than 2x window duration", async () => {
+    it("should clean up entries older than 2x window duration", () => {
       const slowLimiter = new RateLimiter({
         maxRequests: 5,
         windowMs: 100,
@@ -206,7 +208,7 @@ describe("RateLimiter", () => {
       slowLimiter.check("user1");
       slowLimiter.check("user2");
 
-      await new Promise((resolve) => setTimeout(resolve, 250));
+      vi.advanceTimersByTime(250);
 
       const result = slowLimiter.check("user1");
 
@@ -373,6 +375,14 @@ describe("getIdentifier()", () => {
 });
 
 describe("RateLimiter - Edge Cases and Boundary Conditions", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it("should handle maxRequests of 1", () => {
     const limiter = new RateLimiter({
       maxRequests: 1,
@@ -403,7 +413,7 @@ describe("RateLimiter - Edge Cases and Boundary Conditions", () => {
     limiter.destroy();
   });
 
-  it("should handle very short window (10ms)", async () => {
+  it("should handle very short window (10ms)", () => {
     const limiter = new RateLimiter({
       maxRequests: 2,
       windowMs: 10,
@@ -415,13 +425,13 @@ describe("RateLimiter - Edge Cases and Boundary Conditions", () => {
     expect(result1.success).toBe(true);
     expect(result2.success).toBe(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 15));
+    vi.advanceTimersByTime(15);
 
     const result3 = limiter.check("user1");
 
     expect(result3.success).toBe(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 5));
+    vi.advanceTimersByTime(5);
 
     const result4 = limiter.check("user1");
     const result5 = limiter.check("user1");

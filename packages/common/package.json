@@ -5,7 +5,7 @@
   "exports": {
     ".": "./src/index.ts",
     "./resend": "./src/email.ts",
-    "./MagicLinkEmail": "./src/emails/magic-link-email.tsx",
+
     "./subscriptions": "./src/subscriptions.ts",
     "./env": "./src/env.mjs",
     "./config/ui": "./src/config/ui.ts",
@@ -26,7 +26,6 @@
     "format": "prettier --check '**/*.{mjs,ts,json}' "
   },
   "dependencies": {
-    "@saasfly/ui": "workspace:*",
     "@t3-oss/env-nextjs": "0.8.0",
     "@react-email/components": "0.0.19",
     "resend": "2.1.0",

@@ -91,3 +91,36 @@ export const SEMANTIC_COLORS: SemanticColors = {
     ring: "focus:ring-red-600",
   },
 };
+
+/** Visual effect configuration type */
+export interface VisualEffects {
+  shimmer: {
+    color: string;
+    size: string;
+    duration: string;
+    background: string;
+  };
+  shadows: {
+    buttonHover: string;
+    cardHover: string;
+    glow: string;
+  };
+}
+
+/**
+ * Visual effects configuration
+ * Centralized values for shimmer, shadows, and glow effects
+ */
+export const VISUAL_EFFECTS: VisualEffects = {
+  shimmer: {
+    color: "#ffffff",
+    size: "0.1em",
+    duration: "1.5s",
+    background: "radial-gradient(ellipse 80% 50% at 50% 120%,rgba(62, 61, 117),rgba(18, 18, 38))",
+  },
+  shadows: {
+    buttonHover: "0 0 40px 8px rgba(62,61,117,0.7)",
+    cardHover: "0 10px 40px -10px rgba(0,0,0,0.2)",
+    glow: "0 0 20px 4px rgba(62,61,117,0.5)",
+  },
+};

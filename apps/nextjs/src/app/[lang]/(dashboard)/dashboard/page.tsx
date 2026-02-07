@@ -2,6 +2,8 @@ import React from "react";
 import { redirect } from "next/navigation";
 
 import { authOptions, getCurrentUser } from "@saasfly/auth";
+
+export const dynamic = "force-dynamic";
 import {
   Table,
   TableBody,

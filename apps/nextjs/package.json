@@ -7,7 +7,7 @@
     "build:analyze": "ANALYZE=true contentlayer2 build && npx dotenv-cli -e ../../.env.local -- next build",
     "clean": "git clean -xdf .next .turbo node_modules",
     "dev": "npx dotenv-cli -e ../../.env.local -- next dev",
-    "lint": "npx dotenv-cli -e ../../.env.local -e ../../.env.ci -- next lint",
+    "lint": "eslint . --ext .ts,.tsx",
     "format": "prettier --write '**/*.{js,cjs,mjs,ts,tsx,md,json}'  --ignore-path .prettierignore",
     "start": "npx dotenv-cli -e ../../.env.local -- next start",
     "with-env": "echo 'Use individual scripts with dotenv-cli prefix instead'"

@@ -162,7 +162,7 @@ describe("createCheckoutSession", () => {
     if (capturedFn) {
       await capturedFn();
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      const stripeCall = vi.mocked(stripe.checkout.sessions.create).mock.calls[0]?.[1];
+      const stripeCall = (vi.mocked(stripe.checkout.sessions.create).mock.calls[0] as any)?.[1];
       expect(stripeCall?.idempotencyKey).toBeDefined();
       expect(stripeCall?.idempotencyKey).toMatch(/^checkout_session_\d+_/);
     }
@@ -185,7 +185,7 @@ describe("createCheckoutSession", () => {
     if (capturedFn) {
       await capturedFn();
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      const stripeCall = vi.mocked(stripe.checkout.sessions.create).mock.calls[0]?.[1];
+      const stripeCall = (vi.mocked(stripe.checkout.sessions.create).mock.calls[0] as any)?.[1];
       expect(stripeCall?.idempotencyKey).toBe("custom_key_123");
     }
   });
@@ -206,7 +206,7 @@ describe("createCheckoutSession", () => {
       // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(stripe.checkout.sessions.create).toHaveBeenCalled();
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      const callArgs = vi.mocked(stripe.checkout.sessions.create).mock.calls[0];
+      const callArgs = vi.mocked(stripe.checkout.sessions.create).mock.calls[0] as any;
       expect(callArgs?.[1]?.idempotencyKey).toBeDefined();
     }
   });

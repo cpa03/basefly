@@ -30,7 +30,7 @@ describe("UserDeletionService", () => {
   let mockDeleteWhere: ReturnType<typeof vi.fn>;
   let mockDeleteExecute: ReturnType<typeof vi.fn>;
   let mockSelectAll: ReturnType<typeof vi.fn>;
-  let mockSelectWhere: ReturnType<typeof vi.fn>;
+  let mockSelectWhere: any;
   let mockSelectExecute: ReturnType<typeof vi.fn>;
   let mockSelectExecuteTakeFirst: ReturnType<typeof vi.fn>;
 

@@ -4,6 +4,13 @@
 
 ## Fixed Bugs
 
+### [x] Cyclic dependency between @saasfly/ui and @saasfly/common
+**Date**: 2026-02-07  
+**File**: `packages/ui/package.json`, `packages/common/package.json`  
+**Issue**: Cyclic dependency detected: @saasfly/ui -> @saasfly/common -> @saasfly/ui  
+**Solution**: Moved MagicLinkEmail component from @saasfly/common to @saasfly/ui package to break the cycle  
+**Impact**: Turbo build and typecheck now working correctly
+
 ## Recent Improvements
 
 ### Phase 1: Palette 🎨 - UX Micro-Improvements (2026-02-07)

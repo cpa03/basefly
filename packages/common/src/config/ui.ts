@@ -25,6 +25,18 @@ export interface AnimationTiming {
   stagger: number;
 }
 
+/** Semantic color tokens for consistent theming */
+export interface SemanticColors {
+  success: {
+    icon: string;
+    text: string;
+  };
+  destructive: {
+    background: string;
+    ring: string;
+  };
+}
+
 /**
  * Toast notification configuration
  */
@@ -63,4 +75,19 @@ export const ANIMATION_TIMING: AnimationTiming = {
   slow: 300,
   /** Stagger delay for lists */
   stagger: 50,
+};
+
+/**
+ * Semantic color tokens
+ * Use these instead of hardcoded color classes for consistency
+ */
+export const SEMANTIC_COLORS: SemanticColors = {
+  success: {
+    icon: "text-green-500",
+    text: "text-green-600",
+  },
+  destructive: {
+    background: "bg-red-600",
+    ring: "focus:ring-red-600",
+  },
 };

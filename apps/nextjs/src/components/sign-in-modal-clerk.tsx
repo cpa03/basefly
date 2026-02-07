@@ -3,7 +3,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { OAuthStrategy } from "@clerk/types";
+import type { OAuthStrategy } from "@clerk/types";
 import { useSignIn } from "@clerk/nextjs";
 
 import { Button } from "@saasfly/ui/button";

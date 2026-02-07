@@ -25,7 +25,7 @@ const config = {
   ],
   pageExtensions: ["ts", "tsx", "mdx"],
   images: {
-    domains: ["images.unsplash.com", "avatars.githubusercontent.com", "www.twillot.com", "cdnv2.ruguoapp.com", "www.setupyourpay.com", "cdn.sanity.io", "pbs.twimg.com"],
+    domains: ["images.unsplash.com", "avatars.githubusercontent.com", "www.twillot.com", "cdnv2.ruguoapp.com", "www.setupyourpay.com", "cdn.sanity.io", "pbs.twimg.com", "avatar.vercel.sh", "ui.aceternity.com"],
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60,
     remotePatterns: [
@@ -56,12 +56,11 @@ const config = {
     ],
   },
   /** We already do linting and typechecking as separate tasks in CI */
-  eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
   output: "standalone",
   compress: true,
-  swcMinify: true,
   poweredByHeader: false,
+  turbopack: {},
   experimental: {
     mdxRs: true,
     optimizePackageImports: ["@saasfly/ui", "lucide-react"],

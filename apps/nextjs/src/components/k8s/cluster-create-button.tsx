@@ -10,7 +10,6 @@ import { buttonVariants, type ButtonProps } from "@saasfly/ui/button";
 import { Add, Spinner } from "@saasfly/ui/icons";
 import type { ToastProps } from "@saasfly/ui/toast";
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 import { toast as _toast } from "@saasfly/ui/use-toast";
 
 // Type assertion to satisfy ESLint while maintaining functionality

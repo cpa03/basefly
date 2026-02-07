@@ -124,3 +124,34 @@ export const VISUAL_EFFECTS: VisualEffects = {
     glow: "0 0 20px 4px rgba(62,61,117,0.5)",
   },
 };
+
+/** Animation CSS classes mapped to timing values for Tailwind */
+export const ANIMATION_CLASSES = {
+  /** Fast transitions - hover states, micro-interactions */
+  fast: "duration-150",
+  /** Normal transitions - buttons, links, most UI elements */
+  normal: "duration-200",
+  /** Slow transitions - page transitions, modals, complex animations */
+  slow: "duration-300",
+  /** Extra slow - page transitions, large elements */
+  extraSlow: "duration-500",
+} as const;
+
+/** Transition timing functions */
+export const TRANSITION_TIMING = {
+  default: "ease-out",
+  bounce: "ease-in-out",
+  linear: "linear",
+} as const;
+
+/** Combined transition presets for common use cases */
+export const TRANSITION_PRESETS = {
+  /** Default button/link hover effect */
+  interactive: `${ANIMATION_CLASSES.fast} ${TRANSITION_TIMING.default}`,
+  /** Card or container hover effects */
+  container: `${ANIMATION_CLASSES.normal} ${TRANSITION_TIMING.default}`,
+  /** Page-level or modal animations */
+  page: `${ANIMATION_CLASSES.slow} ${TRANSITION_TIMING.default}`,
+  /** Complex animations requiring more time */
+  complex: `${ANIMATION_CLASSES.extraSlow} ${TRANSITION_TIMING.bounce}`,
+} as const;

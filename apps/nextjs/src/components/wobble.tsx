@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 
 import { WobbleCard } from "@saasfly/ui/wobble-card";
 
@@ -20,7 +21,7 @@ export function WobbleCardShow() {
             providing the best possible resources for building saas service.
           </p>
         </div>
-        <img
+        <Image
           src="https://ui.aceternity.com/_next/image?url=%2Flinear.webp&w=1080&q=75"
           width={500}
           height={500}
@@ -47,7 +48,7 @@ export function WobbleCardShow() {
             and clients to build high-quality SaaS services faster and easier.
           </p>
         </div>
-        <img
+        <Image
           src="https://ui.aceternity.com/_next/image?url=%2Flinear.webp&w=1080&q=75"
           width={500}
           height={500}

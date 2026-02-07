@@ -109,7 +109,7 @@ export default async function IndexPage({
                   className="mb-4 mt-6 flex w-full flex-col justify-center space-y-4 sm:flex-row sm:justify-start sm:space-x-8 sm:space-y-0 z-10">
                   <Link href={siteConfig.links.github} target="_blank">
                     <Button
-                      className="bg-blue-600 hover:bg-blue-500 text-white rounded-full text-lg px-6 h-12 font-medium">
+                      className="rounded-full text-lg px-6 h-12 font-medium transition-all duration-200 ease-out hover:scale-105 hover:shadow-lg active:scale-95">
                       {dict.marketing.get_started}
                       <ArrowRight className="h-5 w-5"/>
                     </Button>

@@ -26,9 +26,9 @@ describe("SoftDeleteService", () => {
   let mockUpdateSet: ReturnType<typeof vi.fn>;
   let mockUpdateExecute: ReturnType<typeof vi.fn>;
   let mockSelectAll: ReturnType<typeof vi.fn>;
-  let mockSelectWhere1: ReturnType<typeof vi.fn>;
-  let mockSelectWhere2: ReturnType<typeof vi.fn>;
-  let mockSelectWhere3: ReturnType<typeof vi.fn>;
+  let mockSelectWhere1: any;
+  let mockSelectWhere2: any;
+  let mockSelectWhere3: any;
   let mockSelectExecute: ReturnType<typeof vi.fn>;
   let mockSelectExecuteTakeFirst: ReturnType<typeof vi.fn>;
 

@@ -10,7 +10,7 @@ import {
   enhancedUpdateUserNameSchema,
   enhancedInsertCustomerSchema,
   enhancedQueryCustomerSchema,
-} from "./schemas.test";
+} from "./schemas";
 
 describe("Enhanced API Schemas Validation", () => {
   describe("enhancedK8sClusterCreateSchema", () => {

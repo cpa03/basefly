@@ -1,4 +1,9 @@
 import { env } from "./env.mjs";
+import {
+  PRICING_TIERS,
+  RESOURCE_LIMITS,
+  getStripePriceIds,
+} from "./config/pricing";
 
 export interface SubscriptionPlan {
   title: string;
@@ -15,12 +20,14 @@ export interface SubscriptionPlan {
   };
 }
 
+const stripePriceIds = getStripePriceIds();
+
 export const pricingData: SubscriptionPlan[] = [
   {
     title: "Starter",
     description: "For Beginners",
     benefits: [
-      "Up to 100 monthly posts",
+      `Up to ${RESOURCE_LIMITS.STARTER.posts} monthly posts`,
       "Basic analytics and reporting",
       "Access to standard templates",
     ],
@@ -31,8 +38,8 @@ export const pricingData: SubscriptionPlan[] = [
       "Limited access to business resources.",
     ],
     prices: {
-      monthly: 0,
-      yearly: 0,
+      monthly: PRICING_TIERS.STARTER.monthly,
+      yearly: PRICING_TIERS.STARTER.yearly,
     },
     stripeIds: {
       monthly: null,
@@ -43,7 +50,7 @@ export const pricingData: SubscriptionPlan[] = [
     title: "Pro",
     description: "Unlock Advanced Features",
     benefits: [
-      "Up to 500 monthly posts",
+      `Up to ${RESOURCE_LIMITS.PRO.posts} monthly posts`,
       "Advanced analytics and reporting",
       "Access to business templates",
       "Priority customer support",
@@ -54,14 +61,12 @@ export const pricingData: SubscriptionPlan[] = [
       "Limited access to business resources.",
     ],
     prices: {
-      monthly: 15,
-      yearly: 144,
+      monthly: PRICING_TIERS.PRO.monthly,
+      yearly: PRICING_TIERS.PRO.yearly,
     },
     stripeIds: {
-      // @ts-ignore
-      monthly: env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID,
-      // @ts-ignore
-      yearly: env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID,
+      monthly: stripePriceIds.pro.monthly,
+      yearly: stripePriceIds.pro.yearly,
     },
   },
   {
@@ -76,14 +81,22 @@ export const pricingData: SubscriptionPlan[] = [
     ],
     limitations: [],
     prices: {
-      monthly: 30,
-      yearly: 300,
+      monthly: PRICING_TIERS.BUSINESS.monthly,
+      yearly: PRICING_TIERS.BUSINESS.yearly,
     },
     stripeIds: {
-      // @ts-ignore
-      monthly: env.NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID,
-      // @ts-ignore
-      yearly: env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID,
+      monthly: stripePriceIds.business.monthly,
+      yearly: stripePriceIds.business.yearly,
     },
   },
 ];
+
+/**
+ * @deprecated Use PRICING_TIERS from @saasfly/common/config/pricing instead
+ */
+export const PRICING = PRICING_TIERS;
+
+/**
+ * @deprecated Use RESOURCE_LIMITS from @saasfly/common/config/pricing instead
+ */
+export const LIMITS = RESOURCE_LIMITS;

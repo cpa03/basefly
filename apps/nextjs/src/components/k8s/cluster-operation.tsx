@@ -21,7 +21,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@saasfly/ui/dropdown-menu";
-import { Ellipsis, Spinner, Trash } from "@saasfly/ui/icons";
+import { Check, Copy, CopyDone, Ellipsis, Spinner, Trash } from "@saasfly/ui/icons";
 import { toast } from "@saasfly/ui/use-toast";
 
 import { trpc } from "~/trpc/client";
@@ -58,6 +58,18 @@ export function ClusterOperations({ cluster, lang }: ClusterOperationsProps) {
   const router = useRouter();
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false);
   const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false);
+  const [hasCopied, setHasCopied] = React.useState<boolean>(false);
+
+  const handleCopyId = React.useCallback(async () => {
+    await navigator.clipboard.writeText(String(cluster.id));
+    setHasCopied(true);
+    toast({
+      title: "Copied!",
+      description: "Cluster ID copied to clipboard.",
+    });
+    // Reset the copied state after 2 seconds
+    setTimeout(() => setHasCopied(false), 2000);
+  }, [cluster.id]);
 
   return (
     <>
@@ -77,16 +89,20 @@ export function ClusterOperations({ cluster, lang }: ClusterOperationsProps) {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            className="flex cursor-pointer items-center"
-            onSelect={() => {
-              void navigator.clipboard.writeText(String(cluster.id));
-              toast({
-                title: "Copied!",
-                description: "Cluster ID copied to clipboard.",
-              });
-            }}
+            className="flex cursor-pointer items-center gap-2"
+            onSelect={handleCopyId}
           >
-            Copy ID
+            {hasCopied ? (
+              <>
+                <CopyDone className="h-4 w-4 text-green-500" aria-hidden="true" />
+                <span className="text-green-600">Copied!</span>
+              </>
+            ) : (
+              <>
+                <Copy className="h-4 w-4" aria-hidden="true" />
+                <span>Copy ID</span>
+              </>
+            )}
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem

@@ -21,55 +21,60 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@saasfly/ui/dropdown-menu";
-import { Check, Copy, CopyDone, Ellipsis, Spinner, Trash } from "@saasfly/ui/icons";
+import { Copy, CopyDone, Ellipsis, Spinner, Trash } from "@saasfly/ui/icons";
 import { toast } from "@saasfly/ui/use-toast";
 
 import { trpc } from "~/trpc/client";
 import type { Cluster } from "~/types/k8s";
 
-async function deleteCluster(clusterId: number) {
-  try {
-    const res = await trpc.k8s.deleteCluster.mutate({ id: clusterId });
-    if (!res?.success) {
-      toast({
-        title: "Something went wrong.",
-        description: "Your cluster was not deleted. Please try again.",
-        variant: "destructive",
-      });
-      return false;
-    }
-    return true;
-  } catch (error) {
-    toast({
-      title: "Error",
-      description: "An unexpected error occurred. Please try again.",
-      variant: "destructive",
-    });
-    return false;
-  }
-}
-
 interface ClusterOperationsProps {
   cluster: Pick<Cluster, "id" | "name">;
   lang: string;
+  dict?: Record<string, unknown>;
 }
 
-export function ClusterOperations({ cluster, lang }: ClusterOperationsProps) {
+export function ClusterOperations({ cluster, lang, dict }: ClusterOperationsProps) {
   const router = useRouter();
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false);
   const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false);
   const [hasCopied, setHasCopied] = React.useState<boolean>(false);
 
+  const k8sDict = dict?.k8s as Record<string, unknown> | undefined;
+  const actionsDict = k8sDict?.actions as Record<string, string> | undefined;
+  const errorsDict = k8sDict?.errors as Record<string, string> | undefined;
+  const deleteDialogDict = k8sDict?.delete_dialog as Record<string, string> | undefined;
+
   const handleCopyId = React.useCallback(async () => {
     await navigator.clipboard.writeText(String(cluster.id));
     setHasCopied(true);
     toast({
-      title: "Copied!",
-      description: "Cluster ID copied to clipboard.",
+      title: actionsDict?.copy_success_title ?? "Copied!",
+      description: actionsDict?.copy_success_desc ?? "Cluster ID copied to clipboard.",
     });
-    // Reset the copied state after 2 seconds
     setTimeout(() => setHasCopied(false), 2000);
-  }, [cluster.id]);
+  }, [cluster.id, actionsDict]);
+
+  async function deleteCluster(clusterId: number) {
+    try {
+      const res = await trpc.k8s.deleteCluster.mutate({ id: clusterId });
+      if (!res?.success) {
+        toast({
+          title: errorsDict?.delete_failed_title ?? "Something went wrong.",
+          description: errorsDict?.delete_failed_desc ?? "Your cluster was not deleted. Please try again.",
+          variant: "destructive",
+        });
+        return false;
+      }
+      return true;
+    } catch (error) {
+      toast({
+        title: errorsDict?.unexpected_error_title ?? "Error",
+        description: errorsDict?.unexpected_error_desc ?? "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+      return false;
+    }
+  }
 
   return (
     <>
@@ -84,7 +89,7 @@ export function ClusterOperations({ cluster, lang }: ClusterOperationsProps) {
               href={`/${lang}/editor/cluster/${cluster.id}`}
               className="flex w-full"
             >
-              Edit
+              {actionsDict?.edit ?? "Edit"}
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
@@ -95,12 +100,12 @@ export function ClusterOperations({ cluster, lang }: ClusterOperationsProps) {
             {hasCopied ? (
               <>
                 <CopyDone className="h-4 w-4 text-green-500" aria-hidden="true" />
-                <span className="text-green-600">Copied!</span>
+                <span className="text-green-600">{actionsDict?.copied ?? "Copied!"}</span>
               </>
             ) : (
               <>
                 <Copy className="h-4 w-4" aria-hidden="true" />
-                <span>Copy ID</span>
+                <span>{actionsDict?.copy_id ?? "Copy ID"}</span>
               </>
             )}
           </DropdownMenuItem>
@@ -109,7 +114,7 @@ export function ClusterOperations({ cluster, lang }: ClusterOperationsProps) {
             className="flex cursor-pointer items-center text-destructive focus:text-destructive"
             onSelect={() => setShowDeleteAlert(true)}
           >
-            Delete
+            {actionsDict?.delete ?? "Delete"}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -117,14 +122,14 @@ export function ClusterOperations({ cluster, lang }: ClusterOperationsProps) {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              Are you sure you want to delete this cluster?
+              {deleteDialogDict?.title ?? "Are you sure you want to delete this cluster?"}
             </AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone.
+              {deleteDialogDict?.description ?? "This action cannot be undone."}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{actionsDict?.cancel ?? "Cancel"}</AlertDialogCancel>
             <AlertDialogAction
               onClick={async (event) => {
                 event.preventDefault();
@@ -148,7 +153,7 @@ export function ClusterOperations({ cluster, lang }: ClusterOperationsProps) {
               ) : (
                 <Trash className="mr-2 h-4 w-4" aria-hidden="true" />
               )}
-              <span>Delete</span>
+              <span>{actionsDict?.delete ?? "Delete"}</span>
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

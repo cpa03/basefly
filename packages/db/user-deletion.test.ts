@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-var-requires */
+
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
+
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/unbound-method */
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -62,7 +62,7 @@ describe("UserDeletionService", () => {
     };
 
     // Mock db.transaction().execute(callback) pattern
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+
     // @ts-expect-error Complex transaction mock type
     vi.mocked(db.transaction).mockReturnValue({
       execute: vi.fn().mockImplementation((callback: (trx: typeof mockTrx) => Promise<unknown>) => {
@@ -83,7 +83,7 @@ describe("UserDeletionService", () => {
     });
     const selectChain = createSelectChain();
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+
     // @ts-expect-error Complex query builder mock type
     vi.mocked(db.selectFrom).mockReturnValue(selectChain as unknown as {
       selectAll: ReturnType<typeof vi.fn>,
@@ -99,12 +99,12 @@ describe("UserDeletionService", () => {
     it("soft deletes all K8s clusters before hard deleting user", async () => {
       await service.deleteUser("user_123");
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
       expect(db.transaction).toHaveBeenCalled();
       expect(mockTrx.updateTable).toHaveBeenCalledWith("K8sClusterConfig");
       expect(mockUpdateWhere).toHaveBeenCalledWith("authUserId", "=", "user_123");
       expect(mockUpdateWhere).toHaveBeenCalledWith("deletedAt", "is", null);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
       expect(mockUpdateSet).toHaveBeenCalledWith({ deletedAt: expect.any(Date) });
       expect(mockUpdateExecute).toHaveBeenCalled();
     });
@@ -128,7 +128,7 @@ describe("UserDeletionService", () => {
     it("executes all operations within a single transaction", async () => {
       await service.deleteUser("user_123");
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
       expect(db.transaction).toHaveBeenCalledTimes(1);
       expect(mockTrx.updateTable).toHaveBeenCalledTimes(1);
       expect(mockTrx.deleteFrom).toHaveBeenCalledTimes(2);
@@ -150,7 +150,7 @@ describe("UserDeletionService", () => {
       await service.deleteUser("user_123");
 
       expect(mockTrx.updateTable).toHaveBeenCalled();
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
       expect(mockUpdateSet).toHaveBeenCalledWith({ deletedAt: expect.any(Date) });
       expect(mockTrx.deleteFrom).toHaveBeenCalledTimes(2);
     });
@@ -160,12 +160,12 @@ describe("UserDeletionService", () => {
     it("soft deletes all K8s clusters for user", async () => {
       await service.softDeleteUser("user_123");
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
       expect(db.transaction).toHaveBeenCalled();
       expect(mockTrx.updateTable).toHaveBeenCalledWith("K8sClusterConfig");
       expect(mockUpdateWhere).toHaveBeenCalledWith("authUserId", "=", "user_123");
       expect(mockUpdateWhere).toHaveBeenCalledWith("deletedAt", "is", null);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
       expect(mockUpdateSet).toHaveBeenCalledWith({ deletedAt: expect.any(Date) });
     });
 
@@ -187,7 +187,7 @@ describe("UserDeletionService", () => {
     it("executes all operations within a single transaction", async () => {
       await service.softDeleteUser("user_123");
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
       expect(db.transaction).toHaveBeenCalledTimes(1);
       expect(mockTrx.updateTable).toHaveBeenCalledTimes(2);
       expect(mockTrx.deleteFrom).not.toHaveBeenCalled();

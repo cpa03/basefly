@@ -105,6 +105,27 @@
       "new_cluster": "New Cluster",
       "no_cluster_title": "No clusters created",
       "no_cluster_content": "You don&apos;t have any clusters yet. Start creating cluster. ",
+      "errors": {
+        "create_failed_title": "Something went wrong.",
+        "create_failed_desc": "Your cluster was not created. Please try again.",
+        "delete_failed_title": "Something went wrong.",
+        "delete_failed_desc": "Your cluster was not deleted. Please try again.",
+        "unexpected_error_title": "Error",
+        "unexpected_error_desc": "An unexpected error occurred. Please try again."
+      },
+      "actions": {
+        "edit": "Edit",
+        "copy_id": "Copy ID",
+        "copied": "Copied!",
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "copy_success_title": "Copied!",
+        "copy_success_desc": "Cluster ID copied to clipboard."
+      },
+      "delete_dialog": {
+        "title": "Are you sure you want to delete this cluster?",
+        "description": "This action cannot be undone."
+      },
       "": ""
     },
     "billing": {

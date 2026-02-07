@@ -1,23 +1,35 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import * as React from "react";
 
 import { Check, Clock, PauseCircle, XCircle, Loader2 as SpinnerLoader } from "@saasfly/ui/icons";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./tooltip";
 
-import { cn } from "@saasfly/ui";
+import { cn } from "./index";
 
 export type ClusterStatus = "PENDING" | "CREATING" | "INITING" | "RUNNING" | "STOPPED" | "DELETED";
 
-interface StatusBadgeProps extends React.HTMLAttributes<HTMLDivElement> {
-  status: ClusterStatus;
-  size?: "sm" | "default" | "lg";
+interface StatusConfig {
+  icon: typeof Clock;
+  label: string;
+  description: string;
+  variant: "secondary" | "default" | "destructive";
+  bgColor: string;
+  textColor: string;
+  dotColor: string;
+  animate?: boolean;
 }
 
-const statusConfig = {
+const statusConfig: Record<ClusterStatus, StatusConfig> = {
   PENDING: {
     icon: Clock,
     label: "Pending",
-    variant: "secondary" as const,
+    description: "Cluster creation is queued and waiting to start",
+    variant: "secondary",
     bgColor: "bg-slate-100 dark:bg-slate-800",
     textColor: "text-slate-600 dark:text-slate-400",
     dotColor: "bg-slate-400",
@@ -25,7 +37,8 @@ const statusConfig = {
   CREATING: {
     icon: SpinnerLoader,
     label: "Creating",
-    variant: "secondary" as const,
+    description: "Cluster infrastructure is being provisioned",
+    variant: "secondary",
     bgColor: "bg-blue-50 dark:bg-blue-950/30",
     textColor: "text-blue-600 dark:text-blue-400",
     dotColor: "bg-blue-500",
@@ -34,7 +47,8 @@ const statusConfig = {
   INITING: {
     icon: SpinnerLoader,
     label: "Initializing",
-    variant: "secondary" as const,
+    description: "Cluster is being configured and services are starting",
+    variant: "secondary",
     bgColor: "bg-indigo-50 dark:bg-indigo-950/30",
     textColor: "text-indigo-600 dark:text-indigo-400",
     dotColor: "bg-indigo-500",
@@ -43,7 +57,8 @@ const statusConfig = {
   RUNNING: {
     icon: Check,
     label: "Running",
-    variant: "default" as const,
+    description: "Cluster is operational and ready for workloads",
+    variant: "default",
     bgColor: "bg-green-50 dark:bg-green-950/30",
     textColor: "text-green-600 dark:text-green-400",
     dotColor: "bg-green-500",
@@ -51,7 +66,8 @@ const statusConfig = {
   STOPPED: {
     icon: PauseCircle,
     label: "Stopped",
-    variant: "secondary" as const,
+    description: "Cluster is paused and not consuming resources",
+    variant: "secondary",
     bgColor: "bg-amber-50 dark:bg-amber-950/30",
     textColor: "text-amber-600 dark:text-amber-400",
     dotColor: "bg-amber-500",
@@ -59,7 +75,8 @@ const statusConfig = {
   DELETED: {
     icon: XCircle,
     label: "Deleted",
-    variant: "destructive" as const,
+    description: "Cluster has been marked for deletion",
+    variant: "destructive",
     bgColor: "bg-red-50 dark:bg-red-950/30",
     textColor: "text-red-600 dark:text-red-400",
     dotColor: "bg-red-500",
@@ -84,9 +101,16 @@ const sizeStyles = {
   },
 };
 
+interface StatusBadgeProps extends React.HTMLAttributes<HTMLDivElement> {
+  status: ClusterStatus;
+  size?: "sm" | "default" | "lg";
+  showTooltip?: boolean;
+}
+
 export function StatusBadge({
   status,
   size = "default",
+  showTooltip = true,
   className,
   ...props
 }: StatusBadgeProps) {
@@ -94,7 +118,7 @@ export function StatusBadge({
   const Icon = config.icon;
   const styles = sizeStyles[size];
 
-  return (
+  const badge = (
     <div
       className={cn(
         "inline-flex items-center rounded-full font-medium transition-colors",
@@ -122,5 +146,23 @@ export function StatusBadge({
       />
       <span className="sr-only">{config.label}</span>
     </div>
+  );
+
+  if (!showTooltip) {
+    return badge;
+  }
+
+  return (
+    <TooltipProvider delayDuration={200}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          {badge}
+        </TooltipTrigger>
+        <TooltipContent side="top" className="max-w-[200px]">
+          <p className="font-semibold">{config.label}</p>
+          <p className="text-xs text-muted-foreground">{config.description}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 }

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-var-requires */
+
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/unbound-method */
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -71,7 +71,7 @@ describe("SoftDeleteService", () => {
       executeTakeFirst: mockSelectExecuteTakeFirst,
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+
     // @ts-expect-error Type instantiation is excessively deep
     vi.mocked(db.updateTable).mockReturnValue({
       where: mockUpdateWhere,
@@ -83,7 +83,7 @@ describe("SoftDeleteService", () => {
       execute: ReturnType<typeof vi.fn>,
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+
     // @ts-expect-error Complex query builder mock type
     vi.mocked(db.selectFrom).mockReturnValue(selectChain as unknown as {
       selectAll: ReturnType<typeof vi.fn>,
@@ -99,11 +99,11 @@ describe("SoftDeleteService", () => {
     it("sets deletedAt timestamp when soft deleting a record", async () => {
       await service.softDelete(1, "user_123");
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
       expect(db.updateTable).toHaveBeenCalledWith("K8sClusterConfig");
       expect(mockUpdateWhere).toHaveBeenCalledWith("id", "=", 1);
       expect(mockUpdateWhere).toHaveBeenCalledWith("authUserId", "=", "user_123");
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
       expect(mockUpdateSet).toHaveBeenCalledWith({ deletedAt: expect.any(Date) });
       expect(mockUpdateExecute).toHaveBeenCalled();
     });
@@ -127,7 +127,7 @@ describe("SoftDeleteService", () => {
     it("sets deletedAt to null when restoring a record", async () => {
       await service.restore(2, "user_789");
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+
       expect(db.updateTable).toHaveBeenCalledWith("K8sClusterConfig");
       expect(mockUpdateWhere).toHaveBeenCalledWith("id", "=", 2);
       expect(mockUpdateWhere).toHaveBeenCalledWith("authUserId", "=", "user_789");

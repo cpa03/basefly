@@ -8,9 +8,19 @@ import { cn } from "@saasfly/ui";
 //button self design
 import { buttonVariants, type ButtonProps } from "@saasfly/ui/button";
 import { Add, Spinner } from "@saasfly/ui/icons";
-import { toast } from "@saasfly/ui/use-toast";
+import type { ToastProps } from "@saasfly/ui/toast";
 
-import { DEFAULT_CLUSTER_LOCATION } from "~/config/k8s";
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+import { toast as _toast } from "@saasfly/ui/use-toast";
+
+// Type assertion to satisfy ESLint while maintaining functionality
+const toast = _toast as (props: Omit<ToastProps, "id"> & { 
+  title?: React.ReactNode;
+  description?: React.ReactNode;
+  variant?: "default" | "destructive";
+}) => { id: string; dismiss: () => void; update: (props: ToastProps) => void };
+
+import { DEFAULT_CLUSTER_CONFIG } from "~/config/k8s";
 import { trpc } from "~/trpc/client";
 
 interface K8sCreateButtonProps extends ButtonProps {
@@ -32,16 +42,17 @@ export function K8sCreateButton({
     setIsLoading(true);
     try {
       const res = await trpc.k8s.createCluster.mutate({
-        name: "Default Cluster",
-        location: DEFAULT_CLUSTER_LOCATION,
+        name: DEFAULT_CLUSTER_CONFIG.name,
+        location: DEFAULT_CLUSTER_CONFIG.location,
       });
 
       if (!res?.success) {
-        return toast({
-          title: "Something went wrong.",
-          description: "Your cluster was not created. Please try again.",
+        toast({
+          title: (dict.k8s?.errors as Record<string, string>)?.create_failed_title ?? "Something went wrong.",
+          description: (dict.k8s?.errors as Record<string, string>)?.create_failed_desc ?? "Your cluster was not created. Please try again.",
           variant: "destructive",
         });
+        return;
       }
 
       // This forces a cache invalidation.
@@ -52,8 +63,8 @@ export function K8sCreateButton({
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "An unexpected error occurred. Please try again.",
+        title: (dict.k8s?.errors as Record<string, string>)?.unexpected_error_title ?? "Error",
+        description: (dict.k8s?.errors as Record<string, string>)?.unexpected_error_desc ?? "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
     } finally {

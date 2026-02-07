@@ -83,6 +83,7 @@ export default async function DashboardPage({
                           key={String(cluster.id)}
                           cluster={cluster}
                           lang={lang}
+                          dict={dict.business}
                         />
                       ))}
                     </TableBody>
@@ -113,6 +114,7 @@ export default async function DashboardPage({
                       <ClusterOperations
                         cluster={{ id: cluster.id, name: cluster.name }}
                         lang={lang}
+                        dict={dict.business}
                       />
                     </div>
                     <div className="flex flex-wrap gap-4 border-t pt-3">

@@ -10,9 +10,10 @@ import type { Cluster } from "~/types/k8s";
 interface ClusterItemProps {
   cluster: Pick<Cluster, "id" | "name" | "location" | "plan" | "status" | "updatedAt">;
   lang: string;
+  dict?: Record<string, unknown>;
 }
 
-export function ClusterItem({ cluster, lang }: ClusterItemProps) {
+export function ClusterItem({ cluster, lang, dict }: ClusterItemProps) {
   return (
     <TableRow key={String(cluster.id)}>
       <TableCell className="font-medium">
@@ -40,6 +41,7 @@ export function ClusterItem({ cluster, lang }: ClusterItemProps) {
         <ClusterOperations
           cluster={{ id: cluster.id, name: cluster.name }}
           lang={lang}
+          dict={dict}
         />
       </TableCell>
     </TableRow>

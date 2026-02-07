@@ -137,9 +137,11 @@
     "./tabs": "./src/tabs.tsx",
     "./text-generate-effect": "./src/text-generate-effect.tsx",
     "./text-reveal": "./src/text-reveal.tsx",
+    "./toast": "./src/toast.tsx",
     "./toaster": "./src/toaster.tsx",
-    "./typewriter-effect": "./src/typewriter-effect.tsx",
+    "./tooltip": "./src/tooltip.tsx",
     "./use-toast": "./src/use-toast.tsx",
+    "./typewriter-effect": "./src/typewriter-effect.tsx",
     "./wobble-card": "./src/wobble-card.tsx"
   }
 }

@@ -79,9 +79,11 @@ export function ClusterOperations({ cluster, lang, dict }: ClusterOperationsProp
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger className="flex h-8 w-8 items-center justify-center rounded-md border transition-colors hover:bg-muted">
-          <Ellipsis className="h-4 w-4" />
-          <span className="sr-only">Open</span>
+        <DropdownMenuTrigger
+          className="flex h-8 w-8 items-center justify-center rounded-md border transition-all duration-150 ease-out hover:bg-muted hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          aria-label="Cluster actions"
+        >
+          <Ellipsis className="h-4 w-4" aria-hidden="true" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem>
@@ -94,13 +96,13 @@ export function ClusterOperations({ cluster, lang, dict }: ClusterOperationsProp
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            className="flex cursor-pointer items-center gap-2"
+            className="flex cursor-pointer items-center gap-2 transition-colors duration-150"
             onSelect={handleCopyId}
           >
             {hasCopied ? (
               <>
                 <CopyDone className="h-4 w-4 text-green-500" aria-hidden="true" />
-                <span className="text-green-600">{actionsDict?.copied ?? "Copied!"}</span>
+                <span className="text-green-600 font-medium">{actionsDict?.copied ?? "Copied!"}</span>
               </>
             ) : (
               <>

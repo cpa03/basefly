@@ -2432,3 +2432,70 @@ retry logic, rate limiting).
 
 ---
 
+
+# UI/UX Consolidation Tasks
+
+## Animation System Consolidation ✅
+
+### Task: Consolidate Radix UI Animation Patterns Across Components
+- **Status**: ✅ Completed
+- **Priority**: Medium
+- **Type**: [CONSOLIDATE]
+- **Files**: 
+  - `packages/common/src/animation.ts`
+  - `packages/common/src/index.ts`
+  - `packages/ui/src/dropdown-menu.tsx`
+  - `packages/ui/src/tooltip.tsx`
+  - `packages/ui/package.json`
+  - `apps/nextjs/src/components/k8s/cluster-operation.tsx`
+
+**Description**:
+Consolidate animation patterns across Radix UI components by centralizing animation class definitions in the common package, enabling consistent animations and easier maintenance.
+
+**Changes Made**:
+1. ✅ Extended `packages/common/src/animation.ts` with new utilities:
+   - `radixAnimations` - Radix-specific animation classes for tooltip and dropdown
+   - `focusRing` - Standardized focus ring configurations
+   - `hoverScale` - Hover micro-interaction scales
+   - Added type exports: `FocusRingKey`, `HoverScaleKey`
+
+2. ✅ Updated `packages/common/src/index.ts` to export new types
+
+3. ✅ Updated `packages/ui/package.json` to add `@saasfly/common` dependency
+
+4. ✅ Refactored `packages/ui/src/dropdown-menu.tsx`:
+   - Replaced hardcoded animation classes with `ANIMATION.radix.dropdown.content.all`
+   - Replaced hardcoded sub-content animations with `ANIMATION.radix.dropdown.subContent.all`
+
+5. ✅ Refactored `packages/ui/src/tooltip.tsx`:
+   - Replaced hardcoded animation classes with `ANIMATION.radix.tooltip.all`
+
+6. ✅ Enhanced `apps/nextjs/src/components/k8s/cluster-operation.tsx`:
+   - Added focus ring styling using `focusRing` configuration
+   - Improved accessibility with `aria-label` attributes
+   - Added hover scale effects for better interactivity
+
+**Success Criteria**:
+- [x] Animation classes centralized in common package
+- [x] Dropdown menu uses centralized animation utilities
+- [x] Tooltip uses centralized animation utilities
+- [x] Focus ring configuration reusable across components
+- [x] Hover scale effects standardized
+- [x] All tests pass (324 tests)
+- [x] No breaking changes to existing functionality
+
+**Benefits**:
+- Consistent animation behavior across all UI components
+- Easier maintenance - change animations in one place
+- Type-safe animation configuration
+- Reduced code duplication
+- Better developer experience with IDE autocomplete
+
+**Related Components** (future consolidation opportunities):
+- popover.tsx - uses similar slide animations
+- alert-dialog.tsx - uses fade and zoom animations
+- sheet.tsx - uses slide animations
+- select.tsx - uses fade animations
+- dialog.tsx - uses fade and zoom animations
+
+---

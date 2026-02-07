@@ -183,7 +183,6 @@ Bạn có thể tìm thấy mã triển khai NextAuth ở đây ( https://github
 - `ui`: Các thành phần UI chia sẻ
 - `db`: Sơ đồ cơ sở dữ liệu và các tiện ích
 - `auth`: Các tiện ích xác thực
-- `email`: Mẫu email và các tiện ích
 
 ## 📜 Giấy phép
 

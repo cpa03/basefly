@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Check, Copy } from "@saasfly/ui/icons";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@saasfly/ui/tooltip";
 import { logger } from "~/lib/logger";
 
 export function CodeCopy() {
@@ -24,13 +25,22 @@ export function CodeCopy() {
         <span>$</span>
         <span>{command}</span>
       </div>
-      <button
-        onClick={copyToClipboard}
-        className="p-1.5 hover:bg-gray-200 dark:hover:bg-neutral-800 rounded-md transition-colors ml-2"
-        aria-label="Copy to clipboard"
-      >
-        {copied ? <Check className="w-4 h-4 text-neutral-700 dark:text-neutral-300" /> : <Copy className={`w-4 h-4 text-neutral-700 dark:text-neutral-300`} />}
-      </button>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              onClick={copyToClipboard}
+              className="p-1.5 hover:bg-gray-200 dark:hover:bg-neutral-800 rounded-md transition-colors ml-2"
+              aria-label={copied ? "Copied to clipboard" : "Copy to clipboard"}
+            >
+              {copied ? <Check className="w-4 h-4 text-neutral-700 dark:text-neutral-300" /> : <Copy className={`w-4 h-4 text-neutral-700 dark:text-neutral-300`} />}
+            </button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{copied ? "Copied!" : "Copy to clipboard"}</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     </div>
   )
 }

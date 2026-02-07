@@ -3,6 +3,7 @@
  * 
  * This module provides a single source of truth for all pricing-related
  * configuration values, eliminating hardcoded prices scattered across the codebase.
+ * All prices are configurable via environment variables.
  * 
  * @module @saasfly/common/config/pricing
  */
@@ -10,20 +11,30 @@
 import { env } from "../env.mjs";
 
 /**
+ * Parse numeric environment variable with fallback
+ */
+function parseEnvNumber(value: string | undefined, fallback: number): number {
+  if (!value) return fallback;
+  const parsed = parseInt(value, 10);
+  return isNaN(parsed) ? fallback : parsed;
+}
+
+/**
  * Pricing tiers for subscription plans
+ * All values can be configured via environment variables
  */
 export const PRICING_TIERS = {
   STARTER: {
-    monthly: 0,
-    yearly: 0,
+    monthly: parseEnvNumber(process.env.NEXT_PUBLIC_STARTER_MONTHLY_PRICE, 0),
+    yearly: parseEnvNumber(process.env.NEXT_PUBLIC_STARTER_YEARLY_PRICE, 0),
   },
   PRO: {
-    monthly: 15,
-    yearly: 144,
+    monthly: parseEnvNumber(process.env.NEXT_PUBLIC_PRO_MONTHLY_PRICE, 15),
+    yearly: parseEnvNumber(process.env.NEXT_PUBLIC_PRO_YEARLY_PRICE, 144),
   },
   BUSINESS: {
-    monthly: 30,
-    yearly: 300,
+    monthly: parseEnvNumber(process.env.NEXT_PUBLIC_BUSINESS_MONTHLY_PRICE, 30),
+    yearly: parseEnvNumber(process.env.NEXT_PUBLIC_BUSINESS_YEARLY_PRICE, 300),
   },
 } as const;
 
@@ -33,16 +44,16 @@ export const PRICING_TIERS = {
  */
 export const LEGACY_PRICING_TIERS = {
   STARTER: {
-    monthly: 0,
-    yearly: 0,
+    monthly: parseEnvNumber(process.env.NEXT_PUBLIC_LEGACY_STARTER_MONTHLY_PRICE, 0),
+    yearly: parseEnvNumber(process.env.NEXT_PUBLIC_LEGACY_STARTER_YEARLY_PRICE, 0),
   },
   PRO: {
-    monthly: 30,
-    yearly: 288,
+    monthly: parseEnvNumber(process.env.NEXT_PUBLIC_LEGACY_PRO_MONTHLY_PRICE, 30),
+    yearly: parseEnvNumber(process.env.NEXT_PUBLIC_LEGACY_PRO_YEARLY_PRICE, 288),
   },
   BUSINESS: {
-    monthly: 60,
-    yearly: 600,
+    monthly: parseEnvNumber(process.env.NEXT_PUBLIC_LEGACY_BUSINESS_MONTHLY_PRICE, 60),
+    yearly: parseEnvNumber(process.env.NEXT_PUBLIC_LEGACY_BUSINESS_YEARLY_PRICE, 600),
   },
 } as const;
 

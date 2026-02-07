@@ -3,33 +3,62 @@
  * 
  * This module provides a single source of truth for all Kubernetes-related
  * configuration values, eliminating hardcoded cluster settings.
+ * All values can be configured via environment variables.
  * 
  * @module @saasfly/common/config/k8s
  */
+
+import { env } from "../env.mjs";
+
+/**
+ * Parse string environment variable with fallback
+ */
+function parseEnvString(value: string | undefined, fallback: string): string {
+  return value ?? fallback;
+}
+
+/**
+ * Parse numeric environment variable with fallback
+ */
+function parseEnvNumber(value: string | undefined, fallback: number): number {
+  if (!value) return fallback;
+  const parsed = parseInt(value, 10);
+  return isNaN(parsed) ? fallback : parsed;
+}
+
+/**
+ * Parse array environment variable with fallback
+ */
+function parseEnvArray(value: string | undefined, fallback: string[]): string[] {
+  if (!value) return fallback;
+  return value.split(",").map(s => s.trim()).filter(Boolean);
+}
 
 /**
  * Available cluster locations/regions
  * 
  * These are the geographic locations where Kubernetes clusters can be deployed.
  * Using a readonly array ensures these cannot be modified at runtime.
+ * Configurable via NEXT_PUBLIC_CLUSTER_LOCATIONS environment variable.
  */
-export const CLUSTER_LOCATIONS = [
-  "China",
-  "Hong Kong",
-  "Singapore",
-  "Tokyo",
-  "US-West",
-] as const;
+export const CLUSTER_LOCATIONS = parseEnvArray(
+  env.NEXT_PUBLIC_CLUSTER_LOCATIONS,
+  ["China", "Hong Kong", "Singapore", "Tokyo", "US-West"]
+) as readonly string[];
 
 /**
  * Type representing valid cluster locations
  */
-export type ClusterLocation = (typeof CLUSTER_LOCATIONS)[number];
+export type ClusterLocation = string;
 
 /**
  * Default cluster location for new clusters
+ * Configurable via NEXT_PUBLIC_DEFAULT_CLUSTER_LOCATION environment variable
  */
-export const DEFAULT_CLUSTER_LOCATION: ClusterLocation = "Hong Kong";
+export const DEFAULT_CLUSTER_LOCATION: ClusterLocation = parseEnvString(
+  env.NEXT_PUBLIC_DEFAULT_CLUSTER_LOCATION,
+  "Hong Kong"
+);
 
 /**
  * Alternative export name for backward compatibility
@@ -65,26 +94,28 @@ export const DEFAULT_CLUSTER_CONFIG = {
 
 /**
  * Cluster resource defaults
+ * All values are configurable via environment variables
  */
 export const CLUSTER_DEFAULTS = {
   /** Default node count for new clusters */
-  nodeCount: 1,
+  nodeCount: parseEnvNumber(env.NEXT_PUBLIC_DEFAULT_NODE_COUNT, 1),
   /** Default node type/machine type */
-  nodeType: "standard",
+  nodeType: parseEnvString(env.NEXT_PUBLIC_DEFAULT_NODE_TYPE, "standard"),
   /** Default storage size in GB */
-  storageSize: 20,
+  storageSize: parseEnvNumber(env.NEXT_PUBLIC_DEFAULT_STORAGE_SIZE, 20),
   /** Default Kubernetes version */
-  k8sVersion: "1.28",
+  k8sVersion: parseEnvString(env.NEXT_PUBLIC_DEFAULT_K8S_VERSION, "1.28"),
 } as const;
 
 /**
  * Cluster limits per subscription tier
  * These are maximum limits enforced at the application level
+ * All values are configurable via environment variables
  */
 export const CLUSTER_TIER_LIMITS = {
-  FREE: 1,
-  PRO: 3,
-  BUSINESS: 10,
+  FREE: parseEnvNumber(env.NEXT_PUBLIC_CLUSTER_LIMIT_FREE, 1),
+  PRO: parseEnvNumber(env.NEXT_PUBLIC_CLUSTER_LIMIT_PRO, 3),
+  BUSINESS: parseEnvNumber(env.NEXT_PUBLIC_CLUSTER_LIMIT_BUSINESS, 10),
 } as const;
 
 /**

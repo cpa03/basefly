@@ -1,6 +1,15 @@
 import type { NextRequest } from "next/server";
 
 /**
+ * Parse numeric environment variable with fallback
+ */
+function parseEnvNumber(value: string | undefined, fallback: number): number {
+  if (!value) return fallback;
+  const parsed = parseInt(value, 10);
+  return isNaN(parsed) ? fallback : parsed;
+}
+
+/**
  * Rate Limiter
  *
  * Token bucket algorithm implementation for API rate limiting.
@@ -11,6 +20,7 @@ import type { NextRequest } from "next/server";
  * - Automatic cleanup of expired entries
  * - Token bucket algorithm for smooth rate limiting
  * - Per-user or per-IP rate limiting
+ * - Environment-driven configuration
  *
  * @example
  * ```typescript
@@ -195,19 +205,25 @@ export type EndpointType = "read" | "write" | "stripe";
  * Read operations: Higher limit (less impact)
  * Write operations: Lower limit (more impact)
  * Stripe operations: Lowest limit (external API calls)
+ * 
+ * All values are configurable via environment variables:
+ * - NEXT_PUBLIC_RATE_LIMIT_READ_MAX (default: 100)
+ * - NEXT_PUBLIC_RATE_LIMIT_WRITE_MAX (default: 20)
+ * - NEXT_PUBLIC_RATE_LIMIT_STRIPE_MAX (default: 10)
+ * - NEXT_PUBLIC_RATE_LIMIT_WINDOW_MS (default: 60000)
  */
 export const rateLimitConfigs: Record<EndpointType, RateLimitConfig> = {
   read: {
-    maxRequests: 100,
-    windowMs: 60 * 1000, // 1 minute
+    maxRequests: parseEnvNumber(process.env.NEXT_PUBLIC_RATE_LIMIT_READ_MAX, 100),
+    windowMs: parseEnvNumber(process.env.NEXT_PUBLIC_RATE_LIMIT_WINDOW_MS, 60 * 1000), // 1 minute
   },
   write: {
-    maxRequests: 20,
-    windowMs: 60 * 1000, // 1 minute
+    maxRequests: parseEnvNumber(process.env.NEXT_PUBLIC_RATE_LIMIT_WRITE_MAX, 20),
+    windowMs: parseEnvNumber(process.env.NEXT_PUBLIC_RATE_LIMIT_WINDOW_MS, 60 * 1000), // 1 minute
   },
   stripe: {
-    maxRequests: 10,
-    windowMs: 60 * 1000, // 1 minute
+    maxRequests: parseEnvNumber(process.env.NEXT_PUBLIC_RATE_LIMIT_STRIPE_MAX, 10),
+    windowMs: parseEnvNumber(process.env.NEXT_PUBLIC_RATE_LIMIT_WINDOW_MS, 60 * 1000), // 1 minute
   },
 };
 

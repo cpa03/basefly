@@ -31,27 +31,58 @@ export function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }));
 }
 
+/**
+ * Parse keywords from environment variable or use defaults
+ */
+function getMetadataKeywords(): string[] {
+  const envKeywords = process.env.NEXT_PUBLIC_METADATA_KEYWORDS;
+  if (envKeywords) {
+    return envKeywords.split(",").map(k => k.trim()).filter(Boolean);
+  }
+  return [
+    "Next.js",
+    "Shadcn ui",
+    "SaaS",
+    "Fast",
+    "Simple",
+    "Easy",
+    "Cloud Native",
+    "Kubernetes",
+    "K8s",
+  ];
+}
+
+/**
+ * Get metadata base URL from environment or use default
+ */
+function getMetadataBase(): URL {
+  const envBase = process.env.NEXT_PUBLIC_METADATA_BASE_URL;
+  if (envBase) {
+    return new URL(envBase);
+  }
+  return new URL(siteConfig.url);
+}
+
+/**
+ * Get default theme from environment or use fallback
+ */
+function getDefaultTheme(): string {
+  return process.env.NEXT_PUBLIC_DEFAULT_THEME ?? "dark";
+}
+
 export const metadata = {
   title: {
     default: siteConfig.name,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  keywords: [
-    "Next.js",
-    "Shadcn ui",
-    "Sass",
-    "Fast ",
-    "Simple ",
-    "Easy",
-    "Cloud Native",
-  ],
+  keywords: getMetadataKeywords(),
   authors: [
     {
-      name: "saasfly",
+      name: siteConfig.name.toLowerCase(),
     },
   ],
-  creator: "Saasfly",
+  creator: siteConfig.name,
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -64,7 +95,7 @@ export const metadata = {
     icon: "/logo.svg",
     apple: "/apple-touch-icon.png",
   },
-  metadataBase: new URL("https://show.saasfly.io/"),
+  metadataBase: getMetadataBase(),
 };
 
 export default function RootLayout({
@@ -91,7 +122,7 @@ export default function RootLayout({
         >
           <ThemeProvider
             attribute="class"
-            defaultTheme="dark"
+            defaultTheme={getDefaultTheme()}
             enableSystem={false}
           >
             <NextDevtoolsProvider>{children}</NextDevtoolsProvider>

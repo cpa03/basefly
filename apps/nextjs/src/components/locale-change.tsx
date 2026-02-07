@@ -24,9 +24,14 @@ export function LocaleChange({ url }: { url: string }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="sm" className="h-8 w-8 px-0">
-          <Languages />
-          <span className="sr-only"></span>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-8 w-8 px-0 transition-colors hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          aria-label="Change language"
+        >
+          <Languages className="h-4 w-4" aria-hidden="true" />
+          <span className="sr-only">Change language</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

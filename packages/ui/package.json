@@ -15,6 +15,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@saasfly/common": "workspace:*",
     "@radix-ui/react-accessible-icon": "next",
     "@radix-ui/react-accordion": "next",
     "@radix-ui/react-alert-dialog": "next",

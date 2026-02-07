@@ -7,7 +7,12 @@
     "./resend": "./src/email.ts",
     "./MagicLinkEmail": "./src/emails/magic-link-email.tsx",
     "./subscriptions": "./src/subscriptions.ts",
-    "./env": "./src/env.mjs"
+    "./env": "./src/env.mjs",
+    "./config/ui": "./src/config/ui.ts",
+    "./config/resilience": "./src/config/resilience.ts",
+    "./config/k8s": "./src/config/k8s.ts",
+    "./config/pricing": "./src/config/pricing.ts",
+    "./config/site": "./src/config/site.ts"
   },
   "typesVersions": {
     "*": {

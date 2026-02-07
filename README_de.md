@@ -185,7 +185,6 @@ Hier finden Sie die NextAuth Implementierung ( https://github.com/saasfly/saasfl
 - `ui`: Gemeinsam genutzte UI-Komponenten
 - `db`: Datenbankschema und Utilities
 - `auth`: Authentifizierungs-Utilities
-- `email`: E-Mail-Vorlagen und Utilities
 
 ## 📜 Lizenz
 

@@ -8,8 +8,6 @@
     "./edge": "./src/edge.ts",
     "./lambda": "./src/lambda.ts",
     "./transformer": "./src/transformer.ts",
-    "./resend": "./src/email.ts",
-    "./MagicLinkEmail": "./src/emails/magic-link-email.tsx",
     "./subscriptions": "./src/subscriptions.ts",
     "./request-id": "./src/request-id.ts"
   },

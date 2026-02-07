@@ -52,4 +52,4 @@ package-lock.json
 .env
 
 # opencode
-.opencode/
+.opencode/node_modules

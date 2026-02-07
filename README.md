@@ -263,7 +263,6 @@ bun run dev:web
 - `api`: tRPC routers and API endpoint handlers
 - `stripe`: Stripe integration with retry logic, circuit breaker, and webhook handlers
 - `common`: Shared utilities, types, and constants across packages
-- `email`: Email templates and utilities using React Email
 
 ## 📜 License
 

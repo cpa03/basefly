@@ -3,10 +3,11 @@
 import { useState } from "react"
 import { Check, Copy } from "@saasfly/ui/icons";
 import { logger } from "~/lib/logger";
+import { siteConfig } from "~/config/site";
 
 export function CodeCopy() {
   const [copied, setCopied] = useState(false)
-  const command = "bun create saasfly"
+  const command = siteConfig.cli.installCommand
 
   const copyToClipboard = async () => {
     try {

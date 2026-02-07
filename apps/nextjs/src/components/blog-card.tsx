@@ -3,7 +3,7 @@ import { FollowerPointerCard } from "@saasfly/ui/following-pointer";
 
 export function XBlogArticle() {
   return (
-    <div className="w-80">
+    <div className="w-full max-w-xs sm:max-w-sm md:w-80">
       <FollowerPointerCard
         title={
           <TitleComponent
@@ -14,13 +14,13 @@ export function XBlogArticle() {
       >
         <div className="group relative h-full overflow-hidden rounded-2xl border border-zinc-100 bg-white transition duration-200 hover:shadow-xl">
           <div className="aspect-w-16 aspect-h-10 xl:aspect-w-16 xl:aspect-h-10 relative w-full overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-100">
-            <Image
-               src={blogContent.image}
-               alt="thumbnail"
-               width={640}
-               height={400}
-               className={`transform object-cover transition duration-200 group-hover:scale-95 group-hover:rounded-2xl `}
-            />
+           <Image
+                src={blogContent.image}
+                alt={blogContent.title}
+                width={640}
+                height={400}
+                className="transform object-cover transition duration-200 group-hover:scale-95 group-hover:rounded-2xl"
+             />
           </div>
           <div className=" p-4">
             <h2 className="my-4 text-lg font-bold text-zinc-700">
@@ -31,9 +31,13 @@ export function XBlogArticle() {
             </h2>
             <div className="mt-10 flex flex-row items-center justify-between">
               <span className="text-sm text-gray-500">{blogContent.date}</span>
-              <div className="relative z-10 block rounded-xl bg-black px-6 py-2 text-xs font-bold text-white">
+              <button
+                type="button"
+                className="relative z-10 rounded-xl bg-black px-6 py-2 text-xs font-bold text-white transition-all duration-200 hover:bg-zinc-800 hover:scale-105 hover:shadow-lg active:scale-95 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2"
+                aria-label={`Read article: ${blogContent.title}`}
+              >
                 Read More
-              </div>
+              </button>
             </div>
           </div>
         </div>
@@ -67,7 +71,7 @@ const TitleComponent = ({
       src={avatar}
       height={20}
       width={20}
-      alt="thumbnail"
+      alt={`${title}'s avatar`}
       className="rounded-full border-2 border-white"
     />
     <p>{title}</p>

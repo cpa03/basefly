@@ -26,6 +26,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@saasfly/common": "workspace:*",
     "@saasfly/db": "workspace:*",
     "@t3-oss/env-nextjs": "0.8.0",
     "stripe": "14.15.0",

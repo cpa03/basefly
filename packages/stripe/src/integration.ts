@@ -1,5 +1,13 @@
 import Stripe from "stripe";
 
+import {
+  CIRCUIT_BREAKER_CONFIG,
+  RETRY_CONFIG,
+  TIMEOUT_CONFIG,
+  STRIPE_CONFIG,
+  DEFAULT_RETRYABLE_ERRORS,
+} from "../../common/src/config/resilience";
+
 /**
  * Configuration options for retry logic
  */
@@ -91,8 +99,8 @@ export class CircuitBreaker {
    */
   constructor(
     private readonly serviceName: string,
-    private readonly threshold = 5,
-    private readonly resetTimeoutMs = 60000,
+    private readonly threshold = CIRCUIT_BREAKER_CONFIG.failureThreshold,
+    private readonly resetTimeoutMs = CIRCUIT_BREAKER_CONFIG.resetTimeoutMs,
   ) {}
 
   /**
@@ -181,15 +189,7 @@ export class CircuitBreaker {
  * Default list of retryable error codes
  * Includes network errors and rate limits
  */
-export const defaultRetryableErrors = [
-  "ECONNRESET",
-  "ETIMEDOUT",
-  "ECONNREFUSED",
-  "ENOTFOUND",
-  "EAI_AGAIN",
-  "rate_limit",
-  "timeout",
-];
+export const defaultRetryableErrors = [...DEFAULT_RETRYABLE_ERRORS];
 
 /**
  * Sleep for specified milliseconds
@@ -221,9 +221,9 @@ export async function withRetry<T>(
   options: RetryOptions = {},
 ): Promise<T> {
   const {
-    maxAttempts = 3,
-    baseDelay = 1000,
-    maxDelay = 10000,
+    maxAttempts = RETRY_CONFIG.maxAttempts,
+    baseDelay = RETRY_CONFIG.baseDelay,
+    maxDelay = RETRY_CONFIG.maxDelay,
     retryableErrors = defaultRetryableErrors,
   } = options;
 
@@ -300,10 +300,10 @@ export function createStripeClientWithDefaults(
   options: Stripe.StripeConfig = {},
 ): Stripe {
   return new Stripe(apiKey, {
-    typescript: true,
-    timeout: 30000,
-    maxNetworkRetries: 2,
-    telemetry: false,
+    typescript: STRIPE_CONFIG.typescript as true,
+    timeout: STRIPE_CONFIG.timeout,
+    maxNetworkRetries: STRIPE_CONFIG.maxNetworkRetries,
+    telemetry: STRIPE_CONFIG.telemetry as false,
     ...options,
   });
 }
@@ -345,8 +345,8 @@ export async function safeStripeCall<T>(
   } = {},
 ): Promise<T> {
   const {
-    timeoutMs = 30000,
-    maxAttempts = 3,
+    timeoutMs = TIMEOUT_CONFIG.default,
+    maxAttempts = RETRY_CONFIG.maxAttempts,
     serviceName = "Stripe",
     circuitBreaker,
   } = options;

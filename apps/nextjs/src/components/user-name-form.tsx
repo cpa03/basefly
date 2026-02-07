@@ -90,7 +90,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
             </Label>
             <Input
               id="name"
-              className="w-[400px]"
+              className="w-full max-w-[400px]"
               size={32}
               aria-invalid={!!errors?.name}
               aria-describedby={errors?.name ? "name-error" : undefined}

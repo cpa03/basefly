@@ -37,4 +37,4 @@ export {
 export type { ClusterLocation, ClusterStatus, SubscriptionTier } from "./config/k8s";
 
 export { ANIMATION } from "./animation";
-export type { DurationKey, EasingKey, ScaleKey } from "./animation";
+export type { DurationKey, EasingKey, ScaleKey, FocusRingKey, HoverScaleKey } from "./animation";

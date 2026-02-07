@@ -112,6 +112,65 @@ export const transition = {
   slow: `${duration.slow} ${easing.smooth}`,
 } as const;
 
+/** Radix UI animation class constants for consistent component animations */
+export const radixAnimations = {
+  /** Tooltip animation classes - fade and zoom */
+  tooltip: {
+    open: "animate-in fade-in-0 zoom-in-95",
+    closed: "animate-out fade-out-0 zoom-out-95",
+    slideBottom: "data-[side=bottom]:slide-in-from-top-2",
+    slideLeft: "data-[side=left]:slide-in-from-right-2",
+    slideRight: "data-[side=right]:slide-in-from-left-2",
+    slideTop: "data-[side=top]:slide-in-from-bottom-2",
+    get all() {
+      return `${this.open} ${this.closed} ${this.slideBottom} ${this.slideLeft} ${this.slideRight} ${this.slideTop}`;
+    },
+  },
+  /** Dropdown menu animation classes */
+  dropdown: {
+    content: {
+      open: "animate-in",
+      slideBottom: "data-[side=bottom]:slide-in-from-top-2",
+      slideLeft: "data-[side=left]:slide-in-from-right-2",
+      slideRight: "data-[side=right]:slide-in-from-left-2",
+      slideTop: "data-[side=top]:slide-in-from-bottom-2",
+      get all() {
+        return `${this.open} ${this.slideBottom} ${this.slideLeft} ${this.slideRight} ${this.slideTop}`;
+      },
+    },
+    subContent: {
+      open: "animate-in",
+      slideBottom: "data-[side=bottom]:slide-in-from-top-1",
+      slideLeft: "data-[side=left]:slide-in-from-right-1",
+      slideRight: "data-[side=right]:slide-in-from-left-1",
+      slideTop: "data-[side=top]:slide-in-from-bottom-1",
+      get all() {
+        return `${this.open} ${this.slideBottom} ${this.slideLeft} ${this.slideRight} ${this.slideTop}`;
+      },
+    },
+  },
+} as const;
+
+/** Focus ring configuration for consistent keyboard navigation */
+export const focusRing = {
+  /** Standard focus ring for interactive elements */
+  default: "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  /** Subtle focus ring for smaller elements */
+  subtle: "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+  /** No focus ring (for custom implementations) */
+  none: "",
+} as const;
+
+/** Hover scale configuration for micro-interactions */
+export const hoverScale = {
+  /** Subtle scale for cards and containers */
+  subtle: "hover:scale-[1.02] transition-transform duration-150 ease-out",
+  /** Standard scale for buttons */
+  default: "hover:scale-105 transition-transform duration-150 ease-out",
+  /** Prominent scale for emphasis */
+  prominent: "hover:scale-110 transition-transform duration-150 ease-out",
+} as const;
+
 /** Complete animation presets */
 export const ANIMATION = {
   duration,
@@ -122,6 +181,9 @@ export const ANIMATION = {
   bezier,
   stagger,
   transition,
+  radix: radixAnimations,
+  focusRing,
+  hoverScale,
 } as const;
 
 /** Type for duration keys */
@@ -132,5 +194,11 @@ export type EasingKey = keyof typeof easing;
 
 /** Type for scale keys */
 export type ScaleKey = keyof typeof scale;
+
+/** Type for focus ring keys */
+export type FocusRingKey = keyof typeof focusRing;
+
+/** Type for hover scale keys */
+export type HoverScaleKey = keyof typeof hoverScale;
 
 export default ANIMATION;

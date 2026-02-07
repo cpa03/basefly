@@ -615,6 +615,9 @@ importers:
       '@react-three/fiber':
         specifier: 8.16.1
         version: 8.16.1(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.163.0)
+      '@saasfly/common':
+        specifier: workspace:*
+        version: link:../common
       '@tsparticles/engine':
         specifier: 3.3.0
         version: 3.3.0

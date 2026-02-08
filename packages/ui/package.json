@@ -129,6 +129,7 @@
     "./popover": "./src/popover.tsx",
     "./scroll-area": "./src/scroll-area.tsx",
     "./select": "./src/select.tsx",
+    "./shake-wrapper": "./src/shake-wrapper.tsx",
     "./sheet": "./src/sheet.tsx",
     "./skeleton": "./src/skeleton.tsx",
     "./sparkles": "./src/sparkles.tsx",

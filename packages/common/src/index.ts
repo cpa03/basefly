@@ -34,5 +34,22 @@ export {
 } from "./config/k8s";
 export type { ClusterLocation, ClusterStatus, SubscriptionTier } from "./config/k8s";
 
+// Animation constants
 export { ANIMATION } from "./animation";
 export type { DurationKey, EasingKey, ScaleKey, FocusRingKey, HoverScaleKey } from "./animation";
+
+// UI configuration - timing, colors, and feedback
+export {
+  TOAST_CONFIG,
+  FEEDBACK_TIMING,
+  ANIMATION_TIMING,
+  SEMANTIC_COLORS,
+  VISUAL_EFFECTS,
+} from "./config/ui";
+export type {
+  ToastConfig,
+  FeedbackTiming,
+  AnimationTiming,
+  SemanticColors,
+  VisualEffects,
+} from "./config/ui";

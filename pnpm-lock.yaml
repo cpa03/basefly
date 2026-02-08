@@ -425,6 +425,9 @@ importers:
       '@saasfly/typescript-config':
         specifier: workspace:*
         version: link:../../tooling/typescript-config
+      '@types/node':
+        specifier: 20.12.12
+        version: 20.12.12
       eslint:
         specifier: 8.57.0
         version: 8.57.0

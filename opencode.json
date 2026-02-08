@@ -1,0 +1,57 @@
+{
+  "$schema": "https://opencode.ai/schema.json",
+  "name": "basefly",
+  "plugin": [
+    "oh-my-opencode"
+  ],
+  "models": {
+    "sisyphus": {
+      "model": "opencode/kimi-k2.5-free",
+      "temperature": 0.7
+    },
+    "oracle": {
+      "model": "opencode/glm-4.7-free",
+      "temperature": 0.5
+    },
+    "librarian": {
+      "model": "opencode/glm-4.7-free",
+      "temperature": 0.3
+    },
+    "explore": {
+      "model": "opencode/gpt-5-nano",
+      "temperature": 0.2
+    },
+    "multimodal-looker": {
+      "model": "opencode/minimax-m2.1-free",
+      "temperature": 0.5
+    }
+  },
+  "skills": {
+    "sources": [
+      ".opencode/skills",
+      ".opencode/superpowers/skills"
+    ]
+  },
+  "mcp": {
+    "servers": [
+      {
+        "name": "websearch",
+        "command": "npx",
+        "args": ["-y", "@mcp/exa"],
+        "env": {
+          "EXA_API_KEY": "${EXA_API_KEY}"
+        }
+      },
+      {
+        "name": "context7",
+        "command": "npx",
+        "args": ["-y", "@mcp/context7"]
+      },
+      {
+        "name": "github-search",
+        "command": "npx",
+        "args": ["-y", "@mcp/grep-app"]
+      }
+    ]
+  }
+}

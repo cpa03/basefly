@@ -87,7 +87,7 @@ export function ClusterOperations({ cluster, lang, dict }: ClusterOperationsProp
     <>
       <DropdownMenu>
         <DropdownMenuTrigger
-          className="flex h-8 w-8 items-center justify-center rounded-md border transition-all duration-150 ease-out hover:bg-muted hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className={`flex h-8 w-8 items-center justify-center rounded-md border transition-all ${TRANSITION_PRESETS.interactive} hover:bg-muted hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
           aria-label="Cluster actions"
         >
           <Ellipsis className="h-4 w-4" aria-hidden="true" />
@@ -103,7 +103,7 @@ export function ClusterOperations({ cluster, lang, dict }: ClusterOperationsProp
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            className="flex cursor-pointer items-center gap-2 transition-colors duration-150"
+            className={`flex cursor-pointer items-center gap-2 transition-colors ${TRANSITION_PRESETS.interactive}`}
             onSelect={handleCopyId}
             disabled={isCopying}
           >

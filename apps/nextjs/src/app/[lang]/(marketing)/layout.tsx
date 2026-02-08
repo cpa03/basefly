@@ -9,6 +9,8 @@ import type { Locale } from "~/config/i18n-config";
 import { getMarketingConfig } from "~/config/ui/marketing";
 import { getDictionary } from "~/lib/get-dictionary";
 
+export const dynamic = "force-dynamic";
+
 export default async function MarketingLayout({
   children,
   params: { lang },

@@ -13,6 +13,7 @@ import { priceDataMap } from "~/config/price/price-data";
 import { useSigninModal } from "~/hooks/use-signin-modal";
 import { UserSubscriptionPlan } from "~/types";
 import type { SubscriptionPlanTranslation } from "~/config/price/price-data";
+import { siteConfig } from "~/config/site";
 
 interface PricingCardsProps {
   userId?: string;
@@ -188,9 +189,9 @@ export function PricingCards({
           Email{" "}
           <a
             className="font-medium text-primary hover:underline"
-            href="mailto:support@saasfly.io"
+            href={`mailto:${siteConfig.support.email}?subject=${encodeURIComponent(siteConfig.support.subject)}`}
           >
-            support@saasfly.io
+            {siteConfig.support.email}
           </a>{" "}
           {dict.contact}
           <br />

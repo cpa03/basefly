@@ -1,7 +1,7 @@
 import React, { type CSSProperties } from "react";
 
 import { cn } from "@saasfly/ui";
-import { ANIMATION } from "@saasfly/common";
+import { ANIMATION, VISUAL_EFFECTS } from "@saasfly/common";
 
 interface ShimmerButtonProps {
   shimmerColor?: string;
@@ -9,16 +9,18 @@ interface ShimmerButtonProps {
   borderRadius?: string;
   shimmerDuration?: string;
   background?: string;
+  hoverShadow?: string;
   className?: string;
   children?: React.ReactNode;
 }
 
 const ShimmerButton = ({
-  shimmerColor = "#ffffff",
-  shimmerSize = "0.1em",
-  shimmerDuration = "1.5s",
+  shimmerColor = VISUAL_EFFECTS.shimmer.color,
+  shimmerSize = VISUAL_EFFECTS.shimmer.size,
+  shimmerDuration = VISUAL_EFFECTS.shimmer.duration,
   borderRadius = "100px",
-  background = "radial-gradient(ellipse 80% 50% at 50% 120%,rgba(62, 61, 117),rgba(18, 18, 38))",
+  background = VISUAL_EFFECTS.shimmer.background,
+  hoverShadow = VISUAL_EFFECTS.shadows.buttonHover,
   className,
   children,
   ...props
@@ -33,11 +35,12 @@ const ShimmerButton = ({
           "--speed": shimmerDuration,
           "--cut": shimmerSize,
           "--bg": background,
+          "--hover-shadow": hoverShadow,
         } as CSSProperties
       }
       className={cn(
-        "group relative flex cursor-pointer overflow-hidden whitespace-nowrap px-6 py-4 text-white [background:var(--bg)] [border-radius:var(--radius)] dark:text-black ",
-        `transition-all ${ANIMATION.duration.medium} ${ANIMATION.scale.default} hover:shadow-[0_0_40px_8px_rgba(62,61,117,0.7)]`,
+        "group relative flex cursor-pointer overflow-hidden whitespace-nowrap px-6 py-4 text-white [background:var(--bg)] [border-radius:var(--radius)] dark:text-black",
+        `transition-all ${ANIMATION.transition.medium} ${ANIMATION.scale.default} hover:shadow-[var(--hover-shadow)]`,
         className,
       )}
       {...props}

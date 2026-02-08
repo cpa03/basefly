@@ -13,6 +13,7 @@ import {
 } from "react-hook-form";
 
 import { Label } from "./label";
+import { ShakeWrapper } from "./shake-wrapper";
 import { cn } from "./utils/cn";
 
 const Form = FormProvider;
@@ -52,7 +53,11 @@ const useFormField = () => {
     throw new Error("useFormField should be used within <FormField>");
   }
 
-  const { id } = itemContext;
+  const { id, setShouldShake } = itemContext;
+
+  const triggerShake = React.useCallback(() => {
+    setShouldShake(true);
+  }, [setShouldShake]);
 
   return {
     id,
@@ -60,12 +65,15 @@ const useFormField = () => {
     formItemId: `${id}-form-item`,
     formDescriptionId: `${id}-form-item-description`,
     formMessageId: `${id}-form-item-message`,
+    triggerShake,
     ...fieldState,
   };
 };
 
 interface FormItemContextValue {
   id: string;
+  shouldShake: boolean;
+  setShouldShake: (value: boolean) => void;
 }
 
 const FormItemContext = React.createContext<FormItemContextValue>(
@@ -77,10 +85,13 @@ const FormItem = React.forwardRef<
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => {
   const id = React.useId();
+  const [shouldShake, setShouldShake] = React.useState(false);
 
   return (
-    <FormItemContext.Provider value={{ id }}>
-      <div ref={ref} className={cn("space-y-2", className)} {...props} />
+    <FormItemContext.Provider value={{ id, shouldShake, setShouldShake }}>
+      <ShakeWrapper shake={shouldShake} onShakeComplete={() => setShouldShake(false)}>
+        <div ref={ref} className={cn("space-y-2", className)} {...props} />
+      </ShakeWrapper>
     </FormItemContext.Provider>
   );
 });
@@ -177,3 +188,6 @@ export {
   FormMessage,
   FormField,
 };
+
+export { ShakeWrapper } from "./shake-wrapper";
+export type { ShakeWrapperProps } from "./shake-wrapper";

@@ -171,6 +171,21 @@ export const hoverScale = {
   prominent: "hover:scale-110 transition-transform duration-150 ease-out",
 } as const;
 
+/** Shake animation configuration for form validation errors */
+export const shake = {
+  /** Duration of the shake animation in seconds */
+  duration: 0.4,
+  /** Keyframes for horizontal shake motion */
+  keyframes: {
+    x: [0, -8, 8, -8, 8, -4, 4, -2, 2, 0],
+  },
+  /** Timing configuration for Framer Motion */
+  transition: {
+    duration: 0.4,
+    ease: "easeInOut" as const,
+  },
+} as const;
+
 /** Complete animation presets */
 export const ANIMATION = {
   duration,
@@ -184,6 +199,7 @@ export const ANIMATION = {
   radix: radixAnimations,
   focusRing,
   hoverScale,
+  shake,
 } as const;
 
 /** Type for duration keys */

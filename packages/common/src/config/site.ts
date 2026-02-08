@@ -1,9 +1,12 @@
-export const siteConfig = {
-  name: "Saasfly",
-  description: "We provide an easier way to build saas service in production",
-  url: "https://github.com/saaslfy/saasfly",
-  ogImage: "",
-  links: {
-    github: "https://github.com/saaslfy",
-  },
-};
+/**
+ * Site Configuration - Consolidated
+ * 
+ * Re-exports from centralized app configuration.
+ * 
+ * Flexy Principle: Single source of truth - no duplication!
+ * 
+ * @deprecated Import from './app' instead for new code
+ */
+
+export { SITE_CONFIG as siteConfig } from "./app";
+export { SITE_CONFIG } from "./app";

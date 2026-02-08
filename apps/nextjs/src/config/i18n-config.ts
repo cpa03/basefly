@@ -1,14 +1,21 @@
+/**
+ * Internationalization Configuration
+ * 
+ * Uses centralized configuration from @saasfly/common.
+ * 
+ * Flexy Principle: No hardcoded locales - everything is configurable!
+ */
+
+import { I18N_CONFIG, type Locale } from "@saasfly/common/config/app";
+
 export const i18n = {
-  defaultLocale: "zh",
-  locales: ["en", "zh", "ko", "ja"],
+  defaultLocale: I18N_CONFIG.defaultLocale,
+  locales: [...I18N_CONFIG.locales],
 } as const;
 
-export type Locale = (typeof i18n)["locales"][number];
+export type { Locale };
 
-// 新增的映射对象
-export const localeMap = {
-  en: "English",
-  zh: "中文",
-  ko: "한국어",
-  ja: "日本語",
-} as const;
+/**
+ * Locale display names
+ */
+export const localeMap = I18N_CONFIG.localeNames;

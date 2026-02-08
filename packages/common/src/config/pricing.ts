@@ -4,83 +4,42 @@
  * This module provides a single source of truth for all pricing-related
  * configuration values, eliminating hardcoded prices scattered across the codebase.
  * 
+ * All pricing values are configurable via environment variables with sensible defaults.
+ * 
+ * Flexy Principle: No hardcoded prices - everything is configurable!
+ * 
  * @module @saasfly/common/config/pricing
  */
 
+import { PRICING_CONFIG, type PricingTiers, type ResourceLimits, type ClusterLimits } from "./app";
 import { env } from "../env.mjs";
 
 /**
  * Pricing tiers for subscription plans
+ * Uses centralized configuration from app.ts
  */
 export const PRICING_TIERS = {
-  STARTER: {
-    monthly: 0,
-    yearly: 0,
-  },
-  PRO: {
-    monthly: 15,
-    yearly: 144,
-  },
-  BUSINESS: {
-    monthly: 30,
-    yearly: 300,
-  },
-} as const;
-
-/**
- * Legacy pricing tiers (used by nextjs app)
- * These have different values than the common package tiers
- */
-export const LEGACY_PRICING_TIERS = {
-  STARTER: {
-    monthly: 0,
-    yearly: 0,
-  },
-  PRO: {
-    monthly: 30,
-    yearly: 288,
-  },
-  BUSINESS: {
-    monthly: 60,
-    yearly: 600,
-  },
+  STARTER: PRICING_CONFIG.tiers.STARTER,
+  PRO: PRICING_CONFIG.tiers.PRO,
+  BUSINESS: PRICING_CONFIG.tiers.BUSINESS,
 } as const;
 
 /**
  * Cluster limits per plan
+ * Uses centralized configuration from app.ts
  */
-export const CLUSTER_LIMITS = {
-  STARTER: 1,
-  PRO: 3,
-  BUSINESS: 10,
-} as const;
+export const CLUSTER_LIMITS = PRICING_CONFIG.clusterLimits;
 
 /**
  * Resource limits per plan (for legacy use)
+ * Uses centralized configuration from app.ts
  */
-export const RESOURCE_LIMITS = {
-  STARTER: {
-    posts: 100,
-    clusters: 1,
-  },
-  PRO: {
-    posts: 500,
-    clusters: 3,
-  },
-  BUSINESS: {
-    posts: Infinity,
-    clusters: 10,
-  },
-} as const;
+export const RESOURCE_LIMITS = PRICING_CONFIG.resourceLimits;
 
 /**
  * Plan IDs as constants to avoid string duplication
  */
-export const PLAN_IDS = {
-  STARTER: "starter",
-  PRO: "pro",
-  BUSINESS: "business",
-} as const;
+export const PLAN_IDS = PRICING_CONFIG.planIds;
 
 /**
  * Stripe price ID environment variable names
@@ -115,7 +74,7 @@ export function getStripePriceIds() {
 /**
  * Format price for display
  */
-export function formatPrice(amount: number, currency = "USD"): string {
+export function formatPrice(amount: number, currency = PRICING_CONFIG.currency): string {
   if (amount === 0) return "Free";
   
   return new Intl.NumberFormat("en-US", {
@@ -139,18 +98,6 @@ export function getPriceDisplayString(
 }
 
 /**
- * Get legacy price string for FAQ or display purposes
- */
-export function getLegacyPriceDisplayString(
-  tier: keyof typeof LEGACY_PRICING_TIERS,
-  billingCycle: "monthly" | "yearly"
-): string {
-  const price = LEGACY_PRICING_TIERS[tier][billingCycle];
-  if (price === 0) return "Free";
-  return `$${price}`;
-}
-
-/**
  * Type for plan tiers
  */
 export type PlanTier = keyof typeof PRICING_TIERS;
@@ -159,3 +106,18 @@ export type PlanTier = keyof typeof PRICING_TIERS;
  * Type for billing cycles
  */
 export type BillingCycle = "monthly" | "yearly";
+
+/**
+ * @deprecated LEGACY_PRICING_TIERS has been removed. Use PRICING_TIERS instead.
+ * Pricing is now fully configurable via environment variables:
+ * - PRICING_STARTER_MONTHLY, PRICING_STARTER_YEARLY
+ * - PRICING_PRO_MONTHLY, PRICING_PRO_YEARLY  
+ * - PRICING_BUSINESS_MONTHLY, PRICING_BUSINESS_YEARLY
+ * Or use PRICING_TIERS_JSON for complete customization
+ */
+export const LEGACY_PRICING_TIERS = PRICING_TIERS;
+
+/**
+ * @deprecated Use getPriceDisplayString instead. Pricing is now unified.
+ */
+export const getLegacyPriceDisplayString = getPriceDisplayString;

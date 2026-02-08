@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { middleware as clerkMiddleware } from "./utils/clerk";
 import { getOrGenerateRequestId, REQUEST_ID_HEADER } from "@saasfly/api/request-id";
+import { buildCspHeader } from "@saasfly/common/config/app";
 
 export const config = {
   matcher: [
@@ -11,23 +12,11 @@ export const config = {
   ],
 };
 
-const cspHeader = `
-  default-src 'self';
-  script-src 'self' 'unsafe-inline' cdn.jsdelivr.net;
-  style-src 'self' 'unsafe-inline' cdn.jsdelivr.net;
-  img-src 'self' blob: data: https://*.unsplash.com https://*.githubusercontent.com https://*.twil.lol https://*.twillot.com https://*.setupyourpay.com https://cdn.sanity.io https://*.twimg.com;
-  font-src 'self' data: cdn.jsdelivr.net;
-  connect-src 'self' https://*.clerk.accounts.dev https://*.stripe.com https://api.stripe.com https://*.posthog.com;
-  frame-src 'self' https://js.stripe.com;
-  object-src 'none';
-  base-uri 'self';
-  form-action 'self';
-  frame-ancestors 'none';
-  block-all-mixed-content;
-  upgrade-insecure-requests;
-`
-
-const contentSecurityPolicyHeaderValue = cspHeader.replace(/\s{2,}/g, ' ').trim();
+/**
+ * Content Security Policy header value
+ * Built dynamically from centralized configuration
+ */
+const contentSecurityPolicyHeaderValue = buildCspHeader();
 
 /**
  * Next.js middleware that wraps Clerk middleware with request ID injection
@@ -43,9 +32,9 @@ export default async function middleware(req: NextRequest) {
   
   const result = await clerkMiddleware(req);
 
-  if (result && typeof result === 'object' && 'headers' in result) {
+  if (result && typeof result === "object" && "headers" in result) {
     result.headers.set(REQUEST_ID_HEADER, requestId);
-    result.headers.set('Content-Security-Policy', contentSecurityPolicyHeaderValue);
+    result.headers.set("Content-Security-Policy", contentSecurityPolicyHeaderValue);
   }
 
   return result;

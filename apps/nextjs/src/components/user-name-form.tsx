@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import type * as z from "zod";
 
 import { cn } from "@saasfly/ui";
-import { buttonVariants } from "@saasfly/ui/button";
+import { Button } from "@saasfly/ui/button";
 import {
   Card,
   CardContent,
@@ -17,7 +17,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@saasfly/ui/card";
-import { Spinner } from "@saasfly/ui/icons";
 import { Input } from "@saasfly/ui/input";
 import { Label } from "@saasfly/ui/label";
 import { toast } from "@saasfly/ui/use-toast";
@@ -104,17 +103,9 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
           </div>
         </CardContent>
         <CardFooter>
-          <button
-            type="submit"
-            className={cn(buttonVariants(), className)}
-            disabled={isSaving}
-            aria-busy={isSaving}
-          >
-            {isSaving && (
-              <Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
-            )}
-            <span>Save</span>
-          </button>
+          <Button type="submit" isLoading={isSaving}>
+            Save
+          </Button>
         </CardFooter>
       </Card>
     </form>

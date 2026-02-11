@@ -3,6 +3,22 @@ packages:
   - packages/*
   - tooling/*
 
+ignoredBuiltDependencies:
+  - '@clerk/shared'
+  - '@prisma/engines'
+  - '@tsparticles/engine'
+  - '@vercel/speed-insights'
+  - bufferutil
+  - contentlayer2
+  - core-js
+  - core-js-pure
+  - esbuild
+  - prisma
+  - protobufjs
+  - puppeteer
+  - sharp
+  - utf-8-validate
+
 overrides:
   cross-spawn@>=7.0.0 <7.0.5: '>=7.0.5'
   js-yaml@>=4.0.0 <4.1.1: '>=4.1.1'

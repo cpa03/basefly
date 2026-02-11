@@ -12,8 +12,6 @@ import withBundleAnalyzer from "@next/bundle-analyzer";
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
-  /** Use webpack instead of Turbopack for compatibility with existing config */
-  turbopack: {},
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
     "@saasfly/api",
@@ -25,7 +23,6 @@ const config = {
   ],
   pageExtensions: ["ts", "tsx", "mdx"],
   images: {
-    domains: ["images.unsplash.com", "avatars.githubusercontent.com", "www.twillot.com", "cdnv2.ruguoapp.com", "www.setupyourpay.com", "cdn.sanity.io", "pbs.twimg.com", "avatar.vercel.sh", "ui.aceternity.com"],
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60,
     remotePatterns: [
@@ -53,6 +50,18 @@ const config = {
         protocol: "https",
         hostname: "**.twimg.com",
       },
+      {
+        protocol: "https",
+        hostname: "**.ruguoapp.com",
+      },
+      {
+        protocol: "https",
+        hostname: "avatar.vercel.sh",
+      },
+      {
+        protocol: "https",
+        hostname: "ui.aceternity.com",
+      },
     ],
   },
   /** We already do linting and typechecking as separate tasks in CI */
@@ -60,7 +69,6 @@ const config = {
   output: "standalone",
   compress: true,
   poweredByHeader: false,
-  turbopack: {},
   experimental: {
     mdxRs: true,
     optimizePackageImports: ["@saasfly/ui", "lucide-react"],

@@ -30,7 +30,7 @@ const cspHeader = `
 const contentSecurityPolicyHeaderValue = cspHeader.replace(/\s{2,}/g, ' ').trim();
 
 /**
- * Next.js middleware that wraps Clerk middleware with request ID injection
+ * Next.js proxy middleware that wraps Clerk middleware with request ID injection
  * 
  * - Generates or extracts request ID from request headers
  * - Adds request ID to response headers for client visibility
@@ -38,7 +38,7 @@ const contentSecurityPolicyHeaderValue = cspHeader.replace(/\s{2,}/g, ' ').trim(
  * - Enables distributed tracing across all requests
  * - Adds Content-Security-Policy header for XSS protection
  */
-export default async function middleware(req: NextRequest) {
+export default async function proxy(req: NextRequest) {
   const requestId = getOrGenerateRequestId(req.headers);
   
   const result = await clerkMiddleware(req);

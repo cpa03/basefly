@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "contentlayer2 build && npx dotenv-cli -e ../../.env.local -- next build",
+    "build": "contentlayer2 build && npx dotenv-cli -e ../../.env.local -e ../../.env.ci -- next build",
     "build:analyze": "ANALYZE=true contentlayer2 build && npx dotenv-cli -e ../../.env.local -- next build",
     "clean": "git clean -xdf .next .turbo node_modules",
     "dev": "npx dotenv-cli -e ../../.env.local -- next dev",

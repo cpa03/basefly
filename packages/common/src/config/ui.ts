@@ -91,3 +91,47 @@ export const SEMANTIC_COLORS: SemanticColors = {
     ring: "focus:ring-red-600",
   },
 };
+
+/** Visual effects configuration type */
+export interface VisualEffects {
+  shimmer: {
+    color: string;
+    size: string;
+    duration: string;
+    background: string;
+  };
+  shadows: {
+    buttonHover: string;
+  };
+}
+
+/**
+ * Visual effects configuration
+ * Standard values for shimmer, shadows, and other visual effects
+ */
+export const VISUAL_EFFECTS: VisualEffects = {
+  shimmer: {
+    color: "hsl(0 0% 100%/1)",
+    size: "1px",
+    duration: "3s",
+    background: "hsl(0 0% 0%/1)",
+  },
+  shadows: {
+    buttonHover: "0 0 20px hsl(0 0% 100%/0.5)",
+  },
+};
+
+/** Transition presets configuration type */
+export interface TransitionPresets {
+  container: string;
+  interactive: string;
+}
+
+/**
+ * Transition presets
+ * Standard CSS transition classes for consistent animations
+ */
+export const TRANSITION_PRESETS: TransitionPresets = {
+  container: "duration-300 ease-in-out",
+  interactive: "duration-200 ease-in-out",
+};

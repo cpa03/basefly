@@ -4,6 +4,7 @@ import { getCurrentUser } from "@saasfly/auth";
 
 import { NavBar } from "~/components/navbar";
 import { SiteFooter } from "~/components/site-footer";
+import { SkipLink } from "~/components/skip-link";
 import type { Locale } from "~/config/i18n-config";
 import { getMarketingConfig } from "~/config/ui/marketing";
 import { getDictionary } from "~/lib/get-dictionary";
@@ -24,6 +25,7 @@ export default async function DocsLayout({
 
   return (
     <div className="flex min-h-screen flex-col">
+      <SkipLink />
       <Suspense fallback="...">
         <NavBar
           items={
@@ -36,7 +38,9 @@ export default async function DocsLayout({
           dropdown={dict.dropdown}
         />
       </Suspense>
-      <div className="container flex-1">{children}</div>
+      <main id="main-content" className="container flex-1">
+        {children}
+      </main>
       <SiteFooter
         className="border-t"
         params={{ lang: `${lang}` }}

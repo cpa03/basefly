@@ -12,8 +12,6 @@ import withBundleAnalyzer from "@next/bundle-analyzer";
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
-  /** Use webpack instead of Turbopack for compatibility with existing config */
-  turbopack: {},
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [
     "@saasfly/api",

@@ -45,6 +45,7 @@ export {
   ANIMATION_TIMING,
   SEMANTIC_COLORS,
   VISUAL_EFFECTS,
+  TRANSITION_PRESETS,
 } from "./config/ui";
 export type {
   ToastConfig,
@@ -52,4 +53,5 @@ export type {
   AnimationTiming,
   SemanticColors,
   VisualEffects,
+  TransitionPresets,
 } from "./config/ui";

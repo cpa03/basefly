@@ -44,6 +44,7 @@ export {
   FEEDBACK_TIMING,
   ANIMATION_TIMING,
   SEMANTIC_COLORS,
+  TRANSITION_PRESETS,
   VISUAL_EFFECTS,
 } from "./config/ui";
 export type {
@@ -52,4 +53,5 @@ export type {
   AnimationTiming,
   SemanticColors,
   VisualEffects,
+  TransitionPresetKey,
 } from "./config/ui";

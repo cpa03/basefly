@@ -1,57 +1,68 @@
 {
-  "$schema": "https://opencode.ai/schema.json",
-  "name": "basefly",
+  "$schema": "https://opencode.ai/config.json",
+  "share": "disabled",
+  "autoupdate": true,
+  "model": "iflowcn/big-pickle",
+  "small_model": "opencode/big-pickle",
+  "compaction": {
+    "auto": true,
+    "prune": true
+  },
+  "watcher": {
+    "ignore": [
+      "node_modules/**",
+      "dist/**",
+      "build/**",
+      "coverage/**",
+      ".git/**",
+      "*.log",
+      ".next/**",
+      ".nuxt/**",
+      "target/**"
+    ]
+  },
   "plugin": [
     "oh-my-opencode"
   ],
-  "models": {
-    "sisyphus": {
-      "model": "opencode/kimi-k2.5-free",
-      "temperature": 0.7
-    },
-    "oracle": {
-      "model": "opencode/glm-4.7-free",
-      "temperature": 0.5
-    },
-    "librarian": {
-      "model": "opencode/glm-4.7-free",
-      "temperature": 0.3
-    },
-    "explore": {
-      "model": "opencode/gpt-5-nano",
-      "temperature": 0.2
-    },
-    "multimodal-looker": {
-      "model": "opencode/minimax-m2.1-free",
-      "temperature": 0.5
+  "tools": {
+    "bash": true,
+    "write": true,
+    "edit": true,
+    "read": true,
+    "grep": true,
+    "glob": true,
+    "list": true,
+    "patch": true,
+    "todowrite": true,
+    "todoread": true,
+    "webfetch": true,
+    "websearch": true,
+    "codesearch": true,
+    "skill": true
+  },
+  "permission": {
+    "edit": "allow",
+    "write": "allow",
+    "webfetch": "allow",
+    "websearch": "allow",
+    "codesearch": "allow",
+    "bash": {
+      "pwd": "allow",
+      "ls": "allow",
+      "dir": "allow",
+      "cat": "allow",
+      "type": "allow",
+      "Get-*": "allow",
+      "Test-Path": "allow",
+      "git *": "allow",
+      "gh *": "allow",
+      "npm *": "allow",
+      "yarn *": "allow",
+      "bun *": "allow",
+      "pnpm *": "allow",
+      "docker *": "allow",
+      "kubectl *": "allow",
+      "ssh *": "allow"
     }
-  },
-  "skills": {
-    "sources": [
-      ".opencode/skills",
-      ".opencode/superpowers/skills"
-    ]
-  },
-  "mcp": {
-    "servers": [
-      {
-        "name": "websearch",
-        "command": "npx",
-        "args": ["-y", "@mcp/exa"],
-        "env": {
-          "EXA_API_KEY": "${EXA_API_KEY}"
-        }
-      },
-      {
-        "name": "context7",
-        "command": "npx",
-        "args": ["-y", "@mcp/context7"]
-      },
-      {
-        "name": "github-search",
-        "command": "npx",
-        "args": ["-y", "@mcp/grep-app"]
-      }
-    ]
   }
 }

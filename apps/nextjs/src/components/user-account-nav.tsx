@@ -32,7 +32,7 @@ export function UserAccountNav({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger aria-label={dict.open_user_menu}>
         <UserAvatar
           user={{ name: user.name ?? null, image: user.image ?? null }}
           className="h-8 w-8"

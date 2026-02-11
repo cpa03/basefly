@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { FollowerPointerCard } from "@saasfly/ui/following-pointer";
+import { TRANSITION_PRESETS } from "@saasfly/common/config/ui";
 
 export function XBlogArticle() {
   return (
@@ -12,15 +13,15 @@ export function XBlogArticle() {
           />
         }
       >
-        <div className="group relative h-full overflow-hidden rounded-2xl border border-zinc-100 bg-white transition duration-200 hover:shadow-xl">
+        <div className={`group relative h-full overflow-hidden rounded-2xl border border-zinc-100 bg-white transition ${TRANSITION_PRESETS.container} hover:shadow-xl`}>
           <div className="aspect-w-16 aspect-h-10 xl:aspect-w-16 xl:aspect-h-10 relative w-full overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-100">
-           <Image
-                src={blogContent.image}
-                alt={blogContent.title}
-                width={640}
-                height={400}
-                className="transform object-cover transition duration-200 group-hover:scale-95 group-hover:rounded-2xl"
-             />
+             <Image
+                  src={blogContent.image}
+                  alt={blogContent.title}
+                  width={640}
+                  height={400}
+                  className={`transform object-cover transition ${TRANSITION_PRESETS.container} group-hover:scale-95 group-hover:rounded-2xl`}
+               />
           </div>
           <div className=" p-4">
             <h2 className="my-4 text-lg font-bold text-zinc-700">
@@ -33,7 +34,7 @@ export function XBlogArticle() {
               <span className="text-sm text-gray-500">{blogContent.date}</span>
               <button
                 type="button"
-                className="relative z-10 rounded-xl bg-black px-6 py-2 text-xs font-bold text-white transition-all duration-200 hover:bg-zinc-800 hover:scale-105 hover:shadow-lg active:scale-95 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2"
+                className={`relative z-10 rounded-xl bg-black px-6 py-2 text-xs font-bold text-white transition-all ${TRANSITION_PRESETS.container} hover:bg-zinc-800 hover:scale-105 hover:shadow-lg active:scale-95 focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2`}
                 aria-label={`Read article: ${blogContent.title}`}
               >
                 Read More

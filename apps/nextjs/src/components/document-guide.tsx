@@ -1,8 +1,9 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { ChevronRight } from "lucide-react";
 
 import { cn } from "@saasfly/ui";
 import { AnimatedGradientText } from "@saasfly/ui/animated-gradient-text";
+import { TRANSITION_PRESETS } from "@saasfly/common/config/ui";
 
 export function DocumentGuide({ children }: { children: ReactNode }) {
   return (
@@ -15,7 +16,7 @@ export function DocumentGuide({ children }: { children: ReactNode }) {
       >
         {children}
       </span>
-      <ChevronRight className="ml-1 size-3 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5" />
+      <ChevronRight className={`ml-1 size-3 transition-transform ${TRANSITION_PRESETS.container} ease-in-out group-hover:translate-x-0.5`} />
     </AnimatedGradientText>
   );
 }

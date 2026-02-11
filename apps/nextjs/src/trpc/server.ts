@@ -3,12 +3,12 @@ import "server-only";
 import { cookies } from "next/headers";
 import { createTRPCProxyClient, loggerLink, TRPCClientError } from "@trpc/client";
 
-import { AppRouter } from "@saasfly/api";
+import type { AppRouter } from "@saasfly/api";
 
 import { transformer } from "./shared";
 import { observable } from "@trpc/server/observable";
 import { callProcedure } from "@trpc/server";
-import { TRPCErrorResponse } from "@trpc/server/rpc";
+import type { TRPCErrorResponse } from "@trpc/server/rpc";
 import { cache } from "react";
 import { appRouter } from "../../../../packages/api/src/root";
 import { auth } from "@clerk/nextjs/server";
@@ -32,9 +32,10 @@ export const createTRPCContext = async (opts: {
  * handling a tRPC call from a React Server Component.
  */
 const createContext = cache(async () => {
+  const cookieStore = await cookies();
   return createTRPCContext({
     headers: new Headers({
-      cookie: cookies().toString(),
+      cookie: cookieStore.toString(),
       "x-trpc-source": "rsc",
     }),
     auth: await auth(),

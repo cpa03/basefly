@@ -1,6 +1,7 @@
 import { match as matchLocale } from "@formatjs/intl-localematcher";
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import { NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import Negotiator from "negotiator";
 
 import { i18n } from "~/config/i18n-config";

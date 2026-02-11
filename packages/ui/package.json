@@ -129,6 +129,7 @@
     "./popover": "./src/popover.tsx",
     "./scroll-area": "./src/scroll-area.tsx",
     "./select": "./src/select.tsx",
+    "./shake-wrapper": "./src/shake-wrapper.tsx",
     "./sheet": "./src/sheet.tsx",
     "./skeleton": "./src/skeleton.tsx",
     "./sparkles": "./src/sparkles.tsx",
@@ -143,6 +144,7 @@
     "./tooltip": "./src/tooltip.tsx",
     "./use-toast": "./src/use-toast.tsx",
     "./typewriter-effect": "./src/typewriter-effect.tsx",
-    "./wobble-card": "./src/wobble-card.tsx"
+    "./wobble-card": "./src/wobble-card.tsx",
+    "./magic-link-email": "./src/magic-link-email.tsx"
   }
 }

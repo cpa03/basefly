@@ -1,0 +1,95 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
+  
+  // OpenX Basefly Configuration - Multi-Model Agent Harness
+  // Configured with free tier models: opencode/glm-4.7-free, opencode/kimi-k2.5-free, opencode/minimax-m2.1-free
+  
+  "agents": {
+    "sisyphus": {
+      "model": "opencode/kimi-k2.5-free",
+      "temperature": 0.7,
+      "description": "Main orchestrator agent - handles complex tasks and coordination"
+    },
+    "oracle": {
+      "model": "opencode/glm-4.7-free",
+      "temperature": 0.5,
+      "description": "Architecture and debugging specialist"
+    },
+    "librarian": {
+      "model": "opencode/glm-4.7-free",
+      "temperature": 0.3,
+      "description": "Documentation and codebase research"
+    },
+    "explore": {
+      "model": "opencode/gpt-5-nano",
+      "temperature": 0.2,
+      "description": "Fast codebase exploration and grep operations"
+    },
+    "multimodal-looker": {
+      "model": "opencode/minimax-m2.1-free",
+      "temperature": 0.5,
+      "description": "Visual understanding and UI/UX tasks"
+    }
+  },
+  
+  "categories": {
+    "quick": {
+      "model": "opencode/gpt-5-nano",
+      "temperature": 0.2
+    },
+    "visual-engineering": {
+      "model": "opencode/minimax-m2.1-free",
+      "temperature": 0.5
+    },
+    "business-logic": {
+      "model": "opencode/kimi-k2.5-free",
+      "temperature": 0.6
+    },
+    "research": {
+      "model": "opencode/glm-4.7-free",
+      "temperature": 0.3
+    }
+  },
+  
+  "skills": {
+    "sources": [
+      { "path": ".opencode/skills", "recursive": true },
+      { "path": ".opencode/superpowers/skills", "recursive": true }
+    ],
+    "enable": [
+      "brainstorming",
+      "writing-plans",
+      "executing-plans",
+      "test-driven-development",
+      "systematic-debugging",
+      "using-git-worktrees",
+      "requesting-code-review",
+      "finishing-a-development-branch",
+      "subagent-driven-development",
+      "dispatching-parallel-agents",
+      "github-workflow-automation"
+    ]
+  },
+  
+  "mcp": {
+    "servers": [
+      {
+        "name": "websearch",
+        "enabled": true
+      },
+      {
+        "name": "context7", 
+        "enabled": true
+      },
+      {
+        "name": "github-search",
+        "enabled": true
+      }
+    ]
+  },
+  
+  "experimental": {
+    "aggressive_truncation": true,
+    "auto_resume": true
+  }
+}

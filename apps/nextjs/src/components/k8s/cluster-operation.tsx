@@ -26,6 +26,7 @@ import { toast } from "@saasfly/ui/use-toast";
 
 import { trpc } from "~/trpc/client";
 import type { Cluster } from "~/types/k8s";
+import { FEEDBACK_TIMING, SEMANTIC_COLORS } from "@saasfly/common/config/ui";
 
 interface ClusterOperationsProps {
   cluster: Pick<Cluster, "id" | "name">;
@@ -38,6 +39,7 @@ export function ClusterOperations({ cluster, lang, dict }: ClusterOperationsProp
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false);
   const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false);
   const [hasCopied, setHasCopied] = React.useState<boolean>(false);
+  const [isCopying, setIsCopying] = React.useState<boolean>(false);
 
   const k8sDict = dict?.k8s as Record<string, unknown> | undefined;
   const actionsDict = k8sDict?.actions as Record<string, string> | undefined;
@@ -45,13 +47,18 @@ export function ClusterOperations({ cluster, lang, dict }: ClusterOperationsProp
   const deleteDialogDict = k8sDict?.delete_dialog as Record<string, string> | undefined;
 
   const handleCopyId = React.useCallback(async () => {
-    await navigator.clipboard.writeText(String(cluster.id));
-    setHasCopied(true);
-    toast({
-      title: actionsDict?.copy_success_title ?? "Copied!",
-      description: actionsDict?.copy_success_desc ?? "Cluster ID copied to clipboard.",
-    });
-    setTimeout(() => setHasCopied(false), 2000);
+    setIsCopying(true);
+    try {
+      await navigator.clipboard.writeText(String(cluster.id));
+      setHasCopied(true);
+      toast({
+        title: actionsDict?.copy_success_title ?? "Copied!",
+        description: actionsDict?.copy_success_desc ?? "Cluster ID copied to clipboard.",
+      });
+      setTimeout(() => setHasCopied(false), FEEDBACK_TIMING.copySuccess);
+    } finally {
+      setIsCopying(false);
+    }
   }, [cluster.id, actionsDict]);
 
   async function deleteCluster(clusterId: number) {
@@ -80,7 +87,7 @@ export function ClusterOperations({ cluster, lang, dict }: ClusterOperationsProp
     <>
       <DropdownMenu>
         <DropdownMenuTrigger
-          className="flex h-8 w-8 items-center justify-center rounded-md border transition-all duration-150 ease-out hover:bg-muted hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className={`flex h-8 w-8 items-center justify-center rounded-md border transition-all ${TRANSITION_PRESETS.interactive} hover:bg-muted hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
           aria-label="Cluster actions"
         >
           <Ellipsis className="h-4 w-4" aria-hidden="true" />
@@ -96,13 +103,19 @@ export function ClusterOperations({ cluster, lang, dict }: ClusterOperationsProp
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem
-            className="flex cursor-pointer items-center gap-2 transition-colors duration-150"
+            className={`flex cursor-pointer items-center gap-2 transition-colors ${TRANSITION_PRESETS.interactive}`}
             onSelect={handleCopyId}
+            disabled={isCopying}
           >
-            {hasCopied ? (
+            {isCopying ? (
               <>
-                <CopyDone className="h-4 w-4 text-green-500" aria-hidden="true" />
-                <span className="text-green-600 font-medium">{actionsDict?.copied ?? "Copied!"}</span>
+                <Spinner className="h-4 w-4 animate-spin" aria-hidden="true" />
+                <span className="text-muted-foreground">{actionsDict?.copying ?? "Copying..."}</span>
+              </>
+            ) : hasCopied ? (
+              <>
+                <CopyDone className={`h-4 w-4 ${SEMANTIC_COLORS.success.icon}`} aria-hidden="true" />
+                <span className={`${SEMANTIC_COLORS.success.text} font-medium`}>{actionsDict?.copied ?? "Copied!"}</span>
               </>
             ) : (
               <>
@@ -147,7 +160,7 @@ export function ClusterOperations({ cluster, lang, dict }: ClusterOperationsProp
                   setIsDeleteLoading(false);
                 }
               }}
-              className="bg-red-600 focus:ring-red-600"
+              className={`${SEMANTIC_COLORS.destructive.background} ${SEMANTIC_COLORS.destructive.ring}`}
               aria-busy={isDeleteLoading}
             >
               {isDeleteLoading ? (

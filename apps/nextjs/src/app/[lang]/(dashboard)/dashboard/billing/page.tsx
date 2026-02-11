@@ -17,6 +17,8 @@ export const metadata = {
   description: "Manage billing and your subscription plan.",
 };
 
+export const dynamic = "force-dynamic";
+
 interface Subscription {
   plan: string | null;
   endsAt: Date | null;

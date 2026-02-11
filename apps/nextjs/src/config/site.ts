@@ -22,4 +22,8 @@ export const siteConfig = {
       pnpm: "pnpm create saasfly",
     },
   },
+  support: {
+    email: "support@saasfly.io",
+    subject: "Support Request",
+  },
 };

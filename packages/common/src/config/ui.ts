@@ -91,3 +91,43 @@ export const SEMANTIC_COLORS: SemanticColors = {
     ring: "focus:ring-red-600",
   },
 };
+
+/**
+ * Transition presets for consistent animations across components
+ * @deprecated Use ANIMATION from @saasfly/common instead
+ */
+export const TRANSITION_PRESETS = {
+  /** Container transitions for cards and sections */
+  container: "transition-all duration-200 ease-out",
+  /** Interactive element transitions for buttons and links */
+  interactive: "transition-colors duration-150 ease-out",
+  /** Transform transitions for scale effects */
+  transform: "transition-transform duration-150 ease-out",
+  /** Shimmer effect for loading states */
+  shimmer: "animate-shimmer",
+  /** Shadow transitions */
+  shadows: "transition-shadow duration-200 ease-out",
+} as const;
+
+/**
+ * Visual effects configuration
+ * @deprecated Use ANIMATION from @saasfly/common instead
+ */
+export const VISUAL_EFFECTS = {
+  /** Transition presets */
+  transition: TRANSITION_PRESETS,
+  /** Shimmer button configuration */
+  shimmer: {
+    color: "#ffffff",
+    size: "1px",
+    duration: "2s",
+    background: "#000000",
+  },
+  /** Shadow effects */
+  shadows: {
+    buttonHover: "0 0 20px rgba(0,0,0,0.3)",
+  },
+} as const;
+
+/** Type for visual effects configuration */
+export type VisualEffects = typeof VISUAL_EFFECTS;

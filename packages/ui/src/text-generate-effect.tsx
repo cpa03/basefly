@@ -19,17 +19,19 @@ const TextGenerateEffectImpl = ({
   const wordsArray = words.split(" ");
 
   useEffect(() => {
-    void animate(
-      "span",
-      {
-        opacity: 1,
-      },
-      {
-        duration: 2,
-        delay: stagger(0.1),
-      },
-    );
-  }, [scope.current, words]);
+    if (scope.current) {
+      void animate(
+        "span",
+        {
+          opacity: 1,
+        },
+        {
+          duration: 2,
+          delay: stagger(0.1),
+        },
+      );
+    }
+  }, [scope, animate, words]);
 
   const renderWords = () => {
     return (

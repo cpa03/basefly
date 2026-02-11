@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import * as React from "react";
 
 import { Check, Clock, PauseCircle, XCircle, Loader2 as SpinnerLoader } from "@saasfly/ui/icons";

@@ -131,7 +131,6 @@ function addVariablesForColors({
 }) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   const allColors = flattenColorPalette(
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     theme("colors") as string,
   ) as Record<string, unknown>;
   const newVars = Object.fromEntries(

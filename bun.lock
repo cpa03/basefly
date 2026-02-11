@@ -161,7 +161,6 @@
       "version": "0.1.0",
       "dependencies": {
         "@react-email/components": "0.0.19",
-        "@saasfly/ui": "workspace:*",
         "@t3-oss/env-nextjs": "0.8.0",
         "resend": "2.1.0",
         "zod": "3.22.4",
@@ -170,6 +169,7 @@
         "@saasfly/eslint-config": "workspace:*",
         "@saasfly/prettier-config": "workspace:*",
         "@saasfly/typescript-config": "workspace:*",
+        "@types/node": "20.12.12",
         "eslint": "8.57.0",
         "prettier": "3.7.4",
         "typescript": "5.9.3",

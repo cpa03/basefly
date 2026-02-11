@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { cn } from "@saasfly/ui";
-import { buttonVariants } from "@saasfly/ui/button";
+import { Button } from "@saasfly/ui/button";
 import {
   Card,
   CardContent,
@@ -12,7 +12,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@saasfly/ui/card";
-import { Spinner } from "@saasfly/ui/icons";
 import { toast } from "@saasfly/ui/use-toast";
 
 import { formatDate } from "~/lib/utils";
@@ -68,21 +67,11 @@ export function BillingForm({
         </CardHeader>
         <CardContent>{subscriptionPlan?.description}</CardContent>
         <CardFooter className="flex flex-col items-start space-y-2 md:flex-row md:justify-between md:space-x-0">
-          <button
-            type="submit"
-            className={cn(buttonVariants())}
-            disabled={isLoading}
-            aria-busy={isLoading}
-          >
-            {isLoading && (
-              <Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
-            )}
-            <span>
-              {subscriptionPlan?.isPaid
-                ? "Manage Subscription"
-                : "Upgrade to PRO"}
-            </span>
-          </button>
+          <Button type="submit" isLoading={isLoading}>
+            {subscriptionPlan?.isPaid
+              ? "Manage Subscription"
+              : "Upgrade to PRO"}
+          </Button>
           {subscriptionPlan?.isPaid ? (
             <p className="rounded-full text-xs font-medium">
               {subscriptionPlan?.isCanceled

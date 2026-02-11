@@ -105,6 +105,14 @@ export default {
             transform: "translate(calc(-50% - 0.5rem))",
           },
         },
+        shimmer: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.7" },
+        },
+        "shimmer-sweep": {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(200%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -116,6 +124,10 @@ export default {
         "meteor-effect": "meteor 5s linear infinite",
         scroll:
           "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
+        shimmer:
+          "shimmer 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "shimmer-sweep":
+          "shimmer-sweep 2s cubic-bezier(0.4, 0, 0.2, 1) infinite",
       },
     },
   },
@@ -131,7 +143,6 @@ function addVariablesForColors({
 }) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   const allColors = flattenColorPalette(
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     theme("colors") as string,
   ) as Record<string, unknown>;
   const newVars = Object.fromEntries(

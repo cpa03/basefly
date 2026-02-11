@@ -35,24 +35,37 @@ export function BillingFormButton({
   const stripeSessionAction = () =>
     startTransition(async () => await createSession(stripePlanId!));
 
+  const buttonText = subscriptionPlan.stripePriceId
+    ? dict.manage_subscription
+    : dict.upgrade;
+
   return (
     <Button
       variant="default"
-      className="w-full"
+      className="relative w-full overflow-hidden"
       disabled={isPending}
       onClick={stripeSessionAction}
+      aria-busy={isPending}
+      aria-live="polite"
     >
-      {isPending ? (
-        <>
-          <Spinner className="mr-2 h-4 w-4 animate-spin" /> Loading...
-        </>
-      ) : (
-        <>
-          {subscriptionPlan.stripePriceId
-            ? dict.manage_subscription
-            : dict.upgrade}
-        </>
-      )}
+      <span
+        className={`flex items-center justify-center transition-all duration-200 ease-out ${
+          isPending ? "opacity-0 translate-y-1" : "opacity-100 translate-y-0"
+        }`}
+        aria-hidden={isPending}
+      >
+        {buttonText}
+      </span>
+
+      <span
+        className={`absolute inset-0 flex items-center justify-center transition-all duration-200 ease-out ${
+          isPending ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1"
+        }`}
+        aria-hidden={!isPending}
+      >
+        <Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+        <span>Loading...</span>
+      </span>
     </Button>
   );
 }

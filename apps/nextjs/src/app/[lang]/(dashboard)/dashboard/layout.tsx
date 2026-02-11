@@ -6,6 +6,7 @@ import { LocaleChange } from "~/components/locale-change";
 import { MainNav } from "~/components/main-nav";
 import { DashboardNav } from "~/components/nav";
 import { SiteFooter } from "~/components/site-footer";
+import { SkipLink } from "~/components/skip-link";
 import { UserAccountNav } from "~/components/user-account-nav";
 import { i18n, type Locale } from "~/config/i18n-config";
 import { getDashboardConfig } from "~/config/ui/dashboard";
@@ -34,6 +35,7 @@ export default async function DashboardLayout({
   const dashboardConfig = await getDashboardConfig({ params: { lang } });
   return (
     <div className="flex min-h-screen flex-col space-y-6">
+      <SkipLink />
       <header className="sticky top-0 z-40 border-b bg-background">
         <div className="container flex h-16 items-center justify-between py-4">
           <MainNav
@@ -61,7 +63,7 @@ export default async function DashboardLayout({
             params={{ lang: `${lang}` }}
           />
         </aside>
-        <main className="flex w-full flex-1 flex-col overflow-hidden">
+        <main id="main-content" className="flex w-full flex-1 flex-col overflow-hidden">
           {children}
         </main>
       </div>

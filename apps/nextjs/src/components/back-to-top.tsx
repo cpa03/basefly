@@ -3,6 +3,7 @@
 import * as React from "react";
 import { ArrowUp } from "lucide-react";
 
+import { ANIMATION } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { Button } from "@saasfly/ui/button";
 import {
@@ -11,7 +12,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@saasfly/ui/tooltip";
-import { ANIMATION } from "@saasfly/common";
 
 interface BackToTopProps {
   /**
@@ -115,13 +115,13 @@ const BackToTop = React.forwardRef<HTMLButtonElement, BackToTopProps>(
               onClick={scrollToTop}
               className={cn(
                 // Positioning
-                "fixed bottom-4 sm:bottom-8 z-50",
+                "fixed bottom-4 z-50 sm:bottom-8",
                 positionClasses[position],
                 // Size
                 "h-10 w-10 sm:h-12 sm:w-12",
                 // Visual styling
                 "rounded-full shadow-lg",
-                "bg-background/80 backdrop-blur-sm border",
+                "border bg-background/80 backdrop-blur-sm",
                 "hover:bg-background hover:shadow-xl",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                 // Animation
@@ -131,11 +131,11 @@ const BackToTop = React.forwardRef<HTMLButtonElement, BackToTopProps>(
                 // Visibility states with motion-safe
                 "motion-safe:transition-all",
                 isVisible
-                  ? "motion-safe:opacity-100 motion-safe:scale-100 pointer-events-auto"
-                  : "motion-safe:opacity-0 motion-safe:scale-75 pointer-events-none",
+                  ? "pointer-events-auto motion-safe:scale-100 motion-safe:opacity-100"
+                  : "pointer-events-none motion-safe:scale-75 motion-safe:opacity-0",
                 // Reduced motion fallback
-                "opacity-0 scale-75 pointer-events-none",
-                isVisible && "opacity-100 scale-100 pointer-events-auto",
+                "pointer-events-none scale-75 opacity-0",
+                isVisible && "pointer-events-auto scale-100 opacity-100",
                 className,
               )}
               aria-label="Back to top (Ctrl+Home)"

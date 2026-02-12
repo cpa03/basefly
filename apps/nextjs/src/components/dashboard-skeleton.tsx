@@ -1,5 +1,5 @@
-import { Skeleton } from "@saasfly/ui/skeleton";
 import { cn } from "@saasfly/ui";
+import { Skeleton } from "@saasfly/ui/skeleton";
 
 export function DashboardSkeleton() {
   return (
@@ -27,7 +27,7 @@ export function DashboardSkeleton() {
                       className={cn(
                         "h-4 w-20",
                         "motion-safe:animate-pulse",
-                        "motion-reduce:animate-none motion-reduce:bg-muted"
+                        "motion-reduce:animate-none motion-reduce:bg-muted",
                       )}
                     />
                   </th>
@@ -42,10 +42,10 @@ export function DashboardSkeleton() {
                       <Skeleton
                         className={cn(
                           colIndex === 5
-                            ? "h-10 w-20 ml-auto"
+                            ? "ml-auto h-10 w-20"
                             : "h-5 w-full max-w-[150px]",
                           "motion-safe:animate-pulse",
-                          "motion-reduce:animate-none motion-reduce:bg-muted"
+                          "motion-reduce:animate-none motion-reduce:bg-muted",
                         )}
                       />
                     </td>

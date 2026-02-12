@@ -1,6 +1,6 @@
-import { ClerkProvider } from "@clerk/nextjs";
 import { Inter as FontSans } from "next/font/google";
 import localFont from "next/font/local";
+import { ClerkProvider } from "@clerk/nextjs";
 
 import "~/styles/globals.css";
 
@@ -83,8 +83,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-  const isValidClerkKey = clerkKey && 
-    !clerkKey.includes("dummy") && 
+  const isValidClerkKey =
+    clerkKey &&
+    !clerkKey.includes("dummy") &&
     !clerkKey.includes("placeholder") &&
     clerkKey.startsWith("pk_") &&
     clerkKey.length > 20;
@@ -108,7 +109,9 @@ export default function RootLayout({
             defaultTheme="dark"
             enableSystem={false}
           >
-            <NextDevtoolsProvider>{children}</NextDevtoolsProvider>
+            <NextDevtoolsProvider>
+              <main id="main-content">{children}</main>
+            </NextDevtoolsProvider>
             <Analytics />
             <SpeedInsights />
             <Toaster />

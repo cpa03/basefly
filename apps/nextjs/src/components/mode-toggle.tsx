@@ -10,13 +10,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@saasfly/ui/dropdown-menu";
+import { Laptop, Moon, Sun } from "@saasfly/ui/icons";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@saasfly/ui/tooltip";
-import { Laptop, Moon, Sun } from "@saasfly/ui/icons";
 
 type Theme = "light" | "dark" | "system";
 
@@ -85,7 +85,8 @@ export function ModeToggle() {
   // Format shortcut based on platform
   const shortcutLabel = React.useMemo(() => {
     const isMac =
-      typeof navigator !== "undefined" && /Mac|iPod|iPhone|iPad/.test(navigator.platform);
+      typeof navigator !== "undefined" &&
+      /Mac|iPod|iPhone|iPad/.test(navigator.platform);
     return isMac ? "⌘⇧L" : "Ctrl+Shift+L";
   }, []);
 
@@ -98,7 +99,7 @@ export function ModeToggle() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 w-8 px-0 relative"
+                className="relative h-8 w-8 px-0"
                 aria-label={`Toggle theme (current: ${theme ?? "system"})`}
               >
                 {currentIcon}

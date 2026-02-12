@@ -1,20 +1,28 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-
-import { k8sRouter, k8sClusterCreateSchema, k8sClusterDeleteSchema } from "./k8s";
-import { stripeRouter, createSessionSchema } from "./stripe";
-import { customerRouter, updateUserNameSchema, insertCustomerSchema } from "./customer";
-import { authRouter } from "./auth";
-import {
-  ErrorCode,
-  createApiError,
-  handleIntegrationError,
-  createValidationErrorMessage,
-} from "../errors";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { z } from "zod";
 
 // Import mocked IntegrationError for testing
 import { IntegrationError as MockIntegrationError } from "@saasfly/stripe";
+
+import {
+  createApiError,
+  createValidationErrorMessage,
+  ErrorCode,
+  handleIntegrationError,
+} from "../errors";
+import { authRouter } from "./auth";
+import {
+  customerRouter,
+  insertCustomerSchema,
+  updateUserNameSchema,
+} from "./customer";
+import {
+  k8sClusterCreateSchema,
+  k8sClusterDeleteSchema,
+  k8sRouter,
+} from "./k8s";
+import { createSessionSchema, stripeRouter } from "./stripe";
 
 vi.mock("@saasfly/db", () => ({
   db: {
@@ -39,7 +47,10 @@ vi.mock("@saasfly/stripe", () => ({
   createCheckoutSession: vi.fn(),
   retrieveSubscription: vi.fn(),
   IntegrationError: class MockIntegrationError extends Error {
-    constructor(message: string, public code: string) {
+    constructor(
+      message: string,
+      public code: string,
+    ) {
       super(message);
       this.name = "IntegrationError";
     }
@@ -111,7 +122,9 @@ describe("API Validation Tests", () => {
         const result = k8sClusterCreateSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
-          expect(result.error.errors.some((e) => e.path.includes("name"))).toBe(true);
+          expect(result.error.errors.some((e) => e.path.includes("name"))).toBe(
+            true,
+          );
         }
       });
 
@@ -123,7 +136,9 @@ describe("API Validation Tests", () => {
         const result = k8sClusterCreateSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
-          expect(result.error.errors.some((e) => e.path.includes("location"))).toBe(true);
+          expect(
+            result.error.errors.some((e) => e.path.includes("location")),
+          ).toBe(true);
         }
       });
 
@@ -135,7 +150,9 @@ describe("API Validation Tests", () => {
         const result = k8sClusterCreateSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
-          expect(result.error.errors.some((e) => e.path.includes("name"))).toBe(true);
+          expect(result.error.errors.some((e) => e.path.includes("name"))).toBe(
+            true,
+          );
         }
       });
 
@@ -147,7 +164,9 @@ describe("API Validation Tests", () => {
         const result = k8sClusterCreateSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
-          expect(result.error.errors.some((e) => e.path.includes("location"))).toBe(true);
+          expect(
+            result.error.errors.some((e) => e.path.includes("location")),
+          ).toBe(true);
         }
       });
 
@@ -197,7 +216,9 @@ describe("API Validation Tests", () => {
         const result = k8sClusterDeleteSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
-          expect(result.error.errors.some((e) => e.path.includes("id"))).toBe(true);
+          expect(result.error.errors.some((e) => e.path.includes("id"))).toBe(
+            true,
+          );
         }
       });
 
@@ -240,7 +261,9 @@ describe("API Validation Tests", () => {
         const result = createSessionSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
-          expect(result.error.errors.some((e) => e.path.includes("planId"))).toBe(true);
+          expect(
+            result.error.errors.some((e) => e.path.includes("planId")),
+          ).toBe(true);
         }
       });
 
@@ -286,7 +309,9 @@ describe("API Validation Tests", () => {
         const result = updateUserNameSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
-          expect(result.error.errors.some((e) => e.path.includes("name"))).toBe(true);
+          expect(result.error.errors.some((e) => e.path.includes("name"))).toBe(
+            true,
+          );
         }
       });
 
@@ -295,7 +320,9 @@ describe("API Validation Tests", () => {
         const result = updateUserNameSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
-          expect(result.error.errors.some((e) => e.path.includes("userId"))).toBe(true);
+          expect(
+            result.error.errors.some((e) => e.path.includes("userId")),
+          ).toBe(true);
         }
       });
 
@@ -340,7 +367,9 @@ describe("API Validation Tests", () => {
         const result = insertCustomerSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
-          expect(result.error.errors.some((e) => e.path.includes("userId"))).toBe(true);
+          expect(
+            result.error.errors.some((e) => e.path.includes("userId")),
+          ).toBe(true);
         }
       });
 
@@ -396,7 +425,10 @@ describe("API Validation Tests", () => {
     });
 
     it("maps INTEGRATION_ERROR to INTERNAL_SERVER_ERROR TRPC code", () => {
-      const error = createApiError(ErrorCode.INTEGRATION_ERROR, "Integration error");
+      const error = createApiError(
+        ErrorCode.INTEGRATION_ERROR,
+        "Integration error",
+      );
       expect(error).toBeInstanceOf(TRPCError);
       expect(error.code).toBe("INTERNAL_SERVER_ERROR");
     });
@@ -416,7 +448,10 @@ describe("API Validation Tests", () => {
 
   describe("Integration Error Handling", () => {
     it("handles CIRCUIT_BREAKER_OPEN errors", () => {
-      const error = new MockIntegrationError("Service temporarily unavailable due to failures", "CIRCUIT_BREAKER_OPEN");
+      const error = new MockIntegrationError(
+        "Service temporarily unavailable due to failures",
+        "CIRCUIT_BREAKER_OPEN",
+      );
       const trpcError = handleIntegrationError(error);
       expect(trpcError).toBeInstanceOf(TRPCError);
       expect(trpcError.code).toBe("INTERNAL_SERVER_ERROR");
@@ -432,7 +467,10 @@ describe("API Validation Tests", () => {
     });
 
     it("handles API_ERROR errors", () => {
-      const error = new MockIntegrationError("External service error", "API_ERROR");
+      const error = new MockIntegrationError(
+        "External service error",
+        "API_ERROR",
+      );
       const trpcError = handleIntegrationError(error);
       expect(trpcError).toBeInstanceOf(TRPCError);
       expect(trpcError.code).toBe("INTERNAL_SERVER_ERROR");
@@ -467,7 +505,9 @@ describe("API Validation Tests", () => {
         { message: "Email is invalid" },
       ];
       const message = createValidationErrorMessage(errors);
-      expect(message).toBe("Validation failed: Name is required, Email is invalid");
+      expect(message).toBe(
+        "Validation failed: Name is required, Email is invalid",
+      );
     });
 
     it("handles errors with path", () => {

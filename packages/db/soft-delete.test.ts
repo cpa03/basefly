@@ -4,9 +4,10 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/unbound-method */
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { SoftDeleteService } from "./soft-delete";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import { db } from "./index";
+import { SoftDeleteService } from "./soft-delete";
 
 vi.mock("./index", () => ({
   db: {
@@ -71,26 +72,26 @@ describe("SoftDeleteService", () => {
       executeTakeFirst: mockSelectExecuteTakeFirst,
     };
 
-
     // @ts-expect-error Type instantiation is excessively deep
     vi.mocked(db.updateTable).mockReturnValue({
       where: mockUpdateWhere,
       set: mockUpdateSet,
       execute: mockUpdateExecute,
     } as {
-      where: ReturnType<typeof vi.fn>,
-      set: ReturnType<typeof vi.fn>,
-      execute: ReturnType<typeof vi.fn>,
+      where: ReturnType<typeof vi.fn>;
+      set: ReturnType<typeof vi.fn>;
+      execute: ReturnType<typeof vi.fn>;
     });
-
 
     // @ts-expect-error Complex query builder mock type
-    vi.mocked(db.selectFrom).mockReturnValue(selectChain as unknown as {
-      selectAll: ReturnType<typeof vi.fn>,
-      where: ReturnType<typeof vi.fn>,
-      execute: ReturnType<typeof vi.fn>,
-      executeTakeFirst: ReturnType<typeof vi.fn>,
-    });
+    vi.mocked(db.selectFrom).mockReturnValue(
+      selectChain as unknown as {
+        selectAll: ReturnType<typeof vi.fn>;
+        where: ReturnType<typeof vi.fn>;
+        execute: ReturnType<typeof vi.fn>;
+        executeTakeFirst: ReturnType<typeof vi.fn>;
+      },
+    );
 
     service = new SoftDeleteService("K8sClusterConfig");
   });
@@ -99,12 +100,17 @@ describe("SoftDeleteService", () => {
     it("sets deletedAt timestamp when soft deleting a record", async () => {
       await service.softDelete(1, "user_123");
 
-
       expect(db.updateTable).toHaveBeenCalledWith("K8sClusterConfig");
       expect(mockUpdateWhere).toHaveBeenCalledWith("id", "=", 1);
-      expect(mockUpdateWhere).toHaveBeenCalledWith("authUserId", "=", "user_123");
+      expect(mockUpdateWhere).toHaveBeenCalledWith(
+        "authUserId",
+        "=",
+        "user_123",
+      );
 
-      expect(mockUpdateSet).toHaveBeenCalledWith({ deletedAt: expect.any(Date) });
+      expect(mockUpdateSet).toHaveBeenCalledWith({
+        deletedAt: expect.any(Date),
+      });
       expect(mockUpdateExecute).toHaveBeenCalled();
     });
 
@@ -113,13 +119,20 @@ describe("SoftDeleteService", () => {
 
       expect(mockUpdateWhere).toHaveBeenCalledTimes(2);
       expect(mockUpdateWhere).toHaveBeenNthCalledWith(1, "id", "=", 5);
-      expect(mockUpdateWhere).toHaveBeenNthCalledWith(2, "authUserId", "=", "user_456");
+      expect(mockUpdateWhere).toHaveBeenNthCalledWith(
+        2,
+        "authUserId",
+        "=",
+        "user_456",
+      );
     });
 
     it("handles database errors gracefully", async () => {
       mockUpdateExecute.mockRejectedValue(new Error("Database error"));
 
-      await expect(service.softDelete(1, "user_123")).rejects.toThrow("Database error");
+      await expect(service.softDelete(1, "user_123")).rejects.toThrow(
+        "Database error",
+      );
     });
   });
 
@@ -127,10 +140,13 @@ describe("SoftDeleteService", () => {
     it("sets deletedAt to null when restoring a record", async () => {
       await service.restore(2, "user_789");
 
-
       expect(db.updateTable).toHaveBeenCalledWith("K8sClusterConfig");
       expect(mockUpdateWhere).toHaveBeenCalledWith("id", "=", 2);
-      expect(mockUpdateWhere).toHaveBeenCalledWith("authUserId", "=", "user_789");
+      expect(mockUpdateWhere).toHaveBeenCalledWith(
+        "authUserId",
+        "=",
+        "user_789",
+      );
       expect(mockUpdateSet).toHaveBeenCalledWith({ deletedAt: null });
       expect(mockUpdateExecute).toHaveBeenCalled();
     });
@@ -140,13 +156,20 @@ describe("SoftDeleteService", () => {
 
       expect(mockUpdateWhere).toHaveBeenCalledTimes(2);
       expect(mockUpdateWhere).toHaveBeenNthCalledWith(1, "id", "=", 10);
-      expect(mockUpdateWhere).toHaveBeenNthCalledWith(2, "authUserId", "=", "user_abc");
+      expect(mockUpdateWhere).toHaveBeenNthCalledWith(
+        2,
+        "authUserId",
+        "=",
+        "user_abc",
+      );
     });
 
     it("handles database errors gracefully", async () => {
       mockUpdateExecute.mockRejectedValue(new Error("Connection failed"));
 
-      await expect(service.restore(3, "user_123")).rejects.toThrow("Connection failed");
+      await expect(service.restore(3, "user_123")).rejects.toThrow(
+        "Connection failed",
+      );
     });
   });
 
@@ -159,7 +182,11 @@ describe("SoftDeleteService", () => {
 
       expect(result).toEqual(mockCluster);
       expect(mockSelectWhere1).toHaveBeenCalledWith("id", "=", 1);
-      expect(mockSelectWhere2).toHaveBeenCalledWith("authUserId", "=", "user_123");
+      expect(mockSelectWhere2).toHaveBeenCalledWith(
+        "authUserId",
+        "=",
+        "user_123",
+      );
       expect(mockSelectWhere3).toHaveBeenCalledWith("deletedAt", "is", null);
       expect(mockSelectExecuteTakeFirst).toHaveBeenCalled();
     });
@@ -185,13 +212,19 @@ describe("SoftDeleteService", () => {
 
       await service.findActive(1, "user_xyz");
 
-      expect(mockSelectWhere2).toHaveBeenCalledWith("authUserId", "=", "user_xyz");
+      expect(mockSelectWhere2).toHaveBeenCalledWith(
+        "authUserId",
+        "=",
+        "user_xyz",
+      );
     });
 
     it("handles database errors gracefully", async () => {
       mockSelectExecuteTakeFirst.mockRejectedValue(new Error("Query failed"));
 
-      await expect(service.findActive(1, "user_123")).rejects.toThrow("Query failed");
+      await expect(service.findActive(1, "user_123")).rejects.toThrow(
+        "Query failed",
+      );
     });
   });
 
@@ -208,7 +241,11 @@ describe("SoftDeleteService", () => {
 
       expect(result).toEqual(mockClusters);
       expect(result.length).toBe(3);
-      expect(mockSelectWhere1).toHaveBeenCalledWith("authUserId", "=", "user_123");
+      expect(mockSelectWhere1).toHaveBeenCalledWith(
+        "authUserId",
+        "=",
+        "user_123",
+      );
       expect(mockSelectWhere2).toHaveBeenCalledWith("deletedAt", "is", null);
       expect(mockSelectExecute).toHaveBeenCalled();
     });
@@ -237,7 +274,9 @@ describe("SoftDeleteService", () => {
     it("handles database errors gracefully", async () => {
       mockSelectExecute.mockRejectedValue(new Error("Connection error"));
 
-      await expect(service.findAllActive("user_123")).rejects.toThrow("Connection error");
+      await expect(service.findAllActive("user_123")).rejects.toThrow(
+        "Connection error",
+      );
     });
 
     it("only returns records for the specified user", async () => {
@@ -245,7 +284,11 @@ describe("SoftDeleteService", () => {
 
       await service.findAllActive("user_specific");
 
-      expect(mockSelectWhere1).toHaveBeenCalledWith("authUserId", "=", "user_specific");
+      expect(mockSelectWhere1).toHaveBeenCalledWith(
+        "authUserId",
+        "=",
+        "user_specific",
+      );
     });
   });
 
@@ -261,8 +304,16 @@ describe("SoftDeleteService", () => {
 
       expect(result).toEqual(mockDeletedClusters);
       expect(result.length).toBe(2);
-      expect(mockSelectWhere1).toHaveBeenCalledWith("authUserId", "=", "user_123");
-      expect(mockSelectWhere2).toHaveBeenCalledWith("deletedAt", "is not", null);
+      expect(mockSelectWhere1).toHaveBeenCalledWith(
+        "authUserId",
+        "=",
+        "user_123",
+      );
+      expect(mockSelectWhere2).toHaveBeenCalledWith(
+        "deletedAt",
+        "is not",
+        null,
+      );
       expect(mockSelectExecute).toHaveBeenCalled();
     });
 
@@ -283,13 +334,19 @@ describe("SoftDeleteService", () => {
 
       await service.findDeleted("user_123");
 
-      expect(mockSelectWhere2).toHaveBeenCalledWith("deletedAt", "is not", null);
+      expect(mockSelectWhere2).toHaveBeenCalledWith(
+        "deletedAt",
+        "is not",
+        null,
+      );
     });
 
     it("handles database errors gracefully", async () => {
       mockSelectExecute.mockRejectedValue(new Error("Query error"));
 
-      await expect(service.findDeleted("user_123")).rejects.toThrow("Query error");
+      await expect(service.findDeleted("user_123")).rejects.toThrow(
+        "Query error",
+      );
     });
 
     it("only returns deleted records for the specified user", async () => {
@@ -297,7 +354,11 @@ describe("SoftDeleteService", () => {
 
       await service.findDeleted("user_specific");
 
-      expect(mockSelectWhere1).toHaveBeenCalledWith("authUserId", "=", "user_specific");
+      expect(mockSelectWhere1).toHaveBeenCalledWith(
+        "authUserId",
+        "=",
+        "user_specific",
+      );
     });
   });
 
@@ -308,7 +369,9 @@ describe("SoftDeleteService", () => {
     });
 
     it("enforces type safety with generic type parameter", () => {
-      const service = new SoftDeleteService<"K8sClusterConfig">("K8sClusterConfig");
+      const service = new SoftDeleteService<"K8sClusterConfig">(
+        "K8sClusterConfig",
+      );
       expect(service).toBeInstanceOf(SoftDeleteService);
     });
   });

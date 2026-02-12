@@ -1,8 +1,8 @@
 import { compareDesc } from "date-fns";
 
 import { BlogPosts } from "~/components/blog/blog-posts";
-import { allPosts as rawPosts } from ".contentlayer/generated";
 import type { Post } from "~/types";
+import { allPosts as rawPosts } from ".contentlayer/generated";
 
 export const metadata = {
   title: "Blog",

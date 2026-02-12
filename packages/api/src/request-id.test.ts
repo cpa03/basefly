@@ -2,28 +2,31 @@
  * Tests for Request ID Utility
  */
 
-import { describe, it, expect, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
+
 import {
-  generateRequestId,
+  createRequestContext,
   extractRequestId,
+  generateRequestId,
   getOrGenerateRequestId,
   isValidRequestId,
-  createRequestContext,
   REQUEST_ID_HEADER,
 } from "./request-id";
 
 describe("generateRequestId", () => {
   it("should generate a valid UUID v4 format", () => {
     const requestId = generateRequestId();
-    
+
     // Should match UUID v4 pattern
-    expect(requestId).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
+    expect(requestId).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+    );
   });
 
   it("should generate unique IDs", () => {
     const id1 = generateRequestId();
     const id2 = generateRequestId();
-    
+
     expect(id1).not.toBe(id2);
   });
 
@@ -34,11 +37,11 @@ describe("generateRequestId", () => {
 
   it("should generate IDs with valid format components", () => {
     const requestId = generateRequestId();
-    const parts = requestId.split('-');
-    
+    const parts = requestId.split("-");
+
     // UUID v4 has 5 parts separated by dashes
     expect(parts).toHaveLength(5);
-    
+
     // Part lengths: 8-4-4-4-12
     expect(parts[0]).toHaveLength(8);
     expect(parts[1]).toHaveLength(4);
@@ -55,14 +58,14 @@ describe("extractRequestId", () => {
     const headers = new Headers();
     const testId = "a1b2c3d4-e5f6-4789-abcd-ef1234567890";
     headers.set(REQUEST_ID_HEADER, testId);
-    
+
     const extracted = extractRequestId(headers);
     expect(extracted).toBe(testId);
   });
 
   it("should return null if request ID header is missing", () => {
     const headers = new Headers();
-    
+
     const extracted = extractRequestId(headers);
     expect(extracted).toBeNull();
   });
@@ -70,7 +73,7 @@ describe("extractRequestId", () => {
   it("should return null if request ID is invalid format", () => {
     const headers = new Headers();
     headers.set(REQUEST_ID_HEADER, "invalid-uuid");
-    
+
     const extracted = extractRequestId(headers);
     expect(extracted).toBeNull();
   });
@@ -78,7 +81,7 @@ describe("extractRequestId", () => {
   it("should return null if request ID is empty string", () => {
     const headers = new Headers();
     headers.set(REQUEST_ID_HEADER, "");
-    
+
     const extracted = extractRequestId(headers);
     expect(extracted).toBeNull();
   });
@@ -86,7 +89,7 @@ describe("extractRequestId", () => {
   it("should handle case-insensitive UUID validation", () => {
     const headers = new Headers();
     headers.set(REQUEST_ID_HEADER, "A1B2C3D4-E5F6-4789-ABCD-EF1234567890");
-    
+
     const extracted = extractRequestId(headers);
     expect(extracted).toBe("A1B2C3D4-E5F6-4789-ABCD-EF1234567890");
   });
@@ -97,14 +100,14 @@ describe("getOrGenerateRequestId", () => {
     const headers = new Headers();
     const testId = "a1b2c3d4-e5f6-4789-abcd-ef1234567890";
     headers.set(REQUEST_ID_HEADER, testId);
-    
+
     const requestId = getOrGenerateRequestId(headers);
     expect(requestId).toBe(testId);
   });
 
   it("should generate new ID if header is missing", () => {
     const headers = new Headers();
-    
+
     const requestId = getOrGenerateRequestId(headers);
     expect(requestId).toBeDefined();
     expect(isValidRequestId(requestId)).toBe(true);
@@ -113,7 +116,7 @@ describe("getOrGenerateRequestId", () => {
   it("should generate new ID if header has invalid ID", () => {
     const headers = new Headers();
     headers.set(REQUEST_ID_HEADER, "invalid");
-    
+
     const requestId = getOrGenerateRequestId(headers);
     expect(requestId).toBeDefined();
     expect(isValidRequestId(requestId)).toBe(true);
@@ -142,21 +145,31 @@ describe("isValidRequestId", () => {
 
   it("should return false for wrong UUID version", () => {
     // Version 1 UUID (starts with 1)
-    expect(isValidRequestId("a1b2c3d4-e5f6-1789-abcd-ef1234567890")).toBe(false);
-    
+    expect(isValidRequestId("a1b2c3d4-e5f6-1789-abcd-ef1234567890")).toBe(
+      false,
+    );
+
     // Version 3 UUID (starts with 3)
-    expect(isValidRequestId("a1b2c3d4-e5f6-3789-abcd-ef1234567890")).toBe(false);
-    
+    expect(isValidRequestId("a1b2c3d4-e5f6-3789-abcd-ef1234567890")).toBe(
+      false,
+    );
+
     // Version 5 UUID (starts with 5)
-    expect(isValidRequestId("a1b2c3d4-e5f6-5789-abcd-ef1234567890")).toBe(false);
+    expect(isValidRequestId("a1b2c3d4-e5f6-5789-abcd-ef1234567890")).toBe(
+      false,
+    );
   });
 
   it("should return false for invalid variant bits", () => {
     // Variant 0 (starts with 0-7)
-    expect(isValidRequestId("a1b2c3d4-e5f6-4789-0bcd-ef1234567890")).toBe(false);
-    
+    expect(isValidRequestId("a1b2c3d4-e5f6-4789-0bcd-ef1234567890")).toBe(
+      false,
+    );
+
     // Variant 2 (starts with c-f)
-    expect(isValidRequestId("a1b2c3d4-e5f6-4789-cbcd-ef1234567890")).toBe(false);
+    expect(isValidRequestId("a1b2c3d4-e5f6-4789-cbcd-ef1234567890")).toBe(
+      false,
+    );
   });
 
   it("should be case-insensitive", () => {
@@ -169,7 +182,7 @@ describe("createRequestContext", () => {
   it("should create context object with valid request ID", () => {
     const testId = "a1b2c3d4-e5f6-4789-abcd-ef1234567890";
     const context = createRequestContext(testId);
-    
+
     expect(context).toEqual({ requestId: testId });
   });
 
@@ -182,7 +195,9 @@ describe("createRequestContext", () => {
   });
 
   it("should throw error for missing request ID", () => {
-    expect(() => createRequestContext(undefined as unknown as string)).toThrow();
+    expect(() =>
+      createRequestContext(undefined as unknown as string),
+    ).toThrow();
   });
 });
 

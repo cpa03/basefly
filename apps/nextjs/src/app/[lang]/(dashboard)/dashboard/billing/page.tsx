@@ -49,7 +49,9 @@ function SubscriptionContent({ subscription }: { subscription: Subscription }) {
   if (subscription.plan && subscription.endsAt) {
     return (
       <p>
-        You are currently on the <strong>{subscription.plan}</strong> plan.Your subscription will renew on <strong>{subscription.endsAt.toLocaleDateString()}</strong>.
+        You are currently on the <strong>{subscription.plan}</strong> plan.Your
+        subscription will renew on{" "}
+        <strong>{subscription.endsAt.toLocaleDateString()}</strong>.
       </p>
     );
   }

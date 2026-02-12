@@ -2,15 +2,16 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { describe, it, expect, vi, beforeEach } from "vitest";
 import type Stripe from "stripe";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import {
   createBillingSession,
   createCheckoutSession,
   retrieveSubscription,
 } from "./client";
-import { safeStripeCall } from "./integration";
 import { stripe } from "./index";
+import { safeStripeCall } from "./integration";
 
 vi.mock("./integration", () => ({
   safeStripeCall: vi.fn(),
@@ -44,18 +45,18 @@ describe("createBillingSession", () => {
     const mockSession = { url: "https://billing.stripe.com/session/123" };
     vi.mocked(safeStripeCall).mockResolvedValue(mockSession);
 
-    const result = await createBillingSession("cus_123", "https://example.com/dashboard");
+    const result = await createBillingSession(
+      "cus_123",
+      "https://example.com/dashboard",
+    );
 
     expect(result).toEqual(mockSession);
-    expect(safeStripeCall).toHaveBeenCalledWith(
-      expect.any(Function),
-      {
-        serviceName: "Stripe Billing Portal",
-        circuitBreaker: expect.any(Object),
-        maxAttempts: 3,
-        timeoutMs: 30000,
-      }
-    );
+    expect(safeStripeCall).toHaveBeenCalledWith(expect.any(Function), {
+      serviceName: "Stripe Billing Portal",
+      circuitBreaker: expect.any(Object),
+      maxAttempts: 3,
+      timeoutMs: 30000,
+    });
   });
 
   it("passes customer ID and return URL to Stripe API", async () => {
@@ -83,7 +84,9 @@ describe("createBillingSession", () => {
     const error = new Error("Stripe API error");
     vi.mocked(safeStripeCall).mockRejectedValue(error);
 
-    await expect(createBillingSession("cus_123", "https://example.com")).rejects.toThrow(error);
+    await expect(
+      createBillingSession("cus_123", "https://example.com"),
+    ).rejects.toThrow(error);
   });
 
   it("uses circuit breaker for resilience", async () => {
@@ -120,7 +123,10 @@ describe("createCheckoutSession", () => {
   });
 
   it("creates checkout session with provided parameters", async () => {
-    const mockSession = { url: "https://checkout.stripe.com/session/456", id: "cs_123" };
+    const mockSession = {
+      url: "https://checkout.stripe.com/session/456",
+      id: "cs_123",
+    };
     vi.mocked(safeStripeCall).mockResolvedValue(mockSession);
 
     const params = {
@@ -134,18 +140,18 @@ describe("createCheckoutSession", () => {
       line_items: [{ price: "price_123", quantity: 1 }],
     } as Stripe.Checkout.SessionCreateParams;
 
-    const result = await createCheckoutSession(params, "checkout_user_123_price_123");
+    const result = await createCheckoutSession(
+      params,
+      "checkout_user_123_price_123",
+    );
 
     expect(result).toEqual(mockSession);
-    expect(safeStripeCall).toHaveBeenCalledWith(
-      expect.any(Function),
-      {
-        serviceName: "Stripe Checkout",
-        circuitBreaker: expect.any(Object),
-        maxAttempts: 3,
-        timeoutMs: 30000,
-      }
-    );
+    expect(safeStripeCall).toHaveBeenCalledWith(expect.any(Function), {
+      serviceName: "Stripe Checkout",
+      circuitBreaker: expect.any(Object),
+      maxAttempts: 3,
+      timeoutMs: 30000,
+    });
   });
 
   it("generates idempotency key if not provided", async () => {
@@ -157,12 +163,16 @@ describe("createCheckoutSession", () => {
       return Promise.resolve(mockSession);
     });
 
-    await createCheckoutSession({ mode: "subscription" as const, line_items: [] });
+    await createCheckoutSession({
+      mode: "subscription" as const,
+      line_items: [],
+    });
 
     if (capturedFn) {
       await capturedFn();
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      const stripeCall = (vi.mocked(stripe.checkout.sessions.create).mock.calls[0] as any)?.[1];
+      const stripeCall =
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        (vi.mocked(stripe.checkout.sessions.create).mock.calls[0] as any)?.[1];
       expect(stripeCall?.idempotencyKey).toBeDefined();
       expect(stripeCall?.idempotencyKey).toMatch(/^checkout_session_\d+_/);
     }
@@ -179,13 +189,14 @@ describe("createCheckoutSession", () => {
 
     await createCheckoutSession(
       { mode: "subscription" as const, line_items: [] },
-      "custom_key_123"
+      "custom_key_123",
     );
 
     if (capturedFn) {
       await capturedFn();
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      const stripeCall = (vi.mocked(stripe.checkout.sessions.create).mock.calls[0] as any)?.[1];
+      const stripeCall =
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        (vi.mocked(stripe.checkout.sessions.create).mock.calls[0] as any)?.[1];
       expect(stripeCall?.idempotencyKey).toBe("custom_key_123");
     }
   });
@@ -199,14 +210,18 @@ describe("createCheckoutSession", () => {
       return Promise.resolve(mockSession);
     });
 
-    await createCheckoutSession({ mode: "subscription" as const, line_items: [] });
+    await createCheckoutSession({
+      mode: "subscription" as const,
+      line_items: [],
+    });
 
     if (capturedFn) {
       await capturedFn();
       // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(stripe.checkout.sessions.create).toHaveBeenCalled();
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      const callArgs = vi.mocked(stripe.checkout.sessions.create).mock.calls[0] as any;
+      const callArgs = vi.mocked(stripe.checkout.sessions.create).mock
+        .calls[0] as any;
       expect(callArgs?.[1]?.idempotencyKey).toBeDefined();
     }
   });
@@ -215,14 +230,18 @@ describe("createCheckoutSession", () => {
     const error = new Error("Checkout session creation failed");
     vi.mocked(safeStripeCall).mockRejectedValue(error);
 
-    await expect(createCheckoutSession({ mode: "subscription" as const, line_items: [] }))
-      .rejects.toThrow(error);
+    await expect(
+      createCheckoutSession({ mode: "subscription" as const, line_items: [] }),
+    ).rejects.toThrow(error);
   });
 
   it("uses circuit breaker for resilience", async () => {
     vi.mocked(safeStripeCall).mockResolvedValue({ url: "https://example.com" });
 
-    await createCheckoutSession({ mode: "subscription" as const, line_items: [] });
+    await createCheckoutSession({
+      mode: "subscription" as const,
+      line_items: [],
+    });
 
     const callOptions = vi.mocked(safeStripeCall).mock.calls[0]?.[1] as any;
     expect(callOptions?.circuitBreaker).toBeDefined();
@@ -231,7 +250,10 @@ describe("createCheckoutSession", () => {
   it("sets maxAttempts to 3", async () => {
     vi.mocked(safeStripeCall).mockResolvedValue({ url: "https://example.com" });
 
-    await createCheckoutSession({ mode: "subscription" as const, line_items: [] });
+    await createCheckoutSession({
+      mode: "subscription" as const,
+      line_items: [],
+    });
 
     const callOptions = vi.mocked(safeStripeCall).mock.calls[0]?.[1] as any;
     expect(callOptions?.maxAttempts).toBe(3);
@@ -240,7 +262,10 @@ describe("createCheckoutSession", () => {
   it("sets timeout to 30000ms", async () => {
     vi.mocked(safeStripeCall).mockResolvedValue({ url: "https://example.com" });
 
-    await createCheckoutSession({ mode: "subscription" as const, line_items: [] });
+    await createCheckoutSession({
+      mode: "subscription" as const,
+      line_items: [],
+    });
 
     const callOptions = vi.mocked(safeStripeCall).mock.calls[0]?.[1] as any;
     expect(callOptions?.timeoutMs).toBe(30000);
@@ -276,7 +301,7 @@ describe("createCheckoutSession", () => {
           ...params,
           metadata: {},
         },
-        { idempotencyKey: "key_123" }
+        { idempotencyKey: "key_123" },
       );
     }
   });
@@ -299,15 +324,12 @@ describe("retrieveSubscription", () => {
     const result = await retrieveSubscription("sub_123");
 
     expect(result).toEqual(mockSubscription);
-    expect(safeStripeCall).toHaveBeenCalledWith(
-      expect.any(Function),
-      {
-        serviceName: "Stripe Subscriptions",
-        circuitBreaker: expect.any(Object),
-        maxAttempts: 3,
-        timeoutMs: 30000,
-      }
-    );
+    expect(safeStripeCall).toHaveBeenCalledWith(expect.any(Function), {
+      serviceName: "Stripe Subscriptions",
+      circuitBreaker: expect.any(Object),
+      maxAttempts: 3,
+      timeoutMs: 30000,
+    });
   });
 
   it("passes subscription ID to Stripe API", async () => {

@@ -1,12 +1,12 @@
 import type { NextRequest } from "next/server";
-import {initTRPC, TRPCError} from "@trpc/server";
-import {auth, currentUser, getAuth} from "@clerk/nextjs/server";
+import { auth, currentUser, getAuth } from "@clerk/nextjs/server";
+import { initTRPC, TRPCError } from "@trpc/server";
 import { ZodError } from "zod";
 
-import { transformer } from "./transformer";
-import { getLimiter, getIdentifier, EndpointType } from "./rate-limiter";
 import { createApiError, ErrorCode } from "./errors";
+import { EndpointType, getIdentifier, getLimiter } from "./rate-limiter";
 import { getOrGenerateRequestId } from "./request-id";
+import { transformer } from "./transformer";
 
 export type { EndpointType } from "./rate-limiter";
 
@@ -58,15 +58,12 @@ const isAuthed = t.middleware(({ next, ctx }) => {
   return next({ ctx: { userId: ctx.userId } });
 });
 
-
 export const protectedProcedure = procedure.use(isAuthed);
 
-export const rateLimit = (
-  endpointType: EndpointType,
-) =>
+export const rateLimit = (endpointType: EndpointType) =>
   t.middleware(async ({ ctx, next }) => {
     const limiter = getLimiter(endpointType);
-    const req = "req" in ctx ? ctx.req as NextRequest | undefined : undefined;
+    const req = "req" in ctx ? (ctx.req as NextRequest | undefined) : undefined;
     const identifier = getIdentifier(ctx.userId, req);
 
     const result = limiter.check(identifier);
@@ -89,5 +86,6 @@ export const rateLimit = (
 export const createRateLimitedProcedure = (endpointType: EndpointType) =>
   procedure.use(rateLimit(endpointType));
 
-export const createRateLimitedProtectedProcedure = (endpointType: EndpointType) =>
-  protectedProcedure.use(rateLimit(endpointType));
+export const createRateLimitedProtectedProcedure = (
+  endpointType: EndpointType,
+) => protectedProcedure.use(rateLimit(endpointType));

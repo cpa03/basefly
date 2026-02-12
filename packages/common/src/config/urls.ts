@@ -1,9 +1,9 @@
 /**
  * External URLs Configuration
- * 
+ *
  * This module provides a single source of truth for all external URLs,
  * eliminating hardcoded links scattered across the codebase.
- * 
+ *
  * @module @saasfly/common/config/urls
  */
 
@@ -39,7 +39,8 @@ export const EXTERNAL_URLS = {
   },
   /** Vercel deployment */
   vercel: {
-    deploy: "https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsaasfly%2Fsaasfly&env=NEXT_PUBLIC_APP_URL,CLERK_SECRET_KEY,CLERK_PUBLISHABLE_KEY,NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL,NEXT_PUBLIC_CLERK_AFTER_SIGN_OUT_URL,STRIPE_API_KEY,STRIPE_WEBHOOK_SECRET,POSTGRES_URL,RESEND_API_KEY,RESEND_FROM,ADMIN_EMAIL&install-command=bun%20install&build-command=bun%20run%20build&root-directory=apps%2Fnextjs",
+    deploy:
+      "https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsaasfly%2Fsaasfly&env=NEXT_PUBLIC_APP_URL,CLERK_SECRET_KEY,CLERK_PUBLISHABLE_KEY,NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL,NEXT_PUBLIC_CLERK_AFTER_SIGN_OUT_URL,STRIPE_API_KEY,STRIPE_WEBHOOK_SECRET,POSTGRES_URL,RESEND_API_KEY,RESEND_FROM,ADMIN_EMAIL&install-command=bun%20install&build-command=bun%20run%20build&root-directory=apps%2Fnextjs",
   },
   /** One-click deployment service */
   oneclick: {
@@ -75,13 +76,16 @@ export const EXTERNAL_URLS = {
   },
   /** Content CDN */
   cdn: {
-    sanity: "https://cdn.sanity.io/images/tpb4obti/production/50c13f886c039225be4e7e99023b8f1e2b4161b9-1792x1024.png",
-    twitterProfile: "https://pbs.twimg.com/profile_images/1766283284370305025/QKXW5W3M_400x400.jpg",
+    sanity:
+      "https://cdn.sanity.io/images/tpb4obti/production/50c13f886c039225be4e7e99023b8f1e2b4161b9-1792x1024.png",
+    twitterProfile:
+      "https://pbs.twimg.com/profile_images/1766283284370305025/QKXW5W3M_400x400.jpg",
     ruguoapp: "https://cdnv2.ruguoapp.com/FoAVSRtT2zVc96oDjAWrd5TvXXQ4v3.png",
   },
   /** Aceternity UI assets */
   aceternity: {
-    linearImage: "https://ui.aceternity.com/_next/image?url=%2Flinear.webp&w=1080&q=75",
+    linearImage:
+      "https://ui.aceternity.com/_next/image?url=%2Flinear.webp&w=1080&q=75",
   },
   /** X/Twitter broadcast */
   xBroadcast: {
@@ -193,7 +197,7 @@ export type RouteSection = keyof typeof ROUTES;
  * Helper function for type-safe URL access
  */
 export function getExternalUrl<K extends keyof typeof EXTERNAL_URLS>(
-  key: K
+  key: K,
 ): (typeof EXTERNAL_URLS)[K] {
   return EXTERNAL_URLS[key];
 }

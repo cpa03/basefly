@@ -19,9 +19,9 @@ export function UserClerkAuthForm({
   lang,
   ...props
 }: UserAuthFormProps) {
-  const { user } = useUser()
+  const { user } = useUser();
   if (user) {
-    redirect(`/${lang}/dashboard`)
+    redirect(`/${lang}/dashboard`);
   }
 
   return (

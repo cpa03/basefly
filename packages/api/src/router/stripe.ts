@@ -3,20 +3,20 @@ import { z } from "zod";
 
 import { Customer, db } from "@saasfly/db";
 import {
-  IntegrationError,
   createBillingSession,
   createCheckoutSession,
+  IntegrationError,
   retrieveSubscription,
 } from "@saasfly/stripe";
 
 import { pricingData } from "../../../common/src/subscriptions";
 import { env } from "../env.mjs";
+import { handleIntegrationError } from "../errors";
 import {
-  createTRPCRouter,
   createRateLimitedProtectedProcedure,
+  createTRPCRouter,
   EndpointType,
 } from "../trpc";
-import { handleIntegrationError } from "../errors";
 
 export interface SubscriptionPlan {
   title: string;
@@ -103,65 +103,67 @@ export const stripeRouter = createTRPCRouter({
       }
     }),
 
-  userPlans: createRateLimitedProtectedProcedure("read")
-    .query(async (opts) => {
-      noStore();
-      const userId = opts.ctx.userId! as string;
-      const requestId = opts.ctx.requestId;
-      const custom = await db
-        .selectFrom("Customer")
-        .select([
-          "stripeSubscriptionId",
-          "stripeCurrentPeriodEnd",
-          "stripeCustomerId",
-          "stripePriceId",
-        ])
-        .where("authUserId", "=", userId)
-        .executeTakeFirst();
-      if (!custom) {
-        return;
-      }
-      // Check if user is on a paid plan.
-      const isPaid =
-        custom.stripePriceId &&
-        custom.stripeCurrentPeriodEnd &&
-        custom.stripeCurrentPeriodEnd.getTime() + 86_400_000 > Date.now();
-      // Find the pricing data corresponding to the custom's plan
-      const customPlan =
-        pricingData.find(
-          (plan) => plan.stripeIds.monthly === custom.stripePriceId,
-        ) ??
-        pricingData.find(
-          (plan) => plan.stripeIds.yearly === custom.stripePriceId,
+  userPlans: createRateLimitedProtectedProcedure("read").query(async (opts) => {
+    noStore();
+    const userId = opts.ctx.userId! as string;
+    const requestId = opts.ctx.requestId;
+    const custom = await db
+      .selectFrom("Customer")
+      .select([
+        "stripeSubscriptionId",
+        "stripeCurrentPeriodEnd",
+        "stripeCustomerId",
+        "stripePriceId",
+      ])
+      .where("authUserId", "=", userId)
+      .executeTakeFirst();
+    if (!custom) {
+      return;
+    }
+    // Check if user is on a paid plan.
+    const isPaid =
+      custom.stripePriceId &&
+      custom.stripeCurrentPeriodEnd &&
+      custom.stripeCurrentPeriodEnd.getTime() + 86_400_000 > Date.now();
+    // Find the pricing data corresponding to the custom's plan
+    const customPlan =
+      pricingData.find(
+        (plan) => plan.stripeIds.monthly === custom.stripePriceId,
+      ) ??
+      pricingData.find(
+        (plan) => plan.stripeIds.yearly === custom.stripePriceId,
+      );
+    const plan = isPaid && customPlan ? customPlan : pricingData[0];
+
+    const interval = isPaid
+      ? customPlan?.stripeIds.monthly === custom.stripePriceId
+        ? "month"
+        : customPlan?.stripeIds.yearly === custom.stripePriceId
+          ? "year"
+          : null
+      : null;
+    let isCanceled = false;
+    try {
+      if (isPaid && custom.stripeSubscriptionId) {
+        const stripePlan = await retrieveSubscription(
+          custom.stripeSubscriptionId,
+          { requestId },
         );
-      const plan = isPaid && customPlan ? customPlan : pricingData[0];
-
-      const interval = isPaid
-        ? customPlan?.stripeIds.monthly === custom.stripePriceId
-          ? "month"
-          : customPlan?.stripeIds.yearly === custom.stripePriceId
-            ? "year"
-            : null
-        : null;
-      let isCanceled = false;
-      try {
-        if (isPaid && custom.stripeSubscriptionId) {
-          const stripePlan = await retrieveSubscription(custom.stripeSubscriptionId, { requestId });
-          isCanceled = stripePlan.cancel_at_period_end;
-        }
-      } catch (error) {
-        if (error instanceof IntegrationError) {
-          throw handleIntegrationError(error);
-        }
+        isCanceled = stripePlan.cancel_at_period_end;
       }
+    } catch (error) {
+      if (error instanceof IntegrationError) {
+        throw handleIntegrationError(error);
+      }
+    }
 
-      return {
-        ...plan,
-        ...custom,
-        stripeCurrentPeriodEnd: custom.stripeCurrentPeriodEnd?.getTime() ?? 0,
-        isPaid,
-        interval,
-        isCanceled,
-      };
-    }),
+    return {
+      ...plan,
+      ...custom,
+      stripeCurrentPeriodEnd: custom.stripeCurrentPeriodEnd?.getTime() ?? 0,
+      isPaid,
+      interval,
+      isCanceled,
+    };
+  }),
 });

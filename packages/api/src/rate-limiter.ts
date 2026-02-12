@@ -57,12 +57,12 @@ interface RateLimitResult {
 
 /**
  * Token Bucket Rate Limiter
- * 
+ *
  * Uses the token bucket algorithm where:
  * - Each request consumes 1 token
  * - Tokens refill at end of window
  * - Requests rejected when bucket is empty
- * 
+ *
  * Advantages:
  * - Burst-friendly (allows short bursts within limit)
  * - Smooth rate limiting behavior
@@ -76,7 +76,7 @@ export class RateLimiter {
 
   /**
    * Create a new rate limiter
-   * 
+   *
    * @param config - Rate limit configuration
    */
   constructor(config: RateLimitConfig) {
@@ -88,10 +88,10 @@ export class RateLimiter {
 
   /**
    * Check if a request should be allowed
-   * 
+   *
    * Updates the token bucket for the identifier and returns
    * whether the request is allowed along with rate limit info.
-   * 
+   *
    * @param identifier - Unique identifier (user ID or IP address)
    * @returns Rate limit result with success status and metadata
    */
@@ -140,9 +140,9 @@ export class RateLimiter {
 
   /**
    * Reset rate limit for a specific identifier
-   * 
+   *
    * Useful for manual resets or when user logs out.
-   * 
+   *
    * @param identifier - Unique identifier to reset
    */
   reset(identifier: string): void {
@@ -151,7 +151,7 @@ export class RateLimiter {
 
   /**
    * Start automatic cleanup of expired entries
-   * 
+   *
    * Removes entries older than 2x window duration
    * to prevent memory leaks.
    */
@@ -172,7 +172,7 @@ export class RateLimiter {
 
   /**
    * Clean up rate limiter resources
-   * 
+   *
    * Stops cleanup interval and clears all stored entries.
    */
   destroy(): void {
@@ -191,7 +191,7 @@ export type EndpointType = "read" | "write" | "stripe";
 
 /**
  * Pre-configured rate limit settings for different endpoint types
- * 
+ *
  * Read operations: Higher limit (less impact)
  * Write operations: Lower limit (more impact)
  * Stripe operations: Lowest limit (external API calls)
@@ -213,7 +213,7 @@ export const rateLimitConfigs: Record<EndpointType, RateLimitConfig> = {
 
 /**
  * Pre-configured rate limiters for each endpoint type
- * 
+ *
  * Shared across all API endpoints for consistent rate limiting.
  * Can be extended to use Redis for distributed systems.
  */
@@ -225,7 +225,7 @@ const limiters: Record<EndpointType, RateLimiter> = {
 
 /**
  * Get the rate limiter for a specific endpoint type
- * 
+ *
  * @param type - Endpoint type (read, write, or stripe)
  * @returns Configured rate limiter instance
  */
@@ -235,21 +235,25 @@ export function getLimiter(type: EndpointType): RateLimiter {
 
 /**
  * Generate a rate limit identifier for a request
- * 
+ *
  * Uses user ID for authenticated requests, IP address for unauthenticated.
- * 
+ *
  * @param userId - User ID if authenticated
  * @param req - Next.js request object (optional)
  * @returns Unique identifier string
  */
-export function getIdentifier(userId: string | null, req?: NextRequest): string {
+export function getIdentifier(
+  userId: string | null,
+  req?: NextRequest,
+): string {
   if (userId) {
     return `user:${userId}`;
   }
 
   if (req) {
     const forwarded = req.headers.get("x-forwarded-for");
-    const ip = forwarded?.split(",")[0] || req.headers.get("x-real-ip") || "unknown";
+    const ip =
+      forwarded?.split(",")[0] || req.headers.get("x-real-ip") || "unknown";
     return `ip:${ip}`;
   }
 

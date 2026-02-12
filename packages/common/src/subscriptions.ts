@@ -1,9 +1,9 @@
-import { env } from "./env.mjs";
 import {
+  getStripePriceIds,
   PRICING_TIERS,
   RESOURCE_LIMITS,
-  getStripePriceIds,
 } from "./config/pricing";
+import { env } from "./env.mjs";
 
 export interface SubscriptionPlan {
   title: string;

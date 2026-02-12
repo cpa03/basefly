@@ -1,4 +1,10 @@
-import { BRAND, EXTERNAL_URLS, GITHUB_REPO, CLI_COMMANDS, CONTACT } from "@saasfly/common";
+import {
+  BRAND,
+  CLI_COMMANDS,
+  CONTACT,
+  EXTERNAL_URLS,
+  GITHUB_REPO,
+} from "@saasfly/common";
 
 export const siteConfig = {
   name: BRAND.name,

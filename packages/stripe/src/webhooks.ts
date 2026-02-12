@@ -1,21 +1,19 @@
 import type Stripe from "stripe";
 
 import { db, SubscriptionPlan } from "@saasfly/db";
-import { executeIdempotentWebhook } from "./webhook-idempotency";
 
-import { IntegrationError } from "./integration";
 import { retrieveSubscription } from "./client";
-import { getSubscriptionPlan } from "./plans";
+import { IntegrationError } from "./integration";
 import { logger } from "./logger";
+import { getSubscriptionPlan } from "./plans";
+import { executeIdempotentWebhook } from "./webhook-idempotency";
 
 export async function handleEvent(event: Stripe.Event) {
   const eventId = event.id;
   const eventType = event.type;
 
-  await executeIdempotentWebhook(
-    eventId,
-    eventType,
-    async () => processEventInternal(event),
+  await executeIdempotentWebhook(eventId, eventType, async () =>
+    processEventInternal(event),
   );
 }
 
@@ -56,14 +54,19 @@ async function processEventInternal(event: Stripe.Event) {
 async function handleCheckoutSessionCompleted(
   session: Stripe.Checkout.Session,
 ) {
-  const subscription = await retrieveSubscription(session.subscription as string);
+  const subscription = await retrieveSubscription(
+    session.subscription as string,
+  );
   const customerId =
     typeof subscription.customer === "string"
       ? subscription.customer
       : subscription.customer.id;
   const { userId } = subscription.metadata;
   if (!userId) {
-    throw new IntegrationError("Missing user id in metadata", "MISSING_USER_ID");
+    throw new IntegrationError(
+      "Missing user id in metadata",
+      "MISSING_USER_ID",
+    );
   }
 
   const customer = await db
@@ -85,17 +88,20 @@ async function handleCheckoutSessionCompleted(
   }
 }
 
-async function handleInvoicePaymentSucceeded(
-  session: Stripe.Checkout.Session,
-) {
-  const subscription = await retrieveSubscription(session.subscription as string);
+async function handleInvoicePaymentSucceeded(session: Stripe.Checkout.Session) {
+  const subscription = await retrieveSubscription(
+    session.subscription as string,
+  );
   const customerId =
     typeof subscription.customer === "string"
       ? subscription.customer
       : subscription.customer.id;
   const { userId } = subscription.metadata;
   if (!userId) {
-    throw new IntegrationError("Missing user id in metadata", "MISSING_USER_ID");
+    throw new IntegrationError(
+      "Missing user id in metadata",
+      "MISSING_USER_ID",
+    );
   }
 
   const customer = await db

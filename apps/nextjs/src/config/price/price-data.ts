@@ -1,10 +1,11 @@
-import { env } from "~/env.mjs";
 import {
-  LEGACY_PRICING_TIERS,
   CLUSTER_LIMITS,
   getLegacyPriceDisplayString,
+  LEGACY_PRICING_TIERS,
   type PlanTier,
 } from "@saasfly/common";
+
+import { env } from "~/env.mjs";
 
 /**
  * Get the tier based on price amount
@@ -17,24 +18,24 @@ function getTierFromAmount(amount: number): PlanTier {
       return tier as PlanTier;
     }
   }
-  
+
   // Fallback logic: 0 = STARTER, otherwise determine by price range
   if (amount === 0) return "STARTER";
-  
+
   // Get sorted prices to determine tiers
   const tiers = Object.entries(LEGACY_PRICING_TIERS)
     .filter(([_, prices]) => prices.monthly > 0)
     .sort((a, b) => a[1].monthly - b[1].monthly);
-  
+
   // Find appropriate tier based on price
   for (const [tier, prices] of tiers) {
     if (amount <= prices.monthly) {
       return tier as PlanTier;
     }
   }
-  
+
   // Default to highest tier if price exceeds all
-  return tiers[tiers.length - 1]?.[0] as PlanTier ?? "BUSINESS";
+  return (tiers[tiers.length - 1]?.[0] as PlanTier) ?? "BUSINESS";
 }
 
 export interface SubscriptionPlanTranslation {
@@ -56,7 +57,10 @@ export interface SubscriptionPlanTranslation {
 /**
  * Helper function to generate cluster limit text for benefits
  */
-function getClusterLimitText(limit: number, locale: "en" | "zh" | "ja" | "ko"): string {
+function getClusterLimitText(
+  limit: number,
+  locale: "en" | "zh" | "ja" | "ko",
+): string {
   const texts: Record<typeof locale, string> = {
     en: `Up to ${limit} cluster${limit > 1 ? "s" : ""} per month`,
     zh: `每月最多${limit}个集群`,
@@ -77,17 +81,17 @@ const createPlanConfig = (
     benefits: string[];
     limitations: string[];
   },
-  locale: "en" | "zh" | "ja" | "ko"
+  locale: "en" | "zh" | "ja" | "ko",
 ): SubscriptionPlanTranslation => {
   const prices = LEGACY_PRICING_TIERS[tier];
   const clusterLimit = CLUSTER_LIMITS[tier];
-  
+
   // Update first benefit with cluster limit
   const benefits = [...translations.benefits];
   if (tier !== "BUSINESS") {
     benefits[0] = getClusterLimitText(clusterLimit, locale);
   }
-  
+
   return {
     id: tier.toLowerCase(),
     title: translations.title,
@@ -99,12 +103,14 @@ const createPlanConfig = (
       yearly: prices.yearly,
     },
     stripeIds: {
-      monthly: tier === "STARTER" 
-        ? null 
-        : env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID ?? null,
-      yearly: tier === "STARTER" 
-        ? null 
-        : env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID ?? null,
+      monthly:
+        tier === "STARTER"
+          ? null
+          : (env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID ?? null),
+      yearly:
+        tier === "STARTER"
+          ? null
+          : (env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID ?? null),
     },
   };
 };
@@ -117,11 +123,7 @@ const translations = {
     starter: {
       title: "入门版",
       description: "适合初学者",
-      benefits: [
-        "每月最多1个集群",
-        "基础分析和报告",
-        "访问基础功能",
-      ],
+      benefits: ["每月最多1个集群", "基础分析和报告", "访问基础功能"],
       limitations: [
         "无法优先获取新功能",
         "有限的客户支持",

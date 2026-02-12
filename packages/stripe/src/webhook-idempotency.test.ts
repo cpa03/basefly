@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument, @typescript-eslint/unbound-method, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { executeIdempotentWebhook, registerWebhookEvent, markEventAsProcessed, hasEventBeenProcessed } from "./webhook-idempotency";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import { db } from "@saasfly/db";
+
+import {
+  executeIdempotentWebhook,
+  hasEventBeenProcessed,
+  markEventAsProcessed,
+  registerWebhookEvent,
+} from "./webhook-idempotency";
 
 vi.mock("@saasfly/db", () => ({
   db: {
@@ -28,7 +35,10 @@ describe("Webhook Idempotency", () => {
         } as any),
       } as any);
 
-      const result = await registerWebhookEvent("evt_test123", "checkout.session.completed");
+      const result = await registerWebhookEvent(
+        "evt_test123",
+        "checkout.session.completed",
+      );
 
       expect(result).toBe(true);
       expect(db.insertInto).toHaveBeenCalledWith("StripeWebhookEvent");
@@ -46,13 +56,18 @@ describe("Webhook Idempotency", () => {
         } as any),
       } as any);
 
-      const result = await registerWebhookEvent("evt_test123", "checkout.session.completed");
+      const result = await registerWebhookEvent(
+        "evt_test123",
+        "checkout.session.completed",
+      );
 
       expect(result).toBe(false);
     });
 
     it("should throw for non-duplicate errors", async () => {
-      const mockInsert = vi.fn().mockRejectedValue(new Error("Database connection failed"));
+      const mockInsert = vi
+        .fn()
+        .mockRejectedValue(new Error("Database connection failed"));
       vi.mocked(db.insertInto).mockReturnValue({
         values: vi.fn().mockReturnValue({
           execute: mockInsert,

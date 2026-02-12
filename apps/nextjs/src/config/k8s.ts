@@ -1,9 +1,9 @@
 /**
  * Kubernetes Configuration
- * 
+ *
  * This module re-exports cluster configuration from @saasfly/common
  * to maintain backward compatibility while using centralized config.
- * 
+ *
  * @deprecated Import directly from @saasfly/common instead
  */
 

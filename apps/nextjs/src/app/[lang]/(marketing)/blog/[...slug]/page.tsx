@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import {
-  allAuthors as rawAuthors,
   allPosts as rawAllPosts,
+  allAuthors as rawAuthors,
 } from "contentlayer/generated";
 
 import { BackToTop } from "~/components/back-to-top";
@@ -20,7 +20,7 @@ import { ChevronLeft } from "@saasfly/ui/icons";
 
 import { env } from "~/env.mjs";
 import { absoluteUrl, formatDate } from "~/lib/utils";
-import type { Post, Author } from "~/types";
+import type { Author, Post } from "~/types";
 
 const allPosts = rawAllPosts as Post[];
 const allAuthors = rawAuthors as Author[];
@@ -31,7 +31,9 @@ interface PostPageProps {
   };
 }
 
-function getPostFromParams(params: { slug?: string | string[] }): Post | undefined {
+function getPostFromParams(params: {
+  slug?: string | string[];
+}): Post | undefined {
   const slug = Array.isArray(params.slug) ? params.slug.join("/") : params.slug;
   const post = allPosts.find((post) => post.slugAsParams === slug);
   return post;
@@ -105,7 +107,7 @@ export default function PostPage({ params }: PostPageProps) {
           "absolute left-[-200px] top-14 hidden xl:inline-flex",
         )}
       >
-          <ChevronLeft className="mr-2 h-4 w-4" />
+        <ChevronLeft className="mr-2 h-4 w-4" />
         See all posts
       </Link>
       <div>
@@ -162,7 +164,7 @@ export default function PostPage({ params }: PostPageProps) {
       <hr className="mt-12" />
       <div className="flex justify-center py-6 lg:py-10">
         <Link href="/blog" className={cn(buttonVariants({ variant: "ghost" }))}>
-        <ChevronLeft className="mr-2 h-4 w-4" />
+          <ChevronLeft className="mr-2 h-4 w-4" />
           See all posts
         </Link>
       </div>

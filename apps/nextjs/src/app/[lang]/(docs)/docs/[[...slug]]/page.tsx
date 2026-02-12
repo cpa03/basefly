@@ -5,10 +5,8 @@ import { DashboardTableOfContents } from "~/components/content/toc";
 import { DocsPageHeader } from "~/components/docs/page-header";
 import { DocsPager } from "~/components/docs/pager";
 import { getTableOfContents } from "~/lib/toc";
-import { allDocs as rawDocs } from ".contentlayer/generated";
 import type { Doc } from "~/types";
-
-const allDocs = rawDocs as Doc[];
+import { allDocs as rawDocs } from ".contentlayer/generated";
 
 import "~/styles/mdx.css";
 
@@ -16,6 +14,8 @@ import type { Metadata } from "next";
 
 import { env } from "~/env.mjs";
 import { absoluteUrl } from "~/lib/utils";
+
+const allDocs = rawDocs as Doc[];
 
 interface DocPageProps {
   params: {

@@ -1,14 +1,17 @@
 import Link from "next/link";
 
-import { TableCell, TableRow } from "@saasfly/ui/table";
 import { StatusBadge } from "@saasfly/ui/status-badge";
+import { TableCell, TableRow } from "@saasfly/ui/table";
 
 import { ClusterOperations } from "~/components/k8s/cluster-operation";
 import { formatDate } from "~/lib/utils";
 import type { Cluster } from "~/types/k8s";
 
 interface ClusterItemProps {
-  cluster: Pick<Cluster, "id" | "name" | "location" | "plan" | "status" | "updatedAt">;
+  cluster: Pick<
+    Cluster,
+    "id" | "name" | "location" | "plan" | "status" | "updatedAt"
+  >;
   lang: string;
   dict?: Record<string, unknown>;
 }
@@ -33,7 +36,7 @@ export function ClusterItem({ cluster, lang, dict }: ClusterItemProps) {
         {cluster.status ? (
           <StatusBadge status={cluster.status} size="sm" />
         ) : (
-          <span className="text-muted-foreground text-sm">-</span>
+          <span className="text-sm text-muted-foreground">-</span>
         )}
       </TableCell>
       <TableCell className="text-right">

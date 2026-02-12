@@ -28,7 +28,8 @@ export const VISUAL_EFFECTS = {
   shadows: {
     buttonHover: "0 10px 40px -10px rgba(59, 130, 246, 0.5)",
     card: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-    elevated: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+    elevated:
+      "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
   },
 } as const;
 
@@ -126,5 +127,3 @@ export const SEMANTIC_COLORS: SemanticColors = {
     ring: "focus:ring-red-600",
   },
 };
-
-

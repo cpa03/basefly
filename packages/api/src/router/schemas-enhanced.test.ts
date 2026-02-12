@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { z } from "zod";
 
 import {
+  enhancedInsertCustomerSchema,
   enhancedK8sClusterCreateSchema,
   enhancedK8sClusterDeleteSchema,
   enhancedK8sClusterUpdateSchema,
+  enhancedQueryCustomerSchema,
   enhancedStripeCreateSessionSchema,
   enhancedUpdateUserNameSchema,
-  enhancedInsertCustomerSchema,
-  enhancedQueryCustomerSchema,
 } from "./schemas";
 
 describe("Enhanced API Schemas Validation", () => {
@@ -64,9 +64,11 @@ describe("Enhanced API Schemas Validation", () => {
       const result = enhancedK8sClusterCreateSchema.safeParse(invalidData);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues.some((i) => i.message.includes("cannot be empty"))).toBe(
-          true,
-        );
+        expect(
+          result.error.issues.some((i) =>
+            i.message.includes("cannot be empty"),
+          ),
+        ).toBe(true);
       }
     });
 
@@ -87,9 +89,9 @@ describe("Enhanced API Schemas Validation", () => {
       const result = enhancedK8sClusterCreateSchema.safeParse(invalidData);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues.some((i) => i.message.includes("exceed 100"))).toBe(
-          true,
-        );
+        expect(
+          result.error.issues.some((i) => i.message.includes("exceed 100")),
+        ).toBe(true);
       }
     });
 
@@ -101,9 +103,9 @@ describe("Enhanced API Schemas Validation", () => {
       const result = enhancedK8sClusterCreateSchema.safeParse(invalidData);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues.some((i) => i.message.includes("only contain"))).toBe(
-          true,
-        );
+        expect(
+          result.error.issues.some((i) => i.message.includes("only contain")),
+        ).toBe(true);
       }
     });
 
@@ -115,9 +117,9 @@ describe("Enhanced API Schemas Validation", () => {
       const result = enhancedK8sClusterCreateSchema.safeParse(invalidData);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues.some((i) => i.message.includes("only contain"))).toBe(
-          true,
-        );
+        expect(
+          result.error.issues.some((i) => i.message.includes("only contain")),
+        ).toBe(true);
       }
     });
 
@@ -138,9 +140,9 @@ describe("Enhanced API Schemas Validation", () => {
       const result = enhancedK8sClusterCreateSchema.safeParse(invalidData);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues.some((i) => i.message.includes("exceed 50"))).toBe(
-          true,
-        );
+        expect(
+          result.error.issues.some((i) => i.message.includes("exceed 50")),
+        ).toBe(true);
       }
     });
 
@@ -335,7 +337,9 @@ describe("Enhanced API Schemas Validation", () => {
     });
 
     it("accepts Stripe price ID with UUID suffix", () => {
-      const validData = { planId: "price_550e8400-e29b-41d4-a716-446655440000" };
+      const validData = {
+        planId: "price_550e8400-e29b-41d4-a716-446655440000",
+      };
       const result = enhancedStripeCreateSessionSchema.safeParse(validData);
       expect(result.success).toBe(true);
     });
@@ -345,7 +349,9 @@ describe("Enhanced API Schemas Validation", () => {
       const result = enhancedStripeCreateSessionSchema.safeParse(invalidData);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0]?.message).toContain("start with 'price_'");
+        expect(result.error.issues[0]?.message).toContain(
+          "start with 'price_'",
+        );
       }
     });
 
@@ -443,9 +449,11 @@ describe("Enhanced API Schemas Validation", () => {
       const result = enhancedUpdateUserNameSchema.safeParse(invalidData);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues.some((i) => i.message.includes("Invalid user ID"))).toBe(
-          true,
-        );
+        expect(
+          result.error.issues.some((i) =>
+            i.message.includes("Invalid user ID"),
+          ),
+        ).toBe(true);
       }
     });
 

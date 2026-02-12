@@ -3,9 +3,9 @@ import "./src/env.mjs";
 import "@saasfly/auth/env.mjs";
 
 import { withNextDevtools } from "@next-devtools/core/plugin";
+import withBundleAnalyzer from "@next/bundle-analyzer";
 // import "@saasfly/api/env"
 import withMDX from "@next/mdx";
-import withBundleAnalyzer from "@next/bundle-analyzer";
 
 !process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
 
@@ -69,6 +69,7 @@ const config = {
   output: "standalone",
   compress: true,
   poweredByHeader: false,
+  productionBrowserSourceMaps: true,
   experimental: {
     mdxRs: true,
     optimizePackageImports: ["@saasfly/ui", "lucide-react"],
@@ -102,6 +103,28 @@ const config = {
           {
             key: "Permissions-Policy",
             value: "camera=(), microphone=(), geolocation=()",
+          },
+          {
+            key: "Cache-Control",
+            value: "public, max-age=0, must-revalidate",
+          },
+        ],
+      },
+      {
+        source: "/_next/static/(.*)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/:path*.:ext(js|css|woff2|png|jpg|jpeg|gif|ico|svg)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
           },
         ],
       },

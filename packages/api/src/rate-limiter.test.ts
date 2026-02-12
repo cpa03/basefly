@@ -1,6 +1,13 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { RateLimiter, getLimiter, getIdentifier, rateLimitConfigs, type EndpointType } from "./rate-limiter";
 import type { NextRequest } from "next/server";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+import {
+  getIdentifier,
+  getLimiter,
+  rateLimitConfigs,
+  RateLimiter,
+  type EndpointType,
+} from "./rate-limiter";
 
 describe("RateLimiter", () => {
   let limiter: RateLimiter;

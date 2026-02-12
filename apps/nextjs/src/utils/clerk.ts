@@ -1,11 +1,9 @@
-import { match as matchLocale } from "@formatjs/intl-localematcher";
+import { NextResponse, type NextRequest } from "next/server";
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import type { NextRequest } from 'next/server';
-import { NextResponse } from 'next/server';
+import { match as matchLocale } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
 
 import { i18n } from "~/config/i18n-config";
-
 
 const noNeedProcessRoute = [".*\\.png", ".*\\.jpg", ".*\\.opengraph-image.png"];
 
@@ -19,7 +17,7 @@ export const isPublicRoute = createRouteMatcher([
   new RegExp("/(\\w{2}/)?blog(.*)"),
   new RegExp("/(\\w{2}/)?pricing(.*)"),
   new RegExp("^/\\w{2}$"), // root with locale
-])
+]);
 
 export function getLocale(request: NextRequest): string | undefined {
   // Negotiator expects plain object so we need to transform headers
@@ -73,7 +71,7 @@ export const middleware = clerkMiddleware(async (auth, req: NextRequest) => {
     return null;
   }
 
-  const { userId } = await auth()
+  const { userId } = await auth();
 
   const isAuth = !!userId;
 
@@ -97,7 +95,10 @@ export const middleware = clerkMiddleware(async (auth, req: NextRequest) => {
       from += req.nextUrl.search;
     }
     return NextResponse.redirect(
-      new URL(`/${locale}/login-clerk?from=${encodeURIComponent(from)}`, req.url),
+      new URL(
+        `/${locale}/login-clerk?from=${encodeURIComponent(from)}`,
+        req.url,
+      ),
     );
   }
-})
+});

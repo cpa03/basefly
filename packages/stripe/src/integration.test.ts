@@ -1,15 +1,15 @@
- 
 /* eslint-disable @typescript-eslint/dot-notation */
- 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
 import {
   CircuitBreaker,
   CircuitBreakerOpenError,
-  withRetry,
-  withTimeout,
+  defaultRetryableErrors,
   IntegrationError,
   isRetryableError,
-  defaultRetryableErrors,
+  withRetry,
+  withTimeout,
 } from "./integration";
 
 describe("CircuitBreaker", () => {
@@ -93,7 +93,9 @@ describe("CircuitBreaker", () => {
       await expect(circuitBreaker.execute(errorFn)).rejects.toThrow();
       await expect(circuitBreaker.execute(errorFn)).rejects.toThrow();
 
-      expect(circuitBreaker["state"].nextAttemptTime).toBeGreaterThanOrEqual(startTime + 5000);
+      expect(circuitBreaker["state"].nextAttemptTime).toBeGreaterThanOrEqual(
+        startTime + 5000,
+      );
     });
 
     it("throws CircuitBreakerOpenError when circuit is open", async () => {
@@ -103,7 +105,9 @@ describe("CircuitBreaker", () => {
       await expect(circuitBreaker.execute(errorFn)).rejects.toThrow();
       await expect(circuitBreaker.execute(errorFn)).rejects.toThrow();
 
-      await expect(circuitBreaker.execute(errorFn)).rejects.toThrow(CircuitBreakerOpenError);
+      await expect(circuitBreaker.execute(errorFn)).rejects.toThrow(
+        CircuitBreakerOpenError,
+      );
       expect(errorFn).toHaveBeenCalledTimes(3);
     });
   });
@@ -137,7 +141,9 @@ describe("CircuitBreaker", () => {
 
       vi.advanceTimersByTime(4000);
 
-      await expect(circuitBreaker.execute(errorFn)).rejects.toThrow(CircuitBreakerOpenError);
+      await expect(circuitBreaker.execute(errorFn)).rejects.toThrow(
+        CircuitBreakerOpenError,
+      );
       expect(circuitBreaker["state"].isOpen).toBe(true);
     });
   });
@@ -226,23 +232,31 @@ describe("withRetry", () => {
     });
 
     it("returns result after one retry", async () => {
-      const retryFn = vi.fn()
+      const retryFn = vi
+        .fn()
         .mockRejectedValueOnce(new Error("ECONNRESET"))
         .mockResolvedValue("success");
 
-      const result = await withRetry(retryFn, { maxAttempts: 2, baseDelay: 10 });
+      const result = await withRetry(retryFn, {
+        maxAttempts: 2,
+        baseDelay: 10,
+      });
 
       expect(result).toBe("success");
       expect(retryFn).toHaveBeenCalledTimes(2);
     });
 
     it("returns result after multiple retries", async () => {
-      const retryFn = vi.fn()
+      const retryFn = vi
+        .fn()
         .mockRejectedValueOnce(new Error("ECONNRESET"))
         .mockRejectedValueOnce(new Error("ECONNRESET"))
         .mockResolvedValue("success");
 
-      const result = await withRetry(retryFn, { maxAttempts: 3, baseDelay: 10 });
+      const result = await withRetry(retryFn, {
+        maxAttempts: 3,
+        baseDelay: 10,
+      });
 
       expect(result).toBe("success");
       expect(retryFn).toHaveBeenCalledTimes(3);
@@ -251,7 +265,8 @@ describe("withRetry", () => {
 
   describe("retry logic", () => {
     it("retries on retryable errors", async () => {
-      const retryFn = vi.fn()
+      const retryFn = vi
+        .fn()
         .mockRejectedValueOnce(new Error("ECONNRESET"))
         .mockResolvedValue("success");
 
@@ -263,24 +278,31 @@ describe("withRetry", () => {
     it("does not retry on non-retryable errors", async () => {
       const errorFn = vi.fn().mockRejectedValue(new Error("Not retryable"));
 
-      await expect(withRetry(errorFn, { maxAttempts: 3 })).rejects.toThrow("Not retryable");
+      await expect(withRetry(errorFn, { maxAttempts: 3 })).rejects.toThrow(
+        "Not retryable",
+      );
       expect(errorFn).toHaveBeenCalledTimes(1);
     });
 
     it("uses exponential backoff", async () => {
-      const retryFn = vi.fn()
+      const retryFn = vi
+        .fn()
         .mockRejectedValueOnce(new Error("ECONNRESET"))
         .mockRejectedValueOnce(new Error("ECONNRESET"))
         .mockResolvedValue("success");
 
-      const result = await withRetry(retryFn, { maxAttempts: 3, baseDelay: 50 });
+      const result = await withRetry(retryFn, {
+        maxAttempts: 3,
+        baseDelay: 50,
+      });
 
       expect(result).toBe("success");
       expect(retryFn).toHaveBeenCalledTimes(3);
     });
 
     it("respects maxDelay parameter", async () => {
-      const retryFn = vi.fn()
+      const retryFn = vi
+        .fn()
         .mockRejectedValueOnce(new Error("ECONNRESET"))
         .mockRejectedValueOnce(new Error("ECONNRESET"))
         .mockRejectedValueOnce(new Error("ECONNRESET"))
@@ -295,14 +317,17 @@ describe("withRetry", () => {
     it("stops retrying after maxAttempts", async () => {
       const retryFn = vi.fn().mockRejectedValue(new Error("ECONNRESET"));
 
-      await expect(withRetry(retryFn, { maxAttempts: 3, baseDelay: 10 })).rejects.toThrow("ECONNRESET");
+      await expect(
+        withRetry(retryFn, { maxAttempts: 3, baseDelay: 10 }),
+      ).rejects.toThrow("ECONNRESET");
       expect(retryFn).toHaveBeenCalledTimes(3);
     });
   });
 
   describe("custom retryable errors", () => {
     it("uses custom retryable error list", async () => {
-      const retryFn = vi.fn()
+      const retryFn = vi
+        .fn()
         .mockRejectedValueOnce(new Error("CUSTOM_ERROR"))
         .mockResolvedValue("success");
 
@@ -318,10 +343,12 @@ describe("withRetry", () => {
     it("does not retry on errors not in custom list", async () => {
       const errorFn = vi.fn().mockRejectedValue(new Error("ECONNRESET"));
 
-      await expect(withRetry(errorFn, {
-        maxAttempts: 3,
-        retryableErrors: ["CUSTOM_ERROR"],
-      })).rejects.toThrow("ECONNRESET");
+      await expect(
+        withRetry(errorFn, {
+          maxAttempts: 3,
+          retryableErrors: ["CUSTOM_ERROR"],
+        }),
+      ).rejects.toThrow("ECONNRESET");
 
       expect(errorFn).toHaveBeenCalledTimes(1);
     });
@@ -359,7 +386,11 @@ describe("withTimeout", () => {
   it("uses custom timeout message", async () => {
     const slowPromise = new Promise((resolve) => setTimeout(resolve, 2000));
 
-    const timeoutPromise = withTimeout(slowPromise, 1000, "Custom timeout message");
+    const timeoutPromise = withTimeout(
+      slowPromise,
+      1000,
+      "Custom timeout message",
+    );
 
     vi.advanceTimersByTime(1000);
 
@@ -386,35 +417,66 @@ describe("withTimeout", () => {
 
 describe("isRetryableError", () => {
   it("returns true for retryable network errors", () => {
-    expect(isRetryableError(new Error("ECONNRESET"), defaultRetryableErrors)).toBe(true);
-    expect(isRetryableError(new Error("ETIMEDOUT"), defaultRetryableErrors)).toBe(true);
-    expect(isRetryableError(new Error("ECONNREFUSED"), defaultRetryableErrors)).toBe(true);
-    expect(isRetryableError(new Error("ENOTFOUND"), defaultRetryableErrors)).toBe(true);
-    expect(isRetryableError(new Error("EAI_AGAIN"), defaultRetryableErrors)).toBe(true);
+    expect(
+      isRetryableError(new Error("ECONNRESET"), defaultRetryableErrors),
+    ).toBe(true);
+    expect(
+      isRetryableError(new Error("ETIMEDOUT"), defaultRetryableErrors),
+    ).toBe(true);
+    expect(
+      isRetryableError(new Error("ECONNREFUSED"), defaultRetryableErrors),
+    ).toBe(true);
+    expect(
+      isRetryableError(new Error("ENOTFOUND"), defaultRetryableErrors),
+    ).toBe(true);
+    expect(
+      isRetryableError(new Error("EAI_AGAIN"), defaultRetryableErrors),
+    ).toBe(true);
   });
 
   it("returns true for retryable rate limit errors", () => {
-    expect(isRetryableError(new Error("rate_limit exceeded"), defaultRetryableErrors)).toBe(true);
+    expect(
+      isRetryableError(
+        new Error("rate_limit exceeded"),
+        defaultRetryableErrors,
+      ),
+    ).toBe(true);
   });
 
   it("returns true for retryable timeout errors", () => {
-    expect(isRetryableError(new Error("Connection timeout"), defaultRetryableErrors)).toBe(true);
+    expect(
+      isRetryableError(new Error("Connection timeout"), defaultRetryableErrors),
+    ).toBe(true);
   });
 
   it("returns false for non-retryable errors", () => {
-    expect(isRetryableError(new Error("Not found"), defaultRetryableErrors)).toBe(false);
-    expect(isRetryableError(new Error("Unauthorized"), defaultRetryableErrors)).toBe(false);
-    expect(isRetryableError(new Error("Invalid input"), defaultRetryableErrors)).toBe(false);
+    expect(
+      isRetryableError(new Error("Not found"), defaultRetryableErrors),
+    ).toBe(false);
+    expect(
+      isRetryableError(new Error("Unauthorized"), defaultRetryableErrors),
+    ).toBe(false);
+    expect(
+      isRetryableError(new Error("Invalid input"), defaultRetryableErrors),
+    ).toBe(false);
   });
 
   it("is case-insensitive when checking error messages", () => {
-    expect(isRetryableError(new Error("econnreset"), defaultRetryableErrors)).toBe(true);
-    expect(isRetryableError(new Error("RATE_LIMIT"), defaultRetryableErrors)).toBe(true);
-    expect(isRetryableError(new Error("TiMeOuT"), defaultRetryableErrors)).toBe(true);
+    expect(
+      isRetryableError(new Error("econnreset"), defaultRetryableErrors),
+    ).toBe(true);
+    expect(
+      isRetryableError(new Error("RATE_LIMIT"), defaultRetryableErrors),
+    ).toBe(true);
+    expect(isRetryableError(new Error("TiMeOuT"), defaultRetryableErrors)).toBe(
+      true,
+    );
   });
 
   it("returns false for non-Error objects", () => {
-    expect(isRetryableError("string error", defaultRetryableErrors)).toBe(false);
+    expect(isRetryableError("string error", defaultRetryableErrors)).toBe(
+      false,
+    );
     expect(isRetryableError(null, defaultRetryableErrors)).toBe(false);
     expect(isRetryableError(undefined, defaultRetryableErrors)).toBe(false);
     expect(isRetryableError(123, defaultRetryableErrors)).toBe(false);
@@ -432,7 +494,11 @@ describe("IntegrationError", () => {
 
   it("includes original error in error object", () => {
     const originalError = new Error("Original");
-    const error = new IntegrationError("Wrapped error", "WRAPPER", originalError);
+    const error = new IntegrationError(
+      "Wrapped error",
+      "WRAPPER",
+      originalError,
+    );
 
     expect(error.originalError).toBe(originalError);
   });

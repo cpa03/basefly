@@ -1,10 +1,10 @@
 /**
  * User Deletion Service
- * 
+ *
  * Provides controlled user deletion with cascading effects on related data.
  * Implements both hard delete (permanent removal) and soft delete (audit trail preservation)
  * strategies for GDPR compliance and data management requirements.
- * 
+ *
  * Key features:
  * - Transaction-based atomicity (all operations succeed or fail together)
  * - Soft delete of K8sClusterConfig before user deletion (preserves audit trail)
@@ -12,7 +12,7 @@
  * - Pre-deletion summary to validate data before deletion
  * - Ownership checks via authUserId foreign keys
  * - Request ID logging for distributed tracing
- * 
+ *
  * Deletion Strategy:
  * - Database level: ON DELETE RESTRICT prevents accidental data loss
  * - Application level: UserDeletionService handles controlled cascade
@@ -24,16 +24,16 @@ import { db } from ".";
 
 /**
  * Service for managing user deletion with controlled cascading
- * 
+ *
  * @example
  * ```typescript
  * // Get summary before deletion (user confirmation)
  * const summary = await userDeletionService.getUserSummary(userId);
  * console.log(`User has ${summary.activeClusters} active clusters`);
- * 
+ *
  * // Hard delete user with cascade (with request tracking)
  * await userDeletionService.deleteUser(userId, { requestId: "uuid" });
- * 
+ *
  * // Soft delete for compliance (keeps record)
  * await userDeletionService.softDeleteUser(userId, { requestId: "uuid" });
  * ```
@@ -41,22 +41,25 @@ import { db } from ".";
 export class UserDeletionService {
   /**
    * Hard delete a user with cascading effects
-   * 
+   *
    * This performs a permanent deletion of user and related data:
    * 1. Soft deletes all K8sClusterConfig records (preserves audit trail)
    * 2. Hard deletes Customer records (billing data removed)
    * 3. Hard deletes User record (permanent removal)
-   * 
+   *
    * All operations run in a single transaction for atomicity.
    * If any operation fails, the entire transaction rolls back.
-   * 
+   *
    * @param userId - The user ID to delete
    * @param options - Optional request ID for distributed tracing
    * @throws Error if transaction fails or any deletion operation fails
-   * 
+   *
    * @warning This operation is irreversible and permanently removes user data
    */
-  async deleteUser(userId: string, _options?: { requestId?: string }): Promise<void> {
+  async deleteUser(
+    userId: string,
+    _options?: { requestId?: string },
+  ): Promise<void> {
     await db.transaction().execute(async (trx) => {
       // Step 1: Soft delete all K8s clusters (preserves audit trail)
       // Using soft delete ensures we can track cluster history
@@ -76,30 +79,30 @@ export class UserDeletionService {
 
       // Step 3: Hard delete user record
       // This is the final step after all dependent data is handled
-      await trx
-        .deleteFrom("User")
-        .where("id", "=", userId)
-        .execute();
+      await trx.deleteFrom("User").where("id", "=", userId).execute();
     });
   }
 
   /**
    * Soft delete a user for compliance purposes
-   * 
+   *
    * This preserves the user record for GDPR compliance while:
    * 1. Soft deleting all K8sClusterConfig records (preserves audit trail)
    * 2. Anonymizing user email (prevents re-login but keeps record)
-   * 
+   *
    * All operations run in a single transaction for atomicity.
-   * 
+   *
    * @param userId - The user ID to soft delete
    * @param options - Optional request ID for distributed tracing
    * @throws Error if transaction fails or any update operation fails
-   * 
+   *
    * @note User email is anonymized to `deleted_{userId}@example.com` to prevent
    *       future login attempts while preserving the record for compliance
    */
-  async softDeleteUser(userId: string, _options?: { requestId?: string }): Promise<void> {
+  async softDeleteUser(
+    userId: string,
+    _options?: { requestId?: string },
+  ): Promise<void> {
     await db.transaction().execute(async (trx) => {
       // Step 1: Soft delete all K8s clusters
       await trx
@@ -121,16 +124,16 @@ export class UserDeletionService {
 
   /**
    * Get a summary of user data before deletion
-   * 
+   *
    * Useful for:
    * - User confirmation before deletion
    * - Displaying what will be affected
    * - Validation checks (e.g., ensure no active subscriptions)
-   * 
+   *
    * @param userId - The user ID to get summary for
    * @param options - Optional request ID for distributed tracing
    * @returns Object containing user info, customer data, and cluster count, or null if user not found
-   * 
+   *
    * @example
    * ```typescript
    * const summary = await userDeletionService.getUserSummary(userId, { requestId: "uuid" });

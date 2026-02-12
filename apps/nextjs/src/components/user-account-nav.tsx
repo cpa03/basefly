@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import type { User } from "@saasfly/auth";
 import { useClerk } from "@clerk/nextjs";
 
+import type { User } from "@saasfly/auth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -64,10 +64,9 @@ export function UserAccountNav({
           className="cursor-pointer"
           onSelect={(event) => {
             event.preventDefault();
-            signOut({ redirectUrl: `/${lang}/login-clerk` })
-              .catch((error) => {
-                logger.error("Error during sign out", error);
-              })
+            signOut({ redirectUrl: `/${lang}/login-clerk` }).catch((error) => {
+              logger.error("Error during sign out", error);
+            });
           }}
         >
           {dict.sign_out}

@@ -2,20 +2,19 @@
 
 import React from "react";
 import Link from "next/link";
-import type { User } from "@saasfly/auth";
 import { useSelectedLayoutSegment } from "next/navigation";
 
+import type { User } from "@saasfly/auth";
 import { cn } from "@saasfly/ui";
 import { Button } from "@saasfly/ui/button";
 
-import { MainNav } from "./main-nav";
-import { LocaleChange } from "~/components/locale-change";
 import { GitHubStar } from "~/components/github-star";
-import { useSigninModal } from "~/hooks/use-signin-modal";
-import { UserAccountNav } from "./user-account-nav";
-
+import { LocaleChange } from "~/components/locale-change";
 import useScroll from "~/hooks/use-scroll";
+import { useSigninModal } from "~/hooks/use-signin-modal";
 import type { MainNavItem } from "~/types";
+import { MainNav } from "./main-nav";
+import { UserAccountNav } from "./user-account-nav";
 
 interface NavBarProps {
   user: Pick<User, "name" | "image" | "email"> | undefined;
@@ -51,7 +50,11 @@ export function NavBar({
       }`}
     >
       <div className="container flex h-16 items-center justify-between py-4">
-        <MainNav items={items} params={{ lang: `${lang}` }} marketing={marketing}>
+        <MainNav
+          items={items}
+          params={{ lang: `${lang}` }}
+          marketing={marketing}
+        >
           {children}
         </MainNav>
 
@@ -61,11 +64,17 @@ export function NavBar({
               {items?.map((item, index) => (
                 <Link
                   key={index}
-                  href={item.disabled ? "#" : (item.href.startsWith("http") ? item.href : `/${lang}${item.href}`)}
+                  href={
+                    item.disabled
+                      ? "#"
+                      : item.href.startsWith("http")
+                        ? item.href
+                        : `/${lang}${item.href}`
+                  }
                   className={cn(
                     "flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm",
                     item.href.startsWith(`/${segment}`)
-                      ? "text-blue-500 font-semibold"
+                      ? "font-semibold text-blue-500"
                       : "",
                     item.disabled && "cursor-not-allowed opacity-80",
                   )}
@@ -76,7 +85,7 @@ export function NavBar({
             </nav>
           ) : null}
 
-          <div className="w-[1px] h-8 bg-accent"></div>
+          <div className="h-8 w-[1px] bg-accent"></div>
 
           {rightElements}
 

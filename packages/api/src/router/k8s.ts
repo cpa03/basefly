@@ -1,12 +1,12 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { db, SubscriptionPlan, k8sClusterService } from "@saasfly/db";
+import { db, k8sClusterService, SubscriptionPlan } from "@saasfly/db";
 
 import { createApiError, ErrorCode } from "../errors";
 import {
-  createTRPCRouter,
   createRateLimitedProtectedProcedure,
+  createTRPCRouter,
   EndpointType,
 } from "../trpc";
 
@@ -20,10 +20,7 @@ export const k8sClusterDeleteSchema = z.object({
   id: z.number().positive().int(),
 });
 
-async function verifyClusterOwnership(
-  clusterId: number,
-  userId: string,
-) {
+async function verifyClusterOwnership(clusterId: number, userId: string) {
   const cluster = await k8sClusterService.findActive(clusterId, userId);
   if (!cluster) {
     throw createApiError(ErrorCode.NOT_FOUND, "Cluster not found");
@@ -38,10 +35,12 @@ async function verifyClusterOwnership(
 }
 
 export const k8sRouter = createTRPCRouter({
-  getClusters: createRateLimitedProtectedProcedure("read").query(async (opts) => {
-    const userId = opts.ctx.userId! as string;
-    return await k8sClusterService.findAllActive(userId);
-  }),
+  getClusters: createRateLimitedProtectedProcedure("read").query(
+    async (opts) => {
+      const userId = opts.ctx.userId! as string;
+      return await k8sClusterService.findAllActive(userId);
+    },
+  ),
   createCluster: createRateLimitedProtectedProcedure("write")
     .input(k8sClusterCreateSchema)
     .mutation(async ({ ctx, input }) => {

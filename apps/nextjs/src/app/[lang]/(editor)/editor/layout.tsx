@@ -57,7 +57,10 @@ export default async function DashboardLayout({
             params={{ lang: `${lang}` }}
           />
         </aside>
-        <main id="main-content" className="flex w-full flex-1 flex-col overflow-hidden">
+        <main
+          id="main-content"
+          className="flex w-full flex-1 flex-col overflow-hidden"
+        >
           {children}
         </main>
       </div>

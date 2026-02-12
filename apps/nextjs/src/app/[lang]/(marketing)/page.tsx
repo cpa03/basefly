@@ -1,39 +1,68 @@
-import Link from "next/link";
-import Image from "next/image";
 import dynamic from "next/dynamic";
+import Image from "next/image";
+import Link from "next/link";
+
 import { EXTERNAL_URLS, getGitHubProfileUrl } from "@saasfly/common";
-import { getDictionary } from "~/lib/get-dictionary";
-import { siteConfig } from "~/config/site";
-
-import { CodeCopy } from "~/components/code-copy";
-
-const FeaturesGrid = dynamic(() => import("~/components/features-grid").then(mod => ({ default: mod.FeaturesGrid })), {
-  ssr: true,
-  loading: () => <div className="w-full h-[400px] animate-pulse bg-muted rounded-lg" />
-});
-
-const RightsideMarketing = dynamic(() => import("~/components/rightside-marketing").then(mod => ({ default: mod.RightsideMarketing })), {
-  ssr: true,
-  loading: () => <div className="w-full h-full animate-pulse bg-muted rounded-lg" />
-});
-
-const Comments = dynamic(() => import("~/components/comments").then(mod => ({ default: mod.Comments })), {
-  ssr: true,
-  loading: () => <div className="w-full h-[200px] animate-pulse bg-muted rounded-lg" />
-});
-
-const VideoScroll = dynamic(() => import("~/components/video-scroll").then(mod => ({ default: mod.VideoScroll })), {
-  ssr: true,
-  loading: () => <div className="w-full h-[500px] animate-pulse bg-muted rounded-lg" />
-});
-
 import { AnimatedTooltip } from "@saasfly/ui/animated-tooltip";
 import { BackgroundLines } from "@saasfly/ui/background-lines";
 import { Button } from "@saasfly/ui/button";
 import { ColourfulText } from "@saasfly/ui/colorful-text";
 import { ArrowRight, Heart } from "@saasfly/ui/icons";
 
+import { CodeCopy } from "~/components/code-copy";
 import type { Locale } from "~/config/i18n-config";
+import { siteConfig } from "~/config/site";
+import { getDictionary } from "~/lib/get-dictionary";
+
+const FeaturesGrid = dynamic(
+  () =>
+    import("~/components/features-grid").then((mod) => ({
+      default: mod.FeaturesGrid,
+    })),
+  {
+    ssr: true,
+    loading: () => (
+      <div className="h-[400px] w-full animate-pulse rounded-lg bg-muted" />
+    ),
+  },
+);
+
+const RightsideMarketing = dynamic(
+  () =>
+    import("~/components/rightside-marketing").then((mod) => ({
+      default: mod.RightsideMarketing,
+    })),
+  {
+    ssr: true,
+    loading: () => (
+      <div className="h-full w-full animate-pulse rounded-lg bg-muted" />
+    ),
+  },
+);
+
+const Comments = dynamic(
+  () =>
+    import("~/components/comments").then((mod) => ({ default: mod.Comments })),
+  {
+    ssr: true,
+    loading: () => (
+      <div className="h-[200px] w-full animate-pulse rounded-lg bg-muted" />
+    ),
+  },
+);
+
+const VideoScroll = dynamic(
+  () =>
+    import("~/components/video-scroll").then((mod) => ({
+      default: mod.VideoScroll,
+    })),
+  {
+    ssr: true,
+    loading: () => (
+      <div className="h-[500px] w-full animate-pulse rounded-lg bg-muted" />
+    ),
+  },
+);
 
 const people = [
   {
@@ -89,51 +118,54 @@ export default async function IndexPage({
     <>
       <section className="container">
         <div className="grid grid-cols-1 gap-10 xl:grid-cols-2">
-          <div className="flex flex-col items-start h-full">
+          <div className="flex h-full flex-col items-start">
             <BackgroundLines className="h-full">
               <div className="flex flex-col pt-4 md:pt-36 lg:pt-36 xl:pt-36">
                 <div className="mt-20">
-                  <div
-                    className="mb-6 max-w-4xl text-left text-4xl font-semibold dark:text-zinc-100 md:text-5xl xl:text-5xl md:leading-[4rem] xl:leading-[4rem]">
-                    {dict.marketing.title || "Ship your apps to the world easier with "}
-                    <ColourfulText text="Saasfly"/>
+                  <div className="mb-6 max-w-4xl text-left text-4xl font-semibold dark:text-zinc-100 md:text-5xl md:leading-[4rem] xl:text-5xl xl:leading-[4rem]">
+                    {dict.marketing.title ||
+                      "Ship your apps to the world easier with "}
+                    <ColourfulText text="Saasfly" />
                   </div>
                 </div>
 
                 <div className="mt-4">
                   <span className="text-neutral-500 dark:text-neutral-400 sm:text-lg">
-                    {dict.marketing.sub_title || "Your complete All-in-One solution for building SaaS services."}
+                    {dict.marketing.sub_title ||
+                      "Your complete All-in-One solution for building SaaS services."}
                   </span>
                 </div>
 
-                <div
-                  className="mb-4 mt-6 flex w-full flex-col justify-center space-y-4 sm:flex-row sm:justify-start sm:space-x-8 sm:space-y-0 z-10">
+                <div className="z-10 mb-4 mt-6 flex w-full flex-col justify-center space-y-4 sm:flex-row sm:justify-start sm:space-x-8 sm:space-y-0">
                   <Link href={siteConfig.links.github} target="_blank">
-                    <Button
-                      className="rounded-full text-lg px-6 h-12 font-medium transition-all duration-200 ease-out hover:scale-105 hover:shadow-lg active:scale-95">
+                    <Button className="h-12 rounded-full px-6 text-lg font-medium transition-all duration-200 ease-out hover:scale-105 hover:shadow-lg active:scale-95">
                       {dict.marketing.get_started}
-                      <ArrowRight className="h-5 w-5"/>
+                      <ArrowRight className="h-5 w-5" />
                     </Button>
                   </Link>
 
-                  <CodeCopy/>
+                  <CodeCopy />
                 </div>
 
-                <div className="flex xl:flex-row flex-col items-center justify-start mt-4 w-full">
+                <div className="mt-4 flex w-full flex-col items-center justify-start xl:flex-row">
                   <div className="flex">
-                    <AnimatedTooltip items={people}/>
+                    <AnimatedTooltip items={people} />
                   </div>
-                  <div className="flex flex-col items-center justify-start ml-8">
+                  <div className="ml-8 flex flex-col items-center justify-start">
                     <div className="w-[340px]">
                       <span className="font-semibold">9 </span>
-                      <span className="text-neutral-500 dark:text-neutral-400">{dict.marketing.contributors.contributors_desc}</span>
+                      <span className="text-neutral-500 dark:text-neutral-400">
+                        {dict.marketing.contributors.contributors_desc}
+                      </span>
                     </div>
                     <div className="w-[340px]">
-                      <span
-                        className="text-neutral-500 dark:text-neutral-400">{dict.marketing.contributors.developers_first}</span>
-                      <ColourfulText text="2000"/>
-                      <span
-                        className="text-neutral-500 dark:text-neutral-400">{dict.marketing.contributors.developers_second}</span>
+                      <span className="text-neutral-500 dark:text-neutral-400">
+                        {dict.marketing.contributors.developers_first}
+                      </span>
+                      <ColourfulText text="2000" />
+                      <span className="text-neutral-500 dark:text-neutral-400">
+                        {dict.marketing.contributors.developers_second}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -141,9 +173,9 @@ export default async function IndexPage({
             </BackgroundLines>
           </div>
 
-          <div className="hidden h-full w-full xl:block bg-background">
+          <div className="hidden h-full w-full bg-background xl:block">
             <div className="flex flex-col pt-44">
-              <RightsideMarketing dict={dict.marketing.right_side}/>
+              <RightsideMarketing dict={dict.marketing.right_side} />
             </div>
           </div>
         </div>
@@ -154,30 +186,49 @@ export default async function IndexPage({
       </section>
 
       <section className="container pt-24">
-        <div className="flex flex-col justify-center items-center pt-10">
-          <div className="text-lg text-neutral-500 dark:text-neutral-400">{dict.marketing.sponsor.title}</div>
+        <div className="flex flex-col items-center justify-center pt-10">
+          <div className="text-lg text-neutral-500 dark:text-neutral-400">
+            {dict.marketing.sponsor.title}
+          </div>
           <div className="mt-4 flex items-center gap-4">
             <Link href={EXTERNAL_URLS.clerk.referral} target="_blank">
-              <Image src="/images/clerk.png" width="48" height="48" alt="clerk"/>
+              <Image
+                src="/images/clerk.png"
+                width="48"
+                height="48"
+                alt="clerk"
+              />
             </Link>
             <Link href={EXTERNAL_URLS.twillot.home} target="_blank">
-              <Image src={EXTERNAL_URLS.twillot.logo} width="48" height="48" alt="twillot"/>
+              <Image
+                src={EXTERNAL_URLS.twillot.logo}
+                width="48"
+                height="48"
+                alt="twillot"
+              />
             </Link>
             <Link href={EXTERNAL_URLS.setupyourpay.home} target="_blank">
-              <Image src={EXTERNAL_URLS.setupyourpay.logo} width="48" height="48" alt="setupyourpay" />
+              <Image
+                src={EXTERNAL_URLS.setupyourpay.logo}
+                width="48"
+                height="48"
+                alt="setupyourpay"
+              />
             </Link>
             <Link href={EXTERNAL_URLS.opencollective.saasfly} target="_blank">
-                <div className="flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-dashed border-neutral-300 dark:border-neutral-700 hover:bg-accent dark:hover:bg-neutral-800/30">
-                <Heart className="w-5 h-5 fill-pink-600 text-pink-600 dark:fill-pink-700 dark:text-pink-700" />
-                <span className="text-sm font-medium text-neutral-500 dark:text-neutral-200">{dict.marketing.sponsor.donate || ''}</span>
-                </div>
+              <div className="flex items-center gap-2 rounded-xl border-2 border-dashed border-neutral-300 px-4 py-2 hover:bg-accent dark:border-neutral-700 dark:hover:bg-neutral-800/30">
+                <Heart className="h-5 w-5 fill-pink-600 text-pink-600 dark:fill-pink-700 dark:text-pink-700" />
+                <span className="text-sm font-medium text-neutral-500 dark:text-neutral-200">
+                  {dict.marketing.sponsor.donate || ""}
+                </span>
+              </div>
             </Link>
           </div>
         </div>
       </section>
 
       <section className="container pt-8">
-        <VideoScroll dict={dict.marketing.video}/>
+        <VideoScroll dict={dict.marketing.video} />
       </section>
 
       <section className="w-full px-8 pt-10 sm:px-0 sm:pt-24 md:px-0 md:pt-24 xl:px-0 xl:pt-24">
@@ -192,7 +243,7 @@ export default async function IndexPage({
           </div>
 
           <div className="w-full overflow-x-hidden">
-            <Comments/>
+            <Comments />
           </div>
         </div>
       </section>

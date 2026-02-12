@@ -1,7 +1,7 @@
 import React, { type CSSProperties } from "react";
 
-import { cn } from "@saasfly/ui";
 import { ANIMATION, VISUAL_EFFECTS } from "@saasfly/common";
+import { cn } from "@saasfly/ui";
 
 interface ShimmerButtonProps {
   shimmerColor?: string;

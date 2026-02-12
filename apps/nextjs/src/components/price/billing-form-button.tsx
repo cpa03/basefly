@@ -50,7 +50,7 @@ export function BillingFormButton({
     >
       <span
         className={`flex items-center justify-center transition-all duration-200 ease-out ${
-          isPending ? "opacity-0 translate-y-1" : "opacity-100 translate-y-0"
+          isPending ? "translate-y-1 opacity-0" : "translate-y-0 opacity-100"
         }`}
         aria-hidden={isPending}
       >
@@ -59,7 +59,7 @@ export function BillingFormButton({
 
       <span
         className={`absolute inset-0 flex items-center justify-center transition-all duration-200 ease-out ${
-          isPending ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1"
+          isPending ? "translate-y-0 opacity-100" : "-translate-y-1 opacity-0"
         }`}
         aria-hidden={!isPending}
       >

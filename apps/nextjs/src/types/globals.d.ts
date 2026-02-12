@@ -1,12 +1,12 @@
-import type { User } from "@saasfly/auth"
+import type { User } from "@saasfly/auth";
 
-export {}
+export {};
 
 declare global {
   interface CustomJwtSessionClaims {
     user?: User & {
       id: string;
       isAdmin: boolean;
-    }
+    };
   }
 }

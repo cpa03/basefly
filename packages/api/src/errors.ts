@@ -92,11 +92,7 @@ export function handleIntegrationError(error: unknown): TRPCError {
   }
 
   if (error instanceof Error) {
-    return createApiError(
-      ErrorCode.INTEGRATION_ERROR,
-      error.message,
-      error,
-    );
+    return createApiError(ErrorCode.INTEGRATION_ERROR, error.message, error);
   }
 
   return createApiError(
@@ -116,7 +112,9 @@ export class IntegrationError extends Error {
   }
 }
 
-export function createValidationErrorMessage(errors: Array<{ message: string; path?: (string | number)[] }>): string {
+export function createValidationErrorMessage(
+  errors: Array<{ message: string; path?: (string | number)[] }>,
+): string {
   if (errors.length === 0) {
     return "Validation error";
   }

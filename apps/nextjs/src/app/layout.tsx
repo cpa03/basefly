@@ -68,6 +68,15 @@ export const metadata = {
   metadataBase: new URL(EXTERNAL_URLS.demo.home),
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "black" },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: {

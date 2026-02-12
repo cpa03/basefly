@@ -41,6 +41,7 @@ const contentSecurityPolicyHeaderValue = cspHeader.replace(/\s{2,}/g, ' ').trim(
 export default async function proxy(req: NextRequest) {
   const requestId = getOrGenerateRequestId(req.headers);
   
+  // @ts-expect-error - Clerk middleware type expects event param but it's optional at runtime
   const result = await clerkMiddleware(req);
 
   if (result && typeof result === 'object' && 'headers' in result) {

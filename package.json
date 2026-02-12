@@ -45,6 +45,11 @@
   },
   "packageManager": "pnpm@10.28.2",
   "prettier": "@saasfly/prettier-config",
+  "pnpm": {
+    "overrides": {
+      "axios": ">=1.13.5"
+    }
+  },
   "workspaces": [
     "apps/*",
     "packages/*",

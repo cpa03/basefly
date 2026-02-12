@@ -1,5 +1,8 @@
 import { notFound } from "next/navigation";
-import { allAuthors, allPosts } from "contentlayer/generated";
+import {
+  allAuthors as rawAuthors,
+  allPosts as rawAllPosts,
+} from "contentlayer/generated";
 
 import { BackToTop } from "~/components/back-to-top";
 import { Mdx } from "~/components/content/mdx-components";
@@ -17,6 +20,10 @@ import { ChevronLeft } from "@saasfly/ui/icons";
 
 import { env } from "~/env.mjs";
 import { absoluteUrl, formatDate } from "~/lib/utils";
+import type { Post, Author } from "~/types";
+
+const allPosts = rawAllPosts as Post[];
+const allAuthors = rawAuthors as Author[];
 
 interface PostPageProps {
   params: {
@@ -24,14 +31,9 @@ interface PostPageProps {
   };
 }
 
-function getPostFromParams(params: { slug?: string | string[] }) {
+function getPostFromParams(params: { slug?: string | string[] }): Post | undefined {
   const slug = Array.isArray(params.slug) ? params.slug.join("/") : params.slug;
   const post = allPosts.find((post) => post.slugAsParams === slug);
-
-  if (!post) {
-    null;
-  }
-
   return post;
 }
 

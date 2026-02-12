@@ -81,3 +81,82 @@ export type UserSubscriptionPlan = SubscriptionPlan &
     interval: string | null;
     isCanceled?: boolean;
   };
+
+// Contentlayer types - based on contentlayer.config.ts
+export interface Post {
+  _id: string;
+  _raw: {
+    sourceFilePath: string;
+    sourceFileName: string;
+    sourceFileDir: string;
+    contentType: string;
+    flattenedPath: string;
+  };
+  type: "Post";
+  title: string;
+  description?: string;
+  date: string;
+  published: boolean;
+  image: string;
+  authors: string[];
+  slug: string;
+  slugAsParams: string;
+  body: {
+    raw: string;
+    code: string;
+  };
+}
+
+export interface Author {
+  _id: string;
+  _raw: {
+    sourceFilePath: string;
+    sourceFileName: string;
+    sourceFileDir: string;
+    contentType: string;
+    flattenedPath: string;
+  };
+  type: "Author";
+  title: string;
+  description?: string;
+  avatar: string;
+  twitter: string;
+  slug: string;
+  slugAsParams: string;
+  body: {
+    raw: string;
+    code: string;
+  };
+}
+
+declare module "contentlayer/generated" {
+  export const allPosts: Post[];
+  export const allAuthors: Author[];
+}
+
+declare module ".contentlayer/generated" {
+  export const allPosts: Post[];
+  export const allDocs: Doc[];
+}
+
+// Contentlayer Doc type - based on contentlayer.config.ts
+export interface Doc {
+  _id: string;
+  _raw: {
+    sourceFilePath: string;
+    sourceFileName: string;
+    sourceFileDir: string;
+    contentType: string;
+    flattenedPath: string;
+  };
+  type: "Doc";
+  title: string;
+  description?: string;
+  published: boolean;
+  slug: string;
+  slugAsParams: string;
+  body: {
+    raw: string;
+    code: string;
+  };
+}

@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 import Negotiator from "negotiator";
 
 import { i18n } from "~/config/i18n-config";
-import { _env } from "@saasfly/auth/env.mjs";
+
 
 const noNeedProcessRoute = [".*\\.png", ".*\\.jpg", ".*\\.opengraph-image.png"];
 
@@ -43,8 +43,6 @@ export function isNoNeedProcess(request: NextRequest): boolean {
   return noNeedProcessRoute.some((route) => new RegExp(route).test(pathname));
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
 export const middleware = clerkMiddleware(async (auth, req: NextRequest) => {
   if (isNoNeedProcess(req)) {
     return null;
@@ -71,8 +69,6 @@ export const middleware = clerkMiddleware(async (auth, req: NextRequest) => {
     );
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
   if (isPublicRoute(req)) {
     return null;
   }

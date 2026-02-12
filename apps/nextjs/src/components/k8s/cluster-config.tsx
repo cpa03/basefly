@@ -39,7 +39,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@saasfly/ui/tabs";
 import { toast } from "@saasfly/ui/use-toast";
 
-import { CLUSTER_LOCATIONS, AVAILABLE_CLUSTER_REGIONS } from "~/config/k8s";
+import { CLUSTER_LOCATIONS, isValidClusterLocation } from "~/config/k8s";
 import { trpc } from "~/trpc/client";
 import type { Cluster } from "~/types/k8s";
 
@@ -59,17 +59,13 @@ const FormSchema = z.object({
     .max(32, { message: "name must be at most 32 characters." }),
   location: z.enum(CLUSTER_LOCATIONS),
 });
-const isValidLocation = (
-  location: string,
-): location is (typeof CLUSTER_LOCATIONS)[number] => {
-  return AVAILABLE_CLUSTER_REGIONS.includes(location);
-};
+
 
 export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
   const form = useForm<z.infer<typeof FormSchema>>({
     defaultValues: {
       name: cluster.name, // default value
-      location: isValidLocation(cluster.location)
+      location: isValidClusterLocation(cluster.location)
         ? cluster.location
         : undefined,
     },
@@ -157,7 +153,7 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
                               <SelectContent>
                                 <SelectGroup>
                                   <SelectLabel>Select Region</SelectLabel>
-                                  {AVAILABLE_CLUSTER_REGIONS.map((location) => (
+                                  {CLUSTER_LOCATIONS.map((location) => (
                                     <SelectItem key={location} value={location}>
                                       {location}
                                     </SelectItem>

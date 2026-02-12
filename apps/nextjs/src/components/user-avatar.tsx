@@ -1,11 +1,13 @@
 import type { AvatarProps } from "@radix-ui/react-avatar";
-import type { User } from "@saasfly/auth";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@saasfly/ui/avatar";
 import { User } from "@saasfly/ui/icons";
 
 interface UserAvatarProps extends AvatarProps {
-  user: Pick<User, "image" | "name">;
+  user: {
+    name?: string | null;
+    image?: string | null;
+  };
 }
 
 export function UserAvatar({ user, ...props }: UserAvatarProps) {

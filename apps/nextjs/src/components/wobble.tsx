@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 
+import { EXTERNAL_URLS } from "@saasfly/common";
 import { WobbleCard } from "@saasfly/ui/wobble-card";
 
 export function WobbleCardShow() {
@@ -22,7 +23,7 @@ export function WobbleCardShow() {
           </p>
         </div>
         <Image
-          src="https://ui.aceternity.com/_next/image?url=%2Flinear.webp&w=1080&q=75"
+          src={EXTERNAL_URLS.aceternity.linearImage}
           width={500}
           height={500}
           alt="linear demo"
@@ -41,7 +42,7 @@ export function WobbleCardShow() {
       <WobbleCard containerClassName="col-span-1 lg:col-span-3 bg-blue-900 min-h-[500px] lg:min-h-[600px] xl:min-h-[300px]">
         <div className="max-w-sm">
           <h2 className="max-w-sm text-balance  text-left text-base font-semibold tracking-[-0.015em] text-white md:max-w-lg md:text-xl lg:text-3xl">
-            Streamline Your SaaS Development with Nextify’s Starter Kit.
+            Streamline Your SaaS Development with Nextify&apos;s Starter Kit.
           </h2>
           <p className="mt-4 max-w-[26rem] text-left  text-base/6 text-neutral-200">
             Our starter kit embodies this expertise, empowering both our team
@@ -49,7 +50,7 @@ export function WobbleCardShow() {
           </p>
         </div>
         <Image
-          src="https://ui.aceternity.com/_next/image?url=%2Flinear.webp&w=1080&q=75"
+          src={EXTERNAL_URLS.aceternity.linearImage}
           width={500}
           height={500}
           alt="linear demo"

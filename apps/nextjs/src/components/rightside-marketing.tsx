@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import { EXTERNAL_URLS } from "@saasfly/common";
 import { GlowingEffect } from "@saasfly/ui/glowing-effect";
 import { Cloud, Rocket, ThumbsUp } from "@saasfly/ui/icons";
 
@@ -13,7 +14,7 @@ export function RightsideMarketing({ dict } : { dict: Record<string, string> | u
         icon={<Rocket className="h-4 w-4 text-black dark:text-neutral-400" />}
         title={dict?.deploy_on_vercel_title ?? ''}
         description={dict?.deploy_on_vercel_desc ?? ''}
-        link="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsaasfly%2Fsaasfly&env=NEXT_PUBLIC_APP_URL,NEXTAUTH_URL,NEXTAUTH_SECRET,STRIPE_API_KEY,STRIPE_WEBHOOK_SECRET,POSTGRES_URL,GITHUB_CLIENT_ID,GITHUB_CLIENT_SECRET,RESEND_API_KEY,RESEND_FROM&install-command=bun%20install&build-command=bun%20run%20build&root-directory=apps%2Fnextjs"
+        link={EXTERNAL_URLS.vercel.deploy}
       />
 
       <GridItem
@@ -21,7 +22,7 @@ export function RightsideMarketing({ dict } : { dict: Record<string, string> | u
         icon={<Cloud className="h-4 w-4 text-black dark:text-neutral-400" />}
         title={dict?.ship_on_cloudflare_title ?? ''}
         description={dict?.ship_on_cloudflare_desc ?? ''}
-        link="https://oneclick.sh/"
+        link={EXTERNAL_URLS.oneclick.home}
       />
 
       <GridItem
@@ -29,7 +30,7 @@ export function RightsideMarketing({ dict } : { dict: Record<string, string> | u
         icon={<ThumbsUp className="h-4 w-4 text-black dark:text-neutral-400" />}
         title={dict?.showcase_title ?? ''}
         description={dict?.showcase_desc ?? ''}
-        link="https://discord.gg/b9uTZjdkrb"
+        link={EXTERNAL_URLS.discord.invite}
       />
     </ul>
   );

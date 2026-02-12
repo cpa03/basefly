@@ -1,3 +1,5 @@
+import { ROUTES } from "@saasfly/common";
+
 import type { Locale } from "~/config/i18n-config";
 import { getDictionary } from "~/lib/get-dictionary";
 import type { DashboardConfig } from "~/types";
@@ -15,7 +17,7 @@ export const getDashboardConfig = async ({
     mainNav: [
       {
         title: dict.common.dashboard.main_nav_documentation,
-        href: "/docs",
+        href: ROUTES.docs.home,
       },
       {
         title: dict.common.dashboard.main_nav_support,
@@ -27,17 +29,17 @@ export const getDashboardConfig = async ({
       {
         id: "clusters",
         title: dict.common.dashboard.sidebar_nav_clusters,
-        href: "/dashboard/",
+        href: ROUTES.dashboard.home,
       },
       {
         id: "billing",
         title: dict.common.dashboard.sidebar_nav_billing,
-        href: "/dashboard/billing",
+        href: ROUTES.dashboard.billing,
       },
       {
         id: "settings",
         title: dict.common.dashboard.sidebar_nav_settings,
-        href: "/dashboard/settings",
+        href: ROUTES.dashboard.settings,
       },
     ],
   };

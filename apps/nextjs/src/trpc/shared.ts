@@ -10,11 +10,20 @@ import type { AppRouter } from "@saasfly/api";
 import { env } from "~/env.mjs";
 
 export { transformer } from "@saasfly/api/transformer";
+
 const getBaseUrl = () => {
   if (typeof window !== "undefined") return "";
-  const vc = env.NEXT_PUBLIC_APP_URL;
-  if (vc) return vc;
-  return `http://localhost:3000`;
+  
+  const appUrl = env.NEXT_PUBLIC_APP_URL;
+  if (appUrl) return appUrl;
+  
+  if (process.env.NODE_ENV === "development") {
+    return "http://localhost:3000";
+  }
+  
+  throw new Error(
+    "NEXT_PUBLIC_APP_URL is not defined. Please set it in your environment variables."
+  );
 };
 
 const lambdas = [""];

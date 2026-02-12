@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { EXTERNAL_URLS } from "@saasfly/common";
 import { FollowerPointerCard } from "@saasfly/ui/following-pointer";
 import { TRANSITION_PRESETS } from "@saasfly/common/config/ui";
 
@@ -54,10 +55,8 @@ const blogContent = {
   title: "Making Sense of React Server Components",
   description:
     "So, here's something that makes me feel old: React celebrated its 10th birthday this year!",
-  image:
-    "https://cdn.sanity.io/images/tpb4obti/production/50c13f886c039225be4e7e99023b8f1e2b4161b9-1792x1024.png",
-  authorAvatar:
-    "https://pbs.twimg.com/profile_images/1766283284370305025/QKXW5W3M_400x400.jpg",
+  image: EXTERNAL_URLS.cdn.sanity,
+  authorAvatar: EXTERNAL_URLS.cdn.twitterProfile,
 };
 
 const TitleComponent = ({

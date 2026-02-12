@@ -1,13 +1,18 @@
 import type { NextRequest } from "next/server";
+
+import {
+  getOrGenerateRequestId,
+  REQUEST_ID_HEADER,
+} from "@saasfly/api/request-id";
+
 import { middleware as clerkMiddleware } from "./utils/clerk";
-import { getOrGenerateRequestId, REQUEST_ID_HEADER } from "@saasfly/api/request-id";
 
 export const config = {
   matcher: [
     "/((?!.*\\..*|_next).*)",
     "/",
     "/(api|trpc)(.*)",
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)"
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
   ],
 };
 
@@ -25,13 +30,15 @@ const cspHeader = `
   frame-ancestors 'none';
   block-all-mixed-content;
   upgrade-insecure-requests;
-`
+`;
 
-const contentSecurityPolicyHeaderValue = cspHeader.replace(/\s{2,}/g, ' ').trim();
+const contentSecurityPolicyHeaderValue = cspHeader
+  .replace(/\s{2,}/g, " ")
+  .trim();
 
 /**
  * Next.js proxy middleware that wraps Clerk middleware with request ID injection
- * 
+ *
  * - Generates or extracts request ID from request headers
  * - Adds request ID to response headers for client visibility
  * - Passes request ID to tRPC context via request headers
@@ -40,13 +47,16 @@ const contentSecurityPolicyHeaderValue = cspHeader.replace(/\s{2,}/g, ' ').trim(
  */
 export default async function proxy(req: NextRequest) {
   const requestId = getOrGenerateRequestId(req.headers);
-  
+
   // @ts-expect-error - Clerk middleware type expects event param but it's optional at runtime
   const result = await clerkMiddleware(req);
 
-  if (result && typeof result === 'object' && 'headers' in result) {
+  if (result && typeof result === "object" && "headers" in result) {
     result.headers.set(REQUEST_ID_HEADER, requestId);
-    result.headers.set('Content-Security-Policy', contentSecurityPolicyHeaderValue);
+    result.headers.set(
+      "Content-Security-Policy",
+      contentSecurityPolicyHeaderValue,
+    );
   }
 
   return result;

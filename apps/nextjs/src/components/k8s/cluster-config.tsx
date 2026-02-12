@@ -60,7 +60,6 @@ const FormSchema = z.object({
   location: z.enum(CLUSTER_LOCATIONS),
 });
 
-
 export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
   const form = useForm<z.infer<typeof FormSchema>>({
     defaultValues: {
@@ -335,9 +334,7 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
           </CardContent>
           <div className="w-2/3 space-y-6 p-6 pt-0">
             <Button type="submit" disabled={_isSaving}>
-              {_isSaving && (
-                <Spinner className="mr-2 h-4 w-4 animate-spin" />
-              )}
+              {_isSaving && <Spinner className="mr-2 h-4 w-4 animate-spin" />}
               Submit
             </Button>
           </div>

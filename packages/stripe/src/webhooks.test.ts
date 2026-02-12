@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-return, @typescript-eslint/unbound-method, @typescript-eslint/no-empty-function, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { handleEvent } from "./webhooks";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import { db } from "@saasfly/db";
+
 import { stripe } from ".";
 import { logger } from "./logger";
+import { handleEvent } from "./webhooks";
 
 vi.mock("@saasfly/db", () => ({
   db: {
@@ -318,7 +320,9 @@ describe("handleEvent", () => {
       await handleEvent(mockEvent);
 
       expect(loggerSpy).toHaveBeenCalledWith(
-        expect.stringContaining("Unhandled event type: customer.subscription.updated"),
+        expect.stringContaining(
+          "Unhandled event type: customer.subscription.updated",
+        ),
       );
 
       loggerSpy.mockRestore();

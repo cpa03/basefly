@@ -5,6 +5,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import {
+  FEEDBACK_TIMING,
+  SEMANTIC_COLORS,
+  TRANSITION_PRESETS,
+} from "@saasfly/common/config/ui";
+import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -26,7 +31,6 @@ import { toast } from "@saasfly/ui/use-toast";
 
 import { trpc } from "~/trpc/client";
 import type { Cluster } from "~/types/k8s";
-import { FEEDBACK_TIMING, SEMANTIC_COLORS, TRANSITION_PRESETS } from "@saasfly/common/config/ui";
 
 interface ClusterOperationsProps {
   cluster: Pick<Cluster, "id" | "name">;
@@ -34,7 +38,11 @@ interface ClusterOperationsProps {
   dict?: Record<string, unknown>;
 }
 
-export function ClusterOperations({ cluster, lang, dict }: ClusterOperationsProps) {
+export function ClusterOperations({
+  cluster,
+  lang,
+  dict,
+}: ClusterOperationsProps) {
   const router = useRouter();
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false);
   const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false);
@@ -44,7 +52,9 @@ export function ClusterOperations({ cluster, lang, dict }: ClusterOperationsProp
   const k8sDict = dict?.k8s as Record<string, unknown> | undefined;
   const actionsDict = k8sDict?.actions as Record<string, string> | undefined;
   const errorsDict = k8sDict?.errors as Record<string, string> | undefined;
-  const deleteDialogDict = k8sDict?.delete_dialog as Record<string, string> | undefined;
+  const deleteDialogDict = k8sDict?.delete_dialog as
+    | Record<string, string>
+    | undefined;
 
   const handleCopyId = React.useCallback(async () => {
     setIsCopying(true);
@@ -53,7 +63,8 @@ export function ClusterOperations({ cluster, lang, dict }: ClusterOperationsProp
       setHasCopied(true);
       toast({
         title: actionsDict?.copy_success_title ?? "Copied!",
-        description: actionsDict?.copy_success_desc ?? "Cluster ID copied to clipboard.",
+        description:
+          actionsDict?.copy_success_desc ?? "Cluster ID copied to clipboard.",
       });
       setTimeout(() => setHasCopied(false), FEEDBACK_TIMING.copySuccess);
     } finally {
@@ -67,7 +78,9 @@ export function ClusterOperations({ cluster, lang, dict }: ClusterOperationsProp
       if (!res?.success) {
         toast({
           title: errorsDict?.delete_failed_title ?? "Something went wrong.",
-          description: errorsDict?.delete_failed_desc ?? "Your cluster was not deleted. Please try again.",
+          description:
+            errorsDict?.delete_failed_desc ??
+            "Your cluster was not deleted. Please try again.",
           variant: "destructive",
         });
         return false;
@@ -76,7 +89,9 @@ export function ClusterOperations({ cluster, lang, dict }: ClusterOperationsProp
     } catch (error) {
       toast({
         title: errorsDict?.unexpected_error_title ?? "Error",
-        description: errorsDict?.unexpected_error_desc ?? "An unexpected error occurred. Please try again.",
+        description:
+          errorsDict?.unexpected_error_desc ??
+          "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
       return false;
@@ -87,7 +102,7 @@ export function ClusterOperations({ cluster, lang, dict }: ClusterOperationsProp
     <>
       <DropdownMenu>
         <DropdownMenuTrigger
-          className={`flex h-8 w-8 items-center justify-center rounded-md border transition-all ${TRANSITION_PRESETS.interactive} hover:bg-muted hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
+          className={`flex h-8 w-8 items-center justify-center rounded-md border transition-all ${TRANSITION_PRESETS.interactive} hover:scale-105 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
           aria-label="Cluster actions"
         >
           <Ellipsis className="h-4 w-4" aria-hidden="true" />
@@ -110,12 +125,19 @@ export function ClusterOperations({ cluster, lang, dict }: ClusterOperationsProp
             {isCopying ? (
               <>
                 <Spinner className="h-4 w-4 animate-spin" aria-hidden="true" />
-                <span className="text-muted-foreground">{actionsDict?.copying ?? "Copying..."}</span>
+                <span className="text-muted-foreground">
+                  {actionsDict?.copying ?? "Copying..."}
+                </span>
               </>
             ) : hasCopied ? (
               <>
-                <CopyDone className={`h-4 w-4 ${SEMANTIC_COLORS.success.icon}`} aria-hidden="true" />
-                <span className={`${SEMANTIC_COLORS.success.text} font-medium`}>{actionsDict?.copied ?? "Copied!"}</span>
+                <CopyDone
+                  className={`h-4 w-4 ${SEMANTIC_COLORS.success.icon}`}
+                  aria-hidden="true"
+                />
+                <span className={`${SEMANTIC_COLORS.success.text} font-medium`}>
+                  {actionsDict?.copied ?? "Copied!"}
+                </span>
               </>
             ) : (
               <>
@@ -137,14 +159,17 @@ export function ClusterOperations({ cluster, lang, dict }: ClusterOperationsProp
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              {deleteDialogDict?.title ?? "Are you sure you want to delete this cluster?"}
+              {deleteDialogDict?.title ??
+                "Are you sure you want to delete this cluster?"}
             </AlertDialogTitle>
             <AlertDialogDescription>
               {deleteDialogDict?.description ?? "This action cannot be undone."}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>{actionsDict?.cancel ?? "Cancel"}</AlertDialogCancel>
+            <AlertDialogCancel>
+              {actionsDict?.cancel ?? "Cancel"}
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={async (event) => {
                 event.preventDefault();
@@ -164,7 +189,10 @@ export function ClusterOperations({ cluster, lang, dict }: ClusterOperationsProp
               aria-busy={isDeleteLoading}
             >
               {isDeleteLoading ? (
-                <Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+                <Spinner
+                  className="mr-2 h-4 w-4 animate-spin"
+                  aria-hidden="true"
+                />
               ) : (
                 <Trash className="mr-2 h-4 w-4" aria-hidden="true" />
               )}

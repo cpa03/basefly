@@ -2,12 +2,12 @@
 
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/unbound-method */
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { UserDeletionService } from "./user-deletion";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import { db } from "./index";
+import { UserDeletionService } from "./user-deletion";
 
 vi.mock("./index", () => ({
   db: {
@@ -21,8 +21,8 @@ vi.mock("./index", () => ({
 describe("UserDeletionService", () => {
   let service: UserDeletionService;
   let mockTrx: {
-    updateTable: ReturnType<typeof vi.fn>,
-    deleteFrom: ReturnType<typeof vi.fn>,
+    updateTable: ReturnType<typeof vi.fn>;
+    deleteFrom: ReturnType<typeof vi.fn>;
   };
   let mockUpdateWhere: ReturnType<typeof vi.fn>;
   let mockUpdateSet: ReturnType<typeof vi.fn>;
@@ -65,9 +65,13 @@ describe("UserDeletionService", () => {
 
     // @ts-expect-error Complex transaction mock type
     vi.mocked(db.transaction).mockReturnValue({
-      execute: vi.fn().mockImplementation((callback: (trx: typeof mockTrx) => Promise<unknown>) => {
-        return callback(mockTrx);
-      }),
+      execute: vi
+        .fn()
+        .mockImplementation(
+          (callback: (trx: typeof mockTrx) => Promise<unknown>) => {
+            return callback(mockTrx);
+          },
+        ),
     });
 
     // Create a chainable mock object for select queries
@@ -83,14 +87,15 @@ describe("UserDeletionService", () => {
     });
     const selectChain = createSelectChain();
 
-
     // @ts-expect-error Complex query builder mock type
-    vi.mocked(db.selectFrom).mockReturnValue(selectChain as unknown as {
-      selectAll: ReturnType<typeof vi.fn>,
-      where: ReturnType<typeof vi.fn>,
-      execute: ReturnType<typeof vi.fn>,
-      executeTakeFirst: ReturnType<typeof vi.fn>,
-    });
+    vi.mocked(db.selectFrom).mockReturnValue(
+      selectChain as unknown as {
+        selectAll: ReturnType<typeof vi.fn>;
+        where: ReturnType<typeof vi.fn>;
+        execute: ReturnType<typeof vi.fn>;
+        executeTakeFirst: ReturnType<typeof vi.fn>;
+      },
+    );
 
     service = new UserDeletionService();
   });
@@ -99,13 +104,18 @@ describe("UserDeletionService", () => {
     it("soft deletes all K8s clusters before hard deleting user", async () => {
       await service.deleteUser("user_123");
 
-
       expect(db.transaction).toHaveBeenCalled();
       expect(mockTrx.updateTable).toHaveBeenCalledWith("K8sClusterConfig");
-      expect(mockUpdateWhere).toHaveBeenCalledWith("authUserId", "=", "user_123");
+      expect(mockUpdateWhere).toHaveBeenCalledWith(
+        "authUserId",
+        "=",
+        "user_123",
+      );
       expect(mockUpdateWhere).toHaveBeenCalledWith("deletedAt", "is", null);
 
-      expect(mockUpdateSet).toHaveBeenCalledWith({ deletedAt: expect.any(Date) });
+      expect(mockUpdateSet).toHaveBeenCalledWith({
+        deletedAt: expect.any(Date),
+      });
       expect(mockUpdateExecute).toHaveBeenCalled();
     });
 
@@ -113,7 +123,11 @@ describe("UserDeletionService", () => {
       await service.deleteUser("user_456");
 
       expect(mockTrx.deleteFrom).toHaveBeenCalledWith("Customer");
-      expect(mockDeleteWhere).toHaveBeenCalledWith("authUserId", "=", "user_456");
+      expect(mockDeleteWhere).toHaveBeenCalledWith(
+        "authUserId",
+        "=",
+        "user_456",
+      );
       expect(mockDeleteExecute).toHaveBeenCalled();
     });
 
@@ -128,7 +142,6 @@ describe("UserDeletionService", () => {
     it("executes all operations within a single transaction", async () => {
       await service.deleteUser("user_123");
 
-
       expect(db.transaction).toHaveBeenCalledTimes(1);
       expect(mockTrx.updateTable).toHaveBeenCalledTimes(1);
       expect(mockTrx.deleteFrom).toHaveBeenCalledTimes(2);
@@ -137,7 +150,9 @@ describe("UserDeletionService", () => {
     it("handles database errors and rolls back transaction", async () => {
       mockUpdateExecute.mockRejectedValue(new Error("Database error"));
 
-      await expect(service.deleteUser("user_123")).rejects.toThrow("Database error");
+      await expect(service.deleteUser("user_123")).rejects.toThrow(
+        "Database error",
+      );
     });
 
     it("only soft deletes active clusters (deletedAt is null)", async () => {
@@ -151,7 +166,9 @@ describe("UserDeletionService", () => {
 
       expect(mockTrx.updateTable).toHaveBeenCalled();
 
-      expect(mockUpdateSet).toHaveBeenCalledWith({ deletedAt: expect.any(Date) });
+      expect(mockUpdateSet).toHaveBeenCalledWith({
+        deletedAt: expect.any(Date),
+      });
       expect(mockTrx.deleteFrom).toHaveBeenCalledTimes(2);
     });
   });
@@ -160,13 +177,18 @@ describe("UserDeletionService", () => {
     it("soft deletes all K8s clusters for user", async () => {
       await service.softDeleteUser("user_123");
 
-
       expect(db.transaction).toHaveBeenCalled();
       expect(mockTrx.updateTable).toHaveBeenCalledWith("K8sClusterConfig");
-      expect(mockUpdateWhere).toHaveBeenCalledWith("authUserId", "=", "user_123");
+      expect(mockUpdateWhere).toHaveBeenCalledWith(
+        "authUserId",
+        "=",
+        "user_123",
+      );
       expect(mockUpdateWhere).toHaveBeenCalledWith("deletedAt", "is", null);
 
-      expect(mockUpdateSet).toHaveBeenCalledWith({ deletedAt: expect.any(Date) });
+      expect(mockUpdateSet).toHaveBeenCalledWith({
+        deletedAt: expect.any(Date),
+      });
     });
 
     it("updates user email to preserve compliance audit trail", async () => {
@@ -174,7 +196,9 @@ describe("UserDeletionService", () => {
 
       expect(mockTrx.updateTable).toHaveBeenCalledWith("User");
       expect(mockUpdateWhere).toHaveBeenCalledWith("id", "=", "user_456");
-      expect(mockUpdateSet).toHaveBeenCalledWith({ email: `deleted_user_456@example.com` });
+      expect(mockUpdateSet).toHaveBeenCalledWith({
+        email: `deleted_user_456@example.com`,
+      });
     });
 
     it("preserves User record for compliance requirements", async () => {
@@ -187,7 +211,6 @@ describe("UserDeletionService", () => {
     it("executes all operations within a single transaction", async () => {
       await service.softDeleteUser("user_123");
 
-
       expect(db.transaction).toHaveBeenCalledTimes(1);
       expect(mockTrx.updateTable).toHaveBeenCalledTimes(2);
       expect(mockTrx.deleteFrom).not.toHaveBeenCalled();
@@ -196,13 +219,17 @@ describe("UserDeletionService", () => {
     it("handles database errors and rolls back transaction", async () => {
       mockUpdateExecute.mockRejectedValue(new Error("Connection error"));
 
-      await expect(service.softDeleteUser("user_123")).rejects.toThrow("Connection error");
+      await expect(service.softDeleteUser("user_123")).rejects.toThrow(
+        "Connection error",
+      );
     });
 
     it("uses deterministic email format for soft-deleted users", async () => {
       await service.softDeleteUser("user_abc");
 
-      expect(mockUpdateSet).toHaveBeenCalledWith({ email: `deleted_user_abc@example.com` });
+      expect(mockUpdateSet).toHaveBeenCalledWith({
+        email: `deleted_user_abc@example.com`,
+      });
     });
   });
 
@@ -232,7 +259,12 @@ describe("UserDeletionService", () => {
     });
 
     it("includes customer information when customer exists", async () => {
-      const mockUser = { id: "user_123", name: "Test", email: "test@example.com", image: null };
+      const mockUser = {
+        id: "user_123",
+        name: "Test",
+        email: "test@example.com",
+        image: null,
+      };
       const mockCustomer = {
         id: 1,
         authUserId: "user_123",
@@ -251,7 +283,12 @@ describe("UserDeletionService", () => {
     });
 
     it("includes active clusters count in summary", async () => {
-      const mockUser = { id: "user_123", name: "Test", email: "test@example.com", image: null };
+      const mockUser = {
+        id: "user_123",
+        name: "Test",
+        email: "test@example.com",
+        image: null,
+      };
       const mockClusters = [
         { id: 1, name: "cluster-1", deletedAt: null },
         { id: 2, name: "cluster-2", deletedAt: null },
@@ -259,7 +296,9 @@ describe("UserDeletionService", () => {
       ];
 
       // First call (User) returns mockUser, second call (Customer) returns null
-      mockSelectExecuteTakeFirst.mockResolvedValueOnce(mockUser).mockResolvedValueOnce(null);
+      mockSelectExecuteTakeFirst
+        .mockResolvedValueOnce(mockUser)
+        .mockResolvedValueOnce(null);
       mockSelectExecute.mockResolvedValue(mockClusters);
 
       const result = await service.getUserSummary("user_123");
@@ -268,14 +307,21 @@ describe("UserDeletionService", () => {
     });
 
     it("includes all active clusters in summary", async () => {
-      const mockUser = { id: "user_123", name: "Test", email: "test@example.com", image: null };
+      const mockUser = {
+        id: "user_123",
+        name: "Test",
+        email: "test@example.com",
+        image: null,
+      };
       const mockClusters = [
         { id: 1, name: "cluster-1", deletedAt: null },
         { id: 2, name: "cluster-2", deletedAt: null },
       ];
 
       // First call (User) returns mockUser, second call (Customer) returns null
-      mockSelectExecuteTakeFirst.mockResolvedValueOnce(mockUser).mockResolvedValueOnce(null);
+      mockSelectExecuteTakeFirst
+        .mockResolvedValueOnce(mockUser)
+        .mockResolvedValueOnce(null);
       mockSelectExecute.mockResolvedValue(mockClusters);
 
       const result = await service.getUserSummary("user_123");
@@ -285,13 +331,20 @@ describe("UserDeletionService", () => {
     });
 
     it("only counts active clusters (deletedAt is null)", async () => {
-      const mockUser = { id: "user_123", name: "Test", email: "test@example.com", image: null };
+      const mockUser = {
+        id: "user_123",
+        name: "Test",
+        email: "test@example.com",
+        image: null,
+      };
       const mockActiveClusters = [
         { id: 1, name: "cluster-1", deletedAt: null },
       ];
 
       // First call (User) returns mockUser, second call (Customer) returns null
-      mockSelectExecuteTakeFirst.mockResolvedValueOnce(mockUser).mockResolvedValueOnce(null);
+      mockSelectExecuteTakeFirst
+        .mockResolvedValueOnce(mockUser)
+        .mockResolvedValueOnce(null);
       mockSelectExecute.mockResolvedValue(mockActiveClusters);
 
       await service.getUserSummary("user_123");
@@ -302,11 +355,18 @@ describe("UserDeletionService", () => {
     it("handles database errors gracefully", async () => {
       mockSelectExecuteTakeFirst.mockRejectedValue(new Error("Query failed"));
 
-      await expect(service.getUserSummary("user_123")).rejects.toThrow("Query failed");
+      await expect(service.getUserSummary("user_123")).rejects.toThrow(
+        "Query failed",
+      );
     });
 
     it("returns correct summary structure", async () => {
-      const mockUser = { id: "user_123", name: "Test", email: "test@example.com", image: null };
+      const mockUser = {
+        id: "user_123",
+        name: "Test",
+        email: "test@example.com",
+        image: null,
+      };
       const mockCustomer = {
         id: 1,
         authUserId: "user_123",
@@ -331,9 +391,16 @@ describe("UserDeletionService", () => {
     });
 
     it("returns null customer when customer does not exist", async () => {
-      const mockUser = { id: "user_123", name: "Test", email: "test@example.com", image: null };
+      const mockUser = {
+        id: "user_123",
+        name: "Test",
+        email: "test@example.com",
+        image: null,
+      };
 
-      mockSelectExecuteTakeFirst.mockResolvedValueOnce(mockUser).mockResolvedValueOnce(null);
+      mockSelectExecuteTakeFirst
+        .mockResolvedValueOnce(mockUser)
+        .mockResolvedValueOnce(null);
       mockSelectExecute.mockResolvedValue([]);
 
       const result = await service.getUserSummary("user_123");
@@ -342,10 +409,17 @@ describe("UserDeletionService", () => {
     });
 
     it("returns zero active clusters count when no clusters exist", async () => {
-      const mockUser = { id: "user_123", name: "Test", email: "test@example.com", image: null };
+      const mockUser = {
+        id: "user_123",
+        name: "Test",
+        email: "test@example.com",
+        image: null,
+      };
 
       // First call (User) returns mockUser, second call (Customer) returns null
-      mockSelectExecuteTakeFirst.mockResolvedValueOnce(mockUser).mockResolvedValueOnce(null);
+      mockSelectExecuteTakeFirst
+        .mockResolvedValueOnce(mockUser)
+        .mockResolvedValueOnce(null);
       mockSelectExecute.mockResolvedValue([]);
 
       const result = await service.getUserSummary("user_123");

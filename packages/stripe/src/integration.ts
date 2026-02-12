@@ -2,10 +2,10 @@ import Stripe from "stripe";
 
 import {
   CIRCUIT_BREAKER_CONFIG,
-  RETRY_CONFIG,
-  TIMEOUT_CONFIG,
-  STRIPE_CONFIG,
   DEFAULT_RETRYABLE_ERRORS,
+  RETRY_CONFIG,
+  STRIPE_CONFIG,
+  TIMEOUT_CONFIG,
 } from "../../common/src/config/resilience";
 
 /**
@@ -39,10 +39,7 @@ export class IntegrationError extends Error {
  */
 export class CircuitBreakerOpenError extends IntegrationError {
   constructor(serviceName: string) {
-    super(
-      `Circuit breaker is open for ${serviceName}`,
-      "CIRCUIT_BREAKER_OPEN",
-    );
+    super(`Circuit breaker is open for ${serviceName}`, "CIRCUIT_BREAKER_OPEN");
     this.name = "CircuitBreakerOpenError";
   }
 }
@@ -59,20 +56,20 @@ interface CircuitBreakerState {
 
 /**
  * Circuit Breaker Pattern Implementation
- * 
+ *
  * Prevents cascading failures by stopping calls to failing services.
  * After a threshold number of failures, the circuit "opens" and
  * all calls immediately fail without attempting the service.
- * 
+ *
  * This pattern improves system resilience by:
  * - Preventing resource exhaustion on failing services
  * - Providing fast failures when services are down
  * - Allowing services time to recover
- * 
+ *
  * @example
  * ```typescript
  * const stripeBreaker = new CircuitBreaker("Stripe", 5, 60000);
- * 
+ *
  * try {
  *   const result = await stripeBreaker.execute(() => stripe.charges.create(params));
  * } catch (error) {
@@ -92,7 +89,7 @@ export class CircuitBreaker {
 
   /**
    * Create a new circuit breaker
-   * 
+   *
    * @param serviceName - Name of the service being protected (for error messages)
    * @param threshold - Number of consecutive failures before opening circuit (default: 5)
    * @param resetTimeoutMs - Time to wait before attempting to close circuit (default: 60000ms)
@@ -105,11 +102,11 @@ export class CircuitBreaker {
 
   /**
    * Execute a function with circuit breaker protection
-   * 
+   *
    * If circuit is open and reset timeout hasn't passed, throws CircuitBreakerOpenError.
    * If circuit is open but timeout has passed, attempts to reset and execute.
    * If circuit is closed, executes function and tracks success/failure.
-   * 
+   *
    * @param fn - Async function to execute with protection
    * @returns Result of the function if successful
    * @throws CircuitBreakerOpenError if circuit is open
@@ -172,7 +169,7 @@ export class CircuitBreaker {
   /**
    * Check if circuit breaker is currently open
    * Auto-resets if timeout has expired
-   * 
+   *
    * @returns true if circuit is open and timeout hasn't expired
    */
   isOpen(): boolean {
@@ -200,10 +197,10 @@ function sleep(ms: number): Promise<void> {
 
 /**
  * Retry function with exponential backoff
- * 
+ *
  * Retries a function on failure with exponentially increasing delays.
  * Useful for handling transient network errors and rate limits.
- * 
+ *
  * @example
  * ```typescript
  * const result = await withRetry(
@@ -252,7 +249,10 @@ export async function withRetry<T>(
 /**
  * Check if an error is retryable based on error codes
  */
-export function isRetryableError(error: unknown, retryableErrors: string[]): boolean {
+export function isRetryableError(
+  error: unknown,
+  retryableErrors: string[],
+): boolean {
   if (error instanceof Error) {
     return retryableErrors.some((code) =>
       error.message.toLowerCase().includes(code.toLowerCase()),
@@ -263,10 +263,10 @@ export function isRetryableError(error: unknown, retryableErrors: string[]): boo
 
 /**
  * Wrap a promise with timeout protection
- * 
+ *
  * Throws IntegrationError if promise doesn't resolve within timeout.
  * Prevents operations from hanging indefinitely.
- * 
+ *
  * @example
  * ```typescript
  * try {
@@ -310,20 +310,20 @@ export function createStripeClientWithDefaults(
 
 /**
  * Safe Stripe API call with full resilience patterns
- * 
+ *
  * Combines circuit breaker, retry logic, and timeout protection.
  * All Stripe API calls should use this wrapper.
- * 
+ *
  * Features:
  * - Circuit breaker to prevent cascading failures
  * - Retry with exponential backoff for transient errors
  * - Timeout protection to prevent hanging calls
  * - Standardized error handling with IntegrationError
- * 
+ *
  * @example
  * ```typescript
  * const stripeBreaker = new CircuitBreaker("Stripe", 5, 60000);
- * 
+ *
  * const session = await safeStripeCall(
  *   () => stripe.checkout.sessions.create(params, { idempotencyKey }),
  *   {
@@ -354,15 +354,21 @@ export async function safeStripeCall<T>(
   const executeWithCircuitBreaker = async (): Promise<T> => {
     if (circuitBreaker) {
       return circuitBreaker.execute(async () => {
-        return withRetry(async () => {
-          return withTimeout(fn(), timeoutMs);
-        }, { maxAttempts });
+        return withRetry(
+          async () => {
+            return withTimeout(fn(), timeoutMs);
+          },
+          { maxAttempts },
+        );
       });
     }
 
-    return withRetry(async () => {
-      return withTimeout(fn(), timeoutMs);
-    }, { maxAttempts });
+    return withRetry(
+      async () => {
+        return withTimeout(fn(), timeoutMs);
+      },
+      { maxAttempts },
+    );
   };
 
   try {

@@ -1,8 +1,8 @@
 import * as React from "react";
 
+import { ANIMATION } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import * as Icons from "@saasfly/ui/icons";
-import { ANIMATION } from "@saasfly/common";
 
 // Note: This component uses dynamic icon access by name, which requires namespace import
 // For type safety, the name prop is validated against: keyof typeof Icons
@@ -17,7 +17,7 @@ export function EmptyPlaceholder({
   return (
     <div
       className={cn(
-        `group flex min-h-[400px] flex-col items-center justify-center rounded-md border border-dashed p-8 text-center animate-in fade-in-50 transition-all ${ANIMATION.duration.medium} ${ANIMATION.easing.default} hover:border-primary/50 hover:bg-muted/30 hover:shadow-sm`,
+        `group flex min-h-[400px] flex-col items-center justify-center rounded-md border border-dashed p-8 text-center transition-all animate-in fade-in-50 ${ANIMATION.duration.medium} ${ANIMATION.easing.default} hover:border-primary/50 hover:bg-muted/30 hover:shadow-sm`,
         className,
       )}
       {...props}
@@ -29,8 +29,9 @@ export function EmptyPlaceholder({
   );
 }
 
-interface EmptyPlaceholderIconProps
-  extends Partial<React.SVGProps<SVGSVGElement>> {
+interface EmptyPlaceholderIconProps extends Partial<
+  React.SVGProps<SVGSVGElement>
+> {
   name: keyof typeof Icons;
 }
 
@@ -45,8 +46,15 @@ EmptyPlaceholder.Icon = function EmptyPlaceHolderIcon({
   }
 
   return (
-    <div className={`flex h-20 w-20 items-center justify-center rounded-full bg-muted transition-transform ${ANIMATION.duration.medium} ${ANIMATION.easing.default} group-hover:scale-110 group-hover:bg-muted/80`}>
-      <Icon className={cn(`h-10 w-10 transition-colors ${ANIMATION.duration.medium} group-hover:text-primary`, className)} />
+    <div
+      className={`flex h-20 w-20 items-center justify-center rounded-full bg-muted transition-transform ${ANIMATION.duration.medium} ${ANIMATION.easing.default} group-hover:scale-110 group-hover:bg-muted/80`}
+    >
+      <Icon
+        className={cn(
+          `h-10 w-10 transition-colors ${ANIMATION.duration.medium} group-hover:text-primary`,
+          className,
+        )}
+      />
     </div>
   );
 };

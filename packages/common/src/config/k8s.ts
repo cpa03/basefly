@@ -1,15 +1,15 @@
 /**
  * Centralized Kubernetes Configuration
- * 
+ *
  * This module provides a single source of truth for all Kubernetes-related
  * configuration values, eliminating hardcoded cluster settings.
- * 
+ *
  * @module @saasfly/common/config/k8s
  */
 
 /**
  * Available cluster locations/regions
- * 
+ *
  * These are the geographic locations where Kubernetes clusters can be deployed.
  * Using a readonly array ensures these cannot be modified at runtime.
  */
@@ -42,7 +42,7 @@ export const AVAILABLE_CLUSTER_REGIONS = CLUSTER_LOCATIONS;
  */
 export const CLUSTER_STATUSES = [
   "PENDING",
-  "CREATING", 
+  "CREATING",
   "INITING",
   "RUNNING",
   "STOPPED",
@@ -95,7 +95,9 @@ export type SubscriptionTier = keyof typeof CLUSTER_TIER_LIMITS;
 /**
  * Check if a location is valid
  */
-export function isValidClusterLocation(location: string): location is ClusterLocation {
+export function isValidClusterLocation(
+  location: string,
+): location is ClusterLocation {
   return CLUSTER_LOCATIONS.includes(location as ClusterLocation);
 }
 
@@ -103,12 +105,14 @@ export function isValidClusterLocation(location: string): location is ClusterLoc
  * Get the display name for a cluster location
  * Can be used for localization in the future
  */
-export function getClusterLocationDisplayName(location: ClusterLocation): string {
+export function getClusterLocationDisplayName(
+  location: ClusterLocation,
+): string {
   const displayNames: Record<ClusterLocation, string> = {
-    "China": "China (Mainland)",
+    China: "China (Mainland)",
     "Hong Kong": "Hong Kong",
-    "Singapore": "Singapore",
-    "Tokyo": "Tokyo, Japan",
+    Singapore: "Singapore",
+    Tokyo: "Tokyo, Japan",
     "US-West": "US West",
   };
   return displayNames[location] ?? location;

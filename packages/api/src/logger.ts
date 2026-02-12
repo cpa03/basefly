@@ -10,11 +10,11 @@ const logger = pino({
 
 /**
  * Enhanced logger with request ID support for distributed tracing
- * 
+ *
  * @example
  * ```ts
  * import { logger } from "@saasfly/api/logger";
- * 
+ *
  * logger.info("Processing request", { requestId: "uuid" });
  * logger.error("Operation failed", error, { requestId: "uuid" });
  * ```

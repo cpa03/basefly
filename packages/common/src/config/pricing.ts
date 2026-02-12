@@ -1,9 +1,9 @@
 /**
  * Centralized Pricing Configuration
- * 
+ *
  * This module provides a single source of truth for all pricing-related
  * configuration values, eliminating hardcoded prices scattered across the codebase.
- * 
+ *
  * @module @saasfly/common/config/pricing
  */
 
@@ -117,7 +117,7 @@ export function getStripePriceIds() {
  */
 export function formatPrice(amount: number, currency = "USD"): string {
   if (amount === 0) return "Free";
-  
+
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency,
@@ -131,7 +131,7 @@ export function formatPrice(amount: number, currency = "USD"): string {
  */
 export function getPriceDisplayString(
   tier: keyof typeof PRICING_TIERS,
-  billingCycle: "monthly" | "yearly"
+  billingCycle: "monthly" | "yearly",
 ): string {
   const price = PRICING_TIERS[tier][billingCycle];
   if (price === 0) return "Free";
@@ -143,7 +143,7 @@ export function getPriceDisplayString(
  */
 export function getLegacyPriceDisplayString(
   tier: keyof typeof LEGACY_PRICING_TIERS,
-  billingCycle: "monthly" | "yearly"
+  billingCycle: "monthly" | "yearly",
 ): string {
   const price = LEGACY_PRICING_TIERS[tier][billingCycle];
   if (price === 0) return "Free";

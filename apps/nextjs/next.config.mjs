@@ -3,9 +3,9 @@ import "./src/env.mjs";
 import "@saasfly/auth/env.mjs";
 
 import { withNextDevtools } from "@next-devtools/core/plugin";
+import withBundleAnalyzer from "@next/bundle-analyzer";
 // import "@saasfly/api/env"
 import withMDX from "@next/mdx";
-import withBundleAnalyzer from "@next/bundle-analyzer";
 
 !process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
 

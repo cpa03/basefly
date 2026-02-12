@@ -1,6 +1,14 @@
 import * as React from "react";
 
-import { Check, Clock, PauseCircle, XCircle, Loader2 as SpinnerLoader } from "@saasfly/ui/icons";
+import {
+  Check,
+  Clock,
+  PauseCircle,
+  Loader2 as SpinnerLoader,
+  XCircle,
+} from "@saasfly/ui/icons";
+
+import { cn } from "./index";
 import {
   Tooltip,
   TooltipContent,
@@ -8,9 +16,13 @@ import {
   TooltipTrigger,
 } from "./tooltip";
 
-import { cn } from "./index";
-
-export type ClusterStatus = "PENDING" | "CREATING" | "INITING" | "RUNNING" | "STOPPED" | "DELETED";
+export type ClusterStatus =
+  | "PENDING"
+  | "CREATING"
+  | "INITING"
+  | "RUNNING"
+  | "STOPPED"
+  | "DELETED";
 
 interface StatusConfig {
   icon: typeof Clock;
@@ -124,7 +136,7 @@ export function StatusBadge({
         config.bgColor,
         config.textColor,
         styles.container,
-        className
+        className,
       )}
       role="status"
       aria-label={`${config.label} status`}
@@ -135,7 +147,7 @@ export function StatusBadge({
           "rounded-full",
           styles.dot,
           config.dotColor,
-          config.animate && "animate-pulse"
+          config.animate && "animate-pulse",
         )}
         aria-hidden="true"
       />
@@ -154,9 +166,7 @@ export function StatusBadge({
   return (
     <TooltipProvider delayDuration={200}>
       <Tooltip>
-        <TooltipTrigger asChild>
-          {badge}
-        </TooltipTrigger>
+        <TooltipTrigger asChild>{badge}</TooltipTrigger>
         <TooltipContent side="top" className="max-w-[200px]">
           <p className="font-semibold">{config.label}</p>
           <p className="text-xs text-muted-foreground">{config.description}</p>

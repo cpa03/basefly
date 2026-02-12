@@ -1,14 +1,14 @@
 /**
  * Animation timing constants for consistent transitions across the application.
  * These constants provide complete Tailwind class names that work with Tailwind's JIT compiler.
- * 
+ *
  * Usage:
  * ```tsx
  * import { ANIMATION } from "@saasfly/common";
- * 
+ *
  * // In className
  * className={`transition-all ${ANIMATION.transition.duration.medium} ${ANIMATION.transition.scale.default}`}
- * 
+ *
  * // In Framer Motion (use seconds)
  * transition={{ duration: ANIMATION.seconds.medium }}
  * ```
@@ -154,9 +154,11 @@ export const radixAnimations = {
 /** Focus ring configuration for consistent keyboard navigation */
 export const focusRing = {
   /** Standard focus ring for interactive elements */
-  default: "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  default:
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
   /** Subtle focus ring for smaller elements */
-  subtle: "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+  subtle:
+    "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
   /** No focus ring (for custom implementations) */
   none: "",
 } as const;

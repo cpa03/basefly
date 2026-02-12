@@ -1,8 +1,9 @@
 import type { NextRequest, NextResponse } from "next/server";
 
 const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-const isValidClerkKey = clerkKey && 
-  !clerkKey.includes("dummy") && 
+const isValidClerkKey =
+  clerkKey &&
+  !clerkKey.includes("dummy") &&
   !clerkKey.includes("placeholder") &&
   clerkKey.startsWith("pk_") &&
   clerkKey.length > 20;

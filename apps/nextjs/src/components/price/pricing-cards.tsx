@@ -9,11 +9,13 @@ import { Check, Close } from "@saasfly/ui/icons";
 import { Switch } from "@saasfly/ui/switch";
 
 import { BillingFormButton } from "~/components/price/billing-form-button";
-import { priceDataMap } from "~/config/price/price-data";
+import {
+  priceDataMap,
+  type SubscriptionPlanTranslation,
+} from "~/config/price/price-data";
+import { siteConfig } from "~/config/site";
 import { useSigninModal } from "~/hooks/use-signin-modal";
 import { UserSubscriptionPlan } from "~/types";
-import type { SubscriptionPlanTranslation } from "~/config/price/price-data";
-import { siteConfig } from "~/config/site";
 
 interface PricingCardsProps {
   userId?: string;

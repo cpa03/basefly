@@ -9,18 +9,19 @@ import { cn } from "@saasfly/ui";
 import { buttonVariants, type ButtonProps } from "@saasfly/ui/button";
 import { Add, Spinner } from "@saasfly/ui/icons";
 import type { ToastProps } from "@saasfly/ui/toast";
-
 import { toast as _toast } from "@saasfly/ui/use-toast";
-
-// Type assertion to satisfy ESLint while maintaining functionality
-const toast = _toast as (props: Omit<ToastProps, "id"> & { 
-  title?: React.ReactNode;
-  description?: React.ReactNode;
-  variant?: "default" | "destructive";
-}) => { id: string; dismiss: () => void; update: (props: ToastProps) => void };
 
 import { DEFAULT_CLUSTER_CONFIG } from "~/config/k8s";
 import { trpc } from "~/trpc/client";
+
+// Type assertion to satisfy ESLint while maintaining functionality
+const toast = _toast as (
+  props: Omit<ToastProps, "id"> & {
+    title?: React.ReactNode;
+    description?: React.ReactNode;
+    variant?: "default" | "destructive";
+  },
+) => { id: string; dismiss: () => void; update: (props: ToastProps) => void };
 
 interface K8sCreateButtonProps extends ButtonProps {
   dict: Record<string, unknown>;
@@ -45,11 +46,20 @@ export function K8sCreateButton({
         location: DEFAULT_CLUSTER_CONFIG.location,
       });
 
-      const response = res as { success?: boolean; id?: number; errors?: { message?: string }[] };
+      const response = res as {
+        success?: boolean;
+        id?: number;
+        errors?: { message?: string }[];
+      };
       if (!response?.success) {
         toast({
-          title: (dict.k8s as Record<string, Record<string, string>>)?.errors?.create_failed_title ?? "Something went wrong.",
-          description: (dict.k8s as Record<string, Record<string, string>>)?.errors?.create_failed_desc ?? "Your cluster was not created. Please try again.",
+          title:
+            (dict.k8s as Record<string, Record<string, string>>)?.errors
+              ?.create_failed_title ?? "Something went wrong.",
+          description:
+            (dict.k8s as Record<string, Record<string, string>>)?.errors
+              ?.create_failed_desc ??
+            "Your cluster was not created. Please try again.",
           variant: "destructive",
         });
         return;
@@ -63,8 +73,13 @@ export function K8sCreateButton({
       }
     } catch (error: unknown) {
       toast({
-        title: (dict.k8s as Record<string, Record<string, string>>)?.errors?.unexpected_error_title ?? "Error",
-        description: (dict.k8s as Record<string, Record<string, string>>)?.errors?.unexpected_error_desc ?? "An unexpected error occurred. Please try again.",
+        title:
+          (dict.k8s as Record<string, Record<string, string>>)?.errors
+            ?.unexpected_error_title ?? "Error",
+        description:
+          (dict.k8s as Record<string, Record<string, string>>)?.errors
+            ?.unexpected_error_desc ??
+          "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
     } finally {

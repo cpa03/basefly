@@ -3,10 +3,10 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { User } from "@saasfly/auth";
 import { useForm } from "react-hook-form";
 import type * as z from "zod";
 
+import type { User } from "@saasfly/auth";
 import { cn } from "@saasfly/ui";
 import { Button } from "@saasfly/ui/button";
 import {
@@ -96,7 +96,11 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
               {...register("name")}
             />
             {errors?.name && (
-              <p id="name-error" className="px-1 text-xs text-red-600" role="alert">
+              <p
+                id="name-error"
+                className="px-1 text-xs text-red-600"
+                role="alert"
+              >
                 {errors.name.message}
               </p>
             )}

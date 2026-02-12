@@ -12,7 +12,7 @@ declare global {
     user?: User & {
       id: string;
       isAdmin: boolean;
-    }
+    };
   }
 }
 
@@ -20,7 +20,7 @@ export const authOptions = {
   pages: {
     signIn: "/login",
   },
-}
+};
 
 export async function getCurrentUser() {
   return await getSessionUser();

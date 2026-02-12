@@ -30,11 +30,21 @@ export {
   sanitizeClusterName,
   generateClusterName,
 } from "./config/k8s";
-export type { ClusterLocation, ClusterStatus, SubscriptionTier } from "./config/k8s";
+export type {
+  ClusterLocation,
+  ClusterStatus,
+  SubscriptionTier,
+} from "./config/k8s";
 
 // Animation constants
 export { ANIMATION } from "./animation";
-export type { DurationKey, EasingKey, ScaleKey, FocusRingKey, HoverScaleKey } from "./animation";
+export type {
+  DurationKey,
+  EasingKey,
+  ScaleKey,
+  FocusRingKey,
+  HoverScaleKey,
+} from "./animation";
 
 // UI configuration - timing, colors, and feedback
 export {

@@ -29,19 +29,19 @@ export interface SoftDeleteEntity {
 
 /**
  * Generic soft delete service for database entities
- * 
+ *
  * @template T - The database table name (must be a valid table in DB schema)
- * 
+ *
  * @example
  * ```typescript
  * const clusterService = new SoftDeleteService<"K8sClusterConfig">("K8sClusterConfig");
- * 
+ *
  * // Soft delete a cluster with request tracking
  * await clusterService.softDelete(clusterId, userId, { requestId: "uuid" });
- * 
+ *
  * // Restore a deleted cluster
  * await clusterService.restore(clusterId, userId, { requestId: "uuid" });
- * 
+ *
  * // Find active clusters only
  * const clusters = await clusterService.findAllActive(userId);
  * ```
@@ -51,13 +51,17 @@ export class SoftDeleteService<T extends keyof DB> {
 
   /**
    * Mark a record as deleted by setting deletedAt timestamp
-   * 
+   *
    * @param id - The record ID to delete
    * @param userId - The user ID for ownership validation
    * @param options - Optional request ID for distributed tracing
    * @throws Error if record doesn't exist or doesn't belong to user
    */
-  async softDelete(id: number, userId: string, _options?: { requestId?: string }): Promise<void> {
+  async softDelete(
+    id: number,
+    userId: string,
+    _options?: { requestId?: string },
+  ): Promise<void> {
     await db
       .updateTable(this.tableName)
       .set({ deletedAt: new Date() } as any)
@@ -68,13 +72,17 @@ export class SoftDeleteService<T extends keyof DB> {
 
   /**
    * Restore a soft-deleted record by setting deletedAt to null
-   * 
+   *
    * @param id - The record ID to restore
    * @param userId - The user ID for ownership validation
    * @param options - Optional request ID for distributed tracing
    * @throws Error if record doesn't exist or doesn't belong to user
    */
-  async restore(id: number, userId: string, _options?: { requestId?: string }): Promise<void> {
+  async restore(
+    id: number,
+    userId: string,
+    _options?: { requestId?: string },
+  ): Promise<void> {
     await db
       .updateTable(this.tableName)
       .set({ deletedAt: null } as any)
@@ -84,8 +92,8 @@ export class SoftDeleteService<T extends keyof DB> {
   }
 
   /**
-    * Find a single active (non-deleted) record by ID
-   * 
+   * Find a single active (non-deleted) record by ID
+   *
    * @param id - The record ID to find
    * @param userId - The user ID for ownership validation
    * @returns The record if found and belongs to the user, undefined otherwise
@@ -102,7 +110,7 @@ export class SoftDeleteService<T extends keyof DB> {
 
   /**
    * Find all active (non-deleted) records for a user
-   * 
+   *
    * @param userId - The user ID to find records for
    * @returns Array of active records belonging to the user
    */
@@ -117,7 +125,7 @@ export class SoftDeleteService<T extends keyof DB> {
 
   /**
    * Find all deleted records for a user (audit trail)
-   * 
+   *
    * @param userId - The user ID to find deleted records for
    * @returns Array of deleted records belonging to the user
    */
@@ -135,4 +143,6 @@ export class SoftDeleteService<T extends keyof DB> {
  * Pre-configured service instance for K8sClusterConfig table
  * Used throughout the application for cluster management
  */
-export const k8sClusterService = new SoftDeleteService<"K8sClusterConfig">("K8sClusterConfig");
+export const k8sClusterService = new SoftDeleteService<"K8sClusterConfig">(
+  "K8sClusterConfig",
+);

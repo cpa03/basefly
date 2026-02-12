@@ -3,8 +3,8 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import type { OAuthStrategy } from "@clerk/types";
 import { useSignIn } from "@clerk/nextjs";
+import type { OAuthStrategy } from "@clerk/types";
 
 import { Button } from "@saasfly/ui/button";
 import { GitHub, Spinner } from "@saasfly/ui/icons";
@@ -42,7 +42,9 @@ export const SignInClerkModal = ({
       .catch((err: Error) => {
         // See https://clerk.com/docs/custom-flows/error-handling
         // for more info on error handling
-        logger.info("Sign in errors", { errors: (err as { errors?: unknown[] }).errors });
+        logger.info("Sign in errors", {
+          errors: (err as { errors?: unknown[] }).errors,
+        });
         logger.error("Sign in failed", err);
       });
   };
@@ -50,7 +52,7 @@ export const SignInClerkModal = ({
   return (
     <Modal showModal={signInModal.isOpen} setShowModal={signInModal.onClose}>
       <div className="w-full">
-        <div className="flex flex-col items-center justify-center space-y-3 border-b border-neutral-200 dark:border-neutral-800 bg-background px-4 py-6 pt-8 text-center md:px-16">
+        <div className="flex flex-col items-center justify-center space-y-3 border-b border-neutral-200 bg-background px-4 py-6 pt-8 text-center dark:border-neutral-800 md:px-16">
           <a href={siteConfig.url}>
             <Image
               src="/images/avatars/saasfly-logo.svg"

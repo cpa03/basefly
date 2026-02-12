@@ -89,7 +89,10 @@ const FormItem = React.forwardRef<
 
   return (
     <FormItemContext.Provider value={{ id, shouldShake, setShouldShake }}>
-      <ShakeWrapper shake={shouldShake} onShakeComplete={() => setShouldShake(false)}>
+      <ShakeWrapper
+        shake={shouldShake}
+        onShakeComplete={() => setShouldShake(false)}
+      >
         <div ref={ref} className={cn("space-y-2", className)} {...props} />
       </ShakeWrapper>
     </FormItemContext.Provider>

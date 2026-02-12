@@ -62,7 +62,10 @@ const components = {
       {...props}
     />
   ),
-  a: ({ className, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
+  a: ({
+    className,
+    ...props
+  }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
     <a
       className={cn("font-medium underline underline-offset-4", className)}
       {...props}
@@ -83,7 +86,10 @@ const components = {
   li: ({ className, ...props }: React.HTMLAttributes<HTMLLIElement>) => (
     <li className={cn("mt-2", className)} {...props} />
   ),
-  blockquote: ({ className, ...props }: React.HTMLAttributes<HTMLQuoteElement>) => (
+  blockquote: ({
+    className,
+    ...props
+  }: React.HTMLAttributes<HTMLQuoteElement>) => (
     <blockquote
       className={cn(
         "mt-6 border-l-2 pl-6 italic [&>*]:text-muted-foreground",
@@ -99,7 +105,9 @@ const components = {
   }: React.ImgHTMLAttributes<HTMLImageElement>) => (
     <img className={cn("rounded-md border", className)} alt={alt} {...props} />
   ),
-  hr: ({ ...props }: React.HTMLAttributes<HTMLHRElement>) => <hr className="my-4 md:my-8" {...props} />,
+  hr: ({ ...props }: React.HTMLAttributes<HTMLHRElement>) => (
+    <hr className="my-4 md:my-8" {...props} />
+  ),
   table: ({ className, ...props }: React.HTMLAttributes<HTMLTableElement>) => (
     <div className="my-6 w-full overflow-y-auto">
       <table className={cn("w-full", className)} {...props} />

@@ -19,7 +19,9 @@ export async function hasEventBeenProcessed(eventId: string): Promise<boolean> {
 
     return !!event;
   } catch (error) {
-    logger.error("Failed to check webhook event processing status", error, { eventId });
+    logger.error("Failed to check webhook event processing status", error, {
+      eventId,
+    });
     return false;
   }
 }
@@ -41,7 +43,9 @@ export async function markEventAsProcessed(eventId: string): Promise<void> {
       })
       .execute();
   } catch (error) {
-    logger.error("Failed to mark webhook event as processed", error, { eventId });
+    logger.error("Failed to mark webhook event as processed", error, {
+      eventId,
+    });
     throw new IntegrationError(
       "Failed to update webhook event status",
       "WEBHOOK_UPDATE_FAILED",
@@ -82,11 +86,17 @@ export async function registerWebhookEvent(
     return true;
   } catch (error) {
     if (isDuplicateKeyError(error)) {
-      logger.info("Webhook event already processed, skipping", { eventId, eventType });
+      logger.info("Webhook event already processed, skipping", {
+        eventId,
+        eventType,
+      });
       return false;
     }
 
-    logger.error("Failed to register webhook event", error, { eventId, eventType });
+    logger.error("Failed to register webhook event", error, {
+      eventId,
+      eventType,
+    });
     throw new IntegrationError(
       "Failed to register webhook event",
       "WEBHOOK_REGISTRATION_FAILED",
@@ -149,7 +159,10 @@ export async function executeIdempotentWebhook<T>(
     await markEventAsProcessed(eventId);
     return result;
   } catch (error) {
-    logger.error("Webhook handler execution failed", error, { eventId, eventType });
+    logger.error("Webhook handler execution failed", error, {
+      eventId,
+      eventType,
+    });
     throw error;
   }
 }
@@ -188,7 +201,9 @@ export async function cleanupOldWebhookEvents(
 
     return deletedCount;
   } catch (error) {
-    logger.error("Failed to cleanup old webhook events", error, { retentionDays });
+    logger.error("Failed to cleanup old webhook events", error, {
+      retentionDays,
+    });
     return 0;
   }
 }

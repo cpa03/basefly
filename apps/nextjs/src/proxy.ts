@@ -13,11 +13,11 @@ export const config = {
 
 const cspHeader = `
   default-src 'self';
-  script-src 'self' 'unsafe-inline' cdn.jsdelivr.net;
+  script-src 'self' 'unsafe-inline' cdn.jsdelivr.net https://va.vercel-scripts.com;
   style-src 'self' 'unsafe-inline' cdn.jsdelivr.net;
   img-src 'self' blob: data: https://*.unsplash.com https://*.githubusercontent.com https://*.twil.lol https://*.twillot.com https://*.setupyourpay.com https://cdn.sanity.io https://*.twimg.com;
   font-src 'self' data: cdn.jsdelivr.net;
-  connect-src 'self' https://*.clerk.accounts.dev https://*.stripe.com https://api.stripe.com https://*.posthog.com;
+  connect-src 'self' https://*.clerk.accounts.dev https://*.stripe.com https://api.stripe.com https://*.posthog.com ws://localhost:12882/;
   frame-src 'self' https://js.stripe.com;
   object-src 'none';
   base-uri 'self';

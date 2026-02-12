@@ -1,5 +1,3 @@
-export { resend } from "./email";
-
 export { siteConfig } from "./config/site";
 
 // Pricing configuration - centralized pricing values

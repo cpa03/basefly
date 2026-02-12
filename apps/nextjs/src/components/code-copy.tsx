@@ -11,7 +11,7 @@ import { FEEDBACK_TIMING, SEMANTIC_COLORS } from "@saasfly/common";
 export function CodeCopy() {
   const [copied, setCopied] = useState(false)
   const [isCopying, setIsCopying] = useState(false)
-  const command = siteConfig.cli.installCommand
+  const command = siteConfig.cli.primary
 
   const copyToClipboard = async () => {
     setIsCopying(true)

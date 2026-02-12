@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { allAuthors, allPosts } from "contentlayer/generated";
 
+import { BackToTop } from "~/components/back-to-top";
 import { Mdx } from "~/components/content/mdx-components";
 
 import "~/styles/mdx.css";
@@ -163,6 +164,7 @@ export default function PostPage({ params }: PostPageProps) {
           See all posts
         </Link>
       </div>
+      <BackToTop />
     </article>
   );
 }

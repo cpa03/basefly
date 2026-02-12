@@ -74,7 +74,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-  const isValidClerkKey = clerkKey && !clerkKey.includes("dummy") && clerkKey !== "1";
+  const isValidClerkKey = clerkKey && 
+    !clerkKey.includes("dummy") && 
+    !clerkKey.includes("placeholder") &&
+    clerkKey.startsWith("pk_") &&
+    clerkKey.length > 20;
   const ClerkProviderWrapper = isValidClerkKey
     ? ClerkProvider
     : ({ children }: { children: React.ReactNode }) => <>{children}</>;

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
-
 import { notFound } from "next/navigation";
 
 import { Mdx } from "~/components/content/mdx-components";
@@ -7,7 +5,10 @@ import { DashboardTableOfContents } from "~/components/content/toc";
 import { DocsPageHeader } from "~/components/docs/page-header";
 import { DocsPager } from "~/components/docs/pager";
 import { getTableOfContents } from "~/lib/toc";
-import { allDocs } from ".contentlayer/generated";
+import { allDocs as rawDocs } from ".contentlayer/generated";
+import type { Doc } from "~/types";
+
+const allDocs = rawDocs as Doc[];
 
 import "~/styles/mdx.css";
 
@@ -22,13 +23,9 @@ interface DocPageProps {
   };
 }
 
-function getDocFromParams(params: { slug: any }) {
-  const slug = params.slug?.join("/") || "";
+function getDocFromParams(params: { slug?: string[] }): Doc | undefined {
+  const slug = params.slug?.join("/") ?? "";
   const doc = allDocs.find((doc) => doc.slugAsParams === slug);
-  if (!doc) {
-    null;
-  }
-
   return doc;
 }
 

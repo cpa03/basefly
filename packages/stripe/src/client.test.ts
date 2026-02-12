@@ -170,10 +170,9 @@ describe("createCheckoutSession", () => {
 
     if (capturedFn) {
       await capturedFn();
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      const stripeCall = (
-        vi.mocked(stripe.checkout.sessions.create).mock.calls[0] as any
-      )?.[1];
+      const stripeCall =
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        (vi.mocked(stripe.checkout.sessions.create).mock.calls[0] as any)?.[1];
       expect(stripeCall?.idempotencyKey).toBeDefined();
       expect(stripeCall?.idempotencyKey).toMatch(/^checkout_session_\d+_/);
     }
@@ -195,10 +194,9 @@ describe("createCheckoutSession", () => {
 
     if (capturedFn) {
       await capturedFn();
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      const stripeCall = (
-        vi.mocked(stripe.checkout.sessions.create).mock.calls[0] as any
-      )?.[1];
+      const stripeCall =
+        // eslint-disable-next-line @typescript-eslint/unbound-method
+        (vi.mocked(stripe.checkout.sessions.create).mock.calls[0] as any)?.[1];
       expect(stripeCall?.idempotencyKey).toBe("custom_key_123");
     }
   });

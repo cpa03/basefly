@@ -108,7 +108,9 @@ export default function RootLayout({
             defaultTheme="dark"
             enableSystem={false}
           >
-            <NextDevtoolsProvider>{children}</NextDevtoolsProvider>
+            <NextDevtoolsProvider>
+              <main id="main-content">{children}</main>
+            </NextDevtoolsProvider>
             <Analytics />
             <SpeedInsights />
             <Toaster />

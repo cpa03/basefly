@@ -1,3 +1,4 @@
+import { BackToTop } from "~/components/back-to-top";
 import { DocsSidebarNav } from "~/components/docs/sidebar-nav";
 import type { Locale } from "~/config/i18n-config";
 import { getDocsConfig } from "~/config/ui/docs";
@@ -17,6 +18,7 @@ export default function DocsLayout({
         <DocsSidebarNav items={getDocsConfig(`${lang}`).sidebarNav} />
       </aside>
       {children}
+      <BackToTop />
     </div>
   );
 }

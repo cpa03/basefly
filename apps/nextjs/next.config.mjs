@@ -74,10 +74,6 @@ const config = {
     optimizePackageImports: ["@saasfly/ui", "lucide-react"],
     optimizeCss: true,
   },
-  turbopack: {
-    // Empty config to silence Turbopack/webpack conflict warning
-    // The @next-devtools/core/plugin uses webpack, but we're letting Turbopack handle the build
-  },
   async headers() {
     return [
       {

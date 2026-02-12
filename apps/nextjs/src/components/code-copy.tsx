@@ -19,8 +19,8 @@ export function CodeCopy() {
       await navigator.clipboard.writeText(command)
       setCopied(true)
       setTimeout(() => setCopied(false), FEEDBACK_TIMING.copySuccess)
-    } catch (err) {
-      logger.error("Failed to copy text", err, { command });
+    } catch (err: unknown) {
+      logger.error("Failed to copy text", err instanceof Error ? err.message : String(err), { command });
       toast({
         title: "Failed to copy",
         description: "Could not copy to clipboard. Please try again or copy manually.",

@@ -45,10 +45,11 @@ export function K8sCreateButton({
         location: DEFAULT_CLUSTER_CONFIG.location,
       });
 
-      if (!res?.success) {
+      const response = res as { success?: boolean; id?: number; errors?: { message?: string }[] };
+      if (!response?.success) {
         toast({
-          title: (dict.k8s?.errors as Record<string, string>)?.create_failed_title ?? "Something went wrong.",
-          description: (dict.k8s?.errors as Record<string, string>)?.create_failed_desc ?? "Your cluster was not created. Please try again.",
+          title: (dict.k8s as Record<string, Record<string, string>>)?.errors?.create_failed_title ?? "Something went wrong.",
+          description: (dict.k8s as Record<string, Record<string, string>>)?.errors?.create_failed_desc ?? "Your cluster was not created. Please try again.",
           variant: "destructive",
         });
         return;
@@ -57,13 +58,13 @@ export function K8sCreateButton({
       // This forces a cache invalidation.
       router.refresh();
 
-      if (res.id) {
-        router.push(`/${lang}/editor/cluster/${res.id}`);
+      if (response.id) {
+        router.push(`/${lang}/editor/cluster/${response.id}`);
       }
-    } catch (error) {
+    } catch (error: unknown) {
       toast({
-        title: (dict.k8s?.errors as Record<string, string>)?.unexpected_error_title ?? "Error",
-        description: (dict.k8s?.errors as Record<string, string>)?.unexpected_error_desc ?? "An unexpected error occurred. Please try again.",
+        title: (dict.k8s as Record<string, Record<string, string>>)?.errors?.unexpected_error_title ?? "Error",
+        description: (dict.k8s as Record<string, Record<string, string>>)?.errors?.unexpected_error_desc ?? "An unexpected error occurred. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -90,7 +91,7 @@ export function K8sCreateButton({
       ) : (
         <Add className="mr-2 h-4 w-4" aria-hidden="true" />
       )}
-      {dict.k8s?.new_cluster}
+      {(dict.k8s as Record<string, string>)?.new_cluster ?? "New Cluster"}
     </button>
   );
 }

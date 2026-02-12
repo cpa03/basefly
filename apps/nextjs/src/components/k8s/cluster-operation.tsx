@@ -26,7 +26,7 @@ import { toast } from "@saasfly/ui/use-toast";
 
 import { trpc } from "~/trpc/client";
 import type { Cluster } from "~/types/k8s";
-import { FEEDBACK_TIMING, SEMANTIC_COLORS } from "@saasfly/common/config/ui";
+import { FEEDBACK_TIMING, SEMANTIC_COLORS, TRANSITION_PRESETS } from "@saasfly/common/config/ui";
 
 interface ClusterOperationsProps {
   cluster: Pick<Cluster, "id" | "name">;

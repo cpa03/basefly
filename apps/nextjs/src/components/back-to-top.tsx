@@ -76,6 +76,13 @@ const BackToTop = React.forwardRef<HTMLButtonElement, BackToTopProps>(
       };
     }, [threshold]);
 
+    const scrollToTop = React.useCallback(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }, []);
+
     // Handle keyboard shortcut (Home key)
     React.useEffect(() => {
       const handleKeyDown = (e: KeyboardEvent) => {
@@ -88,14 +95,7 @@ const BackToTop = React.forwardRef<HTMLButtonElement, BackToTopProps>(
 
       window.addEventListener("keydown", handleKeyDown);
       return () => window.removeEventListener("keydown", handleKeyDown);
-    }, []);
-
-    const scrollToTop = React.useCallback(() => {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    }, []);
+    }, [scrollToTop]);
 
     // Position classes
     const positionClasses = {

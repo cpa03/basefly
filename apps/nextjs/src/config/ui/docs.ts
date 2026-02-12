@@ -1,3 +1,5 @@
+import { ROUTES } from "@saasfly/common";
+
 import type { DocsConfig } from "~/types";
 
 export const getDocsConfig = (_lang: string): DocsConfig => {
@@ -5,7 +7,7 @@ export const getDocsConfig = (_lang: string): DocsConfig => {
     mainNav: [
       {
         title: "Documentation",
-        href: `/docs`,
+        href: ROUTES.docs.home,
       },
       {
         title: "Guides",
@@ -19,7 +21,7 @@ export const getDocsConfig = (_lang: string): DocsConfig => {
         items: [
           {
             title: "Introduction",
-            href: `/docs`,
+            href: ROUTES.docs.home,
           },
         ],
       },
@@ -29,24 +31,24 @@ export const getDocsConfig = (_lang: string): DocsConfig => {
         items: [
           {
             title: "Introduction",
-            href: `/docs/documentation`,
+            href: ROUTES.docs.documentation,
           },
           {
             title: "Contentlayer",
-            href: `/docs/in-progress`,
+            href: ROUTES.docs.inProgress,
             disabled: true,
           },
           {
             title: "Components",
-            href: `/docs/documentation/components`,
+            href: ROUTES.docs.components,
           },
           {
             title: "Code Blocks",
-            href: `/docs/documentation/code-blocks`,
+            href: ROUTES.docs.codeBlocks,
           },
           {
             title: "Style Guide",
-            href: `/docs/documentation/style-guide`,
+            href: ROUTES.docs.styleGuide,
           },
         ],
       },
@@ -56,7 +58,7 @@ export const getDocsConfig = (_lang: string): DocsConfig => {
         items: [
           {
             title: "Introduction",
-            href: `/docs/in-progress`,
+            href: ROUTES.docs.inProgress,
             disabled: true,
           },
         ],
@@ -67,32 +69,32 @@ export const getDocsConfig = (_lang: string): DocsConfig => {
         items: [
           {
             title: "Introduction",
-            href: "/docs/in-progress",
+            href: ROUTES.docs.inProgress,
             disabled: true,
           },
           {
             title: "Layouts",
-            href: "/docs/in-progress",
+            href: ROUTES.docs.inProgress,
             disabled: true,
           },
           {
             title: "Server Components",
-            href: "/docs/in-progress",
+            href: ROUTES.docs.inProgress,
             disabled: true,
           },
           {
             title: "Authentication",
-            href: "/docs/in-progress",
+            href: ROUTES.docs.inProgress,
             disabled: true,
           },
           {
             title: "Database with Prisma",
-            href: "/docs/in-progress",
+            href: ROUTES.docs.inProgress,
             disabled: true,
           },
           {
             title: "API Routes",
-            href: "/docs/in-progress",
+            href: ROUTES.docs.inProgress,
             disabled: true,
           },
         ],

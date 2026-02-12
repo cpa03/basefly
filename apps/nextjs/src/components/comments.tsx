@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { getAvatarUrl } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import Marquee from "@saasfly/ui/marquee";
 
@@ -7,37 +8,37 @@ const reviews = [
     name: "Jack",
     username: "@jack",
     body: "I've never seen anything like this before. It's amazing. I love it.",
-    img: "https://avatar.vercel.sh/jack",
+    img: getAvatarUrl("jack"),
   },
   {
     name: "Alex",
     username: "@alex",
     body: "This tool has revolutionized the way our team works.",
-    img: "https://avatar.vercel.sh/jill",
+    img: getAvatarUrl("alex"),
   },
   {
     name: "Shamoki",
     username: "@shamoki",
     body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/john",
+    img: getAvatarUrl("shamoki"),
   },
   {
     name: "王伟",
     username: "@wangwei",
     body: "这款 SaaS 服务简直是办公利器！我的工作效率提高了很多。",
-    img: "https://avatar.vercel.sh/jane",
+    img: getAvatarUrl("wangwei"),
   },
   {
     name: "김민수",
     username: "@kios",
     body: "저는 이 SaaS 서비스에 매우 만족하고 있습니다.",
-    img: "https://avatar.vercel.sh/jenny",
+    img: getAvatarUrl("kios"),
   },
   {
     name: "山田太郎",
     username: "@samtimkun",
     body: "このSaaSサービスには本当に感謝しています。",
-    img: "https://avatar.vercel.sh/james",
+    img: getAvatarUrl("samtimkun"),
   },
 ];
 

@@ -8,6 +8,7 @@ import { NextDevtoolsProvider } from "@next-devtools/core";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
+import { EXTERNAL_URLS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { Toaster } from "@saasfly/ui/toaster";
 
@@ -64,7 +65,7 @@ export const metadata = {
     icon: "/logo.svg",
     apple: "/apple-touch-icon.png",
   },
-  metadataBase: new URL("https://show.saasfly.io/"),
+  metadataBase: new URL(EXTERNAL_URLS.demo.home),
 };
 
 export default function RootLayout({

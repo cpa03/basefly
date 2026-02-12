@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import { EXTERNAL_URLS, getGitHubProfileUrl } from "@saasfly/common";
 import { getDictionary } from "~/lib/get-dictionary";
 import { siteConfig } from "~/config/site";
 
@@ -39,39 +40,39 @@ const people = [
     id: 1,
     name: "tianzx",
     designation: "CEO at Nextify",
-    image: "https://avatars.githubusercontent.com/u/10096899",
-    link: "https://x.com/nextify2024",
+    image: getGitHubProfileUrl("10096899"),
+    link: EXTERNAL_URLS.twitter.nextify,
   },
   {
     id: 2,
     name: "jackc3",
     designation: "Co-founder at Nextify",
-    image: "https://avatars.githubusercontent.com/u/10334353",
-    link: "https://x.com/BingxunYao",
+    image: getGitHubProfileUrl("10334353"),
+    link: EXTERNAL_URLS.twitter.bingxunYao,
   },
   {
     id: 3,
     name: "imesong",
     designation: "Contributor",
-    image: "https://avatars.githubusercontent.com/u/3849293",
+    image: getGitHubProfileUrl("3849293"),
   },
   {
     id: 4,
     name: "ziveen",
     designation: "Contributor",
-    image: "https://avatars.githubusercontent.com/u/22560152",
+    image: getGitHubProfileUrl("22560152"),
   },
   {
     id: 5,
     name: "Zenuncl",
     designation: "Independent Software Developer",
-    image: "https://avatars.githubusercontent.com/u/3316062",
+    image: getGitHubProfileUrl("3316062"),
   },
   {
     id: 6,
     name: "Innei",
     designation: "Indie Developer",
-    image: "https://avatars.githubusercontent.com/u/41265413",
+    image: getGitHubProfileUrl("41265413"),
   },
 ];
 
@@ -156,16 +157,16 @@ export default async function IndexPage({
         <div className="flex flex-col justify-center items-center pt-10">
           <div className="text-lg text-neutral-500 dark:text-neutral-400">{dict.marketing.sponsor.title}</div>
           <div className="mt-4 flex items-center gap-4">
-            <Link href="https://go.clerk.com/uKDp7Au" target="_blank">
-              <Image src="/images/clerk.png" width="48" height="48" alt="twillot"/>
+            <Link href={EXTERNAL_URLS.clerk.referral} target="_blank">
+              <Image src="/images/clerk.png" width="48" height="48" alt="clerk"/>
             </Link>
-            <Link href="https://www.twillot.com/" target="_blank">
-              <Image src="https://www.twillot.com/logo-128.png" width="48" height="48" alt="twillot"/>
+            <Link href={EXTERNAL_URLS.twillot.home} target="_blank">
+              <Image src={EXTERNAL_URLS.twillot.logo} width="48" height="48" alt="twillot"/>
             </Link>
-            <Link href="https://www.setupyourpay.com/" target="_blank">
-              <Image src="https://www.setupyourpay.com/logo.png" width="48" height="48" alt="setupyourpay" />
+            <Link href={EXTERNAL_URLS.setupyourpay.home} target="_blank">
+              <Image src={EXTERNAL_URLS.setupyourpay.logo} width="48" height="48" alt="setupyourpay" />
             </Link>
-            <Link href="https://opencollective.com/saasfly" target="_blank">
+            <Link href={EXTERNAL_URLS.opencollective.saasfly} target="_blank">
                 <div className="flex items-center gap-2 px-4 py-2 rounded-xl border-2 border-dashed border-neutral-300 dark:border-neutral-700 hover:bg-accent dark:hover:bg-neutral-800/30">
                 <Heart className="w-5 h-5 fill-pink-600 text-pink-600 dark:fill-pink-700 dark:text-pink-700" />
                 <span className="text-sm font-medium text-neutral-500 dark:text-neutral-200">{dict.marketing.sponsor.donate || ''}</span>

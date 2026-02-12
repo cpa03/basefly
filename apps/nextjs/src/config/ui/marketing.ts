@@ -1,3 +1,5 @@
+import { EXTERNAL_URLS, ROUTES } from "@saasfly/common";
+
 import type { Locale } from "~/config/i18n-config";
 import { getDictionary } from "~/lib/get-dictionary";
 import type { MarketingConfig } from "~/types";
@@ -14,23 +16,23 @@ export const getMarketingConfig = async ({
     mainNav: [
       {
         title: "Libra AI",
-        href: "https://libra.dev/",
+        href: EXTERNAL_URLS.libra.home,
       },
       {
         title: dict.marketing.main_nav_features,
-        href: `/#features`,
+        href: ROUTES.marketing.features,
       },
       {
         title: dict.marketing.main_nav_pricing,
-        href: `/pricing`,
+        href: ROUTES.marketing.pricing,
       },
       {
         title: dict.marketing.main_nav_blog,
-        href: `/blog`,
+        href: ROUTES.marketing.blog,
       },
       {
         title: dict.marketing.main_nav_documentation,
-        href: `/docs`,
+        href: ROUTES.marketing.docs,
       },
     ],
   };

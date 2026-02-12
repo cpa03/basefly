@@ -1,5 +1,3 @@
-export { resend } from "./email";
-
 export { siteConfig } from "./config/site";
 
 // Pricing configuration - centralized pricing values
@@ -55,3 +53,18 @@ export type {
   VisualEffects,
   TransitionPresetKey,
 } from "./config/ui";
+
+// URLs and routes configuration - centralized external and internal links
+export {
+  EXTERNAL_URLS,
+  ROUTES,
+  CONTACT,
+  GITHUB_REPO,
+  CLI_COMMANDS,
+  BRAND,
+  getExternalUrl,
+  getRoute,
+  getAvatarUrl,
+  getGitHubProfileUrl,
+} from "./config/urls";
+export type { ExternalUrlCategory, RouteSection } from "./config/urls";

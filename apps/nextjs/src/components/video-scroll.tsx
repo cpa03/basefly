@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
+import { EXTERNAL_URLS } from "@saasfly/common";
 import { ContainerScroll } from "@saasfly/ui/container-scroll-animation";
 import { ColourfulText } from "@saasfly/ui/colorful-text";
 
@@ -21,9 +22,9 @@ export function VideoScroll({ dict } : { dict: Record<string, string> | undefine
           </>
         }
       >
-        <Link href="https://x.com/i/broadcasts/1eaKbaYVAXkxX" target="_blank">
+        <Link href={EXTERNAL_URLS.xBroadcast.demo} target="_blank">
           <Image
-            src={`https://cdnv2.ruguoapp.com/FoAVSRtT2zVc96oDjAWrd5TvXXQ4v3.png`}
+            src={EXTERNAL_URLS.cdn.ruguoapp}
             alt="hero"
             height={720}
             width={1400}

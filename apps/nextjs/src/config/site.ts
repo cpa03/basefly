@@ -1,29 +1,14 @@
+import { BRAND, EXTERNAL_URLS, GITHUB_REPO, CLI_COMMANDS, CONTACT } from "@saasfly/common";
+
 export const siteConfig = {
-  name: "Saasfly",
-  description: "We provide an easier way to build saas service in production",
-  url: "https://github.com/saasfly/saasfly",
+  name: BRAND.name,
+  description: BRAND.description,
+  url: EXTERNAL_URLS.github.repo,
   ogImage: "",
   links: {
-    github: "https://github.com/saasfly/saasfly",
+    github: EXTERNAL_URLS.github.repo,
   },
-  github: {
-    owner: "saasfly",
-    repo: "saasfly",
-    // Set to null to fetch dynamically, or provide a string value
-    stars: "2.5K",
-  },
-  cli: {
-    // Primary installation command displayed on the homepage
-    installCommand: "bun create saasfly",
-    // Alternative commands for different package managers
-    alternatives: {
-      npm: "npx create-saasfly",
-      yarn: "yarn create saasfly",
-      pnpm: "pnpm create saasfly",
-    },
-  },
-  support: {
-    email: "support@saasfly.io",
-    subject: "Support Request",
-  },
+  github: GITHUB_REPO,
+  cli: CLI_COMMANDS,
+  support: CONTACT.support,
 };

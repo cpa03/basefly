@@ -100,7 +100,7 @@ export function ModeToggle() {
                 variant="ghost"
                 size="sm"
                 className="relative h-8 w-8 px-0"
-                aria-label={`Toggle theme (current: ${theme ?? "system"})`}
+                aria-label={`Toggle theme`}
               >
                 {currentIcon}
                 <span className="sr-only">Toggle theme</span>

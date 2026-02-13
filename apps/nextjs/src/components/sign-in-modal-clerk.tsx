@@ -14,6 +14,14 @@ import { siteConfig } from "~/config/site";
 import { useSigninModal } from "~/hooks/use-signin-modal";
 import { logger } from "~/lib/logger";
 
+function useClerkSignIn() {
+  try {
+    return useSignIn();
+  } catch {
+    return { signIn: null };
+  }
+}
+
 export const SignInClerkModal = ({
   dict,
 }: {
@@ -21,7 +29,7 @@ export const SignInClerkModal = ({
 }) => {
   const signInModal = useSigninModal();
   const [signInClicked, setSignInClicked] = useState(false);
-  const { signIn } = useSignIn();
+  const { signIn } = useClerkSignIn();
 
   if (!signIn) {
     return null;

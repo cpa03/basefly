@@ -35,10 +35,14 @@ export const createTRPCContext = async (opts: {
  * handling a tRPC call from a React Server Component.
  */
 const createContext = cache(async () => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
+  // Convert cookie store to string properly
+  const cookieHeader = Array.from(cookieStore.getAll())
+    .map((cookie) => `${cookie.name}=${cookie.value}`)
+    .join("; ");
   return createTRPCContext({
     headers: new Headers({
-      cookie: cookieStore.toString(),
+      cookie: cookieHeader,
       "x-trpc-source": "rsc",
     }),
     auth: await auth(),

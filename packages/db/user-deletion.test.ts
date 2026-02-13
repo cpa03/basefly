@@ -62,8 +62,6 @@ describe("UserDeletionService", () => {
     };
 
     // Mock db.transaction().execute(callback) pattern
-
-    // @ts-expect-error Complex transaction mock type
     vi.mocked(db.transaction).mockReturnValue({
       execute: vi
         .fn()
@@ -72,7 +70,7 @@ describe("UserDeletionService", () => {
             return callback(mockTrx);
           },
         ),
-    });
+    } as unknown as ReturnType<typeof db.transaction>);
 
     // Create a chainable mock object for select queries
     const createSelectChain = () => ({
@@ -87,14 +85,8 @@ describe("UserDeletionService", () => {
     });
     const selectChain = createSelectChain();
 
-    // @ts-expect-error Complex query builder mock type
     vi.mocked(db.selectFrom).mockReturnValue(
-      selectChain as unknown as {
-        selectAll: ReturnType<typeof vi.fn>;
-        where: ReturnType<typeof vi.fn>;
-        execute: ReturnType<typeof vi.fn>;
-        executeTakeFirst: ReturnType<typeof vi.fn>;
-      },
+      selectChain as unknown as ReturnType<typeof db.selectFrom>,
     );
 
     service = new UserDeletionService();

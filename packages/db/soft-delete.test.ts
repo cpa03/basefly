@@ -77,20 +77,10 @@ describe("SoftDeleteService", () => {
       where: mockUpdateWhere,
       set: mockUpdateSet,
       execute: mockUpdateExecute,
-    } as {
-      where: ReturnType<typeof vi.fn>;
-      set: ReturnType<typeof vi.fn>;
-      execute: ReturnType<typeof vi.fn>;
-    });
+    } as unknown as ReturnType<typeof db.updateTable>);
 
-    // @ts-expect-error Complex query builder mock type
     vi.mocked(db.selectFrom).mockReturnValue(
-      selectChain as unknown as {
-        selectAll: ReturnType<typeof vi.fn>;
-        where: ReturnType<typeof vi.fn>;
-        execute: ReturnType<typeof vi.fn>;
-        executeTakeFirst: ReturnType<typeof vi.fn>;
-      },
+      selectChain as unknown as ReturnType<typeof db.selectFrom>,
     );
 
     service = new SoftDeleteService("K8sClusterConfig");

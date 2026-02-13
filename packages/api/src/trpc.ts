@@ -12,9 +12,9 @@ export type { EndpointType } from "./rate-limiter";
 
 interface CreateContextOptions {
   req?: NextRequest;
-  auth?: ReturnType<typeof getAuth>;
+  auth?: ReturnType<typeof getAuth> | null;
 }
-type AuthObject = ReturnType<typeof getAuth>;
+type AuthObject = ReturnType<typeof getAuth> | null;
 export const createTRPCContext = async (opts: {
   headers: Headers;
   auth: AuthObject;
@@ -22,7 +22,7 @@ export const createTRPCContext = async (opts: {
 }) => {
   const requestId = getOrGenerateRequestId(opts.headers);
   return {
-    userId: opts.auth.userId,
+    userId: opts.auth?.userId ?? null,
     requestId,
     req: opts.req,
     ...opts,

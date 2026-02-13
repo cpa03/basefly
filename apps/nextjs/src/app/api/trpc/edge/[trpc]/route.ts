@@ -7,11 +7,30 @@ import { edgeRouter } from "@saasfly/api/edge";
 
 import { logger } from "~/lib/logger";
 
+function isClerkEnabled(): boolean {
+  const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  return !!(
+    clerkKey &&
+    !clerkKey.includes("dummy") &&
+    !clerkKey.includes("placeholder") &&
+    clerkKey.startsWith("pk_") &&
+    clerkKey.length > 20
+  );
+}
+
 // export const runtime = "edge";
 const createContext = async (req: NextRequest) => {
+  let authResult = null;
+  if (isClerkEnabled()) {
+    try {
+      authResult = getAuth(req);
+    } catch {
+      authResult = null;
+    }
+  }
   return createTRPCContext({
     headers: req.headers,
-    auth: getAuth(req),
+    auth: authResult,
   });
 };
 

@@ -12,6 +12,7 @@ import { EXTERNAL_URLS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { Toaster } from "@saasfly/ui/toaster";
 
+import { PageProgressBar } from "~/components/page-progress";
 import { TailwindIndicator } from "~/components/tailwind-indicator";
 import { ThemeProvider } from "~/components/theme-provider";
 import { i18n } from "~/config/i18n-config";
@@ -109,6 +110,7 @@ export default function RootLayout({
             defaultTheme="dark"
             enableSystem={false}
           >
+            <PageProgressBar />
             <NextDevtoolsProvider>
               <main id="main-content">{children}</main>
             </NextDevtoolsProvider>

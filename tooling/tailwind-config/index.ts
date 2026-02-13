@@ -139,7 +139,6 @@ function addVariablesForColors({
   addBase: (base: Record<string, unknown>) => void;
   theme: (path: string) => unknown;
 }) {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   const allColors = flattenColorPalette(theme("colors") as string) as Record<
     string,
     unknown

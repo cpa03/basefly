@@ -63,7 +63,7 @@ describe("UserDeletionService", () => {
 
     // Mock db.transaction().execute(callback) pattern
 
-    // @ts-expect-error Complex transaction mock type
+    // @ts-ignore Complex transaction mock type
     vi.mocked(db.transaction).mockReturnValue({
       execute: vi
         .fn()
@@ -87,8 +87,9 @@ describe("UserDeletionService", () => {
     });
     const selectChain = createSelectChain();
 
-    // @ts-expect-error Complex query builder mock type
+    // @ts-ignore Complex query builder mock type
     vi.mocked(db.selectFrom).mockReturnValue(
+      // @ts-ignore Argument type mismatch in mock
       selectChain as unknown as {
         selectAll: ReturnType<typeof vi.fn>;
         where: ReturnType<typeof vi.fn>;

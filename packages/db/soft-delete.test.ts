@@ -72,7 +72,7 @@ describe("SoftDeleteService", () => {
       executeTakeFirst: mockSelectExecuteTakeFirst,
     };
 
-    // @ts-expect-error Type instantiation is excessively deep
+    // @ts-ignore Type instantiation is excessively deep and possibly infinite
     vi.mocked(db.updateTable).mockReturnValue({
       where: mockUpdateWhere,
       set: mockUpdateSet,
@@ -83,8 +83,9 @@ describe("SoftDeleteService", () => {
       execute: ReturnType<typeof vi.fn>;
     });
 
-    // @ts-expect-error Complex query builder mock type
+    // @ts-ignore Complex query builder mock type
     vi.mocked(db.selectFrom).mockReturnValue(
+      // @ts-ignore Argument type mismatch in mock
       selectChain as unknown as {
         selectAll: ReturnType<typeof vi.fn>;
         where: ReturnType<typeof vi.fn>;

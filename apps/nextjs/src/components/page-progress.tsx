@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 
 import { cn } from "@saasfly/ui";
@@ -13,15 +14,7 @@ interface PageProgressProps {
 }
 
 const PageProgress = React.forwardRef<HTMLDivElement, PageProgressProps>(
-  (
-    {
-      color = "bg-primary",
-      height = 3,
-      delay = 100,
-      className,
-    },
-    ref,
-  ) => {
+  ({ color = "bg-primary", height = 3, delay = 100, className }, ref) => {
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const [progress, setProgress] = React.useState(0);
@@ -139,4 +132,12 @@ const PageProgress = React.forwardRef<HTMLDivElement, PageProgressProps>(
 
 PageProgress.displayName = "PageProgress";
 
-export { PageProgress, type PageProgressProps };
+function PageProgressBar(props: PageProgressProps) {
+  return (
+    <Suspense fallback={null}>
+      <PageProgress {...props} />
+    </Suspense>
+  );
+}
+
+export { PageProgress, PageProgressBar, type PageProgressProps };

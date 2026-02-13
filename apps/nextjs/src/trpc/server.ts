@@ -17,15 +17,26 @@ import type { AppRouter } from "@saasfly/api";
 import { appRouter } from "../../../../packages/api/src/root";
 import { transformer } from "./shared";
 
+function isClerkEnabled(): boolean {
+  const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  return !!(
+    clerkKey &&
+    !clerkKey.includes("dummy") &&
+    !clerkKey.includes("placeholder") &&
+    clerkKey.startsWith("pk_") &&
+    clerkKey.length > 20
+  );
+}
+
 type AuthObject = Awaited<ReturnType<typeof auth>>;
 
 export const createTRPCContext = async (opts: {
   headers: Headers;
-  auth: AuthObject;
+  auth: AuthObject | null;
   // eslint-disable-next-line @typescript-eslint/require-await
 }) => {
   return {
-    userId: opts.auth.userId,
+    userId: opts.auth?.userId ?? null,
     ...opts,
   };
 };
@@ -40,12 +51,23 @@ const createContext = cache(async () => {
   const cookieHeader = Array.from(cookieStore.getAll())
     .map((cookie) => `${cookie.name}=${cookie.value}`)
     .join("; ");
+
+  let authResult: AuthObject | null = null;
+
+  if (isClerkEnabled()) {
+    try {
+      authResult = await auth();
+    } catch {
+      authResult = null;
+    }
+  }
+
   return createTRPCContext({
     headers: new Headers({
       cookie: cookieHeader,
       "x-trpc-source": "rsc",
     }),
-    auth: await auth(),
+    auth: authResult,
   });
 });
 

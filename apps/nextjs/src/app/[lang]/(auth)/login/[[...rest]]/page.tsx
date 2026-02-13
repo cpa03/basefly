@@ -16,6 +16,17 @@ export const metadata: Metadata = {
   description: "Login to your account",
 };
 
+function isClerkEnabled(): boolean {
+  const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  return !!(
+    clerkKey &&
+    !clerkKey.includes("dummy") &&
+    !clerkKey.includes("placeholder") &&
+    clerkKey.startsWith("pk_") &&
+    clerkKey.length > 20
+  );
+}
+
 export default async function LoginPage({
   params: { lang },
 }: {
@@ -24,6 +35,8 @@ export default async function LoginPage({
   };
 }) {
   const dict = await getDictionary(lang);
+  const clerkEnabled = isClerkEnabled();
+
   return (
     <main className="container flex min-h-screen w-screen flex-col items-center justify-center">
       <Link
@@ -50,7 +63,14 @@ export default async function LoginPage({
             {dict.login.welcome_back}
           </h1>
         </div>
-        <UserClerkAuthForm lang={lang} dict={dict.login} />
+        {clerkEnabled ? (
+          <UserClerkAuthForm lang={lang} dict={dict.login} />
+        ) : (
+          <div className="text-center text-muted-foreground">
+            <p>Authentication is not configured.</p>
+            <p className="text-sm">Please contact the administrator.</p>
+          </div>
+        )}
       </div>
     </main>
   );

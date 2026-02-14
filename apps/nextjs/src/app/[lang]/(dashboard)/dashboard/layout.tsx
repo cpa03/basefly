@@ -14,9 +14,9 @@ import { getDictionary } from "~/lib/get-dictionary";
 
 interface DashboardLayoutProps {
   children?: React.ReactNode;
-  params: {
-    lang: Locale;
-  };
+  params: Promise<{
+    lang: string;
+  }>;
 }
 
 export function generateStaticParams() {
@@ -25,10 +25,11 @@ export function generateStaticParams() {
 
 export default async function DashboardLayout({
   children,
-  params: { lang },
+  params,
 }: DashboardLayoutProps) {
+  const { lang } = await params;
   const user = await getCurrentUser();
-  const dict = await getDictionary(lang);
+  const dict = await getDictionary(lang as Locale);
   if (!user) {
     redirect(authOptions?.pages?.signIn ?? "/login");
   }

@@ -14,14 +14,15 @@ export const dynamic = "force-dynamic";
 
 export default async function MarketingLayout({
   children,
-  params: { lang },
+  params,
 }: {
   children: React.ReactNode;
-  params: {
-    lang: Locale;
-  };
+  params: Promise<{
+    lang: string;
+  }>;
 }) {
-  const dict = await getDictionary(lang);
+  const { lang } = await params;
+  const dict = await getDictionary(lang as Locale);
   const user = await getCurrentUser();
   return (
     <div className="flex min-h-screen flex-col">
@@ -33,7 +34,7 @@ export default async function MarketingLayout({
           }
           params={{ lang: `${lang}` }}
           scroll={true}
-          user={user}
+          user={user ?? undefined}
           marketing={dict.marketing}
           dropdown={dict.dropdown}
         />

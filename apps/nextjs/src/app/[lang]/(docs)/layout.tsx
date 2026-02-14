@@ -11,16 +11,17 @@ import { getDictionary } from "~/lib/get-dictionary";
 
 interface DocsLayoutProps {
   children: React.ReactNode;
-  params: {
-    lang: Locale;
-  };
+  params: Promise<{
+    lang: string;
+  }>;
 }
 
 export default async function DocsLayout({
   children,
-  params: { lang },
+  params,
 }: DocsLayoutProps) {
-  const dict = await getDictionary(lang);
+  const { lang } = await params;
+  const dict = await getDictionary(lang as Locale);
   const user = await getCurrentUser();
 
   return (
@@ -33,7 +34,7 @@ export default async function DocsLayout({
           }
           params={{ lang: `${lang}` }}
           scroll={true}
-          user={user}
+          user={user ?? undefined}
           marketing={dict.marketing}
           dropdown={dict.dropdown}
         />

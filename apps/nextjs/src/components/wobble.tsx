@@ -3,14 +3,18 @@
 import React from "react";
 import Image from "next/image";
 
-import { EXTERNAL_URLS } from "@saasfly/common";
+import {
+  EXTERNAL_URLS,
+  IMAGE_DIMENSIONS,
+  WOBBLE_CARD_COLORS,
+} from "@saasfly/common";
 import { WobbleCard } from "@saasfly/ui/wobble-card";
 
 export function WobbleCardShow() {
   return (
     <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-4 lg:grid-cols-3">
       <WobbleCard
-        containerClassName="col-span-1 lg:col-span-2 h-full bg-pink-800 min-h-[500px] lg:min-h-[300px]"
+        containerClassName={`col-span-1 lg:col-span-2 h-full ${WOBBLE_CARD_COLORS.pink.background} min-h-[${IMAGE_DIMENSIONS.wobbleCard.height}px] lg:min-h-[300px]`}
         className=""
       >
         <div className="max-w-xs">
@@ -24,8 +28,8 @@ export function WobbleCardShow() {
         </div>
         <Image
           src={EXTERNAL_URLS.aceternity.linearImage}
-          width={500}
-          height={500}
+          width={IMAGE_DIMENSIONS.wobbleCard.width}
+          height={IMAGE_DIMENSIONS.wobbleCard.height}
           alt="linear demo"
           className="absolute -bottom-10 -right-4 rounded-2xl object-contain grayscale filter lg:-right-[40%]"
         />
@@ -39,7 +43,7 @@ export function WobbleCardShow() {
           mind.
         </p>
       </WobbleCard>
-      <WobbleCard containerClassName="col-span-1 lg:col-span-3 bg-blue-900 min-h-[500px] lg:min-h-[600px] xl:min-h-[300px]">
+      <WobbleCard containerClassName={`col-span-1 lg:col-span-3 ${WOBBLE_CARD_COLORS.blue.background} min-h-[${IMAGE_DIMENSIONS.wobbleCard.height}px] lg:min-h-[600px] xl:min-h-[300px]`}>
         <div className="max-w-sm">
           <h2 className="max-w-sm text-balance  text-left text-base font-semibold tracking-[-0.015em] text-white md:max-w-lg md:text-xl lg:text-3xl">
             Streamline Your SaaS Development with Nextify&apos;s Starter Kit.
@@ -51,8 +55,8 @@ export function WobbleCardShow() {
         </div>
         <Image
           src={EXTERNAL_URLS.aceternity.linearImage}
-          width={500}
-          height={500}
+          width={IMAGE_DIMENSIONS.wobbleCard.width}
+          height={IMAGE_DIMENSIONS.wobbleCard.height}
           alt="linear demo"
           className="absolute -bottom-10 -right-10 rounded-2xl object-contain md:-right-[40%] lg:-right-[20%]"
         />

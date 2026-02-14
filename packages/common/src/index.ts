@@ -1,5 +1,55 @@
 export { siteConfig } from "./config/site";
 
+// Contributors configuration - centralized team member data
+export {
+  CORE_CONTRIBUTORS,
+  CONTRIBUTORS,
+  getAllContributors,
+  getCoreContributors,
+  getContributorById,
+  getContributorAvatarUrl,
+  getContributorsForDisplay,
+} from "./config/contributors";
+export type { Contributor } from "./config/contributors";
+
+// Dimensions configuration - centralized sizes and measurements
+export {
+  IMAGE_DIMENSIONS,
+  CONTAINER_DIMENSIONS,
+  SPACING,
+  getImageDimensions,
+  getSpacing,
+} from "./config/dimensions";
+export type { ImageDimensionKey, SpacingCategory } from "./config/dimensions";
+
+// Theme configuration - centralized color tokens
+export {
+  BRAND_COLORS,
+  SEMANTIC_COLORS,
+  GRADIENTS,
+  FEATURE_CARD_COLORS,
+  WOBBLE_CARD_COLORS,
+  METEORS_CARD_COLORS,
+  TEXT_COLORS,
+  BACKGROUND_COLORS,
+  BORDER_COLORS,
+} from "./config/theme";
+export type {
+  BrandColorKey,
+  SemanticColorKey,
+  GradientKey,
+} from "./config/theme";
+
+// Content configuration - centralized content values
+export {
+  SAMPLE_DATES,
+  SAMPLE_STATS,
+  TYPEWRITER_WORDS,
+  TESTIMONIALS,
+  FEATURE_HIGHLIGHTS,
+} from "./config/content";
+export type { SampleStatKey, TypewriterWordSetKey } from "./config/content";
+
 // Pricing configuration - centralized pricing values
 export {
   PRICING_TIERS,

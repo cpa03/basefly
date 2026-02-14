@@ -4,10 +4,11 @@ import Link from "next/link";
 
 import {
   ASSETS,
+  CORE_CONTRIBUTORS,
   EXTERNAL_URLS,
-  getGitHubProfileUrl,
   MARKETING_FALLBACKS,
-  MARKETING_STATS,
+  SAMPLE_STATS,
+  getContributorAvatarUrl,
 } from "@saasfly/common";
 import { AnimatedTooltip } from "@saasfly/ui/animated-tooltip";
 import { BackgroundLines } from "@saasfly/ui/background-lines";
@@ -70,46 +71,18 @@ const VideoScroll = dynamic(
   },
 );
 
-const people = [
-  {
-    id: 1,
-    name: "tianzx",
-    designation: "CEO at Nextify",
-    image: getGitHubProfileUrl("10096899"),
-    link: EXTERNAL_URLS.twitter.nextify,
-  },
-  {
-    id: 2,
-    name: "jackc3",
-    designation: "Co-founder at Nextify",
-    image: getGitHubProfileUrl("10334353"),
-    link: EXTERNAL_URLS.twitter.bingxunYao,
-  },
-  {
-    id: 3,
-    name: "imesong",
-    designation: "Contributor",
-    image: getGitHubProfileUrl("3849293"),
-  },
-  {
-    id: 4,
-    name: "ziveen",
-    designation: "Contributor",
-    image: getGitHubProfileUrl("22560152"),
-  },
-  {
-    id: 5,
-    name: "Zenuncl",
-    designation: "Independent Software Developer",
-    image: getGitHubProfileUrl("3316062"),
-  },
-  {
-    id: 6,
-    name: "Innei",
-    designation: "Indie Developer",
-    image: getGitHubProfileUrl("41265413"),
-  },
-];
+const people = CORE_CONTRIBUTORS.map((contributor, index) => ({
+  id: index + 1,
+  name: contributor.username ?? contributor.name.toLowerCase(),
+  designation: contributor.role,
+  image: getContributorAvatarUrl(contributor),
+  link:
+    index === 0
+      ? EXTERNAL_URLS.twitter.nextify
+      : index === 1
+        ? EXTERNAL_URLS.twitter.bingxunYao
+        : undefined,
+}));
 
 export default async function IndexPage({
   params: { lang },
@@ -166,7 +139,8 @@ export default async function IndexPage({
                       <span className="text-neutral-500 dark:text-neutral-400">
                         {dict.marketing.contributors.developers_first}
                       </span>
-                      <ColourfulText text={String(MARKETING_STATS.developerCount)} />
+<<<<<<< HEAD
+                      <ColourfulText text={SAMPLE_STATS.users.count.toString()} />
                       <span className="text-neutral-500 dark:text-neutral-400">
                         {dict.marketing.contributors.developers_second}
                       </span>

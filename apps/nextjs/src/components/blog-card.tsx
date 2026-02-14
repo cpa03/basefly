@@ -1,7 +1,11 @@
 import Image from "next/image";
 
-import { EXTERNAL_URLS } from "@saasfly/common";
-import { TRANSITION_PRESETS } from "@saasfly/common/config/ui";
+import {
+  EXTERNAL_URLS,
+  IMAGE_DIMENSIONS,
+  SAMPLE_DATES,
+  TRANSITION_PRESETS,
+} from "@saasfly/common";
 import { FollowerPointerCard } from "@saasfly/ui/following-pointer";
 
 export function XBlogArticle() {
@@ -22,8 +26,8 @@ export function XBlogArticle() {
             <Image
               src={blogContent.image}
               alt={blogContent.title}
-              width={640}
-              height={400}
+              width={IMAGE_DIMENSIONS.medium.width}
+              height={IMAGE_DIMENSIONS.medium.height}
               className={`transform object-cover transition ${TRANSITION_PRESETS.container} group-hover:scale-95 group-hover:rounded-2xl`}
             />
           </div>
@@ -54,7 +58,7 @@ export function XBlogArticle() {
 const blogContent = {
   slug: "Making-Sense-of-React-Server-Components",
   author: "Nextify",
-  date: "26th March, 2024",
+  date: SAMPLE_DATES.blog.samplePost,
   title: "Making Sense of React Server Components",
   description:
     "So, here's something that makes me feel old: React celebrated its 10th birthday this year!",

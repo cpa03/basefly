@@ -2,7 +2,13 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 
-import { EXTERNAL_URLS, getGitHubProfileUrl } from "@saasfly/common";
+import {
+  ASSETS,
+  EXTERNAL_URLS,
+  getGitHubProfileUrl,
+  MARKETING_FALLBACKS,
+  MARKETING_STATS,
+} from "@saasfly/common";
 import { AnimatedTooltip } from "@saasfly/ui/animated-tooltip";
 import { BackgroundLines } from "@saasfly/ui/background-lines";
 import { Button } from "@saasfly/ui/button";
@@ -123,16 +129,14 @@ export default async function IndexPage({
               <div className="flex flex-col pt-4 md:pt-36 lg:pt-36 xl:pt-36">
                 <div className="mt-20">
                   <div className="mb-6 max-w-4xl text-left text-4xl font-semibold dark:text-zinc-100 md:text-5xl md:leading-[4rem] xl:text-5xl xl:leading-[4rem]">
-                    {dict.marketing.title ||
-                      "Ship your apps to the world easier with "}
+                    {dict.marketing.title || MARKETING_FALLBACKS.title}
                     <ColourfulText text="Saasfly" />
                   </div>
                 </div>
 
                 <div className="mt-4">
                   <span className="text-neutral-500 dark:text-neutral-400 sm:text-lg">
-                    {dict.marketing.sub_title ||
-                      "Your complete All-in-One solution for building SaaS services."}
+                    {dict.marketing.sub_title || MARKETING_FALLBACKS.subtitle}
                   </span>
                 </div>
 
@@ -153,7 +157,7 @@ export default async function IndexPage({
                   </div>
                   <div className="ml-8 flex flex-col items-center justify-start">
                     <div className="w-[340px]">
-                      <span className="font-semibold">9 </span>
+                      <span className="font-semibold">{MARKETING_STATS.contributorCount} </span>
                       <span className="text-neutral-500 dark:text-neutral-400">
                         {dict.marketing.contributors.contributors_desc}
                       </span>
@@ -162,7 +166,7 @@ export default async function IndexPage({
                       <span className="text-neutral-500 dark:text-neutral-400">
                         {dict.marketing.contributors.developers_first}
                       </span>
-                      <ColourfulText text="2000" />
+                      <ColourfulText text={String(MARKETING_STATS.developerCount)} />
                       <span className="text-neutral-500 dark:text-neutral-400">
                         {dict.marketing.contributors.developers_second}
                       </span>
@@ -193,7 +197,7 @@ export default async function IndexPage({
           <div className="mt-4 flex items-center gap-4">
             <Link href={EXTERNAL_URLS.clerk.referral} target="_blank">
               <Image
-                src="/images/clerk.png"
+                src={ASSETS.clerkLogo}
                 width="48"
                 height="48"
                 alt="clerk"

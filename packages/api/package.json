@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@saasfly/auth": "workspace:*",
+    "@saasfly/common": "workspace:*",
     "@saasfly/db": "workspace:*",
     "@saasfly/stripe": "workspace:*",
     "@trpc/client": "10.45.3",

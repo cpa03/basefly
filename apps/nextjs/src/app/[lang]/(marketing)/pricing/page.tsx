@@ -1,4 +1,5 @@
 import { getCurrentUser } from "@saasfly/auth";
+import { PAGE_METADATA } from "@saasfly/common";
 
 import { PricingCards } from "~/components/price/pricing-cards";
 import { PricingFaq } from "~/components/price/pricing-faq";
@@ -7,7 +8,7 @@ import { getDictionary } from "~/lib/get-dictionary";
 import { trpc } from "~/trpc/server";
 
 export const metadata = {
-  title: "Pricing",
+  title: PAGE_METADATA.pricing,
 };
 
 export default async function PricingPage({

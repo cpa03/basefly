@@ -138,11 +138,12 @@ export function sanitizeClusterName(name: string): string {
   return name.trim();
 }
 
-/**
- * Generate a unique cluster name with timestamp
- * Useful for creating default cluster names
- */
 export function generateClusterName(baseName: string = "Cluster"): string {
   const timestamp = new Date().toISOString().split("T")[0];
   return `${baseName} ${timestamp}`;
 }
+
+export const K8S_DEFAULTS = {
+  network: "Default",
+  plan: "FREE" as const,
+} as const;

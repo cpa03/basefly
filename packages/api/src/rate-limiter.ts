@@ -1,105 +1,37 @@
 import type { NextRequest } from "next/server";
+import {
+  RATE_LIMIT_DEFAULTS,
+  type EndpointType,
+  type RateLimitConfig,
+} from "@saasfly/common";
 
-/**
- * Rate Limiter
- *
- * Token bucket algorithm implementation for API rate limiting.
- * Protects endpoints from abuse, DDoS attacks, and resource exhaustion.
- *
- * Features:
- * - In-memory storage (Redis-ready for distributed systems)
- * - Automatic cleanup of expired entries
- * - Token bucket algorithm for smooth rate limiting
- * - Per-user or per-IP rate limiting
- *
- * @example
- * ```typescript
- * const limiter = new RateLimiter({
- *   maxRequests: 100,
- *   windowMs: 60 * 1000, // 1 minute
- * });
- *
- * const result = limiter.check("user123");
- * if (result.success) {
- *   // Allow request
- *   console.log(`Remaining: ${result.remaining}`);
- * } else {
- *   // Reject request
- *   console.log(`Reset at: ${new Date(result.resetAt)}`);
- * }
- * ```
- */
-
-/**
- * Internal state for a rate limit entry
- */
 interface RateLimitEntry {
   tokens: number;
   lastRefill: number;
 }
 
-/**
- * Configuration for rate limiter
- */
-interface RateLimitConfig {
-  maxRequests: number;
-  windowMs: number;
-}
-
-/**
- * Result of a rate limit check
- */
 interface RateLimitResult {
   success: boolean;
   remaining: number;
   resetAt: number;
 }
 
-/**
- * Token Bucket Rate Limiter
- *
- * Uses the token bucket algorithm where:
- * - Each request consumes 1 token
- * - Tokens refill at end of window
- * - Requests rejected when bucket is empty
- *
- * Advantages:
- * - Burst-friendly (allows short bursts within limit)
- * - Smooth rate limiting behavior
- * - Predictable reset times
- */
 export class RateLimiter {
   private store: Map<string, RateLimitEntry> = new Map();
   private maxRequests: number;
   private windowMs: number;
   private cleanupInterval: NodeJS.Timeout | null = null;
 
-  /**
-   * Create a new rate limiter
-   *
-   * @param config - Rate limit configuration
-   */
   constructor(config: RateLimitConfig) {
     this.maxRequests = config.maxRequests;
     this.windowMs = config.windowMs;
-
     this.startCleanup();
   }
 
-  /**
-   * Check if a request should be allowed
-   *
-   * Updates the token bucket for the identifier and returns
-   * whether the request is allowed along with rate limit info.
-   *
-   * @param identifier - Unique identifier (user ID or IP address)
-   * @returns Rate limit result with success status and metadata
-   */
   check(identifier: string): RateLimitResult {
     const now = Date.now();
     const entry = this.store.get(identifier);
 
-    // First request for this identifier
     if (!entry) {
       this.store.set(identifier, {
         tokens: this.maxRequests - 1,
@@ -112,7 +44,6 @@ export class RateLimiter {
       };
     }
 
-    // Refill tokens if window has passed
     const elapsed = now - entry.lastRefill;
 
     if (elapsed >= this.windowMs) {
@@ -120,7 +51,6 @@ export class RateLimiter {
       entry.lastRefill = now;
     }
 
-    // Check if tokens available
     if (entry.tokens > 0) {
       entry.tokens -= 1;
       return {
@@ -130,7 +60,6 @@ export class RateLimiter {
       };
     }
 
-    // Rate limit exceeded
     return {
       success: false,
       remaining: 0,
@@ -138,23 +67,10 @@ export class RateLimiter {
     };
   }
 
-  /**
-   * Reset rate limit for a specific identifier
-   *
-   * Useful for manual resets or when user logs out.
-   *
-   * @param identifier - Unique identifier to reset
-   */
   reset(identifier: string): void {
     this.store.delete(identifier);
   }
 
-  /**
-   * Start automatic cleanup of expired entries
-   *
-   * Removes entries older than 2x window duration
-   * to prevent memory leaks.
-   */
   private startCleanup(): void {
     if (this.cleanupInterval) {
       return;
@@ -170,11 +86,6 @@ export class RateLimiter {
     }, this.windowMs);
   }
 
-  /**
-   * Clean up rate limiter resources
-   *
-   * Stops cleanup interval and clears all stored entries.
-   */
   destroy(): void {
     if (this.cleanupInterval) {
       clearInterval(this.cleanupInterval);
@@ -184,64 +95,21 @@ export class RateLimiter {
   }
 }
 
-/**
- * Endpoint type for rate limiting
- */
-export type EndpointType = "read" | "write" | "stripe";
+export { type EndpointType };
 
-/**
- * Pre-configured rate limit settings for different endpoint types
- *
- * Read operations: Higher limit (less impact)
- * Write operations: Lower limit (more impact)
- * Stripe operations: Lowest limit (external API calls)
- */
-export const rateLimitConfigs: Record<EndpointType, RateLimitConfig> = {
-  read: {
-    maxRequests: 100,
-    windowMs: 60 * 1000, // 1 minute
-  },
-  write: {
-    maxRequests: 20,
-    windowMs: 60 * 1000, // 1 minute
-  },
-  stripe: {
-    maxRequests: 10,
-    windowMs: 60 * 1000, // 1 minute
-  },
-};
+export const rateLimitConfigs: Record<EndpointType, RateLimitConfig> =
+  RATE_LIMIT_DEFAULTS;
 
-/**
- * Pre-configured rate limiters for each endpoint type
- *
- * Shared across all API endpoints for consistent rate limiting.
- * Can be extended to use Redis for distributed systems.
- */
 const limiters: Record<EndpointType, RateLimiter> = {
-  read: new RateLimiter(rateLimitConfigs.read),
-  write: new RateLimiter(rateLimitConfigs.write),
-  stripe: new RateLimiter(rateLimitConfigs.stripe),
+  read: new RateLimiter(RATE_LIMIT_DEFAULTS.read),
+  write: new RateLimiter(RATE_LIMIT_DEFAULTS.write),
+  stripe: new RateLimiter(RATE_LIMIT_DEFAULTS.stripe),
 };
 
-/**
- * Get the rate limiter for a specific endpoint type
- *
- * @param type - Endpoint type (read, write, or stripe)
- * @returns Configured rate limiter instance
- */
 export function getLimiter(type: EndpointType): RateLimiter {
   return limiters[type];
 }
 
-/**
- * Generate a rate limit identifier for a request
- *
- * Uses user ID for authenticated requests, IP address for unauthenticated.
- *
- * @param userId - User ID if authenticated
- * @param req - Next.js request object (optional)
- * @returns Unique identifier string
- */
 export function getIdentifier(
   userId: string | null,
   req?: NextRequest,

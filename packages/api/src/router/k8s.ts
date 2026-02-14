@@ -1,13 +1,13 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { db, k8sClusterService, SubscriptionPlan } from "@saasfly/db";
+import { K8S_DEFAULTS } from "@saasfly/common";
+import { db, k8sClusterService } from "@saasfly/db";
 
 import { createApiError, ErrorCode } from "../errors";
 import {
   createRateLimitedProtectedProcedure,
   createTRPCRouter,
-  EndpointType,
 } from "../trpc";
 
 export const k8sClusterCreateSchema = z.object({
@@ -52,8 +52,8 @@ export const k8sRouter = createTRPCRouter({
           .values({
             name: input.name,
             location: input.location,
-            network: "Default",
-            plan: SubscriptionPlan.FREE,
+            network: K8S_DEFAULTS.network,
+            plan: K8S_DEFAULTS.plan,
             authUserId: userId,
           })
           .returning("id")

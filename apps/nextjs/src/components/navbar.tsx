@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 
 import type { User } from "@saasfly/auth";
+import { UI_STRINGS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { Button } from "@saasfly/ui/button";
 
@@ -98,7 +99,7 @@ export function NavBar({
               <Button variant="outline" size="sm">
                 {typeof marketing.login === "string"
                   ? marketing.login
-                  : "Default Login Text"}
+                  : UI_STRINGS.login}
               </Button>
             </Link>
           ) : null}
@@ -118,7 +119,7 @@ export function NavBar({
             >
               {typeof marketing.signup === "string"
                 ? marketing.signup
-                : "Default Signup Text"}
+                : UI_STRINGS.signup}
             </Button>
           )}
         </div>

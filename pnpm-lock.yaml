@@ -314,6 +314,9 @@ importers:
       '@saasfly/auth':
         specifier: workspace:*
         version: link:../auth
+      '@saasfly/common':
+        specifier: workspace:*
+        version: link:../common
       '@saasfly/db':
         specifier: workspace:*
         version: link:../db

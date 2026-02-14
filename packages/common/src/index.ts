@@ -29,12 +29,29 @@ export {
   isValidClusterName,
   sanitizeClusterName,
   generateClusterName,
+  K8S_DEFAULTS,
 } from "./config/k8s";
 export type {
   ClusterLocation,
   ClusterStatus,
   SubscriptionTier,
 } from "./config/k8s";
+
+// UI Strings configuration
+export {
+  UI_STRINGS,
+  THEME_STRINGS,
+  MARKETING_FALLBACKS,
+  PAGE_METADATA,
+  MARKETING_STATS,
+} from "./config/ui-strings";
+
+// Asset paths configuration
+export {
+  ASSET_BASE_PATHS,
+  ASSETS,
+  getAssetPath,
+} from "./config/assets";
 
 // Animation constants
 export { ANIMATION } from "./animation";
@@ -63,6 +80,23 @@ export type {
   VisualEffects,
   TransitionPresetKey,
 } from "./config/ui";
+
+export {
+  CIRCUIT_BREAKER_CONFIG,
+  RETRY_CONFIG,
+  TIMEOUT_CONFIG,
+  STRIPE_CONFIG,
+  DEFAULT_RETRYABLE_ERRORS,
+  RATE_LIMIT_DEFAULTS,
+} from "./config/resilience";
+export type {
+  CircuitBreakerConfig,
+  RetryConfig,
+  TimeoutConfig,
+  StripeConfig,
+  RateLimitConfig,
+  EndpointType,
+} from "./config/resilience";
 
 // URLs and routes configuration - centralized external and internal links
 export {

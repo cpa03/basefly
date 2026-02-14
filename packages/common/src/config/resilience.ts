@@ -88,10 +88,6 @@ export const STRIPE_CONFIG: StripeConfig = {
   telemetry: false,
 };
 
-/**
- * Default retryable error codes
- * Network and transient errors that warrant retry
- */
 export const DEFAULT_RETRYABLE_ERRORS: readonly string[] = [
   "ECONNRESET",
   "ETIMEDOUT",
@@ -101,3 +97,25 @@ export const DEFAULT_RETRYABLE_ERRORS: readonly string[] = [
   "rate_limit",
   "timeout",
 ];
+
+export interface RateLimitConfig {
+  maxRequests: number;
+  windowMs: number;
+}
+
+export type EndpointType = "read" | "write" | "stripe";
+
+export const RATE_LIMIT_DEFAULTS: Record<EndpointType, RateLimitConfig> = {
+  read: {
+    maxRequests: 100,
+    windowMs: 60 * 1000,
+  },
+  write: {
+    maxRequests: 20,
+    windowMs: 60 * 1000,
+  },
+  stripe: {
+    maxRequests: 10,
+    windowMs: 60 * 1000,
+  },
+};

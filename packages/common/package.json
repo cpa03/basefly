@@ -11,7 +11,9 @@
     "./config/resilience": "./src/config/resilience.ts",
     "./config/k8s": "./src/config/k8s.ts",
     "./config/pricing": "./src/config/pricing.ts",
-    "./config/site": "./src/config/site.ts"
+    "./config/site": "./src/config/site.ts",
+    "./config/ui-strings": "./src/config/ui-strings.ts",
+    "./config/assets": "./src/config/assets.ts"
   },
   "typesVersions": {
     "*": {

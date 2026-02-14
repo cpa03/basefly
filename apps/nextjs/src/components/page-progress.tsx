@@ -4,6 +4,7 @@ import * as React from "react";
 import { Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 
+import { PAGE_PROGRESS_CONFIG } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 
 interface PageProgressProps {
@@ -14,7 +15,15 @@ interface PageProgressProps {
 }
 
 const PageProgress = React.forwardRef<HTMLDivElement, PageProgressProps>(
-  ({ color = "bg-primary", height = 3, delay = 100, className }, ref) => {
+  (
+    {
+      color = "bg-primary",
+      height = PAGE_PROGRESS_CONFIG.defaultHeight,
+      delay = PAGE_PROGRESS_CONFIG.defaultDelay,
+      className,
+    },
+    ref,
+  ) => {
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const [progress, setProgress] = React.useState(0);
@@ -33,13 +42,17 @@ const PageProgress = React.forwardRef<HTMLDivElement, PageProgressProps>(
       setProgress(0);
 
       const animate = () => {
-        const remaining = 90 - progressRef.current;
-        const increment = remaining * 0.05;
+        const remaining =
+          PAGE_PROGRESS_CONFIG.maxProgress - progressRef.current;
+        const increment = remaining * PAGE_PROGRESS_CONFIG.incrementMultiplier;
 
-        progressRef.current = Math.min(progressRef.current + increment, 90);
+        progressRef.current = Math.min(
+          progressRef.current + increment,
+          PAGE_PROGRESS_CONFIG.maxProgress,
+        );
         setProgress(progressRef.current);
 
-        if (progressRef.current < 90) {
+        if (progressRef.current < PAGE_PROGRESS_CONFIG.maxProgress) {
           animationRef.current = requestAnimationFrame(animate);
         }
       };
@@ -67,8 +80,8 @@ const PageProgress = React.forwardRef<HTMLDivElement, PageProgressProps>(
         setTimeout(() => {
           progressRef.current = 0;
           setProgress(0);
-        }, 300);
-      }, 200);
+        }, PAGE_PROGRESS_CONFIG.fadeDuration);
+      }, PAGE_PROGRESS_CONFIG.hideDelay);
     }, []);
 
     React.useEffect(() => {
@@ -76,7 +89,7 @@ const PageProgress = React.forwardRef<HTMLDivElement, PageProgressProps>(
 
       const timer = setTimeout(() => {
         completeProgress();
-      }, 50);
+      }, PAGE_PROGRESS_CONFIG.autoCompleteDelay);
 
       return () => {
         clearTimeout(timer);

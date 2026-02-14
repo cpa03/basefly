@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 
 import type { User } from "@saasfly/auth";
-import { UI_STRINGS } from "@saasfly/common";
+import { NAVBAR_CONFIG, UI_STRINGS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { Button } from "@saasfly/ui/button";
 
@@ -40,7 +40,7 @@ export function NavBar({
   marketing,
   dropdown,
 }: NavBarProps) {
-  const scrolled = useScroll(50);
+  const scrolled = useScroll(NAVBAR_CONFIG.scrollThreshold);
   const signInModal = useSigninModal();
   const segment = useSelectedLayoutSegment();
 

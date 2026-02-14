@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useTheme } from "next-themes";
 
-import { THEME_STRINGS } from "@saasfly/common";
+import { THEME_STRINGS, THEMES, type Theme } from "@saasfly/common";
 import { Button } from "@saasfly/ui/button";
 import {
   DropdownMenu,
@@ -18,10 +18,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@saasfly/ui/tooltip";
-
-type Theme = "light" | "dark" | "system";
-
-const THEMES: Theme[] = ["light", "dark", "system"];
 
 /**
  * ModeToggle - Theme switching component with keyboard shortcut support

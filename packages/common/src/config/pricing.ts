@@ -159,3 +159,32 @@ export type PlanTier = keyof typeof PRICING_TIERS;
  * Type for billing cycles
  */
 export type BillingCycle = "monthly" | "yearly";
+
+/**
+ * Subscription configuration
+ * Centralized subscription settings like trial periods, grace periods, etc.
+ */
+export const SUBSCRIPTION_CONFIG = {
+  /** Free trial period duration in days */
+  trialPeriodDays: 14,
+  /** Plans that offer free trial */
+  trialEligiblePlans: ["PRO"] as const,
+  /** Grace period after subscription expires (days) */
+  gracePeriodDays: 3,
+} as const;
+
+/**
+ * Get trial period display string for a locale
+ */
+export function getTrialPeriodDisplayString(
+  locale: "en" | "zh" | "ja" | "ko" = "en",
+  days: number = SUBSCRIPTION_CONFIG.trialPeriodDays,
+): string {
+  const strings: Record<typeof locale, string> = {
+    en: `${days}-day`,
+    zh: `${days}天`,
+    ja: `${days}日間`,
+    ko: `${days}일`,
+  };
+  return strings[locale];
+}

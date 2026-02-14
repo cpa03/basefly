@@ -12,6 +12,8 @@ export {
   formatPrice,
   getPriceDisplayString,
   getLegacyPriceDisplayString,
+  SUBSCRIPTION_CONFIG,
+  getTrialPeriodDisplayString,
 } from "./config/pricing";
 export type { PlanTier, BillingCycle } from "./config/pricing";
 
@@ -71,6 +73,9 @@ export {
   SEMANTIC_COLORS,
   TRANSITION_PRESETS,
   VISUAL_EFFECTS,
+  THEMES,
+  PAGE_PROGRESS_CONFIG,
+  NAVBAR_CONFIG,
 } from "./config/ui";
 export type {
   ToastConfig,
@@ -79,6 +84,7 @@ export type {
   SemanticColors,
   VisualEffects,
   TransitionPresetKey,
+  Theme,
 } from "./config/ui";
 
 export {

@@ -12,6 +12,7 @@ import { EXTERNAL_URLS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { Toaster } from "@saasfly/ui/toaster";
 
+import { KeyboardShortcutsHelp } from "~/components/keyboard-shortcuts-help";
 import { PageProgressBar } from "~/components/page-progress";
 import { TailwindIndicator } from "~/components/tailwind-indicator";
 import { ThemeProvider } from "~/components/theme-provider";
@@ -117,6 +118,7 @@ export default function RootLayout({
             <Analytics />
             <SpeedInsights />
             <Toaster />
+            <KeyboardShortcutsHelp />
             <TailwindIndicator />
           </ThemeProvider>
         </body>

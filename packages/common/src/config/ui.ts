@@ -127,3 +127,42 @@ export const SEMANTIC_COLORS: SemanticColors = {
     ring: "focus:ring-red-600",
   },
 };
+
+/**
+ * Available theme options
+ * Centralized to ensure consistency across theme toggle components
+ */
+export const THEMES = ["light", "dark", "system"] as const;
+
+/** Type for theme values */
+export type Theme = (typeof THEMES)[number];
+
+/**
+ * Page progress bar configuration
+ * Centralized animation and timing constants
+ */
+export const PAGE_PROGRESS_CONFIG = {
+  /** Default height of the progress bar in pixels */
+  defaultHeight: 3,
+  /** Default delay before animation starts (ms) */
+  defaultDelay: 100,
+  /** Maximum progress value before completion (0-100) */
+  maxProgress: 90,
+  /** Progress increment multiplier for smooth animation */
+  incrementMultiplier: 0.05,
+  /** Delay before hiding after completion (ms) */
+  hideDelay: 200,
+  /** Duration of the fade out transition (ms) */
+  fadeDuration: 300,
+  /** Time to wait before auto-completing (ms) */
+  autoCompleteDelay: 50,
+} as const;
+
+/**
+ * Navbar configuration
+ * Scroll and appearance settings
+ */
+export const NAVBAR_CONFIG = {
+  /** Scroll threshold in pixels before triggering navbar style change */
+  scrollThreshold: 50,
+} as const;

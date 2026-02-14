@@ -46,6 +46,7 @@ export const createTRPCContext = async (opts: {
  * handling a tRPC call from a React Server Component.
  */
 const createContext = cache(async () => {
+  // eslint-disable-next-line @typescript-eslint/await-thenable
   const cookieStore = await cookies();
   // Convert cookie store to string properly
   const cookieHeader = Array.from(cookieStore.getAll())

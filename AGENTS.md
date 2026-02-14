@@ -112,7 +112,7 @@ bun format         # Format code
 
 ## Important Notes
 
-- This is a monorepo using pnpm workspaces
+- This is a monorepo using bun workspaces
 - Database migrations are in packages/db
 - Environment variables are in .env.example
 - CI/CD workflows are in .github/workflows

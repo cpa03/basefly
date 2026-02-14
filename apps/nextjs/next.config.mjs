@@ -75,7 +75,6 @@ const config = {
     optimizePackageImports: ["@saasfly/ui", "lucide-react"],
     optimizeCss: true,
   },
-  turbopack: {},
   async headers() {
     return [
       {

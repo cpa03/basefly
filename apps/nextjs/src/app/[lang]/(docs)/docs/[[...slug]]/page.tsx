@@ -15,7 +15,7 @@ import type { Metadata } from "next";
 import { env } from "~/env.mjs";
 import { absoluteUrl } from "~/lib/utils";
 
-const allDocs = rawDocs as Doc[];
+const allDocs = rawDocs as unknown as Doc[];
 
 interface DocPageProps {
   params: {

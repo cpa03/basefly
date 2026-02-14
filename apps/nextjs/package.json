@@ -56,6 +56,7 @@
     "zustand": "4.5.0"
   },
   "devDependencies": {
+    "@clerk/types": "^4.101.15",
     "@next-devtools/core": "0.2.0",
     "@next/bundle-analyzer": "14.2.15",
     "@next/eslint-plugin-next": "14.0.1",

@@ -95,19 +95,19 @@ This project uses OpenX - a multi-model agent harness with the following agents:
 
 Run tests with:
 ```bash
-pnpm test           # Run all tests
-pnpm test:ui        # Run with UI
-pnpm test:coverage  # Run with coverage
+bun test           # Run all tests
+bun test:ui        # Run with UI
+bun test:coverage  # Run with coverage
 ```
 
 ## Build Commands
 
 ```bash
-pnpm dev            # Development mode
-pnpm build          # Production build
-pnpm lint           # Run ESLint
-pnpm typecheck      # TypeScript check
-pnpm format         # Format code
+bun dev            # Development mode
+bun build          # Production build
+bun lint           # Run ESLint
+bun typecheck      # TypeScript check
+bun format         # Format code
 ```
 
 ## Important Notes

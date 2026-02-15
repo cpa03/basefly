@@ -4,6 +4,7 @@ import {
   getOrGenerateRequestId,
   REQUEST_ID_HEADER,
 } from "@saasfly/api/request-id";
+import { getMinifiedCSPHeader } from "@saasfly/common";
 
 import { middleware as clerkMiddleware } from "./utils/clerk";
 
@@ -16,25 +17,8 @@ export const config = {
   ],
 };
 
-const cspHeader = `
-  default-src 'self';
-  script-src 'self' 'unsafe-inline' cdn.jsdelivr.net https://va.vercel-scripts.com;
-  style-src 'self' 'unsafe-inline' cdn.jsdelivr.net;
-  img-src 'self' blob: data: https://*.unsplash.com https://*.githubusercontent.com https://*.twil.lol https://*.twillot.com https://*.setupyourpay.com https://cdn.sanity.io https://*.twimg.com;
-  font-src 'self' data: cdn.jsdelivr.net;
-  connect-src 'self' https://*.clerk.accounts.dev https://*.stripe.com https://api.stripe.com https://*.posthog.com ws://localhost:12882/;
-  frame-src 'self' https://js.stripe.com;
-  object-src 'none';
-  base-uri 'self';
-  form-action 'self';
-  frame-ancestors 'none';
-  block-all-mixed-content;
-  upgrade-insecure-requests;
-`;
-
-const contentSecurityPolicyHeaderValue = cspHeader
-  .replace(/\s{2,}/g, " ")
-  .trim();
+// Use centralized CSP configuration from @saasfly/common
+const contentSecurityPolicyHeaderValue = getMinifiedCSPHeader();
 
 function isValidClerkKey(key: string | undefined): boolean {
   if (!key) return false;

@@ -6,6 +6,7 @@ import {
 } from "@trpc/client";
 
 import type { AppRouter } from "@saasfly/api";
+import { DEV_URLS } from "@saasfly/common";
 
 import { env } from "~/env.mjs";
 
@@ -18,7 +19,7 @@ const getBaseUrl = () => {
   if (appUrl) return appUrl;
 
   if (process.env.NODE_ENV === "development") {
-    return "http://localhost:3000";
+    return DEV_URLS.localhost;
   }
 
   throw new Error(

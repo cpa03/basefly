@@ -112,12 +112,13 @@ const people = [
 ];
 
 export default async function IndexPage({
-  params: { lang },
+  params,
 }: {
-  params: {
+  params: Promise<{
     lang: Locale;
-  };
+  }>;
 }) {
+  const { lang } = await params;
   const dict = await getDictionary(lang);
 
   return (

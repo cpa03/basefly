@@ -16,21 +16,22 @@ async function getClusterForUser(clusterId: Cluster["id"], userId: User["id"]) {
 }
 
 interface EditorClusterProps {
-  params: {
+  params: Promise<{
     clusterId: number;
     lang: string;
-  };
+  }>;
 }
 
 export default async function EditorClusterPage({
   params,
 }: EditorClusterProps) {
+  const { clusterId, lang } = await params;
   const user = await getCurrentUser();
   if (!user) {
     redirect(authOptions?.pages?.signIn ?? "/login-clerk");
   }
 
-  const cluster = await getClusterForUser(params.clusterId, user.id);
+  const cluster = await getClusterForUser(clusterId, user.id);
 
   if (!cluster) {
     notFound();
@@ -42,7 +43,7 @@ export default async function EditorClusterPage({
         name: cluster.name,
         location: cluster.location,
       }}
-      params={{ lang: params.lang }}
+      params={{ lang }}
     />
   );
 }

@@ -5,10 +5,7 @@ import { K8S_DEFAULTS } from "@saasfly/common";
 import { db, k8sClusterService } from "@saasfly/db";
 
 import { createApiError, ErrorCode } from "../errors";
-import {
-  createRateLimitedProtectedProcedure,
-  createTRPCRouter,
-} from "../trpc";
+import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 
 export const k8sClusterCreateSchema = z.object({
   id: z.number().optional(),

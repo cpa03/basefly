@@ -101,10 +101,28 @@ const components = {
   img: ({
     className,
     alt,
+    src,
+    width,
+    height,
     ...props
-  }: React.ImgHTMLAttributes<HTMLImageElement>) => (
-    <img className={cn("rounded-md border", className)} alt={alt} {...props} />
-  ),
+  }: React.ImgHTMLAttributes<HTMLImageElement>) => {
+    // Use Next.js Image for optimized loading when dimensions are provided
+    if (src && typeof src === "string" && width && height) {
+      return (
+        <NextImage
+          src={src}
+          alt={alt || ""}
+          width={parseInt(String(width), 10)}
+          height={parseInt(String(height), 10)}
+          className={cn("rounded-md border", className)}
+          loading="lazy"
+          {...props}
+        />
+      );
+    }
+    // Fallback to standard img for external/unknown images
+    return <img className={cn("rounded-md border", className)} alt={alt} src={src} {...props} />;
+  },
   hr: ({ ...props }: React.HTMLAttributes<HTMLHRElement>) => (
     <hr className="my-4 md:my-8" {...props} />
   ),

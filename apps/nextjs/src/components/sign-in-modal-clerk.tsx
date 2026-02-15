@@ -70,7 +70,7 @@ export const SignInClerkModal = ({
               className="mx-auto"
               width="64"
               height="64"
-              alt=""
+              alt="Basefly logo"
             />
           </a>
           <h3 className="font-urban text-2xl font-bold">{dict.signup}</h3>

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { EXTERNAL_URLS } from "@saasfly/common";
+import { EXTERNAL_URLS, ICON_SIZES } from "@saasfly/common";
 import { GlowingEffect } from "@saasfly/ui/glowing-effect";
 import { Cloud, Rocket, ThumbsUp } from "@saasfly/ui/icons";
 
@@ -15,7 +15,11 @@ export function RightsideMarketing({
     <ul className="grid grid-cols-1 grid-rows-none gap-4 md:grid-cols-12 md:grid-rows-2 lg:gap-4 xl:max-h-[34rem] xl:grid-rows-2">
       <GridItem
         area="md:[grid-area:1/1/2/7] xl:[grid-area:1/1/2/7]"
-        icon={<Rocket className="h-4 w-4 text-black dark:text-neutral-400" />}
+        icon={
+          <Rocket
+            className={`${ICON_SIZES.sm} text-black dark:text-neutral-400`}
+          />
+        }
         title={dict?.deploy_on_vercel_title ?? ""}
         description={dict?.deploy_on_vercel_desc ?? ""}
         link={EXTERNAL_URLS.vercel.deploy}
@@ -23,7 +27,11 @@ export function RightsideMarketing({
 
       <GridItem
         area="md:[grid-area:1/7/2/13] xl:[grid-area:2/1/3/7]"
-        icon={<Cloud className="h-4 w-4 text-black dark:text-neutral-400" />}
+        icon={
+          <Cloud
+            className={`${ICON_SIZES.sm} text-black dark:text-neutral-400`}
+          />
+        }
         title={dict?.ship_on_cloudflare_title ?? ""}
         description={dict?.ship_on_cloudflare_desc ?? ""}
         link={EXTERNAL_URLS.oneclick.home}
@@ -31,7 +39,11 @@ export function RightsideMarketing({
 
       <GridItem
         area="md:[grid-area:2/1/3/7] xl:[grid-area:1/7/3/13]"
-        icon={<ThumbsUp className="h-4 w-4 text-black dark:text-neutral-400" />}
+        icon={
+          <ThumbsUp
+            className={`${ICON_SIZES.sm} text-black dark:text-neutral-400`}
+          />
+        }
         title={dict?.showcase_title ?? ""}
         description={dict?.showcase_desc ?? ""}
         link={EXTERNAL_URLS.discord.invite}

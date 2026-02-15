@@ -1,5 +1,7 @@
 import { TRPCError } from "@trpc/server";
 
+import { IntegrationError } from "@saasfly/stripe";
+
 export enum ErrorCode {
   BAD_REQUEST = "BAD_REQUEST",
   UNAUTHORIZED = "UNAUTHORIZED",
@@ -99,17 +101,6 @@ export function handleIntegrationError(error: unknown): TRPCError {
     ErrorCode.INTERNAL_SERVER_ERROR,
     "Unknown integration error",
   );
-}
-
-export class IntegrationError extends Error {
-  constructor(
-    message: string,
-    public readonly code: string,
-    public readonly originalError?: unknown,
-  ) {
-    super(message);
-    this.name = "IntegrationError";
-  }
 }
 
 export function createValidationErrorMessage(

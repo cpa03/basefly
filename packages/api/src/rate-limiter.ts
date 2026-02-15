@@ -1,4 +1,5 @@
 import type { NextRequest } from "next/server";
+
 import {
   RATE_LIMIT_DEFAULTS,
   type EndpointType,

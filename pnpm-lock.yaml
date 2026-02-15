@@ -6,6 +6,7 @@ settings:
 
 overrides:
   axios: '>=1.13.5'
+  qs: '>=6.14.2'
   cross-spawn@>=7.0.0 <7.0.5: '>=7.0.5'
   js-yaml@>=4.0.0 <4.1.1: '>=4.1.1'
   lodash@>=4.0.0 <=4.17.22: '>=4.17.23'
@@ -7661,8 +7662,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  qs@6.14.1:
-    resolution: {integrity: sha512-4EK3+xJl8Ts67nLYNwqw/dsFVnCf+qR7RgXSK9jEEm9unao3njwMDdmsdvoKBKHzxd7tCYz5e5M+SnMjdtXGQQ==}
+  qs@6.14.2:
+    resolution: {integrity: sha512-V/yCWTTF7VJ9hIh18Ugr2zhJMP01MY7c5kh4J870L7imm6/DIzBsNLTXzMwUA3yZ5b/KBqLx8Kp3uRvd7xSe3Q==}
     engines: {node: '>=0.6'}
 
   query-selector-shadow-dom@1.0.1:
@@ -17186,7 +17187,7 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  qs@6.14.1:
+  qs@6.14.2:
     dependencies:
       side-channel: 1.1.0
 
@@ -18138,7 +18139,7 @@ snapshots:
   stripe@14.15.0:
     dependencies:
       '@types/node': 20.12.12
-      qs: 6.14.1
+      qs: 6.14.2
 
   stubborn-fs@2.0.0:
     dependencies:

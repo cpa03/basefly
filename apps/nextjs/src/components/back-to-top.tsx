@@ -59,6 +59,11 @@ const BackToTop = React.forwardRef<HTMLButtonElement, BackToTopProps>(
 
     // Track scroll position
     React.useEffect(() => {
+      // Guard against SSR - window may not exist during server rendering
+      if (typeof window === "undefined") {
+        return;
+      }
+
       const toggleVisibility = () => {
         // Use requestAnimationFrame for performance
         window.requestAnimationFrame(() => {
@@ -77,6 +82,10 @@ const BackToTop = React.forwardRef<HTMLButtonElement, BackToTopProps>(
     }, [threshold]);
 
     const scrollToTop = React.useCallback(() => {
+      // Guard against SSR - window may not exist during server rendering
+      if (typeof window === "undefined") {
+        return;
+      }
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -85,6 +94,11 @@ const BackToTop = React.forwardRef<HTMLButtonElement, BackToTopProps>(
 
     // Handle keyboard shortcut (Home key)
     React.useEffect(() => {
+      // Guard against SSR - window may not exist during server rendering
+      if (typeof window === "undefined") {
+        return;
+      }
+
       const handleKeyDown = (e: KeyboardEvent) => {
         // Ctrl/Cmd + Home to scroll to top
         if ((e.ctrlKey || e.metaKey) && e.key === "Home") {

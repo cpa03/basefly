@@ -70,7 +70,12 @@ export const CSP_DIRECTIVES = {
   defaultSrc: ["'self'"],
 
   /** Script source policy */
-  scriptSrc: ["'self'", "'unsafe-inline'", CSP_DOMAINS.scripts.cdn, CSP_DOMAINS.scripts.vercel],
+  scriptSrc: [
+    "'self'",
+    "'unsafe-inline'",
+    CSP_DOMAINS.scripts.cdn,
+    CSP_DOMAINS.scripts.vercel,
+  ],
 
   /** Style source policy */
   styleSrc: ["'self'", "'unsafe-inline'", CSP_DOMAINS.fonts.cdn],
@@ -158,7 +163,9 @@ export function buildCSPHeader(): string {
  * @returns Minified CSP header string
  */
 export function getMinifiedCSPHeader(): string {
-  return buildCSPHeader().replace(/\s{2,}/g, " ").trim();
+  return buildCSPHeader()
+    .replace(/\s{2,}/g, " ")
+    .trim();
 }
 
 /**

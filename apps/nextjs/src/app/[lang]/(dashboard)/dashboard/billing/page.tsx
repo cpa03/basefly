@@ -25,12 +25,13 @@ interface Subscription {
 }
 
 export default async function BillingPage({
-  params: { lang },
+  params,
 }: {
-  params: {
+  params: Promise<{
     lang: Locale;
-  };
+  }>;
 }) {
+  const { lang } = await params;
   const dict = await getDictionary(lang);
   return (
     <DashboardShell

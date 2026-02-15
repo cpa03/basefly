@@ -12,12 +12,13 @@ export const metadata = {
 };
 
 export default async function PricingPage({
-  params: { lang },
+  params,
 }: {
-  params: {
+  params: Promise<{
     lang: Locale;
-  };
+  }>;
 }) {
+  const { lang } = await params;
   const user = await getCurrentUser();
   const dict = await getDictionary(lang);
   let subscriptionPlan;

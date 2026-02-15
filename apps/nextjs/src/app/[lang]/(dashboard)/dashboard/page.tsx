@@ -31,12 +31,13 @@ export const metadata = {
 };
 
 export default async function DashboardPage({
-  params: { lang },
+  params,
 }: {
-  params: {
+  params: Promise<{
     lang: Locale;
-  };
+  }>;
 }) {
+  const { lang } = await params;
   // Auth check is handled by DashboardLayout, but we still need the user object
   const user = await getCurrentUser();
   if (!user) {

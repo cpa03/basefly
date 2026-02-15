@@ -28,12 +28,13 @@ function isClerkEnabled(): boolean {
 }
 
 export default async function LoginPage({
-  params: { lang },
+  params,
 }: {
-  params: {
+  params: Promise<{
     lang: Locale;
-  };
+  }>;
 }) {
+  const { lang } = await params;
   const dict = await getDictionary(lang);
   const clerkEnabled = isClerkEnabled();
 

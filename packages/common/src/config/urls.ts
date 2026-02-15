@@ -226,3 +226,38 @@ export function getAvatarUrl(name: string): string {
 export function getGitHubProfileUrl(username: string): string {
   return `https://avatars.githubusercontent.com/u/${username}`;
 }
+
+/**
+ * Development and local environment URLs
+ * Centralized to ensure consistency across development tools
+ */
+export const DEV_URLS = {
+  /** Default local development server URL */
+  localhost: "http://localhost:3000",
+  /** Local WebSocket URL for HMR */
+  localWs: "ws://localhost:12882/",
+  /** Alternative local development ports */
+  altPorts: {
+    /** Alternative port 3001 */
+    port3001: "http://localhost:3001",
+    /** Alternative port 3002 */
+    port3002: "http://localhost:3002",
+  },
+} as const;
+
+/**
+ * Get the appropriate base URL for the current environment
+ * @param envUrl - Optional environment URL override (e.g., NEXT_PUBLIC_APP_URL)
+ * @param nodeEnv - Current NODE_ENV value
+ * @returns The base URL to use
+ */
+export function getBaseUrl(
+  envUrl?: string,
+  nodeEnv?: string,
+): string {
+  if (envUrl) return envUrl;
+  if (nodeEnv === "development") return DEV_URLS.localhost;
+  throw new Error(
+    "Base URL is not defined. Please set NEXT_PUBLIC_APP_URL in your environment variables.",
+  );
+}

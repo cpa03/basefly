@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { getCurrentUser } from "@saasfly/auth";
 
 import { NavBar } from "~/components/navbar";
+import { NavbarSkeleton } from "~/components/navbar-skeleton";
 import { SiteFooter } from "~/components/site-footer";
 import { SkipLink } from "~/components/skip-link";
 import type { Locale } from "~/config/i18n-config";
@@ -27,7 +28,7 @@ export default async function DocsLayout({
   return (
     <div className="flex min-h-screen flex-col">
       <SkipLink />
-      <Suspense fallback="...">
+      <Suspense fallback={<NavbarSkeleton />}>
         <NavBar
           items={
             (await getMarketingConfig({ params: { lang: `${lang}` } })).mainNav

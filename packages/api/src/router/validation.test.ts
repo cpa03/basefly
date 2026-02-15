@@ -170,14 +170,14 @@ describe("API Validation Tests", () => {
         }
       });
 
-      it("accepts extra fields", () => {
+      it("rejects extra fields", () => {
         const dataWithExtra = {
           name: "test-cluster",
           location: "us-east-1",
-          extraField: "should be ignored",
+          extraField: "should be rejected",
         };
         const result = k8sClusterCreateSchema.safeParse(dataWithExtra);
-        expect(result.success).toBe(true);
+        expect(result.success).toBe(false);
       });
 
       it("rejects undefined when required", () => {
@@ -285,10 +285,10 @@ describe("API Validation Tests", () => {
         expect(result.success).toBe(false);
       });
 
-      it("accepts extra fields", () => {
+      it("rejects extra fields", () => {
         const dataWithExtra = { planId: "price_123", extra: "field" };
         const result = createSessionSchema.safeParse(dataWithExtra);
-        expect(result.success).toBe(true);
+        expect(result.success).toBe(false);
       });
     });
   });
@@ -298,14 +298,14 @@ describe("API Validation Tests", () => {
       it("accepts valid user name update", () => {
         const validData = {
           name: "John Doe",
-          userId: "user_123",
+          userId: "550e8400-e29b-41d4-a716-446655440000",
         };
         const result = updateUserNameSchema.safeParse(validData);
         expect(result.success).toBe(true);
       });
 
       it("rejects missing name", () => {
-        const invalidData = { userId: "user_123" };
+        const invalidData = { userId: "550e8400-e29b-41d4-a716-446655440000" };
         const result = updateUserNameSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
@@ -327,13 +327,19 @@ describe("API Validation Tests", () => {
       });
 
       it("rejects empty string name", () => {
-        const invalidData = { name: "", userId: "user_123" };
+        const invalidData = {
+          name: "",
+          userId: "550e8400-e29b-41d4-a716-446655440000",
+        };
         const result = updateUserNameSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
       });
 
       it("rejects non-string name", () => {
-        const invalidData = { name: 123, userId: "user_123" };
+        const invalidData = {
+          name: 123,
+          userId: "550e8400-e29b-41d4-a716-446655440000",
+        };
         const result = updateUserNameSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
       });
@@ -348,16 +354,16 @@ describe("API Validation Tests", () => {
         const longName = Array(1000).fill("a").join("");
         const invalidData = {
           name: longName,
-          userId: "user_123",
+          userId: "550e8400-e29b-41d4-a716-446655440000",
         };
         const result = updateUserNameSchema.safeParse(invalidData);
-        expect(result.success).toBe(true);
+        expect(result.success).toBe(false);
       });
     });
 
     describe("insertCustomerSchema", () => {
       it("accepts valid user id", () => {
-        const validData = { userId: "user_123" };
+        const validData = { userId: "550e8400-e29b-41d4-a716-446655440000" };
         const result = insertCustomerSchema.safeParse(validData);
         expect(result.success).toBe(true);
       });
@@ -387,6 +393,12 @@ describe("API Validation Tests", () => {
 
       it("rejects empty string userId", () => {
         const invalidData = { userId: "" };
+        const result = insertCustomerSchema.safeParse(invalidData);
+        expect(result.success).toBe(false);
+      });
+
+      it("rejects non-UUID userId", () => {
+        const invalidData = { userId: "user_123" };
         const result = insertCustomerSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
       });

@@ -1,7 +1,7 @@
 import {
   getLegacyPriceDisplayString,
-  SUBSCRIPTION_CONFIG,
   getTrialPeriodDisplayString,
+  SUBSCRIPTION_CONFIG,
 } from "@saasfly/common";
 
 interface FAQItem {

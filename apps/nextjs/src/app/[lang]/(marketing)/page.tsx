@@ -157,7 +157,9 @@ export default async function IndexPage({
                   </div>
                   <div className="ml-8 flex flex-col items-center justify-start">
                     <div className="w-[340px]">
-                      <span className="font-semibold">{MARKETING_STATS.contributorCount} </span>
+                      <span className="font-semibold">
+                        {MARKETING_STATS.contributorCount}{" "}
+                      </span>
                       <span className="text-neutral-500 dark:text-neutral-400">
                         {dict.marketing.contributors.contributors_desc}
                       </span>
@@ -166,7 +168,9 @@ export default async function IndexPage({
                       <span className="text-neutral-500 dark:text-neutral-400">
                         {dict.marketing.contributors.developers_first}
                       </span>
-                      <ColourfulText text={String(MARKETING_STATS.developerCount)} />
+                      <ColourfulText
+                        text={String(MARKETING_STATS.developerCount)}
+                      />
                       <span className="text-neutral-500 dark:text-neutral-400">
                         {dict.marketing.contributors.developers_second}
                       </span>

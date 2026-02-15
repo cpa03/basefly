@@ -5,20 +5,60 @@ import { K8S_DEFAULTS } from "@saasfly/common";
 import { db, k8sClusterService } from "@saasfly/db";
 
 import { createApiError, ErrorCode } from "../errors";
-import {
-  createRateLimitedProtectedProcedure,
-  createTRPCRouter,
-} from "../trpc";
+import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 
-export const k8sClusterCreateSchema = z.object({
-  id: z.number().optional(),
-  name: z.string().min(1),
-  location: z.string().min(1),
-});
+// Enhanced schemas with comprehensive validation
+export const k8sClusterCreateSchema = z
+  .object({
+    id: z.number().int().positive().optional(),
+    name: z
+      .string()
+      .trim()
+      .min(1, "Cluster name cannot be empty")
+      .max(100, "Cluster name cannot exceed 100 characters")
+      .regex(
+        /^[a-zA-Z0-9-]+$/,
+        "Cluster name can only contain letters, numbers, and hyphens",
+      ),
+    location: z
+      .string()
+      .trim()
+      .min(1, "Location cannot be empty")
+      .max(50, "Location cannot exceed 50 characters"),
+  })
+  .strict();
 
-export const k8sClusterDeleteSchema = z.object({
-  id: z.number().positive().int(),
-});
+export const k8sClusterDeleteSchema = z
+  .object({
+    id: z.number().int("ID must be an integer").positive("ID must be positive"),
+  })
+  .strict();
+
+export const k8sClusterUpdateSchema = z
+  .object({
+    id: z.number().int("ID must be an integer").positive("ID must be positive"),
+    name: z
+      .string()
+      .trim()
+      .min(1, "Cluster name cannot be empty")
+      .max(100, "Cluster name cannot exceed 100 characters")
+      .regex(
+        /^[a-zA-Z0-9-]+$/,
+        "Cluster name can only contain letters, numbers, and hyphens",
+      )
+      .optional(),
+    location: z
+      .string()
+      .trim()
+      .min(1, "Location cannot be empty")
+      .max(50, "Location cannot exceed 50 characters")
+      .optional(),
+  })
+  .strict()
+  .refine(
+    (data) => data.name !== undefined || data.location !== undefined,
+    "At least one field (name or location) must be provided for update",
+  );
 
 async function verifyClusterOwnership(clusterId: number, userId: string) {
   const cluster = await k8sClusterService.findActive(clusterId, userId);
@@ -45,8 +85,20 @@ export const k8sRouter = createTRPCRouter({
     .input(k8sClusterCreateSchema)
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.userId! as string;
+      const requestId = ctx.requestId;
 
       try {
+        console.info(
+          JSON.stringify({
+            level: "info",
+            message: "Creating cluster",
+            userId,
+            requestId,
+            clusterName: input.name,
+            location: input.location,
+          }),
+        );
+
         const newCluster = await db
           .insertInto("K8sClusterConfig")
           .values({
@@ -66,6 +118,16 @@ export const k8sRouter = createTRPCRouter({
           );
         }
 
+        console.info(
+          JSON.stringify({
+            level: "info",
+            message: "Cluster created successfully",
+            userId,
+            requestId,
+            clusterId: newCluster.id,
+          }),
+        );
+
         return {
           id: newCluster.id,
           clusterName: input.name,
@@ -83,6 +145,15 @@ export const k8sRouter = createTRPCRouter({
         if (error instanceof TRPCError) {
           throw error;
         }
+        console.error(
+          JSON.stringify({
+            level: "error",
+            message: "Failed to create cluster",
+            userId,
+            requestId,
+            error: error instanceof Error ? error.message : String(error),
+          }),
+        );
         throw createApiError(
           ErrorCode.INTERNAL_SERVER_ERROR,
           "Failed to create cluster",
@@ -91,12 +162,23 @@ export const k8sRouter = createTRPCRouter({
       }
     }),
   updateCluster: createRateLimitedProtectedProcedure("write")
-    .input(k8sClusterCreateSchema)
+    .input(k8sClusterUpdateSchema)
     .mutation(async (opts) => {
-      const id = opts.input.id!;
+      const id = opts.input.id;
       const userId = opts.ctx.userId!;
       const newName = opts.input.name;
       const newLocation = opts.input.location;
+      const requestId = opts.ctx.requestId;
+
+      console.info(
+        JSON.stringify({
+          level: "info",
+          message: "Updating cluster",
+          userId,
+          requestId,
+          clusterId: id,
+        }),
+      );
 
       await verifyClusterOwnership(id, userId);
 
@@ -110,6 +192,16 @@ export const k8sRouter = createTRPCRouter({
           .where("id", "=", id)
           .set(updateData)
           .execute();
+
+        console.info(
+          JSON.stringify({
+            level: "info",
+            message: "Cluster updated successfully",
+            userId,
+            requestId,
+            clusterId: id,
+          }),
+        );
       }
       return {
         success: true,
@@ -120,10 +212,32 @@ export const k8sRouter = createTRPCRouter({
     .mutation(async (opts) => {
       const id = opts.input.id;
       const userId = opts.ctx.userId!;
+      const requestId = opts.ctx.requestId;
+
+      console.info(
+        JSON.stringify({
+          level: "info",
+          message: "Deleting cluster",
+          userId,
+          requestId,
+          clusterId: id,
+        }),
+      );
 
       await verifyClusterOwnership(id, userId);
 
       await k8sClusterService.softDelete(id, userId);
+
+      console.info(
+        JSON.stringify({
+          level: "info",
+          message: "Cluster deleted successfully",
+          userId,
+          requestId,
+          clusterId: id,
+        }),
+      );
+
       return { success: true };
     }),
 });

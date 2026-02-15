@@ -10,6 +10,11 @@ export default function useMediaQuery() {
   } | null>(null);
 
   useEffect(() => {
+    // Guard against SSR - window may not exist during server rendering
+    if (typeof window === "undefined") {
+      return;
+    }
+
     const checkDevice = () => {
       if (window.matchMedia("(max-width: 640px)").matches) {
         setDevice("mobile");

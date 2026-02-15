@@ -35,6 +35,10 @@ export const SignInClerkModal = ({
   }
 
   const signInWith = (strategy: OAuthStrategy) => {
+    // Guard against SSR - window may not exist during server rendering
+    if (typeof window === "undefined") {
+      return Promise.reject(new Error("Window not available"));
+    }
     const protocol = window.location.protocol;
     const host = window.location.host;
     return signIn
@@ -66,7 +70,7 @@ export const SignInClerkModal = ({
               className="mx-auto"
               width="64"
               height="64"
-              alt=""
+              alt="Basefly logo"
             />
           </a>
           <h3 className="font-urban text-2xl font-bold">{dict.signup}</h3>

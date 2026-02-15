@@ -23,6 +23,7 @@ import { toast } from "@saasfly/ui/use-toast";
 
 import { userNameSchema } from "~/lib/validations/user";
 import { trpc } from "~/trpc/client";
+import { useFormErrorScroll } from "~/hooks/use-form-error-scroll";
 
 interface UserNameFormProps extends React.HTMLAttributes<HTMLFormElement> {
   user: Pick<User, "id" | "name">;
@@ -32,6 +33,7 @@ type FormData = z.infer<typeof userNameSchema>;
 
 export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
   const router = useRouter();
+  const scrollToError = useFormErrorScroll();
   const {
     handleSubmit,
     register,
@@ -43,6 +45,10 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
     },
   });
   const [isSaving, setIsSaving] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    scrollToError(errors);
+  }, [errors, scrollToError]);
 
   async function onSubmit(data: FormData) {
     setIsSaving(true);

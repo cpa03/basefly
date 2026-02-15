@@ -3,8 +3,9 @@
 ## Project Overview
 
 Basefly is a Next.js-based SaaS template with modern architecture including:
+
 - Monorepo structure with Turbo
-- Next.js 15 with App Router
+- Next.js 16 with App Router
 - TypeScript throughout
 - Tailwind CSS for styling
 - tRPC for API routes
@@ -18,26 +19,31 @@ Basefly is a Next.js-based SaaS template with modern architecture including:
 This project uses OpenX - a multi-model agent harness with the following agents:
 
 ### Sisyphus (Main Orchestrator)
+
 - **Model**: opencode/kimi-k2.5-free
 - **Role**: Complex task coordination and orchestration
 - **Use for**: Major features, architecture decisions, multi-step workflows
 
 ### Oracle
+
 - **Model**: opencode/glm-4.7-free
 - **Role**: Architecture and debugging specialist
 - **Use for**: Code review, debugging, technical decisions
 
 ### Librarian
+
 - **Model**: opencode/glm-4.7-free
 - **Role**: Documentation and research
 - **Use for**: Finding files, understanding codebase, documentation lookup
 
 ### Explore
+
 - **Model**: opencode/gpt-5-nano
 - **Role**: Fast exploration
 - **Use for**: Quick file searches, grep operations, initial codebase mapping
 
 ### Multimodal Looker
+
 - **Model**: opencode/minimax-m2.1-free
 - **Role**: Visual/UI tasks
 - **Use for**: UI component work, visual debugging, screenshots
@@ -94,6 +100,7 @@ This project uses OpenX - a multi-model agent harness with the following agents:
 ## Testing
 
 Run tests with:
+
 ```bash
 pnpm test           # Run all tests
 pnpm test:ui        # Run with UI

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { TRANSITION_PRESETS } from "@saasfly/common/config/ui";
+import { ICON_SIZES, TRANSITION_PRESETS } from "@saasfly/common";
 import { GitHub } from "@saasfly/ui/icons";
 
 import { siteConfig } from "~/config/site";
@@ -18,7 +18,7 @@ export function GitHubStar() {
       <div
         className={`inline-flex h-9 items-center gap-1.5 rounded-full border border-input px-3 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground ${TRANSITION_PRESETS.container}`}
       >
-        <GitHub className="h-4 w-4" />
+        <GitHub className={ICON_SIZES.sm} />
         <span>{siteConfig.github.stars}</span>
       </div>
     </Link>

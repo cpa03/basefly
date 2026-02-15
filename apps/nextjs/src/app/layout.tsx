@@ -4,7 +4,6 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 import "~/styles/globals.css";
 
-import { NextDevtoolsProvider } from "@next-devtools/core";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -18,6 +17,12 @@ import { TailwindIndicator } from "~/components/tailwind-indicator";
 import { ThemeProvider } from "~/components/theme-provider";
 import { i18n } from "~/config/i18n-config";
 import { siteConfig } from "~/config/site";
+
+const NextDevtoolsProvider =
+  process.env.NODE_ENV === "development" &&
+  process.env.ENABLE_DEVTOOLS === "true"
+    ? (await import("@next-devtools/core")).NextDevtoolsProvider
+    : ({ children }: { children: React.ReactNode }) => <>{children}</>;
 
 const fontSans = FontSans({
   subsets: ["latin"],

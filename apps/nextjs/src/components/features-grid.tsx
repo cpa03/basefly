@@ -1,3 +1,4 @@
+import { ICON_SIZES } from "@saasfly/common";
 import { Card } from "@saasfly/ui/card";
 import { Billing, Blocks, Languages, ShieldCheck } from "@saasfly/ui/icons";
 
@@ -12,7 +13,7 @@ export function FeaturesGrid({
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100">
-              <Blocks className="h-6 w-6 text-purple-500" />
+              <Blocks className={`${ICON_SIZES.lg} text-purple-500`} />
             </div>
             <h2 className="text-lg font-semibold">{dict?.monorepo_title}</h2>
           </div>
@@ -26,7 +27,7 @@ export function FeaturesGrid({
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100">
-              <Languages className="h-6 w-6 text-purple-500" />
+              <Languages className={`${ICON_SIZES.lg} text-purple-500`} />
             </div>
             <h2 className="text-lg font-semibold">{dict?.i18n_title}</h2>
           </div>
@@ -40,7 +41,7 @@ export function FeaturesGrid({
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100">
-              <Billing className="h-6 w-6 text-purple-500" />
+              <Billing className={`${ICON_SIZES.lg} text-purple-500`} />
             </div>
             <h2 className="text-lg font-semibold">{dict?.payments_title}</h2>
           </div>
@@ -54,7 +55,7 @@ export function FeaturesGrid({
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <div className="flex h-12 w-12 items-center justify-center rounded-full bg-purple-100">
-              <ShieldCheck className="h-6 w-6 text-purple-500" />
+              <ShieldCheck className={`${ICON_SIZES.lg} text-purple-500`} />
             </div>
             <h2 className="text-lg font-semibold">{dict?.nextauth_title}</h2>
           </div>

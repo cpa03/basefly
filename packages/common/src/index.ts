@@ -49,11 +49,7 @@ export {
 } from "./config/ui-strings";
 
 // Asset paths configuration
-export {
-  ASSET_BASE_PATHS,
-  ASSETS,
-  getAssetPath,
-} from "./config/assets";
+export { ASSET_BASE_PATHS, ASSETS, getAssetPath } from "./config/assets";
 
 // Animation constants
 export { ANIMATION } from "./animation";
@@ -118,3 +114,15 @@ export {
   getGitHubProfileUrl,
 } from "./config/urls";
 export type { ExternalUrlCategory, RouteSection } from "./config/urls";
+
+export {
+  ICON_SIZES,
+  getIconSize,
+  BUTTON_ICON_SIZES,
+  NAV_ICON_SIZES,
+  FEATURE_ICON_SIZES,
+  STATUS_ICON_SIZES,
+  SOCIAL_ICON_SIZES,
+  ICON_PRESETS,
+} from "./icon-sizes";
+export type { IconSizeKey } from "./icon-sizes";

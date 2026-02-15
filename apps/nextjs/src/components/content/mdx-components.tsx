@@ -121,7 +121,14 @@ const components = {
       );
     }
     // Fallback to standard img for external/unknown images
-    return <img className={cn("rounded-md border", className)} alt={alt} src={src} {...props} />;
+    return (
+      <img
+        className={cn("rounded-md border", className)}
+        alt={alt}
+        src={src}
+        {...props}
+      />
+    );
   },
   hr: ({ ...props }: React.HTMLAttributes<HTMLHRElement>) => (
     <hr className="my-4 md:my-8" {...props} />

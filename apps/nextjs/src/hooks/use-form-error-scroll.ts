@@ -103,9 +103,12 @@ export function useFormErrorScroll(options: UseFormErrorScrollOptions = {}) {
         // Focus the element if it's a form control and focus is enabled
         if (focus && errorElement instanceof HTMLElement) {
           // Small delay to ensure scroll completes
-          setTimeout(() => {
-            errorElement.focus({ preventScroll: true });
-          }, prefersReducedMotion ? 0 : parseInt(ANIMATION.duration.normal));
+          setTimeout(
+            () => {
+              errorElement.focus({ preventScroll: true });
+            },
+            prefersReducedMotion ? 0 : parseInt(ANIMATION.duration.normal),
+          );
         }
       }, delay);
     },

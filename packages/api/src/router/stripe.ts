@@ -43,7 +43,15 @@ export type UserSubscriptionPlan = SubscriptionPlan &
     interval: "month" | "year" | null;
     isCanceled?: boolean;
   };
-export const createSessionSchema = z.object({ planId: z.string().min(1) });
+// Enhanced schema with comprehensive validation
+export const createSessionSchema = z
+  .object({
+    planId: z
+      .string()
+      .min(1, "Plan ID cannot be empty")
+      .regex(/^price_/, "Plan ID must start with 'price_'"),
+  })
+  .strict();
 
 export const stripeRouter = createTRPCRouter({
   createSession: createRateLimitedProtectedProcedure("stripe")

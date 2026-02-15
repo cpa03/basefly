@@ -3,19 +3,31 @@ import { z } from "zod";
 
 import { db, SubscriptionPlan } from "@saasfly/db";
 
-import {
-  createRateLimitedProtectedProcedure,
-  createTRPCRouter,
-  EndpointType,
-} from "../trpc";
+import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 
-export const updateUserNameSchema = z.object({
-  name: z.string().min(1),
-  userId: z.string().min(1),
-});
-export const insertCustomerSchema = z.object({
-  userId: z.string().min(1),
-});
+// Enhanced schemas with comprehensive validation
+export const updateUserNameSchema = z
+  .object({
+    name: z
+      .string()
+      .trim()
+      .min(1, "Name cannot be empty")
+      .max(100, "Name cannot exceed 100 characters"),
+    userId: z.string().uuid("Invalid user ID format"),
+  })
+  .strict();
+
+export const insertCustomerSchema = z
+  .object({
+    userId: z.string().uuid("Invalid user ID format"),
+  })
+  .strict();
+
+export const queryCustomerSchema = z
+  .object({
+    userId: z.string().uuid("Invalid user ID format"),
+  })
+  .strict();
 export const customerRouter = createTRPCRouter({
   updateUserName: createRateLimitedProtectedProcedure("write")
     .input(updateUserNameSchema)
@@ -84,7 +96,7 @@ export const customerRouter = createTRPCRouter({
     }),
 
   queryCustomer: createRateLimitedProtectedProcedure("read")
-    .input(insertCustomerSchema)
+    .input(queryCustomerSchema)
     .query(async ({ ctx, input }) => {
       noStore();
       const { userId } = input;

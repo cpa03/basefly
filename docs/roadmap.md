@@ -74,7 +74,6 @@ Build a production-ready, scalable Kubernetes cluster management platform with e
 
 - Implement read replicas for dashboard queries
 - Add materialized views for aggregations
-- Explore GraphQL for complex queries
 
 ## Future Considerations
 
@@ -171,4 +170,4 @@ Build a production-ready, scalable Kubernetes cluster management platform with e
 
 Last updated: 2026-01-13
 
-*This roadmap is a living document and will be updated regularly based on business priorities, user feedback, and technical discoveries.*
+_This roadmap is a living document and will be updated regularly based on business priorities, user feedback, and technical discoveries._

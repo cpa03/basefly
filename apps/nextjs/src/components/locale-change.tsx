@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 
+import { ICON_SIZES } from "@saasfly/common";
 import { Button } from "@saasfly/ui/button";
 import {
   DropdownMenu,
@@ -30,7 +31,7 @@ export function LocaleChange({ url }: { url: string }) {
           className="h-8 w-8 px-0 transition-colors hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           aria-label="Change language"
         >
-          <Languages className="h-4 w-4" aria-hidden="true" />
+          <Languages className={ICON_SIZES.sm} aria-hidden="true" />
           <span className="sr-only">Change language</span>
         </Button>
       </DropdownMenuTrigger>

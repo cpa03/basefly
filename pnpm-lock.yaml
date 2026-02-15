@@ -5,6 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
+  axios: '>=1.13.5'
   cross-spawn@>=7.0.0 <7.0.5: '>=7.0.5'
   js-yaml@>=4.0.0 <4.1.1: '>=4.1.1'
   lodash@>=4.0.0 <=4.17.22: '>=4.17.23'

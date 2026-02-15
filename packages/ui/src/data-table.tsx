@@ -7,14 +7,8 @@ import {
   type ColumnDef,
 } from "@tanstack/react-table";
 
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "./table";
 import { DataTableEmpty } from "./data-table-empty";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "./table";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

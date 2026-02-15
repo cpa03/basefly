@@ -3,8 +3,9 @@
 import * as React from "react";
 
 import { ANIMATION } from "@saasfly/common";
-import { cn } from "./utils/cn";
+
 import { Search } from "./icons";
+import { cn } from "./utils/cn";
 
 interface DataTableEmptyProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
@@ -61,7 +62,10 @@ interface DataTableEmptyProps extends React.HTMLAttributes<HTMLDivElement> {
  * </TableCell>
  * ```
  */
-const DataTableEmpty = React.forwardRef<HTMLTableCellElement, DataTableEmptyProps>(
+const DataTableEmpty = React.forwardRef<
+  HTMLTableCellElement,
+  DataTableEmptyProps
+>(
   (
     {
       title = "No results found",

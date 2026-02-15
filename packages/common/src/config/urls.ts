@@ -251,10 +251,7 @@ export const DEV_URLS = {
  * @param nodeEnv - Current NODE_ENV value
  * @returns The base URL to use
  */
-export function getBaseUrl(
-  envUrl?: string,
-  nodeEnv?: string,
-): string {
+export function getBaseUrl(envUrl?: string, nodeEnv?: string): string {
   if (envUrl) return envUrl;
   if (nodeEnv === "development") return DEV_URLS.localhost;
   throw new Error(

@@ -21,9 +21,9 @@ import { Input } from "@saasfly/ui/input";
 import { Label } from "@saasfly/ui/label";
 import { toast } from "@saasfly/ui/use-toast";
 
+import { useFormErrorScroll } from "~/hooks/use-form-error-scroll";
 import { userNameSchema } from "~/lib/validations/user";
 import { trpc } from "~/trpc/client";
-import { useFormErrorScroll } from "~/hooks/use-form-error-scroll";
 
 interface UserNameFormProps extends React.HTMLAttributes<HTMLFormElement> {
   user: Pick<User, "id" | "name">;

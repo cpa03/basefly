@@ -4,14 +4,14 @@
 </div>
 
 # Basefly </br>
-<a href="https://trendshift.io/repositories/8929" target="_blank"><img src="https://trendshift.io/api/badge/repositories/8929" alt="saasfly%2Fsaasfly | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+<a href="https://trendshift.io/repositories/8929" target="_blank"><img src="https://trendshift.io/api/badge/repositories/8929" alt="basefly%2Fbasefly | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
 [![GitHub Actions Workflow Status][check-workflow-badge]][check-workflow-badge-link] [![GitHub License][github-license-badge]][github-license-badge-link]  [![Discord][discord-badge]][discord-badge-link] [![Saasfly][made-by-nextify-badge]][made-by-nextify-badge-link]
 [![Chinese](https://img.shields.io/badge/-Chinese-red.svg)](README_zh.md)
 [![German](https://img.shields.io/badge/-German-yellow.svg)](README_de.md)
 [![Vietnamese](https://img.shields.io/badge/-Vietnamese-yellow.svg)](README_vi.md) </br>
-![COMMIT_ACTIVITY](https://img.shields.io/github/commit-activity/m/saasfly/saasfly?style=for-the-badge">)
-[![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2Fsaasfly%2Fsaasfly&labelColor=%23f47373&countColor=%23263759)](https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2Fsaasfly%2Fsaasfly)
+![COMMIT_ACTIVITY](https://img.shields.io/github/commit-activity/m/basefly/basefly?style=for-the-badge)
+[![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2Fbasefly%2Fbasefly&labelColor=%23f47373&countColor=%23263759)](https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2Fbasefly%2Fbasefly)
 
 An enterprise-grade Kubernetes cluster management platform.
 
@@ -33,7 +33,7 @@ See more documentation at <https://document.saasfly.io>
 
 ## 🌟 Star History
 
-[![Star History Chart](https://app.repohistory.com/api/svg?repo=saasfly/saasfly&type=Timeline)](https://repohistory.com)
+[![Star History Chart](https://app.repohistory.com/api/svg?repo=basefly/basefly&type=Timeline)](https://repohistory.com)
 
 ## Sponsors
 
@@ -78,7 +78,7 @@ See more documentation at <https://document.saasfly.io>
 
 ### 🖱 One Click Deploy
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsaasfly%2Fsaasfly&env=NEXT_PUBLIC_APP_URL,CLERK_SECRET_KEY,CLERK_PUBLISHABLE_KEY,NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL,NEXT_PUBLIC_CLERK_AFTER_SIGN_OUT_URL,STRIPE_API_KEY,STRIPE_WEBHOOK_SECRET,POSTGRES_URL,RESEND_API_KEY,RESEND_FROM,ADMIN_EMAIL&install-command=bun%20install&build-command=bun%20run%20build&root-directory=apps%2Fnextjs)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fbasefly%2Fbasefly&env=NEXT_PUBLIC_APP_URL,CLERK_SECRET_KEY,CLERK_PUBLISHABLE_KEY,STRIPE_API_KEY,STRIPE_WEBHOOK_SECRET,POSTGRES_URL,RESEND_API_KEY,RESEND_FROM,ADMIN_EMAIL,NEXT_PUBLIC_STRIPE_STD_PRODUCT_ID,NEXT_PUBLIC_STRIPE_STD_MONTHLY_PRICE_ID,NEXT_PUBLIC_STRIPE_PRO_PRODUCT_ID,NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID,NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID,NEXT_PUBLIC_STRIPE_BUSINESS_PRODUCT_ID,NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID,NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID&install-command=bun%20install&build-command=bun%20run%20build&root-directory=apps%2Fnextjs)
 
 ### 📋 Prerequisites
 
@@ -282,12 +282,12 @@ Made with [contrib.rocks](https://contrib.rocks).
 
 <!-- Badges and links -->
 
-[check-workflow-badge]: https://img.shields.io/github/actions/workflow/status/saasfly/saasfly/ci.yml?label=ci
+[check-workflow-badge]: https://img.shields.io/github/actions/workflow/status/basefly/basefly/ci.yml?label=ci
 [github-license-badge]: https://img.shields.io/badge/License-MIT-green.svg
 [discord-badge]: https://img.shields.io/discord/1204690198382911488?color=7b8dcd&link=https%3A%2F%2Fsaasfly.io%2Fdiscord
 [made-by-nextify-badge]: https://img.shields.io/badge/made_by-nextify-blue?color=FF782B&link=https://nextify.ltd/
 
-[check-workflow-badge-link]: https://github.com/saasfly/saasfly/actions/workflows/check.yml
-[github-license-badge-link]: https://github.com/saasfly/saasfly/blob/main/LICENSE
+[check-workflow-badge-link]: https://github.com/basefly/basefly/actions/workflows/check.yml
+[github-license-badge-link]: https://github.com/basefly/basefly/blob/main/LICENSE
 [discord-badge-link]: https://discord.gg/8SwSX43wnD
 [made-by-nextify-badge-link]: https://nextify.ltd

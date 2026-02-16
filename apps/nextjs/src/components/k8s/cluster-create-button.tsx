@@ -1,13 +1,10 @@
 "use client";
 
 import * as React from "react";
-//navigate to new page
 import { useRouter } from "next/navigation";
 
-import { cn } from "@saasfly/ui";
-//button self design
-import { buttonVariants, type ButtonProps } from "@saasfly/ui/button";
-import { Add, Spinner } from "@saasfly/ui/icons";
+import { Button, type ButtonProps } from "@saasfly/ui/button";
+import { Add } from "@saasfly/ui/icons";
 import type { ToastProps } from "@saasfly/ui/toast";
 import { toast as _toast } from "@saasfly/ui/use-toast";
 
@@ -88,25 +85,15 @@ export function K8sCreateButton({
   }
 
   return (
-    <button
+    <Button
       onClick={onClick}
-      className={cn(
-        buttonVariants({ variant }),
-        {
-          "cursor-not-allowed opacity-60": isLoading,
-        },
-        className,
-      )}
-      disabled={isLoading}
-      aria-busy={isLoading}
+      variant={variant}
+      isLoading={isLoading}
+      className={className}
       {...props}
     >
-      {isLoading ? (
-        <Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
-      ) : (
-        <Add className="mr-2 h-4 w-4" aria-hidden="true" />
-      )}
+      {!isLoading && <Add className="mr-2 h-4 w-4" aria-hidden="true" />}
       {(dict.k8s as Record<string, string>)?.new_cluster ?? "New Cluster"}
-    </button>
+    </Button>
   );
 }

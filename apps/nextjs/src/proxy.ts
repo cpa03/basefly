@@ -6,6 +6,7 @@ import {
 } from "@saasfly/api/request-id";
 import { getMinifiedCSPHeader, HTTP_STATUS } from "@saasfly/common";
 
+import { i18n } from "./config/i18n-config";
 import { middleware as clerkMiddleware } from "./utils/clerk";
 
 export const config = {
@@ -58,19 +59,31 @@ function createErrorResponse(
   });
 }
 
-/**
- * Next.js proxy middleware that wraps Clerk middleware with request ID injection
- *
- * - Generates or extracts request ID from request headers
- * - Adds request ID to response headers for client visibility
- * - Passes request ID to tRPC context via request headers
- * - Enables distributed tracing across all requests
- * - Adds Content-Security-Policy header for XSS protection
- * - Gracefully handles Clerk initialization errors in development
- */
+function handleI18nRouting(req: NextRequest): NextResponse | null {
+  const pathname = req.nextUrl.pathname;
+
+  const pathnameHasLocale = i18n.locales.some(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
+  );
+
+  if (pathnameHasLocale) {
+    return null;
+  }
+
+  const locale = i18n.defaultLocale;
+  const url = req.nextUrl.clone();
+  url.pathname = `/${locale}${pathname}`;
+  return NextResponse.redirect(url);
+}
+
 export default async function proxy(
   req: NextRequest,
 ): Promise<Response | null> {
+  const i18nResponse = handleI18nRouting(req);
+  if (i18nResponse) {
+    return i18nResponse;
+  }
+
   const requestId = getOrGenerateRequestId(req.headers);
   const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 

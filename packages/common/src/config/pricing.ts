@@ -7,7 +7,12 @@
  * @module @saasfly/common/config/pricing
  */
 
-import { env } from "../env.mjs";
+const getEnvVar = (key: string): string | undefined => {
+  if (typeof process !== "undefined") {
+    return process.env[key];
+  }
+  return undefined;
+};
 
 /**
  * Pricing tiers for subscription plans
@@ -102,12 +107,13 @@ export const STRIPE_PRICE_IDS = {
 export function getStripePriceIds() {
   return {
     pro: {
-      monthly: env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID ?? null,
-      yearly: env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID ?? null,
+      monthly: getEnvVar("NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID") ?? null,
+      yearly: getEnvVar("NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID") ?? null,
     },
     business: {
-      monthly: env.NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID ?? null,
-      yearly: env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID ?? null,
+      monthly:
+        getEnvVar("NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID") ?? null,
+      yearly: getEnvVar("NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID") ?? null,
     },
   };
 }

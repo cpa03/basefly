@@ -1,23 +1,30 @@
 import { SubscriptionPlan } from "@saasfly/db";
 
-import { env } from "./env.mjs";
+const getEnvVar = (key: string): string | undefined => {
+  if (typeof process !== "undefined") {
+    return process.env[key];
+  }
+  return undefined;
+};
 
 export const PLANS: Record<
   string,
   (typeof SubscriptionPlan)[keyof typeof SubscriptionPlan]
 > = {
-  ...(env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID && {
-    [env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID]: SubscriptionPlan.PRO,
+  ...(getEnvVar("NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID") && {
+    [getEnvVar("NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID")!]:
+      SubscriptionPlan.PRO,
   }),
-  ...(env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID && {
-    [env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID]: SubscriptionPlan.PRO,
+  ...(getEnvVar("NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID") && {
+    [getEnvVar("NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID")!]:
+      SubscriptionPlan.PRO,
   }),
-  ...(env.NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID && {
-    [env.NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID]:
+  ...(getEnvVar("NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID") && {
+    [getEnvVar("NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID")!]:
       SubscriptionPlan.BUSINESS,
   }),
-  ...(env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID && {
-    [env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID]:
+  ...(getEnvVar("NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID") && {
+    [getEnvVar("NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID")!]:
       SubscriptionPlan.BUSINESS,
   }),
 };

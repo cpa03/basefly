@@ -1,39 +1,46 @@
-import { env } from "../env.mjs";
+const getEnvVar = (key: string): string | undefined => {
+  if (typeof process !== "undefined") {
+    return process.env[key];
+  }
+  return undefined;
+};
 
 export const FEATURE_FLAGS = {
   billing: {
-    enabled: env.ENABLE_BILLING !== "false",
-    stripeCheckout: env.ENABLE_STRIPE_CHECKOUT !== "false",
-    billingPortal: env.ENABLE_BILLING_PORTAL !== "false",
+    enabled: getEnvVar("ENABLE_BILLING") !== "false",
+    stripeCheckout: getEnvVar("ENABLE_STRIPE_CHECKOUT") !== "false",
+    billingPortal: getEnvVar("ENABLE_BILLING_PORTAL") !== "false",
   },
   clusters: {
-    enabled: env.ENABLE_CLUSTERS !== "false",
-    autoProvisioning: env.ENABLE_AUTO_PROVISIONING === "true",
-    multiRegion: env.ENABLE_MULTI_REGION === "true",
+    enabled: getEnvVar("ENABLE_CLUSTERS") !== "false",
+    autoProvisioning: getEnvVar("ENABLE_AUTO_PROVISIONING") === "true",
+    multiRegion: getEnvVar("ENABLE_MULTI_REGION") === "true",
   },
   auth: {
-    magicLinks: env.ENABLE_MAGIC_LINKS === "true",
+    magicLinks: getEnvVar("ENABLE_MAGIC_LINKS") === "true",
     oauth: {
-      google: env.ENABLE_GOOGLE_OAUTH === "true",
-      github: env.ENABLE_GITHUB_OAUTH === "true",
+      google: getEnvVar("ENABLE_GOOGLE_OAUTH") === "true",
+      github: getEnvVar("ENABLE_GITHUB_OAUTH") === "true",
     },
   },
   notifications: {
-    email: env.ENABLE_EMAIL_NOTIFICATIONS !== "false",
-    webhooks: env.ENABLE_WEBHOOK_NOTIFICATIONS === "true",
+    email: getEnvVar("ENABLE_EMAIL_NOTIFICATIONS") !== "false",
+    webhooks: getEnvVar("ENABLE_WEBHOOK_NOTIFICATIONS") === "true",
   },
   analytics: {
-    posthog: env.NEXT_PUBLIC_POSTHOG_KEY && env.NEXT_PUBLIC_POSTHOG_KEY !== " ",
-    vercel: env.ENABLE_VERCEL_ANALYTICS !== "false",
+    posthog:
+      getEnvVar("NEXT_PUBLIC_POSTHOG_KEY") &&
+      getEnvVar("NEXT_PUBLIC_POSTHOG_KEY") !== " ",
+    vercel: getEnvVar("ENABLE_VERCEL_ANALYTICS") !== "false",
   },
   admin: {
-    dashboard: env.ENABLE_ADMIN_DASHBOARD !== "false",
-    userManagement: env.ENABLE_USER_MANAGEMENT === "true",
+    dashboard: getEnvVar("ENABLE_ADMIN_DASHBOARD") !== "false",
+    userManagement: getEnvVar("ENABLE_USER_MANAGEMENT") === "true",
   },
   dev: {
-    debugMode: env.IS_DEBUG === "true",
-    mockPayments: env.ENABLE_MOCK_PAYMENTS === "true",
-    verboseLogging: env.VERBOSE_LOGGING === "true",
+    debugMode: getEnvVar("IS_DEBUG") === "true",
+    mockPayments: getEnvVar("ENABLE_MOCK_PAYMENTS") === "true",
+    verboseLogging: getEnvVar("VERBOSE_LOGGING") === "true",
   },
 } as const;
 

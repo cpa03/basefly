@@ -373,6 +373,9 @@ importers:
 
   packages/auth:
     dependencies:
+      '@clerk/nextjs':
+        specifier: ^6.36.6
+        version: 6.37.3(next@16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@saasfly/common':
         specifier: workspace:*
         version: link:../common

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 
 import type { User } from "@saasfly/auth";
-import { NAVBAR_CONFIG, UI_STRINGS } from "@saasfly/common";
+import { NAVBAR_CONFIG, UI_STRINGS, TRANSITION_PRESETS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { Button } from "@saasfly/ui/button";
 
@@ -16,6 +16,41 @@ import { useSigninModal } from "~/hooks/use-signin-modal";
 import type { MainNavItem } from "~/types";
 import { MainNav } from "./main-nav";
 import { UserAccountNav } from "./user-account-nav";
+
+interface NavLinkProps {
+  href: string;
+  children: React.ReactNode;
+  isActive?: boolean;
+  disabled?: boolean;
+}
+
+function NavLink({ href, children, isActive, disabled }: NavLinkProps) {
+  return (
+    <Link
+      href={disabled ? "#" : href}
+      className={cn(
+        "group relative flex items-center text-lg font-medium sm:text-sm",
+        TRANSITION_PRESETS.link,
+        "text-foreground/70 hover:text-foreground",
+        isActive && "font-semibold text-blue-500",
+        disabled && "cursor-not-allowed opacity-80",
+      )}
+    >
+      <span>{children}</span>
+      <span
+        className={cn(
+          "absolute -bottom-1 left-0 h-0.5 w-full origin-left",
+          "bg-current",
+          "motion-safe:scale-x-0 motion-safe:transition-transform motion-safe:duration-200 motion-safe:ease-out",
+          "group-hover:motion-safe:scale-x-100",
+          "group-focus-visible:motion-safe:scale-x-100",
+          isActive && "motion-safe:scale-x-100",
+        )}
+        aria-hidden="true"
+      />
+    </Link>
+  );
+}
 
 interface NavBarProps {
   user: Pick<User, "name" | "image" | "email"> | undefined;
@@ -63,7 +98,7 @@ export function NavBar({
           {items?.length ? (
             <nav className="hidden gap-6 md:flex">
               {items?.map((item, index) => (
-                <Link
+                <NavLink
                   key={index}
                   href={
                     item.disabled
@@ -72,16 +107,11 @@ export function NavBar({
                         ? item.href
                         : `/${lang}${item.href}`
                   }
-                  className={cn(
-                    "flex items-center text-lg font-medium transition-colors hover:text-foreground/80 sm:text-sm",
-                    item.href.startsWith(`/${segment}`)
-                      ? "font-semibold text-blue-500"
-                      : "",
-                    item.disabled && "cursor-not-allowed opacity-80",
-                  )}
+                  isActive={item.href.startsWith(`/${segment}`)}
+                  disabled={item.disabled}
                 >
                   {item.title}
-                </Link>
+                </NavLink>
               ))}
             </nav>
           ) : null}

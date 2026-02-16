@@ -1,5 +1,3 @@
-import { env } from "~/env.mjs";
-
 export function formatDate(input: string | number): string {
   const date = new Date(input);
   return date.toLocaleDateString("en-US", {
@@ -10,5 +8,6 @@ export function formatDate(input: string | number): string {
 }
 
 export function absoluteUrl(path: string) {
-  return `${env.NEXT_PUBLIC_APP_URL}${path}`;
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  return `${baseUrl}${path}`;
 }

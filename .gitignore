@@ -55,6 +55,9 @@ package-lock.json
 .opencode/node_modules
 .opencode/bun.lock
 
+# bun (project uses pnpm)
+bun.lock
+
 # generated/temporary prompt files
 docs/prompts/claude.txt
 docs/prompts/.github/

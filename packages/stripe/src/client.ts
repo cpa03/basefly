@@ -1,16 +1,20 @@
 import type { Stripe } from "stripe";
 
+import {
+  CIRCUIT_BREAKER_CONFIG,
+  RETRY_CONFIG,
+  TIMEOUT_CONFIG,
+} from "@saasfly/common";
+
 import { stripe } from "./index";
 import { CircuitBreaker, safeStripeCall } from "./integration";
 import { logger } from "./logger";
 
-/**
- * Circuit breaker for Stripe API calls
- *
- * Opens after 5 consecutive failures, resets after 60 seconds.
- * Prevents cascading failures when Stripe is unavailable.
- */
-const stripeCircuitBreaker = new CircuitBreaker("Stripe", 5, 60000);
+const stripeCircuitBreaker = new CircuitBreaker(
+  "Stripe",
+  CIRCUIT_BREAKER_CONFIG.failureThreshold,
+  CIRCUIT_BREAKER_CONFIG.resetTimeoutMs,
+);
 
 /**
  * Generate a unique idempotency key for Stripe operations
@@ -86,8 +90,8 @@ export async function createBillingSession(
     {
       serviceName: "Stripe Billing Portal",
       circuitBreaker: stripeCircuitBreaker,
-      maxAttempts: 3,
-      timeoutMs: 30000,
+      maxAttempts: RETRY_CONFIG.maxAttempts,
+      timeoutMs: TIMEOUT_CONFIG.default,
     },
   );
 
@@ -151,8 +155,8 @@ export async function createCheckoutSession(
     {
       serviceName: "Stripe Checkout",
       circuitBreaker: stripeCircuitBreaker,
-      maxAttempts: 3,
-      timeoutMs: 30000,
+      maxAttempts: RETRY_CONFIG.maxAttempts,
+      timeoutMs: TIMEOUT_CONFIG.default,
     },
   );
 
@@ -192,8 +196,8 @@ export async function retrieveSubscription(
     {
       serviceName: "Stripe Subscriptions",
       circuitBreaker: stripeCircuitBreaker,
-      maxAttempts: 3,
-      timeoutMs: 30000,
+      maxAttempts: RETRY_CONFIG.maxAttempts,
+      timeoutMs: TIMEOUT_CONFIG.default,
     },
   );
 

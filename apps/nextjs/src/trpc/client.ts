@@ -2,6 +2,7 @@ import { loggerLink } from "@trpc/client";
 import { experimental_createTRPCNextAppDirClient } from "@trpc/next/app-dir/client";
 
 import type { AppRouter } from "@saasfly/api";
+import { TRPC_SOURCE_VALUES } from "@saasfly/common";
 
 import { endingLink, transformer } from "./shared";
 
@@ -15,7 +16,7 @@ export const trpc = experimental_createTRPCNextAppDirClient<AppRouter>({
         }),
         endingLink({
           headers: {
-            "x-trpc-source": "client",
+            "x-trpc-source": TRPC_SOURCE_VALUES.CLIENT,
           },
         }),
       ],

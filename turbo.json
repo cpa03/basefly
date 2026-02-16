@@ -17,8 +17,7 @@
       "outputs": ["node_modules/.cache/.prettiercache"]
     },
     "lint": {
-      "dependsOn": ["^topo"],
-      "outputs": ["node_modules/.cache/.eslintcache"]
+      "dependsOn": ["^topo"]
     },
     "typecheck": {
       "dependsOn": ["^topo"],

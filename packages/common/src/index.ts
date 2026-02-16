@@ -138,3 +138,34 @@ export {
   ICON_PRESETS,
 } from "./icon-sizes";
 export type { IconSizeKey } from "./icon-sizes";
+
+// HTTP configuration - centralized HTTP status codes
+export {
+  HTTP_STATUS,
+  HTTP_STATUS_CATEGORIES,
+  HTTP_STATUS_MESSAGES,
+  isSuccessStatus,
+  isRedirectStatus,
+  isClientErrorStatus,
+  isServerErrorStatus,
+  isErrorStatus,
+  getStatusCategory,
+  getStatusMessage,
+} from "./config/http";
+export type { HttpStatusCode } from "./config/http";
+
+// Headers configuration - centralized HTTP header names
+export {
+  STANDARD_HEADERS,
+  CUSTOM_HEADERS,
+  TRPC_SOURCE_VALUES,
+  CONTENT_TYPES,
+  HEADERS,
+} from "./config/headers";
+export type {
+  StandardHeader,
+  CustomHeader,
+  HeaderName,
+  TrpcSourceValue,
+  ContentType,
+} from "./config/headers";

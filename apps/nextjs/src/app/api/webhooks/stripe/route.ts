@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 import { handleEvent, stripe } from "@saasfly/stripe";
+import { HTTP_STATUS } from "@saasfly/common";
 
 import { env } from "~/env.mjs";
 import { logger } from "~/lib/logger";
@@ -17,11 +18,17 @@ const handler = async (req: NextRequest) => {
     await handleEvent(event);
 
     logger.info("Handled Stripe Event", { eventType: event.type });
-    return NextResponse.json({ received: true }, { status: 200 });
+    return NextResponse.json(
+      { received: true },
+      { status: HTTP_STATUS.OK },
+    );
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
     logger.error("Error when handling Stripe Event", error, { message });
-    return NextResponse.json({ error: message }, { status: 400 });
+    return NextResponse.json(
+      { error: message },
+      { status: HTTP_STATUS.BAD_REQUEST },
+    );
   }
 };
 

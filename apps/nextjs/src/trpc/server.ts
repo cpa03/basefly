@@ -13,6 +13,7 @@ import { observable } from "@trpc/server/observable";
 import type { TRPCErrorResponse } from "@trpc/server/rpc";
 
 import type { AppRouter } from "@saasfly/api";
+import { TRPC_SOURCE_VALUES } from "@saasfly/common";
 
 import { appRouter } from "../../../../packages/api/src/root";
 import { transformer } from "./shared";
@@ -65,7 +66,7 @@ const createContext = cache(async () => {
   return createTRPCContext({
     headers: new Headers({
       cookie: cookieHeader,
-      "x-trpc-source": "rsc",
+      "x-trpc-source": TRPC_SOURCE_VALUES.RSC,
     }),
     auth: authResult,
   });

@@ -4,7 +4,7 @@ import {
   getOrGenerateRequestId,
   REQUEST_ID_HEADER,
 } from "@saasfly/api/request-id";
-import { getMinifiedCSPHeader } from "@saasfly/common";
+import { getMinifiedCSPHeader, HTTP_STATUS } from "@saasfly/common";
 
 import { middleware as clerkMiddleware } from "./utils/clerk";
 
@@ -42,7 +42,7 @@ function createErrorResponse(
         requestId,
       },
       {
-        status: 500,
+        status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
         headers: {
           [REQUEST_ID_HEADER]: requestId,
           "Content-Security-Policy": contentSecurityPolicyHeaderValue,

@@ -156,7 +156,8 @@ export const HEADERS = {
 /**
  * Type for standard header names
  */
-export type StandardHeader = (typeof STANDARD_HEADERS)[keyof typeof STANDARD_HEADERS];
+export type StandardHeader =
+  (typeof STANDARD_HEADERS)[keyof typeof STANDARD_HEADERS];
 
 /**
  * Type for custom header names
@@ -171,7 +172,8 @@ export type HeaderName = (typeof HEADERS)[keyof typeof HEADERS];
 /**
  * Type for tRPC source values
  */
-export type TrpcSourceValue = (typeof TRPC_SOURCE_VALUES)[keyof typeof TRPC_SOURCE_VALUES];
+export type TrpcSourceValue =
+  (typeof TRPC_SOURCE_VALUES)[keyof typeof TRPC_SOURCE_VALUES];
 
 /**
  * Type for content type values

@@ -24,6 +24,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.36.6",
     "@saasfly/auth": "workspace:*",
     "@saasfly/common": "workspace:*",
     "@saasfly/db": "workspace:*",

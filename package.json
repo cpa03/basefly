@@ -52,8 +52,5 @@
     "apps/*",
     "packages/*",
     "tooling/*"
-  ],
-  "dependencies": {
-    "@clerk/nextjs": "^6.36.6"
-  }
+  ]
 }

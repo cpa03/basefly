@@ -2,18 +2,20 @@
 
 ## Active Bugs
 
+- [x] bug: Build failure - `buttonVariants()` called from server component in docs pages.
 - [x] bug: `packages/stripe/src/plans.test.ts` fails due to module-level `process.env` usage in `plans.ts`.
 - [x] bug: Inconsistent logging in `packages/api/src/router/k8s.ts` (using `console.info` instead of `logger`).
 - [x] bug: Unused `eslint-disable` directives in `packages/ui/src/text-generate-effect.tsx` and `packages/ui/src/typewriter-effect.tsx`.
 - [x] bug: Potential "Invalid Date" in `DashboardPage` and `ClusterItem` when `updatedAt` is null/undefined.
 
-## Verification Summary (2026-02-15)
+## Verification Summary (2026-02-17)
 
 ### Code Quality Checks
 
 - ✅ **TypeScript**: All 8 packages pass typecheck with 0 errors
 - ✅ **ESLint**: All 7 packages pass lint with 0 errors
-- ✅ **Tests**: All 324 tests passing across 12 test files
+- ✅ **Tests**: All 325 tests passing across 12 test files
+- ✅ **Build**: Successful with 56 static pages generated
 
 ### Test Coverage
 
@@ -28,6 +30,15 @@
 - **Additional router tests**: 175+ tests ✓
 
 ## Fixed Bugs
+
+### [x] Build failure: buttonVariants called from server component
+
+**Date**: 2026-02-17  
+**File**: `apps/nextjs/src/components/docs/pager.tsx`  
+**Issue**: Next.js build failed with error: "Attempted to call buttonVariants() from the server but buttonVariants is on the client. It's not possible to invoke a client function from the server."  
+**Root Cause**: `DocsPager` component imports and uses `buttonVariants` from `@saasfly/ui/button`, which is a client component file (has `"use client"` directive). The docs pages are server components, so they cannot directly use functions exported from client components.  
+**Solution**: Added `"use client"` directive to `apps/nextjs/src/components/docs/pager.tsx` to make it a client component. This is appropriate since the component uses client-side navigation via Next.js `<Link>` component.  
+**Impact**: Build now succeeds with all 56 pages generated successfully.
 
 ### [x] Cyclic dependency between @saasfly/ui and @saasfly/common
 

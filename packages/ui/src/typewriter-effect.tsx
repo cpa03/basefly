@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, type ComponentType } from "react";
 import dynamic from "next/dynamic";
 import { motion, stagger, useAnimate, useInView } from "framer-motion";
 
@@ -94,9 +94,19 @@ export const TypewriterEffectImpl = ({
   );
 };
 
-export const TextGenerateEffect = dynamic(
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+const TypedDynamicComponent = dynamic(
   () => Promise.resolve(TypewriterEffectImpl),
   {
     ssr: false,
   },
-);
+) as ComponentType<{
+  words: {
+    text: string;
+    className?: string;
+  }[];
+  className?: string;
+  cursorClassName?: string;
+}>;
+
+export const TypewriterEffect = TypedDynamicComponent;

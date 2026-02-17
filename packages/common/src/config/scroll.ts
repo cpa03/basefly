@@ -65,9 +65,10 @@ export function createScrollOptions(
 
   return {
     options: {
-      top: scrollOptions.top !== undefined
-        ? scrollOptions.top - SCROLL_OFFSETS[offsetKey]
-        : undefined,
+      top:
+        scrollOptions.top !== undefined
+          ? scrollOptions.top - SCROLL_OFFSETS[offsetKey]
+          : undefined,
       left: scrollOptions.left,
       behavior,
     },

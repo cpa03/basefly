@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, type ComponentType } from "react";
 import dynamic from "next/dynamic";
 import { motion, stagger, useAnimate } from "framer-motion";
 
@@ -59,9 +59,15 @@ const TextGenerateEffectImpl = ({
   );
 };
 
-export const TextGenerateEffect = dynamic(
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
+const TypedDynamicComponent = dynamic(
   () => Promise.resolve(TextGenerateEffectImpl),
   {
     ssr: false,
   },
-);
+) as ComponentType<{
+  words: string;
+  className?: string;
+}>;
+
+export const TextGenerateEffect = TypedDynamicComponent;

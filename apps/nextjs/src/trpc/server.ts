@@ -49,7 +49,9 @@ export const createTRPCContext = async (opts: {
 const createContext = cache(async () => {
   const cookieStore = cookies();
   // Convert cookie store to string properly
-  const cookieHeader = Array.from(cookieStore.getAll())
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  const allCookies = cookieStore.getAll() as { name: string; value: string }[];
+  const cookieHeader = Array.from(allCookies)
     .map((cookie) => `${cookie.name}=${cookie.value}`)
     .join("; ");
 

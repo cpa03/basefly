@@ -5,7 +5,6 @@ import { PricingCards } from "~/components/price/pricing-cards";
 import { PricingFaq } from "~/components/price/pricing-faq";
 import type { Locale } from "~/config/i18n-config";
 import { getDictionary } from "~/lib/get-dictionary";
-import { trpc } from "~/trpc/server";
 
 export const metadata = {
   title: PAGE_METADATA.pricing,
@@ -24,7 +23,13 @@ export default async function PricingPage({
   let subscriptionPlan;
 
   if (user) {
-    subscriptionPlan = await trpc.stripe.userPlans.query();
+    try {
+      const { trpc } = await import("~/trpc/server");
+      subscriptionPlan = await trpc.stripe.userPlans.query();
+    } catch (error) {
+      console.error("Failed to fetch user subscription plan:", error);
+      subscriptionPlan = undefined;
+    }
   }
   return (
     <div className="flex w-full flex-col gap-16 py-8 md:py-8">

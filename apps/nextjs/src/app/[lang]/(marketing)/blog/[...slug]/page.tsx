@@ -15,7 +15,7 @@ import Link from "next/link";
 import Balancer from "react-wrap-balancer";
 
 import { cn } from "@saasfly/ui";
-import { buttonVariants } from "@saasfly/ui/button";
+import { buttonVariants } from "@saasfly/ui/button-variants";
 import { ChevronLeft } from "@saasfly/ui/icons";
 
 import { env } from "~/env.mjs";

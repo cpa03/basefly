@@ -6,6 +6,7 @@ import { ModalProvider } from "~/components/modal-provider";
 import { NavBar } from "~/components/navbar";
 import { NavbarSkeleton } from "~/components/navbar-skeleton";
 import { SiteFooter } from "~/components/site-footer";
+import { BackToTop } from "~/components/back-to-top";
 import { SkipLink } from "~/components/skip-link";
 import type { Locale } from "~/config/i18n-config";
 import { getMarketingConfig } from "~/config/ui/marketing";
@@ -49,6 +50,7 @@ export default async function MarketingLayout({
         params={{ lang: `${lang}` }}
         dict={dict.common}
       />
+      <BackToTop />
     </div>
   );
 }

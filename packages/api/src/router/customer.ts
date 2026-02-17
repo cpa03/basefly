@@ -34,18 +34,9 @@ export const customerRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { userId } = input;
       const ctxUserId = ctx.userId;
-      const requestId = ctx.requestId;
       if (!ctxUserId || userId !== ctxUserId) {
         return { success: false, reason: "no auth" };
       }
-      console.info(
-        JSON.stringify({
-          level: "info",
-          message: "Updating user name",
-          userId,
-          requestId,
-        }),
-      );
       await db
         .updateTable("User")
         .set({
@@ -53,14 +44,6 @@ export const customerRouter = createTRPCRouter({
         })
         .where("id", "=", userId)
         .execute();
-      console.info(
-        JSON.stringify({
-          level: "info",
-          message: "Updated user name",
-          userId,
-          requestId,
-        }),
-      );
       return { success: true, reason: "" };
     }),
 
@@ -68,15 +51,6 @@ export const customerRouter = createTRPCRouter({
     .input(insertCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       const { userId } = input;
-      const requestId = ctx.requestId;
-      console.info(
-        JSON.stringify({
-          level: "info",
-          message: "Inserting customer",
-          userId,
-          requestId,
-        }),
-      );
       const result = await db
         .insertInto("Customer")
         .values({
@@ -84,14 +58,6 @@ export const customerRouter = createTRPCRouter({
           plan: SubscriptionPlan.FREE,
         })
         .executeTakeFirst();
-      console.info(
-        JSON.stringify({
-          level: "info",
-          message: "Inserted customer",
-          userId,
-          requestId,
-        }),
-      );
       return result;
     }),
 
@@ -100,15 +66,6 @@ export const customerRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       noStore();
       const { userId } = input;
-      const requestId = ctx.requestId;
-      console.info(
-        JSON.stringify({
-          level: "info",
-          message: "Querying customer",
-          userId,
-          requestId,
-        }),
-      );
       return await db
         .selectFrom("Customer")
         .where("authUserId", "=", userId)

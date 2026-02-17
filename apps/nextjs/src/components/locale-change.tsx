@@ -36,15 +36,11 @@ export function LocaleChange({ url }: { url: string }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <div>
-          {i18n.locales.map((locale) => {
-            return (
-              <DropdownMenuItem key={locale} onClick={() => onClick(locale)}>
-                <span>{localeMap[locale]}</span>
-              </DropdownMenuItem>
-            );
-          })}
-        </div>
+        {i18n.locales.map((locale) => (
+          <DropdownMenuItem key={locale} onClick={() => onClick(locale)}>
+            <span>{localeMap[locale]}</span>
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -235,7 +235,7 @@ export type { PageSizeKey } from "./config/pagination";
 export {
   CACHE_DURATION,
   CACHE_CONTROL,
-  SECURITY_HEADERS,
+  HTTP_SECURITY_HEADERS,
   NEXTJS_CACHE_HEADERS,
   generateCacheControl,
   generateNextJsHeaders,

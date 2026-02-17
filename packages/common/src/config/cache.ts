@@ -57,7 +57,7 @@ export const CACHE_CONTROL = {
  * Security header values
  * Centralized security-related header values
  */
-export const SECURITY_HEADERS = {
+export const HTTP_SECURITY_HEADERS = {
   /** HSTS (HTTP Strict Transport Security) header value */
   HSTS: `max-age=${CACHE_DURATION.HSTS_MAX_AGE}; includeSubDomains; preload`,
   /** Frame options - prevent clickjacking */
@@ -128,7 +128,7 @@ export const NEXTJS_CACHE_HEADERS = {
   /** API routes */
   api: {
     key: "X-Content-Type-Options",
-    value: SECURITY_HEADERS.CONTENT_TYPE_OPTIONS,
+    value: HTTP_SECURITY_HEADERS.CONTENT_TYPE_OPTIONS,
   },
 } as const;
 
@@ -143,27 +143,27 @@ export function generateNextJsHeaders() {
       headers: [
         {
           key: "X-DNS-Prefetch-Control",
-          value: SECURITY_HEADERS.DNS_PREFETCH_CONTROL,
+          value: HTTP_SECURITY_HEADERS.DNS_PREFETCH_CONTROL,
         },
         {
           key: "Strict-Transport-Security",
-          value: SECURITY_HEADERS.HSTS,
+          value: HTTP_SECURITY_HEADERS.HSTS,
         },
         {
           key: "X-Frame-Options",
-          value: SECURITY_HEADERS.FRAME_OPTIONS,
+          value: HTTP_SECURITY_HEADERS.FRAME_OPTIONS,
         },
         {
           key: "X-Content-Type-Options",
-          value: SECURITY_HEADERS.CONTENT_TYPE_OPTIONS,
+          value: HTTP_SECURITY_HEADERS.CONTENT_TYPE_OPTIONS,
         },
         {
           key: "Referrer-Policy",
-          value: SECURITY_HEADERS.REFERRER_POLICY,
+          value: HTTP_SECURITY_HEADERS.REFERRER_POLICY,
         },
         {
           key: "Permissions-Policy",
-          value: SECURITY_HEADERS.PERMISSIONS_POLICY,
+          value: HTTP_SECURITY_HEADERS.PERMISSIONS_POLICY,
         },
         {
           key: "Cache-Control",
@@ -194,7 +194,7 @@ export function generateNextJsHeaders() {
       headers: [
         {
           key: "X-Content-Type-Options",
-          value: SECURITY_HEADERS.CONTENT_TYPE_OPTIONS,
+          value: HTTP_SECURITY_HEADERS.CONTENT_TYPE_OPTIONS,
         },
       ],
     },

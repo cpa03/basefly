@@ -1,4 +1,6 @@
-export function formatDate(input: string | number | Date | undefined | null): string {
+export function formatDate(
+  input: string | number | Date | undefined | null,
+): string {
   if (!input) return "-";
   const date = new Date(input);
   if (isNaN(date.getTime())) return "-";

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 
 import type { User } from "@saasfly/auth";
-import { NAVBAR_CONFIG, UI_STRINGS, TRANSITION_PRESETS } from "@saasfly/common";
+import { NAVBAR_CONFIG, TRANSITION_PRESETS, UI_STRINGS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { Button } from "@saasfly/ui/button";
 

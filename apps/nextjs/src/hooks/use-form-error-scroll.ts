@@ -4,9 +4,9 @@ import * as React from "react";
 
 import {
   ANIMATION,
+  SCROLL_BEHAVIOR,
   SCROLL_DELAYS,
   SCROLL_OFFSETS,
-  SCROLL_BEHAVIOR,
 } from "@saasfly/common";
 
 interface UseFormErrorScrollOptions {

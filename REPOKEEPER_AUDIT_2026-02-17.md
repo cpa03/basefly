@@ -198,15 +198,20 @@ packages/ui/src/data/globe.json (308KB)
 
 ## Action Items Summary
 
+### Completed ✅
+
+- [x] Consolidate duplicate prompt files (removed 2 duplicates, fixed 1 file extension)
+  - Removed: `docs/prompts/Anthropic/claude-3.7-sonnet-w-tools.xml` (duplicate of .md)
+  - Removed: `docs/prompts/Anthropic/claude-sonnet-4.txt` (duplicate of .md)
+  - Fixed: `docs/prompts/Anthropic/claude-opus-4.5` → added .md extension
+
 ### High Priority
 
-- [ ] Replace deprecated `critters` package
+- [ ] Replace deprecated `critters` package (not currently in use - was transitive dependency)
 - [ ] Update Turbo ecosystem to v2.8.9
 
 ### Medium Priority
 
-- [ ] Archive docs/prompts/Anthropic/old/ directory
-- [ ] Consolidate duplicate prompt files
 - [ ] Review and optimize GitHub workflow schedules
 - [ ] Update @ianvs/prettier-plugin-sort-imports
 

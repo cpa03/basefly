@@ -87,7 +87,6 @@ const config = {
     ],
     optimizeCss: true,
   },
-  turbopack: {},
   async headers() {
     return [
       {

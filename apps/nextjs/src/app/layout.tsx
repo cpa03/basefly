@@ -7,7 +7,7 @@ import "~/styles/globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-import { EXTERNAL_URLS } from "@saasfly/common";
+import { EXTERNAL_URLS, FEATURE_FLAGS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { Toaster } from "@saasfly/ui/toaster";
 
@@ -120,8 +120,8 @@ export default function RootLayout({
             <NextDevtoolsProvider>
               <main id="main-content">{children}</main>
             </NextDevtoolsProvider>
-            <Analytics />
-            <SpeedInsights />
+            {FEATURE_FLAGS.analytics.vercel && <Analytics />}
+            {FEATURE_FLAGS.analytics.vercel && <SpeedInsights />}
             <Toaster />
             <KeyboardShortcutsHelp />
             <TailwindIndicator />

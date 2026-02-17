@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { cn } from "@saasfly/ui";
-import { buttonVariants } from "@saasfly/ui/button";
+import { buttonVariants } from "@saasfly/ui/button-variants";
 import { ChevronLeft } from "@saasfly/ui/icons";
 
 import { UserClerkAuthForm } from "~/components/user-clerk-auth-form";

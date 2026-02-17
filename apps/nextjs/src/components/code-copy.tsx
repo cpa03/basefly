@@ -169,7 +169,7 @@ export function CodeCopy() {
         </span>
       </div>
 
-      <TooltipProvider delayDuration={200}>
+      <TooltipProvider delayDuration={FEEDBACK_TIMING.tooltipDelay}>
         <Tooltip>
           <TooltipTrigger asChild>
             <button

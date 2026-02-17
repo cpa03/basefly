@@ -6,6 +6,11 @@ import { withNextDevtools } from "@next-devtools/core/plugin";
 import withBundleAnalyzer from "@next/bundle-analyzer";
 // import "@saasfly/api/env"
 import withMDX from "@next/mdx";
+import {
+  CACHE_CONTROL,
+  CACHE_DURATION,
+  SECURITY_HEADERS,
+} from "@saasfly/common";
 
 !process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
 
@@ -24,7 +29,7 @@ const config = {
   pageExtensions: ["ts", "tsx", "mdx"],
   images: {
     formats: ["image/avif", "image/webp"],
-    minimumCacheTTL: 60,
+    minimumCacheTTL: CACHE_DURATION.ONE_MINUTE,
     remotePatterns: [
       {
         protocol: "https",
@@ -95,31 +100,31 @@ const config = {
         headers: [
           {
             key: "X-DNS-Prefetch-Control",
-            value: "on",
+            value: SECURITY_HEADERS.DNS_PREFETCH_CONTROL,
           },
           {
             key: "Strict-Transport-Security",
-            value: "max-age=63072000; includeSubDomains; preload",
+            value: SECURITY_HEADERS.HSTS,
           },
           {
             key: "X-Frame-Options",
-            value: "SAMEORIGIN",
+            value: SECURITY_HEADERS.FRAME_OPTIONS,
           },
           {
             key: "X-Content-Type-Options",
-            value: "nosniff",
+            value: SECURITY_HEADERS.CONTENT_TYPE_OPTIONS,
           },
           {
             key: "Referrer-Policy",
-            value: "origin-when-cross-origin",
+            value: SECURITY_HEADERS.REFERRER_POLICY,
           },
           {
             key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=()",
+            value: SECURITY_HEADERS.PERMISSIONS_POLICY,
           },
           {
             key: "Cache-Control",
-            value: "public, max-age=0, must-revalidate",
+            value: CACHE_CONTROL.NO_CACHE,
           },
         ],
       },
@@ -128,7 +133,7 @@ const config = {
         headers: [
           {
             key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
+            value: CACHE_CONTROL.IMMUTABLE,
           },
         ],
       },
@@ -137,7 +142,7 @@ const config = {
         headers: [
           {
             key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
+            value: CACHE_CONTROL.IMMUTABLE,
           },
         ],
       },
@@ -146,7 +151,7 @@ const config = {
         headers: [
           {
             key: "X-Content-Type-Options",
-            value: "nosniff",
+            value: SECURITY_HEADERS.CONTENT_TYPE_OPTIONS,
           },
         ],
       },

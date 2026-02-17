@@ -231,6 +231,17 @@ export {
 } from "./config/pagination";
 export type { PageSizeKey } from "./config/pagination";
 
+// Cache configuration - centralized cache control and TTL settings
+export {
+  CACHE_DURATION,
+  CACHE_CONTROL,
+  SECURITY_HEADERS,
+  NEXTJS_CACHE_HEADERS,
+  generateCacheControl,
+  generateNextJsHeaders,
+} from "./config/cache";
+export type { CacheDurationKey, CacheControlKey } from "./config/cache";
+
 // UI Design Tokens - centralized theming and sizing
 export {
   BUTTON_TOKENS,

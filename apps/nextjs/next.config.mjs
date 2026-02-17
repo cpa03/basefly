@@ -9,6 +9,28 @@ import withMDX from "@next/mdx";
 
 !process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
 
+// Cache and security header values are centralized in @saasfly/common
+// See: packages/common/src/config/cache.ts for canonical definitions
+const CACHE_DURATION = {
+  ONE_MINUTE: 60,
+  ONE_YEAR: 31536000,
+  HSTS_MAX_AGE: 63072000,
+};
+
+const CACHE_CONTROL = {
+  NO_CACHE: "public, max-age=0, must-revalidate",
+  IMMUTABLE: `public, max-age=${CACHE_DURATION.ONE_YEAR}, immutable`,
+};
+
+const HTTP_SECURITY_HEADERS = {
+  HSTS: `max-age=${CACHE_DURATION.HSTS_MAX_AGE}; includeSubDomains; preload`,
+  FRAME_OPTIONS: "SAMEORIGIN",
+  CONTENT_TYPE_OPTIONS: "nosniff",
+  REFERRER_POLICY: "origin-when-cross-origin",
+  PERMISSIONS_POLICY: "camera=(), microphone=(), geolocation=()",
+  DNS_PREFETCH_CONTROL: "on",
+};
+
 /** @type {import("next").NextConfig} */
 const config = {
   reactStrictMode: true,
@@ -24,7 +46,7 @@ const config = {
   pageExtensions: ["ts", "tsx", "mdx"],
   images: {
     formats: ["image/avif", "image/webp"],
-    minimumCacheTTL: 60,
+    minimumCacheTTL: CACHE_DURATION.ONE_MINUTE,
     remotePatterns: [
       {
         protocol: "https",
@@ -95,31 +117,31 @@ const config = {
         headers: [
           {
             key: "X-DNS-Prefetch-Control",
-            value: "on",
+            value: HTTP_SECURITY_HEADERS.DNS_PREFETCH_CONTROL,
           },
           {
             key: "Strict-Transport-Security",
-            value: "max-age=63072000; includeSubDomains; preload",
+            value: HTTP_SECURITY_HEADERS.HSTS,
           },
           {
             key: "X-Frame-Options",
-            value: "SAMEORIGIN",
+            value: HTTP_SECURITY_HEADERS.FRAME_OPTIONS,
           },
           {
             key: "X-Content-Type-Options",
-            value: "nosniff",
+            value: HTTP_SECURITY_HEADERS.CONTENT_TYPE_OPTIONS,
           },
           {
             key: "Referrer-Policy",
-            value: "origin-when-cross-origin",
+            value: HTTP_SECURITY_HEADERS.REFERRER_POLICY,
           },
           {
             key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=()",
+            value: HTTP_SECURITY_HEADERS.PERMISSIONS_POLICY,
           },
           {
             key: "Cache-Control",
-            value: "public, max-age=0, must-revalidate",
+            value: CACHE_CONTROL.NO_CACHE,
           },
         ],
       },
@@ -128,7 +150,7 @@ const config = {
         headers: [
           {
             key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
+            value: CACHE_CONTROL.IMMUTABLE,
           },
         ],
       },
@@ -137,7 +159,7 @@ const config = {
         headers: [
           {
             key: "Cache-Control",
-            value: "public, max-age=31536000, immutable",
+            value: CACHE_CONTROL.IMMUTABLE,
           },
         ],
       },
@@ -146,7 +168,7 @@ const config = {
         headers: [
           {
             key: "X-Content-Type-Options",
-            value: "nosniff",
+            value: HTTP_SECURITY_HEADERS.CONTENT_TYPE_OPTIONS,
           },
         ],
       },

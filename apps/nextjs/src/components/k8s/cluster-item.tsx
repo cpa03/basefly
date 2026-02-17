@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { ANIMATION } from "@saasfly/common";
+import { ANIMATION, FEEDBACK_TIMING } from "@saasfly/common";
 import { StatusBadge } from "@saasfly/ui/status-badge";
 import { TableCell, TableRow } from "@saasfly/ui/table";
 import {
@@ -25,7 +25,7 @@ interface ClusterItemProps {
 
 function ClusterNameCell({ name, href }: { name: string; href: string }) {
   return (
-    <TooltipProvider delayDuration={300}>
+    <TooltipProvider delayDuration={FEEDBACK_TIMING.tooltipDelay}>
       <Tooltip>
         <TooltipTrigger asChild>
           <Link

@@ -112,6 +112,16 @@ export default {
           "0%": { transform: "translateX(-100%)" },
           "100%": { transform: "translateX(200%)" },
         },
+        ripple: {
+          "0%": {
+            transform: "translate(-50%, -50%) scale(0)",
+            opacity: "0.5",
+          },
+          "100%": {
+            transform: "translate(-50%, -50%) scale(4)",
+            opacity: "0",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -126,6 +136,7 @@ export default {
         shimmer: "shimmer 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         "shimmer-sweep":
           "shimmer-sweep 2s cubic-bezier(0.4, 0, 0.2, 1) infinite",
+        ripple: "ripple 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards",
       },
     },
   },

@@ -1,5 +1,7 @@
-export function formatDate(input: string | number): string {
+export function formatDate(input: string | number | Date | undefined | null): string {
+  if (!input) return "-";
   const date = new Date(input);
+  if (isNaN(date.getTime())) return "-";
   return date.toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",

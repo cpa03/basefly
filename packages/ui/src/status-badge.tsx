@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { type ClusterStatus } from "@saasfly/common";
 import {
   Check,
   Clock,
@@ -15,14 +16,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./tooltip";
-
-export type ClusterStatus =
-  | "PENDING"
-  | "CREATING"
-  | "INITING"
-  | "RUNNING"
-  | "STOPPED"
-  | "DELETED";
 
 interface StatusConfig {
   icon: typeof Clock;

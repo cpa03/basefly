@@ -1,3 +1,27 @@
+// Project configuration - ROOT configuration for brand, company, and project settings
+export {
+  PROJECT_CONFIG,
+  BRAND_CONFIG,
+  COMPANY_CONFIG,
+  REPOSITORY_CONFIG,
+  APP_URLS,
+  FEATURE_CONFIG,
+  DEPLOYMENT_CONFIG,
+  CLI_CONFIG,
+  MARKETING_CONFIG,
+  INTEGRATION_CONFIG,
+  getCurrentBaseUrl,
+  isProjectFeatureEnabled,
+  getBrandName,
+  getRepositoryUrl,
+} from "./config/project";
+export type {
+  ProjectConfig,
+  BrandConfig,
+  CompanyConfig,
+  RepositoryConfig,
+} from "./config/project";
+
 export { siteConfig } from "./config/site";
 
 // CSP configuration - centralized Content Security Policy

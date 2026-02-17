@@ -32,7 +32,8 @@ export const BRAND_CONFIG = {
   legacyName: "Saasfly" as const,
 
   /** Brand description - short tagline */
-  description: "Enterprise-grade Kubernetes cluster management platform" as const,
+  description:
+    "Enterprise-grade Kubernetes cluster management platform" as const,
 
   /** Extended description - for SEO and marketing */
   longDescription:
@@ -425,10 +426,7 @@ export type RepositoryConfig = typeof REPOSITORY_CONFIG;
 /**
  * Helper function to get the current base URL based on environment
  */
-export function getCurrentBaseUrl(
-  envUrl?: string,
-  nodeEnv?: string,
-): string {
+export function getCurrentBaseUrl(envUrl?: string, nodeEnv?: string): string {
   if (envUrl) return envUrl;
   if (nodeEnv === "development") return APP_URLS.development;
   return APP_URLS.production;
@@ -437,9 +435,7 @@ export function getCurrentBaseUrl(
 /**
  * Helper function to check if a feature is enabled
  */
-export function isProjectFeatureEnabled(
-  featurePath: string,
-): boolean {
+export function isProjectFeatureEnabled(featurePath: string): boolean {
   const parts = featurePath.split(".");
   let current: unknown = FEATURE_CONFIG;
 
@@ -465,9 +461,7 @@ export function getBrandName(useLegacy = false): string {
  * Helper function to get repository URL
  */
 export function getRepositoryUrl(useLegacy = false): string {
-  return useLegacy
-    ? REPOSITORY_CONFIG.legacyUrl
-    : REPOSITORY_CONFIG.url;
+  return useLegacy ? REPOSITORY_CONFIG.legacyUrl : REPOSITORY_CONFIG.url;
 }
 
 // Default export for convenience

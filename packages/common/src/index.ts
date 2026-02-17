@@ -230,3 +230,22 @@ export {
   generatePaginationMeta,
 } from "./config/pagination";
 export type { PageSizeKey } from "./config/pagination";
+
+// UI Design Tokens - centralized theming and sizing
+export {
+  BUTTON_TOKENS,
+  INPUT_TOKENS,
+  CARD_TOKENS,
+  DIALOG_TOKENS,
+  BADGE_TOKENS,
+  FOCUS_TOKENS,
+  UI_ANIMATION,
+} from "./ui-tokens";
+export type {
+  ButtonHeight,
+  ButtonPadding,
+  InputHeight,
+  CardPadding,
+  BadgeSize,
+  FocusVariant,
+} from "./ui-tokens";

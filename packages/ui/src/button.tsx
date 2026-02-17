@@ -5,11 +5,9 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Loader2 } from "lucide-react";
 
+import { BUTTON_TOKENS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 
-/**
- * Ripple effect state management
- */
 interface Ripple {
   id: number;
   x: number;
@@ -34,7 +32,7 @@ const useButtonRipple = () => {
 
       window.setTimeout(() => {
         setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
-      }, 600);
+      }, BUTTON_TOKENS.ripple.duration);
     },
     [],
   );
@@ -62,6 +60,8 @@ const ButtonRipple: React.FC<{
     }
   };
 
+  const rippleSize = `${BUTTON_TOKENS.ripple.size}px`;
+
   return (
     <span
       className={cn(
@@ -73,8 +73,8 @@ const ButtonRipple: React.FC<{
         left: ripple.x,
         top: ripple.y,
         transform: "translate(-50%, -50%)",
-        width: "var(--ripple-size, 200px)",
-        height: "var(--ripple-size, 200px)",
+        width: rippleSize,
+        height: rippleSize,
       }}
     />
   );

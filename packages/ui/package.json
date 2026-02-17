@@ -105,6 +105,7 @@
     "./avatar": "./src/avatar.tsx",
     "./background-lines": "./src/background-lines.tsx",
     "./button": "./src/button.tsx",
+    "./button-variants": "./src/button-variants.ts",
     "./calendar": "./src/calendar.tsx",
     "./callout": "./src/callout.tsx",
     "./card-hover-effect": "./src/card-hover-effect.tsx",

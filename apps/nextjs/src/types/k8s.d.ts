@@ -1,18 +1,11 @@
-interface ClusterStatus {
-  PENDING: "PENDING";
-  CREATING: "CREATING";
-  INITING: "INITING";
-  RUNNING: "RUNNING";
-  STOPPED: "STOPPED";
-  DELETED: "DELETED";
-}
+import type { ClusterStatus } from "@saasfly/common";
 
 type ClusterPlan = "FREE" | "BUSINESS" | "PRO";
 
 export interface Cluster {
   id: number;
   name: string;
-  status: keyof ClusterStatus | null;
+  status: ClusterStatus | null;
   location: string;
   authUserId: string;
   plan: ClusterPlan | null;

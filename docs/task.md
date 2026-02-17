@@ -219,6 +219,7 @@ Add comprehensive tests for rate limiter to ensure API endpoint protection is pr
 ## Bugs and Errors
 
 ### Errors
+- [x] error: `plans.test.ts` failure: expected 'FREE' to be 'PRO'
 - [x] error: Build fails due to missing environment variables (STRIPE_API_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL) - *Fixed by creating .env.local file*
 - [x] error: `DashboardPage` may return undefined if `trpc.k8s.getClusters.query()` returns undefined, causing React runtime error.
 - [x] error: TypeScript import errors in test files (incorrect `../index` paths)

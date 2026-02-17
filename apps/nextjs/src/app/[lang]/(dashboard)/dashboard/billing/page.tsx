@@ -41,17 +41,24 @@ export default async function BillingPage({
     >
       <SubscriptionCard dict={dict.business.billing} />
 
-      <UsageCard />
+      <UsageCard dict={dict.business.billing} />
     </DashboardShell>
   );
 }
 
-function SubscriptionContent({ subscription }: { subscription: Subscription }) {
+function SubscriptionContent({
+  subscription,
+  dict,
+}: {
+  subscription: Subscription;
+  dict: Record<string, string>;
+}) {
   if (subscription.plan && subscription.endsAt) {
     return (
       <p>
-        You are currently on the <strong>{subscription.plan}</strong> plan.Your
-        subscription will renew on{" "}
+        {dict.subscriptionInfoPrefix} <strong>{subscription.plan}</strong>{" "}
+        {dict.subscriptionInfoPlan}
+        {dict.subscriptionInfoRenew}{" "}
         <strong>{subscription.endsAt.toLocaleDateString()}</strong>.
       </p>
     );
@@ -64,11 +71,11 @@ async function SubscriptionCard({ dict }: { dict: Record<string, string> }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Subscription</CardTitle>
+        <CardTitle>{dict.subscription}</CardTitle>
       </CardHeader>
       <CardContent>
         {subscription ? (
-          <SubscriptionContent subscription={subscription} />
+          <SubscriptionContent subscription={subscription} dict={dict} />
         ) : (
           <p>{dict.noSubscription}</p>
         )}
@@ -80,13 +87,13 @@ async function SubscriptionCard({ dict }: { dict: Record<string, string> }) {
   );
 }
 
-function UsageCard() {
+function UsageCard({ dict }: { dict: Record<string, string> }) {
   return (
     <Card className="mt-4">
       <CardHeader>
-        <CardTitle>Usage</CardTitle>
+        <CardTitle>{dict.usage}</CardTitle>
       </CardHeader>
-      <CardContent>None</CardContent>
+      <CardContent>{dict.no_usage}</CardContent>
     </Card>
   );
 }

@@ -29,7 +29,7 @@ export function ClusterItem({ cluster, lang, dict }: ClusterItemProps) {
       </TableCell>
       <TableCell className="text-left">{cluster.location}</TableCell>
       <TableCell className="text-left">
-        {formatDate(cluster.updatedAt?.toDateString())}
+        {formatDate(cluster.updatedAt)}
       </TableCell>
       <TableCell className="text-left">{cluster.plan ?? "-"}</TableCell>
       <TableCell className="text-left">

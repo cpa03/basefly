@@ -140,7 +140,7 @@ export default async function DashboardPage({
                     <div className="flex items-center gap-2 text-sm">
                       <span className="text-muted-foreground">Updated:</span>
                       <span className="font-medium">
-                        {formatDate(cluster.updatedAt?.toDateString())}
+                        {formatDate(cluster.updatedAt)}
                       </span>
                     </div>
                   </div>
@@ -150,7 +150,7 @@ export default async function DashboardPage({
           </div>
         ) : (
           <EmptyPlaceholder>
-            {/*<EmptyPlaceholder.Icon />*/}
+            <EmptyPlaceholder.Icon name="Cluster" />
             <EmptyPlaceholder.Title>
               {dict.business.k8s.no_cluster_title}
             </EmptyPlaceholder.Title>

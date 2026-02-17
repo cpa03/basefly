@@ -131,10 +131,15 @@
     "billing": {
       "billing": "Billing",
       "content": "Manage your subscription and billing details",
-      "noSubscription": "You are not subscribed to any plan. ",
-      "subscriptionInfo": "You are currently on the <strong>{plan}</strong> plan.Your subscription will renew on <strong>{date}</strong>.",
+      "noSubscription": "You are not subscribed to any plan.",
+      "subscription": "Subscription",
+      "subscriptionInfoPrefix": "You are currently on the",
+      "subscriptionInfoPlan": "plan.",
+      "subscriptionInfoRenew": "Your subscription will renew on",
       "manage_subscription": "Manage Subscription",
       "upgrade": "upgrade",
+      "usage": "Usage",
+      "no_usage": "None",
       "": ""
     }
   },

@@ -2,7 +2,10 @@
 
 ## Active Bugs
 
-_No active bugs found as of 2026-02-15_
+- [x] bug: `packages/stripe/src/plans.test.ts` fails due to module-level `process.env` usage in `plans.ts`.
+- [x] bug: Inconsistent logging in `packages/api/src/router/k8s.ts` (using `console.info` instead of `logger`).
+- [x] bug: Unused `eslint-disable` directives in `packages/ui/src/text-generate-effect.tsx` and `packages/ui/src/typewriter-effect.tsx`.
+- [x] bug: Potential "Invalid Date" in `DashboardPage` and `ClusterItem` when `updatedAt` is null/undefined.
 
 ## Verification Summary (2026-02-15)
 

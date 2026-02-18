@@ -8,5 +8,31 @@
   "buildCommand": "turbo run build --filter=@saasfly/nextjs",
   "outputDirectory": "apps/nextjs/.next",
   "ignoreCommand": "npx turbo-ignore --fallback=HEAD^1",
-  "cleanUrls": true
+  "cleanUrls": true,
+  "regions": ["iad1", "sfo1"],
+  "functions": {
+    "apps/nextjs/src/app/api/**/*.ts": {
+      "memory": 1024,
+      "maxDuration": 30
+    },
+    "apps/nextjs/src/app/api/webhooks/**/*.ts": {
+      "memory": 1024,
+      "maxDuration": 60
+    }
+  },
+  "headers": [
+    {
+      "source": "/api/trpc/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        }
+      ]
+    }
+  ]
 }

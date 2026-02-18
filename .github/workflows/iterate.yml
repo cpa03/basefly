@@ -50,7 +50,7 @@ jobs:
           git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
       - name: Install Node.js
         continue-on-error: true
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "20"
       - name: Install Dependencies
@@ -128,7 +128,7 @@ jobs:
           git config --global user.email "${{ matrix.role }}@bank-sampah.sulhi.workers.dev"
       - name: Setup Node & OpenCode
         continue-on-error: true
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: "20"
       - name: Install OpenCode CLI
@@ -171,7 +171,7 @@ jobs:
           git config --global user.name "PR-Handler"
           git config --global user.email "PR-Handler@bank-sampah.sulhi.workers.dev"
       - name: Setup Node & OpenCode
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "20"
       - name: Install OpenCode CLI
@@ -203,7 +203,7 @@ jobs:
           git config --global user.name "Fixer"
           git config --global user.email "fixer@bank-sampah.sulhi.workers.dev"
       - name: Setup Node & OpenCode
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "20"
       - name: Install Dependencies

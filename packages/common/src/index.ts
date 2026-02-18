@@ -265,6 +265,26 @@ export type {
   PaginationValidation,
 } from "./config/validation";
 
+// Error configuration - centralized error messages
+export {
+  ERROR_MESSAGES,
+  PATTERN_ERRORS,
+  CLUSTER_ERRORS,
+  USER_ERRORS,
+  AUTH_ERRORS,
+  TOAST_MESSAGES,
+  ERRORS,
+} from "./config/errors";
+export type {
+  ErrorMessageKey,
+  PatternErrorKey,
+  ClusterErrorKey,
+  UserErrorKey,
+  AuthErrorKey,
+  ToastMessageKey,
+  ErrorsConfig,
+} from "./config/errors";
+
 // UI Design Tokens - centralized theming and sizing
 export {
   BUTTON_TOKENS,

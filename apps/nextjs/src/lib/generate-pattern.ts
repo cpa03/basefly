@@ -1,3 +1,5 @@
+import { PATTERN_ERRORS } from "@saasfly/common";
+
 /**
  * Patterns from Hero Patterns
  * Licence: CC BY 4.0
@@ -491,7 +493,7 @@ export const getRandomPatternStyle = (seed: string) => {
   const opacity = 0.4;
 
   if (!pattern || !fgColor) {
-    throw new Error("Something went wrong trying to pick a pattern...");
+    throw new Error(PATTERN_ERRORS.PATTERN_SELECTION_FAILED);
   }
 
   return {

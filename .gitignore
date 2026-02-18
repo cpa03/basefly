@@ -60,6 +60,6 @@ package-lock.json
 
 # bun (project uses pnpm)
 bun.lock
-.opencode/bun.lock
 
-
+# environment-specific local overrides
+.env.*.local

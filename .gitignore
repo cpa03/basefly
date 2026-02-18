@@ -55,6 +55,9 @@ package-lock.json
 .opencode/node_modules
 .opencode/bun.lock
 
+# sisyphus (local state files)
+.sisyphus/
+
 # bun (project uses pnpm)
 bun.lock
 .opencode/bun.lock

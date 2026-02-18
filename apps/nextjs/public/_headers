@@ -1,0 +1,51 @@
+# Cloudflare Pages Headers Configuration
+# See: https://developers.cloudflare.com/pages/platform/headers
+
+/*
+  # Security Headers (aligned with Vercel configuration)
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  X-DNS-Prefetch-Control: on
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+
+  # Cache Control for HTML pages
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Static assets - immutable caching (1 year)
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Font files - immutable caching
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+
+# Images - stale-while-revalidate
+/images/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# Optimized image formats
+/*.webp
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+/*.avif
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# API routes - security headers and no indexing
+/api/*
+  X-Content-Type-Options: nosniff
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+
+# tRPC routes - no indexing
+/trpc/*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+
+# API webhooks - additional security
+/api/webhooks/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY

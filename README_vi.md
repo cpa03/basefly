@@ -2,14 +2,19 @@
     <img src="./saasfly-logo.svg" width="128" alt="" />
 </div>
 
-# Saasfly </br>
+# Basefly </br>
+<a href="https://trendshift.io/repositories/8929" target="_blank"><img src="https://trendshift.io/api/badge/repositories/8929" alt="basefly%2Fbasefly | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
 [![Trạng thái quy trình làm việc GitHub Actions][check-workflow-badge]][check-workflow-badge-link] [![Giấy phép GitHub][github-license-badge]][github-license-badge-link]  [![Discord][discord-badge]][discord-badge-link] [![Saasfly][made-by-nextify-badge]][made-by-nextify-badge-link]
 [![English](https://img.shields.io/badge/-English-grey.svg)](README.md)
+[![Chinese](https://img.shields.io/badge/-Chinese-red.svg)](README_zh.md)
+[![German](https://img.shields.io/badge/-German-yellow.svg)](README_de.md) </br>
+![COMMIT_ACTIVITY](https://img.shields.io/github/commit-activity/m/basefly/basefly?style=for-the-badge)
+[![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2Fcpa03%2Fbasefly&labelColor=%23f47373&countColor=%23263759)](https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2Fcpa03%2Fbasefly)
 
-Một boilerplate Next.js dễ sử dụng, cấp doanh nghiệp.
+Một nền tảng quản lý cụm Kubernetes cấp doanh nghiệp.
 
-Bạn không cần phải mua mẫu nữa; Saasfly cung cấp một giải pháp nguồn mở hoàn chỉnh để xây dựng các ứng dụng SaaS một cách nhanh chóng và dễ dàng.
+Basefly đơn giản hóa việc triển khai và quản lý cụm Kubernetes với giao diện web hiện đại, các cấp độ truy cập dựa trên đăng ký và thanh toán tích hợp thông qua Stripe.
 
 > **[Nextify](https://nextify.ltd)** cung cấp giải pháp SaaS doanh nghiệp toàn diện. Nếu bạn quan tâm đến việc thảo luận về dự án của mình hoặc chỉ muốn trò chuyện với chúng tôi, vui lòng liên hệ với chúng tôi tại [contact@nextify.ltd] (mailto:contact@nextify.ltd).
 
@@ -21,9 +26,7 @@ Bạn không cần phải mua mẫu nữa; Saasfly cung cấp một giải pháp
 
 Tự mình thử nó!
 
-Máy chủ demo 1 (Địa điểm: Washington, Hoa Kỳ): <https://show.saasfly.io>
-
-Máy chủ demo 2 (Địa điểm: Tokyo, Nhật Bản): <https://demo.saasfly.io>
+Máy chủ demo (Địa điểm: Washington, Hoa Kỳ): <https://show.saasfly.io>
 
 Để xem thêm tài liệu, hãy truy cập <https://document.saasfly.io>
 
@@ -31,55 +34,101 @@ Máy chủ demo 2 (Địa điểm: Tokyo, Nhật Bản): <https://demo.saasfly.i
 
 [![Biểu đồ lịch sử Star](https://app.repohistory.com/api/svg?repo=cpa03/basefly&type=Timeline)](https://repohistory.com)
 
+## Nhà tài trợ
+
+<table>
+  <tr>
+   <td style="width: 64px;">
+      <a href="https://libra.dev/">
+        <div style="width: 64px;">
+          <img alt="Clerk" src="https://raw.githubusercontent.com/nextify-limited/libra/main/logo.svg">
+        </div>
+      </a>
+    </td>
+    <td style="width: 64px;">
+      <a href="https://go.clerk.com/uKDp7Au">
+        <div style="width: 64px;">
+          <img alt="Clerk" src="./clerk.png">
+        </div>
+      </a>
+    </td>
+    <td style="width: 64px;">
+      <a href="https://www.twillot.com/">
+        <div style="width: 64px;">
+          <img alt="Take Control of All Your Twitter Assets" src="./twillot.png">
+        </div>
+      </a>
+    </td>
+    <td style="width: 64px;">
+      <a href="https://www.setupyourpay.com/" title="如何注册美国公司进行收款">
+        <div style="width: 64px;">
+          <img alt="全球收款手册" src="./setupyourpay.png">
+        </div>
+      </a>
+    </td>
+  </tr>
+</table>
+
+<a href="mailto:contact@nextify.ltd">
+  Thêm logo của bạn ở đây
+</a>
+
 ## 🚀 Bắt đầu
 
 ### 🖱 Mẫu một lần nhấp
 
-[![Triển khai với Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsaasfly%2Fsaasfly&env=NEXT_PUBLIC_APP_URL,NEXTAUTH_URL,NEXTAUTH_SECRET,STRIPE_API_KEY,STRIPE_WEBHOOK_SECRET,POSTGRES_URL,GITHUB_CLIENT_ID,GITHUB_CLIENT_SECRET,RESEND_API_KEY,RESEND_FROM&install-command=bun%20install&build-command=bun%20run%20build&root-directory=apps%2Fnextjs)
+[![Triển khai với Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fbasefly%2Fbasefly&env=NEXT_PUBLIC_APP_URL,CLERK_SECRET_KEY,CLERK_PUBLISHABLE_KEY,STRIPE_API_KEY,STRIPE_WEBHOOK_SECRET,POSTGRES_URL,RESEND_API_KEY,RESEND_FROM,ADMIN_EMAIL,NEXT_PUBLIC_STRIPE_STD_PRODUCT_ID,NEXT_PUBLIC_STRIPE_STD_MONTHLY_PRICE_ID,NEXT_PUBLIC_STRIPE_PRO_PRODUCT_ID,NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID,NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID,NEXT_PUBLIC_STRIPE_BUSINESS_PRODUCT_ID,NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID,NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID&install-command=pnpm%20install&build-command=pnpm%20run%20build&root-directory=apps%2Fnextjs)
 
 ### 📋 Điều kiện tiên quyết
 
 Trước khi bắt đầu, hãy đảm bảo bạn đã cài đặt các thành phần sau:
 
-1. [Bun](https://bun.sh/) & [Node.js](https://nodejs.org/) & [Git](https://git-scm.com/)
+1. [pnpm](https://pnpm.io/) & [Node.js](https://nodejs.org/) & [Git](https://git-scm.com/)
 
     1. Linux
 
     ```bash
-      curl -sL https://gist.github.com/tianzx/874662fb204d32390bc2f2e9e4d2df0a/raw -o ~/downloaded_script.sh && chmod +x ~/downloaded_script.sh && source ~/downloaded_script.sh 
+      curl -fsSL https://get.pnpm.io/install.sh | sh -
     ```
 
     2. MacOS
 
     ```bash
-      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"  
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
       brew install git
-      brew install oven-sh/bun/bun
-      brew install nvm
+      brew install pnpm
     ```
 
-2. [PostgreSQL](https://www.postgresql.org/)
+2. [PostgreSQL](https://www.postgresql.org/) - Cần thiết cho cấu hình cụm và dữ liệu người dùng
     1. Bạn có thể sử dụng Vercel Postgres hoặc máy chủ PostgreSQL cục bộ (thêm biến môi trường POSTGRES_URL trong .env.local)
        ```bash
           POSTGRES_URL = ''
        ```
 
+3. [Clerk](https://clerk.com/) tài khoản - Để xác thực
+    1. Tạo tài khoản Clerk và lấy API keys
+    2. Thêm ứng dụng Clerk với cấu hình Next.js
+
+4. [Stripe](https://stripe.com/) tài khoản - Cho thanh toán đăng ký
+    1. Tạo tài khoản Stripe
+    2. Lấy API keys và thiết lập endpoint webhook
+
 ### Cài đặt
 
 Để bắt đầu với boilerplate này, chúng tôi cung cấp hai tùy chọn:
 
-1. Sử dụng lệnh `bun create` (🌟Khuyến nghị cao🌟):
+1. Sử dụng lệnh `pnpm create` (🌟Khuyến nghị cao🌟):
 
 ```bash
-bun create saasfly
+pnpm create basefly
 ```
 
 2. Tự sao chép kho lưu trữ:
 
 ```bash
 git clone https://github.com/cpa03/basefly.git
-cd saasfly 
-bun install  
+cd basefly
+pnpm install
 ```
 
 ### Thiết lập
@@ -89,53 +138,80 @@ Làm theo các bước sau để thiết lập dự án của bạn:
 1. Thiết lập các biến môi trường:
 
 ```bash
-cp .env.example .env.local 
-// (Bạn phải chuẩn bị một cơ sở dữ liệu trước khi chạy lệnh này)
-bun db:push  
+cp .env.example .env.local
+# Cấu hình các biến môi trường cần thiết (xem .env.example để biết chi tiết)
+# Bắt buộc: Clerk keys, Stripe keys, PostgreSQL URL, Resend API key
+pnpm db:push
 ```
 
 2. Chạy máy chủ phát triển:
 
 ```bash
-bun run dev:web
+pnpm run dev:web
 ```
 
 3. Mở [http://localhost:3000](http://localhost:3000) trong trình duyệt để xem kết quả.
 
-4. (Tùy chọn bản alpha) `bun run tailwind-config-viewer`
+4. (Tùy chọn bản alpha) `pnpm run tailwind-config-viewer`
    Mở [http://localhost:3333](http://localhost:3333) trong trình duyệt của bạn để xem cấu hình Tailwind CSS.
 
-### Các ghi chú khác
+5. Truy cập bảng điều khiển quản trị tại `/admin/dashboard` bằng cách sử dụng các địa chỉ email được cấu hình trong biến môi trường `ADMIN_EMAIL`.
 
-Chúng tôi sẽ sử dụng Clerk như nhà cung cấp xác thực mặc định kể từ ngày 1 tháng 6 năm 2025.
+## 🎯 Tính năng chính
 
-Bạn có thể tìm thấy mã triển khai NextAuth ở đây ( https://github.com/cpa03/basefly/tree/feature-nextauth ).
+### Quản lý cụm Kubernetes
+- Tạo và quản lý các cụm Kubernetes thông qua giao diện web
+- Nhiều cấp độ đăng ký (FREE, PRO, BUSINESS) với các giới hạn tài nguyên khác nhau
+- Theo dõi trạng thái cụm (PENDING, CREATING, INITING, RUNNING, STOPPED)
+- Hỗ trợ xóa mềm để bảo tồn cụm
+
+### Đăng ký & Thanh toán
+- Thanh toán đăng ký Stripe tích hợp
+- Nhiều gói định giá với cấp phép tự động
+- Đồng bộ trạng thái đăng ký dựa trên Webhook
+- Cổng khách hàng để quản lý đăng ký
+
+### Tính năng doanh nghiệp
+- Hỗ trợ đa ngôn ngữ (Tiếng Anh, Tiếng Trung, Tiếng Đức, Tiếng Việt)
+- Kiểm soát truy cập dựa trên vai trò (Bảng điều khiển quản trị)
+- Bảo toàn audit trail với các mẫu xóa mềm
+- API an toàn kiểu với tRPC
+- Xử lý lỗi toàn diện với logic thử lại
 
 ## 🥺 Lộ trình dự án
 
-1. Trang tổng quan quản trị (vẫn đang trong giai đoạn alpha!!!)
-    2. Hiện tại chỉ cung cấp các trang tĩnh, chúng tôi có kế hoạch tích hợp với CMS kiến trúc headless
-    3. Bạn có thể cung cấp một tài khoản quản trị viên, thay đổi **ADMIN_EMAIL="admin@saasfly.io,root@saasfly.io"** trong .env.local, sau đó truy cập host:port/admin/dashboard
-    4. Vì lý do bảo mật, chúng tôi tạm thời không cung cấp demo trực tuyến.
-2. Nhiều ngôn ngữ READEME
-3. TODO
+1. Bảng điều khiển quản trị nâng cao
+   1. Hiện đang ở giai đoạn alpha - cung cấp chế độ xem quản trị cơ bản
+   2. Cấu hình email quản trị trong biến môi trường `ADMIN_EMAIL`
+   3. Truy cập tại `/admin/dashboard`
+   4. Bảo mật: Không có demo quản trị trực tuyến
+
+2. Tính năng Kubernetes nâng cao
+   1. Tích hợp giám sát và chỉ số cụm
+   2. Quản lý node pool
+   3. Cấu hình auto-scaling
+
+3. Các tích hợp bổ sung
+   1. Cân nhắc tích hợp Payload CMS cho quản lý nội dung
+   2. Hệ thống thông báo nâng cao
+   3. Phân tích và báo cáo sử dụng
 
 ## ⭐ Các tính năng
 
-### 🐭 Framework
+### 🐭 Framework & Cốt lõi
 
 - **[Next.js](https://nextjs.org/)** - Framework web React (sử dụng **App Directory**)
-- **[NextAuth.js](https://next-auth.js.org/)** - Xác thực cho Next.js
+- **[Clerk](https://clerk.com/)** - Nền tảng quản lý người dùng và xác thực hoàn chỉnh
 - **[Kysely](https://kysely.dev/)** - Trình xây dựng truy vấn SQL an toàn về kiểu cho TypeScript
 - **[Prisma](https://www.prisma.io/)** - ORM thế hệ tiếp theo cho Node.js và TypeScript, được sử dụng như một công cụ quản lý sơ đồ
 - **[React-email](https://react.email/)** - Một trình hiển thị React để tạo email đẹp bằng các thành phần React
 
-### 🐮 Nền tảng
+### 🐮 Nền tảng & Tích hợp
 
-- **[Clerk](https://go.clerk.com/uKDp7Au)** - Nền tảng Quản lý người dùng toàn diện nhất
+- **[Clerk](https://go.clerk.com/uKDp7Au)** - Xác thực và quản lý người dùng hoàn chỉnh
 - **[Vercel](https://vercel.com/)** – Dễ dàng triển khai ứng dụng Next.js của bạn
-- **[Stripe](https://stripe.com/)** – Xử lý thanh toán cho các doanh nghiệp Internet
-- **[Resend](https://resend.com/)** – Nền tảng email marketing cho nhà phát triển
+- **[Stripe](https://stripe.com/)** – Xử lý thanh toán và thanh toán đăng ký
+- **[Resend](https://resend.com/)** – Nền tảng email marketing cho email giao dịch
 
 ### 🐯 Tính năng doanh nghiệp
 
@@ -171,7 +247,7 @@ Bạn có thể tìm thấy mã triển khai NextAuth ở đây ( https://github
 ### 🐑 Hiệu suất
 
 - **[Vercel Analytics](https://vercel.com/analytics)** – Số liệu hiệu suất thời gian thực cho các ứng dụng Next.js
-- **[bun.sh](https://bun.sh/)** – Thay thế cho npm để quản lý gói nhanh hơn, đáng tin cậy hơn
+- **[pnpm](https://pnpm.io/)** – Quản lý gói nhanh, tiết kiệm không gian đĩa
 
 ### 🐘 Cơ sở dữ liệu
 
@@ -179,10 +255,13 @@ Bạn có thể tìm thấy mã triển khai NextAuth ở đây ( https://github
 
 ## 📦 Ứng dụng và gói
 
-- `web`: Ứng dụng Next.js chính
-- `ui`: Các thành phần UI chia sẻ
-- `db`: Sơ đồ cơ sở dữ liệu và các tiện ích
-- `auth`: Các tiện ích xác thực
+- `web` (apps/nextjs): Ứng dụng Next.js chính với bảng điều khiển, quản lý cụm và giao diện quản trị
+- `ui`: Các thành phần UI chia sẻ được xây dựng bằng Radix UI và Tailwind CSS
+- `db`: Sơ đồ cơ sở dữ liệu (Prisma), di chuyển và tiện ích truy cập dữ liệu với Kysely
+- `auth`: Tiện ích xác thực (tích hợp Clerk)
+- `api`: Bộ định tuyến tRPC và bộ xử lý endpoint API
+- `stripe`: Tích hợp Stripe với logic thử lại, circuit breaker và bộ xử lý webhook
+- `common`: Các tiện ích, loại và hằng số được chia sẻ giữa các gói
 
 ## 📜 Giấy phép
 

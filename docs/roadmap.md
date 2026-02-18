@@ -134,31 +134,31 @@ Build a production-ready, scalable Kubernetes cluster management platform with e
 
 ## Decision Log
 
-### 2024-01-07: Database Architecture
+### 2026-01-07: Database Architecture
 
 **Decision**: Use PostgreSQL with Prisma + Kysely
 **Rationale**: Type-safe queries, production-ready, strong ecosystem
 **Alternatives Considered**: MongoDB (less strict), MySQL (no Kysely support)
 
-### 2024-01-07: Cascade Delete Strategy
+### 2026-01-07: Cascade Delete Strategy
 
 **Decision**: Application-level cascade with database RESTRICT
 **Rationale**: Prevent accidental data loss, maintain audit trails
 **Alternatives Considered**: Database CASCADE (too risky, no audit)
 
-### 2024-01-07: Soft Delete Pattern
+### 2026-01-07: Soft Delete Pattern
 
 **Decision**: Timestamp-based soft delete with partial unique indexes
 **Rationale**: Preserves audit trail, enforces uniqueness on active records
 **Alternatives Considered**: Boolean flag (less flexible), hard delete (no audit)
 
-### 2024-01-10: Integration Resilience
+### 2026-01-10: Integration Resilience
 
 **Decision**: Circuit breaker, retry with exponential backoff, timeouts
 **Rationale**: Prevent cascading failures, handle transient errors
 **Alternatives Considered**: Simple retry (no protection), fail fast (no retry)
 
-### 2024-01-10: Rate Limiting
+### 2026-01-10: Rate Limiting
 
 **Decision**: Token bucket algorithm with in-memory storage
 **Rationale**: Fair distribution, simple implementation, Redis-ready

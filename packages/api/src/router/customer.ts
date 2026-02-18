@@ -4,6 +4,7 @@ import { z } from "zod";
 import { USER_VALIDATION } from "@saasfly/common";
 import { db, SubscriptionPlan } from "@saasfly/db";
 
+import { logger } from "../logger";
 import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 
 // Enhanced schemas with comprehensive validation using centralized constants
@@ -38,9 +39,23 @@ export const customerRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { userId } = input;
       const ctxUserId = ctx.userId;
+      const requestId = ctx.requestId;
+
+      logger.info("Updating user name", {
+        userId,
+        ctxUserId,
+        requestId,
+      });
+
       if (!ctxUserId || userId !== ctxUserId) {
+        logger.warn("Unauthorized user name update attempt", {
+          userId,
+          ctxUserId,
+          requestId,
+        });
         return { success: false, reason: "no auth" };
       }
+
       await db
         .updateTable("User")
         .set({
@@ -48,6 +63,12 @@ export const customerRouter = createTRPCRouter({
         })
         .where("id", "=", userId)
         .execute();
+
+      logger.info("User name updated successfully", {
+        userId,
+        requestId,
+      });
+
       return { success: true, reason: "" };
     }),
 
@@ -55,6 +76,13 @@ export const customerRouter = createTRPCRouter({
     .input(insertCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       const { userId } = input;
+      const requestId = ctx.requestId;
+
+      logger.info("Creating customer", {
+        userId,
+        requestId,
+      });
+
       const result = await db
         .insertInto("Customer")
         .values({
@@ -62,6 +90,12 @@ export const customerRouter = createTRPCRouter({
           plan: SubscriptionPlan.FREE,
         })
         .executeTakeFirst();
+
+      logger.info("Customer created successfully", {
+        userId,
+        requestId,
+      });
+
       return result;
     }),
 
@@ -70,6 +104,13 @@ export const customerRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       noStore();
       const { userId } = input;
+      const requestId = ctx.requestId;
+
+      logger.debug("Querying customer", {
+        userId,
+        requestId,
+      });
+
       return await db
         .selectFrom("Customer")
         .where("authUserId", "=", userId)

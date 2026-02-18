@@ -1,4 +1,5 @@
 import { unstable_noStore as noStore } from "next/cache";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { USER_VALIDATION } from "@saasfly/common";
@@ -53,7 +54,10 @@ export const customerRouter = createTRPCRouter({
           ctxUserId,
           requestId,
         });
-        return { success: false, reason: "no auth" };
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You can only update your own profile",
+        });
       }
 
       await db

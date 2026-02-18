@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^6.37.5",
-    "@dinero.js/currencies": "2.0.0-alpha.16",
+    "@dinero.js/currencies": "2.0.0-alpha.15",
     "@formatjs/intl-localematcher": "0.8.1",
     "@hookform/resolvers": "5.2.2",
     "@next/mdx": "16.1.6",

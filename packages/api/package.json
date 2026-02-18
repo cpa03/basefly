@@ -35,7 +35,7 @@
     "next": "14.2.35",
     "superjson": "2.2.6",
     "dinero.js": "2.0.0-alpha.16",
-    "@dinero.js/currencies": "2.0.0-alpha.16",
+    "@dinero.js/currencies": "2.0.0-alpha.15",
     "zod": "4.3.6",
     "zod-form-data": "3.0.1",
     "pino": "10.3.1"

@@ -7,9 +7,9 @@ This document provides a comprehensive overview of the test suite for the Basefl
 ## Test Framework
 
 - **Framework**: Vitest
-- **Run Command**: `bun test` (or `npm test`)
-- **UI Mode**: `bun test:ui`
-- **Coverage**: `bun test:coverage`
+- **Run Command**: `pnpm test` (or `npm test`)
+- **UI Mode**: `pnpm test:ui`
+- **Coverage**: `pnpm test:coverage`
 
 ## Existing Test Files
 
@@ -371,22 +371,22 @@ Critical paths and edge cases covered comprehensively.
 
 ```bash
 # Run all tests
-bun test
+pnpm test
 
 # Run tests in watch mode
-bun test --watch
+pnpm test --watch
 
 # Run tests with UI
-bun test:ui
+pnpm test:ui
 
 # Run tests with coverage
-bun test:coverage
+pnpm test:coverage
 
 # Run specific test file
-bun test packages/db/soft-delete.test.ts
+pnpm test packages/db/soft-delete.test.ts
 
 # Run tests matching pattern
-bun test --grep "softDelete"
+pnpm test --grep "softDelete"
 ```
 
 ---

@@ -73,6 +73,7 @@ bun db:migrate:dev --name descriptive_migration_name
 ```
 
 This will:
+
 - Generate the migration SQL file
 - Apply it to your development database
 - Update the `_prisma_migrations` table
@@ -91,6 +92,7 @@ ALTER TABLE "Example" ADD COLUMN "newField" TEXT;
 ### Step 4: Test Locally
 
 Verify the changes work correctly:
+
 - Run your application
 - Test affected features
 - Check for data integrity issues
@@ -117,6 +119,7 @@ git commit -m "feat: add new field to Example model"
 ### Deployment Steps
 
 1. **Backup Database**
+
    ```bash
    # Create backup using your database provider's tools
    # Example for PostgreSQL:
@@ -127,12 +130,14 @@ git commit -m "feat: add new field to Example model"
    Deploy your application code (including migration files)
 
 3. **Apply Migrations**
+
    ```bash
    cd packages/db
    bun db:migrate:deploy
    ```
 
 4. **Generate Types**
+
    ```bash
    bun db:generate
    ```
@@ -154,6 +159,7 @@ bun db:migrate:dev --name reverse_descriptive_migration_name
 ```
 
 Example reverse migration:
+
 ```sql
 -- Reverts previous migration
 ALTER TABLE "Example" DROP COLUMN "newField";
@@ -185,6 +191,7 @@ bun db:migrate:resolve --rolled-back <migration-name>
 ### 1. Descriptive Migration Names
 
 Use clear, descriptive names:
+
 - ✅ `add_user_email_verified_index`
 - ✅ `add_customer_stripe_integration`
 - ❌ `update_schema`
@@ -193,6 +200,7 @@ Use clear, descriptive names:
 ### 2. Non-Destructive Changes
 
 Prefer adding over modifying when possible:
+
 - ✅ Add new column
 - ✅ Add new table
 - ✅ Add new index
@@ -230,6 +238,7 @@ WHERE id BETWEEN 1 AND 1000;
 ### 5. Test with Realistic Data
 
 Test migrations with realistic data volumes:
+
 - Use production-like data sets
 - Test on staging environment
 - Monitor performance impact
@@ -332,11 +341,13 @@ jobs:
 
 ## Current Migration History
 
-| Date | Migration | Description |
-|------|-----------|-------------|
-| 2026-01-31 | `20260131_add_row_level_security` | Added row-level security (RLS) for multi-tenant data protection |
-| 2026-01-31 | `20260131_add_automated_triggers` | Added database triggers for automated maintenance (updatedAt updates, user soft delete cascade) |
-| 2026-01-31 | `20260131_add_check_constraints` | Added check constraints for data integrity (name/location length, Stripe ID formats) |
-| 2026-01-10 | `20260110_add_composite_indexes` | Added composite indexes for query performance optimization |
-| 2024-01-07 | `20240107_implement_soft_delete` | Implemented soft delete pattern with deletedAt timestamp and partial unique indexes |
-| 2024-01-07 | `20240107_add_foreign_key_constraints` | Added foreign key constraints to Customer and K8sClusterConfig tables |
+| Date       | Migration                                         | Description                                                                                     |
+| ---------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| 2026-02-18 | `20260218_add_partial_indexes_for_cluster_status` | Added partial indexes for K8sClusterConfig query optimization (active/deleted clusters)         |
+| 2026-02-18 | `20260218_add_webhook_event_type_index`           | Added index on StripeWebhookEvent.eventType for query performance                               |
+| 2026-01-31 | `20260131_add_row_level_security`                 | Added row-level security (RLS) for multi-tenant data protection                                 |
+| 2026-01-31 | `20260131_add_automated_triggers`                 | Added database triggers for automated maintenance (updatedAt updates, user soft delete cascade) |
+| 2026-01-31 | `20260131_add_check_constraints`                  | Added check constraints for data integrity (name/location length, Stripe ID formats)            |
+| 2026-01-10 | `20260110_add_composite_indexes`                  | Added composite indexes for query performance optimization                                      |
+| 2024-01-07 | `20240107_implement_soft_delete`                  | Implemented soft delete pattern with deletedAt timestamp and partial unique indexes             |
+| 2024-01-07 | `20240107_add_foreign_key_constraints`            | Added foreign key constraints to Customer and K8sClusterConfig tables                           |

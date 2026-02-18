@@ -66,20 +66,18 @@ jobs:
 
 ## Current Vulnerabilities
 
-Running `pnpm audit --audit-level=moderate` currently finds 7 vulnerabilities:
+Running `pnpm audit --audit-level=moderate` currently finds 2 vulnerabilities:
 
-| Severity | Package     | Issue                                                  |
-| -------- | ----------- | ------------------------------------------------------ |
-| high     | cross-spawn | ReDoS (GHSA-3xgq-45jj-v275)                            |
-| high     | next        | HTTP request deserialization DoS (GHSA-h25m-26qc-wcjf) |
-| moderate | lodash      | Prototype Pollution (GHSA-xxjr-mmjv-4gpg)              |
-| moderate | next        | Image Optimizer DoS (GHSA-9g9p-9gw9-jx7f)              |
-| moderate | ajv         | ReDoS with $data option (GHSA-2g4f-4pwh-qvx6)          |
+| Severity | Package | Issue                                         |
+| -------- | ------- | --------------------------------------------- |
+| moderate | ajv     | ReDoS with $data option (GHSA-2g4f-4pwh-qvx6) |
 
-These are primarily transitive dependencies from:
+**Note**: The ajv vulnerability is in transitive dependencies:
 
-- `@clerk/nextjs` → `next@14.2.35`
-- `prisma-kysely` → `cross-spawn@7.0.3`, `lodash@4.17.21`
+- `check-dependency-version-consistency > table > ajv@8.17.1`
+- `@next-devtools/core > react-dev-inspector > react-dev-utils > fork-ts-checker-webpack-plugin > schema-utils > ajv@6.12.6`
+
+An override for ajv >= 8.18.0 was attempted but causes ESLint compatibility issues (ajv is used internally by @eslint/eslintrc). This requires further investigation.
 
 ## Recommendations
 
@@ -90,12 +88,17 @@ These are primarily transitive dependencies from:
 ## Security Controls Already in Place
 
 - ✅ Dependabot configured for weekly updates
-- ✅ Security overrides in `pnpm-workspace.yaml`
+- ✅ Security overrides in `pnpm-workspace.yaml` (cross-spawn, lodash, next, ws, etc.)
 - ✅ CSP headers configured in `packages/common/src/config/csp.ts`
-- ✅ Security headers in `next.config.mjs`
-- ✅ Rate limiting in `packages/api/src/rate-limiter.ts`
-- ✅ Input validation with Zod schemas
-- ✅ Protected tRPC procedures with auth middleware
+- ✅ Security headers in `next.config.mjs` (HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy)
+- ✅ Rate limiting in `packages/api/src/rate-limiter.ts` with token bucket algorithm
+- ✅ Input validation with Zod schemas in `packages/api/src/router/schemas.ts`
+- ✅ Protected tRPC procedures with auth middleware (`isAuthed`, `isAdmin`)
+- ✅ Admin procedures with email-based admin verification
+- ✅ Stripe webhook signature verification in `apps/nextjs/src/app/api/webhooks/stripe/route.ts`
+- ✅ T3 env validation for environment variables
+- ✅ Request ID tracing for debugging
+- ✅ security.txt file for vulnerability reporting
 
 ## Implementation Notes
 

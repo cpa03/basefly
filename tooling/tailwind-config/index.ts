@@ -1,10 +1,11 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 // import colors from "tailwindcss/colors";
 // Tailwind internal utility - no type definitions available
 import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette";
 
 export default {
-  darkMode: ["class"],
+  darkMode: "class",
   content: ["src/**/*.{ts,tsx}", "components/**/*.{ts,tsx}"],
   theme: {
     container: {
@@ -140,7 +141,12 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), addVariablesForColors],
+  plugins: [
+    tailwindcssAnimate,
+    // Tailwind plugin API has complex internal types not publicly documented
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    addVariablesForColors as any,
+  ],
 } satisfies Config;
 
 function addVariablesForColors({

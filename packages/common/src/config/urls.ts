@@ -163,6 +163,10 @@ export function getGitHubProfileUrl(username: string): string {
   return `https://avatars.githubusercontent.com/u/${username}`;
 }
 
+export function getTwitterProfileUrl(username: string): string {
+  return `https://x.com/${username}`;
+}
+
 export const DEV_URLS = {
   localhost: APP_URLS.development,
   localWs: "ws://localhost:12882/",

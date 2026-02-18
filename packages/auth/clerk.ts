@@ -29,7 +29,7 @@ export async function getSessionUser() {
       }
     }
     return sessionClaims?.user;
-  } catch (_error) {
+  } catch {
     return null;
   }
 }

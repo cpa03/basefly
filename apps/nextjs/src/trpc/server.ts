@@ -13,21 +13,11 @@ import { observable } from "@trpc/server/observable";
 import type { TRPCErrorResponse } from "@trpc/server/rpc";
 
 import type { AppRouter } from "@saasfly/api";
+import { isClerkEnabled } from "@saasfly/auth";
 import { TRPC_SOURCE_VALUES } from "@saasfly/common";
 
 import { appRouter } from "../../../../packages/api/src/root";
 import { transformer } from "./shared";
-
-function isClerkEnabled(): boolean {
-  const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-  return !!(
-    clerkKey &&
-    !clerkKey.includes("dummy") &&
-    !clerkKey.includes("placeholder") &&
-    clerkKey.startsWith("pk_") &&
-    clerkKey.length > 20
-  );
-}
 
 type AuthObject = Awaited<ReturnType<typeof auth>>;
 

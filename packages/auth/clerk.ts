@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 
 import { env } from "./env.mjs";
 
-function isClerkEnabled(): boolean {
+export function isClerkEnabled(): boolean {
   const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
   return !!(
     clerkKey &&

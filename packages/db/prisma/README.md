@@ -343,6 +343,7 @@ jobs:
 
 | Date       | Migration                                         | Description                                                                                     |
 | ---------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| 2026-02-18 | `20260218_add_auth_session_indexes`               | Added indexes for Account, Session, VerificationToken tables (userId, expires, identifier)      |
 | 2026-02-18 | `20260218_add_partial_indexes_for_cluster_status` | Added partial indexes for K8sClusterConfig query optimization (active/deleted clusters)         |
 | 2026-02-18 | `20260218_add_webhook_event_type_index`           | Added index on StripeWebhookEvent.eventType for query performance                               |
 | 2026-01-31 | `20260131_add_row_level_security`                 | Added row-level security (RLS) for multi-tenant data protection                                 |

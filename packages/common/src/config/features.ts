@@ -42,6 +42,13 @@ export const FEATURE_FLAGS = {
     mockPayments: getEnvVar("ENABLE_MOCK_PAYMENTS") === "true",
     verboseLogging: getEnvVar("VERBOSE_LOGGING") === "true",
   },
+  ai: {
+    enabled: getEnvVar("ENABLE_AI_FEATURES") === "true",
+    chatbot: getEnvVar("ENABLE_AI_CHATBOT") === "true",
+    contentGeneration: getEnvVar("ENABLE_AI_CONTENT_GENERATION") === "true",
+    recommendations: getEnvVar("ENABLE_AI_RECOMMENDATIONS") === "true",
+    analytics: getEnvVar("ENABLE_AI_ANALYTICS") === "true",
+  },
 } as const;
 
 export function isFeatureEnabled(path: string): boolean {
@@ -101,4 +108,10 @@ export type FeatureFlagPath =
   | "dev"
   | "dev.debugMode"
   | "dev.mockPayments"
-  | "dev.verboseLogging";
+  | "dev.verboseLogging"
+  | "ai"
+  | "ai.enabled"
+  | "ai.chatbot"
+  | "ai.contentGeneration"
+  | "ai.recommendations"
+  | "ai.analytics";

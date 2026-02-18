@@ -29,7 +29,7 @@ Try it out for yourself!
 
 Demo Server (Location: Washington - USA): <https://show.saasfly.io>
 
-See more documentation at <https://document.saasfly.io>
+See more documentation at <https://docs.saasfly.io>
 
 ## 🌟 Star History
 

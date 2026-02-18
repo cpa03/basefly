@@ -1,8 +1,12 @@
+## Linked Issues
+
+<!-- Link to related issues using "Closes #123" or "Fixes #456" -->
+
+Closes #
+
 ## Description
 
 Please include a summary of the changes and the related issue. Please also include relevant motivation and context.
-
-Fixes # (issue)
 
 ## Type of Change
 

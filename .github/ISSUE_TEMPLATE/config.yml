@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security Vulnerability
+    url: mailto:contact@nextify.ltd
+    about: Please report security vulnerabilities via email
+  - name: Documentation
+    url: https://document.saasfly.io
+    about: Check the documentation before opening an issue
+  - name: Discord Community
+    url: https://discord.gg/8SwSX43wnD
+    about: Join our Discord community for discussions and support

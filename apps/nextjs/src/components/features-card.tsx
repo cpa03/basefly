@@ -1,6 +1,6 @@
 "use client";
 
-import { ANIMATION } from "@saasfly/common";
+import { ANIMATION, NOTIFICATION_COLORS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { AnimatedList } from "@saasfly/ui/animated-list";
 
@@ -19,28 +19,28 @@ let notifications = [
     time: "15m ago",
 
     icon: "💸",
-    color: "#00C9A7",
+    color: NOTIFICATION_COLORS.payment,
   },
   {
     name: "User signed up",
     description: "Auth, simple and clean",
     time: "10m ago",
     icon: "👤",
-    color: "#FFB800",
+    color: NOTIFICATION_COLORS.signup,
   },
   {
     name: "New Emails",
     description: "Create beautiful emails",
     time: "5m ago",
     icon: "💬",
-    color: "#FF3D71",
+    color: NOTIFICATION_COLORS.message,
   },
   {
     name: "Easy Deploy",
     description: "Deploy your app with ease",
     time: "2m ago",
     icon: "🗞️",
-    color: "#1E86FF",
+    color: NOTIFICATION_COLORS.deployment,
   },
 ];
 

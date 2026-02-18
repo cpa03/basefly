@@ -129,6 +129,26 @@ export const SEMANTIC_COLORS: SemanticColors = {
 };
 
 /**
+ * Notification colors for UI components
+ * Centralized colors for notification cards, badges, and status indicators
+ */
+export const NOTIFICATION_COLORS = {
+  /** Teal/Green - for payment/success notifications */
+  payment: "#00C9A7",
+  /** Gold/Yellow - for user/signup notifications */
+  signup: "#FFB800",
+  /** Pink/Red - for message/email notifications */
+  message: "#FF3D71",
+  /** Blue - for deployment/system notifications */
+  deployment: "#1E86FF",
+} as const;
+
+/**
+ * Type for notification color keys
+ */
+export type NotificationColorKey = keyof typeof NOTIFICATION_COLORS;
+
+/**
  * Available theme options
  * Centralized to ensure consistency across theme toggle components
  */

@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { API_VALIDATION } from "@saasfly/common";
+
 import {
   createRateLimitedProtectedProcedure,
   createTRPCRouter,
@@ -19,7 +21,7 @@ export const helloRouter = createTRPCRouter({
   hello: createRateLimitedProtectedProcedure("read")
     .input(
       z.object({
-        text: z.string().max(1000),
+        text: z.string().max(API_VALIDATION.text.maxLength),
       }),
     )
     .query((opts: { input: { text: string } }) => {

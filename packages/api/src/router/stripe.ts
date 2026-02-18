@@ -1,6 +1,7 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { z } from "zod";
 
+import { PLAN_VALIDATION } from "@saasfly/common";
 import { Customer, db } from "@saasfly/db";
 import {
   createBillingSession,
@@ -43,12 +44,12 @@ export type UserSubscriptionPlan = SubscriptionPlan &
     interval: "month" | "year" | null;
     isCanceled?: boolean;
   };
-// Enhanced schema with comprehensive validation
+// Enhanced schema with comprehensive validation using centralized constants
 export const createSessionSchema = z
   .object({
     planId: z
       .string()
-      .min(1, "Plan ID cannot be empty")
+      .min(PLAN_VALIDATION.id.minLength, "Plan ID cannot be empty")
       .regex(/^price_/, "Plan ID must start with 'price_'"),
   })
   .strict();

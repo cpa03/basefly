@@ -39,6 +39,8 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@saasfly/ui/tabs";
 import { toast } from "@saasfly/ui/use-toast";
 
+import { CLUSTER_VALIDATION } from "@saasfly/common";
+
 import { CLUSTER_LOCATIONS, isValidClusterLocation } from "~/config/k8s";
 import { trpc } from "~/trpc/client";
 import type { Cluster } from "~/types/k8s";
@@ -53,10 +55,10 @@ interface ClusterProps {
 const FormSchema = z.object({
   name: z
     .string()
-    .min(2, {
-      message: "name must be at least 2 characters.",
+    .min(CLUSTER_VALIDATION.displayName.minLength, {
+      message: `name must be at least ${CLUSTER_VALIDATION.displayName.minLength} characters.`,
     })
-    .max(32, { message: "name must be at most 32 characters." }),
+    .max(CLUSTER_VALIDATION.displayName.maxLength, { message: `name must be at most ${CLUSTER_VALIDATION.displayName.maxLength} characters.` }),
   location: z.enum(CLUSTER_LOCATIONS),
 });
 

@@ -1,22 +1,24 @@
 import { z } from "zod";
 
+import { CLUSTER_VALIDATION, PLAN_VALIDATION, USER_VALIDATION } from "@saasfly/common";
+
 export const enhancedK8sClusterCreateSchema = z
   .object({
     id: z.number().optional(),
     name: z
       .string()
       .trim()
-      .min(1, "Cluster name cannot be empty")
-      .max(100, "Cluster name cannot exceed 100 characters")
+      .min(CLUSTER_VALIDATION.name.minLength, "Cluster name cannot be empty")
+      .max(CLUSTER_VALIDATION.name.maxLength, "Cluster name cannot exceed 100 characters")
       .regex(
-        /^[a-zA-Z0-9-]+$/,
-        "Cluster name can only contain letters, numbers, and hyphens",
+        CLUSTER_VALIDATION.name.pattern,
+        CLUSTER_VALIDATION.name.patternMessage,
       ),
     location: z
       .string()
       .trim()
-      .min(1, "Location cannot be empty")
-      .max(50, "Location cannot exceed 50 characters"),
+      .min(CLUSTER_VALIDATION.location.minLength, "Location cannot be empty")
+      .max(CLUSTER_VALIDATION.location.maxLength, "Location cannot exceed 50 characters"),
   })
   .strict();
 
@@ -32,18 +34,18 @@ export const enhancedK8sClusterUpdateSchema = z
     name: z
       .string()
       .trim()
-      .min(1, "Cluster name cannot be empty")
-      .max(100, "Cluster name cannot exceed 100 characters")
+      .min(CLUSTER_VALIDATION.name.minLength, "Cluster name cannot be empty")
+      .max(CLUSTER_VALIDATION.name.maxLength, "Cluster name cannot exceed 100 characters")
       .regex(
-        /^[a-zA-Z0-9-]+$/,
-        "Cluster name can only contain letters, numbers, and hyphens",
+        CLUSTER_VALIDATION.name.pattern,
+        CLUSTER_VALIDATION.name.patternMessage,
       )
       .optional(),
     location: z
       .string()
       .trim()
-      .min(1, "Location cannot be empty")
-      .max(50, "Location cannot exceed 50 characters")
+      .min(CLUSTER_VALIDATION.location.minLength, "Location cannot be empty")
+      .max(CLUSTER_VALIDATION.location.maxLength, "Location cannot exceed 50 characters")
       .optional(),
   })
   .strict()
@@ -56,7 +58,7 @@ export const enhancedStripeCreateSessionSchema = z
   .object({
     planId: z
       .string()
-      .min(1, "Plan ID cannot be empty")
+      .min(PLAN_VALIDATION.id.minLength, "Plan ID cannot be empty")
       .regex(/^price_/, "Plan ID must start with 'price_'"),
   })
   .strict();
@@ -66,8 +68,8 @@ export const enhancedUpdateUserNameSchema = z
     name: z
       .string()
       .trim()
-      .min(1, "Name cannot be empty")
-      .max(100, "Name cannot exceed 100 characters"),
+      .min(USER_VALIDATION.displayName.minLength, "Name cannot be empty")
+      .max(USER_VALIDATION.displayName.maxLength, "Name cannot exceed 100 characters"),
     userId: z.string().uuid("Invalid user ID format"),
   })
   .strict();

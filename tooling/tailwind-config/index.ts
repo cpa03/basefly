@@ -1,10 +1,11 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 // import colors from "tailwindcss/colors";
 // Tailwind internal utility - no type definitions available
 import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette";
 
 export default {
-  darkMode: ["class"],
+  darkMode: "class",
   content: ["src/**/*.{ts,tsx}", "components/**/*.{ts,tsx}"],
   theme: {
     container: {
@@ -140,24 +141,18 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), addVariablesForColors],
+  plugins: [tailwindcssAnimate, addVariablesForColors],
 } satisfies Config;
 
-function addVariablesForColors({
-  addBase,
-  theme,
-}: {
-  addBase: (base: Record<string, unknown>) => void;
-  theme: (path: string) => unknown;
-}) {
-  const allColors = flattenColorPalette(theme("colors") as string) as Record<
-    string,
-    unknown
-  >;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function addVariablesForColors({ addBase, theme }: any) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  const allColors = flattenColorPalette(theme("colors"));
   const newVars = Object.fromEntries(
     Object.entries(allColors).map(([key, val]) => [`--${key}`, val]),
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   addBase({
     ":root": newVars,
   });

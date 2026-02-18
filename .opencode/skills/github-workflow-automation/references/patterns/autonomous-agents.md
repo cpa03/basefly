@@ -428,7 +428,7 @@ jobs:
 
             RULES:
             - Only fix simple/trivial bugs
-            - Ask for help if复杂
+            - Ask for help if complex
             - Create proper tests
             - Document changes
             - Be careful with breaking changes

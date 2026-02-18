@@ -3,7 +3,7 @@
 import * as React from "react";
 import { ArrowUp } from "lucide-react";
 
-import { ANIMATION } from "@saasfly/common";
+import { ANIMATION, SCROLL_THRESHOLDS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { Button } from "@saasfly/ui/button";
 import {
@@ -16,7 +16,7 @@ import {
 interface BackToTopProps {
   /**
    * Scroll threshold in pixels before showing the button
-   * @default 400
+   * @default SCROLL_THRESHOLDS.scrollToTop (400)
    */
   threshold?: number;
   /**
@@ -54,7 +54,7 @@ interface BackToTopProps {
  * ```
  */
 const BackToTop = React.forwardRef<HTMLButtonElement, BackToTopProps>(
-  ({ threshold = 400, className, position = "bottom-right" }, ref) => {
+  ({ threshold = SCROLL_THRESHOLDS.scrollToTop, className, position = "bottom-right" }, ref) => {
     const [isVisible, setIsVisible] = React.useState(false);
 
     // Track scroll position

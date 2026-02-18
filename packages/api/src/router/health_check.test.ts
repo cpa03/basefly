@@ -120,8 +120,12 @@ describe("Hello Router - Security Tests", () => {
       const result = helloInputSchema.safeParse({ text: tooLong });
       expect(result.success).toBe(false);
       if (!result.success) {
+        // Zod v4 uses "Too big" instead of "at most"
         expect(
-          result.error.issues.some((i) => i.message.includes("at most")),
+          result.error.issues.some(
+            (i) =>
+              i.message.includes("Too big") || i.message.includes("at most"),
+          ),
         ).toBe(true);
       }
     });

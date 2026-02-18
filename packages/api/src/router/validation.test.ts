@@ -109,8 +109,8 @@ describe("API Validation Tests", () => {
         const result = k8sClusterCreateSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
-          expect(result.error.errors).toHaveLength(1);
-          expect(result.error.errors[0]?.path).toContain("location");
+          expect(result.error.issues).toHaveLength(1);
+          expect(result.error.issues[0]?.path).toContain("location");
         }
       });
 
@@ -122,7 +122,7 @@ describe("API Validation Tests", () => {
         const result = k8sClusterCreateSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
-          expect(result.error.errors.some((e) => e.path.includes("name"))).toBe(
+          expect(result.error.issues.some((e) => e.path.includes("name"))).toBe(
             true,
           );
         }
@@ -137,7 +137,7 @@ describe("API Validation Tests", () => {
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(
-            result.error.errors.some((e) => e.path.includes("location")),
+            result.error.issues.some((e) => e.path.includes("location")),
           ).toBe(true);
         }
       });
@@ -150,7 +150,7 @@ describe("API Validation Tests", () => {
         const result = k8sClusterCreateSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
-          expect(result.error.errors.some((e) => e.path.includes("name"))).toBe(
+          expect(result.error.issues.some((e) => e.path.includes("name"))).toBe(
             true,
           );
         }
@@ -165,7 +165,7 @@ describe("API Validation Tests", () => {
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(
-            result.error.errors.some((e) => e.path.includes("location")),
+            result.error.issues.some((e) => e.path.includes("location")),
           ).toBe(true);
         }
       });
@@ -204,8 +204,8 @@ describe("API Validation Tests", () => {
         const result = k8sClusterDeleteSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
-          expect(result.error.errors).toHaveLength(1);
-          expect(result.error.errors[0]?.path).toContain("id");
+          expect(result.error.issues).toHaveLength(1);
+          expect(result.error.issues[0]?.path).toContain("id");
         }
       });
 
@@ -216,7 +216,7 @@ describe("API Validation Tests", () => {
         const result = k8sClusterDeleteSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
-          expect(result.error.errors.some((e) => e.path.includes("id"))).toBe(
+          expect(result.error.issues.some((e) => e.path.includes("id"))).toBe(
             true,
           );
         }
@@ -262,7 +262,7 @@ describe("API Validation Tests", () => {
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(
-            result.error.errors.some((e) => e.path.includes("planId")),
+            result.error.issues.some((e) => e.path.includes("planId")),
           ).toBe(true);
         }
       });
@@ -309,7 +309,7 @@ describe("API Validation Tests", () => {
         const result = updateUserNameSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
-          expect(result.error.errors.some((e) => e.path.includes("name"))).toBe(
+          expect(result.error.issues.some((e) => e.path.includes("name"))).toBe(
             true,
           );
         }
@@ -321,7 +321,7 @@ describe("API Validation Tests", () => {
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(
-            result.error.errors.some((e) => e.path.includes("userId")),
+            result.error.issues.some((e) => e.path.includes("userId")),
           ).toBe(true);
         }
       });
@@ -374,7 +374,7 @@ describe("API Validation Tests", () => {
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(
-            result.error.errors.some((e) => e.path.includes("userId")),
+            result.error.issues.some((e) => e.path.includes("userId")),
           ).toBe(true);
         }
       });

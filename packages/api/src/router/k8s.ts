@@ -144,7 +144,7 @@ export const k8sRouter = createTRPCRouter({
           throw createApiError(
             ErrorCode.VALIDATION_ERROR,
             "Invalid input data",
-            error.errors,
+            error.issues,
           );
         }
         if (error instanceof TRPCError) {

@@ -62,6 +62,7 @@ export const InfiniteMovingCards = ({
         }
       }
 
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setStart(true);
     }
   }, [direction, speed]);

@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { CLUSTER_VALIDATION } from "@saasfly/common";
+import { CLUSTER_VALIDATION, PATTERN_COLORS } from "@saasfly/common";
 import { Button } from "@saasfly/ui/button";
 import {
   Card,
@@ -235,7 +235,7 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
                           >
                             <g
                               transform="translate(0.000000,256.000000) scale(0.100000,-0.100000)"
-                              fill="#000000"
+                              fill={PATTERN_COLORS.default}
                               stroke="none"
                             >
                               <path d="M931 2509 c-68 -12 -133 -47 -217 -118 -124 -106 -181 -148 -276 -205 -186 -110 -225 -166 -279 -391 -16 -71 -52 -182 -78 -245 -68 -162 -75 -186 -75 -265 0 -79 7 -103 75 -265 26 -63 62 -173 78 -245 55 -229 92 -280 294 -402 60 -36 136 -88 169 -117 33 -28 83 -71 112 -94 28 -24 80 -58 116 -75 64 -31 67 -32 190 -28 158 5 320 5 480 0 119 -3 128 -2 184 24 33 15 89 52 125 82 36 30 92 76 123 103 32 26 104 75 160 109 195 116 235 170 289 398 16 72 52 182 78 245 67 160 74 185 74 265 0 80 -7 105 -74 265 -26 63 -62 174 -78 245 -54 225 -93 281 -278 391 -107 64 -151 96 -262 192 -145 125 -221 149 -414 130 -100 -9 -291 -6 -417 6 -25 3 -69 0 -99 -5z m558 -155 c502 -90 881 -550 881 -1069 0 -343 -163 -667 -439 -876 -207 -155 -496 -235 -756 -209 -561 57 -985 525 -985 1085 0 300 121 580 341 790 259 246 594 344 958 279z" />
@@ -267,7 +267,7 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
                         <div className="flex">
                           <svg className="h-8 w-12" viewBox="0 0 16 16">
                             <path
-                              fill="#000000"
+                              fill={PATTERN_COLORS.default}
                               d="M0 0l7.971 15.516L16 0H0zm6.732 6.16h-1.27V4.89h1.27v1.27zm0-1.906h-1.27V2.985h1.27v1.269zm1.904 3.81h-1.27v-1.27h1.27v1.27zm0-1.905h-1.27V4.89h1.27v1.27zm0-1.905h-1.27V2.985h1.27v1.269zm1.894 1.905H9.26V4.89h1.27v1.27zM9.26 4.254V2.985h1.27v1.269H9.26z"
                             />
                           </svg>

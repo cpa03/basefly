@@ -286,3 +286,25 @@ export type {
 
 export type { SubscriptionPlan } from "./subscriptions";
 export { pricingData } from "./subscriptions";
+
+// Color Configuration - centralized color palette
+export {
+  COLORS_CONFIG,
+  BRAND_COLORS,
+  NEUTRAL_COLORS,
+  PATTERN_COLORS,
+  MATERIAL_PALETTE,
+  GRADIENT_COLORS,
+  SHADOW_COLORS,
+  HSL_COLORS,
+  MATERIAL_COLOR_ARRAY,
+  getRandomMaterialColor,
+  getRandomMaterialColors,
+  getPatternWithColor,
+} from "./config/colors";
+export type {
+  BrandColor,
+  SemanticColor,
+  MaterialColor,
+  GradientColorSet,
+} from "./config/colors";

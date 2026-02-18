@@ -1,6 +1,6 @@
 "use client";
 
-import { ANIMATION, NOTIFICATION_COLORS } from "@saasfly/common";
+import { ANIMATION, NOTIFICATION_COLORS, SHADOW_COLORS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { AnimatedList } from "@saasfly/ui/animated-list";
 
@@ -54,9 +54,9 @@ const Notification = ({ name, description, icon, color, time }: Item) => {
         // animation styles
         `transition-all ${ANIMATION.duration.normal} ${ANIMATION.easing.smooth} ${ANIMATION.scale.subtle}`,
         // light styles
-        "bg-white [box-shadow:0_0_0_1px_rgba(0,0,0,.03),0_2px_4px_rgba(0,0,0,.05),0_12px_24px_rgba(0,0,0,.05)]",
+        `bg-white [box-shadow:0_0_0_1px_${SHADOW_COLORS.light.DEFAULT},0_2px_4px_${SHADOW_COLORS.light.dark},0_12px_24px_${SHADOW_COLORS.light.dark}]`,
         // dark styles
-        "transform-gpu dark:bg-transparent dark:backdrop-blur-md dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset]",
+        `transform-gpu dark:bg-transparent dark:backdrop-blur-md dark:[border:1px_solid_${SHADOW_COLORS.darkMode.border}] dark:[box-shadow:0_-20px_80px_-20px_${SHADOW_COLORS.darkMode.inset}_inset]`,
       )}
     >
       <div className="flex flex-row items-center gap-3">
@@ -85,7 +85,7 @@ const Notification = ({ name, description, icon, color, time }: Item) => {
 
 export function FeaturesCard() {
   return (
-    <div className="relative flex max-h-[435px] min-h-[435px] flex-col overflow-hidden rounded-2xl border bg-background p-6 shadow-lg dark:border-[#443c3c]">
+    <div className={`relative flex max-h-[435px] min-h-[435px] flex-col overflow-hidden rounded-2xl border bg-background p-6 shadow-lg dark:border-[${SHADOW_COLORS.darkMode.border}]`}>
       <AnimatedList>
         {notifications.map((item, idx) => (
           <Notification {...item} key={idx} />

@@ -1,3 +1,5 @@
+import { MATERIAL_PALETTE } from "@saasfly/common";
+
 /**
  * Patterns from Hero Patterns
  * Licence: CC BY 4.0
@@ -456,24 +458,7 @@ const bgPattern = (
   return 'url("data:image/svg+xml,' + svg + '")';
 };
 
-const colors = [
-  "#e51c23",
-  "#e91e63",
-  "#9c27b0",
-  "#673ab7",
-  "#3f51b5",
-  "#5677fc",
-  "#03a9f4",
-  "#00bcd4",
-  "#009688",
-  "#259b24",
-  "#8bc34a",
-  "#afb42b",
-  "#ff9800",
-  "#ff5722",
-  "#795548",
-  "#607d8b",
-];
+const colors = Object.values(MATERIAL_PALETTE);
 
 export const getRandomPatternStyle = (seed: string) => {
   // Generate a 32-bit hash based on the seed,

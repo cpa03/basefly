@@ -125,7 +125,7 @@ export function NavBar({
           </div>
           <LocaleChange url={"/"} />
           {!user ? (
-            <Link href={`/${lang}/login-clerk`}>
+            <Link href={`/${lang}/login`}>
               <Button variant="outline" size="sm">
                 {typeof marketing.login === "string"
                   ? marketing.login

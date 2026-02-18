@@ -15,6 +15,14 @@ export {
   REQUEST_ID_HEADER,
 } from "./request-id";
 
+export {
+  ErrorCode,
+  createApiError,
+  handleIntegrationError,
+  createValidationErrorMessage,
+  type ApiErrorResponse,
+} from "./errors";
+
 export type { AppRouter } from "./root";
 
 /**

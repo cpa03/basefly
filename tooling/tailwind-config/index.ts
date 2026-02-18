@@ -144,10 +144,14 @@ export default {
   plugins: [tailwindcssAnimate, addVariablesForColors],
 } satisfies Config;
 
+// Tailwind plugin function - uses internal API without type definitions
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function addVariablesForColors({ addBase, theme }: any) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  const allColors = flattenColorPalette(theme("colors"));
+  const allColors = flattenColorPalette(theme("colors")) as Record<
+    string,
+    unknown
+  >;
   const newVars = Object.fromEntries(
     Object.entries(allColors).map(([key, val]) => [`--${key}`, val]),
   );

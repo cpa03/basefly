@@ -1,0 +1,51 @@
+# Dependabot configuration for automated security updates
+# https://docs.github.com/en/code-security/dependabot/dependabot-version-updates
+
+version: 2
+
+updates:
+  # Enable version updates for npm/pnpm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "UTC"
+    # Limit the number of open PRs
+    open-pull-requests-limit: 10
+    # Group all dependencies into a single PR when possible
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+      development-dependencies:
+        dependency-type: "development"
+    # Add labels to PRs
+    labels:
+      - "dependencies"
+      - "security-engineer"
+    # Commit message configuration
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    # Ignore specific packages if needed (uncomment to use)
+    # ignore:
+    #   - dependency-name: "some-package"
+    #     versions: ["x.x.x"]
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 5
+    labels:
+      - "github-actions"
+      - "dependencies"
+      - "security-engineer"
+    commit-message:
+      prefix: "ci"
+      include: "scope"

@@ -170,6 +170,19 @@ const config = {
             key: "X-Content-Type-Options",
             value: HTTP_SECURITY_HEADERS.CONTENT_TYPE_OPTIONS,
           },
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow",
+          },
+        ],
+      },
+      {
+        source: "/trpc/(.*)",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow",
+          },
         ],
       },
     ];

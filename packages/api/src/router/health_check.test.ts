@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-
 import { z } from "zod";
 
 import { API_VALIDATION } from "@saasfly/common";
@@ -122,7 +121,7 @@ describe("Hello Router - Security Tests", () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(
-          result.error.issues.some((i) => i.message.includes("longer than")),
+          result.error.issues.some((i) => i.message.includes("at most")),
         ).toBe(true);
       }
     });

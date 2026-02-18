@@ -11,16 +11,16 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.36.6",
+    "@clerk/nextjs": "^6.37.5",
     "@saasfly/common": "workspace:*",
     "@saasfly/db": "workspace:*",
-    "@t3-oss/env-nextjs": "0.8.0",
-    "kysely": "0.27.3",
-    "@vercel/postgres-kysely": "0.8.0",
+    "@t3-oss/env-nextjs": "0.13.10",
+    "kysely": "0.28.11",
+    "@vercel/postgres-kysely": "0.10.0",
     "next": "14.2.35",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "zod": "3.22.4"
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "zod": "4.3.6"
   },
   "devDependencies": {
     "@saasfly/eslint-config": "workspace:*",
@@ -29,8 +29,8 @@
     "eslint": "8.57.0",
     "prettier": "3.8.1",
     "typescript": "5.9.3",
-    "@typescript-eslint/eslint-plugin": "7.5.0",
-    "eslint-plugin-import": "2.29.1"
+    "@typescript-eslint/eslint-plugin": "8.56.0",
+    "eslint-plugin-import": "2.32.0"
   },
   "eslintConfig": {
     "root": true,

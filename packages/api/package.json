@@ -24,21 +24,21 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.36.6",
+    "@clerk/nextjs": "^6.37.5",
     "@saasfly/auth": "workspace:*",
     "@saasfly/common": "workspace:*",
     "@saasfly/db": "workspace:*",
     "@saasfly/stripe": "workspace:*",
-    "@trpc/client": "10.45.3",
-    "@trpc/server": "10.45.3",
-    "@t3-oss/env-nextjs": "0.8.0",
+    "@trpc/client": "11.10.0",
+    "@trpc/server": "11.10.0",
+    "@t3-oss/env-nextjs": "0.13.10",
     "next": "14.2.35",
-    "superjson": "2.2.1",
-    "dinero.js": "2.0.0-alpha.14",
-    "@dinero.js/currencies": "2.0.0-alpha.14",
-    "zod": "3.22.4",
-    "zod-form-data": "2.0.2",
-    "pino": "9.0.0"
+    "superjson": "2.2.6",
+    "dinero.js": "2.0.0-alpha.16",
+    "@dinero.js/currencies": "2.0.0-alpha.15",
+    "zod": "4.3.6",
+    "zod-form-data": "3.0.1",
+    "pino": "10.3.1"
   },
   "devDependencies": {
     "@saasfly/eslint-config": "workspace:*",

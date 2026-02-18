@@ -39,6 +39,7 @@ export const ContainerScroll = ({
     <div
       className="relative flex h-[60rem] items-center justify-center p-2 md:h-[80rem] md:px-20"
       ref={containerRef}
+      style={{ position: "relative" }}
     >
       <div
         className="relative w-full py-10 md:py-10"

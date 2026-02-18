@@ -21,14 +21,17 @@ export const Meteorss = React.memo(function Meteorss({
           <p className="light:text-slate-600 relative z-50 mb-4 text-base font-normal dark:text-slate-400">
             {meteor.description}
           </p>
-          <a href={meteor.url} target="_blank" rel="noopener noreferrer">
-            <button className="light:text-gray-400 rounded-lg border border-gray-500 px-4 py-1 dark:text-gray-300">
-              {meteor.button_content}
-            </button>
-
-            {/* Meaty part - Meteor effect */}
-            <Meteors number={20} />
+          <a
+            href={meteor.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="light:text-gray-400 inline-block rounded-lg border border-gray-500 px-4 py-1 dark:text-gray-300"
+          >
+            {meteor.button_content}
           </a>
+
+          {/* Meaty part - Meteor effect */}
+          <Meteors number={20} />
         </div>
       </div>
     </div>

@@ -1,11 +1,5 @@
-import * as React from "react";
-
-export function useMounted() {
-  const [mounted, setMounted] = React.useState(false);
-
-  React.useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  return mounted;
-}
+/**
+ * @deprecated Import from "~/hooks/use-mounted" instead.
+ * This file re-exports for backward compatibility.
+ */
+export { useMounted } from "~/hooks/use-mounted";

@@ -280,3 +280,6 @@ export type {
   BadgeSize,
   FocusVariant,
 } from "./ui-tokens";
+
+export type { SubscriptionPlan } from "./subscriptions";
+export { pricingData } from "./subscriptions";

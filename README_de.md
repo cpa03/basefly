@@ -31,7 +31,7 @@ Weitere Dokumentation finden Sie unter <https://document.saasfly.io>.
 
 ## 🌟 Stern-Verlauf
 
-[![Star History Chart](https://app.repohistory.com/api/svg?repo=saasfly/saasfly&type=Timeline)](https://repohistory.com)
+[![Star History Chart](https://app.repohistory.com/api/svg?repo=cpa03/basefly&type=Timeline)](https://repohistory.com)
 
 ## 🚀 Erste Schritte
 
@@ -79,7 +79,7 @@ bun create saasfly
 2. Klonen Sie das Repository manuell:
 
 ```bash
-git clone https://github.com/saasfly/saasfly.git
+git clone https://github.com/cpa03/basefly.git
 cd saasfly
 bun install
 ```
@@ -111,7 +111,7 @@ bun run dev:web
 
 Nach dem 1. Juni 2025 verwenden wir Clerk als standardmäßigen Authentifizierungsanbieter.
 
-Hier finden Sie die NextAuth Implementierung ( https://github.com/saasfly/saasfly/tree/feature-nextauth ).
+Hier finden Sie die NextAuth Implementierung ( https://github.com/cpa03/basefly/tree/feature-nextauth ).
 
 ## 🥺 Projekt-Roadmap
 
@@ -196,12 +196,12 @@ Dieses Projekt wurde von shadcns [Taxonomy](https://github.com/shadcn-ui/taxonom
 
 <!-- Badges and links -->
 
-[check-workflow-badge]: https://img.shields.io/github/actions/workflow/status/saasfly/saasfly/ci.yml?label=ci
+[check-workflow-badge]: https://img.shields.io/github/actions/workflow/status/cpa03/basefly/ci.yml?label=ci
 [github-license-badge]: https://img.shields.io/badge/License-MIT-green.svg
 [discord-badge]: https://img.shields.io/discord/1204690198382911488?color=7b8dcd&link=https%3A%2F%2Fsaasfly.io%2Fdiscord
 [made-by-nextify-badge]: https://img.shields.io/badge/made_by-nextify-blue?color=FF782B&link=https://nextify.ltd/
 
-[check-workflow-badge-link]: https://github.com/saasfly/saasfly/actions/workflows/check.yml
-[github-license-badge-link]: https://github.com/saasfly/saasfly/blob/main/LICENSE
+[check-workflow-badge-link]: https://github.com/cpa03/basefly/actions/workflows/check.yml
+[github-license-badge-link]: https://github.com/cpa03/basefly/blob/main/LICENSE
 [discord-badge-link]: https://discord.gg/8SwSX43wnD
 [made-by-nextify-badge-link]: https://nextify.ltd

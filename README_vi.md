@@ -29,7 +29,7 @@ Máy chủ demo 2 (Địa điểm: Tokyo, Nhật Bản): <https://demo.saasfly.i
 
 ## 🌟 Lịch sử Star
 
-[![Biểu đồ lịch sử Star](https://app.repohistory.com/api/svg?repo=saasfly/saasfly&type=Timeline)](https://repohistory.com)
+[![Biểu đồ lịch sử Star](https://app.repohistory.com/api/svg?repo=cpa03/basefly&type=Timeline)](https://repohistory.com)
 
 ## 🚀 Bắt đầu
 
@@ -77,7 +77,7 @@ bun create saasfly
 2. Tự sao chép kho lưu trữ:
 
 ```bash
-git clone https://github.com/saasfly/saasfly.git
+git clone https://github.com/cpa03/basefly.git
 cd saasfly 
 bun install  
 ```
@@ -109,7 +109,7 @@ bun run dev:web
 
 Chúng tôi sẽ sử dụng Clerk như nhà cung cấp xác thực mặc định kể từ ngày 1 tháng 6 năm 2025.
 
-Bạn có thể tìm thấy mã triển khai NextAuth ở đây ( https://github.com/saasfly/saasfly/tree/feature-nextauth ).
+Bạn có thể tìm thấy mã triển khai NextAuth ở đây ( https://github.com/cpa03/basefly/tree/feature-nextauth ).
 
 ## 🥺 Lộ trình dự án
 
@@ -194,12 +194,12 @@ Dự án này lấy cảm hứng từ [Taxonomy](https://github.com/shadcn-ui/ta
 
 <!-- Huy hiệu và liên kết -->
 
-[check-workflow-badge]: https://img.shields.io/github/actions/workflow/status/saasfly/saasfly/ci.yml?label=ci
+[check-workflow-badge]: https://img.shields.io/github/actions/workflow/status/cpa03/basefly/ci.yml?label=ci
 [github-license-badge]: https://img.shields.io/badge/License-MIT-green.svg
 [discord-badge]: https://img.shields.io/discord/1204690198382911488?color=7b8dcd&link=https%3A%2F%2Fsaasfly.io%2Fdiscord
 [made-by-nextify-badge]: https://img.shields.io/badge/made_by-nextify-blue?color=FF782B&link=https://nextify.ltd/
 
-[check-workflow-badge-link]: https://github.com/saasfly/saasfly/actions/workflows/check.yml
-[github-license-badge-link]: https://github.com/saasfly/saasfly/blob/main/LICENSE
+[check-workflow-badge-link]: https://github.com/cpa03/basefly/actions/workflows/check.yml
+[github-license-badge-link]: https://github.com/cpa03/basefly/blob/main/LICENSE
 [discord-badge-link]: https://discord.gg/8SwSX43wnD
 [made-by-nextify-badge-link]: https://nextify.ltd

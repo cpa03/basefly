@@ -8,7 +8,7 @@ import { isClerkEnabled } from "@saasfly/auth";
 
 import { logger } from "~/lib/logger";
 
-// export const runtime = "edge";
+export const runtime = "edge";
 const createContext = async (req: NextRequest) => {
   let authResult = null;
   if (isClerkEnabled()) {

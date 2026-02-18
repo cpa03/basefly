@@ -30,7 +30,7 @@
 
 ## 🌟 Star历史
 
-[![Star History Chart](https://app.repohistory.com/api/svg?repo=saasfly/saasfly&type=Timeline)](https://repohistory.com)
+[![Star History Chart](https://app.repohistory.com/api/svg?repo=cpa03/basefly&type=Timeline)](https://repohistory.com)
 
 ## 赞助商
 
@@ -106,7 +106,7 @@ bun create saasfly
 2. 手动克隆存储库:
 
 ```bash
-git clone https://github.com/saasfly/saasfly.git
+git clone https://github.com/cpa03/basefly.git
 cd saasfly 
 bun install  
 ```
@@ -137,7 +137,7 @@ bun run dev:web
 
 在 2025 年 6 月 1 日之后，我们将使用 Clerk 作为默认的身份验证提供商。
 
-你可以在这里找到 NextAuth 的实现方案 （ https://github.com/saasfly/saasfly/tree/feature-nextauth ）。
+你可以在这里找到 NextAuth 的实现方案 （ https://github.com/cpa03/basefly/tree/feature-nextauth ）。
 
 ## 🥺 项目路线图
 
@@ -222,12 +222,12 @@ bun run dev:web
 
 <!-- 徽章和链接 -->
 
-[check-workflow-badge]: https://img.shields.io/github/actions/workflow/status/saasfly/saasfly/ci.yml?label=ci
+[check-workflow-badge]: https://img.shields.io/github/actions/workflow/status/cpa03/basefly/ci.yml?label=ci
 [github-license-badge]: https://img.shields.io/badge/License-MIT-green.svg
 [discord-badge]: https://img.shields.io/discord/1204690198382911488?color=7b8dcd&link=https%3A%2F%2Fsaasfly.io%2Fdiscord
 [made-by-nextify-badge]: https://img.shields.io/badge/made_by-nextify-blue?color=FF782B&link=https://nextify.ltd/
 
-[check-workflow-badge-link]: https://github.com/saasfly/saasfly/actions/workflows/check.yml
-[github-license-badge-link]: https://github.com/saasfly/saasfly/blob/main/LICENSE
+[check-workflow-badge-link]: https://github.com/cpa03/basefly/actions/workflows/check.yml
+[github-license-badge-link]: https://github.com/cpa03/basefly/blob/main/LICENSE
 [discord-badge-link]: https://discord.gg/8SwSX43wnD
 [made-by-nextify-badge-link]: https://nextify.ltd

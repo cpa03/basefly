@@ -8,7 +8,16 @@ import { logger } from "~/lib/logger";
 
 const handler = async (req: NextRequest) => {
   const payload = await req.text();
-  const signature = req.headers.get("Stripe-Signature")!;
+  const signature = req.headers.get("Stripe-Signature");
+
+  if (!signature) {
+    logger.error("Missing Stripe-Signature header");
+    return NextResponse.json(
+      { error: "Missing Stripe-Signature header" },
+      { status: HTTP_STATUS.BAD_REQUEST },
+    );
+  }
+
   try {
     const event = stripe.webhooks.constructEvent(
       payload,

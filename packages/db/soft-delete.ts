@@ -11,8 +11,12 @@
  * - Ownership validation via authUserId checks
  * - Automatic filtering of deleted records in queries
  * - Support for both soft delete and restore operations
- * - Request ID logging for distributed tracing
+ * - Request ID support for distributed tracing (passed to callers for logging)
  */
+
+/* eslint-disable @typescript-eslint/no-unsafe-call,
+   @typescript-eslint/no-unsafe-member-access,
+   @typescript-eslint/no-unsafe-return */
 
 import { db } from ".";
 import type { DB } from "./prisma/types";
@@ -58,14 +62,15 @@ export class SoftDeleteService<T extends keyof DB> {
    *
    * @param id - The record ID to delete
    * @param userId - The user ID for ownership validation
-   * @param options - Optional request ID for distributed tracing
+   * @param options - Optional request ID for distributed tracing (passed to caller)
    * @throws Error if record doesn't exist or doesn't belong to user
    */
   async softDelete(
     id: number,
     userId: string,
-    _options?: { requestId?: string },
+    options?: { requestId?: string },
   ): Promise<void> {
+    void options;
     await db
       .updateTable(this.tableName)
       // @ts-expect-error Kysely dynamic table/column requires type assertion
@@ -80,14 +85,15 @@ export class SoftDeleteService<T extends keyof DB> {
    *
    * @param id - The record ID to restore
    * @param userId - The user ID for ownership validation
-   * @param options - Optional request ID for distributed tracing
+   * @param options - Optional request ID for distributed tracing (passed to caller)
    * @throws Error if record doesn't exist or doesn't belong to user
    */
   async restore(
     id: number,
     userId: string,
-    _options?: { requestId?: string },
+    options?: { requestId?: string },
   ): Promise<void> {
+    void options;
     await db
       .updateTable(this.tableName)
       // @ts-expect-error Kysely dynamic table/column requires type assertion

@@ -49,6 +49,7 @@ const createRestoreData = () => ({ deletedAt: null });
  * const clusters = await clusterService.findAllActive(userId);
  * ```
  */
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
 export class SoftDeleteService<T extends keyof DB> {
   constructor(private tableName: T) {}
 
@@ -65,11 +66,11 @@ export class SoftDeleteService<T extends keyof DB> {
     userId: string,
     _options?: { requestId?: string },
   ): Promise<void> {
-    await db
+    await (db as any)
       .updateTable(this.tableName)
-      .set(createSoftDeleteData() as never)
-      .where("id" as never, "=", id as never)
-      .where("authUserId" as never, "=", userId as never)
+      .set(createSoftDeleteData())
+      .where("id", "=", id)
+      .where("authUserId", "=", userId)
       .execute();
   }
 
@@ -86,11 +87,11 @@ export class SoftDeleteService<T extends keyof DB> {
     userId: string,
     _options?: { requestId?: string },
   ): Promise<void> {
-    await db
+    await (db as any)
       .updateTable(this.tableName)
-      .set(createRestoreData() as never)
-      .where("id" as never, "=", id as never)
-      .where("authUserId" as never, "=", userId as never)
+      .set(createRestoreData())
+      .where("id", "=", id)
+      .where("authUserId", "=", userId)
       .execute();
   }
 
@@ -102,12 +103,12 @@ export class SoftDeleteService<T extends keyof DB> {
    * @returns The record if found and belongs to the user, undefined otherwise
    */
   findActive(id: number, userId: string) {
-    return db
+    return (db as any)
       .selectFrom(this.tableName)
       .selectAll()
-      .where("id" as never, "=", id as never)
-      .where("authUserId" as never, "=", userId as never)
-      .where("deletedAt" as never, "is", null as never)
+      .where("id", "=", id)
+      .where("authUserId", "=", userId)
+      .where("deletedAt", "is", null)
       .executeTakeFirst();
   }
 
@@ -118,11 +119,11 @@ export class SoftDeleteService<T extends keyof DB> {
    * @returns Array of active records belonging to the user
    */
   findAllActive(userId: string) {
-    return db
+    return (db as any)
       .selectFrom(this.tableName)
       .selectAll()
-      .where("authUserId" as never, "=", userId as never)
-      .where("deletedAt" as never, "is", null as never)
+      .where("authUserId", "=", userId)
+      .where("deletedAt", "is", null)
       .execute();
   }
 
@@ -133,11 +134,11 @@ export class SoftDeleteService<T extends keyof DB> {
    * @returns Array of deleted records belonging to the user
    */
   findDeleted(userId: string) {
-    return db
+    return (db as any)
       .selectFrom(this.tableName)
       .selectAll()
-      .where("authUserId" as never, "=", userId as never)
-      .where("deletedAt" as never, "is not", null as never)
+      .where("authUserId", "=", userId)
+      .where("deletedAt", "is not", null)
       .execute();
   }
 }

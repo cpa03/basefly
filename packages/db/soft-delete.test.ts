@@ -72,7 +72,6 @@ describe("SoftDeleteService", () => {
       executeTakeFirst: mockSelectExecuteTakeFirst,
     };
 
-    // @ts-expect-error Type instantiation is excessively deep
     vi.mocked(db.updateTable).mockReturnValue({
       where: mockUpdateWhere,
       set: mockUpdateSet,
@@ -230,7 +229,7 @@ describe("SoftDeleteService", () => {
       const result = await service.findAllActive("user_123");
 
       expect(result).toEqual(mockClusters);
-      expect(result.length).toBe(3);
+      expect((result as unknown[]).length).toBe(3);
       expect(mockSelectWhere1).toHaveBeenCalledWith(
         "authUserId",
         "=",
@@ -246,7 +245,7 @@ describe("SoftDeleteService", () => {
       const result = await service.findAllActive("user_123");
 
       expect(result).toEqual([]);
-      expect(result.length).toBe(0);
+      expect((result as unknown[]).length).toBe(0);
     });
 
     it("excludes soft-deleted records from results", async () => {
@@ -293,7 +292,7 @@ describe("SoftDeleteService", () => {
       const result = await service.findDeleted("user_123");
 
       expect(result).toEqual(mockDeletedClusters);
-      expect(result.length).toBe(2);
+      expect((result as unknown[]).length).toBe(2);
       expect(mockSelectWhere1).toHaveBeenCalledWith(
         "authUserId",
         "=",
@@ -313,7 +312,7 @@ describe("SoftDeleteService", () => {
       const result = await service.findDeleted("user_123");
 
       expect(result).toEqual([]);
-      expect(result.length).toBe(0);
+      expect((result as unknown[]).length).toBe(0);
     });
 
     it("excludes active records from results", async () => {

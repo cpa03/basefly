@@ -79,7 +79,7 @@ const ReviewCard = ({
           <figcaption className="text-sm font-medium dark:text-white">
             {name}
           </figcaption>
-          <p className="text-xs font-medium dark:text-white/40">{username}</p>
+          <p className="text-xs font-medium dark:text-white/70">{username}</p>
         </div>
       </div>
       <blockquote className="mt-2 text-sm">{body}</blockquote>

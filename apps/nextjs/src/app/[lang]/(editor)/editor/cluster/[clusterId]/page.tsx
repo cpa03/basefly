@@ -28,7 +28,7 @@ export default async function EditorClusterPage({
   const { clusterId, lang } = await params;
   const user = await getCurrentUser();
   if (!user) {
-    redirect(authOptions?.pages?.signIn ?? "/login-clerk");
+    redirect(authOptions?.pages?.signIn ?? "/login");
   }
 
   const cluster = await getClusterForUser(clusterId, user.id);

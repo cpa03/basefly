@@ -59,6 +59,4 @@ package-lock.json
 bun.lock
 .opencode/bun.lock
 
-# generated/temporary prompt files
-docs/prompts/claude.txt
-docs/prompts/.github/
+

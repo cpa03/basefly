@@ -128,8 +128,8 @@ bun create saasfly
 2. Manually clone the repository:
 
 ```bash
-git clone https://github.com/saasfly/saasfly.git
-cd saasfly
+git clone https://github.com/basefly/basefly.git
+cd basefly
 bun install
 ```
 

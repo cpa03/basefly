@@ -11,7 +11,7 @@
 [![German](https://img.shields.io/badge/-German-yellow.svg)](README_de.md)
 [![Vietnamese](https://img.shields.io/badge/-Vietnamese-yellow.svg)](README_vi.md) </br>
 ![COMMIT_ACTIVITY](https://img.shields.io/github/commit-activity/m/basefly/basefly?style=for-the-badge)
-[![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2Fbasefly%2Fbasefly&labelColor=%23f47373&countColor=%23263759)](https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2Fbasefly%2Fbasefly)
+[![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2Fcpa03%2Fbasefly&labelColor=%23f47373&countColor=%23263759)](https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2Fcpa03%2Fbasefly)
 
 An enterprise-grade Kubernetes cluster management platform.
 
@@ -33,7 +33,7 @@ See more documentation at <https://document.saasfly.io>
 
 ## 🌟 Star History
 
-[![Star History Chart](https://app.repohistory.com/api/svg?repo=basefly/basefly&type=Timeline)](https://repohistory.com)
+[![Star History Chart](https://app.repohistory.com/api/svg?repo=cpa03/basefly&type=Timeline)](https://repohistory.com)
 
 ## Sponsors
 
@@ -49,21 +49,21 @@ See more documentation at <https://document.saasfly.io>
     <td style="width: 64px;">
       <a href="https://go.clerk.com/uKDp7Au">
         <div style="width: 64px;">
-          <img alt="Clerk" src="/clerk.png">
+          <img alt="Clerk" src="./clerk.png">
         </div>
       </a>
     </td>
     <td style="width: 64px;">
       <a href="https://www.twillot.com/">
         <div style="width: 64px;">
-          <img alt="Take Control of All Your Twitter Assets" src="/twillot.png">
+          <img alt="Take Control of All Your Twitter Assets" src="./twillot.png">
         </div>
       </a>
     </td>
     <td style="width: 64px;">
       <a href="https://www.setupyourpay.com/" title="如何注册美国公司进行收款">
         <div style="width: 64px;">
-          <img alt="全球收款手册" src="/setupyourpay.png">
+          <img alt="全球收款手册" src="./setupyourpay.png">
         </div>
       </a>
     </td>
@@ -127,7 +127,7 @@ pnpm create basefly
 2. Manually clone the repository:
 
 ```bash
-git clone https://github.com/basefly/basefly.git
+git clone https://github.com/cpa03/basefly.git
 cd basefly
 pnpm install
 ```
@@ -273,7 +273,7 @@ This project was inspired by shadcn's [Taxonomy](https://github.com/shadcn-ui/ta
 
 ## 👨‍💻 Contributors
 
-<a href="https://github.com/basefly/basefly/graphs/contributors">
+<a href="https://github.com/cpa03/basefly/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=basefly/basefly" />
 </a>
 
@@ -281,12 +281,12 @@ Made with [contrib.rocks](https://contrib.rocks).
 
 <!-- Badges and links -->
 
-[check-workflow-badge]: https://img.shields.io/github/actions/workflow/status/basefly/basefly/ci.yml?label=ci
+[check-workflow-badge]: https://img.shields.io/github/actions/workflow/status/cpa03/basefly/on-pull.yml?label=ci
 [github-license-badge]: https://img.shields.io/badge/License-MIT-green.svg
 [discord-badge]: https://img.shields.io/discord/1204690198382911488?color=7b8dcd&link=https%3A%2F%2Fsaasfly.io%2Fdiscord
 [made-by-nextify-badge]: https://img.shields.io/badge/made_by-nextify-blue?color=FF782B&link=https://nextify.ltd/
 
-[check-workflow-badge-link]: https://github.com/basefly/basefly/actions/workflows/check.yml
-[github-license-badge-link]: https://github.com/basefly/basefly/blob/main/LICENSE
+[check-workflow-badge-link]: https://github.com/cpa03/basefly/actions/workflows/on-pull.yml
+[github-license-badge-link]: https://github.com/cpa03/basefly/blob/main/LICENSE
 [discord-badge-link]: https://discord.gg/8SwSX43wnD
 [made-by-nextify-badge-link]: https://nextify.ltd

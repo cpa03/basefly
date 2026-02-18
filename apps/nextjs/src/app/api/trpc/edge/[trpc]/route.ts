@@ -14,7 +14,7 @@ const createContext = async (req: NextRequest) => {
   if (isClerkEnabled()) {
     try {
       authResult = getAuth(req);
-    } catch {
+    } catch (_error) {
       authResult = null;
     }
   }

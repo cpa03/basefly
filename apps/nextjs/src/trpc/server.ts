@@ -50,7 +50,7 @@ const createContext = cache(async () => {
   if (isClerkEnabled()) {
     try {
       authResult = await auth();
-    } catch {
+    } catch (_error) {
       authResult = null;
     }
   }

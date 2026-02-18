@@ -1,9 +1,10 @@
 # Cloudflare Pages Configuration for Basefly
 # This configuration enables deployment to Cloudflare Pages alongside Vercel
 # See: https://developers.cloudflare.com/pages/platform/build-configuration
+# Best Practices: https://developers.cloudflare.com/workers/best-practices/workers-best-practices/
 
 name = "basefly"
-compatibility_date = "2024-01-01"
+compatibility_date = "2026-02-18"
 compatibility_flags = ["nodejs_compat"]
 
 # Pages configuration

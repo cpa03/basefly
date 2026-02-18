@@ -14,9 +14,9 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "autoprefixer": "10.4.17",
-    "postcss": "8.4.34",
-    "tailwindcss": "3.4.1",
+    "autoprefixer": "10.4.24",
+    "postcss": "8.5.6",
+    "tailwindcss": "4.2.0",
     "tailwindcss-animate": "1.0.7"
   },
   "devDependencies": {
@@ -24,11 +24,11 @@
     "@saasfly/prettier-config": "workspace:*",
     "@saasfly/typescript-config": "workspace:*",
     "@types/node": "20.12.12",
-    "@typescript-eslint/eslint-plugin": "7.5.0",
+    "@typescript-eslint/eslint-plugin": "8.56.0",
     "eslint": "8.57.0",
     "prettier": "3.8.1",
     "typescript": "5.9.3",
-    "eslint-plugin-import": "2.29.1"
+    "eslint-plugin-import": "2.32.0"
   },
   "eslintConfig": {
     "root": true,

@@ -4,19 +4,9 @@ import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 import { createTRPCContext } from "@saasfly/api";
 import { edgeRouter } from "@saasfly/api/edge";
+import { isClerkEnabled } from "@saasfly/auth";
 
 import { logger } from "~/lib/logger";
-
-function isClerkEnabled(): boolean {
-  const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-  return !!(
-    clerkKey &&
-    !clerkKey.includes("dummy") &&
-    !clerkKey.includes("placeholder") &&
-    clerkKey.startsWith("pk_") &&
-    clerkKey.length > 20
-  );
-}
 
 // export const runtime = "edge";
 const createContext = async (req: NextRequest) => {

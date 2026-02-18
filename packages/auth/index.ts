@@ -1,4 +1,6 @@
-import { getSessionUser } from "./clerk";
+import { getSessionUser, isClerkEnabled } from "./clerk";
+
+export { isClerkEnabled };
 
 export interface User {
   id: string;

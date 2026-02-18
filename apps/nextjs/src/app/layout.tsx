@@ -18,11 +18,15 @@ import { ThemeProvider } from "~/components/theme-provider";
 import { i18n } from "~/config/i18n-config";
 import { siteConfig } from "~/config/site";
 
+const FallbackProvider = ({ children }: { children: React.ReactNode }) => (
+  <>{children}</>
+);
+
 const NextDevtoolsProvider =
   process.env.NODE_ENV === "development" &&
   process.env.ENABLE_DEVTOOLS === "true"
     ? (await import("@next-devtools/core")).NextDevtoolsProvider
-    : ({ children }: { children: React.ReactNode }) => <>{children}</>;
+    : FallbackProvider;
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -98,7 +102,7 @@ export default function RootLayout({
     clerkKey.length > 20;
   const ClerkProviderWrapper = isValidClerkKey
     ? ClerkProvider
-    : ({ children }: { children: React.ReactNode }) => <>{children}</>;
+    : FallbackProvider;
 
   return (
     <ClerkProviderWrapper publishableKey={isValidClerkKey ? clerkKey : ""}>

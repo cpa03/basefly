@@ -10,6 +10,18 @@ export const Meteors = ({
   className?: string;
 }) => {
   const meteors = new Array(number ?? 20).fill(true);
+
+  const meteorStyles = React.useMemo(
+    () =>
+      meteors.map(() => ({
+        left: Math.floor(Math.random() * (400 - -400) + -400) + "px",
+        animationDelay: Math.random() * (0.8 - 0.2) + 0.2 + "s",
+        animationDuration: Math.floor(Math.random() * (10 - 2) + 2) + "s",
+      })),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [number],
+  );
+
   return (
     <>
       {meteors.map((el, idx) => (
@@ -22,9 +34,7 @@ export const Meteors = ({
           )}
           style={{
             top: 0,
-            left: Math.floor(Math.random() * (400 - -400) + -400) + "px",
-            animationDelay: Math.random() * (0.8 - 0.2) + 0.2 + "s",
-            animationDuration: Math.floor(Math.random() * (10 - 2) + 2) + "s",
+            ...meteorStyles[idx],
           }}
         ></span>
       ))}

@@ -90,7 +90,7 @@ function CommandPalette({ lang = "en", className }: CommandPaletteProps) {
           );
           setRecentItems(validItems.slice(0, 3));
         }
-      } catch (_error) {
+      } catch {
         // Invalid JSON in localStorage, reset to empty
         localStorage.removeItem("command-palette-recent");
       }

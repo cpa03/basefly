@@ -41,18 +41,13 @@ export const customerRouter = createTRPCRouter({
       const ctxUserId = ctx.userId;
       const requestId = ctx.requestId;
 
-      logger.info("Updating user name", {
-        userId,
-        ctxUserId,
-        requestId,
-      });
+      logger.info({ userId, ctxUserId, requestId }, "Updating user name");
 
       if (!ctxUserId || userId !== ctxUserId) {
-        logger.warn("Unauthorized user name update attempt", {
-          userId,
-          ctxUserId,
-          requestId,
-        });
+        logger.warn(
+          { userId, ctxUserId, requestId },
+          "Unauthorized user name update attempt",
+        );
         return { success: false, reason: "no auth" };
       }
 
@@ -64,10 +59,7 @@ export const customerRouter = createTRPCRouter({
         .where("id", "=", userId)
         .execute();
 
-      logger.info("User name updated successfully", {
-        userId,
-        requestId,
-      });
+      logger.info({ userId, requestId }, "User name updated successfully");
 
       return { success: true, reason: "" };
     }),
@@ -78,10 +70,7 @@ export const customerRouter = createTRPCRouter({
       const { userId } = input;
       const requestId = ctx.requestId;
 
-      logger.info("Creating customer", {
-        userId,
-        requestId,
-      });
+      logger.info({ userId, requestId }, "Creating customer");
 
       const result = await db
         .insertInto("Customer")
@@ -91,10 +80,7 @@ export const customerRouter = createTRPCRouter({
         })
         .executeTakeFirst();
 
-      logger.info("Customer created successfully", {
-        userId,
-        requestId,
-      });
+      logger.info({ userId, requestId }, "Customer created successfully");
 
       return result;
     }),
@@ -106,10 +92,7 @@ export const customerRouter = createTRPCRouter({
       const { userId } = input;
       const requestId = ctx.requestId;
 
-      logger.debug("Querying customer", {
-        userId,
-        requestId,
-      });
+      logger.debug({ userId, requestId }, "Querying customer");
 
       return await db
         .selectFrom("Customer")

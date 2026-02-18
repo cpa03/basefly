@@ -118,6 +118,7 @@ async function handleInvoicePaymentSucceeded(session: Stripe.Checkout.Session) {
     }
 
     const plan = getSubscriptionPlan(priceId);
+    const currentPeriodEnd = subscription.items.data[0]?.current_period_end;
     await db
       .updateTable("Customer")
       .where("id", "=", customer.id)
@@ -125,9 +126,9 @@ async function handleInvoicePaymentSucceeded(session: Stripe.Checkout.Session) {
         stripeCustomerId: customerId,
         stripeSubscriptionId: subscription.id,
         stripePriceId: priceId,
-        stripeCurrentPeriodEnd: new Date(
-          subscription.current_period_end * 1000,
-        ),
+        stripeCurrentPeriodEnd: currentPeriodEnd
+          ? new Date(currentPeriodEnd * 1000)
+          : null,
         plan: plan || SubscriptionPlan.FREE,
       })
       .execute();

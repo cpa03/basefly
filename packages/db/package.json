@@ -32,7 +32,7 @@
     "@saasfly/typescript-config": "workspace:*",
     "dotenv-cli": "7.3.0",
     "eslint": "8.57.0",
-    "prettier": "3.7.4",
+    "prettier": "3.8.1",
     "@typescript-eslint/eslint-plugin": "7.5.0",
     "eslint-plugin-import": "2.29.1",
     "prisma": "5.9.1",

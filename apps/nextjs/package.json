@@ -80,7 +80,7 @@
     "eslint-plugin-react-hooks": "4.6.0",
     "mdast-util-toc": "7.0.0",
     "next-contentlayer2": "0.4.6",
-    "prettier": "3.7.4",
+    "prettier": "3.8.1",
     "puppeteer": "^24.37.2",
     "rehype": "13.0.1",
     "rehype-autolink-headings": "7.1.0",

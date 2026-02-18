@@ -30,7 +30,7 @@ jobs:
       IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}    
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -95,7 +95,7 @@ jobs:
       IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}    
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -161,7 +161,7 @@ jobs:
       IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}    
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -227,7 +227,7 @@ jobs:
       IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}    
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -293,7 +293,7 @@ jobs:
       IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}    
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}

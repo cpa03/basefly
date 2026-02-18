@@ -89,3 +89,11 @@
     stroke-dashoffset: 0;
   }
 }
+
+[data-vaul-drawer] {
+  position: relative;
+}
+
+[data-vaul-scroll-container] {
+  position: relative;
+}

@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 // import colors from "tailwindcss/colors";
 // Tailwind internal utility - no type definitions available
 import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette";
@@ -140,7 +141,7 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), addVariablesForColors],
+  plugins: [tailwindcssAnimate, addVariablesForColors],
 } satisfies Config;
 
 function addVariablesForColors({

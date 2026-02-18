@@ -14,6 +14,10 @@
  * - Request ID logging for distributed tracing
  */
 
+/* eslint-disable @typescript-eslint/no-unsafe-call,
+   @typescript-eslint/no-unsafe-member-access,
+   @typescript-eslint/no-unsafe-return */
+
 import { db } from ".";
 import type { DB } from "./prisma/types";
 

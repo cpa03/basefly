@@ -1,6 +1,12 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "github": {
     "silent": true
   },
-  "buildCommand": "contentlayer2 build && next build"
+  "framework": "nextjs",
+  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "turbo run build --filter=@saasfly/nextjs",
+  "outputDirectory": "apps/nextjs/.next",
+  "ignoreCommand": "npx turbo-ignore --fallback=HEAD^1",
+  "cleanUrls": true
 }

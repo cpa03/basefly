@@ -1,0 +1,46 @@
+# Cloudflare Pages Configuration for Basefly
+# This configuration enables deployment to Cloudflare Pages alongside Vercel
+# See: https://developers.cloudflare.com/pages/platform/build-configuration
+
+name = "basefly"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Pages configuration
+pages_build_output_dir = "apps/nextjs/.next"
+
+# Build configuration for Cloudflare Pages
+[build]
+command = "pnpm install && turbo run build --filter=@saasfly/nextjs"
+
+# Environment variables (set via Cloudflare Dashboard or wrangler secrets)
+# These are placeholders - actual values should be set securely
+[vars]
+NODE_VERSION = "20"
+
+# Production environment
+[env.production]
+name = "basefly"
+routes = [
+  { pattern = "/*", zone_name = "saasfly.io" }
+]
+
+# Preview environment for PRs
+[env.preview]
+name = "basefly-preview"
+
+# Note: For Next.js on Cloudflare Pages, consider using @cloudflare/next-on-pages
+# This enables full Next.js compatibility including:
+# - Edge Runtime support
+# - API Routes
+# - Middleware
+# - Image Optimization (via Cloudflare Images)
+
+# Security: Enable Cloudflare features
+# These can also be configured via Cloudflare Dashboard:
+# - Bot Fight Mode
+# - Browser Integrity Check
+# - Security Level
+# - SSL/TLS: Full (Strict)
+# - Always Use HTTPS
+# - Automatic HTTPS Rewrites

@@ -242,6 +242,26 @@ export {
 } from "./config/cache";
 export type { CacheDurationKey, CacheControlKey } from "./config/cache";
 
+// Validation configuration - centralized validation constraints
+export {
+  VALIDATION,
+  USER_VALIDATION,
+  CLUSTER_VALIDATION,
+  ORG_VALIDATION,
+  PLAN_VALIDATION,
+  API_VALIDATION,
+  PAGINATION_VALIDATION,
+} from "./config/validation";
+export type {
+  ValidationConfig,
+  UserValidation,
+  ClusterValidation,
+  OrganizationValidation,
+  PlanValidation,
+  ApiValidation,
+  PaginationValidation,
+} from "./config/validation";
+
 // UI Design Tokens - centralized theming and sizing
 export {
   BUTTON_TOKENS,

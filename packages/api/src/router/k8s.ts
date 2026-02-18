@@ -1,31 +1,31 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { K8S_DEFAULTS } from "@saasfly/common";
+import { CLUSTER_VALIDATION, K8S_DEFAULTS } from "@saasfly/common";
 import { db, k8sClusterService } from "@saasfly/db";
 
 import { createApiError, ErrorCode } from "../errors";
 import { logger } from "../logger";
 import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 
-// Enhanced schemas with comprehensive validation
+// Enhanced schemas with comprehensive validation using centralized constants
 export const k8sClusterCreateSchema = z
   .object({
     id: z.number().int().positive().optional(),
     name: z
       .string()
       .trim()
-      .min(1, "Cluster name cannot be empty")
-      .max(100, "Cluster name cannot exceed 100 characters")
+      .min(CLUSTER_VALIDATION.name.minLength, "Cluster name cannot be empty")
+      .max(CLUSTER_VALIDATION.name.maxLength, "Cluster name cannot exceed 100 characters")
       .regex(
-        /^[a-zA-Z0-9-]+$/,
-        "Cluster name can only contain letters, numbers, and hyphens",
+        CLUSTER_VALIDATION.name.pattern,
+        CLUSTER_VALIDATION.name.patternMessage,
       ),
     location: z
       .string()
       .trim()
-      .min(1, "Location cannot be empty")
-      .max(50, "Location cannot exceed 50 characters"),
+      .min(CLUSTER_VALIDATION.location.minLength, "Location cannot be empty")
+      .max(CLUSTER_VALIDATION.location.maxLength, "Location cannot exceed 50 characters"),
   })
   .strict();
 
@@ -41,18 +41,18 @@ export const k8sClusterUpdateSchema = z
     name: z
       .string()
       .trim()
-      .min(1, "Cluster name cannot be empty")
-      .max(100, "Cluster name cannot exceed 100 characters")
+      .min(CLUSTER_VALIDATION.name.minLength, "Cluster name cannot be empty")
+      .max(CLUSTER_VALIDATION.name.maxLength, "Cluster name cannot exceed 100 characters")
       .regex(
-        /^[a-zA-Z0-9-]+$/,
-        "Cluster name can only contain letters, numbers, and hyphens",
+        CLUSTER_VALIDATION.name.pattern,
+        CLUSTER_VALIDATION.name.patternMessage,
       )
       .optional(),
     location: z
       .string()
       .trim()
-      .min(1, "Location cannot be empty")
-      .max(50, "Location cannot exceed 50 characters")
+      .min(CLUSTER_VALIDATION.location.minLength, "Location cannot be empty")
+      .max(CLUSTER_VALIDATION.location.maxLength, "Location cannot exceed 50 characters")
       .optional(),
   })
   .strict()

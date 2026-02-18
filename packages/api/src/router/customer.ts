@@ -1,18 +1,19 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { z } from "zod";
 
+import { USER_VALIDATION } from "@saasfly/common";
 import { db, SubscriptionPlan } from "@saasfly/db";
 
 import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 
-// Enhanced schemas with comprehensive validation
+// Enhanced schemas with comprehensive validation using centralized constants
 export const updateUserNameSchema = z
   .object({
     name: z
       .string()
       .trim()
-      .min(1, "Name cannot be empty")
-      .max(100, "Name cannot exceed 100 characters"),
+      .min(USER_VALIDATION.displayName.minLength, "Name cannot be empty")
+      .max(USER_VALIDATION.displayName.maxLength, "Name cannot exceed 100 characters"),
     userId: z.string().uuid("Invalid user ID format"),
   })
   .strict();

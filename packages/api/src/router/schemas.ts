@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-import { CLUSTER_VALIDATION, PLAN_VALIDATION, USER_VALIDATION } from "@saasfly/common";
+import {
+  CLUSTER_VALIDATION,
+  PLAN_VALIDATION,
+  USER_VALIDATION,
+} from "@saasfly/common";
 
 export const enhancedK8sClusterCreateSchema = z
   .object({
@@ -9,7 +13,10 @@ export const enhancedK8sClusterCreateSchema = z
       .string()
       .trim()
       .min(CLUSTER_VALIDATION.name.minLength, "Cluster name cannot be empty")
-      .max(CLUSTER_VALIDATION.name.maxLength, "Cluster name cannot exceed 100 characters")
+      .max(
+        CLUSTER_VALIDATION.name.maxLength,
+        "Cluster name cannot exceed 100 characters",
+      )
       .regex(
         CLUSTER_VALIDATION.name.pattern,
         CLUSTER_VALIDATION.name.patternMessage,
@@ -18,7 +25,10 @@ export const enhancedK8sClusterCreateSchema = z
       .string()
       .trim()
       .min(CLUSTER_VALIDATION.location.minLength, "Location cannot be empty")
-      .max(CLUSTER_VALIDATION.location.maxLength, "Location cannot exceed 50 characters"),
+      .max(
+        CLUSTER_VALIDATION.location.maxLength,
+        "Location cannot exceed 50 characters",
+      ),
   })
   .strict();
 
@@ -35,7 +45,10 @@ export const enhancedK8sClusterUpdateSchema = z
       .string()
       .trim()
       .min(CLUSTER_VALIDATION.name.minLength, "Cluster name cannot be empty")
-      .max(CLUSTER_VALIDATION.name.maxLength, "Cluster name cannot exceed 100 characters")
+      .max(
+        CLUSTER_VALIDATION.name.maxLength,
+        "Cluster name cannot exceed 100 characters",
+      )
       .regex(
         CLUSTER_VALIDATION.name.pattern,
         CLUSTER_VALIDATION.name.patternMessage,
@@ -45,7 +58,10 @@ export const enhancedK8sClusterUpdateSchema = z
       .string()
       .trim()
       .min(CLUSTER_VALIDATION.location.minLength, "Location cannot be empty")
-      .max(CLUSTER_VALIDATION.location.maxLength, "Location cannot exceed 50 characters")
+      .max(
+        CLUSTER_VALIDATION.location.maxLength,
+        "Location cannot exceed 50 characters",
+      )
       .optional(),
   })
   .strict()
@@ -69,7 +85,10 @@ export const enhancedUpdateUserNameSchema = z
       .string()
       .trim()
       .min(USER_VALIDATION.displayName.minLength, "Name cannot be empty")
-      .max(USER_VALIDATION.displayName.maxLength, "Name cannot exceed 100 characters"),
+      .max(
+        USER_VALIDATION.displayName.maxLength,
+        "Name cannot exceed 100 characters",
+      ),
     userId: z.string().uuid("Invalid user ID format"),
   })
   .strict();

@@ -70,15 +70,15 @@ export const InfiniteMovingCards = ({
     <div
       ref={containerRef}
       className={cn(
-        "scroller relative z-20  max-w-7xl overflow-hidden  [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
+        "scroller relative z-20 max-w-7xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
         className,
       )}
     >
       <ul
         ref={scrollerRef}
         className={cn(
-          " flex w-max min-w-full shrink-0 flex-nowrap gap-4 py-4",
-          start && "animate-scroll ",
+          "flex w-max min-w-full shrink-0 flex-nowrap gap-4 py-4",
+          start && "animate-scroll",
           pauseOnHover && "hover:[animation-play-state:paused]",
         )}
       >
@@ -96,15 +96,15 @@ export const InfiniteMovingCards = ({
                 aria-hidden="true"
                 className="user-select-none -z-1 pointer-events-none absolute -left-0.5 -top-0.5 h-[calc(100%_+_4px)] w-[calc(100%_+_4px)]"
               ></div>
-              <span className=" relative z-20 text-sm font-normal leading-[1.6] text-gray-100">
+              <span className="relative z-20 text-sm font-normal leading-[1.6] text-gray-100">
                 {item.quote}
               </span>
               <div className="relative z-20 mt-6 flex flex-row items-center">
                 <span className="flex flex-col gap-1">
-                  <span className=" text-sm font-normal leading-[1.6] text-gray-400">
+                  <span className="text-sm font-normal leading-[1.6] text-gray-400">
                     {item.name}
                   </span>
-                  <span className=" text-sm font-normal leading-[1.6] text-gray-400">
+                  <span className="text-sm font-normal leading-[1.6] text-gray-400">
                     {item.title}
                   </span>
                 </span>

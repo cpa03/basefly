@@ -2,11 +2,11 @@ import { Suspense } from "react";
 
 import { getCurrentUser } from "@saasfly/auth";
 
+import { BackToTop } from "~/components/back-to-top";
 import { ModalProvider } from "~/components/modal-provider";
 import { NavBar } from "~/components/navbar";
 import { NavbarSkeleton } from "~/components/navbar-skeleton";
 import { SiteFooter } from "~/components/site-footer";
-import { BackToTop } from "~/components/back-to-top";
 import { SkipLink } from "~/components/skip-link";
 import type { Locale } from "~/config/i18n-config";
 import { getMarketingConfig } from "~/config/ui/marketing";

@@ -1,0 +1,19 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "bradlc.vscode-tailwindcss",
+    "ms-vscode.vscode-typescript-next",
+    "vitest.explorer",
+    "prisma.prisma",
+    "editorconfig.editorconfig",
+    "streetsidesoftware.code-spell-checker",
+    "aaron-bond.better-comments",
+    "usernamehw.errorlens",
+    "oderwat.indent-rainbow",
+    "eamodio.gitlens",
+    "github.copilot",
+    "github.vscode-github-actions",
+    "ms-playwright.playwright"
+  ]
+}

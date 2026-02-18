@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import "server-only";
 
 import { cache } from "react";
@@ -39,8 +39,6 @@ export const createTRPCContext = async (opts: {
  */
 const createContext = cache(async () => {
   const cookieStore = cookies();
-  // Convert cookie store to string properly
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   const allCookies = cookieStore.getAll() as { name: string; value: string }[];
   const cookieHeader = Array.from(allCookies)
     .map((cookie) => `${cookie.name}=${cookie.value}`)

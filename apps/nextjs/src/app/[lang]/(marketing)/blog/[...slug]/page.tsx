@@ -4,6 +4,7 @@ import {
   allAuthors as rawAuthors,
 } from "contentlayer/generated";
 
+import { getTwitterProfileUrl } from "@saasfly/common";
 import { BackToTop } from "~/components/back-to-top";
 import { Mdx } from "~/components/content/mdx-components";
 
@@ -128,7 +129,7 @@ export default function PostPage({ params }: PostPageProps) {
               author ? (
                 <Link
                   key={author._id}
-                  href={`https://twitter.com/${author.twitter}`}
+                  href={getTwitterProfileUrl(author.twitter)}
                   className="flex items-center space-x-2 text-sm"
                 >
                   <Image

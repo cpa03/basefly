@@ -1,12 +1,12 @@
-
 <div align="center" width="100%">
     <img src="./saasfly-logo.svg" width="128" alt="" />
 </div>
 
 # Basefly </br>
+
 <a href="https://trendshift.io/repositories/8929" target="_blank"><img src="https://trendshift.io/api/badge/repositories/8929" alt="basefly%2Fbasefly | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
-[![GitHub Actions Workflow Status][check-workflow-badge]][check-workflow-badge-link] [![GitHub License][github-license-badge]][github-license-badge-link]  [![Discord][discord-badge]][discord-badge-link] [![Saasfly][made-by-nextify-badge]][made-by-nextify-badge-link]
+[![GitHub Actions Workflow Status][check-workflow-badge]][check-workflow-badge-link] [![GitHub License][github-license-badge]][github-license-badge-link] [![Discord][discord-badge]][discord-badge-link] [![Saasfly][made-by-nextify-badge]][made-by-nextify-badge-link]
 [![Chinese](https://img.shields.io/badge/-Chinese-red.svg)](README_zh.md)
 [![German](https://img.shields.io/badge/-German-yellow.svg)](README_de.md)
 [![Vietnamese](https://img.shields.io/badge/-Vietnamese-yellow.svg)](README_vi.md) </br>
@@ -16,6 +16,25 @@
 An enterprise-grade Kubernetes cluster management platform.
 
 Basefly simplifies Kubernetes cluster deployment and management with a modern web interface, subscription-based access tiers, and integrated billing through Stripe.
+
+## 📑 Table of Contents
+
+- [Live Demo](#-live-demo)
+- [Star History](#-star-history)
+- [Sponsors](#sponsors)
+- [Getting Started](#-getting-started)
+  - [One Click Deploy](#-one-click-deploy)
+  - [Prerequisites](#-prerequisites)
+  - [Installation](#installation)
+  - [Setup](#setup)
+- [Key Features](#-key-features)
+- [Project Roadmap](#-project-roadmap)
+- [Features](#-features)
+- [Apps and Packages](#-apps-and-packages)
+- [Troubleshooting](#-troubleshooting)
+- [License](#-license)
+- [Credits](#-credits)
+- [Contributors](#-contributors)
 
 > **[Nextify](https://nextify.ltd)** provides a complete Enterprise SaaS solution. Contact us at [contact@nextify.ltd](mailto:contact@nextify.ltd) if you're interested in discussing your project, or if you'd simply like to have a conversation with us, please feel free to reach out.
 
@@ -85,20 +104,19 @@ See more documentation at <https://document.saasfly.io>
 Before you start, make sure you have the following installed:
 
 1. [pnpm](https://pnpm.io/) & [Node.js](https://nodejs.org/) & [Git](https://git-scm.com/)
-
    1. Linux
 
-    ```bash
-      curl -fsSL https://get.pnpm.io/install.sh | sh -
-    ```
+   ```bash
+     curl -fsSL https://get.pnpm.io/install.sh | sh -
+   ```
 
    2. MacOS
 
-    ```bash
-      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      brew install git
-      brew install pnpm
-    ```
+   ```bash
+     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+     brew install git
+     brew install pnpm
+   ```
 
 2. [PostgreSQL](https://www.postgresql.org/) - Required for cluster configuration and user data
    1. You can use Vercel Postgres or a local PostgreSQL server (add POSTGRES_URL env in .env.local)
@@ -121,7 +139,7 @@ To get started with this boilerplate, we offer two options:
 1. Use the `pnpm create` command(🌟Strongly recommend🌟):
 
 ```bash
-pnpm create basefly 
+pnpm create basefly
 ```
 
 2. Manually clone the repository:
@@ -160,18 +178,21 @@ pnpm run dev:web
 ## 🎯 Key Features
 
 ### Kubernetes Cluster Management
+
 - Create and manage Kubernetes clusters through a web interface
 - Multiple subscription tiers (FREE, PRO, BUSINESS) with different resource limits
 - Cluster status tracking (PENDING, CREATING, INITING, RUNNING, STOPPED)
 - Soft delete support for cluster preservation
 
 ### Subscription & Billing
+
 - Integrated Stripe subscription billing
 - Multiple pricing plans with automatic provisioning
 - Webhook-based subscription status synchronization
 - Customer portal for subscription management
 
 ### Enterprise Features
+
 - Multi-language support (English, Chinese, German, Vietnamese)
 - Role-based access control (Admin dashboard)
 - Audit trail preservation with soft delete patterns
@@ -181,20 +202,20 @@ pnpm run dev:web
 ## 🥺 Project Roadmap
 
 1. Enhanced Admin Dashboard
-    1. Currently in alpha - provides basic administrative views
-    2. Configure admin emails in `ADMIN_EMAIL` environment variable
-    3. Access at `/admin/dashboard`
-    4. Security: No online admin demos available
+   1. Currently in alpha - provides basic administrative views
+   2. Configure admin emails in `ADMIN_EMAIL` environment variable
+   3. Access at `/admin/dashboard`
+   4. Security: No online admin demos available
 
 2. Advanced Kubernetes Features
-    1. Cluster monitoring and metrics integration
-    2. Node pool management
-    3. Auto-scaling configuration
+   1. Cluster monitoring and metrics integration
+   2. Node pool management
+   3. Auto-scaling configuration
 
 3. Additional Integrations
-    1. Consider integrating Payload CMS for content management
-    2. Enhanced notification system
-    3. Usage analytics and reporting
+   1. Consider integrating Payload CMS for content management
+   2. Enhanced notification system
+   3. Usage analytics and reporting
 
 ## ⭐ Features
 
@@ -263,6 +284,62 @@ pnpm run dev:web
 - `stripe`: Stripe integration with retry logic, circuit breaker, and webhook handlers
 - `common`: Shared utilities, types, and constants across packages
 
+## 🔧 Troubleshooting
+
+### Common Issues
+
+#### Database Connection Errors
+
+If you encounter database connection errors, ensure your `POSTGRES_URL` environment variable is correctly set:
+
+```bash
+# Check if the variable is set
+echo $POSTGRES_URL
+
+# Or in .env.local
+POSTGRES_URL="postgresql://user:password@localhost:5432/basefly"
+```
+
+#### Clerk Authentication Issues
+
+- Ensure both `CLERK_SECRET_KEY` and `CLERK_PUBLISHABLE_KEY` are set
+- Verify your Clerk application is configured for Next.js
+- Check that the redirect URLs match your local development URL
+
+#### Stripe Webhook Errors
+
+- Verify `STRIPE_WEBHOOK_SECRET` matches your Stripe webhook signing secret
+- Ensure webhook endpoint is accessible (use Stripe CLI for local testing)
+- Check Stripe dashboard for webhook delivery failures
+
+#### Build Errors
+
+```bash
+# Clear Turbo cache and rebuild
+pnpm turbo clean
+pnpm install
+pnpm build
+```
+
+#### Port Already in Use
+
+If port 3000 is already in use:
+
+```bash
+# Find and kill the process
+lsof -i :3000
+kill -9 <PID>
+
+# Or use a different port
+PORT=3001 pnpm dev:web
+```
+
+### Getting Help
+
+- Check [existing issues](https://github.com/basefly/basefly/issues)
+- Join our [Discord](https://discord.gg/8SwSX43wnD) for community support
+- Email [contact@nextify.ltd](mailto:contact@nextify.ltd) for enterprise support
+
 ## 📜 License
 
 This project is licensed under the MIT License. For more information, see the [LICENSE](./LICENSE) file.
@@ -285,7 +362,6 @@ Made with [contrib.rocks](https://contrib.rocks).
 [github-license-badge]: https://img.shields.io/badge/License-MIT-green.svg
 [discord-badge]: https://img.shields.io/discord/1204690198382911488?color=7b8dcd&link=https%3A%2F%2Fsaasfly.io%2Fdiscord
 [made-by-nextify-badge]: https://img.shields.io/badge/made_by-nextify-blue?color=FF782B&link=https://nextify.ltd/
-
 [check-workflow-badge-link]: https://github.com/basefly/basefly/actions/workflows/check.yml
 [github-license-badge-link]: https://github.com/basefly/basefly/blob/main/LICENSE
 [discord-badge-link]: https://discord.gg/8SwSX43wnD

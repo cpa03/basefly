@@ -1,3 +1,4 @@
+import React from "react";
 import Image from "next/image";
 
 import { EXTERNAL_URLS } from "@saasfly/common";
@@ -62,21 +63,23 @@ const blogContent = {
   authorAvatar: EXTERNAL_URLS.cdn.twitterProfile,
 };
 
-const TitleComponent = ({
+const TitleComponent = React.memo(function TitleComponent({
   title,
   avatar,
 }: {
   title: string;
   avatar: string;
-}) => (
-  <div className="flex items-center space-x-2">
-    <Image
-      src={avatar}
-      height={20}
-      width={20}
-      alt={`${title}'s avatar`}
-      className="rounded-full border-2 border-white"
-    />
-    <p>{title}</p>
-  </div>
-);
+}) {
+  return (
+    <div className="flex items-center space-x-2">
+      <Image
+        src={avatar}
+        height={20}
+        width={20}
+        alt={`${title}'s avatar`}
+        className="rounded-full border-2 border-white"
+      />
+      <p>{title}</p>
+    </div>
+  );
+});

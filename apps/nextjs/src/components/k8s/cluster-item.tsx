@@ -1,3 +1,4 @@
+import React from "react";
 import Link from "next/link";
 
 import { ANIMATION, FEEDBACK_TIMING } from "@saasfly/common";
@@ -23,7 +24,13 @@ interface ClusterItemProps {
   dict?: Record<string, unknown>;
 }
 
-function ClusterNameCell({ name, href }: { name: string; href: string }) {
+const ClusterNameCell = React.memo(function ClusterNameCell({
+  name,
+  href,
+}: {
+  name: string;
+  href: string;
+}) {
   return (
     <TooltipProvider delayDuration={FEEDBACK_TIMING.tooltipDelay}>
       <Tooltip>
@@ -47,9 +54,13 @@ function ClusterNameCell({ name, href }: { name: string; href: string }) {
       </Tooltip>
     </TooltipProvider>
   );
-}
+});
 
-export function ClusterItem({ cluster, lang, dict }: ClusterItemProps) {
+export const ClusterItem = React.memo(function ClusterItem({
+  cluster,
+  lang,
+  dict,
+}: ClusterItemProps) {
   const clusterUrl = `/${lang}/editor/cluster/${String(cluster.id)}`;
 
   return (
@@ -100,4 +111,4 @@ export function ClusterItem({ cluster, lang, dict }: ClusterItemProps) {
       </TableCell>
     </TableRow>
   );
-}
+});

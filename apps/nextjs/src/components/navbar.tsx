@@ -24,7 +24,12 @@ interface NavLinkProps {
   disabled?: boolean;
 }
 
-function NavLink({ href, children, isActive, disabled }: NavLinkProps) {
+const NavLink = React.memo(function NavLink({
+  href,
+  children,
+  isActive,
+  disabled,
+}: NavLinkProps) {
   return (
     <Link
       href={disabled ? "#" : href}
@@ -50,7 +55,7 @@ function NavLink({ href, children, isActive, disabled }: NavLinkProps) {
       />
     </Link>
   );
-}
+});
 
 interface NavBarProps {
   user: Pick<User, "name" | "image" | "email"> | undefined;

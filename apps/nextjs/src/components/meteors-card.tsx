@@ -1,8 +1,14 @@
+import React from "react";
+
 import { Meteors } from "@saasfly/ui/meteors";
 
 import type { Meteor } from "~/types/meteors";
 
-export function Meteorss({ meteor }: { meteor: Meteor }) {
+export const Meteorss = React.memo(function Meteorss({
+  meteor,
+}: {
+  meteor: Meteor;
+}) {
   return (
     <div className="w-full">
       <div className="relative w-full">
@@ -27,4 +33,4 @@ export function Meteorss({ meteor }: { meteor: Meteor }) {
       </div>
     </div>
   );
-}
+});

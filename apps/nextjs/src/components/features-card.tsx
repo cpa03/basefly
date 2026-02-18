@@ -1,5 +1,7 @@
 "use client";
 
+import React from "react";
+
 import { ANIMATION, NOTIFICATION_COLORS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { AnimatedList } from "@saasfly/ui/animated-list";
@@ -46,7 +48,13 @@ let notifications = [
 
 notifications = Array.from({ length: 10 }, () => notifications).flat();
 
-const Notification = ({ name, description, icon, color, time }: Item) => {
+const Notification = React.memo(function Notification({
+  name,
+  description,
+  icon,
+  color,
+  time,
+}: Item) {
   return (
     <figure
       className={cn(
@@ -81,7 +89,7 @@ const Notification = ({ name, description, icon, color, time }: Item) => {
       </div>
     </figure>
   );
-};
+});
 
 export function FeaturesCard() {
   return (

@@ -126,6 +126,7 @@ const components = {
         className={cn("rounded-md border", className)}
         alt={alt}
         src={src}
+        loading="lazy"
         {...props}
       />
     );

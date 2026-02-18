@@ -8,6 +8,20 @@ import { EndpointType, getIdentifier, getLimiter } from "./rate-limiter";
 import { getOrGenerateRequestId } from "./request-id";
 import { transformer } from "./transformer";
 
+/**
+ * Check if a user email is in the admin list
+ * Server-side admin verification for security-critical routes
+ */
+function isAdminEmail(email: string | null | undefined): boolean {
+  if (!email) return false;
+  const adminEmails = process.env.ADMIN_EMAIL;
+  if (!adminEmails) return false;
+  return adminEmails
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .includes(email.toLowerCase());
+}
+
 export type { EndpointType } from "./rate-limiter";
 
 interface CreateContextOptions {
@@ -60,6 +74,26 @@ const isAuthed = t.middleware(({ next, ctx }) => {
 
 export const protectedProcedure = procedure.use(isAuthed);
 
+const isAdmin = t.middleware(async ({ next, ctx }) => {
+  if (!ctx.userId) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  const user = await currentUser();
+  const userEmail = user?.emailAddresses?.[0]?.emailAddress;
+
+  if (!isAdminEmail(userEmail)) {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message: "Admin access required",
+    });
+  }
+
+  return next({ ctx: { userId: ctx.userId, isAdmin: true } });
+});
+
+export const adminProcedure = protectedProcedure.use(isAdmin);
+
 export const rateLimit = (endpointType: EndpointType) =>
   t.middleware(async ({ ctx, next }) => {
     const limiter = getLimiter(endpointType);
@@ -89,3 +123,6 @@ export const createRateLimitedProcedure = (endpointType: EndpointType) =>
 export const createRateLimitedProtectedProcedure = (
   endpointType: EndpointType,
 ) => protectedProcedure.use(rateLimit(endpointType));
+
+export const createRateLimitedAdminProcedure = (endpointType: EndpointType) =>
+  adminProcedure.use(rateLimit(endpointType));

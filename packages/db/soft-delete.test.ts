@@ -73,7 +73,6 @@ describe("SoftDeleteService", () => {
       executeTakeFirst: mockSelectExecuteTakeFirst,
     };
 
-    // @ts-expect-error Type instantiation is excessively deep
     vi.mocked(db.updateTable).mockReturnValue({
       where: mockUpdateWhere,
       set: mockUpdateSet,

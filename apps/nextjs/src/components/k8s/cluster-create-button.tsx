@@ -68,7 +68,7 @@ export function K8sCreateButton({
       if (response.id) {
         router.push(`/${lang}/editor/cluster/${response.id}`);
       }
-    } catch (error: unknown) {
+    } catch {
       toast({
         title:
           (dict.k8s as Record<string, Record<string, string>>)?.errors

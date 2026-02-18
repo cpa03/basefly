@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call */
 import "server-only";
 
 import { cache } from "react";
@@ -50,7 +51,7 @@ const createContext = cache(async () => {
   if (isClerkEnabled()) {
     try {
       authResult = await auth();
-    } catch (_error) {
+    } catch {
       authResult = null;
     }
   }

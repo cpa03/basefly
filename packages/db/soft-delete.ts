@@ -53,6 +53,7 @@ const createRestoreData = () => ({ deletedAt: null });
  * const clusters = await clusterService.findAllActive(userId);
  * ```
  */
+/* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
 export class SoftDeleteService<T extends keyof DB> {
   constructor(private tableName: T) {}
 
@@ -72,9 +73,10 @@ export class SoftDeleteService<T extends keyof DB> {
     void options;
     await db
       .updateTable(this.tableName)
-      .set(createSoftDeleteData() as never)
-      .where("id" as never, "=", id as never)
-      .where("authUserId" as never, "=", userId as never)
+      // @ts-expect-error Kysely dynamic table/column requires type assertion
+      .set(createSoftDeleteData())
+      .where("id", "=", id)
+      .where("authUserId", "=", userId)
       .execute();
   }
 
@@ -94,9 +96,10 @@ export class SoftDeleteService<T extends keyof DB> {
     void options;
     await db
       .updateTable(this.tableName)
-      .set(createRestoreData() as never)
-      .where("id" as never, "=", id as never)
-      .where("authUserId" as never, "=", userId as never)
+      // @ts-expect-error Kysely dynamic table/column requires type assertion
+      .set(createRestoreData())
+      .where("id", "=", id)
+      .where("authUserId", "=", userId)
       .execute();
   }
 
@@ -108,13 +111,16 @@ export class SoftDeleteService<T extends keyof DB> {
    * @returns The record if found and belongs to the user, undefined otherwise
    */
   findActive(id: number, userId: string) {
-    return db
-      .selectFrom(this.tableName)
-      .selectAll()
-      .where("id" as never, "=", id as never)
-      .where("authUserId" as never, "=", userId as never)
-      .where("deletedAt" as never, "is", null as never)
-      .executeTakeFirst();
+    return (
+      db
+        .selectFrom(this.tableName)
+        .selectAll()
+        // @ts-expect-error Kysely dynamic table/column requires type assertion
+        .where("id", "=", id)
+        .where("authUserId", "=", userId)
+        .where("deletedAt", "is", null)
+        .executeTakeFirst()
+    );
   }
 
   /**
@@ -124,12 +130,15 @@ export class SoftDeleteService<T extends keyof DB> {
    * @returns Array of active records belonging to the user
    */
   findAllActive(userId: string) {
-    return db
-      .selectFrom(this.tableName)
-      .selectAll()
-      .where("authUserId" as never, "=", userId as never)
-      .where("deletedAt" as never, "is", null as never)
-      .execute();
+    return (
+      db
+        .selectFrom(this.tableName)
+        .selectAll()
+        // @ts-expect-error Kysely dynamic table/column requires type assertion
+        .where("authUserId", "=", userId)
+        .where("deletedAt", "is", null)
+        .execute()
+    );
   }
 
   /**
@@ -139,14 +148,18 @@ export class SoftDeleteService<T extends keyof DB> {
    * @returns Array of deleted records belonging to the user
    */
   findDeleted(userId: string) {
-    return db
-      .selectFrom(this.tableName)
-      .selectAll()
-      .where("authUserId" as never, "=", userId as never)
-      .where("deletedAt" as never, "is not", null as never)
-      .execute();
+    return (
+      db
+        .selectFrom(this.tableName)
+        .selectAll()
+        // @ts-expect-error Kysely dynamic table/column requires type assertion
+        .where("authUserId", "=", userId)
+        .where("deletedAt", "is not", null)
+        .execute()
+    );
   }
 }
+/* eslint-enable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
 
 /**
  * Pre-configured service instance for K8sClusterConfig table

@@ -89,6 +89,20 @@ const SVG = ({
     "#6A286F",
     "#604483",
   ];
+
+  const randomDelaysRef = React.useRef<
+    { delay: number; repeatDelay: number }[]
+  >([]);
+  if (randomDelaysRef.current.length === 0) {
+    /* eslint-disable react-hooks/purity */
+    randomDelaysRef.current = paths.map(() => ({
+      delay: Math.floor(Math.random() * 10),
+      repeatDelay: Math.floor(Math.random() * 10 + 2),
+    }));
+    /* eslint-enable react-hooks/purity */
+  }
+  const randomDelays = randomDelaysRef.current;
+
   return (
     <motion.svg
       viewBox="0 0 1440 900"
@@ -113,8 +127,8 @@ const SVG = ({
             ease: "linear",
             repeat: Infinity,
             repeatType: "loop",
-            delay: (idx * 7) % 10,
-            repeatDelay: ((idx * 13) % 10) + 2,
+            delay: randomDelays[idx]?.delay ?? 0,
+            repeatDelay: randomDelays[idx]?.repeatDelay ?? 2,
           }}
           key={`path-first-${idx}`}
         />
@@ -135,8 +149,8 @@ const SVG = ({
             ease: "linear",
             repeat: Infinity,
             repeatType: "loop",
-            delay: (idx * 7) % 10,
-            repeatDelay: ((idx * 13) % 10) + 2,
+            delay: randomDelays[idx]?.delay ?? 0,
+            repeatDelay: randomDelays[idx]?.repeatDelay ?? 2,
           }}
           key={`path-second-${idx}`}
         />

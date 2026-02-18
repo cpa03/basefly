@@ -144,13 +144,7 @@ export function CodeCopy() {
 
   return (
     <div
-      className={`
-        group flex h-12 max-w-xl items-center justify-between 
-        rounded-full bg-neutral-200 px-3 
-        dark:bg-neutral-700/40
-        ${ANIMATION.transition.normal}
-        hover:bg-neutral-300 dark:hover:bg-neutral-600/50
-      `}
+      className={`group flex h-12 max-w-xl items-center justify-between rounded-full bg-neutral-200 px-3 dark:bg-neutral-700/40 ${ANIMATION.transition.normal} hover:bg-neutral-300 dark:hover:bg-neutral-600/50`}
     >
       <div className="flex items-center space-x-2 font-mono text-neutral-700 dark:text-neutral-300">
         <span className="select-none text-neutral-500 dark:text-neutral-400">
@@ -159,12 +153,7 @@ export function CodeCopy() {
         <span className="relative">
           {command}
           <span
-            className={`
-              pointer-events-none absolute inset-0 -mx-1 rounded
-              bg-primary/10 dark:bg-primary/20
-              ${ANIMATION.duration.fast} ${ANIMATION.easing.default}
-              ${copied ? "opacity-100" : "opacity-0"}
-            `}
+            className={`pointer-events-none absolute inset-0 -mx-1 rounded bg-primary/10 dark:bg-primary/20 ${ANIMATION.duration.fast} ${ANIMATION.easing.default} ${copied ? "opacity-100" : "opacity-0"} `}
           />
         </span>
       </div>
@@ -179,38 +168,23 @@ export function CodeCopy() {
               onMouseUp={() => setIsPressed(false)}
               onMouseLeave={() => setIsPressed(false)}
               disabled={isCopying}
-              className={`
-                relative ml-2 rounded-md p-1.5
-                transition-all ${ANIMATION.duration.fast} ${ANIMATION.easing.default}
-                focus-visible:outline-none focus-visible:ring-2 
-                focus-visible:ring-ring focus-visible:ring-offset-2
-                disabled:cursor-not-allowed disabled:opacity-50
-                ${
-                  copied
-                    ? `${SEMANTIC_COLORS.success.icon} bg-green-100 dark:bg-green-900/30`
-                    : "text-neutral-700 hover:bg-gray-200 dark:text-neutral-300 dark:hover:bg-neutral-800"
-                }
-                ${isPressed ? "scale-90" : "hover:scale-110"}
-              `}
+              className={`relative ml-2 rounded-md p-1.5 transition-all ${ANIMATION.duration.fast} ${ANIMATION.easing.default} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
+                copied
+                  ? `${SEMANTIC_COLORS.success.icon} bg-green-100 dark:bg-green-900/30`
+                  : "text-neutral-700 hover:bg-gray-200 dark:text-neutral-300 dark:hover:bg-neutral-800"
+              } ${isPressed ? "scale-90" : "hover:scale-110"} `}
               aria-label={tooltipContent}
               aria-busy={isCopying}
               aria-live="polite"
             >
               <span
-                className={`
-                  block transition-all ${ANIMATION.duration.normal}
-                  ${copied ? "scale-100 opacity-100" : "scale-90 opacity-0"}
-                `}
+                className={`block transition-all ${ANIMATION.duration.normal} ${copied ? "scale-100 opacity-100" : "scale-90 opacity-0"} `}
               >
                 <AnimatedCheck className={ICON_SIZES.sm} />
               </span>
 
               <span
-                className={`
-                  absolute inset-0 flex items-center justify-center
-                  transition-all ${ANIMATION.duration.normal}
-                  ${copied ? "scale-90 opacity-0" : "scale-100 opacity-100"}
-                `}
+                className={`absolute inset-0 flex items-center justify-center transition-all ${ANIMATION.duration.normal} ${copied ? "scale-90 opacity-0" : "scale-100 opacity-100"} `}
               >
                 {isCopying ? (
                   <CopyProgressRing className={ICON_SIZES.sm} />
@@ -223,9 +197,7 @@ export function CodeCopy() {
           <TooltipContent
             side="top"
             sideOffset={8}
-            className={`
-              ${ANIMATION.duration.fast} ${ANIMATION.easing.default}
-            `}
+            className={` ${ANIMATION.duration.fast} ${ANIMATION.easing.default} `}
           >
             <p>{tooltipContent}</p>
           </TooltipContent>

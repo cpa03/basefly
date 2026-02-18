@@ -13,7 +13,10 @@ export const updateUserNameSchema = z
       .string()
       .trim()
       .min(USER_VALIDATION.displayName.minLength, "Name cannot be empty")
-      .max(USER_VALIDATION.displayName.maxLength, "Name cannot exceed 100 characters"),
+      .max(
+        USER_VALIDATION.displayName.maxLength,
+        "Name cannot exceed 100 characters",
+      ),
     userId: z.string().uuid("Invalid user ID format"),
   })
   .strict();

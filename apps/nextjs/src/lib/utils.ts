@@ -1,3 +1,5 @@
+import { DEV_URLS } from "@saasfly/common";
+
 export function formatDate(
   input: string | number | Date | undefined | null,
 ): string {
@@ -12,6 +14,6 @@ export function formatDate(
 }
 
 export function absoluteUrl(path: string) {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? DEV_URLS.localhost;
   return `${baseUrl}${path}`;
 }

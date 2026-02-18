@@ -121,4 +121,5 @@ model StripeWebhookEvent {
   @@unique([id])
   @@index([processed])
   @@index([createdAt])
+  @@index([eventType])
 }

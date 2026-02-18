@@ -101,6 +101,7 @@ export {
   FEEDBACK_TIMING,
   ANIMATION_TIMING,
   SEMANTIC_COLORS,
+  NOTIFICATION_COLORS,
   TRANSITION_PRESETS,
   VISUAL_EFFECTS,
   THEMES,
@@ -112,6 +113,7 @@ export type {
   FeedbackTiming,
   AnimationTiming,
   SemanticColors,
+  NotificationColorKey,
   VisualEffects,
   TransitionPresetKey,
   Theme,
@@ -146,6 +148,7 @@ export {
   getRoute,
   getAvatarUrl,
   getGitHubProfileUrl,
+  getTwitterProfileUrl,
   DEV_URLS,
   getBaseUrl,
 } from "./config/urls";

@@ -11,18 +11,21 @@ Basefly uses GitHub Actions for CI/CD with a multi-agent automation system power
 ### 1. `on-pull.yml` - Pull Request Handler
 
 **Trigger:**
+
 - Pull request events
 - Hourly schedule (cron: `0 * * * *`)
 - Manual dispatch
 
 **Purpose:**
 Handles incoming pull requests by:
+
 - Checking for conflicts with the default branch
 - Running build, lint, and test checks
 - Auto-fixing minor issues when possible
 - Merging PRs that meet all quality gates
 
 **Key Features:**
+
 - Uses `softprops/turnstyle@v3` for queue management
 - 30-minute timeout for long-running operations
 - Automatic conflict resolution for trivial cases
@@ -30,6 +33,7 @@ Handles incoming pull requests by:
 ### 2. `iterate.yml` - Parallel Agent Execution
 
 **Trigger:**
+
 - Push to `main` branch
 - Every 4 hours (cron: `0 */4 * * *`)
 - Manual dispatch
@@ -39,14 +43,15 @@ Orchestrates multiple specialist agents in parallel for continuous improvement.
 
 **Stages:**
 
-| Stage | Agent | Purpose |
-|-------|-------|---------|
-| Architect | RepoKeeper | Repository organization and cleanup |
-| Specialists | Multiple | Domain-specific improvements |
-| PR-Handler | PR-Handler | Merge management |
-| Integrator | Fixer | Final quality assurance |
+| Stage       | Agent      | Purpose                             |
+| ----------- | ---------- | ----------------------------------- |
+| Architect   | RepoKeeper | Repository organization and cleanup |
+| Specialists | Multiple   | Domain-specific improvements        |
+| PR-Handler  | PR-Handler | Merge management                    |
+| Integrator  | Fixer      | Final quality assurance             |
 
 **Specialist Agents:**
+
 - `frontend-engineer` - UI/UX improvements
 - `backend-engineer` - API and server logic
 - `ai-agent-engineer` - AI integration
@@ -69,6 +74,7 @@ Orchestrates multiple specialist agents in parallel for continuous improvement.
 ### 3. `paratterate.yml` - Parallel Iteration
 
 **Trigger:**
+
 - Push to `main` branch
 - Every 4 hours (cron: `0 */4 * * *`)
 - Manual dispatch
@@ -76,13 +82,13 @@ Orchestrates multiple specialist agents in parallel for continuous improvement.
 **Purpose:**
 Alternative parallel execution with different agent personas:
 
-| Job | Agent | Focus Area |
-|-----|-------|------------|
+| Job       | Agent      | Focus Area             |
+| --------- | ---------- | ---------------------- |
 | Architect | RepoKeeper | Repository maintenance |
-| BugFixer | BugFixer | Bug resolution |
-| Palette | Palette | UX improvements |
-| Flexy | Flexy | Modularity |
-| Brocula | Brocula | Browser console fixes |
+| BugFixer  | BugFixer   | Bug resolution         |
+| Palette   | Palette    | UX improvements        |
+| Flexy     | Flexy      | Modularity             |
+| Brocula   | Brocula    | Browser console fixes  |
 
 ## Workflow Configuration
 
@@ -116,12 +122,14 @@ permissions:
 Automated dependency updates are configured in `.github/dependabot.yml`:
 
 ### npm/pnpm Updates
+
 - Schedule: Weekly (Monday 06:00 UTC)
 - Limit: 10 open PRs
 - Groups: Production and development dependencies
 - Labels: `dependencies`, `security-engineer`
 
 ### GitHub Actions Updates
+
 - Schedule: Weekly (Monday 06:00 UTC)
 - Limit: 5 open PRs
 - Labels: `github-actions`, `dependencies`, `security-engineer`
@@ -144,14 +152,17 @@ All PRs must pass:
 ## Branch Strategy
 
 ### Default Branch
+
 - `main` - Production-ready code
 
 ### Feature Branches
+
 - Named after the specialist/feature (e.g., `devops-engineer`, `frontend-engineer`)
 - Must be up-to-date with `main` before PR creation
 - Squash-merged after all checks pass
 
 ### Protected Branch Rules
+
 - `main` requires passing CI checks
 - No direct pushes to `main`
 - All changes via pull request
@@ -172,10 +183,11 @@ The project is configured for Vercel deployment with:
 The project also supports deployment to Cloudflare Pages as an alternative to Vercel.
 
 **Configuration Files:**
+
 - `wrangler.toml` - Cloudflare Workers/Pages configuration
-- `wrangler.jsonc` - JSON configuration with schema support
 
 **Build Configuration:**
+
 - **Framework**: Next.js
 - **Build Command**: `pnpm install && turbo run build --filter=@saasfly/nextjs`
 - **Output Directory**: `apps/nextjs/.next`
@@ -185,20 +197,21 @@ The project also supports deployment to Cloudflare Pages as an alternative to Ve
 
 Set these in Cloudflare Dashboard → Pages → Settings → Environment variables:
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `NEXT_PUBLIC_APP_URL` | Yes | Application URL |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Yes | Clerk public key |
-| `CLERK_SECRET_KEY` | Yes | Clerk secret key |
-| `STRIPE_API_KEY` | Yes | Stripe API key |
-| `STRIPE_WEBHOOK_SECRET` | Yes | Stripe webhook secret |
-| `POSTGRES_URL` | Yes | PostgreSQL connection string |
-| `RESEND_API_KEY` | No | Email service key |
-| `ADMIN_EMAIL` | No | Admin email addresses |
+| Variable                            | Required | Description                  |
+| ----------------------------------- | -------- | ---------------------------- |
+| `NEXT_PUBLIC_APP_URL`               | Yes      | Application URL              |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Yes      | Clerk public key             |
+| `CLERK_SECRET_KEY`                  | Yes      | Clerk secret key             |
+| `STRIPE_API_KEY`                    | Yes      | Stripe API key               |
+| `STRIPE_WEBHOOK_SECRET`             | Yes      | Stripe webhook secret        |
+| `POSTGRES_URL`                      | Yes      | PostgreSQL connection string |
+| `RESEND_API_KEY`                    | No       | Email service key            |
+| `ADMIN_EMAIL`                       | No       | Admin email addresses        |
 
 **Middleware Compatibility:**
 
 The project uses a proper `middleware.ts` file for:
+
 - i18n routing
 - Clerk authentication
 - Request ID tracking
@@ -214,20 +227,22 @@ Cloudflare Smart Placement is enabled for optimal global distribution.
 
 ### Function Configuration
 
-| Path | Memory | Max Duration |
-|------|--------|--------------|
-| `/api/**/*.ts` | 1024 MB | 30s |
-| `/api/webhooks/**/*.ts` | 1024 MB | 60s |
+| Path                    | Memory  | Max Duration |
+| ----------------------- | ------- | ------------ |
+| `/api/**/*.ts`          | 1024 MB | 30s          |
+| `/api/webhooks/**/*.ts` | 1024 MB | 60s          |
 
 ### Security Headers
 
 Applied to `/api/trpc/*` routes:
+
 - `X-Content-Type-Options: nosniff`
 - `X-Frame-Options: DENY`
 
 ## Local Development
 
 ### Prerequisites
+
 ```bash
 # Install dependencies
 pnpm install
@@ -238,21 +253,21 @@ cp .env.example .env.local
 
 ### Available Scripts
 
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | Start all apps in dev mode |
-| `pnpm dev:web` | Start web app only |
-| `pnpm build` | Production build |
-| `pnpm lint` | Run ESLint |
-| `pnpm lint:fix` | Fix linting issues |
-| `pnpm typecheck` | TypeScript check |
-| `pnpm format` | Check formatting |
-| `pnpm format:fix` | Fix formatting |
-| `pnpm test` | Run tests |
-| `pnpm test:ui` | Test UI |
-| `pnpm test:coverage` | Test coverage |
-| `pnpm security:audit` | Security audit |
-| `pnpm security:check` | Security check |
+| Command               | Description                |
+| --------------------- | -------------------------- |
+| `pnpm dev`            | Start all apps in dev mode |
+| `pnpm dev:web`        | Start web app only         |
+| `pnpm build`          | Production build           |
+| `pnpm lint`           | Run ESLint                 |
+| `pnpm lint:fix`       | Fix linting issues         |
+| `pnpm typecheck`      | TypeScript check           |
+| `pnpm format`         | Check formatting           |
+| `pnpm format:fix`     | Fix formatting             |
+| `pnpm test`           | Run tests                  |
+| `pnpm test:ui`        | Test UI                    |
+| `pnpm test:coverage`  | Test coverage              |
+| `pnpm security:audit` | Security audit             |
+| `pnpm security:check` | Security check             |
 
 ## Troubleshooting
 

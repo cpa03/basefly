@@ -5,6 +5,7 @@
   "scripts": {
     "build": "contentlayer2 build && npx dotenv-cli -e ../../.env.local -e ../../.env.ci -- next build",
     "build:analyze": "ANALYZE=true contentlayer2 build && npx dotenv-cli -e ../../.env.local -e ../../.env.ci -- next build",
+    "build:cloudflare": "contentlayer2 build && npx dotenv-cli -e ../../.env.local -e ../../.env.ci -- next build && npx @cloudflare/next-on-pages",
     "clean": "git clean -xdf .next .turbo node_modules",
     "dev": "npx dotenv-cli -e ../../.env.local -e ../../.env.ci -- next dev",
     "lint": "npx dotenv-cli -e ../../.env.local -e ../../.env.ci -- eslint . --cache --cache-location 'node_modules/.cache/.eslintcache'",
@@ -57,6 +58,7 @@
     "zustand": "5.0.11"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.7",
     "@clerk/types": "^4.101.15",
     "@next-devtools/core": "0.2.0",
     "@next/bundle-analyzer": "14.2.15",

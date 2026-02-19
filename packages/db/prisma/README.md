@@ -393,6 +393,7 @@ jobs:
 
 | Date       | Migration                                         | Description                                                                                     |
 | ---------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| 2026-02-19 | `20260219_add_webhook_cleanup_composite_index`    | Added composite index on StripeWebhookEvent(processed, createdAt) for cleanup query optimization|
 | 2026-02-19 | `20260219_add_customer_plan_index`                | Added index on Customer.plan for subscription tier query optimization                           |
 | 2026-02-18 | `20260218_add_auth_session_indexes`               | Added indexes for Account, Session, VerificationToken tables (userId, expires, identifier)      |
 | 2026-02-18 | `20260218_add_partial_indexes_for_cluster_status` | Added partial indexes for K8sClusterConfig query optimization (active/deleted clusters)         |

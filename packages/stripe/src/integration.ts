@@ -6,7 +6,7 @@ import {
   RETRY_CONFIG,
   STRIPE_CONFIG,
   TIMEOUT_CONFIG,
-} from "../../common/src/config/resilience";
+} from "@saasfly/common";
 
 /**
  * Configuration options for retry logic

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Database Seed Script
  *
@@ -59,7 +60,7 @@ async function isDatabaseEmpty(): Promise<boolean> {
 }
 
 async function seedUsers(): Promise<void> {
-  // eslint-disable-next-line no-console
+   
   console.log("Seeding users...");
 
   await db
@@ -74,12 +75,12 @@ async function seedUsers(): Promise<void> {
     .onConflict((oc) => oc.column("id").doNothing())
     .execute();
 
-  // eslint-disable-next-line no-console
+   
   console.log("✓ Users seeded successfully");
 }
 
 async function seedCustomers(): Promise<void> {
-  // eslint-disable-next-line no-console
+   
   console.log("Seeding customers...");
 
   await db
@@ -102,12 +103,12 @@ async function seedCustomers(): Promise<void> {
     .onConflict((oc) => oc.column("authUserId").doNothing())
     .execute();
 
-  // eslint-disable-next-line no-console
+   
   console.log("✓ Customers seeded successfully");
 }
 
 async function seedClusters(): Promise<void> {
-  // eslint-disable-next-line no-console
+   
   console.log("Seeding clusters...");
 
   for (const cluster of SEED_CONFIG.testClusters) {
@@ -126,7 +127,7 @@ async function seedClusters(): Promise<void> {
       .execute();
   }
 
-  // eslint-disable-next-line no-console
+   
   console.log("✓ Clusters seeded successfully");
 }
 
@@ -137,23 +138,23 @@ async function seed(): Promise<void> {
     process.exit(1);
   }
 
-  // eslint-disable-next-line no-console
+   
   console.log("🌱 Starting database seeding...");
-  // eslint-disable-next-line no-console
+   
   console.log(`Environment: ${process.env.NODE_ENV ?? "development"}`);
-  // eslint-disable-next-line no-console
+   
   console.log("");
 
   try {
     const empty = await isDatabaseEmpty();
     if (!empty) {
-      // eslint-disable-next-line no-console
+       
       console.log(
         "⚠️  Database is not empty. Seed will skip existing records.",
       );
-      // eslint-disable-next-line no-console
+       
       console.log("   Use 'db:seed:reset' to clear and reseed.");
-      // eslint-disable-next-line no-console
+       
       console.log("");
     }
 
@@ -164,19 +165,19 @@ async function seed(): Promise<void> {
     await seedCustomers();
     await seedClusters();
 
-    // eslint-disable-next-line no-console
+     
     console.log("");
-    // eslint-disable-next-line no-console
+     
     console.log("✅ Database seeding completed successfully!");
-    // eslint-disable-next-line no-console
+     
     console.log("");
-    // eslint-disable-next-line no-console
+     
     console.log("Seeded data:");
-    // eslint-disable-next-line no-console
+     
     console.log(
       `  - Users: ${SEED_CONFIG.testUser.email}, ${SEED_CONFIG.adminUser.email}`,
     );
-    // eslint-disable-next-line no-console
+     
     console.log(
       `  - Clusters: ${SEED_CONFIG.testClusters.map((c) => c.name).join(", ")}`,
     );
@@ -193,7 +194,7 @@ export async function clearSeedData(): Promise<void> {
     throw new Error("Cannot clear seed data in production");
   }
 
-  // eslint-disable-next-line no-console
+   
   console.log("🧹 Clearing seed data...");
 
   const seedUserIds = [SEED_CONFIG.testUser.id, SEED_CONFIG.adminUser.id];
@@ -212,7 +213,7 @@ export async function clearSeedData(): Promise<void> {
     await trx.deleteFrom("User").where("id", "in", seedUserIds).execute();
   });
 
-  // eslint-disable-next-line no-console
+   
   console.log("✓ Seed data cleared");
 }
 

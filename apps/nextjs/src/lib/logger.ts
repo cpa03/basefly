@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Simple JSON logger with request ID support for distributed tracing
  * Logs are disabled in production to avoid console noise
@@ -15,7 +16,7 @@ const isProduction = process.env.NODE_ENV === "production";
 const logger = {
   info: (msg: string, meta?: Record<string, unknown>) => {
     if (!isProduction) {
-      // eslint-disable-next-line no-console
+       
       console.log(JSON.stringify({ level: "info", msg, ...meta }));
     }
   },

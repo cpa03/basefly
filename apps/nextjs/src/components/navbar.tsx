@@ -104,7 +104,7 @@ export function NavBar({
 
         <div className="flex items-center space-x-3">
           {items?.length ? (
-            <nav className="hidden gap-6 md:flex">
+            <nav className="hidden gap-6 md:flex" aria-label="Main navigation">
               {items?.map((item) => (
                 <NavLink
                   key={item.href}

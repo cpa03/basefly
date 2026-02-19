@@ -101,6 +101,8 @@ All workflows use `ubuntu-24.04-arm` or `ubuntu-22.04-arm` runners for ARM-based
 - Target: Node.js 20
 - Package Manager: pnpm 10.x
 
+> **Note**: Some workflow files may still reference `npm ci`. These should be migrated to use `pnpm/action-setup@v4` with `pnpm install --frozen-lockfile` for consistency with the project's package manager configuration. See the recommended workflow pattern below.
+
 ### Permissions
 
 ```yaml
@@ -110,6 +112,32 @@ permissions:
   pull-requests: write
   actions: write
 ```
+
+### Recommended Workflow Pattern
+
+When creating or updating workflows, use the following pattern for Node.js/pnpm setup:
+
+```yaml
+- name: Install pnpm
+  uses: pnpm/action-setup@v4
+  with:
+    version: 10
+
+- name: Setup Node.js
+  uses: actions/setup-node@v4
+  with:
+    node-version: "20"
+    cache: "pnpm"
+
+- name: Install Dependencies
+  run: pnpm install --frozen-lockfile
+```
+
+This ensures:
+
+- Consistent package manager usage across CI and local development
+- Proper caching of pnpm store for faster builds
+- Lockfile integrity with `--frozen-lockfile`
 
 ### Concurrency
 

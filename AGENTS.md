@@ -5,7 +5,7 @@
 Basefly is a Next.js-based SaaS template with modern architecture including:
 
 - Monorepo structure with Turbo
-- Next.js 16 with App Router
+- Next.js 14 with App Router
 - TypeScript throughout
 - Tailwind CSS for styling
 - tRPC for API routes

@@ -36,6 +36,13 @@ name = "basefly-preview"
 # - API Routes
 # - Middleware
 # - Image Optimization (via Cloudflare Images)
+#
+# To enable full Cloudflare Pages support:
+# 1. Install: pnpm add -D @cloudflare/next-on-pages
+# 2. Update build command in Cloudflare Dashboard:
+#    pnpm install && pnpm run pages:build
+# 3. Add script to package.json:
+#    "pages:build": "next build && @cloudflare/next-on-pages"
 
 # Security: Enable Cloudflare features
 # These can also be configured via Cloudflare Dashboard:
@@ -45,3 +52,8 @@ name = "basefly-preview"
 # - SSL/TLS: Full (Strict)
 # - Always Use HTTPS
 # - Automatic HTTPS Rewrites
+
+# Placement: Optimize for global distribution
+# See: https://developers.cloudflare.com/workers/platform/smart-placement
+[placement]
+mode = "smart"

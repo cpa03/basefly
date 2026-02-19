@@ -123,4 +123,5 @@ model StripeWebhookEvent {
   @@index([processed])
   @@index([createdAt])
   @@index([eventType])
+  @@index([processed, createdAt])
 }

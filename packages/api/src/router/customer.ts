@@ -18,7 +18,7 @@ export const updateUserNameSchema = z
       .min(USER_VALIDATION.displayName.minLength, "Name cannot be empty")
       .max(
         USER_VALIDATION.displayName.maxLength,
-        "Name cannot exceed 100 characters",
+        `Name cannot exceed ${USER_VALIDATION.displayName.maxLength} characters`,
       ),
     userId: z.string().uuid("Invalid user ID format"),
   })

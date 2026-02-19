@@ -6,6 +6,8 @@ import {
   type RateLimitConfig,
 } from "@saasfly/common";
 
+import { logger } from "./logger";
+
 interface RateLimitEntry {
   tokens: number;
   lastRefill: number;
@@ -26,6 +28,13 @@ export class RateLimiter {
   constructor(config: RateLimitConfig) {
     this.maxRequests = config.maxRequests;
     this.windowMs = config.windowMs;
+    logger.debug(
+      {
+        maxRequests: this.maxRequests,
+        windowMs: this.windowMs,
+      },
+      "Rate limiter initialized",
+    );
     this.startCleanup();
   }
 
@@ -61,6 +70,17 @@ export class RateLimiter {
       };
     }
 
+    logger.warn(
+      {
+        identifier,
+        remaining: 0,
+        resetAt: entry.lastRefill + this.windowMs,
+        windowMs: this.windowMs,
+        maxRequests: this.maxRequests,
+      },
+      "Rate limit exceeded",
+    );
+
     return {
       success: false,
       remaining: 0,
@@ -69,7 +89,10 @@ export class RateLimiter {
   }
 
   reset(identifier: string): void {
-    this.store.delete(identifier);
+    const deleted = this.store.delete(identifier);
+    if (deleted) {
+      logger.debug({ identifier }, "Rate limit reset for identifier");
+    }
   }
 
   private startCleanup(): void {
@@ -79,10 +102,21 @@ export class RateLimiter {
 
     this.cleanupInterval = setInterval(() => {
       const now = Date.now();
+      let cleanedCount = 0;
       for (const [key, entry] of this.store.entries()) {
         if (now - entry.lastRefill > this.windowMs * 2) {
           this.store.delete(key);
+          cleanedCount++;
         }
+      }
+      if (cleanedCount > 0) {
+        logger.debug(
+          {
+            cleanedCount,
+            remainingEntries: this.store.size,
+          },
+          "Rate limiter cleanup completed",
+        );
       }
     }, this.windowMs);
   }
@@ -92,7 +126,14 @@ export class RateLimiter {
       clearInterval(this.cleanupInterval);
       this.cleanupInterval = null;
     }
+    const entryCount = this.store.size;
     this.store.clear();
+    logger.debug(
+      {
+        clearedEntries: entryCount,
+      },
+      "Rate limiter destroyed",
+    );
   }
 }
 

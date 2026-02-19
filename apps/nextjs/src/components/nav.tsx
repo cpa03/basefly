@@ -30,13 +30,13 @@ export function DashboardNav({ items, params: { lang } }: DashboardNavProps) {
 
   return (
     <nav className="grid items-start gap-2">
-      {items.map((item, index) => {
+      {items.map((item) => {
         // const Icon = item.icon;
         const Icon = iconMapObj.get(item.id) ?? ArrowRight;
         return (
           item.href && (
             <Link
-              key={index}
+              key={item.id}
               href={item.disabled ? "/" : `/${lang}` + item.href}
             >
               <span

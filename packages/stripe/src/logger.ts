@@ -1,21 +1,4 @@
-/**
- * Logger with request ID support for distributed tracing in Stripe integration
- *
- * @example
- * ```ts
- * import { logger } from "@saasfly/stripe/logger";
- *
- * logger.info("Processing webhook", { requestId: "uuid" });
- * logger.error("Stripe operation failed", error, { requestId: "uuid" });
- * ```
- */
-
-export enum LogLevel {
-  DEBUG = "debug",
-  INFO = "info",
-  WARN = "warn",
-  ERROR = "error",
-}
+import { LOG_LEVEL, LogLevel } from "@saasfly/common";
 
 interface LoggerMetadata {
   requestId?: string;
@@ -26,7 +9,9 @@ class Logger {
   private level: LogLevel;
 
   constructor() {
-    this.level = (process.env.LOG_LEVEL as LogLevel) || LogLevel.INFO;
+    this.level = Object.values(LogLevel).includes(LOG_LEVEL as LogLevel)
+      ? (LOG_LEVEL as LogLevel)
+      : LogLevel.INFO;
   }
 
   private shouldLog(level: LogLevel): boolean {

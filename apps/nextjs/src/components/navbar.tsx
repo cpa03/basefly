@@ -104,9 +104,9 @@ export function NavBar({
         <div className="flex items-center space-x-3">
           {items?.length ? (
             <nav className="hidden gap-6 md:flex">
-              {items?.map((item, index) => (
+              {items?.map((item) => (
                 <NavLink
-                  key={index}
+                  key={item.href}
                   href={
                     item.disabled
                       ? "#"

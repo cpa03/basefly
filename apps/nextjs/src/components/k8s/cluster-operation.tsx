@@ -72,6 +72,14 @@ export function ClusterOperations({
     }
   }, [cluster.id, actionsDict]);
 
+  const handleOpenDeleteAlert = React.useCallback(() => {
+    setShowDeleteAlert(true);
+  }, []);
+
+  const handleCloseDeleteAlert = React.useCallback(() => {
+    setShowDeleteAlert(false);
+  }, []);
+
   async function deleteCluster(clusterId: number) {
     try {
       const res = await trpc.k8s.deleteCluster.mutate({ id: clusterId });
@@ -149,13 +157,16 @@ export function ClusterOperations({
           <DropdownMenuSeparator />
           <DropdownMenuItem
             className="flex cursor-pointer items-center text-destructive focus:text-destructive"
-            onSelect={() => setShowDeleteAlert(true)}
+            onSelect={handleOpenDeleteAlert}
           >
             {actionsDict?.delete ?? "Delete"}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <AlertDialog open={showDeleteAlert} onOpenChange={setShowDeleteAlert}>
+      <AlertDialog
+        open={showDeleteAlert}
+        onOpenChange={(open) => !open && handleCloseDeleteAlert()}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>

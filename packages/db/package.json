@@ -19,6 +19,8 @@
     "db:migrate:reset": "bun with-env prisma migrate reset",
     "db:migrate:resolve": "bun with-env prisma migrate resolve",
     "db:studio": "bun with-env prisma studio",
+    "db:seed": "bun with-env tsx seed.ts",
+    "db:seed:reset": "bun with-env tsx -e \"import('./seed').then(m => m.clearSeedData().then(() => m.seed()))\"",
     "typecheck": "tsc --noEmit",
     "with-env": "dotenv -e ../../.env.local --"
   },
@@ -38,6 +40,7 @@
     "prisma": "5.9.1",
     "prisma-kysely": "1.7.1",
     "@types/pg": "8.11.0",
+    "tsx": "^4.19.0",
     "typescript": "5.9.3"
   },
   "eslintConfig": {

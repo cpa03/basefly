@@ -44,11 +44,61 @@ bun db:generate
 # View database in Prisma Studio
 bun db:studio
 
+# Seed database with test data (development only)
+bun db:seed
+
+# Clear seed data and reseed
+bun db:seed:reset
+
 # Resolve a failed migration
 bun db:migrate:resolve
 
 # Format schema file
 bun prisma format
+```
+
+## Seeding
+
+The database package includes a seed script for populating development and test environments with sample data.
+
+### Seed Data
+
+The seed script creates:
+
+- **Test User**: `test@example.com` with FREE plan
+- **Admin User**: `admin@example.com` with BUSINESS plan  
+- **Sample Clusters**: Two K8s cluster configurations
+
+### Running Seeds
+
+```bash
+# Seed database (skips existing records)
+bun db:seed
+
+# Clear seed data only
+bun db:seed:reset
+```
+
+### Safety Features
+
+- **Production Protection**: Seed script exits early if `NODE_ENV=production`
+- **Idempotent**: Uses `ON CONFLICT DO NOTHING` to skip existing records
+- **Transactional**: Operations run in transactions for atomicity
+
+### Customizing Seed Data
+
+Edit `packages/db/seed.ts` to modify the `SEED_CONFIG` object:
+
+```typescript
+const SEED_CONFIG = {
+  testUser: {
+    id: "test_user_seed_001",
+    name: "Test User",
+    email: "test@example.com",
+    // ...
+  },
+  // Add more seed data as needed
+};
 ```
 
 ## Creating a Migration

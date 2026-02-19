@@ -48,6 +48,18 @@
     "research": {
       "model": "opencode/glm-4.7-free",
       "temperature": 0.3
+    },
+    "ultrabrain": {
+      "model": "opencode/kimi-k2.5-free",
+      "temperature": 0.4
+    },
+    "deep": {
+      "model": "opencode/glm-4.7-free",
+      "temperature": 0.3
+    },
+    "artistry": {
+      "model": "opencode/kimi-k2.5-free",
+      "temperature": 0.7
     }
   },
 

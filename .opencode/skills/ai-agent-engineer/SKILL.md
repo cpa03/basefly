@@ -28,6 +28,20 @@ When modifying `.opencode/oh-my-opencode.json`:
 - **Categories**: Use domain-specific categories for optimal model routing
 - **Skills**: Enable only needed skills to minimize context bloat
 
+### 2.1 Category Selection
+
+Choose the appropriate category based on task complexity:
+
+| Category           | Use Case                                        |
+| ------------------ | ----------------------------------------------- |
+| quick              | Trivial tasks, single file changes, typo fixes  |
+| visual-engineering | Frontend, UI/UX, design, styling, animation     |
+| business-logic     | General business logic, API endpoints           |
+| research           | Documentation lookup, codebase exploration      |
+| ultrabrain         | Hard logic-heavy tasks, complex problem solving |
+| deep               | Goal-oriented autonomous problem-solving        |
+| artistry           | Unconventional, creative approaches             |
+
 ### 3. Skill Development
 
 Follow the skill-creator patterns:

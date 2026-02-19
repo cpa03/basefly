@@ -147,6 +147,7 @@
     "./use-toast": "./src/use-toast.tsx",
     "./typewriter-effect": "./src/typewriter-effect.tsx",
     "./wobble-card": "./src/wobble-card.tsx",
-    "./magic-link-email": "./src/magic-link-email.tsx"
+    "./magic-link-email": "./src/magic-link-email.tsx",
+    "./copy-button": "./src/copy-button.tsx"
   }
 }

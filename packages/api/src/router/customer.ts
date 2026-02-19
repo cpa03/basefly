@@ -50,7 +50,10 @@ export const customerRouter = createTRPCRouter({
           { userId, ctxUserId, requestId },
           "Unauthorized user name update attempt",
         );
-        return { success: false, reason: "no auth" };
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You are not authorized to update this user's name",
+        });
       }
 
       try {
@@ -94,7 +97,10 @@ export const customerRouter = createTRPCRouter({
           { userId, ctxUserId, requestId },
           "Unauthorized customer creation attempt",
         );
-        return { success: false, reason: "unauthorized" };
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You are not authorized to create a customer for this user",
+        });
       }
 
       logger.info({ userId, requestId }, "Creating customer");
@@ -141,7 +147,10 @@ export const customerRouter = createTRPCRouter({
           { userId, ctxUserId, requestId },
           "Unauthorized customer query attempt",
         );
-        return null;
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You are not authorized to query this customer",
+        });
       }
 
       logger.debug({ userId, requestId }, "Querying customer");

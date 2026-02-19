@@ -29,7 +29,8 @@ export async function getSessionUser() {
       }
     }
     return sessionClaims?.user;
-  } catch {
+  } catch (error) {
+    console.error("Failed to get Clerk session user:", error);
     return null;
   }
 }

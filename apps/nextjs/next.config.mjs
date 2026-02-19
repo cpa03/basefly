@@ -29,6 +29,11 @@ const HTTP_SECURITY_HEADERS = {
   REFERRER_POLICY: "origin-when-cross-origin",
   PERMISSIONS_POLICY: "camera=(), microphone=(), geolocation=()",
   DNS_PREFETCH_CONTROL: "on",
+  // Cross-Origin headers for enhanced security
+  // COOP: Prevents clickjacking via window.opener
+  CROSS_ORIGIN_OPENER_POLICY: "same-origin",
+  // CORP: Prevents cross-origin resource leaks
+  CROSS_ORIGIN_RESOURCE_POLICY: "same-origin",
   // Content-Security-Policy for XSS protection
   // Note: 'unsafe-eval' and 'unsafe-inline' are needed for Next.js dev mode and some UI libraries
   // In production, consider using nonces/hashes for stricter CSP
@@ -155,6 +160,14 @@ const config = {
           {
             key: "Permissions-Policy",
             value: HTTP_SECURITY_HEADERS.PERMISSIONS_POLICY,
+          },
+          {
+            key: "Cross-Origin-Opener-Policy",
+            value: HTTP_SECURITY_HEADERS.CROSS_ORIGIN_OPENER_POLICY,
+          },
+          {
+            key: "Cross-Origin-Resource-Policy",
+            value: HTTP_SECURITY_HEADERS.CROSS_ORIGIN_RESOURCE_POLICY,
           },
           {
             key: "Content-Security-Policy",

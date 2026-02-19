@@ -34,6 +34,7 @@ const NavLink = React.memo(function NavLink({
     <Link
       href={disabled ? "#" : href}
       aria-disabled={disabled}
+      aria-current={isActive ? "page" : undefined}
       tabIndex={disabled ? -1 : undefined}
       className={cn(
         "group relative flex items-center text-lg font-medium sm:text-sm",

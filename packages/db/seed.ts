@@ -60,7 +60,6 @@ async function isDatabaseEmpty(): Promise<boolean> {
 }
 
 async function seedUsers(): Promise<void> {
-   
   console.log("Seeding users...");
 
   await db
@@ -75,12 +74,10 @@ async function seedUsers(): Promise<void> {
     .onConflict((oc) => oc.column("id").doNothing())
     .execute();
 
-   
   console.log("✓ Users seeded successfully");
 }
 
 async function seedCustomers(): Promise<void> {
-   
   console.log("Seeding customers...");
 
   await db
@@ -103,12 +100,10 @@ async function seedCustomers(): Promise<void> {
     .onConflict((oc) => oc.column("authUserId").doNothing())
     .execute();
 
-   
   console.log("✓ Customers seeded successfully");
 }
 
 async function seedClusters(): Promise<void> {
-   
   console.log("Seeding clusters...");
 
   for (const cluster of SEED_CONFIG.testClusters) {
@@ -127,7 +122,6 @@ async function seedClusters(): Promise<void> {
       .execute();
   }
 
-   
   console.log("✓ Clusters seeded successfully");
 }
 
@@ -138,23 +132,21 @@ async function seed(): Promise<void> {
     process.exit(1);
   }
 
-   
   console.log("🌱 Starting database seeding...");
-   
+
   console.log(`Environment: ${process.env.NODE_ENV ?? "development"}`);
-   
+
   console.log("");
 
   try {
     const empty = await isDatabaseEmpty();
     if (!empty) {
-       
       console.log(
         "⚠️  Database is not empty. Seed will skip existing records.",
       );
-       
+
       console.log("   Use 'db:seed:reset' to clear and reseed.");
-       
+
       console.log("");
     }
 
@@ -165,19 +157,18 @@ async function seed(): Promise<void> {
     await seedCustomers();
     await seedClusters();
 
-     
     console.log("");
-     
+
     console.log("✅ Database seeding completed successfully!");
-     
+
     console.log("");
-     
+
     console.log("Seeded data:");
-     
+
     console.log(
       `  - Users: ${SEED_CONFIG.testUser.email}, ${SEED_CONFIG.adminUser.email}`,
     );
-     
+
     console.log(
       `  - Clusters: ${SEED_CONFIG.testClusters.map((c) => c.name).join(", ")}`,
     );
@@ -194,7 +185,6 @@ export async function clearSeedData(): Promise<void> {
     throw new Error("Cannot clear seed data in production");
   }
 
-   
   console.log("🧹 Clearing seed data...");
 
   const seedUserIds = [SEED_CONFIG.testUser.id, SEED_CONFIG.adminUser.id];
@@ -213,7 +203,6 @@ export async function clearSeedData(): Promise<void> {
     await trx.deleteFrom("User").where("id", "in", seedUserIds).execute();
   });
 
-   
   console.log("✓ Seed data cleared");
 }
 

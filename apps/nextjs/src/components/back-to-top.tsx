@@ -54,7 +54,14 @@ interface BackToTopProps {
  * ```
  */
 const BackToTop = React.forwardRef<HTMLButtonElement, BackToTopProps>(
-  ({ threshold = SCROLL_THRESHOLDS.scrollToTop, className, position = "bottom-right" }, ref) => {
+  (
+    {
+      threshold = SCROLL_THRESHOLDS.scrollToTop,
+      className,
+      position = "bottom-right",
+    },
+    ref,
+  ) => {
     const [isVisible, setIsVisible] = React.useState(false);
 
     // Track scroll position
@@ -144,8 +151,8 @@ const BackToTop = React.forwardRef<HTMLButtonElement, BackToTopProps>(
                 ANIMATION.easing.default,
                 // Visibility states - motion-safe uses smooth transitions, reduced-motion is instant
                 isVisible
-                  ? "pointer-events-auto motion-safe:scale-100 motion-safe:opacity-100 scale-100 opacity-100"
-                  : "pointer-events-none motion-safe:scale-75 motion-safe:opacity-0 scale-75 opacity-0",
+                  ? "pointer-events-auto scale-100 opacity-100 motion-safe:scale-100 motion-safe:opacity-100"
+                  : "pointer-events-none scale-75 opacity-0 motion-safe:scale-75 motion-safe:opacity-0",
                 className,
               )}
               aria-label="Back to top (Ctrl+Home)"

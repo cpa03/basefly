@@ -16,7 +16,6 @@ const isProduction = process.env.NODE_ENV === "production";
 const logger = {
   info: (msg: string, meta?: Record<string, unknown>) => {
     if (!isProduction) {
-       
       console.log(JSON.stringify({ level: "info", msg, ...meta }));
     }
   },

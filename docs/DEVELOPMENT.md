@@ -49,6 +49,18 @@ pnpm dev:web
 | `pnpm format:fix` | Format code with Prettier      |
 | `pnpm typecheck`  | Run TypeScript type checking   |
 
+### DX Convenience Scripts
+
+| Command         | Description                                              |
+| --------------- | -------------------------------------------------------- |
+| `pnpm dx:check` | Run all checks: typecheck + lint + test + security audit |
+| `pnpm dx:fix`   | Auto-fix all fixable issues: lint + format               |
+
+These commands streamline common developer workflows:
+
+- Use `pnpm dx:check` before pushing to catch issues early
+- Use `pnpm dx:fix` to quickly fix formatting and lint issues
+
 ### Testing
 
 | Command              | Description                    |

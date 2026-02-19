@@ -5,6 +5,7 @@ import {
 } from "contentlayer/generated";
 
 import { getTwitterProfileUrl } from "@saasfly/common";
+
 import { BackToTop } from "~/components/back-to-top";
 import { Mdx } from "~/components/content/mdx-components";
 

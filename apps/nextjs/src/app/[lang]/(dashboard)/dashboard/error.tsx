@@ -4,6 +4,8 @@ import { useEffect } from "react";
 
 import { Button } from "@saasfly/ui/button";
 
+import { logger } from "~/lib/logger";
+
 export default function DashboardError({
   error,
   reset,
@@ -12,7 +14,7 @@ export default function DashboardError({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error("Dashboard error:", error);
+    logger.error("Dashboard error", error, { digest: error.digest });
   }, [error]);
 
   return (

@@ -156,7 +156,9 @@ export default makeSource({
         rehypePrettyCode,
         {
           theme: "github-dark",
-          onVisitLine(node: { children: string | any[] }) {
+          onVisitLine(node: {
+            children: string | { type: string; value?: string }[];
+          }) {
             // Prevent lines from collapsing in `display: grid` mode, and allow empty
             // lines to be copy/pasted
             if (node.children.length === 0) {
@@ -168,7 +170,7 @@ export default makeSource({
           }) {
             // node.properties.className.push("line--highlighted")
 
-            // FIX: I changed remark-gmf 4.0.0 to 3.0.1 (return a lot errors in mdx?)
+            // FIX: I changed remark-gfm 4.0.0 to 3.0.1 (return a lot errors in mdx?)
             // And solve error on onVisitHighlightedLine with code from : https://stackoverflow.com/questions/76549262/onvisithighlightedline-cannot-push-classname-using-rehype-pretty-code
             const nodeClass = node.properties.className;
 

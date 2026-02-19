@@ -1,54 +1,35 @@
-import { LOG_LEVEL, LogLevel } from "@saasfly/common";
+import pino from "pino";
+
+import { IS_DEV, LOG_LEVEL } from "@saasfly/common";
 
 interface LoggerMetadata {
   requestId?: string;
   [key: string]: unknown;
 }
 
-class Logger {
-  private level: LogLevel;
+const pinoLogger = pino({
+  level: LOG_LEVEL,
+  transport: IS_DEV
+    ? { target: "pino-pretty", options: { colorize: true } }
+    : undefined,
+});
 
-  constructor() {
-    this.level = Object.values(LogLevel).includes(LOG_LEVEL as LogLevel)
-      ? (LOG_LEVEL as LogLevel)
-      : LogLevel.INFO;
-  }
-
-  private shouldLog(level: LogLevel): boolean {
-    const levels = [
-      LogLevel.DEBUG,
-      LogLevel.INFO,
-      LogLevel.WARN,
-      LogLevel.ERROR,
-    ];
-    return levels.indexOf(level) >= levels.indexOf(this.level);
-  }
-
+const logger = {
   debug(message: string, data?: LoggerMetadata) {
-    if (this.shouldLog(LogLevel.DEBUG)) {
-      console.debug(JSON.stringify({ level: "debug", message, ...data }));
-    }
-  }
+    pinoLogger.debug(data ?? {}, message);
+  },
 
   info(message: string, data?: LoggerMetadata) {
-    if (this.shouldLog(LogLevel.INFO)) {
-      console.info(JSON.stringify({ level: "info", message, ...data }));
-    }
-  }
+    pinoLogger.info(data ?? {}, message);
+  },
 
   warn(message: string, data?: LoggerMetadata) {
-    if (this.shouldLog(LogLevel.WARN)) {
-      console.warn(JSON.stringify({ level: "warn", message, ...data }));
-    }
-  }
+    pinoLogger.warn(data ?? {}, message);
+  },
 
   error(message: string, error?: unknown, data?: LoggerMetadata) {
-    if (this.shouldLog(LogLevel.ERROR)) {
-      console.error(
-        JSON.stringify({ level: "error", message, error, ...data }),
-      );
-    }
-  }
-}
+    pinoLogger.error({ error, ...data }, message);
+  },
+};
 
-export const logger = new Logger();
+export { logger };

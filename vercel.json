@@ -4,14 +4,13 @@
     "silent": true
   },
   "framework": "nextjs",
-  "skewProtection": true,
   "installCommand": "pnpm install --frozen-lockfile",
   "buildCommand": "turbo run build --filter=@saasfly/nextjs",
   "outputDirectory": "apps/nextjs/.next",
   "ignoreCommand": "npx turbo-ignore --fallback=HEAD^1",
   "cleanUrls": true,
   "trailingSlash": false,
-  "regions": ["iad1", "sfo1"],
+  "regions": ["iad1"],
   "functions": {
     "apps/nextjs/src/app/api/**/*.ts": {
       "memory": 1024,

@@ -131,7 +131,7 @@ export function NavBar({
           <div className="hidden md:flex lg:flex xl:flex">
             <GitHubStar />
           </div>
-          <LocaleChange url={"/"} />
+          <LocaleChange url={"/"} currentLocale={lang} />
           {!user ? (
             <Link href={`/${lang}/login`}>
               <Button variant="outline" size="sm">

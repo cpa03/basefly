@@ -4,10 +4,7 @@ import { db } from "@saasfly/db";
 
 import { createApiError, ErrorCode } from "../errors";
 import { logger } from "../logger";
-import {
-  createRateLimitedProtectedProcedure,
-  createTRPCRouter,
-} from "../trpc";
+import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 
 export const authRouter = createTRPCRouter({
   mySubscription: createRateLimitedProtectedProcedure("read").query(

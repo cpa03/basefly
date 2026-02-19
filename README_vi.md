@@ -3,9 +3,10 @@
 </div>
 
 # Basefly </br>
+
 <a href="https://trendshift.io/repositories/8929" target="_blank"><img src="https://trendshift.io/api/badge/repositories/8929" alt="basefly%2Fbasefly | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
-[![Trạng thái quy trình làm việc GitHub Actions][check-workflow-badge]][check-workflow-badge-link] [![Giấy phép GitHub][github-license-badge]][github-license-badge-link]  [![Discord][discord-badge]][discord-badge-link] [![Saasfly][made-by-nextify-badge]][made-by-nextify-badge-link]
+[![Trạng thái quy trình làm việc GitHub Actions][check-workflow-badge]][check-workflow-badge-link] [![Giấy phép GitHub][github-license-badge]][github-license-badge-link] [![Discord][discord-badge]][discord-badge-link] [![Saasfly][made-by-nextify-badge]][made-by-nextify-badge-link]
 [![English](https://img.shields.io/badge/-English-grey.svg)](README.md)
 [![Chinese](https://img.shields.io/badge/-Chinese-red.svg)](README_zh.md)
 [![German](https://img.shields.io/badge/-German-yellow.svg)](README_de.md) </br>
@@ -84,34 +85,33 @@ Máy chủ demo (Địa điểm: Washington, Hoa Kỳ): <https://show.saasfly.io
 Trước khi bắt đầu, hãy đảm bảo bạn đã cài đặt các thành phần sau:
 
 1. [pnpm](https://pnpm.io/) & [Node.js](https://nodejs.org/) & [Git](https://git-scm.com/)
+   1. Linux
 
-    1. Linux
+   ```bash
+     curl -fsSL https://get.pnpm.io/install.sh | sh -
+   ```
 
-    ```bash
-      curl -fsSL https://get.pnpm.io/install.sh | sh -
-    ```
+   2. MacOS
 
-    2. MacOS
-
-    ```bash
-      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      brew install git
-      brew install pnpm
-    ```
+   ```bash
+     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+     brew install git
+     brew install pnpm
+   ```
 
 2. [PostgreSQL](https://www.postgresql.org/) - Cần thiết cho cấu hình cụm và dữ liệu người dùng
-    1. Bạn có thể sử dụng Vercel Postgres hoặc máy chủ PostgreSQL cục bộ (thêm biến môi trường POSTGRES_URL trong .env.local)
-       ```bash
-          POSTGRES_URL = ''
-       ```
+   1. Bạn có thể sử dụng Vercel Postgres hoặc máy chủ PostgreSQL cục bộ (thêm biến môi trường POSTGRES_URL trong .env.local)
+      ```bash
+         POSTGRES_URL = ''
+      ```
 
 3. [Clerk](https://clerk.com/) tài khoản - Để xác thực
-    1. Tạo tài khoản Clerk và lấy API keys
-    2. Thêm ứng dụng Clerk với cấu hình Next.js
+   1. Tạo tài khoản Clerk và lấy API keys
+   2. Thêm ứng dụng Clerk với cấu hình Next.js
 
 4. [Stripe](https://stripe.com/) tài khoản - Cho thanh toán đăng ký
-    1. Tạo tài khoản Stripe
-    2. Lấy API keys và thiết lập endpoint webhook
+   1. Tạo tài khoản Stripe
+   2. Lấy API keys và thiết lập endpoint webhook
 
 ### Cài đặt
 
@@ -160,18 +160,21 @@ pnpm run dev:web
 ## 🎯 Tính năng chính
 
 ### Quản lý cụm Kubernetes
+
 - Tạo và quản lý các cụm Kubernetes thông qua giao diện web
 - Nhiều cấp độ đăng ký (FREE, PRO, BUSINESS) với các giới hạn tài nguyên khác nhau
 - Theo dõi trạng thái cụm (PENDING, CREATING, INITING, RUNNING, STOPPED)
 - Hỗ trợ xóa mềm để bảo tồn cụm
 
 ### Đăng ký & Thanh toán
+
 - Thanh toán đăng ký Stripe tích hợp
 - Nhiều gói định giá với cấp phép tự động
 - Đồng bộ trạng thái đăng ký dựa trên Webhook
 - Cổng khách hàng để quản lý đăng ký
 
 ### Tính năng doanh nghiệp
+
 - Hỗ trợ đa ngôn ngữ (Tiếng Anh, Tiếng Trung, Tiếng Đức, Tiếng Việt)
 - Kiểm soát truy cập dựa trên vai trò (Bảng điều khiển quản trị)
 - Bảo toàn audit trail với các mẫu xóa mềm
@@ -277,7 +280,6 @@ Dự án này lấy cảm hứng từ [Taxonomy](https://github.com/shadcn-ui/ta
 [github-license-badge]: https://img.shields.io/badge/License-MIT-green.svg
 [discord-badge]: https://img.shields.io/discord/1204690198382911488?color=7b8dcd&link=https%3A%2F%2Fsaasfly.io%2Fdiscord
 [made-by-nextify-badge]: https://img.shields.io/badge/made_by-nextify-blue?color=FF782B&link=https://nextify.ltd/
-
 [check-workflow-badge-link]: https://github.com/cpa03/basefly/actions/workflows/check.yml
 [github-license-badge-link]: https://github.com/cpa03/basefly/blob/main/LICENSE
 [discord-badge-link]: https://discord.gg/8SwSX43wnD

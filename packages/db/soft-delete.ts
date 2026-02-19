@@ -15,6 +15,7 @@
  */
 
 import { db } from ".";
+import { logger } from "./logger";
 import type { DB } from "./prisma/types";
 
 /**
@@ -66,14 +67,37 @@ export class SoftDeleteService<T extends keyof DB> {
     userId: string,
     options?: { requestId?: string },
   ): Promise<void> {
-    void options;
-    await db
-      .updateTable(this.tableName)
-      // @ts-expect-error Kysely dynamic table/column requires type assertion
-      .set(createSoftDeleteData())
-      .where("id", "=", id)
-      .where("authUserId", "=", userId)
-      .execute();
+    const { requestId } = options ?? {};
+    logger.info("Starting soft delete operation", {
+      requestId,
+      table: this.tableName,
+      recordId: id,
+      userId,
+    });
+
+    try {
+      await db
+        .updateTable(this.tableName)
+        // @ts-expect-error Kysely dynamic table/column requires type assertion
+        .set(createSoftDeleteData())
+        .where("id", "=", id)
+        .where("authUserId", "=", userId)
+        .execute();
+
+      logger.info("Soft delete completed", {
+        requestId,
+        table: this.tableName,
+        recordId: id,
+      });
+    } catch (error) {
+      logger.error("Soft delete failed", error, {
+        requestId,
+        table: this.tableName,
+        recordId: id,
+        userId,
+      });
+      throw error;
+    }
   }
 
   /**
@@ -89,14 +113,37 @@ export class SoftDeleteService<T extends keyof DB> {
     userId: string,
     options?: { requestId?: string },
   ): Promise<void> {
-    void options;
-    await db
-      .updateTable(this.tableName)
-      // @ts-expect-error Kysely dynamic table/column requires type assertion
-      .set(createRestoreData())
-      .where("id", "=", id)
-      .where("authUserId", "=", userId)
-      .execute();
+    const { requestId } = options ?? {};
+    logger.info("Starting restore operation", {
+      requestId,
+      table: this.tableName,
+      recordId: id,
+      userId,
+    });
+
+    try {
+      await db
+        .updateTable(this.tableName)
+        // @ts-expect-error Kysely dynamic table/column requires type assertion
+        .set(createRestoreData())
+        .where("id", "=", id)
+        .where("authUserId", "=", userId)
+        .execute();
+
+      logger.info("Restore completed", {
+        requestId,
+        table: this.tableName,
+        recordId: id,
+      });
+    } catch (error) {
+      logger.error("Restore failed", error, {
+        requestId,
+        table: this.tableName,
+        recordId: id,
+        userId,
+      });
+      throw error;
+    }
   }
 
   /**

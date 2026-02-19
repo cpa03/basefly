@@ -41,6 +41,7 @@ Choose the appropriate category based on task complexity:
 | ultrabrain         | Hard logic-heavy tasks, complex problem solving |
 | deep               | Goal-oriented autonomous problem-solving        |
 | artistry           | Unconventional, creative approaches             |
+| writing            | Documentation, prose, technical writing         |
 
 ### 3. Skill Development
 

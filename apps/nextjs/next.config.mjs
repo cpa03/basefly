@@ -63,7 +63,9 @@ const config = {
   pageExtensions: ["ts", "tsx", "mdx"],
   images: {
     formats: ["image/avif", "image/webp"],
-    minimumCacheTTL: CACHE_DURATION.ONE_MINUTE,
+    minimumCacheTTL: CACHE_DURATION.ONE_MINUTE * 60, // 1 hour for better caching
+    deviceSizes: [320, 420, 768, 1024, 1200, 1440, 1920, 2560],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     remotePatterns: [
       {
         protocol: "https",

@@ -121,6 +121,7 @@ export {
   THEMES,
   PAGE_PROGRESS_CONFIG,
   NAVBAR_CONFIG,
+  Z_INDEX,
 } from "./config/ui";
 export type {
   ToastConfig,
@@ -131,6 +132,7 @@ export type {
   VisualEffects,
   TransitionPresetKey,
   Theme,
+  ZIndexKey,
 } from "./config/ui";
 
 export {

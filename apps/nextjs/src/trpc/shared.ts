@@ -6,7 +6,7 @@ import {
 } from "@trpc/client";
 
 import type { AppRouter } from "@saasfly/api";
-import { DEV_URLS } from "@saasfly/common";
+import { DEV_URLS, ENV_ERRORS } from "@saasfly/common";
 
 import { env } from "~/env.mjs";
 
@@ -22,9 +22,7 @@ const getBaseUrl = () => {
     return DEV_URLS.localhost;
   }
 
-  throw new Error(
-    "NEXT_PUBLIC_APP_URL is not defined. Please set it in your environment variables.",
-  );
+  throw new Error(ENV_ERRORS.APP_URL_NOT_DEFINED);
 };
 
 const lambdas = [""];

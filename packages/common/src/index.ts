@@ -272,6 +272,7 @@ export {
   CLUSTER_ERRORS,
   USER_ERRORS,
   AUTH_ERRORS,
+  ENV_ERRORS,
   TOAST_MESSAGES,
   ERRORS,
 } from "./config/errors";
@@ -281,6 +282,7 @@ export type {
   ClusterErrorKey,
   UserErrorKey,
   AuthErrorKey,
+  EnvErrorKey,
   ToastMessageKey,
   ErrorsConfig,
 } from "./config/errors";

@@ -81,6 +81,16 @@ export const AUTH_ERRORS = {
 } as const;
 
 /**
+ * Environment variable error messages
+ */
+export const ENV_ERRORS = {
+  /** NEXT_PUBLIC_APP_URL not defined */
+  APP_URL_NOT_DEFINED: "NEXT_PUBLIC_APP_URL is not defined. Please set it in your environment variables.",
+  /** Generic env var missing */
+  ENV_VAR_MISSING: "Required environment variable is not defined.",
+} as const;
+
+/**
  * Toast notification default messages
  */
 export const TOAST_MESSAGES = {
@@ -120,6 +130,7 @@ export const ERRORS = {
   cluster: CLUSTER_ERRORS,
   user: USER_ERRORS,
   auth: AUTH_ERRORS,
+  env: ENV_ERRORS,
   toast: TOAST_MESSAGES,
 } as const;
 
@@ -129,5 +140,6 @@ export type PatternErrorKey = keyof typeof PATTERN_ERRORS;
 export type ClusterErrorKey = keyof typeof CLUSTER_ERRORS;
 export type UserErrorKey = keyof typeof USER_ERRORS;
 export type AuthErrorKey = keyof typeof AUTH_ERRORS;
+export type EnvErrorKey = keyof typeof ENV_ERRORS;
 export type ToastMessageKey = keyof typeof TOAST_MESSAGES;
 export type ErrorsConfig = typeof ERRORS;

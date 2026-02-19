@@ -107,6 +107,15 @@ const PageProgress = React.forwardRef<HTMLDivElement, PageProgressProps>(
       };
     }, []);
 
+    // Memoize style object to prevent unnecessary re-renders
+    const progressStyle = React.useMemo(
+      () => ({
+        width: `${progress}%`,
+        height: `${height}px`,
+      }),
+      [progress, height],
+    );
+
     return (
       <div
         ref={ref}
@@ -126,10 +135,7 @@ const PageProgress = React.forwardRef<HTMLDivElement, PageProgressProps>(
           "motion-safe:transition-transform",
           className,
         )}
-        style={{
-          width: `${progress}%`,
-          height: `${height}px`,
-        }}
+        style={progressStyle}
       >
         <div
           className={cn(

@@ -17,7 +17,7 @@ Một nền tảng quản lý cụm Kubernetes cấp doanh nghiệp.
 
 Basefly đơn giản hóa việc triển khai và quản lý cụm Kubernetes với giao diện web hiện đại, các cấp độ truy cập dựa trên đăng ký và thanh toán tích hợp thông qua Stripe.
 
-> **[Nextify](https://nextify.ltd)** cung cấp giải pháp SaaS doanh nghiệp toàn diện. Nếu bạn quan tâm đến việc thảo luận về dự án của mình hoặc chỉ muốn trò chuyện với chúng tôi, vui lòng liên hệ với chúng tôi tại [contact@nextify.ltd] (mailto:contact@nextify.ltd).
+> **[Nextify](https://nextify.ltd)** cung cấp giải pháp SaaS doanh nghiệp toàn diện. Nếu bạn quan tâm đến việc thảo luận về dự án của mình hoặc chỉ muốn trò chuyện với chúng tôi, vui lòng liên hệ với chúng tôi tại [contact@nextify.ltd](mailto:contact@nextify.ltd).
 
 > ❤️ Chúng tôi cung cấp **hỗ trợ kỹ thuật và triển khai miễn phí cho các tổ chức phi lợi nhuận**.
 >

@@ -10,6 +10,10 @@ import {
 import { env } from "~/env.mjs";
 import { logger } from "~/lib/logger";
 
+// Vercel best practice: Set maxDuration for webhooks that may require
+// longer processing time for database operations and external API calls
+export const maxDuration = 60;
+
 const handler = async (req: NextRequest) => {
   if (!isStripeConfigured()) {
     logger.error("Stripe is not configured, rejecting webhook");

@@ -1,6 +1,4 @@
-import type { ClusterStatus } from "@saasfly/common";
-
-type ClusterPlan = "FREE" | "BUSINESS" | "PRO";
+import type { ClusterStatus, PlanId } from "@saasfly/common";
 
 export interface Cluster {
   id: number;
@@ -8,7 +6,7 @@ export interface Cluster {
   status: ClusterStatus | null;
   location: string;
   authUserId: string;
-  plan: ClusterPlan | null;
+  plan: PlanId | null;
   network: string | null;
   createdAt: Date;
   updatedAt: Date;

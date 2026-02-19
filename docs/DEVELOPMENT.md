@@ -32,12 +32,14 @@ pnpm dev:web
 
 ### Development
 
-| Command        | Description                                    |
-| -------------- | ---------------------------------------------- |
-| `pnpm dev`     | Start all development servers in parallel      |
-| `pnpm dev:web` | Start web development server (excludes stripe) |
-| `pnpm build`   | Build all packages and apps                    |
-| `pnpm clean`   | Clean all node_modules                         |
+| Command          | Description                                                             |
+| ---------------- | ----------------------------------------------------------------------- |
+| `pnpm dev`       | Start all development servers in parallel                               |
+| `pnpm dev:web`   | Start web development server (excludes stripe)                          |
+| `pnpm build`     | Build all packages and apps                                             |
+| `pnpm clean`     | Clean all node_modules                                                  |
+| `pnpm clean:all` | Clean all generated files (node_modules, .turbo, .next, dist, coverage) |
+| `pnpm reset`     | Full reset: clean all + reinstall dependencies                          |
 
 ### Code Quality
 
@@ -66,6 +68,7 @@ These commands streamline common developer workflows:
 | Command              | Description                    |
 | -------------------- | ------------------------------ |
 | `pnpm test`          | Run all tests                  |
+| `pnpm test:watch`    | Run tests in watch mode        |
 | `pnpm test:ui`       | Run tests with Vitest UI       |
 | `pnpm test:coverage` | Run tests with coverage report |
 
@@ -77,6 +80,7 @@ These commands streamline common developer workflows:
 | `pnpm db:generate`       | Generate Prisma client          |
 | `pnpm db:migrate`        | Run database migrations (dev)   |
 | `pnpm db:migrate:deploy` | Run database migrations (prod)  |
+| `pnpm db:studio`         | Open Prisma Studio GUI          |
 
 ## Project Structure
 
@@ -120,6 +124,13 @@ Feature flags are documented in `.env.example` with detailed comments. Key flags
 - `ENABLE_ADMIN_DASHBOARD` - Enable/disable admin dashboard
 
 ## Troubleshooting
+
+### Quick Fix
+
+```bash
+# Full reset: clean all generated files and reinstall
+pnpm reset
+```
 
 ### Dependency Issues
 

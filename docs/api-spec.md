@@ -45,19 +45,19 @@ interface ApiErrorResponse {
 
 ### Error Codes
 
-| Code | HTTP Status | Description |
-|------|-------------|-------------|
-| `BAD_REQUEST` | 400 | Invalid request parameters |
-| `UNAUTHORIZED` | 401 | Authentication required or failed |
-| `FORBIDDEN` | 403 | User lacks permission for the resource |
-| `NOT_FOUND` | 404 | Resource not found |
-| `CONFLICT` | 409 | Resource conflict (e.g., duplicate) |
-| `VALIDATION_ERROR` | 400 | Input validation failed |
-| `INTEGRATION_ERROR` | 500 | External service error (Stripe, etc.) |
-| `TIMEOUT_ERROR` | 500 | Request to external service timed out |
-| `CIRCUIT_BREAKER_OPEN` | 503 | Service temporarily unavailable (circuit breaker open) |
-| `INTERNAL_SERVER_ERROR` | 500 | Unexpected server error |
-| `SERVICE_UNAVAILABLE` | 503 | Service unavailable |
+| Code                    | HTTP Status | Description                                            |
+| ----------------------- | ----------- | ------------------------------------------------------ |
+| `BAD_REQUEST`           | 400         | Invalid request parameters                             |
+| `UNAUTHORIZED`          | 401         | Authentication required or failed                      |
+| `FORBIDDEN`             | 403         | User lacks permission for the resource                 |
+| `NOT_FOUND`             | 404         | Resource not found                                     |
+| `CONFLICT`              | 409         | Resource conflict (e.g., duplicate)                    |
+| `VALIDATION_ERROR`      | 400         | Input validation failed                                |
+| `INTEGRATION_ERROR`     | 500         | External service error (Stripe, etc.)                  |
+| `TIMEOUT_ERROR`         | 500         | Request to external service timed out                  |
+| `CIRCUIT_BREAKER_OPEN`  | 503         | Service temporarily unavailable (circuit breaker open) |
+| `INTERNAL_SERVER_ERROR` | 500         | Unexpected server error                                |
+| `SERVICE_UNAVAILABLE`   | 503         | Service unavailable                                    |
 
 ## Rate Limiting
 
@@ -71,11 +71,11 @@ Rate limiting is enforced for all API endpoints to protect against abuse and ens
 
 ### Rate Limits
 
-| Endpoint Type | Limit | Window | Example Endpoints |
-|---------------|-------|--------|------------------|
-| Read Operations | 100 requests/minute | 60 seconds | `getClusters`, `userPlans`, `queryCustomer`, `mySubscription`, `hello` |
-| Write Operations | 20 requests/minute | 60 seconds | `createCluster`, `updateCluster`, `deleteCluster`, `updateUserName`, `insertCustomer` |
-| Stripe Operations | 10 requests/minute | 60 seconds | `createSession` |
+| Endpoint Type     | Limit               | Window     | Example Endpoints                                                                     |
+| ----------------- | ------------------- | ---------- | ------------------------------------------------------------------------------------- |
+| Read Operations   | 100 requests/minute | 60 seconds | `getClusters`, `userPlans`, `queryCustomer`, `mySubscription`, `hello`                |
+| Write Operations  | 20 requests/minute  | 60 seconds | `createCluster`, `updateCluster`, `deleteCluster`, `updateUserName`, `insertCustomer` |
+| Stripe Operations | 10 requests/minute  | 60 seconds | `createSession`                                                                       |
 
 ### Rate Limit Response Headers
 
@@ -118,12 +118,9 @@ X-RateLimit-Reset: 1704729600
 **Example: Handling Rate Limits**
 
 ```typescript
-import { wait } from '@saasfly/utils';
+import { wait } from "@saasfly/utils";
 
-async function callWithRetry<T>(
-  fn: () => Promise<T>,
-  maxRetries = 3
-): Promise<T> {
+async function callWithRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> {
   for (let i = 0; i < maxRetries; i++) {
     try {
       return await fn();
@@ -224,7 +221,7 @@ interface CreateClusterResponse {
 ```typescript
 const result = await client.k8s.createCluster.mutate({
   name: "my-cluster",
-  location: "us-east-1"
+  location: "us-east-1",
 });
 // Returns: { id: 1, clusterName: "my-cluster", location: "us-east-1", success: true }
 ```
@@ -237,6 +234,7 @@ const result = await client.k8s.createCluster.mutate({
 - `CONFLICT`: User already has a cluster in the same plan
 
 **Constraints**:
+
 - One cluster per subscription plan (FREE, PRO, BUSINESS) per user
 - Soft delete removes the cluster but preserves audit trail
 - `deletedAt IS NULL` enforces uniqueness constraint
@@ -276,7 +274,7 @@ interface UpdateClusterResponse {
 ```typescript
 const result = await client.k8s.updateCluster.mutate({
   id: 1,
-  name: "updated-cluster-name"
+  name: "updated-cluster-name",
 });
 // Returns: { success: true }
 ```
@@ -289,6 +287,7 @@ const result = await client.k8s.updateCluster.mutate({
 - `INTERNAL_SERVER_ERROR`: Failed to update cluster
 
 **Authorization Rules**:
+
 - Only cluster owner can update
 - Cluster must exist and be active (not soft-deleted)
 
@@ -335,6 +334,7 @@ const result = await client.k8s.deleteCluster.mutate({ id: 1 });
 - `INTERNAL_SERVER_ERROR`: Failed to delete cluster
 
 **Notes**:
+
 - Uses soft delete pattern (`deletedAt` timestamp)
 - Cluster can be restored if needed
 - Ownership validated before deletion
@@ -374,7 +374,7 @@ interface CreateSessionResponse {
 
 ```typescript
 const result = await client.stripe.createSession.mutate({
-  planId: "price_1234567890"
+  planId: "price_1234567890",
 });
 // Returns: { success: true, url: "https://checkout.stripe.com/..." }
 ```
@@ -383,7 +383,7 @@ const result = await client.stripe.createSession.mutate({
 
 ```typescript
 const result = await client.stripe.createSession.mutate({
-  planId: "price_1234567890"
+  planId: "price_1234567890",
 });
 // Returns: { success: true, url: "https://billing.stripe.com/..." }
 ```
@@ -396,6 +396,7 @@ const result = await client.stripe.createSession.mutate({
 - `CIRCUIT_BREAKER_OPEN`: Stripe service temporarily unavailable
 
 **Integration Patterns**:
+
 - **Retry Logic**: 3 attempts with exponential backoff (1s, 2s, 4s)
 - **Timeout**: 30 seconds
 - **Circuit Breaker**: Opens after 5 consecutive failures, resets after 60s
@@ -457,6 +458,7 @@ const plan = await client.stripe.userPlans.query();
 - `CIRCUIT_BREAKER_OPEN`: Stripe service temporarily unavailable
 
 **Notes**:
+
 - Returns FREE plan if user has no paid subscription
 - `isPaid` checks if subscription is active and not expired
 - Calls Stripe API to get `cancel_at_period_end` status if subscription exists
@@ -498,7 +500,7 @@ interface UpdateUserNameResponse {
 ```typescript
 const result = await client.customer.updateUserName.mutate({
   userId: "user_123",
-  name: "John Doe"
+  name: "John Doe",
 });
 // Returns: { success: true, reason: "" }
 ```
@@ -509,6 +511,7 @@ const result = await client.customer.updateUserName.mutate({
 - `INTERNAL_SERVER_ERROR`: Failed to update user name
 
 **Authorization Rules**:
+
 - Users can only update their own name
 - `userId` must match `ctx.userId`
 
@@ -547,6 +550,7 @@ await client.customer.insertCustomer.mutate({ userId: "user_123" });
 - `INTERNAL_SERVER_ERROR`: Failed to create customer record
 
 **Notes**:
+
 - Creates customer with FREE plan by default
 - Used during user onboarding
 
@@ -600,6 +604,7 @@ const customer = await client.customer.queryCustomer.query({ userId: "user_123" 
 - `INTERNAL_SERVER_ERROR`: Failed to query customer
 
 **Notes**:
+
 - Returns `undefined` if customer not found
 - Uses `noStore()` to disable caching
 
@@ -643,6 +648,7 @@ const subscription = await client.auth.mySubscription.query();
 - `INTERNAL_SERVER_ERROR`: Failed to fetch subscription
 
 **Notes**:
+
 - Returns `null` if customer record doesn't exist
 - Uses `noStore()` to disable caching
 
@@ -701,6 +707,7 @@ All external service integrations (Stripe) implement resilience patterns:
 Prevents cascading failures when external services are unavailable.
 
 **Configuration**:
+
 - Opens after: 5 consecutive failures
 - Reset timeout: 60 seconds
 - Fails fast when open
@@ -712,12 +719,14 @@ Prevents cascading failures when external services are unavailable.
 Handles transient failures (network issues, rate limits).
 
 **Configuration**:
+
 - Max attempts: 3
 - Base delay: 1 second
 - Max delay: 10 seconds
 - Backoff pattern: 1s, 2s, 4s
 
 **Retryable Errors**:
+
 - Network errors
 - Timeout errors
 - Rate limit errors (HTTP 429)
@@ -728,6 +737,7 @@ Handles transient failures (network issues, rate limits).
 Prevents hanging requests to external services.
 
 **Configuration**:
+
 - Default timeout: 30 seconds
 - Throws: `TIMEOUT_ERROR`
 
@@ -736,6 +746,7 @@ Prevents hanging requests to external services.
 Ensures safe retries without duplicate operations.
 
 **Implementation**:
+
 - Idempotency keys for Stripe operations
 - Format: `checkout_{userId}_{planId}`
 - Prevents duplicate charges
@@ -745,16 +756,19 @@ Ensures safe retries without duplicate operations.
 Stripe webhooks are processed with comprehensive error handling, logging, and idempotency protection:
 
 **Event Types**:
+
 - `checkout.session.completed` - Subscription created
 - `invoice.payment_succeeded` - Payment successful
 
 **Error Handling**:
+
 - All errors caught and logged
 - `IntegrationError` for retryable issues
 - Invalid metadata prevents retry
 - No silent failures
 
 **Idempotency Protection**:
+
 - **Database Tracking**: All webhook events stored in `StripeWebhookEvent` table
 - **Duplicate Prevention**: Unique constraint prevents reprocessing same event
 - **Automatic Skip**: Handler not executed if event already processed
@@ -769,9 +783,9 @@ import { executeIdempotentWebhook } from "@saasfly/db/webhook-idempotency";
 
 export async function handleEvent(event: Stripe.Event) {
   await executeIdempotentWebhook(
-    event.id,        // Stripe event ID (evt_*)
-    event.type,      // Event type (e.g., checkout.session.completed)
-    async () => processEventInternal(event)
+    event.id, // Stripe event ID (evt_*)
+    event.type, // Event type (e.g., checkout.session.completed)
+    async () => processEventInternal(event),
   );
 }
 ```
@@ -786,6 +800,7 @@ export async function handleEvent(event: Stripe.Event) {
 6. On error → throw to trigger Stripe retry (if retryable)
 
 **Benefits**:
+
 - ✅ Prevents duplicate database updates
 - ✅ Prevents duplicate subscription records
 - ✅ Prevents duplicate charges on checkout
@@ -817,7 +832,7 @@ CREATE INDEX "StripeWebhookEvent_processed_idx" ON "StripeWebhookEvent"("process
 enum SubscriptionPlan {
   FREE = "FREE",
   PRO = "PRO",
-  BUSINESS = "BUSINESS"
+  BUSINESS = "BUSINESS",
 }
 ```
 
@@ -830,7 +845,7 @@ enum ClusterStatus {
   INITING = "INITING",
   RUNNING = "RUNNING",
   STOPPED = "STOPPED",
-  DELETED = "DELETED"
+  DELETED = "DELETED",
 }
 ```
 
@@ -841,13 +856,14 @@ enum ClusterStatus {
 ## Client Setup
 
 ```typescript
-import { createTRPCClient, httpBatchLink } from '@trpc/client';
-import type { AppRouter } from '@saasfly/api';
+import { createTRPCClient, httpBatchLink } from "@trpc/client";
+
+import type { AppRouter } from "@saasfly/api";
 
 const client = createTRPCClient<AppRouter>({
   links: [
     httpBatchLink({
-      url: 'http://localhost:3000/api/trpc',
+      url: "http://localhost:3000/api/trpc",
       // Authentication is handled automatically by Clerk
     }),
   ],
@@ -863,12 +879,12 @@ const clusters = await client.k8s.getClusters.query();
 // 2. Create a new cluster
 const newCluster = await client.k8s.createCluster.mutate({
   name: "production-cluster",
-  location: "us-west-2"
+  location: "us-west-2",
 });
 
 // 3. Create Stripe checkout session for upgrade
 const session = await client.stripe.createSession.mutate({
-  planId: "price_1234567890"
+  planId: "price_1234567890",
 });
 
 // 4. Redirect to Stripe
@@ -883,7 +899,7 @@ console.log(`Current plan: ${plan.title}, isPaid: ${plan.isPaid}`);
 // 6. Update cluster if needed
 await client.k8s.updateCluster.mutate({
   id: newCluster.id,
-  name: "updated-production-cluster"
+  name: "updated-production-cluster",
 });
 ```
 
@@ -920,7 +936,7 @@ Design client-side operations to be idempotent:
 const idempotencyKey = `checkout_${userId}_${planId}_${Date.now()}`;
 const session = await client.stripe.createSession.mutate({
   planId,
-  idempotencyKey
+  idempotencyKey,
 });
 ```
 
@@ -947,14 +963,14 @@ Consider optimistic UI updates for better UX:
 
 ```typescript
 // Optimistically update UI
-setClusters(prev => [...prev, newCluster]);
+setClusters((prev) => [...prev, newCluster]);
 
 // Then make API call
 try {
   const result = await client.k8s.createCluster.mutate(input);
 } catch (error) {
   // Rollback on error
-  setClusters(prev => prev.filter(c => c.id !== newCluster.id));
+  setClusters((prev) => prev.filter((c) => c.id !== newCluster.id));
 }
 ```
 
@@ -962,7 +978,7 @@ try {
 
 # Version History
 
-- **v1.0** (2024-01-08): Initial API specification
+- **v1.0** (2026-01-08): Initial API specification
   - All routers documented
   - Error codes standardized
   - Integration patterns documented

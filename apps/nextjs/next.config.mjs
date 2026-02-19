@@ -22,8 +22,13 @@ const CACHE_CONTROL = {
   IMMUTABLE: `public, max-age=${CACHE_DURATION.ONE_YEAR}, immutable`,
 };
 
+// Disable security headers in CI/development to prevent HTTPS enforcement issues
+const isCI = process.env.CI === "true";
+
 const HTTP_SECURITY_HEADERS = {
-  HSTS: `max-age=${CACHE_DURATION.HSTS_MAX_AGE}; includeSubDomains; preload`,
+  HSTS: isCI
+    ? ""
+    : `max-age=${CACHE_DURATION.HSTS_MAX_AGE}; includeSubDomains; preload`,
   FRAME_OPTIONS: "SAMEORIGIN",
   CONTENT_TYPE_OPTIONS: "nosniff",
   REFERRER_POLICY: "origin-when-cross-origin",
@@ -49,8 +54,10 @@ const HTTP_SECURITY_HEADERS = {
     "base-uri 'self'",
     "form-action 'self'",
     "frame-ancestors 'self'",
-    "upgrade-insecure-requests",
-  ].join("; "),
+    isCI ? "" : "upgrade-insecure-requests",
+  ]
+    .filter(Boolean)
+    .join("; "),
 };
 
 /** @type {import("next").NextConfig} */
@@ -112,10 +119,10 @@ const config = {
   },
   /** We already do linting and typechecking as separate tasks in CI */
   typescript: { ignoreBuildErrors: true },
-  output: "standalone",
+  // output: "standalone",  // Disabled for CI testing
   compress: true,
   poweredByHeader: false,
-  productionBrowserSourceMaps: true,
+  productionBrowserSourceMaps: false,
   experimental: {
     mdxRs: true,
     optimizePackageImports: [
@@ -135,51 +142,57 @@ const config = {
   },
   turbopack: {},
   async headers() {
+    const baseHeaders = [
+      {
+        key: "X-DNS-Prefetch-Control",
+        value: HTTP_SECURITY_HEADERS.DNS_PREFETCH_CONTROL,
+      },
+      {
+        key: "X-Frame-Options",
+        value: HTTP_SECURITY_HEADERS.FRAME_OPTIONS,
+      },
+      {
+        key: "X-Content-Type-Options",
+        value: HTTP_SECURITY_HEADERS.CONTENT_TYPE_OPTIONS,
+      },
+      {
+        key: "Referrer-Policy",
+        value: HTTP_SECURITY_HEADERS.REFERRER_POLICY,
+      },
+      {
+        key: "Permissions-Policy",
+        value: HTTP_SECURITY_HEADERS.PERMISSIONS_POLICY,
+      },
+      {
+        key: "Cross-Origin-Opener-Policy",
+        value: HTTP_SECURITY_HEADERS.CROSS_ORIGIN_OPENER_POLICY,
+      },
+      {
+        key: "Cross-Origin-Resource-Policy",
+        value: HTTP_SECURITY_HEADERS.CROSS_ORIGIN_RESOURCE_POLICY,
+      },
+      {
+        key: "Content-Security-Policy",
+        value: HTTP_SECURITY_HEADERS.CSP,
+      },
+      {
+        key: "Cache-Control",
+        value: CACHE_CONTROL.NO_CACHE,
+      },
+    ];
+
+    // Only add HSTS in production (non-CI)
+    if (!isCI) {
+      baseHeaders.push({
+        key: "Strict-Transport-Security",
+        value: HTTP_SECURITY_HEADERS.HSTS,
+      });
+    }
+
     return [
       {
         source: "/(.*)",
-        headers: [
-          {
-            key: "X-DNS-Prefetch-Control",
-            value: HTTP_SECURITY_HEADERS.DNS_PREFETCH_CONTROL,
-          },
-          {
-            key: "Strict-Transport-Security",
-            value: HTTP_SECURITY_HEADERS.HSTS,
-          },
-          {
-            key: "X-Frame-Options",
-            value: HTTP_SECURITY_HEADERS.FRAME_OPTIONS,
-          },
-          {
-            key: "X-Content-Type-Options",
-            value: HTTP_SECURITY_HEADERS.CONTENT_TYPE_OPTIONS,
-          },
-          {
-            key: "Referrer-Policy",
-            value: HTTP_SECURITY_HEADERS.REFERRER_POLICY,
-          },
-          {
-            key: "Permissions-Policy",
-            value: HTTP_SECURITY_HEADERS.PERMISSIONS_POLICY,
-          },
-          {
-            key: "Cross-Origin-Opener-Policy",
-            value: HTTP_SECURITY_HEADERS.CROSS_ORIGIN_OPENER_POLICY,
-          },
-          {
-            key: "Cross-Origin-Resource-Policy",
-            value: HTTP_SECURITY_HEADERS.CROSS_ORIGIN_RESOURCE_POLICY,
-          },
-          {
-            key: "Content-Security-Policy",
-            value: HTTP_SECURITY_HEADERS.CSP,
-          },
-          {
-            key: "Cache-Control",
-            value: CACHE_CONTROL.NO_CACHE,
-          },
-        ],
+        headers: baseHeaders,
       },
       {
         source: "/_next/static/(.*)",

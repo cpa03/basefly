@@ -32,6 +32,7 @@ model Customer {
   user User @relation(fields: [authUserId], references: [id], onDelete: Restrict)
 
   @@index([authUserId])
+  @@index([plan])
   @@index([authUserId, stripeCurrentPeriodEnd])
 }
 

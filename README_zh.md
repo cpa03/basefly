@@ -156,6 +156,30 @@ pnpm run dev:web
 
 5. 使用 `ADMIN_EMAIL` 环境变量中配置的邮箱地址访问管理仪表板 `/admin/dashboard`。
 
+## 🎯 核心功能
+
+### Kubernetes 集群管理
+
+- 通过 Web 界面创建和管理 Kubernetes 集群
+- 多种订阅层级（FREE、PRO、BUSINESS），具有不同的资源限制
+- 集群状态跟踪（PENDING、CREATING、INITING、RUNNING、STOPPED）
+- 支持软删除以保留集群
+
+### 订阅与计费
+
+- 集成 Stripe 订阅计费
+- 多种定价方案，自动配置
+- 基于 Webhook 的订阅状态同步
+- 客户门户用于订阅管理
+
+### 企业功能
+
+- 多语言支持（英语、中文、德语、越南语）
+- 基于角色的访问控制（管理仪表板）
+- 使用软删除模式保留审计跟踪
+- 使用 tRPC 的类型安全 API
+- 具有重试逻辑的全面错误处理
+
 ## 🥺 项目路线图
 
 1. 增强管理仪表板
@@ -249,13 +273,21 @@ pnpm run dev:web
 
 本项目的灵感来自shadcn的[Taxonomy](https://github.com/shadcn-ui/taxonomy)和t3-oss的[create-t3-turbo](https://github.com/t3-oss/create-t3-turbo)。
 
+## 👨‍💻 贡献者
+
+<a href="https://github.com/cpa03/basefly/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=basefly/basefly" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
+
 <!-- 徽章和链接 -->
 
-[check-workflow-badge]: https://img.shields.io/github/actions/workflow/status/cpa03/basefly/ci.yml?label=ci
+[check-workflow-badge]: https://img.shields.io/github/actions/workflow/status/cpa03/basefly/on-pull.yml?label=ci
 [github-license-badge]: https://img.shields.io/badge/License-MIT-green.svg
 [discord-badge]: https://img.shields.io/discord/1204690198382911488?color=7b8dcd&link=https%3A%2F%2Fsaasfly.io%2Fdiscord
 [made-by-nextify-badge]: https://img.shields.io/badge/made_by-nextify-blue?color=FF782B&link=https://nextify.ltd/
-[check-workflow-badge-link]: https://github.com/cpa03/basefly/actions/workflows/check.yml
+[check-workflow-badge-link]: https://github.com/cpa03/basefly/actions/workflows/on-pull.yml
 [github-license-badge-link]: https://github.com/cpa03/basefly/blob/main/LICENSE
 [discord-badge-link]: https://discord.gg/8SwSX43wnD
 [made-by-nextify-badge-link]: https://nextify.ltd

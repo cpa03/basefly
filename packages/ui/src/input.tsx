@@ -28,7 +28,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const inputRef = React.useRef<HTMLInputElement>(null);
     const [hasContent, setHasContent] = React.useState(false);
 
-    React.useImperativeHandle(ref, () => inputRef.current!);
+    React.useImperativeHandle(
+      ref,
+      () => inputRef.current ?? ({} as HTMLInputElement),
+    );
 
     const checkContent = React.useCallback(() => {
       const inputValue = inputRef.current?.value ?? "";

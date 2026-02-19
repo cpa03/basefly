@@ -30,8 +30,8 @@ export function MobileNav({ items, children, menuItemClick }: MobileNavProps) {
         </Link>
         <nav className="text-sm" aria-label="Main navigation">
           <ul className="grid grid-flow-row auto-rows-max">
-            {items.map((item, index) => (
-              <li key={index}>
+            {items.map((item) => (
+              <li key={item.href}>
                 <Link
                   href={item.disabled ? "#" : item.href}
                   className={cn(

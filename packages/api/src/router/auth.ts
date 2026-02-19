@@ -10,7 +10,15 @@ export const authRouter = createTRPCRouter({
   mySubscription: createRateLimitedProtectedProcedure("read").query(
     async (opts) => {
       noStore();
-      const userId = opts.ctx.userId as string;
+      const userId = opts.ctx.userId;
+
+      if (!userId) {
+        throw createApiError(
+          ErrorCode.UNAUTHORIZED,
+          "User is not authenticated",
+        );
+      }
+
       const requestId = opts.ctx.requestId;
 
       try {

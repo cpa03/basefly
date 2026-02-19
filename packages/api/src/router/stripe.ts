@@ -1,7 +1,7 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { z } from "zod";
 
-import { PLAN_VALIDATION } from "@saasfly/common";
+import { PLAN_VALIDATION, pricingData } from "@saasfly/common";
 import { Customer, db } from "@saasfly/db";
 import {
   createBillingSession,
@@ -10,7 +10,6 @@ import {
   retrieveSubscription,
 } from "@saasfly/stripe";
 
-import { pricingData } from "../../../common/src/subscriptions";
 import { env } from "../env.mjs";
 import { handleIntegrationError } from "../errors";
 import {

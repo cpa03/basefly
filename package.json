@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
+    "ci:check": "pnpm typecheck && pnpm lint && pnpm test",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo clean",
     "db:push": "cd ./packages/db/ && bun db:push",
@@ -16,6 +17,7 @@
     "format:fix": "turbo format --continue -- --write --cache --cache-location='node_modules/.cache/.prettiercache' --ignore-path='../../.gitignore'",
     "lint": "turbo lint",
     "lint:fix": "turbo lint --continue -- --fix --cache --cache-location 'node_modules/.cache/.eslintcache'",
+    "prepare": "husky",
     "typecheck": "turbo typecheck",
     "check-deps": "check-dependency-version-consistency .",
     "gen": "turbo gen --config 'turbo/generators/config.ts'",
@@ -35,7 +37,9 @@
     "chrome-launcher": "^1.2.1",
     "eslint-plugin-turbo": "2.8.9",
     "happy-dom": "^20.1.0",
+    "husky": "^9.1.7",
     "lighthouse": "^13.0.2",
+    "lint-staged": "^15.2.10",
     "playwright": "^1.58.2",
     "prettier": "3.8.1",
     "prettier-plugin-tailwindcss": "0.7.2",
@@ -53,5 +57,13 @@
     "apps/*",
     "packages/*",
     "tooling/*"
-  ]
+  ],
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs}": [
+      "eslint --fix --cache --cache-location 'node_modules/.cache/.eslintcache'"
+    ],
+    "*.{json,md,css,scss}": [
+      "prettier --write --cache --cache-location='node_modules/.cache/.prettiercache'"
+    ]
+  }
 }

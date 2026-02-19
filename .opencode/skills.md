@@ -35,6 +35,9 @@ The following skills are enabled in `.opencode/oh-my-opencode.json`:
 - **dispatching-parallel-agents** - Parallel agent execution
 - **github-workflow-automation** - GitHub Actions workflow automation
 
+### Agent Engineering
+- **ai-agent-engineer** - AI agent engineering best practices and configuration
+
 ## Skill Sources
 
 Skills are loaded from:

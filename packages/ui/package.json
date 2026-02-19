@@ -12,7 +12,7 @@
   "scripts": {
     "clean": "git clean -xdf .turbo node_modules",
     "format": "prettier --check '**/*.{ts,tsx}' ",
-    "lint": "eslint ."
+    "lint": "eslint . --cache --cache-location 'node_modules/.cache/.eslintcache'"
   },
   "dependencies": {
     "@saasfly/common": "workspace:*",

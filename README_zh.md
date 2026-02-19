@@ -29,7 +29,7 @@ Basefly 通过现代 Web 界面简化 Kubernetes 集群的部署和管理，提�
 
 演示服务器 (位置: 美国华盛顿): <https://show.saasfly.io>
 
-查看更多文档请访问 <https://document.saasfly.io>
+查看更多文档请访问 <https://docs.saasfly.io>
 
 ## 🌟 Star历史
 

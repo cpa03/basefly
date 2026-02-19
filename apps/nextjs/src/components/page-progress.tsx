@@ -4,7 +4,7 @@ import * as React from "react";
 import { Suspense } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 
-import { PAGE_PROGRESS_CONFIG } from "@saasfly/common";
+import { PAGE_PROGRESS_CONFIG, Z_INDEX } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 
 interface PageProgressProps {
@@ -118,7 +118,7 @@ const PageProgress = React.forwardRef<HTMLDivElement, PageProgressProps>(
         aria-live="polite"
         aria-hidden={!isVisible}
         className={cn(
-          "fixed left-0 top-0 z-[9999]",
+          `fixed left-0 top-0 ${Z_INDEX.progressBar}`,
           "origin-left",
           "transition-opacity duration-300",
           isVisible ? "opacity-100" : "opacity-0",

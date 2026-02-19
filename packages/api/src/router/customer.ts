@@ -1,9 +1,11 @@
 import { unstable_noStore as noStore } from "next/cache";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { USER_VALIDATION } from "@saasfly/common";
 import { db, SubscriptionPlan } from "@saasfly/db";
 
+import { createApiError, ErrorCode } from "../errors";
 import { logger } from "../logger";
 import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 
@@ -51,17 +53,33 @@ export const customerRouter = createTRPCRouter({
         return { success: false, reason: "no auth" };
       }
 
-      await db
-        .updateTable("User")
-        .set({
-          name: input.name,
-        })
-        .where("id", "=", userId)
-        .execute();
+      try {
+        await db
+          .updateTable("User")
+          .set({
+            name: input.name,
+          })
+          .where("id", "=", userId)
+          .execute();
 
-      logger.info({ userId, requestId }, "User name updated successfully");
+        logger.info({ userId, requestId }, "User name updated successfully");
 
-      return { success: true, reason: "" };
+        return { success: true, reason: "" };
+      } catch (error) {
+        logger.error(
+          {
+            userId,
+            requestId,
+            error: error instanceof Error ? error.message : String(error),
+          },
+          "Failed to update user name",
+        );
+        throw createApiError(
+          ErrorCode.INTERNAL_SERVER_ERROR,
+          "Failed to update user name",
+          error,
+        );
+      }
     }),
 
   insertCustomer: createRateLimitedProtectedProcedure("write")
@@ -72,17 +90,33 @@ export const customerRouter = createTRPCRouter({
 
       logger.info({ userId, requestId }, "Creating customer");
 
-      const result = await db
-        .insertInto("Customer")
-        .values({
-          authUserId: userId,
-          plan: SubscriptionPlan.FREE,
-        })
-        .executeTakeFirst();
+      try {
+        const result = await db
+          .insertInto("Customer")
+          .values({
+            authUserId: userId,
+            plan: SubscriptionPlan.FREE,
+          })
+          .executeTakeFirst();
 
-      logger.info({ userId, requestId }, "Customer created successfully");
+        logger.info({ userId, requestId }, "Customer created successfully");
 
-      return result;
+        return result;
+      } catch (error) {
+        logger.error(
+          {
+            userId,
+            requestId,
+            error: error instanceof Error ? error.message : String(error),
+          },
+          "Failed to create customer",
+        );
+        throw createApiError(
+          ErrorCode.INTERNAL_SERVER_ERROR,
+          "Failed to create customer",
+          error,
+        );
+      }
     }),
 
   queryCustomer: createRateLimitedProtectedProcedure("read")
@@ -94,9 +128,25 @@ export const customerRouter = createTRPCRouter({
 
       logger.debug({ userId, requestId }, "Querying customer");
 
-      return await db
-        .selectFrom("Customer")
-        .where("authUserId", "=", userId)
-        .executeTakeFirst();
+      try {
+        return await db
+          .selectFrom("Customer")
+          .where("authUserId", "=", userId)
+          .executeTakeFirst();
+      } catch (error) {
+        logger.error(
+          {
+            userId,
+            requestId,
+            error: error instanceof Error ? error.message : String(error),
+          },
+          "Failed to query customer",
+        );
+        throw createApiError(
+          ErrorCode.INTERNAL_SERVER_ERROR,
+          "Failed to query customer",
+          error,
+        );
+      }
     }),
 });

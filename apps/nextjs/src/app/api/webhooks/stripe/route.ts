@@ -26,6 +26,22 @@ const handler = async (req: NextRequest) => {
   const payload = await req.text();
   const signature = req.headers.get("Stripe-Signature");
 
+  if (!payload || payload.trim().length === 0) {
+    logger.error("Empty Stripe webhook payload received");
+    return NextResponse.json(
+      { error: "Empty payload" },
+      { status: HTTP_STATUS.BAD_REQUEST },
+    );
+  }
+
+  if (!env.STRIPE_WEBHOOK_SECRET) {
+    logger.error("Stripe webhook secret not configured");
+    return NextResponse.json(
+      { error: "Stripe webhook not configured" },
+      { status: HTTP_STATUS.SERVICE_UNAVAILABLE },
+    );
+  }
+
   if (!signature) {
     logger.error("Missing Stripe-Signature header");
     return NextResponse.json(

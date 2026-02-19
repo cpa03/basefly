@@ -3,15 +3,15 @@
 </div>
 
 # Basefly </br>
+
 <a href="https://trendshift.io/repositories/8929" target="_blank"><img src="https://trendshift.io/api/badge/repositories/8929" alt="basefly%2Fbasefly | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
-[![GitHub Actions工作流状态][check-workflow-badge]][check-workflow-badge-link] [![GitHub许可证][github-license-badge]][github-license-badge-link]  [![Discord][discord-badge]][discord-badge-link] [![Saasfly][made-by-nextify-badge]][made-by-nextify-badge-link]
+[![GitHub Actions工作流状态][check-workflow-badge]][check-workflow-badge-link] [![GitHub许可证][github-license-badge]][github-license-badge-link] [![Discord][discord-badge]][discord-badge-link] [![Saasfly][made-by-nextify-badge]][made-by-nextify-badge-link]
 [![English](https://img.shields.io/badge/-English-grey.svg)](README.md)
 [![German](https://img.shields.io/badge/-German-yellow.svg)](README_de.md)
 [![Vietnamese](https://img.shields.io/badge/-Vietnamese-yellow.svg)](README_vi.md) </br>
 ![COMMIT_ACTIVITY](https://img.shields.io/github/commit-activity/m/basefly/basefly?style=for-the-badge)
 [![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2Fcpa03%2Fbasefly&labelColor=%23f47373&countColor=%23263759)](https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2Fcpa03%2Fbasefly)
-
 
 一个企业级 Kubernetes 集群管理平台。
 
@@ -29,7 +29,7 @@ Basefly 通过现代 Web 界面简化 Kubernetes 集群的部署和管理，提�
 
 演示服务器 (位置: 美国华盛顿): <https://show.saasfly.io>
 
-查看更多文档请访问 <https://document.saasfly.io>
+查看更多文档请访问 <https://docs.saasfly.io>
 
 ## 🌟 Star历史
 
@@ -74,7 +74,6 @@ Basefly 通过现代 Web 界面简化 Kubernetes 集群的部署和管理，提�
   在此添加您的 Logo
 </a>
 
-
 ## 🚀 入门指南
 
 ### 🖱 一键模板
@@ -86,34 +85,33 @@ Basefly 通过现代 Web 界面简化 Kubernetes 集群的部署和管理，提�
 开始之前,请确保您已安装以下内容:
 
 1. [pnpm](https://pnpm.io/) & [Node.js](https://nodejs.org/) & [Git](https://git-scm.com/)
+   1. Linux
 
-    1. Linux
+   ```bash
+     curl -fsSL https://get.pnpm.io/install.sh | sh -
+   ```
 
-    ```bash
-      curl -fsSL https://get.pnpm.io/install.sh | sh -
-    ```
+   2. MacOS
 
-    2. MacOS
-
-    ```bash
-      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      brew install git
-      brew install pnpm
-    ```
+   ```bash
+     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+     brew install git
+     brew install pnpm
+   ```
 
 2. [PostgreSQL](https://www.postgresql.org/) - 用于集群配置和用户数据
-    1. 您可以使用Vercel Postgres或本地PostgreSQL服务器(在.env.local中添加POSTGRES_URL环境变量)
-       ```bash
-          POSTGRES_URL = ''
-       ```
+   1. 您可以使用Vercel Postgres或本地PostgreSQL服务器(在.env.local中添加POSTGRES_URL环境变量)
+      ```bash
+         POSTGRES_URL = ''
+      ```
 
 3. [Clerk](https://clerk.com/) 账户 - 用于身份验证
-    1. 创建Clerk账户并获取API密钥
-    2. 添加Clerk应用程序并配置Next.js
+   1. 创建Clerk账户并获取API密钥
+   2. 添加Clerk应用程序并配置Next.js
 
 4. [Stripe](https://stripe.com/) 账户 - 用于订阅计费
-    1. 创建Stripe账户
-    2. 获取API密钥并设置webhook端点
+   1. 创建Stripe账户
+   2. 获取API密钥并设置webhook端点
 
 ### 安装
 
@@ -161,20 +159,20 @@ pnpm run dev:web
 ## 🥺 项目路线图
 
 1. 增强管理仪表板
-    1. 目前处于alpha阶段 - 提供基本的管理视图
-    2. 在 `ADMIN_EMAIL` 环境变量中配置管理员邮箱
-    3. 访问 `/admin/dashboard`
-    4. 安全说明：不提供在线管理演示
+   1. 目前处于alpha阶段 - 提供基本的管理视图
+   2. 在 `ADMIN_EMAIL` 环境变量中配置管理员邮箱
+   3. 访问 `/admin/dashboard`
+   4. 安全说明：不提供在线管理演示
 
 2. 高级 Kubernetes 功能
-    1. 集群监控和指标集成
-    2. 节点池管理
-    3. 自动扩缩容配置
+   1. 集群监控和指标集成
+   2. 节点池管理
+   3. 自动扩缩容配置
 
 3. 其他集成
-    1. 考虑集成 Payload CMS 进行内容管理
-    2. 增强通知系统
-    3. 使用分析和报告
+   1. 考虑集成 Payload CMS 进行内容管理
+   2. 增强通知系统
+   3. 使用分析和报告
 
 ## ⭐ 特性
 
@@ -257,7 +255,6 @@ pnpm run dev:web
 [github-license-badge]: https://img.shields.io/badge/License-MIT-green.svg
 [discord-badge]: https://img.shields.io/discord/1204690198382911488?color=7b8dcd&link=https%3A%2F%2Fsaasfly.io%2Fdiscord
 [made-by-nextify-badge]: https://img.shields.io/badge/made_by-nextify-blue?color=FF782B&link=https://nextify.ltd/
-
 [check-workflow-badge-link]: https://github.com/cpa03/basefly/actions/workflows/check.yml
 [github-license-badge-link]: https://github.com/cpa03/basefly/blob/main/LICENSE
 [discord-badge-link]: https://discord.gg/8SwSX43wnD

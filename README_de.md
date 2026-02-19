@@ -1,13 +1,12 @@
-Hier ist die überarbeitete Version der deutschen Übersetzung mit optimierter Grammatik und Rechtschreibung:
-
 <div align="center" width="100%">
     <img src="./saasfly-logo.svg" width="128" alt="" />
 </div>
 
 # Basefly </br>
+
 <a href="https://trendshift.io/repositories/8929" target="_blank"><img src="https://trendshift.io/api/badge/repositories/8929" alt="basefly%2Fbasefly | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
-[![GitHub Actions Workflow Status][check-workflow-badge]][check-workflow-badge-link] [![GitHub License][github-license-badge]][github-license-badge-link]  [![Discord][discord-badge]][discord-badge-link] [![Saasfly][made-by-nextify-badge]][made-by-nextify-badge-link]
+[![GitHub Actions Workflow Status][check-workflow-badge]][check-workflow-badge-link] [![GitHub License][github-license-badge]][github-license-badge-link] [![Discord][discord-badge]][discord-badge-link] [![Saasfly][made-by-nextify-badge]][made-by-nextify-badge-link]
 [![English](https://img.shields.io/badge/-English-grey.svg)](README.md)
 [![Chinese](https://img.shields.io/badge/-Chinese-red.svg)](README_zh.md)
 [![Vietnamese](https://img.shields.io/badge/-Vietnamese-yellow.svg)](README_vi.md) </br>
@@ -30,7 +29,7 @@ Probieren Sie es selbst aus!
 
 Demo-Server (Standort: Washington, USA): <https://show.saasfly.io>
 
-Weitere Dokumentation finden Sie unter <https://document.saasfly.io>.
+Weitere Dokumentation finden Sie unter <https://docs.saasfly.io>.
 
 ## 🌟 Stern-Verlauf
 
@@ -86,20 +85,19 @@ Weitere Dokumentation finden Sie unter <https://document.saasfly.io>.
 Stellen Sie vor dem Start sicher, dass Sie Folgendes installiert haben:
 
 1. [pnpm](https://pnpm.io/), [Node.js](https://nodejs.org/) und [Git](https://git-scm.com/)
-
    1. Linux
 
-    ```bash
-      curl -fsSL https://get.pnpm.io/install.sh | sh -
-    ```
+   ```bash
+     curl -fsSL https://get.pnpm.io/install.sh | sh -
+   ```
 
    2. macOS
 
-    ```bash
-      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      brew install git
-      brew install pnpm
-    ```
+   ```bash
+     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+     brew install git
+     brew install pnpm
+   ```
 
 2. [PostgreSQL](https://www.postgresql.org/) - Erforderlich für Cluster-Konfiguration und Benutzerdaten
    1. Sie können entweder Vercel Postgres oder einen lokalen PostgreSQL-Server verwenden (fügen Sie die POSTGRES_URL-Umgebungsvariable in .env.local hinzu)
@@ -162,18 +160,21 @@ pnpm run dev:web
 ## 🎯 Hauptfunktionen
 
 ### Kubernetes-Cluster-Verwaltung
+
 - Erstellen und Verwalten von Kubernetes-Clustern über eine Weboberfläche
 - Mehrere Abonnementstufen (FREE, PRO, BUSINESS) mit unterschiedlichen Ressourcenlimits
 - Cluster-Status-Tracking (PENDING, CREATING, INITING, RUNNING, STOPPED)
 - Soft-Delete-Unterstützung zur Cluster-Erhaltung
 
 ### Abonnement & Abrechnung
+
 - Integrierte Stripe-Abonnementabrechnung
 - Mehrere Preispläne mit automatischer Bereitstellung
 - Webhook-basierte Abonnement-Status-Synchronisation
 - Kundenportal zur Abonnementverwaltung
 
 ### Unternehmensfunktionen
+
 - Mehrsprachige Unterstützung (Englisch, Chinesisch, Deutsch, Vietnamesisch)
 - Rollenbasierte Zugriffskontrolle (Admin-Dashboard)
 - Audit-Trail-Erhaltung mit Soft-Delete-Mustern
@@ -279,7 +280,6 @@ Dieses Projekt wurde von shadcns [Taxonomy](https://github.com/shadcn-ui/taxonom
 [github-license-badge]: https://img.shields.io/badge/License-MIT-green.svg
 [discord-badge]: https://img.shields.io/discord/1204690198382911488?color=7b8dcd&link=https%3A%2F%2Fsaasfly.io%2Fdiscord
 [made-by-nextify-badge]: https://img.shields.io/badge/made_by-nextify-blue?color=FF782B&link=https://nextify.ltd/
-
 [check-workflow-badge-link]: https://github.com/cpa03/basefly/actions/workflows/check.yml
 [github-license-badge-link]: https://github.com/cpa03/basefly/blob/main/LICENSE
 [discord-badge-link]: https://discord.gg/8SwSX43wnD

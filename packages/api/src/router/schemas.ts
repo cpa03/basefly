@@ -15,7 +15,7 @@ export const enhancedK8sClusterCreateSchema = z
       .min(CLUSTER_VALIDATION.name.minLength, "Cluster name cannot be empty")
       .max(
         CLUSTER_VALIDATION.name.maxLength,
-        "Cluster name cannot exceed 100 characters",
+        `Cluster name cannot exceed ${CLUSTER_VALIDATION.name.maxLength} characters`,
       )
       .regex(
         CLUSTER_VALIDATION.name.pattern,
@@ -27,7 +27,7 @@ export const enhancedK8sClusterCreateSchema = z
       .min(CLUSTER_VALIDATION.location.minLength, "Location cannot be empty")
       .max(
         CLUSTER_VALIDATION.location.maxLength,
-        "Location cannot exceed 50 characters",
+        `Location cannot exceed ${CLUSTER_VALIDATION.location.maxLength} characters`,
       ),
   })
   .strict();
@@ -47,7 +47,7 @@ export const enhancedK8sClusterUpdateSchema = z
       .min(CLUSTER_VALIDATION.name.minLength, "Cluster name cannot be empty")
       .max(
         CLUSTER_VALIDATION.name.maxLength,
-        "Cluster name cannot exceed 100 characters",
+        `Cluster name cannot exceed ${CLUSTER_VALIDATION.name.maxLength} characters`,
       )
       .regex(
         CLUSTER_VALIDATION.name.pattern,
@@ -60,7 +60,7 @@ export const enhancedK8sClusterUpdateSchema = z
       .min(CLUSTER_VALIDATION.location.minLength, "Location cannot be empty")
       .max(
         CLUSTER_VALIDATION.location.maxLength,
-        "Location cannot exceed 50 characters",
+        `Location cannot exceed ${CLUSTER_VALIDATION.location.maxLength} characters`,
       )
       .optional(),
   })
@@ -87,7 +87,7 @@ export const enhancedUpdateUserNameSchema = z
       .min(USER_VALIDATION.displayName.minLength, "Name cannot be empty")
       .max(
         USER_VALIDATION.displayName.maxLength,
-        "Name cannot exceed 100 characters",
+        `Name cannot exceed ${USER_VALIDATION.displayName.maxLength} characters`,
       ),
     userId: z.string().uuid("Invalid user ID format"),
   })

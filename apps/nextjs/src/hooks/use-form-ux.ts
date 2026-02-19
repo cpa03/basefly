@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { ANIMATION } from "@saasfly/common";
+import { ANIMATION, FORM_COLORS, FORM_TIMING } from "@saasfly/common";
 
 interface UseFormFocusOptions {
   /** Delay before applying focus styles (ms) */
@@ -94,7 +94,7 @@ interface UseFormSubmissionReturn<T> {
 export function useFormSubmission<T>(
   options: UseFormSubmissionOptions = {},
 ): UseFormSubmissionReturn<T> {
-  const { onStart, onSuccess, onError, resetDelay = 2000 } = options;
+  const { onStart, onSuccess, onError, resetDelay = FORM_TIMING.resetDelay } = options;
 
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);
@@ -170,7 +170,7 @@ export function useInputValidation(
 ): UseInputValidationReturn {
   const {
     validate,
-    debounceMs = 300,
+    debounceMs = FORM_TIMING.debounceMs,
     validateOnBlur = true,
     validateOnChange = false,
   } = options;
@@ -235,20 +235,20 @@ export function useInputValidation(
 export const FORM_STYLES = {
   input: {
     base: "flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-    error: "border-red-500 focus-visible:ring-red-500",
-    success: "border-green-500 focus-visible:ring-green-500",
+    error: `${FORM_COLORS.error.border} ${FORM_COLORS.error.ring}`,
+    success: `${FORM_COLORS.success.border} ${FORM_COLORS.success.ring}`,
   },
   label: {
     base: "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-    required: "after:content-['*'] after:ml-0.5 after:text-red-500",
+    required: `after:content-['*'] after:ml-0.5 after:${FORM_COLORS.required.indicator}`,
   },
   error: {
-    text: "text-sm text-red-600",
-    icon: "h-4 w-4 text-red-500",
+    text: `text-sm ${FORM_COLORS.error.text}`,
+    icon: `h-4 w-4 ${FORM_COLORS.error.icon}`,
   },
   success: {
-    text: "text-sm text-green-600",
-    icon: "h-4 w-4 text-green-500",
+    text: `text-sm ${FORM_COLORS.success.text}`,
+    icon: `h-4 w-4 ${FORM_COLORS.success.icon}`,
   },
   transition: `${ANIMATION.duration.fast} ${ANIMATION.easing.default}`,
 } as const;
@@ -261,6 +261,5 @@ export const FOCUS_RING_STYLES = {
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
   subtle:
     "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
-  destructive:
-    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2",
+  destructive: `focus-visible:outline-none focus-visible:ring-2 ${FORM_COLORS.error.ring} focus-visible:ring-offset-2`,
 } as const;

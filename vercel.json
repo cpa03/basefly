@@ -4,6 +4,7 @@
     "silent": true
   },
   "framework": "nextjs",
+  "skewProtection": true,
   "installCommand": "pnpm install --frozen-lockfile",
   "buildCommand": "turbo run build --filter=@saasfly/nextjs",
   "outputDirectory": "apps/nextjs/.next",

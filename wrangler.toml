@@ -1,18 +1,18 @@
 # Cloudflare Pages Configuration for Basefly
-# This configuration enables deployment to Cloudflare Pages alongside Vercel
-# See: https://developers.cloudflare.com/pages/platform/build-configuration
-# Best Practices: https://developers.cloudflare.com/workers/best-practices/workers-best-practices/
+# Documentation: https://developers.cloudflare.com/pages/platform/build-configuration
+# Best Practices: https://developers.cloudflare.com/workers/best-practices/
 
 name = "basefly"
 compatibility_date = "2026-02-18"
 compatibility_flags = ["nodejs_compat"]
 
 # Pages configuration
+# Note: For Next.js apps, use @cloudflare/next-on-pages for full compatibility
 pages_build_output_dir = "apps/nextjs/.next"
 
-# Build configuration for Cloudflare Pages
+# Build configuration
 [build]
-command = "pnpm install && turbo run build --filter=@saasfly/nextjs"
+command = "pnpm install && pnpm run build"
 
 # Environment variables (set via Cloudflare Dashboard or wrangler secrets)
 # These are placeholders - actual values should be set securely
@@ -30,30 +30,41 @@ routes = [
 [env.preview]
 name = "basefly-preview"
 
-# Note: For Next.js on Cloudflare Pages, consider using @cloudflare/next-on-pages
-# This enables full Next.js compatibility including:
+# Smart placement for optimal global distribution
+# https://developers.cloudflare.com/workers/platform/smart-placement
+[placement]
+mode = "smart"
+
+# Limits configuration (adjust based on your plan)
+# https://developers.cloudflare.com/workers/platform/limits
+[limits]
+cpu_ms = 50000
+
+# Development settings
+[dev]
+port = 8788
+local_protocol = "http"
+
+# Observability
+[observability]
+enabled = true
+
+# Note: For full Next.js compatibility on Cloudflare Pages:
+# 1. Install: pnpm add -D @cloudflare/next-on-pages
+# 2. Add script to package.json: "pages:build": "next build && npx @cloudflare/next-on-pages"
+# 3. Update build command in Cloudflare Dashboard to use pages:build
+#
+# Features enabled by @cloudflare/next-on-pages:
 # - Edge Runtime support
 # - API Routes
 # - Middleware
 # - Image Optimization (via Cloudflare Images)
 #
-# To enable full Cloudflare Pages support:
-# 1. Install: pnpm add -D @cloudflare/next-on-pages
-# 2. Update build command in Cloudflare Dashboard:
-#    pnpm install && pnpm run pages:build
-# 3. Add script to package.json:
-#    "pages:build": "next build && @cloudflare/next-on-pages"
-
-# Security: Enable Cloudflare features
-# These can also be configured via Cloudflare Dashboard:
-# - Bot Fight Mode
-# - Browser Integrity Check
-# - Security Level
+# Security recommendations for Cloudflare Dashboard:
+# - Enable Bot Fight Mode
+# - Enable Browser Integrity Check
+# - Set Security Level: Medium or Higher
 # - SSL/TLS: Full (Strict)
-# - Always Use HTTPS
-# - Automatic HTTPS Rewrites
-
-# Placement: Optimize for global distribution
-# See: https://developers.cloudflare.com/workers/platform/smart-placement
-[placement]
-mode = "smart"
+# - Enable Always Use HTTPS
+# - Enable Automatic HTTPS Rewrites
+# - Enable HTTP/3 (QUIC)

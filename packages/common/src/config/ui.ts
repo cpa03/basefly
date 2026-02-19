@@ -51,6 +51,8 @@ export interface FeedbackTiming {
   toastDisplay: number;
   tooltipDelay: number;
   snackbarDelay: number;
+  /** Duration to show form success state before reset (ms) */
+  formReset: number;
 }
 
 /** Animation timing configuration type */
@@ -59,6 +61,7 @@ export interface AnimationTiming {
   normal: number;
   slow: number;
   stagger: number;
+  debounce: number;
 }
 
 /** Semantic color tokens for consistent theming */
@@ -96,6 +99,8 @@ export const FEEDBACK_TIMING: FeedbackTiming = {
   tooltipDelay: 200,
   /** Snackbar auto-dismiss delay (ms) */
   snackbarDelay: 3000,
+  /** Duration to show form success state before reset (ms) */
+  formReset: 2000,
 };
 
 /**
@@ -111,6 +116,8 @@ export const ANIMATION_TIMING: AnimationTiming = {
   slow: 300,
   /** Stagger delay for lists */
   stagger: 50,
+  /** Default debounce delay for input validation (ms) */
+  debounce: 300,
 };
 
 /**

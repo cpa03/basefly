@@ -2,7 +2,11 @@
 
 import * as React from "react";
 
-import { ANIMATION } from "@saasfly/common";
+import {
+  ANIMATION,
+  ANIMATION_TIMING,
+  FEEDBACK_TIMING,
+} from "@saasfly/common";
 
 interface UseFormFocusOptions {
   /** Delay before applying focus styles (ms) */
@@ -94,7 +98,7 @@ interface UseFormSubmissionReturn<T> {
 export function useFormSubmission<T>(
   options: UseFormSubmissionOptions = {},
 ): UseFormSubmissionReturn<T> {
-  const { onStart, onSuccess, onError, resetDelay = 2000 } = options;
+  const { onStart, onSuccess, onError, resetDelay = FEEDBACK_TIMING.formReset } = options;
 
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);
@@ -170,7 +174,7 @@ export function useInputValidation(
 ): UseInputValidationReturn {
   const {
     validate,
-    debounceMs = 300,
+    debounceMs = ANIMATION_TIMING.debounce,
     validateOnBlur = true,
     validateOnChange = false,
   } = options;

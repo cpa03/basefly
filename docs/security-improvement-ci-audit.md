@@ -83,7 +83,7 @@ An override for ajv >= 8.18.0 was attempted but causes ESLint compatibility issu
 
 1. **Immediate**: Add the security audit stage to CI
 2. **Short-term**: Update overrides in `pnpm-workspace.yaml` to address remaining vulnerabilities
-3. **Long-term**: Consider upgrading to Next.js 16.x which has security fixes
+3. **Long-term**: Consider upgrading to Next.js 15.x or newer which has security fixes
 
 ## Security Controls Already in Place
 

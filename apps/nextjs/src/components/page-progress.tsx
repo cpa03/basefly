@@ -115,6 +115,7 @@ const PageProgress = React.forwardRef<HTMLDivElement, PageProgressProps>(
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={Math.round(progress)}
+        aria-valuetext={`${Math.round(progress)}%`}
         aria-live="polite"
         aria-hidden={!isVisible}
         className={cn(

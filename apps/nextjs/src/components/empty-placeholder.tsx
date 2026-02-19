@@ -59,15 +59,19 @@ EmptyPlaceholder.Icon = function EmptyPlaceHolderIcon({
   );
 };
 
-type EmptyPlacholderTitleProps = React.HTMLAttributes<HTMLHeadingElement>;
+type EmptyPlacholderTitleProps = React.HTMLAttributes<HTMLHeadingElement> & {
+  children: React.ReactNode;
+};
 
 EmptyPlaceholder.Title = function EmptyPlaceholderTitle({
   className,
+  children,
   ...props
 }: EmptyPlacholderTitleProps) {
   return (
-    // eslint-disable-next-line jsx-a11y/heading-has-content
-    <h2 className={cn("mt-6 text-xl font-semibold", className)} {...props} />
+    <h2 className={cn("mt-6 text-xl font-semibold", className)} {...props}>
+      {children}
+    </h2>
   );
 };
 

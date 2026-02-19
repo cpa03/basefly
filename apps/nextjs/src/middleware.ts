@@ -76,7 +76,7 @@ function handleI18nRouting(req: NextRequest): NextResponse | null {
   return NextResponse.redirect(url);
 }
 
-export default async function proxy(
+export default async function middleware(
   req: NextRequest,
 ): Promise<Response | null> {
   const i18nResponse = handleI18nRouting(req);

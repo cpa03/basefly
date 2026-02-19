@@ -5,18 +5,21 @@
   "compatibility_flags": ["nodejs_compat"],
   "pages_build_output_dir": "apps/nextjs/.next",
   "build": {
-    "command": "pnpm install && turbo run build --filter=@saasfly/nextjs",
+    "command": "pnpm install && turbo run build --filter=@saasfly/nextjs"
   },
   "vars": {
-    "NODE_VERSION": "20",
+    "NODE_VERSION": "20"
   },
   "env": {
     "production": {
       "name": "basefly",
-      "routes": [{ "pattern": "/*", "zone_name": "saasfly.io" }],
+      "routes": [{ "pattern": "/*", "zone_name": "saasfly.io" }]
     },
     "preview": {
-      "name": "basefly-preview",
-    },
+      "name": "basefly-preview"
+    }
   },
+  "placement": {
+    "mode": "smart"
+  }
 }

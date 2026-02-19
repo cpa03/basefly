@@ -121,7 +121,7 @@ describe("Hello Router - Security Tests", () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(
-          result.error.issues.some((i) => i.message.includes("at most")),
+          result.error.issues.some((i) => i.message.includes("Too big")),
         ).toBe(true);
       }
     });

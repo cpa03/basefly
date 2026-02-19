@@ -50,7 +50,7 @@ const createContext = cache(async () => {
   if (isClerkEnabled()) {
     try {
       authResult = await auth();
-    } catch (_error) {
+    } catch {
       authResult = null;
     }
   }
@@ -81,6 +81,7 @@ export const trpc = createTRPCProxyClient<AppRouter>({
         observable((observer) => {
           createContext()
             .then((ctx) => {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
               return callProcedure({
                 procedures: appRouter._def.procedures,
                 path: op.path,

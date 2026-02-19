@@ -35,6 +35,11 @@ const fontHeading = localFont({
   variable: "--font-heading",
 });
 
+// Fallback wrapper for when Clerk is not configured
+function ClerkFallback({ children }: { children: React.ReactNode }) {
+  return <>{children}</>;
+}
+
 export function generateStaticParams() {
   return i18n.locales.map((locale) => ({ lang: locale }));
 }
@@ -96,12 +101,11 @@ export default function RootLayout({
     !clerkKey.includes("placeholder") &&
     clerkKey.startsWith("pk_") &&
     clerkKey.length > 20;
-  const ClerkProviderWrapper = isValidClerkKey
-    ? ClerkProvider
-    : ({ children }: { children: React.ReactNode }) => <>{children}</>;
+
+  const Provider = isValidClerkKey ? ClerkProvider : ClerkFallback;
 
   return (
-    <ClerkProviderWrapper publishableKey={isValidClerkKey ? clerkKey : ""}>
+    <Provider publishableKey={isValidClerkKey ? clerkKey : ""}>
       <html lang="en" suppressHydrationWarning>
         <head />
         <body
@@ -128,6 +132,6 @@ export default function RootLayout({
           </ThemeProvider>
         </body>
       </html>
-    </ClerkProviderWrapper>
+    </Provider>
   );
 }

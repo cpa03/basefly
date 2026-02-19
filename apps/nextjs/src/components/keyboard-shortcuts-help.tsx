@@ -174,9 +174,7 @@ function KeyboardShortcutsHelp() {
     const groups: Record<string, KeyboardShortcut[]> = {};
     DEFAULT_SHORTCUTS.forEach((shortcut) => {
       const category = shortcut.category ?? "General";
-      if (!groups[category]) {
-        groups[category] = [];
-      }
+      groups[category] ??= [];
       groups[category].push(shortcut);
     });
     return groups;

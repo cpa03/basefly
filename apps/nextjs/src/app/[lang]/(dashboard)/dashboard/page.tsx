@@ -52,7 +52,14 @@ export default async function DashboardPage({
     });
   }
   // const accout
-  const clusters = (await trpc.k8s.getClusters.query()) ?? [];
+  const clusters = ((await trpc.k8s.getClusters.query()) ?? []) as {
+    id: number;
+    name: string;
+    location: string;
+    plan: string | null;
+    status: string | null;
+    updatedAt: Date | null;
+  }[];
   const dict = await getDictionary(lang);
 
   return (
@@ -87,7 +94,7 @@ export default async function DashboardPage({
                   <TableBody>
                     {clusters.map((cluster) => (
                       <ClusterItem
-                        key={String(cluster.id)}
+                        key={cluster.id}
                         cluster={cluster}
                         lang={lang}
                         dict={dict.business}

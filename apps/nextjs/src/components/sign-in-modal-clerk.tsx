@@ -16,7 +16,7 @@ import { logger } from "~/lib/logger";
 function useClerkSignIn() {
   try {
     return useSignIn();
-  } catch (_error) {
+  } catch {
     return { signIn: null };
   }
 }

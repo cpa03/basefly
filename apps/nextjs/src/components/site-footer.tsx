@@ -10,8 +10,10 @@ function getCopyrightText(
   dict: Record<string, string | Record<string, string>>,
 ) {
   const currentYear = new Date().getFullYear();
-  const copyrightTemplate = String(dict.copyright);
-  return copyrightTemplate?.replace("${currentYear}", String(currentYear));
+  const copyrightValue = dict.copyright;
+  const copyrightTemplate =
+    typeof copyrightValue === "string" ? copyrightValue : "";
+  return copyrightTemplate.replace("${currentYear}", String(currentYear));
 }
 
 export function SiteFooter({

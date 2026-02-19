@@ -31,14 +31,17 @@ export const endingLink = (opts?: {
   headers?: HTTPHeaders | (() => HTTPHeaders);
 }) =>
   ((runtime) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const sharedOpts = {
       headers: opts?.headers,
-    } satisfies Partial<HTTPBatchLinkOptions>;
+    } as Partial<HTTPBatchLinkOptions>;
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const edgeLink = httpBatchLink({
       ...sharedOpts,
       url: `${getBaseUrl()}/api/trpc/edge`,
     })(runtime);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const lambdaLink = httpBatchLink({
       ...sharedOpts,
       url: `${getBaseUrl()}/api/trpc/lambda`,

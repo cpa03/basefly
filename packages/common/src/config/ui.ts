@@ -129,6 +129,47 @@ export const SEMANTIC_COLORS: SemanticColors = {
 };
 
 /**
+ * Extended semantic color tokens for form validation states
+ * Centralized to eliminate hardcoded Tailwind classes
+ */
+export const FORM_COLORS = {
+  error: {
+    border: "border-red-500",
+    ring: "focus-visible:ring-red-500",
+    text: "text-red-600",
+    icon: "text-red-500",
+    background: "bg-red-600",
+  },
+  success: {
+    border: "border-green-500",
+    ring: "focus-visible:ring-green-500",
+    text: "text-green-600",
+    icon: "text-green-500",
+  },
+  required: {
+    indicator: "text-red-500",
+  },
+} as const;
+
+/**
+ * Form timing configuration
+ * Centralized debounce, delay, and reset timings
+ */
+export const FORM_TIMING = {
+  /** Default debounce delay for input validation (ms) */
+  debounceMs: 300,
+  /** Default reset delay for form submission state (ms) */
+  resetDelay: 2000,
+  /** Delay before removing toasts from DOM (ms) */
+  toastRemoveDelay: 1000000,
+  /** Delay before auto-completing progress (ms) */
+  progressAutoCompleteDelay: 50,
+} as const;
+
+/** Type for form color config */
+export type FormColors = typeof FORM_COLORS;
+
+/**
  * Notification colors for UI components
  * Centralized colors for notification cards, badges, and status indicators
  */

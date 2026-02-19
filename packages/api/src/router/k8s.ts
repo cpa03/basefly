@@ -101,12 +101,15 @@ export const k8sRouter = createTRPCRouter({
       const requestId = ctx.requestId;
 
       try {
-        logger.info("Creating cluster", {
-          userId,
-          requestId,
-          clusterName: input.name,
-          location: input.location,
-        });
+        logger.info(
+          {
+            userId,
+            requestId,
+            clusterName: input.name,
+            location: input.location,
+          },
+          "Creating cluster",
+        );
 
         const newCluster = await db
           .insertInto("K8sClusterConfig")
@@ -127,11 +130,14 @@ export const k8sRouter = createTRPCRouter({
           );
         }
 
-        logger.info("Cluster created successfully", {
-          userId,
-          requestId,
-          clusterId: newCluster.id,
-        });
+        logger.info(
+          {
+            userId,
+            requestId,
+            clusterId: newCluster.id,
+          },
+          "Cluster created successfully",
+        );
 
         return {
           id: newCluster.id,
@@ -144,17 +150,20 @@ export const k8sRouter = createTRPCRouter({
           throw createApiError(
             ErrorCode.VALIDATION_ERROR,
             "Invalid input data",
-            error.errors,
+            error.issues,
           );
         }
         if (error instanceof TRPCError) {
           throw error;
         }
-        logger.error("Failed to create cluster", {
-          userId,
-          requestId,
-          error: error instanceof Error ? error.message : String(error),
-        });
+        logger.error(
+          {
+            userId,
+            requestId,
+            error: error instanceof Error ? error.message : String(error),
+          },
+          "Failed to create cluster",
+        );
         throw createApiError(
           ErrorCode.INTERNAL_SERVER_ERROR,
           "Failed to create cluster",
@@ -171,11 +180,14 @@ export const k8sRouter = createTRPCRouter({
       const newLocation = opts.input.location;
       const requestId = opts.ctx.requestId;
 
-      logger.info("Updating cluster", {
-        userId,
-        requestId,
-        clusterId: id,
-      });
+      logger.info(
+        {
+          userId,
+          requestId,
+          clusterId: id,
+        },
+        "Updating cluster",
+      );
 
       await verifyClusterOwnership(id, userId);
 
@@ -190,11 +202,14 @@ export const k8sRouter = createTRPCRouter({
           .set(updateData)
           .execute();
 
-        logger.info("Cluster updated successfully", {
-          userId,
-          requestId,
-          clusterId: id,
-        });
+        logger.info(
+          {
+            userId,
+            requestId,
+            clusterId: id,
+          },
+          "Cluster updated successfully",
+        );
       }
       return {
         success: true,
@@ -207,21 +222,27 @@ export const k8sRouter = createTRPCRouter({
       const userId = opts.ctx.userId!;
       const requestId = opts.ctx.requestId;
 
-      logger.info("Deleting cluster", {
-        userId,
-        requestId,
-        clusterId: id,
-      });
+      logger.info(
+        {
+          userId,
+          requestId,
+          clusterId: id,
+        },
+        "Deleting cluster",
+      );
 
       await verifyClusterOwnership(id, userId);
 
       await k8sClusterService.softDelete(id, userId);
 
-      logger.info("Cluster deleted successfully", {
-        userId,
-        requestId,
-        clusterId: id,
-      });
+      logger.info(
+        {
+          userId,
+          requestId,
+          clusterId: id,
+        },
+        "Cluster deleted successfully",
+      );
 
       return { success: true };
     }),

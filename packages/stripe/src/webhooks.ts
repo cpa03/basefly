@@ -8,6 +8,15 @@ import { logger } from "./logger";
 import { getSubscriptionPlan } from "./plans";
 import { executeIdempotentWebhook } from "./webhook-idempotency";
 
+/**
+ * Extended Subscription type that includes current_period_end
+ * which is returned by the Stripe API but not included in the TypeScript types
+ */
+interface SubscriptionWithPeriod extends Stripe.Subscription {
+  current_period_end: number;
+  current_period_start: number;
+}
+
 export async function handleEvent(event: Stripe.Event) {
   const eventId = event.id;
   const eventType = event.type;
@@ -126,7 +135,8 @@ async function handleInvoicePaymentSucceeded(session: Stripe.Checkout.Session) {
         stripeSubscriptionId: subscription.id,
         stripePriceId: priceId,
         stripeCurrentPeriodEnd: new Date(
-          subscription.current_period_end * 1000,
+          (subscription as unknown as SubscriptionWithPeriod)
+            .current_period_end * 1000,
         ),
         plan: plan || SubscriptionPlan.FREE,
       })

@@ -69,7 +69,7 @@ export class SoftDeleteService<T extends keyof DB> {
     userId: string,
     _options?: { requestId?: string },
   ): Promise<void> {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await (db as any)
       .updateTable(this.tableName)
       .set(createSoftDeleteData())
@@ -91,7 +91,7 @@ export class SoftDeleteService<T extends keyof DB> {
     userId: string,
     _options?: { requestId?: string },
   ): Promise<void> {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await (db as any)
       .updateTable(this.tableName)
       .set(createRestoreData())
@@ -108,7 +108,7 @@ export class SoftDeleteService<T extends keyof DB> {
    * @returns The record if found and belongs to the user, undefined otherwise
    */
   findActive(id: number, userId: string) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (db as any)
       .selectFrom(this.tableName)
       .selectAll()
@@ -125,7 +125,7 @@ export class SoftDeleteService<T extends keyof DB> {
    * @returns Array of active records belonging to the user
    */
   findAllActive(userId: string) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (db as any)
       .selectFrom(this.tableName)
       .selectAll()
@@ -141,7 +141,7 @@ export class SoftDeleteService<T extends keyof DB> {
    * @returns Array of deleted records belonging to the user
    */
   findDeleted(userId: string) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return (db as any)
       .selectFrom(this.tableName)
       .selectAll()

@@ -6,6 +6,7 @@ import { ZodError } from "zod";
 import { isAdminEmail } from "@saasfly/common";
 
 import { createApiError, ErrorCode } from "./errors";
+import { logger } from "./logger";
 import { EndpointType, getIdentifier, getLimiter } from "./rate-limiter";
 import { getOrGenerateRequestId } from "./request-id";
 import { transformer } from "./transformer";
@@ -132,6 +133,19 @@ export const rateLimit = (endpointType: EndpointType) =>
     const result = limiter.check(identifier);
 
     if (!result.success) {
+      // Security logging for rate limit exceeded events
+      // Helps with intrusion detection and security monitoring
+      logger.warn(
+        {
+          identifier,
+          endpointType,
+          requestId: ctx.requestId,
+          userId: ctx.userId,
+          resetAt: result.resetAt,
+        },
+        "Rate limit exceeded - potential abuse detected",
+      );
+
       throw createApiError(
         ErrorCode.TOO_MANY_REQUESTS,
         "Rate limit exceeded. Please try again later.",

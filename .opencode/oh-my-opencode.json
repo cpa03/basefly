@@ -1,9 +1,9 @@
 {
   "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
-  
+
   // OpenX Basefly Configuration - Multi-Model Agent Harness
   // Configured with free tier models: opencode/glm-4.7-free, opencode/kimi-k2.5-free, opencode/minimax-m2.1-free
-  
+
   "agents": {
     "sisyphus": {
       "model": "opencode/kimi-k2.5-free",
@@ -31,7 +31,7 @@
       "description": "Visual understanding and UI/UX tasks"
     }
   },
-  
+
   "categories": {
     "quick": {
       "model": "opencode/gpt-5-nano",
@@ -50,13 +50,14 @@
       "temperature": 0.3
     }
   },
-  
+
   "skills": {
     "sources": [
       { "path": ".opencode/skills", "recursive": true },
       { "path": ".opencode/superpowers/skills", "recursive": true }
     ],
     "enable": [
+      "using-superpowers",
       "brainstorming",
       "writing-plans",
       "executing-plans",
@@ -70,7 +71,7 @@
       "github-workflow-automation"
     ]
   },
-  
+
   "mcp": {
     "servers": [
       {
@@ -78,7 +79,7 @@
         "enabled": true
       },
       {
-        "name": "context7", 
+        "name": "context7",
         "enabled": true
       },
       {
@@ -87,7 +88,7 @@
       }
     ]
   },
-  
+
   "experimental": {
     "aggressive_truncation": true,
     "auto_resume": true

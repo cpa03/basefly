@@ -1,48 +1,89 @@
-import type { LucideProps } from "lucide-react";
-import * as Lucide from "lucide-react";
+import {
+  Activity,
+  AlertTriangle,
+  ArrowRight,
+  Blocks,
+  Building,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  ClipboardCheck,
+  Clock,
+  Cloud,
+  CloudCog,
+  Command,
+  Copy,
+  CreditCard,
+  File,
+  FileText,
+  Heart,
+  HelpCircle,
+  Key,
+  Languages,
+  Laptop,
+  Loader2,
+  Menu,
+  Moon,
+  MoreVertical,
+  PauseCircle,
+  Plus,
+  Rocket,
+  Search,
+  Settings,
+  ShieldCheck,
+  SunMedium,
+  ThumbsUp,
+  Trash,
+  Twitter,
+  User,
+  X,
+  XCircle,
+  type LucideProps,
+} from "lucide-react";
 
 export type Icon = (props: LucideProps) => JSX.Element;
 
-export const Add = Lucide.Plus;
-export const ArrowRight = Lucide.ArrowRight;
-export const Blocks = Lucide.Blocks;
-export const Billing = Lucide.CreditCard;
-export const Check = Lucide.Check;
-export const ChevronLeft = Lucide.ChevronLeft;
-export const ChevronRight = Lucide.ChevronRight;
-export const Clock = Lucide.Clock;
-export const Cloud = Lucide.Cloud;
-export const PauseCircle = Lucide.PauseCircle;
-export const XCircle = Lucide.XCircle;
-export const Loader2 = Lucide.Loader2;
-export const Cluster = Lucide.CloudCog;
-export const Close = Lucide.X;
-export const Copy = Lucide.Copy;
-export const CopyDone = Lucide.ClipboardCheck;
-export const Dashboard = Lucide.Activity;
-export const Ellipsis = Lucide.MoreVertical;
-export const Help = Lucide.HelpCircle;
-export const Heart = Lucide.Heart;
-export const Key = Lucide.Key;
-export const Languages = Lucide.Languages;
-export const Laptop = Lucide.Laptop;
-export const Logo = Lucide.Command;
-export const Menu = Lucide.Menu;
-export const Moon = Lucide.Moon;
-export const Organization = Lucide.Building;
-export const Page = Lucide.File;
-export const Post = Lucide.FileText;
-export const Rocket = Lucide.Rocket;
-export const Search = Lucide.Search;
-export const Settings = Lucide.Settings;
-export const ShieldCheck = Lucide.ShieldCheck;
-export const Spinner = Lucide.Loader2;
-export const Sun = Lucide.SunMedium;
-export const ThumbsUp = Lucide.ThumbsUp;
-export const Trash = Lucide.Trash;
-export const Twitter = Lucide.Twitter;
-export const User = Lucide.User;
-export const Warning = Lucide.AlertTriangle;
+// Named imports enable tree-shaking (~1KB vs ~100KB+ bundle impact)
+export const Add = Plus;
+export { ArrowRight };
+export { Blocks };
+export const Billing = CreditCard;
+export { Check };
+export { ChevronLeft };
+export { ChevronRight };
+export { Clock };
+export { Cloud };
+export { PauseCircle };
+export { XCircle };
+export { Loader2 };
+export const Cluster = CloudCog;
+export const Close = X;
+export { Copy };
+export const CopyDone = ClipboardCheck;
+export const Dashboard = Activity;
+export const Ellipsis = MoreVertical;
+export const Help = HelpCircle;
+export { Heart };
+export { Key };
+export { Languages };
+export { Laptop };
+export const Logo = Command;
+export { Menu };
+export { Moon };
+export const Organization = Building;
+export const Page = File;
+export const Post = FileText;
+export { Rocket };
+export { Search };
+export { Settings };
+export { ShieldCheck };
+export const Spinner = Loader2;
+export const Sun = SunMedium;
+export { ThumbsUp };
+export { Trash };
+export { Twitter };
+export { User };
+export const Warning = AlertTriangle;
 
 export const System: Icon = (props) => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...props}>

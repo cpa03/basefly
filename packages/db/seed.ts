@@ -132,13 +132,15 @@ async function seed(): Promise<void> {
   }
 
   console.log("🌱 Starting database seeding...");
-  console.log(`Environment: ${process.env.NODE_ENV || "development"}`);
+  console.log(`Environment: ${process.env.NODE_ENV ?? "development"}`);
   console.log("");
 
   try {
     const empty = await isDatabaseEmpty();
     if (!empty) {
-      console.log("⚠️  Database is not empty. Seed will skip existing records.");
+      console.log(
+        "⚠️  Database is not empty. Seed will skip existing records.",
+      );
       console.log("   Use 'db:seed:reset' to clear and reseed.");
       console.log("");
     }
@@ -154,8 +156,12 @@ async function seed(): Promise<void> {
     console.log("✅ Database seeding completed successfully!");
     console.log("");
     console.log("Seeded data:");
-    console.log(`  - Users: ${SEED_CONFIG.testUser.email}, ${SEED_CONFIG.adminUser.email}`);
-    console.log(`  - Clusters: ${SEED_CONFIG.testClusters.map((c) => c.name).join(", ")}`);
+    console.log(
+      `  - Users: ${SEED_CONFIG.testUser.email}, ${SEED_CONFIG.adminUser.email}`,
+    );
+    console.log(
+      `  - Clusters: ${SEED_CONFIG.testClusters.map((c) => c.name).join(", ")}`,
+    );
   } catch (error) {
     console.error("");
     console.error("❌ Seeding failed with error:");
@@ -184,15 +190,12 @@ export async function clearSeedData(): Promise<void> {
       .where("authUserId", "in", seedUserIds)
       .execute();
 
-    await trx
-      .deleteFrom("User")
-      .where("id", "in", seedUserIds)
-      .execute();
+    await trx.deleteFrom("User").where("id", "in", seedUserIds).execute();
   });
 
   console.log("✓ Seed data cleared");
 }
 
-seed();
+void seed();
 
 export { seed, SEED_CONFIG };

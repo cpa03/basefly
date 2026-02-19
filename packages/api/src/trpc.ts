@@ -1,57 +1,14 @@
-/**
- * @fileoverview tRPC Configuration and Procedure Factory
- *
- * This module provides the core tRPC setup for the Basefly API layer,
- * including context creation, procedure factories, and middleware chains.
- *
- * @module @saasfly/api/trpc
- *
- * @example
- * ```typescript
- * import { createTRPCRouter, protectedProcedure } from "@saasfly/api/trpc";
- *
- * export const myRouter = createTRPCRouter({
- *   getMyData: protectedProcedure.query(({ ctx }) => {
- *     // ctx.userId is guaranteed to be a string here
- *     return fetchData(ctx.userId);
- *   }),
- * });
- * ```
- */
-
 import type { NextRequest } from "next/server";
 import { auth, currentUser, getAuth } from "@clerk/nextjs/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { ZodError } from "zod";
 
+import { isAdminEmail } from "@saasfly/common";
+
 import { createApiError, ErrorCode } from "./errors";
 import { EndpointType, getIdentifier, getLimiter } from "./rate-limiter";
 import { getOrGenerateRequestId } from "./request-id";
 import { transformer } from "./transformer";
-
-/**
- * Checks if a user email is in the admin list.
- * Used for server-side admin verification on security-critical routes.
- *
- * @param email - The email address to check (can be null/undefined)
- * @returns true if the email is in the ADMIN_EMAIL environment variable
- *
- * @example
- * ```typescript
- * if (isAdminEmail(user?.email)) {
- *   // Grant admin access
- * }
- * ```
- */
-function isAdminEmail(email: string | null | undefined): boolean {
-  if (!email) return false;
-  const adminEmails = process.env.ADMIN_EMAIL;
-  if (!adminEmails) return false;
-  return adminEmails
-    .split(",")
-    .map((e) => e.trim().toLowerCase())
-    .includes(email.toLowerCase());
-}
 
 export type { EndpointType } from "./rate-limiter";
 

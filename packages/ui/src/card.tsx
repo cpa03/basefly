@@ -12,23 +12,37 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, interactive = false, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cn(
-        "rounded-lg border bg-card text-card-foreground shadow-sm",
-        interactive && [
-          "cursor-pointer",
-          "transition-all duration-200 ease-out",
-          "motion-safe:hover:-translate-y-0.5",
-          "motion-safe:hover:shadow-md",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-        ],
-        className,
-      )}
-      {...props}
-    />
-  ),
+  ({ className, interactive = false, onClick, onKeyDown, ...props }, ref) => {
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (interactive && (event.key === "Enter" || event.key === " ")) {
+        event.preventDefault();
+        onClick?.(event as unknown as React.MouseEvent<HTMLDivElement>);
+      }
+      onKeyDown?.(event);
+    };
+
+    return (
+      <div
+        ref={ref}
+        role={interactive ? "button" : undefined}
+        tabIndex={interactive ? 0 : undefined}
+        className={cn(
+          "rounded-lg border bg-card text-card-foreground shadow-sm",
+          interactive && [
+            "cursor-pointer",
+            "transition-all duration-200 ease-out",
+            "motion-safe:hover:-translate-y-0.5",
+            "motion-safe:hover:shadow-md",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+          ],
+          className,
+        )}
+        onClick={onClick}
+        onKeyDown={handleKeyDown}
+        {...props}
+      />
+    );
+  },
 );
 Card.displayName = "Card";
 

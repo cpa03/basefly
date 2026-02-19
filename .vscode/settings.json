@@ -100,5 +100,5 @@
   "vitest.enable": true,
   "vitest.commandLine": "pnpm test",
   "prisma.fileWatcher": true,
-  "github-actions.workflows.pinned.workflows": [".github/workflows/ci.yml"]
+  "github-actions.workflows.pinned.workflows": [".github/workflows/on-pull.yml"]
 }

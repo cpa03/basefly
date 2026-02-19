@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { Z_INDEX } from "@saasfly/common/config/ui";
 import { cn } from "@saasfly/ui";
 
 interface SkipLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
@@ -73,7 +74,8 @@ const SkipLink = React.forwardRef<HTMLAnchorElement, SkipLinkProps>(
         onClick={handleClick}
         className={cn(
           "sr-only",
-          "focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100]",
+          "focus:not-sr-only focus:fixed focus:left-4 focus:top-4",
+          Z_INDEX.skipLink,
           "focus:flex focus:items-center focus:rounded-md focus:bg-primary focus:px-4 focus:py-3",
           "focus:text-sm focus:font-medium focus:text-primary-foreground focus:shadow-lg",
           "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",

@@ -11,6 +11,7 @@ import { EXTERNAL_URLS, FEATURE_FLAGS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { Toaster } from "@saasfly/ui/toaster";
 
+import { ConnectionStatus } from "~/components/connection-status";
 import { KeyboardShortcutsHelp } from "~/components/keyboard-shortcuts-help";
 import { PageProgressBar } from "~/components/page-progress";
 import { TailwindIndicator } from "~/components/tailwind-indicator";
@@ -128,6 +129,7 @@ export default function RootLayout({
             {FEATURE_FLAGS.analytics.vercel && <SpeedInsights />}
             <Toaster />
             <KeyboardShortcutsHelp />
+            <ConnectionStatus />
             <TailwindIndicator />
           </ThemeProvider>
         </body>

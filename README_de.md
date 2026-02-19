@@ -1,5 +1,3 @@
-Hier ist die überarbeitete Version der deutschen Übersetzung mit optimierter Grammatik und Rechtschreibung:
-
 <div align="center" width="100%">
     <img src="./saasfly-logo.svg" width="128" alt="" />
 </div>
@@ -30,7 +28,7 @@ Probieren Sie es selbst aus!
 
 Demo-Server (Standort: Washington, USA): <https://show.saasfly.io>
 
-Weitere Dokumentation finden Sie unter <https://document.saasfly.io>.
+Weitere Dokumentation finden Sie unter <https://docs.saasfly.io>.
 
 ## 🌟 Stern-Verlauf
 

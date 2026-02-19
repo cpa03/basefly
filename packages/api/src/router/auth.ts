@@ -2,10 +2,11 @@ import { unstable_noStore as noStore } from "next/cache";
 
 import { db } from "@saasfly/db";
 
+import { createApiError, ErrorCode } from "../errors";
+import { logger } from "../logger";
 import {
   createRateLimitedProtectedProcedure,
   createTRPCRouter,
-  EndpointType,
 } from "../trpc";
 
 export const authRouter = createTRPCRouter({
@@ -14,17 +15,34 @@ export const authRouter = createTRPCRouter({
       noStore();
       const userId = opts.ctx.userId as string;
       const requestId = opts.ctx.requestId;
-      const customer = await db
-        .selectFrom("Customer")
-        .select(["plan", "stripeCurrentPeriodEnd"])
-        .where("authUserId", "=", userId)
-        .executeTakeFirst();
 
-      if (!customer) return null;
-      return {
-        plan: customer.plan,
-        endsAt: customer.stripeCurrentPeriodEnd,
-      };
+      try {
+        const customer = await db
+          .selectFrom("Customer")
+          .select(["plan", "stripeCurrentPeriodEnd"])
+          .where("authUserId", "=", userId)
+          .executeTakeFirst();
+
+        if (!customer) return null;
+        return {
+          plan: customer.plan,
+          endsAt: customer.stripeCurrentPeriodEnd,
+        };
+      } catch (error) {
+        logger.error(
+          {
+            userId,
+            requestId,
+            error: error instanceof Error ? error.message : String(error),
+          },
+          "Failed to fetch subscription",
+        );
+        throw createApiError(
+          ErrorCode.INTERNAL_SERVER_ERROR,
+          "Failed to fetch subscription",
+          error,
+        );
+      }
     },
   ),
 });

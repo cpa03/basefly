@@ -69,7 +69,7 @@ describe("handleEvent", () => {
         authUserId: "user_123",
       };
 
-      vi.mocked(stripe.subscriptions.retrieve).mockResolvedValue(
+      vi.mocked(stripe!.subscriptions.retrieve).mockResolvedValue(
         mockSubscription as any,
       );
 
@@ -97,7 +97,7 @@ describe("handleEvent", () => {
 
       await handleEvent(mockEvent);
 
-      expect(stripe.subscriptions.retrieve).toHaveBeenCalledWith("sub_123");
+      expect(stripe!.subscriptions.retrieve).toHaveBeenCalledWith("sub_123");
       expect(db.updateTable).toHaveBeenCalledWith("Customer");
       expect(mockUpdateWhere).toHaveBeenCalledWith("id", "=", mockCustomer.id);
       expect(mockSet).toHaveBeenCalledWith({
@@ -123,7 +123,7 @@ describe("handleEvent", () => {
         metadata: {},
       };
 
-      vi.mocked(stripe.subscriptions.retrieve).mockResolvedValue(
+      vi.mocked(stripe!.subscriptions.retrieve).mockResolvedValue(
         mockSubscription as any,
       );
 
@@ -157,7 +157,7 @@ describe("handleEvent", () => {
         },
       };
 
-      vi.mocked(stripe.subscriptions.retrieve).mockResolvedValue(
+      vi.mocked(stripe!.subscriptions.retrieve).mockResolvedValue(
         mockSubscription as any,
       );
 
@@ -204,7 +204,7 @@ describe("handleEvent", () => {
         current_period_end: 1234567890,
       };
 
-      vi.mocked(stripe.subscriptions.retrieve).mockResolvedValue(
+      vi.mocked(stripe!.subscriptions.retrieve).mockResolvedValue(
         mockSubscription as any,
       );
 
@@ -233,7 +233,7 @@ describe("handleEvent", () => {
 
       await handleEvent(mockEvent);
 
-      expect(stripe.subscriptions.retrieve).toHaveBeenCalledWith("sub_123");
+      expect(stripe!.subscriptions.retrieve).toHaveBeenCalledWith("sub_123");
       expect(db.updateTable).toHaveBeenCalledWith("Customer");
       expect(mockUpdateWhere).toHaveBeenCalledWith("id", "=", mockCustomer.id);
     });
@@ -254,7 +254,7 @@ describe("handleEvent", () => {
         metadata: {},
       };
 
-      vi.mocked(stripe.subscriptions.retrieve).mockResolvedValue(
+      vi.mocked(stripe!.subscriptions.retrieve).mockResolvedValue(
         mockSubscription as any,
       );
 
@@ -282,7 +282,7 @@ describe("handleEvent", () => {
         },
       };
 
-      vi.mocked(stripe.subscriptions.retrieve).mockResolvedValue(
+      vi.mocked(stripe!.subscriptions.retrieve).mockResolvedValue(
         mockSubscription as any,
       );
 

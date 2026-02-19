@@ -73,7 +73,7 @@ describe("createBillingSession", () => {
     if (capturedFn) {
       await capturedFn();
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(stripe.billingPortal.sessions.create).toHaveBeenCalledWith({
+      expect(stripe!.billingPortal.sessions.create).toHaveBeenCalledWith({
         customer: "cus_abc",
         return_url: "https://example.com/return",
       });
@@ -172,7 +172,7 @@ describe("createCheckoutSession", () => {
       await capturedFn();
       const stripeCall =
         // eslint-disable-next-line @typescript-eslint/unbound-method
-        (vi.mocked(stripe.checkout.sessions.create).mock.calls[0] as any)?.[1];
+        (vi.mocked(stripe!.checkout.sessions.create).mock.calls[0] as any)?.[1];
       expect(stripeCall?.idempotencyKey).toBeDefined();
       expect(stripeCall?.idempotencyKey).toMatch(/^checkout_session_\d+_/);
     }
@@ -196,7 +196,7 @@ describe("createCheckoutSession", () => {
       await capturedFn();
       const stripeCall =
         // eslint-disable-next-line @typescript-eslint/unbound-method
-        (vi.mocked(stripe.checkout.sessions.create).mock.calls[0] as any)?.[1];
+        (vi.mocked(stripe!.checkout.sessions.create).mock.calls[0] as any)?.[1];
       expect(stripeCall?.idempotencyKey).toBe("custom_key_123");
     }
   });
@@ -218,9 +218,9 @@ describe("createCheckoutSession", () => {
     if (capturedFn) {
       await capturedFn();
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(stripe.checkout.sessions.create).toHaveBeenCalled();
+      expect(stripe!.checkout.sessions.create).toHaveBeenCalled();
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      const callArgs = vi.mocked(stripe.checkout.sessions.create).mock
+      const callArgs = vi.mocked(stripe!.checkout.sessions.create).mock
         .calls[0] as any;
       expect(callArgs?.[1]?.idempotencyKey).toBeDefined();
     }
@@ -296,7 +296,7 @@ describe("createCheckoutSession", () => {
     if (capturedFn) {
       await capturedFn();
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(stripe.checkout.sessions.create).toHaveBeenCalledWith(
+      expect(stripe!.checkout.sessions.create).toHaveBeenCalledWith(
         {
           ...params,
           metadata: {},
@@ -346,7 +346,7 @@ describe("retrieveSubscription", () => {
     if (capturedFn) {
       await capturedFn();
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(stripe.subscriptions.retrieve).toHaveBeenCalledWith("sub_abc");
+      expect(stripe!.subscriptions.retrieve).toHaveBeenCalledWith("sub_abc");
     }
   });
 

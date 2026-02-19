@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Simple JSON logger with request ID support for distributed tracing
  * Logs are disabled in production to avoid console noise

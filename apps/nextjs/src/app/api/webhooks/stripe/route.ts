@@ -6,6 +6,10 @@ import { handleEvent, stripe } from "@saasfly/stripe";
 import { env } from "~/env.mjs";
 import { logger } from "~/lib/logger";
 
+// Vercel best practice: Set maxDuration for webhooks that may require
+// longer processing time for database operations and external API calls
+export const maxDuration = 60;
+
 const handler = async (req: NextRequest) => {
   const payload = await req.text();
   const signature = req.headers.get("Stripe-Signature");

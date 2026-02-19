@@ -94,7 +94,12 @@ interface UseFormSubmissionReturn<T> {
 export function useFormSubmission<T>(
   options: UseFormSubmissionOptions = {},
 ): UseFormSubmissionReturn<T> {
-  const { onStart, onSuccess, onError, resetDelay = FORM_TIMING.resetDelay } = options;
+  const {
+    onStart,
+    onSuccess,
+    onError,
+    resetDelay = FORM_TIMING.resetDelay,
+  } = options;
 
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);

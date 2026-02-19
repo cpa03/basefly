@@ -25,7 +25,9 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
     "security:audit": "pnpm audit --audit-level=moderate",
-    "security:check": "pnpm audit --audit-level=high && pnpm outdated"
+    "security:check": "pnpm audit --audit-level=high && pnpm outdated",
+    "dx:check": "pnpm typecheck && pnpm lint && pnpm test && pnpm security:audit",
+    "dx:fix": "pnpm lint:fix && pnpm format:fix"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "4.7.1",

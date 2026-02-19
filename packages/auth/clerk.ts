@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 
 import { env } from "./env.mjs";
+import { logger } from "./logger";
 
 export function isClerkEnabled(): boolean {
   const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
@@ -30,7 +31,7 @@ export async function getSessionUser() {
     }
     return sessionClaims?.user;
   } catch (error) {
-    console.error("Failed to get Clerk session user:", error);
+    logger.error("Failed to get Clerk session user", error);
     return null;
   }
 }

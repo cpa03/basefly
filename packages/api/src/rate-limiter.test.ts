@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { logger } from "./logger";
 import {
   getIdentifier,
   getLimiter,
@@ -497,5 +498,221 @@ describe("RateLimiter - Edge Cases and Boundary Conditions", () => {
     expect(exhausted.success).toBe(false);
 
     limiter.destroy();
+  });
+});
+
+describe("RateLimiter - Logging", () => {
+  let limiter: RateLimiter;
+  let loggerWarnSpy: ReturnType<typeof vi.spyOn>;
+  let loggerDebugSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    vi.useFakeTimers();
+    loggerWarnSpy = vi.spyOn(logger, "warn").mockImplementation(() => {});
+    loggerDebugSpy = vi.spyOn(logger, "debug").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    if (limiter) {
+      limiter.destroy();
+    }
+    vi.useRealTimers();
+    loggerWarnSpy.mockRestore();
+    loggerDebugSpy.mockRestore();
+  });
+
+  describe("Rate limit exceeded logging", () => {
+    it("should log warning when rate limit is exceeded", () => {
+      limiter = new RateLimiter({
+        maxRequests: 2,
+        windowMs: 1000,
+      });
+
+      // Use up the tokens
+      limiter.check("user1");
+      limiter.check("user1");
+
+      // This should trigger the warning log
+      const result = limiter.check("user1");
+
+      expect(result.success).toBe(false);
+      expect(loggerWarnSpy).toHaveBeenCalledTimes(1);
+      expect(loggerWarnSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          identifier: "user1",
+          remaining: 0,
+          windowMs: 1000,
+          maxRequests: 2,
+        }),
+        "Rate limit exceeded",
+      );
+    });
+
+    it("should include resetAt timestamp in warning log", () => {
+      limiter = new RateLimiter({
+        maxRequests: 1,
+        windowMs: 1000,
+      });
+
+      limiter.check("user1");
+      limiter.check("user1");
+
+      const callArgs = loggerWarnSpy.mock.calls[0];
+      expect(callArgs).toBeDefined();
+      expect(callArgs?.[0]).toHaveProperty("resetAt");
+      expect(typeof callArgs?.[0]?.resetAt).toBe("number");
+    });
+
+    it("should log warning for each subsequent request after limit exceeded", () => {
+      limiter = new RateLimiter({
+        maxRequests: 1,
+        windowMs: 1000,
+      });
+
+      limiter.check("user1");
+      limiter.check("user1");
+      limiter.check("user1");
+      limiter.check("user1");
+
+      expect(loggerWarnSpy).toHaveBeenCalledTimes(3);
+    });
+
+    it("should not log warning when requests are within limit", () => {
+      limiter = new RateLimiter({
+        maxRequests: 10,
+        windowMs: 1000,
+      });
+
+      for (let i = 0; i < 5; i++) {
+        limiter.check("user1");
+      }
+
+      expect(loggerWarnSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("Initialization logging", () => {
+    it("should log debug on initialization", () => {
+      limiter = new RateLimiter({
+        maxRequests: 5,
+        windowMs: 1000,
+      });
+
+      expect(loggerDebugSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          maxRequests: 5,
+          windowMs: 1000,
+        }),
+        "Rate limiter initialized",
+      );
+    });
+  });
+
+  describe("Reset logging", () => {
+    it("should log debug when reset is called on existing identifier", () => {
+      limiter = new RateLimiter({
+        maxRequests: 5,
+        windowMs: 1000,
+      });
+
+      limiter.check("user1");
+      limiter.reset("user1");
+
+      expect(loggerDebugSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          identifier: "user1",
+        }),
+        "Rate limit reset for identifier",
+      );
+    });
+
+    it("should not log when reset is called on non-existent identifier", () => {
+      limiter = new RateLimiter({
+        maxRequests: 5,
+        windowMs: 1000,
+      });
+
+      // Clear initialization log
+      loggerDebugSpy.mockClear();
+
+      limiter.reset("nonexistent");
+
+      // Should only have the destroy log, not a reset log
+      const resetCalls = loggerDebugSpy.mock.calls.filter(
+        (call: unknown[]) => call[1] === "Rate limit reset for identifier",
+      );
+      expect(resetCalls).toHaveLength(0);
+    });
+  });
+
+  describe("Destroy logging", () => {
+    it("should log debug when destroy is called with entries", () => {
+      limiter = new RateLimiter({
+        maxRequests: 5,
+        windowMs: 1000,
+      });
+
+      limiter.check("user1");
+      limiter.check("user2");
+      limiter.check("user3");
+
+      limiter.destroy();
+
+      expect(loggerDebugSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          clearedEntries: 3,
+        }),
+        "Rate limiter destroyed",
+      );
+    });
+
+    it("should log debug when destroy is called with no entries", () => {
+      limiter = new RateLimiter({
+        maxRequests: 5,
+        windowMs: 1000,
+      });
+
+      limiter.destroy();
+
+      expect(loggerDebugSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          clearedEntries: 0,
+        }),
+        "Rate limiter destroyed",
+      );
+    });
+  });
+
+  describe("Cleanup logging", () => {
+    it("should log debug when cleanup removes entries", () => {
+      limiter = new RateLimiter({
+        maxRequests: 5,
+        windowMs: 100,
+      });
+
+      // Create some entries
+      limiter.check("user1");
+      limiter.check("user2");
+
+      // Clear initialization log
+      loggerDebugSpy.mockClear();
+
+      // Advance time past 2x window duration (200ms) to make entries eligible for cleanup
+      // Need to advance enough for both entries to be > 200ms old
+      vi.advanceTimersByTime(250);
+
+      // Trigger another check which will also run the interval callback
+      // The cleanup runs on interval, so we need to trigger it by advancing to the next timer
+      vi.advanceTimersToNextTimer();
+
+      // At this point cleanup should have run and logged
+      const cleanupCalls = loggerDebugSpy.mock.calls.filter(
+        (call: unknown[]) => call[1] === "Rate limiter cleanup completed",
+      );
+
+      expect(cleanupCalls.length).toBeGreaterThan(0);
+      expect(cleanupCalls[0]?.[0]).toHaveProperty("cleanedCount");
+      expect(cleanupCalls[0]?.[0]).toHaveProperty("remainingEntries");
+    });
   });
 });

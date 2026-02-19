@@ -31,6 +31,7 @@ export default function ThemeToggle(props: {
           variant="ghost"
           size="sm"
           className="gap-1 px-2 text-lg font-semibold md:text-base"
+          aria-label={`Change theme (current: ${theme ?? "system"})`}
         >
           {triggerIcon}
           <span className="capitalize">{theme}</span>

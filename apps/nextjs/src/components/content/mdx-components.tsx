@@ -124,7 +124,7 @@ const components = {
     return (
       <img
         className={cn("rounded-md border", className)}
-        alt={alt}
+        alt={alt ?? ""}
         src={src}
         loading="lazy"
         {...props}

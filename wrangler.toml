@@ -1,30 +1,36 @@
 # Cloudflare Pages Configuration for Basefly
 # Documentation: https://developers.cloudflare.com/pages/platform/build-configuration
 # Best Practices: https://developers.cloudflare.com/workers/best-practices/
+# Next.js on Pages: https://developers.cloudflare.com/pages/framework-guides/nextjs/
 
 name = "basefly"
 compatibility_date = "2026-02-18"
-compatibility_flags = ["nodejs_compat"]
+# nodejs_compat_v2 provides better Node.js API support for Next.js
+# no_op ensures compatibility with @cloudflare/next-on-pages
+compatibility_flags = ["nodejs_compat", "nodejs_compat_v2"]
 
 # Pages configuration
-# Note: For Next.js apps, use @cloudflare/next-on-pages for full compatibility
-pages_build_output_dir = "apps/nextjs/.next"
+# Output directory for @cloudflare/next-on-pages
+# Note: The actual output is .vercel/output/static after running next-on-pages
+pages_build_output_dir = ".vercel/output/static"
 
-# Build configuration
+# Build configuration for Cloudflare Pages
 [build]
-command = "pnpm install && pnpm run build"
+command = "pnpm install && pnpm --filter=@saasfly/nextjs run build:cloudflare"
 
 # Environment variables (set via Cloudflare Dashboard or wrangler secrets)
-# These are placeholders - actual values should be set securely
+# Required environment variables are documented in docs/ci-cd.md
 [vars]
 NODE_VERSION = "20"
 
 # Production environment
 [env.production]
 name = "basefly"
-routes = [
-  { pattern = "/*", zone_name = "saasfly.io" }
-]
+# Routes are configured in Cloudflare Dashboard for Pages projects
+# Uncomment and adjust if using Workers with custom domains
+# routes = [
+#   { pattern = "/*", zone_name = "saasfly.io" }
+# ]
 
 # Preview environment for PRs
 [env.preview]
@@ -35,19 +41,37 @@ name = "basefly-preview"
 [placement]
 mode = "smart"
 
-# Limits configuration (adjust based on your plan)
+# Limits configuration (adjust based on your Cloudflare plan)
 # https://developers.cloudflare.com/workers/platform/limits
+# Bundled plans: 10ms CPU, Unbound: up to 30s
 [limits]
 cpu_ms = 50000
 
-# Development settings
+# Development settings for local testing with wrangler
 [dev]
 port = 8788
 local_protocol = "http"
+# Persist KV/D1 data locally for development
+persist = true
 
-# Observability
+# Observability and logging
+# https://developers.cloudflare.com/workers/observability/
 [observability]
 enabled = true
+head_sampling_rate = 1
+
+# Static asset rules for better caching
+# These rules apply to static files served from _next/static
+[[rules]]
+type = "ESModule"
+globs = ["**/*.js", "**/*.mjs"]
+fallthrough = true
+
+# Serve static assets with proper MIME types
+[[rules]]
+type = "CompiledWasm"
+globs = ["**/*.wasm"]
+fallthrough = true
 
 # Note: For full Next.js compatibility on Cloudflare Pages:
 # 1. Install: pnpm add -D @cloudflare/next-on-pages

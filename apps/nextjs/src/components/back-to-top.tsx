@@ -142,14 +142,10 @@ const BackToTop = React.forwardRef<HTMLButtonElement, BackToTopProps>(
                 "transition-all",
                 ANIMATION.duration.normal,
                 ANIMATION.easing.default,
-                // Visibility states with motion-safe
-                "motion-safe:transition-all",
+                // Visibility states - motion-safe uses smooth transitions, reduced-motion is instant
                 isVisible
-                  ? "pointer-events-auto motion-safe:scale-100 motion-safe:opacity-100"
-                  : "pointer-events-none motion-safe:scale-75 motion-safe:opacity-0",
-                // Reduced motion fallback
-                "pointer-events-none scale-75 opacity-0",
-                isVisible && "pointer-events-auto scale-100 opacity-100",
+                  ? "pointer-events-auto motion-safe:scale-100 motion-safe:opacity-100 scale-100 opacity-100"
+                  : "pointer-events-none motion-safe:scale-75 motion-safe:opacity-0 scale-75 opacity-0",
                 className,
               )}
               aria-label="Back to top (Ctrl+Home)"

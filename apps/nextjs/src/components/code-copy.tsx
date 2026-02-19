@@ -203,6 +203,10 @@ export function CodeCopy() {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
+
+      <span className="sr-only" aria-live="polite" aria-atomic="true" role="status">
+        {copied ? "Command copied to clipboard" : ""}
+      </span>
     </div>
   );
 }

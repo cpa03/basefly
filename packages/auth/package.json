@@ -6,7 +6,7 @@
   "types": "./index.ts",
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
-    "lint": "eslint .",
+    "lint": "eslint . --cache --cache-location 'node_modules/.cache/.eslintcache'",
     "format": "prettier --check '**/*.{mjs,ts,json}' ",
     "typecheck": "tsc --noEmit"
   },

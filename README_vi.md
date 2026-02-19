@@ -28,7 +28,7 @@ Tự mình thử nó!
 
 Máy chủ demo (Địa điểm: Washington, Hoa Kỳ): <https://show.saasfly.io>
 
-Để xem thêm tài liệu, hãy truy cập <https://document.saasfly.io>
+Để xem thêm tài liệu, hãy truy cập <https://docs.saasfly.io>
 
 ## 🌟 Lịch sử Star
 

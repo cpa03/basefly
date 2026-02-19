@@ -16,6 +16,15 @@ const stripeCircuitBreaker = new CircuitBreaker(
   CIRCUIT_BREAKER_CONFIG.resetTimeoutMs,
 );
 
+function requireStripeClient(): NonNullable<typeof stripe> {
+  if (!stripe) {
+    throw new Error(
+      "Stripe is not configured. Set STRIPE_API_KEY environment variable.",
+    );
+  }
+  return stripe;
+}
+
 /**
  * Generate a unique idempotency key for Stripe operations
  *
@@ -75,6 +84,7 @@ export async function createBillingSession(
   options?: { requestId?: string },
 ) {
   const { requestId } = options ?? {};
+  const client = requireStripeClient();
 
   logger.info("Creating Stripe billing portal session", {
     requestId,
@@ -83,7 +93,7 @@ export async function createBillingSession(
 
   const result = await safeStripeCall(
     () =>
-      stripe.billingPortal.sessions.create({
+      client.billingPortal.sessions.create({
         customer: customerId,
         return_url: returnUrl,
       }),
@@ -135,6 +145,7 @@ export async function createCheckoutSession(
 ) {
   const { requestId } = options ?? {};
   const key = idempotencyKey ?? generateIdempotencyKey("checkout_session");
+  const client = requireStripeClient();
 
   logger.info("Creating Stripe checkout session", {
     requestId,
@@ -143,7 +154,7 @@ export async function createCheckoutSession(
 
   const result = await safeStripeCall(
     () =>
-      stripe.checkout.sessions.create(
+      client.checkout.sessions.create(
         {
           ...params,
           metadata: addRequestMetadata(requestId, params.metadata),
@@ -188,11 +199,12 @@ export async function retrieveSubscription(
   options?: { requestId?: string },
 ) {
   const { requestId } = options ?? {};
+  const client = requireStripeClient();
 
   logger.info("Retrieving Stripe subscription", { requestId, subscriptionId });
 
   const result = await safeStripeCall(
-    () => stripe.subscriptions.retrieve(subscriptionId),
+    () => client.subscriptions.retrieve(subscriptionId),
     {
       serviceName: "Stripe Subscriptions",
       circuitBreaker: stripeCircuitBreaker,

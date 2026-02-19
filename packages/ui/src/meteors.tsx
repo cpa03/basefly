@@ -9,22 +9,25 @@ export const Meteors = ({
   number?: number;
   className?: string;
 }) => {
-  const meteors = new Array(number ?? 20).fill(true);
+  const meteorCount = number ?? 20;
+  const meteorStylesRef = React.useRef<
+    { left: string; animationDelay: string; animationDuration: string }[]
+  >([]);
 
-  const meteorStyles = React.useMemo(
-    () =>
-      meteors.map(() => ({
-        left: Math.floor(Math.random() * (400 - -400) + -400) + "px",
-        animationDelay: Math.random() * (0.8 - 0.2) + 0.2 + "s",
-        animationDuration: Math.floor(Math.random() * (10 - 2) + 2) + "s",
-      })),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [number],
-  );
+  if (meteorStylesRef.current.length !== meteorCount) {
+    /* eslint-disable react-hooks/purity -- Initialize random styles once per meteor count */
+    meteorStylesRef.current = Array.from({ length: meteorCount }, () => ({
+      left: Math.floor(Math.random() * (400 - -400) + -400) + "px",
+      animationDelay: Math.random() * (0.8 - 0.2) + 0.2 + "s",
+      animationDuration: Math.floor(Math.random() * (10 - 2) + 2) + "s",
+    }));
+    /* eslint-enable react-hooks/purity */
+  }
+  const meteorStyles = meteorStylesRef.current;
 
   return (
     <>
-      {meteors.map((el, idx) => (
+      {meteorStyles.map((style, idx) => (
         <span
           key={"meteor" + idx}
           className={cn(
@@ -34,7 +37,7 @@ export const Meteors = ({
           )}
           style={{
             top: 0,
-            ...meteorStyles[idx],
+            ...style,
           }}
         ></span>
       ))}

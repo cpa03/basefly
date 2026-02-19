@@ -241,6 +241,7 @@ const user = await db
 | User | email | Unique | Email lookup |
 | Account | [provider, providerAccountId] | Unique | OAuth lookup |
 | Customer | authUserId | Index | User lookup |
+| Customer | plan | Index | Subscription tier filtering |
 | Customer | [authUserId, stripeCurrentPeriodEnd] | Composite | Subscription status checks |
 | K8sClusterConfig | authUserId | Index | User lookup |
 | K8sClusterConfig | deletedAt | Index | Soft-delete filtering |

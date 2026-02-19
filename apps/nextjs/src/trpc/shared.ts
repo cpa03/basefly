@@ -7,25 +7,21 @@ import {
 } from "@trpc/client";
 
 import type { AppRouter } from "@saasfly/api";
-import { DEV_URLS } from "@saasfly/common";
+import { getBaseUrl as getSharedBaseUrl } from "@saasfly/common";
 
 import { env } from "~/env.mjs";
 
 export { transformer } from "@saasfly/api/transformer";
 
-const getBaseUrl = () => {
+/**
+ * Get the base URL for API requests.
+ * Uses shared getBaseUrl from @saasfly/common for consistency across packages.
+ * Returns empty string in browser context (client-side uses relative URLs).
+ */
+const getBaseUrl = (): string => {
   if (typeof window !== "undefined") return "";
 
-  const appUrl = env.NEXT_PUBLIC_APP_URL;
-  if (appUrl) return appUrl;
-
-  if (process.env.NODE_ENV === "development") {
-    return DEV_URLS.localhost;
-  }
-
-  throw new Error(
-    "NEXT_PUBLIC_APP_URL is not defined. Please set it in your environment variables.",
-  );
+  return getSharedBaseUrl(env.NEXT_PUBLIC_APP_URL, process.env.NODE_ENV);
 };
 
 const lambdas = [""];

@@ -29,6 +29,23 @@ const HTTP_SECURITY_HEADERS = {
   REFERRER_POLICY: "origin-when-cross-origin",
   PERMISSIONS_POLICY: "camera=(), microphone=(), geolocation=()",
   DNS_PREFETCH_CONTROL: "on",
+  // Content-Security-Policy for XSS protection
+  // Note: 'unsafe-eval' and 'unsafe-inline' are needed for Next.js dev mode and some UI libraries
+  // In production, consider using nonces/hashes for stricter CSP
+  CSP: [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://challenges.cloudflare.com",
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self' data: blob: https: http:",
+    "font-src 'self' data:",
+    "connect-src 'self' https://api.stripe.com https://clerk.basefly.io https://clerk.com https://*.clerk.com wss://*.clerk.com",
+    "frame-src 'self' https://challenges.cloudflare.com https://js.stripe.com https://hooks.stripe.com",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'self'",
+    "upgrade-insecure-requests",
+  ].join("; "),
 };
 
 /** @type {import("next").NextConfig} */
@@ -138,6 +155,10 @@ const config = {
           {
             key: "Permissions-Policy",
             value: HTTP_SECURITY_HEADERS.PERMISSIONS_POLICY,
+          },
+          {
+            key: "Content-Security-Policy",
+            value: HTTP_SECURITY_HEADERS.CSP,
           },
           {
             key: "Cache-Control",

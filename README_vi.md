@@ -2,7 +2,7 @@
     <img src="./saasfly-logo.svg" width="128" alt="" />
 </div>
 
-# Basefly </br>
+# Basefly
 <a href="https://trendshift.io/repositories/8929" target="_blank"><img src="https://trendshift.io/api/badge/repositories/8929" alt="basefly%2Fbasefly | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
 [![Trạng thái quy trình làm việc GitHub Actions][check-workflow-badge]][check-workflow-badge-link] [![Giấy phép GitHub][github-license-badge]][github-license-badge-link]  [![Discord][discord-badge]][discord-badge-link] [![Saasfly][made-by-nextify-badge]][made-by-nextify-badge-link]
@@ -271,14 +271,22 @@ Dự án này được cấp phép theo Giấy phép MIT. Để biết thêm th�
 
 Dự án này lấy cảm hứng từ [Taxonomy](https://github.com/shadcn-ui/taxonomy) của shadcn và [create-t3-turbo](https://github.com/t3-oss/create-t3-turbo)của t3-oss.
 
+## 👨‍💻 Người đóng góp
+
+<a href="https://github.com/cpa03/basefly/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=basefly/basefly" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
+
 <!-- Huy hiệu và liên kết -->
 
-[check-workflow-badge]: https://img.shields.io/github/actions/workflow/status/cpa03/basefly/ci.yml?label=ci
+[check-workflow-badge]: https://img.shields.io/github/actions/workflow/status/cpa03/basefly/on-pull.yml?label=ci
 [github-license-badge]: https://img.shields.io/badge/License-MIT-green.svg
 [discord-badge]: https://img.shields.io/discord/1204690198382911488?color=7b8dcd&link=https%3A%2F%2Fsaasfly.io%2Fdiscord
 [made-by-nextify-badge]: https://img.shields.io/badge/made_by-nextify-blue?color=FF782B&link=https://nextify.ltd/
 
-[check-workflow-badge-link]: https://github.com/cpa03/basefly/actions/workflows/check.yml
+[check-workflow-badge-link]: https://github.com/cpa03/basefly/actions/workflows/on-pull.yml
 [github-license-badge-link]: https://github.com/cpa03/basefly/blob/main/LICENSE
 [discord-badge-link]: https://discord.gg/8SwSX43wnD
 [made-by-nextify-badge-link]: https://nextify.ltd

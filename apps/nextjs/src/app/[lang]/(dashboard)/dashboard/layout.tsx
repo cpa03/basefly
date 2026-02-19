@@ -44,7 +44,7 @@ export default async function DashboardLayout({
             params={{ lang: `${lang}` }}
           />
           <div className="flex items-center space-x-3">
-            <LocaleChange url={"/dashboard"} />
+            <LocaleChange url={"/dashboard"} currentLocale={lang} />
             <UserAccountNav
               user={{
                 name: user.name,

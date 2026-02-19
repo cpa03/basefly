@@ -1,12 +1,28 @@
 import { NextResponse, type NextRequest } from "next/server";
 
 import { HTTP_STATUS } from "@saasfly/common";
-import { handleEvent, stripe } from "@saasfly/stripe";
+import {
+  getStripeClientOrThrow,
+  handleEvent,
+  isStripeConfigured,
+} from "@saasfly/stripe";
 
 import { env } from "~/env.mjs";
 import { logger } from "~/lib/logger";
 
+// Vercel best practice: Set maxDuration for webhooks that may require
+// longer processing time for database operations and external API calls
+export const maxDuration = 60;
+
 const handler = async (req: NextRequest) => {
+  if (!isStripeConfigured()) {
+    logger.error("Stripe is not configured, rejecting webhook");
+    return NextResponse.json(
+      { error: "Stripe not configured" },
+      { status: HTTP_STATUS.SERVICE_UNAVAILABLE },
+    );
+  }
+
   const payload = await req.text();
   const signature = req.headers.get("Stripe-Signature");
 
@@ -19,7 +35,8 @@ const handler = async (req: NextRequest) => {
   }
 
   try {
-    const event = stripe.webhooks.constructEvent(
+    const client = getStripeClientOrThrow();
+    const event = client.webhooks.constructEvent(
       payload,
       signature,
       env.STRIPE_WEBHOOK_SECRET,

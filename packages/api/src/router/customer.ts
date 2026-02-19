@@ -86,7 +86,16 @@ export const customerRouter = createTRPCRouter({
     .input(insertCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       const { userId } = input;
+      const ctxUserId = ctx.userId;
       const requestId = ctx.requestId;
+
+      if (!ctxUserId || userId !== ctxUserId) {
+        logger.warn(
+          { userId, ctxUserId, requestId },
+          "Unauthorized customer creation attempt",
+        );
+        return { success: false, reason: "unauthorized" };
+      }
 
       logger.info({ userId, requestId }, "Creating customer");
 
@@ -124,7 +133,16 @@ export const customerRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       noStore();
       const { userId } = input;
+      const ctxUserId = ctx.userId;
       const requestId = ctx.requestId;
+
+      if (!ctxUserId || userId !== ctxUserId) {
+        logger.warn(
+          { userId, ctxUserId, requestId },
+          "Unauthorized customer query attempt",
+        );
+        return null;
+      }
 
       logger.debug({ userId, requestId }, "Querying customer");
 

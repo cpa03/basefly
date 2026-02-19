@@ -167,6 +167,51 @@ The project is configured for Vercel deployment with:
 - **Output Directory**: `apps/nextjs/.next`
 - **Regions**: `iad1` (US East), `sfo1` (US West)
 
+### Cloudflare Pages Integration
+
+The project also supports deployment to Cloudflare Pages as an alternative to Vercel.
+
+**Configuration Files:**
+- `wrangler.toml` - Cloudflare Workers/Pages configuration
+- `wrangler.jsonc` - JSON configuration with schema support
+
+**Build Configuration:**
+- **Framework**: Next.js
+- **Build Command**: `pnpm install && turbo run build --filter=@saasfly/nextjs`
+- **Output Directory**: `apps/nextjs/.next`
+- **Node.js Version**: 20
+
+**Environment Variables:**
+
+Set these in Cloudflare Dashboard → Pages → Settings → Environment variables:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `NEXT_PUBLIC_APP_URL` | Yes | Application URL |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Yes | Clerk public key |
+| `CLERK_SECRET_KEY` | Yes | Clerk secret key |
+| `STRIPE_API_KEY` | Yes | Stripe API key |
+| `STRIPE_WEBHOOK_SECRET` | Yes | Stripe webhook secret |
+| `POSTGRES_URL` | Yes | PostgreSQL connection string |
+| `RESEND_API_KEY` | No | Email service key |
+| `ADMIN_EMAIL` | No | Admin email addresses |
+
+**Middleware Compatibility:**
+
+The project uses a proper `middleware.ts` file for:
+- i18n routing
+- Clerk authentication
+- Request ID tracking
+- Content Security Policy headers
+
+**Edge Runtime:**
+
+The `/api/trpc/edge` route uses Edge Runtime, compatible with Cloudflare Workers.
+
+**Smart Placement:**
+
+Cloudflare Smart Placement is enabled for optimal global distribution.
+
 ### Function Configuration
 
 | Path | Memory | Max Duration |

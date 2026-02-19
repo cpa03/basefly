@@ -1,6 +1,7 @@
 import * as React from "react";
 import Link from "next/link";
 
+import { Z_INDEX } from "@saasfly/common/config/ui";
 import { cn } from "@saasfly/ui";
 import { Logo } from "@saasfly/ui/icons";
 
@@ -20,7 +21,9 @@ export function MobileNav({ items, children, menuItemClick }: MobileNavProps) {
     <section
       id="mobile-navigation"
       className={cn(
-        "fixed inset-0 top-16 z-50 grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto p-6 pb-32 shadow-md animate-in slide-in-from-bottom-80 md:hidden",
+        "fixed inset-0 top-16",
+        Z_INDEX.modal,
+        "grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto p-6 pb-32 shadow-md animate-in slide-in-from-bottom-80 md:hidden",
       )}
     >
       <div className="relative z-20 grid gap-6 rounded-md bg-popover p-4 text-popover-foreground shadow-md">

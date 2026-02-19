@@ -227,3 +227,41 @@ export const NAVBAR_CONFIG = {
   /** Scroll threshold in pixels before triggering navbar style change */
   scrollThreshold: 50,
 } as const;
+
+/**
+ * Z-Index configuration
+ * Centralized z-index values for consistent layering across the application
+ *
+ * Usage: Import Z_INDEX and use in className templates:
+ * ```tsx
+ * import { Z_INDEX } from "@saasfly/common";
+ * <div className={`fixed ${Z_INDEX.modal}`}>...</div>
+ * ```
+ */
+export const Z_INDEX = {
+  /** Base layer - default stacking context */
+  base: "z-0",
+  /** Low priority layer - behind main content */
+  behind: "z-[-1]",
+  /** Normal content layer */
+  content: "z-10",
+  /** Above content - for overlays within sections */
+  overlay: "z-20",
+  /** Sidebar and navigation elements */
+  sidebar: "z-30",
+  /** Sticky headers and navigation bars */
+  navbar: "z-40",
+  /** Modals, dialogs, and overlay containers */
+  modal: "z-50",
+  /** Toast notifications - above modals */
+  toast: "z-[100]",
+  /** Tooltips and popovers */
+  tooltip: "z-50",
+  /** Skip links for accessibility */
+  skipLink: "z-[100]",
+  /** Progress bar - highest priority UI element */
+  progressBar: "z-[9999]",
+} as const;
+
+/** Type for z-index keys */
+export type ZIndexKey = keyof typeof Z_INDEX;

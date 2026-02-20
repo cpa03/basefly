@@ -32,7 +32,8 @@
     "security:audit": "pnpm audit --audit-level=moderate",
     "security:check": "pnpm audit --audit-level=high && pnpm outdated",
     "dx:check": "pnpm typecheck && pnpm lint && pnpm test && pnpm security:audit",
-    "dx:fix": "pnpm lint:fix && pnpm format:fix"
+    "dx:fix": "pnpm lint:fix && pnpm format:fix",
+    "env:verify": "node -e \"const fs=require('fs');const envExample=fs.existsSync('.env.example');const envLocal=fs.existsSync('.env.local');if(!envExample){console.error('❌ .env.example not found');process.exit(1)}if(!envLocal){console.warn('⚠️  .env.local not found. Copy .env.example to .env.local and configure your environment variables.');console.log('  Run: cp .env.example .env.local')}else{console.log('✅ Environment files verified')}\""
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "4.7.1",

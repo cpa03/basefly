@@ -17,6 +17,8 @@
  * ```
  */
 
+import { InvalidRequestIdError } from "./errors";
+
 /**
  * Standard header name for request IDs
  */
@@ -150,7 +152,7 @@ export function isValidRequestId(requestId: string): boolean {
  */
 export function createRequestContext(requestId: string): { requestId: string } {
   if (!isValidRequestId(requestId)) {
-    throw new Error(`Invalid request ID: ${requestId}`);
+    throw new InvalidRequestIdError(requestId);
   }
 
   return { requestId };

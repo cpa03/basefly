@@ -529,7 +529,7 @@ describe("API Validation Tests", () => {
     });
 
     it("handles empty errors array", () => {
-      const errors: any[] = [];
+      const errors: Array<{ message: string; path?: (string | number)[] }> = [];
       const message = createValidationErrorMessage(errors);
       expect(message).toBe("Validation error");
     });

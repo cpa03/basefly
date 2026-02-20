@@ -4,7 +4,11 @@ import {
   getOrGenerateRequestId,
   REQUEST_ID_HEADER,
 } from "@saasfly/api/request-id";
-import { getMinifiedCSPHeader, HTTP_STATUS } from "@saasfly/common";
+import {
+  getMinifiedCSPHeader,
+  HEADERS,
+  HTTP_STATUS,
+} from "@saasfly/common";
 
 import { i18n } from "./config/i18n-config";
 import { middleware as clerkMiddleware } from "./utils/clerk";
@@ -21,6 +25,30 @@ export const config = {
 // Use centralized CSP configuration from @saasfly/common
 const contentSecurityPolicyHeaderValue = getMinifiedCSPHeader();
 
+/**
+ * Security headers applied to all middleware responses
+ * These complement the headers set in next.config.mjs for defense-in-depth
+ */
+const SECURITY_HEADERS: Record<string, string> = {
+  [HEADERS.X_CONTENT_TYPE_OPTIONS]: "nosniff",
+  [HEADERS.X_FRAME_OPTIONS]: "SAMEORIGIN",
+  [HEADERS.REFERRER_POLICY]: "origin-when-cross-origin",
+  [HEADERS.CONTENT_SECURITY_POLICY]: contentSecurityPolicyHeaderValue,
+  // Cross-Origin headers for enhanced security
+  "Cross-Origin-Opener-Policy": "same-origin",
+  "Cross-Origin-Resource-Policy": "same-origin",
+};
+
+/**
+ * Apply security headers to a response
+ * Ensures all middleware responses have consistent security headers
+ */
+function applySecurityHeaders(response: NextResponse): void {
+  for (const [key, value] of Object.entries(SECURITY_HEADERS)) {
+    response.headers.set(key, value);
+  }
+}
+
 function isValidClerkKey(key: string | undefined): boolean {
   if (!key) return false;
   if (key.includes("dummy") || key.includes("placeholder")) return false;
@@ -36,7 +64,7 @@ function createErrorResponse(
   const errorMessage = error instanceof Error ? error.message : "Unknown error";
 
   if (process.env.NODE_ENV === "development") {
-    return NextResponse.json(
+    const response = NextResponse.json(
       {
         error: "Middleware Error",
         message: errorMessage,
@@ -44,19 +72,20 @@ function createErrorResponse(
       },
       {
         status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
-        headers: {
-          [REQUEST_ID_HEADER]: requestId,
-          "Content-Security-Policy": contentSecurityPolicyHeaderValue,
-        },
       },
     );
+    response.headers.set(REQUEST_ID_HEADER, requestId);
+    applySecurityHeaders(response);
+    return response;
   }
 
-  return NextResponse.next({
+  const response = NextResponse.next({
     request: {
       headers: new Headers(req.headers),
     },
   });
+  applySecurityHeaders(response);
+  return response;
 }
 
 function handleI18nRouting(req: NextRequest): NextResponse | null {
@@ -95,10 +124,7 @@ export default async function proxy(
         },
       });
       response.headers.set(REQUEST_ID_HEADER, requestId);
-      response.headers.set(
-        "Content-Security-Policy",
-        contentSecurityPolicyHeaderValue,
-      );
+      applySecurityHeaders(response);
       return response;
     }
 
@@ -108,10 +134,7 @@ export default async function proxy(
 
     if (result && typeof result === "object" && "headers" in result) {
       result.headers.set(REQUEST_ID_HEADER, requestId);
-      result.headers.set(
-        "Content-Security-Policy",
-        contentSecurityPolicyHeaderValue,
-      );
+      applySecurityHeaders(result as NextResponse);
     }
 
     return result;

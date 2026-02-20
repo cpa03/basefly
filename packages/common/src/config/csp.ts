@@ -18,6 +18,8 @@ export const CSP_DOMAINS = {
     cdn: "cdn.jsdelivr.net",
     /** Vercel analytics scripts */
     vercel: "https://va.vercel-scripts.com",
+    /** Cloudflare Turnstile challenges */
+    cloudflare: "https://challenges.cloudflare.com",
   },
   /** Image sources */
   images: {
@@ -45,6 +47,12 @@ export const CSP_DOMAINS = {
   connect: {
     /** Clerk authentication */
     clerk: "https://*.clerk.accounts.dev",
+    /** Custom Clerk domain */
+    clerkCustom: "https://clerk.basefly.io",
+    /** Clerk main domain */
+    clerkMain: "https://clerk.com",
+    /** Clerk WebSocket */
+    clerkWs: "wss://*.clerk.com",
     /** Stripe API */
     stripe: "https://*.stripe.com",
     /** Stripe main API */
@@ -58,6 +66,10 @@ export const CSP_DOMAINS = {
   frames: {
     /** Stripe checkout */
     stripe: "https://js.stripe.com",
+    /** Stripe webhook frames */
+    stripeHooks: "https://hooks.stripe.com",
+    /** Cloudflare Turnstile challenges */
+    cloudflare: "https://challenges.cloudflare.com",
   },
 } as const;
 
@@ -75,6 +87,7 @@ export const CSP_DIRECTIVES = {
     "'unsafe-inline'",
     CSP_DOMAINS.scripts.cdn,
     CSP_DOMAINS.scripts.vercel,
+    CSP_DOMAINS.scripts.cloudflare,
   ],
 
   /** Style source policy */
@@ -101,6 +114,9 @@ export const CSP_DIRECTIVES = {
   connectSrc: [
     "'self'",
     CSP_DOMAINS.connect.clerk,
+    CSP_DOMAINS.connect.clerkCustom,
+    CSP_DOMAINS.connect.clerkMain,
+    CSP_DOMAINS.connect.clerkWs,
     CSP_DOMAINS.connect.stripe,
     CSP_DOMAINS.connect.stripeApi,
     CSP_DOMAINS.connect.posthog,
@@ -108,7 +124,12 @@ export const CSP_DIRECTIVES = {
   ],
 
   /** Frame source policy */
-  frameSrc: ["'self'", CSP_DOMAINS.frames.stripe],
+  frameSrc: [
+    "'self'",
+    CSP_DOMAINS.frames.stripe,
+    CSP_DOMAINS.frames.stripeHooks,
+    CSP_DOMAINS.frames.cloudflare,
+  ],
 
   /** Object source policy (Flash, etc.) */
   objectSrc: ["'none'"],

@@ -155,18 +155,22 @@ export class UserDeletionService {
       return null;
     }
 
-    const customer = await db
-      .selectFrom("Customer")
-      .selectAll()
-      .where("authUserId", "=", userId)
-      .executeTakeFirst();
-
-    const clusters = await db
-      .selectFrom("K8sClusterConfig")
-      .selectAll()
-      .where("authUserId", "=", userId)
-      .where("deletedAt", "is", null)
-      .execute();
+    // Execute customer and cluster queries in parallel for reduced latency
+    // This optimization reduces total query time from sequential (3 round trips)
+    // to parallel (2 round trips: user check + parallel customer/cluster)
+    const [customer, clusters] = await Promise.all([
+      db
+        .selectFrom("Customer")
+        .selectAll()
+        .where("authUserId", "=", userId)
+        .executeTakeFirst(),
+      db
+        .selectFrom("K8sClusterConfig")
+        .selectAll()
+        .where("authUserId", "=", userId)
+        .where("deletedAt", "is", null)
+        .execute(),
+    ]);
 
     return {
       user,

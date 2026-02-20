@@ -51,7 +51,10 @@ export function Modal({
   }
   return (
     <Dialog open={showModal} onOpenChange={setShowModal}>
-      <DialogContent className="overflow-hidden border-neutral-200 p-0 dark:border-neutral-800 md:max-w-md md:rounded-2xl md:border">
+      <DialogContent
+        className="overflow-hidden border-neutral-200 p-0 dark:border-neutral-800 md:max-w-md md:rounded-2xl md:border"
+        aria-label="Modal content"
+      >
         {children}
       </DialogContent>
     </Dialog>

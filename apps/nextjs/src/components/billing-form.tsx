@@ -2,6 +2,7 @@
 
 import * as React from "react";
 
+import { ROUTES } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { Button } from "@saasfly/ui/button";
 import {
@@ -35,7 +36,7 @@ export function BillingForm({
     setIsLoading(true);
 
     // Get a Stripe session URL.
-    const response = await fetch("/api/users/stripe");
+    const response = await fetch(ROUTES.api.users.stripe);
 
     if (!response?.ok) {
       setIsLoading(false);

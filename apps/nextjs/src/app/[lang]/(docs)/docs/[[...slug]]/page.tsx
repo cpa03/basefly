@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 
+import { ROUTES } from "@saasfly/common";
+
 import { Mdx } from "~/components/content/mdx-components";
 import { DashboardTableOfContents } from "~/components/content/toc";
 import { DocsPageHeader } from "~/components/docs/page-header";
@@ -38,7 +40,7 @@ export function generateMetadata({ params }: DocPageProps): Metadata {
 
   const url = env.NEXT_PUBLIC_APP_URL;
 
-  const ogUrl = new URL(`${url}/api/og`);
+  const ogUrl = new URL(`${url}${ROUTES.api.og}`);
   ogUrl.searchParams.set("heading", doc.description ?? doc.title);
   ogUrl.searchParams.set("type", "Documentation");
   ogUrl.searchParams.set("mode", "dark");

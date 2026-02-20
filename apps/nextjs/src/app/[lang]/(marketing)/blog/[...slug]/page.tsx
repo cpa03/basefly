@@ -4,7 +4,8 @@ import {
   allAuthors as rawAuthors,
 } from "contentlayer/generated";
 
-import { getTwitterProfileUrl } from "@saasfly/common";
+import { getTwitterProfileUrl, ROUTES } from "@saasfly/common";
+
 import { BackToTop } from "~/components/back-to-top";
 import { Mdx } from "~/components/content/mdx-components";
 
@@ -48,7 +49,7 @@ export function generateMetadata({ params }: PostPageProps): Metadata {
 
   const url = env.NEXT_PUBLIC_APP_URL;
 
-  const ogUrl = new URL(`${url}/api/og`);
+  const ogUrl = new URL(`${url}${ROUTES.api.og}`);
   ogUrl.searchParams.set("heading", post.title);
   ogUrl.searchParams.set("type", "Blog Post");
   ogUrl.searchParams.set("mode", "dark");

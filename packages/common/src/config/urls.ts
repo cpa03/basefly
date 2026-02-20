@@ -105,11 +105,16 @@ export const ROUTES = {
     dashboard: "/admin/dashboard",
   },
   api: {
+    og: "/api/og",
+    users: {
+      stripe: "/api/users/stripe",
+    },
     webhooks: {
       stripe: "/api/webhooks/stripe",
     },
     trpc: {
       edge: "/api/trpc/edge",
+      lambda: "/api/trpc/lambda",
     },
   },
 } as const;

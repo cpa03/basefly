@@ -64,6 +64,14 @@
     "writing": {
       "model": "opencode/glm-4.7-free",
       "temperature": 0.4
+    },
+    "unspecified-low": {
+      "model": "opencode/gpt-5-nano",
+      "temperature": 0.2
+    },
+    "unspecified-high": {
+      "model": "opencode/kimi-k2.5-free",
+      "temperature": 0.5
     }
   },
 

@@ -68,6 +68,8 @@ Domain-specific categories route tasks to optimal models:
 | deep               | opencode/glm-4.7-free      | Goal-oriented autonomous problem-solving |
 | artistry           | opencode/kimi-k2.5-free    | Unconventional, creative approaches      |
 | writing            | opencode/glm-4.7-free      | Documentation, prose, technical writing  |
+| unspecified-low    | opencode/gpt-5-nano        | Low-effort general tasks                 |
+| unspecified-high   | opencode/kimi-k2.5-free    | High-effort general tasks                |
 
 ## Code Standards
 

@@ -42,6 +42,8 @@ Choose the appropriate category based on task complexity:
 | deep               | Goal-oriented autonomous problem-solving        |
 | artistry           | Unconventional, creative approaches             |
 | writing            | Documentation, prose, technical writing         |
+| unspecified-low    | Low-effort general tasks                        |
+| unspecified-high   | High-effort general tasks                       |
 
 ### 3. Skill Development
 

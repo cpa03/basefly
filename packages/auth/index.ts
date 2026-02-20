@@ -1,6 +1,7 @@
 import { getSessionUser, isClerkEnabled } from "./clerk";
 
 export { isClerkEnabled };
+export { logger } from "./logger";
 
 export interface User {
   id: string;

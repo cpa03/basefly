@@ -2,8 +2,20 @@
   "name": "@saasfly/auth",
   "version": "0.1.0",
   "private": true,
-  "main": "./index.ts",
-  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./clerk": "./clerk.ts",
+    "./db": "./db.ts",
+    "./logger": "./logger.ts",
+    "./env": "./env.mjs"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./*"
+      ]
+    }
+  },
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint . --cache --cache-location 'node_modules/.cache/.eslintcache'",

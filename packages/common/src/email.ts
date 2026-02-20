@@ -99,7 +99,7 @@ export function isResendConfigured(): boolean {
 export function getResendClientOrThrow(): Resend {
   if (!resend) {
     throw new Error(
-      "Resend is not configured. Set RESEND_API_KEY environment variable.",
+      "Resend is not configured. Set RESEND_API_KEY and RESEND_FROM environment variables. See .env.example for required values. Email features will be disabled until configured.",
     );
   }
   return resend;

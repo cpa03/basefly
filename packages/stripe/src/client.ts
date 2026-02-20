@@ -19,7 +19,7 @@ const stripeCircuitBreaker = new CircuitBreaker(
 function requireStripeClient(): NonNullable<typeof stripe> {
   if (!stripe) {
     throw new Error(
-      "Stripe is not configured. Set STRIPE_API_KEY environment variable.",
+      "Stripe is not configured. Set STRIPE_API_KEY and STRIPE_WEBHOOK_SECRET environment variables. See .env.example for all required Stripe keys. Billing features will be disabled until configured.",
     );
   }
   return stripe;

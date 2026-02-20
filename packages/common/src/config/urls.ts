@@ -177,6 +177,6 @@ export function getBaseUrl(envUrl?: string, nodeEnv?: string): string {
   if (envUrl) return envUrl;
   if (nodeEnv === "development") return DEV_URLS.localhost;
   throw new Error(
-    "Base URL is not defined. Please set NEXT_PUBLIC_APP_URL in your environment variables.",
+    "Base URL is not defined. Please set NEXT_PUBLIC_APP_URL in your environment variables, or run with NODE_ENV=development to use the default localhost URL. See .env.example for reference.",
   );
 }

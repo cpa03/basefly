@@ -393,6 +393,7 @@ jobs:
 
 | Date       | Migration                                         | Description                                                                                      |
 | ---------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| 2026-02-20 | `20260220_add_webhook_eventtype_createdat_index` | Added composite index on StripeWebhookEvent(eventType, createdAt) for time-based event filtering |
 | 2026-02-20 | `20260220_add_customer_authuserid_unique_constraint` | Added unique constraint on Customer.authUserId to enforce one-customer-per-user at database level |
 | 2026-02-20 | `20260220_add_webhook_event_type_processed_index` | Added composite index on StripeWebhookEvent(eventType, processed) for event type filtering       |
 | 2026-02-19 | `20260219_add_webhook_updated_at_trigger`         | Added updatedAt trigger for StripeWebhookEvent to align with K8sClusterConfig and Customer       |

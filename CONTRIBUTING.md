@@ -1,3 +1,17 @@
+# Contributing to Basefly
+
+Thank you for your interest in contributing to Basefly! This document provides guidelines for contributing to the project.
+
+## Table of Contents
+
+- [Can I Create a Pull Request?](#can-i-create-a-pull-request-for-basefly)
+- [Usually Accepted](#-usually-accepted)
+- [Discussion Required](#️-discussion-required)
+- [Won't Be Merged](#-wont-be-merged)
+- [Recommended Pull Request Guideline](#recommended-pull-request-guideline)
+
+---
+
 ## Can I create a pull request for Basefly?
 
 Yes or no, it depends on what you will try to do. Since I don't want to waste your time, be sure to **create an empty draft pull request or open an issue, so we can have a discussion first**. Especially for a large pull request or you don't know if it will be merged or not.

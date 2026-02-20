@@ -1,4 +1,4 @@
-import { BRAND_CONFIG, COMPANY_CONFIG, REPOSITORY_CONFIG } from "./project";
+import { BRAND_CONFIG, REPOSITORY_CONFIG } from "./project";
 
 /**
  * Site configuration - uses centralized project config

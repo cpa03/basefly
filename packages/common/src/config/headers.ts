@@ -107,6 +107,14 @@ export const CUSTOM_HEADERS = {
   X_APP_VERSION: "X-App-Version",
   /** X-Environment - Deployment environment */
   X_ENVIRONMENT: "X-Environment",
+
+  // Rate limiting headers (IETF draft standard)
+  /** X-RateLimit-Limit - Maximum requests allowed per window */
+  X_RATELIMIT_LIMIT: "X-RateLimit-Limit",
+  /** X-RateLimit-Remaining - Requests remaining in current window */
+  X_RATELIMIT_REMAINING: "X-RateLimit-Remaining",
+  /** X-RateLimit-Reset - Unix timestamp when the rate limit resets */
+  X_RATELIMIT_RESET: "X-RateLimit-Reset",
 } as const;
 
 /**

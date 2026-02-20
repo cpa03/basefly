@@ -3,15 +3,21 @@ import { auth, currentUser, getAuth } from "@clerk/nextjs/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { ZodError } from "zod";
 
-import { isAdminEmail } from "@saasfly/common";
+import { HEADERS, isAdminEmail } from "@saasfly/common";
 
 import { createApiError, ErrorCode } from "./errors";
 import { logger } from "./logger";
-import { EndpointType, getIdentifier, getLimiter } from "./rate-limiter";
+import { EndpointType, getIdentifier, getLimiter, rateLimitConfigs } from "./rate-limiter";
 import { getOrGenerateRequestId } from "./request-id";
 import { transformer } from "./transformer";
 
 export type { EndpointType } from "./rate-limiter";
+
+export interface RateLimitInfo {
+  limit: number;
+  remaining: number;
+  resetAt: number;
+}
 
 /**
  * Options for creating tRPC context.
@@ -129,12 +135,11 @@ export const rateLimit = (endpointType: EndpointType) =>
     const limiter = getLimiter(endpointType);
     const req = "req" in ctx ? (ctx.req as NextRequest | undefined) : undefined;
     const identifier = getIdentifier(ctx.userId, req);
+    const config = rateLimitConfigs[endpointType];
 
     const result = limiter.check(identifier);
 
     if (!result.success) {
-      // Security logging for rate limit exceeded events
-      // Helps with intrusion detection and security monitoring
       logger.warn(
         {
           identifier,
@@ -151,13 +156,21 @@ export const rateLimit = (endpointType: EndpointType) =>
         "Rate limit exceeded. Please try again later.",
         {
           resetAt: result.resetAt,
+          limit: config.maxRequests,
+          remaining: 0,
         },
       );
     }
 
-    const response = await next();
-
-    return response;
+    return next({
+      ctx: {
+        rateLimit: {
+          limit: config.maxRequests,
+          remaining: result.remaining,
+          resetAt: result.resetAt,
+        },
+      },
+    });
   });
 
 /**
@@ -187,3 +200,16 @@ export const createRateLimitedProtectedProcedure = (
  */
 export const createRateLimitedAdminProcedure = (endpointType: EndpointType) =>
   adminProcedure.use(rateLimit(endpointType));
+
+export function getRateLimitHeaders(
+  rateLimit: RateLimitInfo | undefined,
+): Record<string, string> {
+  if (!rateLimit) {
+    return {};
+  }
+  return {
+    [HEADERS.X_RATELIMIT_LIMIT]: String(rateLimit.limit),
+    [HEADERS.X_RATELIMIT_REMAINING]: String(rateLimit.remaining),
+    [HEADERS.X_RATELIMIT_RESET]: String(Math.ceil(rateLimit.resetAt / 1000)),
+  };
+}

@@ -2,7 +2,8 @@ import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 
 import type { AppRouter } from "./root";
 
-export { createTRPCContext } from "./trpc";
+export { createTRPCContext, getRateLimitHeaders } from "./trpc";
+export type { RateLimitInfo } from "./trpc";
 
 export { t } from "./trpc";
 

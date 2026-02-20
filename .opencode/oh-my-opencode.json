@@ -70,7 +70,7 @@
   "skills": {
     "sources": [
       { "path": ".opencode/skills", "recursive": true },
-      { "path": ".opencode/superpowers/skills", "recursive": true }
+      { "path": ".opencode/superpowers", "recursive": true }
     ],
     "enable": [
       "using-superpowers",

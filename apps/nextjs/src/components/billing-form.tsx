@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { ROUTES } from "@saasfly/common";
+import { ERROR_MESSAGES, ROUTES } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { Button } from "@saasfly/ui/button";
 import {
@@ -41,7 +41,7 @@ export function BillingForm({
     if (!response?.ok) {
       setIsLoading(false);
       return toast({
-        title: "Something went wrong.",
+        title: ERROR_MESSAGES.SOMETHING_WENT_WRONG,
         description: "Please refresh the page and try again.",
         variant: "destructive",
       });

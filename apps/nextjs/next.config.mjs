@@ -6,8 +6,13 @@ import { withNextDevtools } from "@next-devtools/core/plugin";
 import withBundleAnalyzer from "@next/bundle-analyzer";
 // import "@saasfly/api/env"
 import withMDX from "@next/mdx";
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 
-!process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
+void initOpenNextCloudflareForDev();
+
+if (!process.env.SKIP_ENV_VALIDATION) {
+  await import("./src/env.mjs");
+}
 
 // Cache and security header values are centralized in @saasfly/common
 // See: packages/common/src/config/cache.ts for canonical definitions
@@ -142,7 +147,7 @@ const config = {
     optimizeCss: true,
   },
   turbopack: {},
-  async headers() {
+  headers() {
     const baseHeaders = [
       {
         key: "X-DNS-Prefetch-Control",

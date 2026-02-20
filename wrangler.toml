@@ -1,22 +1,23 @@
-# Cloudflare Pages Configuration for Basefly
-# Documentation: https://developers.cloudflare.com/pages/platform/build-configuration
-# Best Practices: https://developers.cloudflare.com/workers/best-practices/
-# Next.js on Pages: https://developers.cloudflare.com/pages/framework-guides/nextjs/
+# Cloudflare Workers Configuration for Basefly
+# OpenNext Adapter: https://opennext.js.org/cloudflare
+# Documentation: https://developers.cloudflare.com/workers/
 
 name = "basefly"
+main = ".open-next/worker.js"
 compatibility_date = "2026-02-18"
-# nodejs_compat_v2 provides better Node.js API support for Next.js
-# no_op ensures compatibility with @cloudflare/next-on-pages
-compatibility_flags = ["nodejs_compat", "nodejs_compat_v2"]
+compatibility_flags = ["nodejs_compat", "nodejs_compat_v2", "global_fetch_strictly_public"]
 
-# Pages configuration
-# Output directory for @cloudflare/next-on-pages
-# Note: The actual output is .vercel/output/static after running next-on-pages
-pages_build_output_dir = ".vercel/output/static"
+# Assets configuration for OpenNext
+# https://opennext.js.org/cloudflare/get-started
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
 
-# Build configuration for Cloudflare Pages
-[build]
-command = "pnpm install && pnpm --filter=@saasfly/nextjs run build:cloudflare"
+# Service binding for self-reference (required by OpenNext)
+# https://developers.cloudflare.com/workers/runtime-apis/bindings/service-bindings/
+[[services]]
+binding = "WORKER_SELF_REFERENCE"
+service = "basefly"
 
 # Environment variables (set via Cloudflare Dashboard or wrangler secrets)
 # Required environment variables are documented in docs/ci-cd.md
@@ -26,11 +27,6 @@ NODE_VERSION = "20"
 # Production environment
 [env.production]
 name = "basefly"
-# Routes are configured in Cloudflare Dashboard for Pages projects
-# Uncomment and adjust if using Workers with custom domains
-# routes = [
-#   { pattern = "/*", zone_name = "saasfly.io" }
-# ]
 
 # Preview environment for PRs
 [env.preview]
@@ -60,30 +56,6 @@ persist = true
 enabled = true
 head_sampling_rate = 1
 
-# Static asset rules for better caching
-# These rules apply to static files served from _next/static
-[[rules]]
-type = "ESModule"
-globs = ["**/*.js", "**/*.mjs"]
-fallthrough = true
-
-# Serve static assets with proper MIME types
-[[rules]]
-type = "CompiledWasm"
-globs = ["**/*.wasm"]
-fallthrough = true
-
-# Note: For full Next.js compatibility on Cloudflare Pages:
-# 1. Install: pnpm add -D @cloudflare/next-on-pages
-# 2. Add script to package.json: "pages:build": "next build && npx @cloudflare/next-on-pages"
-# 3. Update build command in Cloudflare Dashboard to use pages:build
-#
-# Features enabled by @cloudflare/next-on-pages:
-# - Edge Runtime support
-# - API Routes
-# - Middleware
-# - Image Optimization (via Cloudflare Images)
-#
 # Security recommendations for Cloudflare Dashboard:
 # - Enable Bot Fight Mode
 # - Enable Browser Integrity Check

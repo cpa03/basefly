@@ -38,6 +38,9 @@ yarn-error.log*
 # cloudflare wrangler local dev vars (secrets)
 .dev.vars
 
+# open-next build output
+.open-next/
+
 # vercel
 .vercel
 

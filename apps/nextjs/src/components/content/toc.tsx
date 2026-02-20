@@ -31,10 +31,10 @@ export function DashboardTableOfContents({ toc }: TocProps) {
   }
 
   return mounted ? (
-    <div className="space-y-2">
+    <nav className="space-y-2" aria-label="Table of contents">
       <p className="font-medium">On This Page</p>
       <Tree tree={toc} activeItem={activeHeading} />
-    </div>
+    </nav>
   ) : null;
 }
 
@@ -96,11 +96,13 @@ function Tree({ tree, level = 1, activeItem }: TreeProps) {
             <a
               href={item.url}
               className={cn(
-                "inline-block no-underline",
+                "inline-block no-underline transition-colors",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm",
                 item.url === `#${activeItem}`
                   ? "font-medium text-primary"
-                  : "text-sm text-muted-foreground",
+                  : "text-sm text-muted-foreground hover:text-foreground",
               )}
+              aria-current={item.url === `#${activeItem}` ? "location" : undefined}
             >
               {item.title}
             </a>

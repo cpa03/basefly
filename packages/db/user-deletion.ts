@@ -186,18 +186,19 @@ export class UserDeletionService {
         return null;
       }
 
-      const customer = await db
-        .selectFrom("Customer")
-        .selectAll()
-        .where("authUserId", "=", userId)
-        .executeTakeFirst();
-
-      const clusters = await db
-        .selectFrom("K8sClusterConfig")
-        .selectAll()
-        .where("authUserId", "=", userId)
-        .where("deletedAt", "is", null)
-        .execute();
+      const [customer, clusters] = await Promise.all([
+        db
+          .selectFrom("Customer")
+          .selectAll()
+          .where("authUserId", "=", userId)
+          .executeTakeFirst(),
+        db
+          .selectFrom("K8sClusterConfig")
+          .selectAll()
+          .where("authUserId", "=", userId)
+          .where("deletedAt", "is", null)
+          .execute(),
+      ]);
 
       logger.info("User summary retrieved", {
         requestId,

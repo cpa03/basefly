@@ -24,8 +24,6 @@ const getBaseUrl = (): string => {
   return getSharedBaseUrl(env.NEXT_PUBLIC_APP_URL, process.env.NODE_ENV);
 };
 
-const lambdas = [""];
-
 export const endingLink = (opts?: {
   headers?: HTTPHeaders | (() => HTTPHeaders);
 }) =>
@@ -38,19 +36,6 @@ export const endingLink = (opts?: {
       ...sharedOpts,
       url: `${getBaseUrl()}/api/trpc/edge`,
     })(runtime);
-    const lambdaLink = httpBatchLink({
-      ...sharedOpts,
-      url: `${getBaseUrl()}/api/trpc/lambda`,
-    })(runtime);
 
-    return (ctx) => {
-      const path = ctx.op.path.split(".") as [string, ...string[]];
-      const endpoint = lambdas.includes(path[0]) ? "lambda" : "edge";
-
-      const newCtx = {
-        ...ctx,
-        op: { ...ctx.op, path: path.join(".") },
-      };
-      return endpoint === "edge" ? edgeLink(newCtx) : lambdaLink(newCtx);
-    };
+    return (ctx) => edgeLink(ctx);
   }) satisfies TRPCLink<AppRouter>;

@@ -6,7 +6,6 @@
     ".": "./src/index.ts",
     "./env": "./src/env.mjs",
     "./edge": "./src/edge.ts",
-    "./lambda": "./src/lambda.ts",
     "./transformer": "./src/transformer.ts",
     "./subscriptions": "./src/subscriptions.ts",
     "./request-id": "./src/request-id.ts"

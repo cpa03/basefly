@@ -77,16 +77,6 @@ Rate limiting is enforced for all API endpoints to protect against abuse and ens
 | Write Operations  | 20 requests/minute  | 60 seconds | `createCluster`, `updateCluster`, `deleteCluster`, `updateUserName`, `insertCustomer` |
 | Stripe Operations | 10 requests/minute  | 60 seconds | `createSession`                                                                       |
 
-### Rate Limit Response Headers
-
-When rate limiting is enforced, the following headers are included in responses:
-
-```
-X-RateLimit-Limit: 100
-X-RateLimit-Remaining: 95
-X-RateLimit-Reset: 1704729600
-```
-
 ### Rate Limit Error Response
 
 ```json

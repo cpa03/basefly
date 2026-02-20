@@ -38,11 +38,13 @@ Welcome, new contributor! This section helps you get up to speed quickly.
 4. **DX Convenience Scripts**
 
    ```bash
+   pnpm dx:quick     # Fast feedback: typecheck + lint only
    pnpm dx:check     # Run typecheck + lint + test + security audit
    pnpm dx:fix       # Auto-fix lint and format issues
    pnpm dx:deps      # Check outdated dependencies and run audit
    pnpm dx:setup     # Verify development environment
    pnpm dx:all       # Run all DX checks comprehensively
+   pnpm dx:ci        # Simulate CI: dx:check + build
    ```
 
 5. **Before Submitting a PR**
@@ -70,6 +72,48 @@ tooling/           # Shared configs (ESLint, Prettier, TS)
 - [README.md](./README.md) - Getting started guide
 - [AGENTS.md](./AGENTS.md) - AI agent configuration
 - [docs/](./docs/) - Additional documentation
+
+### Troubleshooting
+
+#### Common Issues
+
+**Lockfile Issues**
+
+```bash
+# Regenerate lockfile if corrupted
+rm pnpm-lock.yaml && pnpm install
+```
+
+**Cache Issues**
+
+```bash
+# Clear all caches and reinstall
+pnpm reset
+```
+
+**Type Errors**
+
+```bash
+# Regenerate Prisma client
+pnpm db:generate
+```
+
+**Build Failures**
+
+```bash
+# Clean and rebuild
+pnpm clean:all && pnpm install && pnpm build
+```
+
+#### Quick Diagnostics
+
+```bash
+# Fast feedback (typecheck + lint only)
+pnpm dx:quick
+
+# Full CI simulation
+pnpm dx:ci
+```
 
 ---
 

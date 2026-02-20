@@ -4,6 +4,7 @@ import React, { useCallback, useMemo, useState } from "react";
 import Link from "next/link";
 import Balancer from "react-wrap-balancer";
 
+import { ROUTES } from "@saasfly/common";
 import { Button, buttonVariants } from "@saasfly/ui/button";
 import { Check, Close } from "@saasfly/ui/icons";
 import { Switch } from "@saasfly/ui/switch";
@@ -113,7 +114,7 @@ const PricingCard = React.memo(function PricingCard({
         {userId && subscriptionPlan ? (
           offer?.id === "starter" ? (
             <Link
-              href="/dashboard"
+              href={ROUTES.dashboard.home}
               className={buttonVariants({
                 className: "w-full",
                 variant: "default",

@@ -1,10 +1,12 @@
+import React from "react";
+
 interface DashboardHeaderProps {
   heading: string;
   text?: string;
   children?: React.ReactNode;
 }
 
-export function DashboardHeader({
+export const DashboardHeader = React.memo(function DashboardHeader({
   heading,
   text,
   children,
@@ -18,4 +20,6 @@ export function DashboardHeader({
       {children}
     </div>
   );
-}
+});
+
+DashboardHeader.displayName = "DashboardHeader";

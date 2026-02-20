@@ -44,9 +44,12 @@ interface LocaleChangeProps {
 export function LocaleChange({ url, currentLocale }: LocaleChangeProps) {
   const router = useRouter();
 
-  function onClick(locale: string) {
-    router.push(`/${locale}/` + url);
-  }
+  const handleLocaleChange = React.useCallback(
+    (locale: string) => {
+      router.push(`/${locale}/` + url);
+    },
+    [router, url],
+  );
 
   return (
     <DropdownMenu>
@@ -67,7 +70,7 @@ export function LocaleChange({ url, currentLocale }: LocaleChangeProps) {
           return (
             <DropdownMenuItem
               key={locale}
-              onClick={() => onClick(locale)}
+              onClick={() => handleLocaleChange(locale)}
               aria-current={isActive ? "true" : undefined}
               className={cn(
                 "cursor-pointer",

@@ -26,12 +26,15 @@ export function MainNav({
   marketing,
 }: MainNavProps) {
   const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false);
-  const toggleMenu = () => {
-    setShowMobileMenu(!showMobileMenu);
-  };
-  const handleMenuItemClick = () => {
+  
+  const toggleMenu = React.useCallback(() => {
+    setShowMobileMenu((prev) => !prev);
+  }, []);
+  
+  const handleMenuItemClick = React.useCallback(() => {
     toggleMenu();
-  };
+  }, [toggleMenu]);
+
   return (
     <div className="flex gap-6 md:gap-10">
       <div className="flex items-center">
@@ -57,7 +60,7 @@ export function MainNav({
 
       <button
         className="flex items-center space-x-2 md:hidden"
-        onClick={() => setShowMobileMenu(!showMobileMenu)}
+        onClick={toggleMenu}
         aria-label={showMobileMenu ? "Close menu" : "Open menu"}
         aria-expanded={showMobileMenu}
         aria-controls="mobile-navigation"

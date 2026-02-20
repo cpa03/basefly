@@ -20,6 +20,7 @@ export {
   createApiError,
   handleIntegrationError,
   createValidationErrorMessage,
+  InvalidRequestIdError,
   type ApiErrorResponse,
 } from "./errors";
 

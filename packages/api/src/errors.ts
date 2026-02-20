@@ -2,6 +2,29 @@ import { TRPCError } from "@trpc/server";
 
 import { IntegrationError } from "@saasfly/stripe";
 
+/**
+ * Custom error class for invalid request IDs
+ *
+ * Thrown when a request ID fails validation (e.g., not in UUID v4 format).
+ * This provides better error categorization and handling compared to generic Error.
+ *
+ * @example
+ * ```ts
+ * if (!isValidRequestId(requestId)) {
+ *   throw new InvalidRequestIdError(requestId);
+ * }
+ * ```
+ */
+export class InvalidRequestIdError extends Error {
+  constructor(
+    public readonly requestId: string,
+    message?: string,
+  ) {
+    super(message ?? `Invalid request ID: ${requestId}`);
+    this.name = "InvalidRequestIdError";
+  }
+}
+
 export enum ErrorCode {
   BAD_REQUEST = "BAD_REQUEST",
   UNAUTHORIZED = "UNAUTHORIZED",

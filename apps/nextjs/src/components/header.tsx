@@ -10,7 +10,7 @@ export const DashboardHeader = React.memo(function DashboardHeader({
   heading,
   text,
   children,
-}: DashboardHeaderProps) {
+}: DashboardHeaderProps): React.JSX.Element {
   return (
     <div className="flex items-center justify-between px-2">
       <div className="grid gap-1">

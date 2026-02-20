@@ -8,6 +8,7 @@
     "build:cloudflare": "contentlayer2 build && npx dotenv-cli -e ../../.env.local -e ../../.env.ci -- next build && npx opennextjs-cloudflare build",
     "preview:cloudflare": "npx opennextjs-cloudflare preview",
     "deploy:cloudflare": "npx opennextjs-cloudflare deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "clean": "git clean -xdf .next .turbo node_modules",
     "dev": "npx dotenv-cli -e ../../.env.local -e ../../.env.ci -- next dev",
     "lint": "npx dotenv-cli -e ../../.env.local -e ../../.env.ci -- eslint . --cache --cache-location 'node_modules/.cache/.eslintcache'",

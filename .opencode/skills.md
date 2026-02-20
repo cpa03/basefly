@@ -48,7 +48,7 @@ The following skills are enabled in `.opencode/oh-my-opencode.json`:
 Skills are loaded from:
 
 1. `.opencode/skills/` - Project-specific skills
-2. `.opencode/superpowers/skills/` - Superpowers skill collection
+2. `.opencode/superpowers/` - Superpowers skill collection
 
 ## MCP Servers
 

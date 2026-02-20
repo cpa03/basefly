@@ -1,14 +1,14 @@
 /**
  * OpenX Basefly Plugin for OpenCode.ai
- * 
+ *
  * Integrates superpowers and custom skills framework
  * Provides multi-model orchestration with free tier models
  */
 
-import path from 'path';
-import fs from 'fs';
-import os from 'os';
-import { fileURLToPath } from 'url';
+import fs from "fs";
+import os from "os";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -21,11 +21,14 @@ const extractAndStripFrontmatter = (content) => {
   const body = match[2];
   const frontmatter = {};
 
-  for (const line of frontmatterStr.split('\n')) {
-    const colonIdx = line.indexOf(':');
+  for (const line of frontmatterStr.split("\n")) {
+    const colonIdx = line.indexOf(":");
     if (colonIdx > 0) {
       const key = line.slice(0, colonIdx).trim();
-      const value = line.slice(colonIdx + 1).trim().replace(/^["']|["']$/g, '');
+      const value = line
+        .slice(colonIdx + 1)
+        .trim()
+        .replace(/^["']|["']$/g, "");
       frontmatter[key] = value;
     }
   }
@@ -35,12 +38,12 @@ const extractAndStripFrontmatter = (content) => {
 
 // Normalize a path
 const normalizePath = (p, homeDir) => {
-  if (!p || typeof p !== 'string') return null;
+  if (!p || typeof p !== "string") return null;
   let normalized = p.trim();
   if (!normalized) return null;
-  if (normalized.startsWith('~/')) {
+  if (normalized.startsWith("~/")) {
     normalized = path.join(homeDir, normalized.slice(2));
-  } else if (normalized === '~') {
+  } else if (normalized === "~") {
     normalized = homeDir;
   }
   return path.resolve(normalized);
@@ -48,18 +51,22 @@ const normalizePath = (p, homeDir) => {
 
 export const OpenXBaseflyPlugin = async ({ client, directory }) => {
   const homeDir = os.homedir();
-  const superpowersSkillsDir = path.resolve(__dirname, 'superpowers/skills');
-  const customSkillsDir = path.resolve(__dirname, 'skills');
+  const superpowersSkillsDir = path.resolve(__dirname, "superpowers");
+  const customSkillsDir = path.resolve(__dirname, "skills");
   const envConfigDir = normalizePath(process.env.OPENCODE_CONFIG_DIR, homeDir);
-  const configDir = envConfigDir || path.join(homeDir, '.config/opencode');
+  const configDir = envConfigDir || path.join(homeDir, ".config/opencode");
 
   // Helper to generate bootstrap content
   const getBootstrapContent = () => {
     // Try to load using-superpowers skill
-    const skillPath = path.join(superpowersSkillsDir, 'using-superpowers', 'SKILL.md');
+    const skillPath = path.join(
+      superpowersSkillsDir,
+      "using-superpowers",
+      "SKILL.md",
+    );
     if (!fs.existsSync(skillPath)) return null;
 
-    const fullContent = fs.readFileSync(skillPath, 'utf8');
+    const fullContent = fs.readFileSync(skillPath, "utf8");
     const { content } = extractAndStripFrontmatter(fullContent);
 
     const toolMapping = `**Tool Mapping for OpenX Basefly:**
@@ -97,11 +104,11 @@ ${toolMapping}
 
   return {
     // Use system prompt transform to inject bootstrap
-    'experimental.chat.system.transform': async (_input, output) => {
+    "experimental.chat.system.transform": async (_input, output) => {
       const bootstrap = getBootstrapContent();
       if (bootstrap) {
         (output.system ||= []).push(bootstrap);
       }
-    }
+    },
   };
 };

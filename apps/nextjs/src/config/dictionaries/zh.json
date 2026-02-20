@@ -97,6 +97,17 @@
       "sidebar_nav_billing": "账单",
       "sidebar_nav_settings": "设置",
       "title_text": "创建和管理集群。",
+      "heading": "Kubernetes",
+      "table_caption": "您的 Kubernetes 集群列表。",
+      "col_name": "名称",
+      "col_location": "位置",
+      "col_updated_at": "更新时间",
+      "col_plan": "套餐",
+      "col_status": "状态",
+      "col_actions": "操作",
+      "label_plan": "套餐：",
+      "label_status": "状态：",
+      "label_updated": "更新：",
       "": ""
     }
   },

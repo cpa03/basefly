@@ -3,7 +3,7 @@ import React, { type CSSProperties } from "react";
 import { ANIMATION, VISUAL_EFFECTS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 
-interface ShimmerButtonProps {
+interface ShimmerButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   shimmerColor?: string;
   shimmerSize?: string;
   borderRadius?: string;
@@ -24,9 +24,13 @@ const ShimmerButton = ({
   className,
   children,
   ...props
-}: ShimmerButtonProps) => {
+}: ShimmerButtonProps): React.JSX.Element => {
+  const accessibleNameFromTextContent =
+    typeof children === "string" ? children : undefined;
+
   return (
     <button
+      aria-label={accessibleNameFromTextContent}
       style={
         {
           "--spread": "90deg",

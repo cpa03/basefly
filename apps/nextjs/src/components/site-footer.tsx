@@ -8,7 +8,7 @@ import { ModeToggle } from "~/components/mode-toggle";
 
 function getCopyrightText(
   dict: Record<string, string | Record<string, string>>,
-) {
+): string | undefined {
   const currentYear = new Date().getFullYear();
   const copyrightTemplate =
     typeof dict.copyright === "string" ? dict.copyright : "";
@@ -25,7 +25,7 @@ export function SiteFooter({
   };
 
   dict: Record<string, string | Record<string, string>>;
-}) {
+}): React.JSX.Element {
   return (
     <footer className={cn(className)}>
       <div className="container flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">

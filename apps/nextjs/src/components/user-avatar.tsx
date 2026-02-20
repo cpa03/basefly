@@ -10,7 +10,7 @@ interface UserAvatarProps extends AvatarProps {
   };
 }
 
-export function UserAvatar({ user, ...props }: UserAvatarProps) {
+export function UserAvatar({ user, ...props }: UserAvatarProps): React.JSX.Element {
   return (
     <Avatar {...props}>
       {user.image ? (

@@ -1,8 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { z } from "zod";
 
-// Import mocked IntegrationError for testing
 import { IntegrationError as MockIntegrationError } from "@saasfly/stripe";
 
 import {
@@ -11,18 +9,9 @@ import {
   ErrorCode,
   handleIntegrationError,
 } from "../errors";
-import { authRouter } from "./auth";
-import {
-  customerRouter,
-  insertCustomerSchema,
-  updateUserNameSchema,
-} from "./customer";
-import {
-  k8sClusterCreateSchema,
-  k8sClusterDeleteSchema,
-  k8sRouter,
-} from "./k8s";
-import { createSessionSchema, stripeRouter } from "./stripe";
+import { insertCustomerSchema, updateUserNameSchema } from "./customer";
+import { k8sClusterCreateSchema, k8sClusterDeleteSchema } from "./k8s";
+import { createSessionSchema } from "./stripe";
 
 vi.mock("@saasfly/db", () => ({
   db: {

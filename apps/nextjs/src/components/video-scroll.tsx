@@ -32,7 +32,7 @@ export function VideoScroll({
         <Link href={EXTERNAL_URLS.xBroadcast.demo} target="_blank">
           <Image
             src={EXTERNAL_URLS.cdn.ruguoapp}
-            alt="hero"
+            alt="Basefly dashboard preview showing Kubernetes cluster management interface"
             height={720}
             width={1400}
             className="mx-auto h-full rounded-2xl object-cover object-left-top"

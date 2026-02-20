@@ -26,8 +26,8 @@ export function Modal({
     return (
       <div className="relative">
         <Drawer.Root open={showModal} onClose={setShowModal}>
-          <Drawer.Overlay className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm" />
           <Drawer.Portal>
+            <Drawer.Overlay className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm" />
             <Drawer.Content
               className={cn(
                 "fixed inset-x-0 bottom-0 z-50 mt-24 overflow-hidden rounded-t-2xl border bg-background",
@@ -39,7 +39,6 @@ export function Modal({
               </div>
               {children}
             </Drawer.Content>
-            <Drawer.Overlay />
           </Drawer.Portal>
         </Drawer.Root>
       </div>

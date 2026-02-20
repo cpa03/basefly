@@ -110,7 +110,7 @@ describe("Auth Clerk Module", () => {
     it("should return undefined when no session claims", async () => {
       process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY =
         "pk_test_12345678901234567890123";
-      mockAuth.mockResolvedValue({ sessionClaims: null });
+      mockAuth.mockResolvedValue({ sessionClaims: undefined });
       const user = await getSessionUser();
       expect(user).toBeUndefined();
     });

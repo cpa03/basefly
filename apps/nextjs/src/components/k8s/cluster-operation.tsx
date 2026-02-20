@@ -198,6 +198,7 @@ export function ClusterOperations({
               }}
               className={`${SEMANTIC_COLORS.destructive.background} ${SEMANTIC_COLORS.destructive.ring}`}
               aria-busy={isDeleteLoading}
+              aria-label={actionsDict?.delete ?? "Delete cluster"}
             >
               {isDeleteLoading ? (
                 <Spinner

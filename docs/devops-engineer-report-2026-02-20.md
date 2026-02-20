@@ -100,9 +100,19 @@ All checks pass locally:
 
 Created GitHub Issue #305 with full implementation details: https://github.com/cpa03/basefly/issues/305
 
-**Implementation Status**: ✅ COMPLETE (committed locally on `devops-engineer` branch)
+**Implementation Status**: ✅ WORKFLOW CHANGES READY (blocked by permissions) | ✅ LOCKFILE FIXED
 
-**Note**: Direct push was blocked due to GitHub App lacking `workflows` permission. The implementation is ready and requires manual merge by someone with workflow write permissions.
+**Note**: Direct push of workflow files was blocked due to GitHub App lacking `workflows` permission. The implementation is ready and requires manual merge by someone with workflow write permissions.
+
+### Additional Fix Applied
+
+Fixed broken `pnpm-lock.yaml` which had a duplicated mapping key error:
+
+```
+ERR_PNPM_BROKEN_LOCKFILE  The lockfile at "/home/runner/work/basefly/basefly/pnpm-lock.yaml" is broken: duplicated mapping key (1463:3)
+```
+
+This was fixed by running `pnpm install` which regenerated the lockfile correctly.
 
 ### Verification Performed
 

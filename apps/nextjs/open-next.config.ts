@@ -1,4 +1,3 @@
 import { defineCloudflareConfig } from "@opennextjs/cloudflare";
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 export default defineCloudflareConfig();

@@ -14,18 +14,15 @@
   "functions": {
     "apps/nextjs/src/app/api/**/*.ts": {
       "memory": 1024,
-      "maxDuration": 30,
-      "minDuration": 5
+      "maxDuration": 30
     },
     "apps/nextjs/src/app/api/webhooks/**/*.ts": {
       "memory": 1024,
-      "maxDuration": 60,
-      "minDuration": 5
+      "maxDuration": 60
     },
     "apps/nextjs/src/app/api/trpc/**/*.ts": {
       "memory": 1024,
-      "maxDuration": 15,
-      "minDuration": 5
+      "maxDuration": 15
     }
   },
   "headers": [

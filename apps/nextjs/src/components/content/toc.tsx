@@ -5,7 +5,7 @@ import * as React from "react";
 import { cn } from "@saasfly/ui";
 
 import type { TableOfContents } from "~/lib/toc";
-import { useMounted } from "~/lib/use-mounted";
+import { useMounted } from "~/hooks/use-mounted";
 
 interface TocProps {
   toc: TableOfContents;

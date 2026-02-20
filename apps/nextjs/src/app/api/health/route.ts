@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
  * Health check endpoint for Kubernetes probes and load balancers.
  * No authentication - intentionally public for fast health monitoring.
  */
-export const runtime = "edge";
 
 export function GET() {
   return NextResponse.json(

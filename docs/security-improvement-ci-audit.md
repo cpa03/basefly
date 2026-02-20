@@ -66,22 +66,11 @@ jobs:
 
 ## Current Vulnerabilities
 
-Running `pnpm audit --audit-level=moderate` currently finds 2 vulnerabilities:
-
-| Severity | Package | Issue                                         |
-| -------- | ------- | --------------------------------------------- |
-| moderate | ajv     | ReDoS with $data option (GHSA-2g4f-4pwh-qvx6) |
-
-**Note**: The ajv vulnerability is in transitive dependencies:
-
-- `check-dependency-version-consistency > table > ajv@8.17.1`
-- `@next-devtools/core > react-dev-inspector > react-dev-utils > fork-ts-checker-webpack-plugin > schema-utils > ajv@6.12.6`
-
-An override for ajv >= 8.18.0 was attempted but causes ESLint compatibility issues (ajv is used internally by @eslint/eslintrc). This requires further investigation.
+Running `pnpm audit --audit-level=moderate` currently finds vulnerabilities in transitive dependencies. The `pnpm-workspace.yaml` includes security overrides for known vulnerable packages.
 
 ## Recommendations
 
-1. **Immediate**: Add the security audit stage to CI
+1. **Immediate**: Add the security audit stage to CI (requires workflow permissions)
 2. **Short-term**: Update overrides in `pnpm-workspace.yaml` to address remaining vulnerabilities
 3. **Long-term**: Consider upgrading to Next.js 15.x or newer which has security fixes
 
@@ -100,6 +89,33 @@ An override for ajv >= 8.18.0 was attempted but causes ESLint compatibility issu
 - ✅ Request ID tracing for debugging
 - ✅ security.txt file for vulnerability reporting
 
+## Additional Security Recommendations
+
+### CSP Improvements
+
+The current CSP configuration uses `'unsafe-inline'` for scripts and styles. Consider migrating to nonce-based CSP for production:
+
+1. Generate a unique nonce per request
+2. Pass nonce to inline scripts/styles
+3. Remove `'unsafe-inline'` from CSP directives
+
+### Rate Limiting Enhancements
+
+Consider adding:
+
+- IP-based blocking for repeated abuse
+- Sliding window rate limiting
+- Rate limit headers in responses (X-RateLimit-Limit, X-RateLimit-Remaining)
+
+### Security Headers Audit
+
+Verify all responses include:
+
+- `X-Content-Type-Options: nosniff`
+- `X-Frame-Options: SAMEORIGIN`
+- `Referrer-Policy: origin-when-cross-origin`
+- `Permissions-Policy` with appropriate restrictions
+
 ## Implementation Notes
 
 This change requires workflow write permissions. The implementation is ready but requires:
@@ -107,6 +123,21 @@ This change requires workflow write permissions. The implementation is ready but
 1. Manual merge by someone with workflow permissions, OR
 2. GitHub App with `workflows` permission
 
+## Local Security Audit
+
+Run security audit locally:
+
+```bash
+pnpm security:audit
+```
+
+Or with full DX check:
+
+```bash
+pnpm dx:check
+```
+
 ---
 
 _Document created by security-engineer agent_
+_Last updated: 2026-02-20_

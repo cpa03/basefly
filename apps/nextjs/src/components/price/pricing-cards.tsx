@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import Link from "next/link";
 import Balancer from "react-wrap-balancer";
 
@@ -147,9 +147,9 @@ export function PricingCards({
   const [isYearly, setIsYearly] = useState<boolean>(isYearlyDefault);
   const signInModal = useSigninModal();
   const pricingData = useMemo(() => priceDataMap[lang] || [], [lang]);
-  const toggleBilling = () => {
-    setIsYearly(!isYearly);
-  };
+  const toggleBilling = useCallback(() => {
+    setIsYearly((prev) => !prev);
+  }, []);
   return (
     <section className="container flex flex-col items-center text-center">
       <div className="mx-auto mb-10 flex w-full flex-col gap-5">

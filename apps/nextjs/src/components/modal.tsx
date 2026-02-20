@@ -33,8 +33,12 @@ export function Modal({
                 "fixed inset-x-0 bottom-0 z-50 mt-24 overflow-hidden rounded-t-2xl border bg-background",
                 className,
               )}
+              aria-label="Modal content"
             >
-              <div className="sticky top-0 z-20 flex w-full items-center justify-center bg-inherit">
+              <div
+                className="sticky top-0 z-20 flex w-full items-center justify-center bg-inherit"
+                aria-hidden="true"
+              >
                 <div className="my-3 h-1.5 w-16 rounded-full bg-muted-foreground/20" />
               </div>
               {children}

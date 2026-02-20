@@ -11,18 +11,22 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "regions": ["iad1"],
+  "skewProtection": true,
   "functions": {
     "apps/nextjs/src/app/api/**/*.ts": {
       "memory": 1024,
-      "maxDuration": 30
+      "maxDuration": 30,
+      "minDuration": 5
     },
     "apps/nextjs/src/app/api/webhooks/**/*.ts": {
       "memory": 1024,
-      "maxDuration": 60
+      "maxDuration": 60,
+      "minDuration": 10
     },
     "apps/nextjs/src/app/api/trpc/**/*.ts": {
       "memory": 1024,
-      "maxDuration": 15
+      "maxDuration": 20,
+      "minDuration": 3
     }
   },
   "headers": [

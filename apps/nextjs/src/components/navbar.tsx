@@ -73,7 +73,7 @@ interface NavBarProps {
   dropdown: Record<string, string>;
 }
 
-export function NavBar({
+export const NavBar = React.memo(function NavBar({
   user,
   items,
   children,
@@ -164,4 +164,6 @@ export function NavBar({
       </div>
     </header>
   );
-}
+});
+
+NavBar.displayName = "NavBar";

@@ -14,7 +14,7 @@ interface Item {
   time: string;
 }
 
-let notifications = [
+const baseNotifications = [
   {
     name: "Payment received",
     description: "Stripe subscription",
@@ -46,7 +46,11 @@ let notifications = [
   },
 ];
 
-notifications = Array.from({ length: 10 }, () => notifications).flat();
+// Pre-compute notifications array once at module load time
+// Using Array.from with mapFn is more efficient than flat()
+const notifications = Array.from({ length: 40 }, (_, i) => ({
+  ...baseNotifications[i % baseNotifications.length],
+}));
 
 const Notification = React.memo(function Notification({
   name,

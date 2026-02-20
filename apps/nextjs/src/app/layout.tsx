@@ -7,7 +7,7 @@ import "~/styles/globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-import { EXTERNAL_URLS, FEATURE_FLAGS } from "@saasfly/common";
+import { BRAND_CONFIG, EXTERNAL_URLS, FEATURE_FLAGS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { Toaster } from "@saasfly/ui/toaster";
 
@@ -61,10 +61,10 @@ export const metadata = {
   ],
   authors: [
     {
-      name: "saasfly",
+      name: BRAND_CONFIG.legacyName.toLowerCase(),
     },
   ],
-  creator: "Saasfly",
+  creator: BRAND_CONFIG.legacyName,
   openGraph: {
     type: "website",
     locale: "en_US",

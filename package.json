@@ -16,6 +16,7 @@
     "db:studio": "cd ./packages/db/ && bun db:studio",
     "dev": "turbo dev --parallel",
     "dev:web": "turbo dev --parallel --filter !stripe",
+    "dev:cloudflare": "cd apps/nextjs && npx dotenv-cli -e ../../.env.local -e ../../.env.ci -- npx wrangler pages dev .vercel/output/static --compatibility-flag=nodejs_compat_v2 --port 8788",
     "format": "turbo format --continue -- --cache --cache-location='node_modules/.cache/.prettiercache' --ignore-path='../../.gitignore'",
     "format:fix": "turbo format --continue -- --write --cache --cache-location='node_modules/.cache/.prettiercache' --ignore-path='../../.gitignore'",
     "lint": "turbo lint",

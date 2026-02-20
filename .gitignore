@@ -35,6 +35,9 @@ yarn-error.log*
 # local env files
 .env.local
 
+# cloudflare wrangler local dev vars (secrets)
+.dev.vars
+
 # vercel
 .vercel
 

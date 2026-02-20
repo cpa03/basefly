@@ -76,13 +76,19 @@ async function handleCheckoutSessionCompleted(
     .executeTakeFirst();
 
   if (customer) {
+    const priceId = subscription.items.data[0]?.price.id;
+    if (!priceId) {
+      logger.warn("No priceId in subscription for checkout.session.completed, skipping update");
+      return;
+    }
+
     await db
       .updateTable("Customer")
       .where("id", "=", customer.id)
       .set({
         stripeCustomerId: customerId,
         stripeSubscriptionId: subscription.id,
-        stripePriceId: subscription.items.data[0]?.price.id,
+        stripePriceId: priceId,
       })
       .execute();
   }

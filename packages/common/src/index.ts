@@ -1,3 +1,37 @@
+/**
+ * @saasfly/common - Shared Configuration and Utilities
+ *
+ * This is the central package for shared configuration, constants, and utilities
+ * used across the Basefly platform. It provides a stable public API surface for:
+ *
+ * - **Environment**: Log levels, environment detection, admin emails
+ * - **Project Config**: Brand, company, repository, deployment settings
+ * - **Security**: CSP headers, security headers configuration
+ * - **Pricing**: Subscription tiers, Stripe price IDs, resource limits
+ * - **Kubernetes**: Cluster locations, statuses, defaults, validation
+ * - **UI**: Design tokens, animations, theming, icon sizes
+ * - **HTTP**: Status codes, header names, content types
+ * - **Resilience**: Circuit breaker, retry, timeout configurations
+ * - **URLs/Routes**: External links, internal routes, navigation
+ * - **Features**: Feature flags and enablement checks
+ * - **Validation**: Input constraints and validation rules
+ * - **Cache**: TTL settings and cache control headers
+ * - **Pagination**: Page sizes and pagination utilities
+ *
+ * @example
+ * ```ts
+ * // Import from the main entry
+ * import { HTTP_STATUS, PRICING_TIERS, FEATURE_FLAGS } from "@saasfly/common";
+ *
+ * // Import from subpath exports
+ * import { HTTP_STATUS } from "@saasfly/common/config/http";
+ * import { CACHE_CONTROL } from "@saasfly/common/config/cache";
+ * ```
+ *
+ * @module @saasfly/common
+ * @see {@link https://docs.saasfly.io Documentation}
+ */
+
 // Environment configuration - centralized environment variables and utilities
 export {
   LogLevel,

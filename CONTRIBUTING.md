@@ -1,3 +1,78 @@
+## Developer Experience (DX) Onboarding
+
+Welcome, new contributor! This section helps you get up to speed quickly.
+
+### Quick Start Checklist
+
+1. **Prerequisites**
+   - [Node.js 18+](https://nodejs.org/) installed
+   - [pnpm](https://pnpm.io/) installed (`npm install -g pnpm`)
+   - [PostgreSQL](https://www.postgresql.org/) (local or remote)
+
+2. **Initial Setup**
+
+   ```bash
+   # Clone and install dependencies
+   git clone https://github.com/cpa03/basefly.git
+   cd basefly
+   pnpm install
+
+   # Verify your environment
+   pnpm dx:setup
+
+   # Copy environment variables
+   cp .env.example .env.local
+   # Edit .env.local with your credentials
+   ```
+
+3. **Daily Development Commands**
+
+   ```bash
+   pnpm dev          # Start development server
+   pnpm build        # Build for production
+   pnpm lint         # Check code style
+   pnpm test         # Run tests
+   pnpm typecheck    # Type check
+   ```
+
+4. **DX Convenience Scripts**
+
+   ```bash
+   pnpm dx:check     # Run typecheck + lint + test + security audit
+   pnpm dx:fix       # Auto-fix lint and format issues
+   pnpm dx:deps      # Check outdated dependencies and run audit
+   pnpm dx:setup     # Verify development environment
+   pnpm dx:all       # Run all DX checks comprehensively
+   ```
+
+5. **Before Submitting a PR**
+
+   ```bash
+   # Run comprehensive checks
+   pnpm dx:all
+
+   # Or step by step:
+   pnpm typecheck && pnpm lint && pnpm test
+   ```
+
+### Project Structure
+
+```
+apps/nextjs/       # Main Next.js application
+packages/api/      # tRPC API definitions
+packages/db/       # Prisma schema and migrations
+packages/ui/       # Shared UI components
+tooling/           # Shared configs (ESLint, Prettier, TS)
+```
+
+### Useful Links
+
+- [README.md](./README.md) - Getting started guide
+- [AGENTS.md](./AGENTS.md) - AI agent configuration
+- [docs/](./docs/) - Additional documentation
+
+---
+
 ## Can I create a pull request for Basefly?
 
 Yes or no, it depends on what you will try to do. Since I don't want to waste your time, be sure to **create an empty draft pull request or open an issue, so we can have a discussion first**. Especially for a large pull request or you don't know if it will be merged or not.

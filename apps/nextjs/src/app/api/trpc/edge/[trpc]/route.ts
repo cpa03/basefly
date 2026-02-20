@@ -13,7 +13,11 @@ const createContext = async (req: NextRequest) => {
   if (isClerkEnabled()) {
     try {
       authResult = getAuth(req);
-    } catch {
+    } catch (error) {
+      logger.debug(
+        "Clerk auth failed in edge context, continuing unauthenticated",
+        { error: error instanceof Error ? error.message : String(error) },
+      );
       authResult = null;
     }
   }

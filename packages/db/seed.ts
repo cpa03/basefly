@@ -152,10 +152,9 @@ async function seed(): Promise<void> {
 
     await db.transaction().execute(async () => {
       await seedUsers();
+      await seedCustomers();
+      await seedClusters();
     });
-
-    await seedCustomers();
-    await seedClusters();
 
     console.log("");
 

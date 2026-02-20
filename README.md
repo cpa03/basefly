@@ -1,12 +1,12 @@
-
 <div align="center" width="100%">
     <img src="./saasfly-logo.svg" width="128" alt="" />
 </div>
 
 # Basefly </br>
+
 <a href="https://trendshift.io/repositories/8929" target="_blank"><img src="https://trendshift.io/api/badge/repositories/8929" alt="basefly%2Fbasefly | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
-[![GitHub Actions Workflow Status][check-workflow-badge]][check-workflow-badge-link] [![GitHub License][github-license-badge]][github-license-badge-link]  [![Discord][discord-badge]][discord-badge-link] [![Saasfly][made-by-nextify-badge]][made-by-nextify-badge-link]
+[![GitHub Actions Workflow Status][check-workflow-badge]][check-workflow-badge-link] [![GitHub License][github-license-badge]][github-license-badge-link] [![Discord][discord-badge]][discord-badge-link] [![Saasfly][made-by-nextify-badge]][made-by-nextify-badge-link]
 [![Chinese](https://img.shields.io/badge/-Chinese-red.svg)](README_zh.md)
 [![German](https://img.shields.io/badge/-German-yellow.svg)](README_de.md)
 [![Vietnamese](https://img.shields.io/badge/-Vietnamese-yellow.svg)](README_vi.md) </br>
@@ -14,6 +14,24 @@
 [![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2Fcpa03%2Fbasefly&labelColor=%23f47373&countColor=%23263759)](https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2Fcpa03%2Fbasefly)
 
 An enterprise-grade Kubernetes cluster management platform.
+
+## 📑 Table of Contents
+
+- [⚡ Live Demo](#-live-demo)
+- [🌟 Star History](#-star-history)
+- [Sponsors](#sponsors)
+- [🚀 Getting Started](#-getting-started)
+  - [🖱 One Click Deploy](#-one-click-deploy)
+  - [📋 Prerequisites](#-prerequisites)
+  - [Installation](#installation)
+  - [Setup](#setup)
+- [🎯 Key Features](#-key-features)
+- [🥺 Project Roadmap](#-project-roadmap)
+- [⭐ Features](#-features)
+- [📦 Apps and Packages](#-apps-and-packages)
+- [📜 License](#-license)
+- [🙏 Credits](#-credits)
+- [👨‍💻 Contributors](#-contributors)
 
 Basefly simplifies Kubernetes cluster deployment and management with a modern web interface, subscription-based access tiers, and integrated billing through Stripe.
 
@@ -85,20 +103,19 @@ See more documentation at <https://docs.saasfly.io>
 Before you start, make sure you have the following installed:
 
 1. [pnpm](https://pnpm.io/) & [Node.js](https://nodejs.org/) & [Git](https://git-scm.com/)
-
    1. Linux
 
-    ```bash
-      curl -fsSL https://get.pnpm.io/install.sh | sh -
-    ```
+   ```bash
+     curl -fsSL https://get.pnpm.io/install.sh | sh -
+   ```
 
    2. MacOS
 
-    ```bash
-      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-      brew install git
-      brew install pnpm
-    ```
+   ```bash
+     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+     brew install git
+     brew install pnpm
+   ```
 
 2. [PostgreSQL](https://www.postgresql.org/) - Required for cluster configuration and user data
    1. You can use Vercel Postgres or a local PostgreSQL server (add POSTGRES_URL env in .env.local)
@@ -121,7 +138,7 @@ To get started with this boilerplate, we offer two options:
 1. Use the `pnpm create` command(🌟Strongly recommend🌟):
 
 ```bash
-pnpm create basefly 
+pnpm create basefly
 ```
 
 2. Manually clone the repository:
@@ -160,18 +177,21 @@ pnpm run dev:web
 ## 🎯 Key Features
 
 ### Kubernetes Cluster Management
+
 - Create and manage Kubernetes clusters through a web interface
 - Multiple subscription tiers (FREE, PRO, BUSINESS) with different resource limits
 - Cluster status tracking (PENDING, CREATING, INITING, RUNNING, STOPPED)
 - Soft delete support for cluster preservation
 
 ### Subscription & Billing
+
 - Integrated Stripe subscription billing
 - Multiple pricing plans with automatic provisioning
 - Webhook-based subscription status synchronization
 - Customer portal for subscription management
 
 ### Enterprise Features
+
 - Multi-language support (English, Chinese, German, Vietnamese)
 - Role-based access control (Admin dashboard)
 - Audit trail preservation with soft delete patterns
@@ -181,20 +201,20 @@ pnpm run dev:web
 ## 🥺 Project Roadmap
 
 1. Enhanced Admin Dashboard
-    1. Currently in alpha - provides basic administrative views
-    2. Configure admin emails in `ADMIN_EMAIL` environment variable
-    3. Access at `/admin/dashboard`
-    4. Security: No online admin demos available
+   1. Currently in alpha - provides basic administrative views
+   2. Configure admin emails in `ADMIN_EMAIL` environment variable
+   3. Access at `/admin/dashboard`
+   4. Security: No online admin demos available
 
 2. Advanced Kubernetes Features
-    1. Cluster monitoring and metrics integration
-    2. Node pool management
-    3. Auto-scaling configuration
+   1. Cluster monitoring and metrics integration
+   2. Node pool management
+   3. Auto-scaling configuration
 
 3. Additional Integrations
-    1. Consider integrating Payload CMS for content management
-    2. Enhanced notification system
-    3. Usage analytics and reporting
+   1. Consider integrating Payload CMS for content management
+   2. Enhanced notification system
+   3. Usage analytics and reporting
 
 ## ⭐ Features
 
@@ -285,7 +305,6 @@ Made with [contrib.rocks](https://contrib.rocks).
 [github-license-badge]: https://img.shields.io/badge/License-MIT-green.svg
 [discord-badge]: https://img.shields.io/discord/1204690198382911488?color=7b8dcd&link=https%3A%2F%2Fsaasfly.io%2Fdiscord
 [made-by-nextify-badge]: https://img.shields.io/badge/made_by-nextify-blue?color=FF782B&link=https://nextify.ltd/
-
 [check-workflow-badge-link]: https://github.com/cpa03/basefly/actions/workflows/on-pull.yml
 [github-license-badge-link]: https://github.com/cpa03/basefly/blob/main/LICENSE
 [discord-badge-link]: https://discord.gg/8SwSX43wnD

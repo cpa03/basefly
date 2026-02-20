@@ -1,6 +1,21 @@
 {
   "$schema": "https://turborepo.org/schema.json",
-  "globalDependencies": ["**/.env"],
+  "globalDependencies": ["**/.env", "**/.env.local"],
+  "globalEnv": [
+    "NODE_ENV",
+    "NEXT_PUBLIC_APP_URL",
+    "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY",
+    "NEXT_PUBLIC_STRIPE_STD_PRODUCT_ID",
+    "NEXT_PUBLIC_STRIPE_STD_MONTHLY_PRICE_ID",
+    "NEXT_PUBLIC_STRIPE_PRO_PRODUCT_ID",
+    "NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID",
+    "NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID",
+    "NEXT_PUBLIC_STRIPE_BUSINESS_PRODUCT_ID",
+    "NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID",
+    "NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID",
+    "NEXT_PUBLIC_POSTHOG_KEY",
+    "NEXT_PUBLIC_POSTHOG_HOST"
+  ],
   "tasks": {
     "topo": {
       "dependsOn": ["^topo"]

@@ -19,11 +19,12 @@ export async function handleEvent(event: Stripe.Event) {
 
 async function processEventInternal(event: Stripe.Event) {
   try {
-    const session = event.data.object as Stripe.Checkout.Session;
     if (event.type === "checkout.session.completed") {
+      const session = event.data.object as Stripe.Checkout.Session;
       await handleCheckoutSessionCompleted(session);
     } else if (event.type === "invoice.payment_succeeded") {
-      await handleInvoicePaymentSucceeded(session);
+      const invoice = event.data.object as Stripe.Invoice;
+      await handleInvoicePaymentSucceeded(invoice);
     } else if (event.type === "customer.subscription.updated") {
       logger.info(`Unhandled event type: ${event.type}`);
     }
@@ -94,10 +95,14 @@ async function handleCheckoutSessionCompleted(
   }
 }
 
-async function handleInvoicePaymentSucceeded(session: Stripe.Checkout.Session) {
-  const subscription = await retrieveSubscription(
-    session.subscription as string,
-  );
+async function handleInvoicePaymentSucceeded(invoice: Stripe.Invoice) {
+  const subscriptionId = invoice.subscription as string | null;
+  if (!subscriptionId) {
+    logger.warn("No subscription ID in invoice, skipping update");
+    return;
+  }
+
+  const subscription = await retrieveSubscription(subscriptionId);
   const customerId =
     typeof subscription.customer === "string"
       ? subscription.customer

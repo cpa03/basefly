@@ -119,7 +119,8 @@ const config = {
   },
   /** We already do linting and typechecking as separate tasks in CI */
   typescript: { ignoreBuildErrors: true },
-  // output: "standalone",  // Disabled for CI testing
+  /** Enables standalone output for Vercel deployments - reduces deployment size */
+  output: "standalone",
   compress: true,
   poweredByHeader: false,
   productionBrowserSourceMaps: false,

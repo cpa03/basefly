@@ -1,5 +1,6 @@
 import { TRPCError } from "@trpc/server";
 
+import { ERROR_MESSAGES } from "@saasfly/common";
 import { IntegrationError } from "@saasfly/stripe";
 
 export enum ErrorCode {
@@ -77,17 +78,17 @@ export function handleIntegrationError(error: unknown): TRPCError {
       case "CIRCUIT_BREAKER_OPEN":
         return createApiError(
           ErrorCode.CIRCUIT_BREAKER_OPEN,
-          err.message || "Service temporarily unavailable due to failures",
+          err.message || ERROR_MESSAGES.SERVICE_UNAVAILABLE,
         );
       case "TIMEOUT":
         return createApiError(
           ErrorCode.TIMEOUT_ERROR,
-          err.message || "Request timed out",
+          err.message || ERROR_MESSAGES.TIMEOUT_ERROR,
         );
       case "API_ERROR":
         return createApiError(
           ErrorCode.INTEGRATION_ERROR,
-          err.message || "External service error",
+          err.message || ERROR_MESSAGES.NETWORK_ERROR,
           error,
         );
     }
@@ -99,7 +100,7 @@ export function handleIntegrationError(error: unknown): TRPCError {
 
   return createApiError(
     ErrorCode.INTERNAL_SERVER_ERROR,
-    "Unknown integration error",
+    ERROR_MESSAGES.UNEXPECTED_ERROR,
   );
 }
 

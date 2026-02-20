@@ -500,7 +500,9 @@ describe("API Validation Tests", () => {
       const error = "string error";
       const trpcError = handleIntegrationError(error);
       expect(trpcError).toBeInstanceOf(TRPCError);
-      expect(trpcError.message).toBe("Unknown integration error");
+      expect(trpcError.message).toBe(
+        "An unexpected error occurred. Please try again.",
+      );
     });
   });
 

@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { CLUSTER_VALIDATION, K8S_DEFAULTS } from "@saasfly/common";
+import { CLUSTER_ERRORS, CLUSTER_VALIDATION, K8S_DEFAULTS } from "@saasfly/common";
 import { db, k8sClusterService } from "@saasfly/db";
 
 import { createApiError, ErrorCode } from "../errors";
@@ -76,13 +76,10 @@ export const k8sClusterUpdateSchema = z
 async function verifyClusterOwnership(clusterId: number, userId: string) {
   const cluster = await k8sClusterService.findActive(clusterId, userId);
   if (!cluster) {
-    throw createApiError(ErrorCode.NOT_FOUND, "Cluster not found");
+    throw createApiError(ErrorCode.NOT_FOUND, CLUSTER_ERRORS.NOT_FOUND);
   }
   if (cluster.authUserId && cluster.authUserId !== userId) {
-    throw createApiError(
-      ErrorCode.FORBIDDEN,
-      "You don't have access to this cluster",
-    );
+    throw createApiError(ErrorCode.FORBIDDEN, CLUSTER_ERRORS.FORBIDDEN);
   }
   return cluster;
 }
@@ -126,7 +123,7 @@ export const k8sRouter = createTRPCRouter({
         if (!newCluster) {
           throw createApiError(
             ErrorCode.INTERNAL_SERVER_ERROR,
-            "Failed to create the cluster",
+            CLUSTER_ERRORS.CREATE_FAILED,
           );
         }
 
@@ -149,7 +146,7 @@ export const k8sRouter = createTRPCRouter({
         if (error instanceof z.ZodError) {
           throw createApiError(
             ErrorCode.VALIDATION_ERROR,
-            "Invalid input data",
+            CLUSTER_ERRORS.INVALID_INPUT,
             error.issues,
           );
         }
@@ -166,7 +163,7 @@ export const k8sRouter = createTRPCRouter({
         );
         throw createApiError(
           ErrorCode.INTERNAL_SERVER_ERROR,
-          "Failed to create cluster",
+          CLUSTER_ERRORS.CREATE_FAILED,
           error,
         );
       }

@@ -28,6 +28,8 @@ export const ERROR_MESSAGES = {
   NETWORK_ERROR: "A network error occurred. Please check your connection.",
   /** Timeout error */
   TIMEOUT_ERROR: "The request timed out. Please try again.",
+  /** Service unavailable */
+  SERVICE_UNAVAILABLE: "Service temporarily unavailable due to failures.",
 } as const;
 
 /**
@@ -54,6 +56,10 @@ export const CLUSTER_ERRORS = {
   NOT_FOUND: "Cluster not found.",
   /** Invalid cluster configuration */
   INVALID_CONFIG: "Invalid cluster configuration.",
+  /** Access forbidden - user doesn't have permission */
+  FORBIDDEN: "You don't have access to this cluster.",
+  /** Invalid input data */
+  INVALID_INPUT: "Invalid input data.",
 } as const;
 
 /**

@@ -1,5 +1,21 @@
 // @ts-nocheck
-// This file uses complex MDAST types that require extensive type definitions
+/**
+ * Table of Contents Generator for Markdown Content
+ *
+ * This file uses @ts-nocheck due to complex MDAST (Markdown Abstract Syntax Tree)
+ * type interactions between mdast-util-toc, unist-util-visit, and remark.
+ *
+ * The types for these libraries are either:
+ * - Incomplete (mdast-util-toc Result.map returns List | undefined)
+ * - Require extensive generic type parameters (unist-util-visit visitor callbacks)
+ * - Have incompatible VFile data type expectations (remark plugin system)
+ *
+ * This is a known trade-off for type safety in this utility module.
+ * The function is well-tested and the runtime behavior is correct.
+ *
+ * @see https://github.com/syntax-tree/mdast-util-toc
+ * @see https://github.com/syntax-tree/unist-util-visit
+ */
 import { toc } from "mdast-util-toc";
 import { remark } from "remark";
 import { visit } from "unist-util-visit";

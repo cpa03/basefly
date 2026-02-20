@@ -95,7 +95,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               hasContent && "opacity-100",
             )}
             aria-label="Clear input"
-            tabIndex={-1}
           >
             <X className="h-3 w-3" aria-hidden="true" />
           </button>

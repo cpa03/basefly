@@ -59,7 +59,7 @@ export default async function DashboardPage({
   return (
     <DashboardShell>
       <DashboardHeader
-        heading="kubernetes"
+        heading={dict.common.dashboard.heading}
         text={dict.common.dashboard.title_text}
       >
         <K8sCreateButton dict={dict.business} lang={lang} />
@@ -70,18 +70,28 @@ export default async function DashboardPage({
             <div className="hidden divide-y divide-border rounded-md border md:block">
               <div className="flex items-center justify-between p-4">
                 <Table className="divide-y divide-gray-200">
-                  <TableCaption>A list of your k8s cluster</TableCaption>
+                  <TableCaption>
+                    {dict.common.dashboard.table_caption}
+                  </TableCaption>
                   <TableHeader>
                     <TableRow className="hover:bg-gray-50">
                       <TableHead scope="col" className="w-[100px]">
-                        Name
+                        {dict.common.dashboard.col_name}
                       </TableHead>
-                      <TableHead scope="col">Location</TableHead>
-                      <TableHead scope="col">UpdatedAt</TableHead>
-                      <TableHead scope="col">Plan</TableHead>
-                      <TableHead scope="col">Status</TableHead>
+                      <TableHead scope="col">
+                        {dict.common.dashboard.col_location}
+                      </TableHead>
+                      <TableHead scope="col">
+                        {dict.common.dashboard.col_updated_at}
+                      </TableHead>
+                      <TableHead scope="col">
+                        {dict.common.dashboard.col_plan}
+                      </TableHead>
+                      <TableHead scope="col">
+                        {dict.common.dashboard.col_status}
+                      </TableHead>
                       <TableHead scope="col" className="text-right">
-                        Actions
+                        {dict.common.dashboard.col_actions}
                       </TableHead>
                     </TableRow>
                   </TableHeader>
@@ -127,11 +137,15 @@ export default async function DashboardPage({
                   </div>
                   <div className="flex flex-wrap gap-4 border-t pt-3">
                     <div className="flex items-center gap-2 text-sm">
-                      <span className="text-muted-foreground">Plan:</span>
+                      <span className="text-muted-foreground">
+                        {dict.common.dashboard.label_plan}
+                      </span>
                       <span className="font-medium">{cluster.plan ?? "-"}</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm">
-                      <span className="text-muted-foreground">Status:</span>
+                      <span className="text-muted-foreground">
+                        {dict.common.dashboard.label_status}
+                      </span>
                       {cluster.status ? (
                         <StatusBadge status={cluster.status} size="sm" />
                       ) : (
@@ -139,7 +153,9 @@ export default async function DashboardPage({
                       )}
                     </div>
                     <div className="flex items-center gap-2 text-sm">
-                      <span className="text-muted-foreground">Updated:</span>
+                      <span className="text-muted-foreground">
+                        {dict.common.dashboard.label_updated}
+                      </span>
                       <span className="font-medium">
                         {formatDate(cluster.updatedAt)}
                       </span>

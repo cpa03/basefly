@@ -96,7 +96,18 @@
       "sidebar_nav_clusters": "Clusters",
       "sidebar_nav_billing": "Billing",
       "sidebar_nav_settings": "Settings",
-      "title_text": "Create and manage clusters."
+      "title_text": "Create and manage clusters.",
+      "heading": "Kubernetes",
+      "table_caption": "A list of your Kubernetes clusters.",
+      "col_name": "Name",
+      "col_location": "Location",
+      "col_updated_at": "Updated At",
+      "col_plan": "Plan",
+      "col_status": "Status",
+      "col_actions": "Actions",
+      "label_plan": "Plan:",
+      "label_status": "Status:",
+      "label_updated": "Updated:"
     },
     "": ""
   },

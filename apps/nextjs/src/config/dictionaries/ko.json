@@ -97,6 +97,17 @@
       "sidebar_nav_billing": "청구",
       "sidebar_nav_settings": "설정",
       "title_text": "클러스터 생성 및 관리。",
+      "heading": "Kubernetes",
+      "table_caption": "Kubernetes 클러스터 목록입니다.",
+      "col_name": "이름",
+      "col_location": "위치",
+      "col_updated_at": "수정일",
+      "col_plan": "플랜",
+      "col_status": "상태",
+      "col_actions": "작업",
+      "label_plan": "플랜:",
+      "label_status": "상태:",
+      "label_updated": "수정:",
       "": ""
     },
     "": ""

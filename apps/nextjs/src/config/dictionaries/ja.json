@@ -97,6 +97,17 @@
       "sidebar_nav_billing": "請求",
       "sidebar_nav_settings": "設定",
       "title_text": "クラスターの作成と管理。",
+      "heading": "Kubernetes",
+      "table_caption": "Kubernetesクラスターの一覧です。",
+      "col_name": "名前",
+      "col_location": "場所",
+      "col_updated_at": "更新日時",
+      "col_plan": "プラン",
+      "col_status": "ステータス",
+      "col_actions": "操作",
+      "label_plan": "プラン:",
+      "label_status": "ステータス:",
+      "label_updated": "更新:",
       "": ""
     },
     "": ""

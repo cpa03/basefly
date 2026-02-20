@@ -9,6 +9,27 @@ import { createApiError, ErrorCode } from "../errors";
 import { logger } from "../logger";
 import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 
+function isUniqueViolation(
+  error: unknown,
+  constraintName?: string,
+): boolean {
+  if (
+    error &&
+    typeof error === "object" &&
+    "code" in error &&
+    typeof (error as { code?: string }).code === "string"
+  ) {
+    const pgError = error as { code: string; constraint?: string };
+    if (pgError.code === "23505") {
+      if (constraintName) {
+        return pgError.constraint === constraintName;
+      }
+      return true;
+    }
+  }
+  return false;
+}
+
 // Enhanced schemas with comprehensive validation using centralized constants
 export const updateUserNameSchema = z
   .object({
@@ -112,6 +133,14 @@ export const customerRouter = createTRPCRouter({
 
         return result;
       } catch (error) {
+        if (isUniqueViolation(error, "Customer_authUserId_unique")) {
+          logger.info({ userId, requestId }, "Customer already exists");
+          throw createApiError(
+            ErrorCode.CONFLICT,
+            "Customer already exists for this user",
+          );
+        }
+
         logger.error(
           {
             userId,

@@ -19,7 +19,7 @@ enum SubscriptionPlan {
 
 model Customer {
   id                     Int               @id @default(autoincrement())
-  authUserId             String
+  authUserId             String            @unique
   name                   String?
   plan                   SubscriptionPlan?
   stripeCustomerId       String?           @unique
@@ -31,7 +31,6 @@ model Customer {
 
   user User @relation(fields: [authUserId], references: [id], onDelete: Restrict)
 
-  @@index([authUserId])
   @@index([plan])
   @@index([authUserId, stripeCurrentPeriodEnd])
 }

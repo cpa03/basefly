@@ -66,7 +66,7 @@ The database package includes a seed script for populating development and test 
 The seed script creates:
 
 - **Test User**: `test@example.com` with FREE plan
-- **Admin User**: `admin@example.com` with BUSINESS plan  
+- **Admin User**: `admin@example.com` with BUSINESS plan
 - **Sample Clusters**: Two K8s cluster configurations
 
 ### Running Seeds
@@ -391,17 +391,18 @@ jobs:
 
 ## Current Migration History
 
-| Date       | Migration                                         | Description                                                                                     |
-| ---------- | ------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| 2026-02-19 | `20260219_add_webhook_updated_at_trigger`         | Added updatedAt trigger for StripeWebhookEvent to align with K8sClusterConfig and Customer      |
-| 2026-02-19 | `20260219_add_webhook_cleanup_composite_index`    | Added composite index on StripeWebhookEvent(processed, createdAt) for cleanup query optimization|
-| 2026-02-19 | `20260219_add_customer_plan_index`                | Added index on Customer.plan for subscription tier query optimization                           |
-| 2026-02-18 | `20260218_add_auth_session_indexes`               | Added indexes for Account, Session, VerificationToken tables (userId, expires, identifier)      |
-| 2026-02-18 | `20260218_add_partial_indexes_for_cluster_status` | Added partial indexes for K8sClusterConfig query optimization (active/deleted clusters)         |
-| 2026-02-18 | `20260218_add_webhook_event_type_index`           | Added index on StripeWebhookEvent.eventType for query performance                               |
-| 2026-01-31 | `20260131_add_row_level_security`                 | Added row-level security (RLS) for multi-tenant data protection                                 |
-| 2026-01-31 | `20260131_add_automated_triggers`                 | Added database triggers for automated maintenance (updatedAt updates, user soft delete cascade) |
-| 2026-01-31 | `20260131_add_check_constraints`                  | Added check constraints for data integrity (name/location length, Stripe ID formats)            |
-| 2026-01-10 | `20260110_add_composite_indexes`                  | Added composite indexes for query performance optimization                                      |
-| 2024-01-07 | `20240107_implement_soft_delete`                  | Implemented soft delete pattern with deletedAt timestamp and partial unique indexes             |
-| 2024-01-07 | `20240107_add_foreign_key_constraints`            | Added foreign key constraints to Customer and K8sClusterConfig tables                           |
+| Date       | Migration                                         | Description                                                                                      |
+| ---------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| 2026-02-20 | `20260220_add_webhook_event_type_processed_index` | Added composite index on StripeWebhookEvent(eventType, processed) for event type filtering       |
+| 2026-02-19 | `20260219_add_webhook_updated_at_trigger`         | Added updatedAt trigger for StripeWebhookEvent to align with K8sClusterConfig and Customer       |
+| 2026-02-19 | `20260219_add_webhook_cleanup_composite_index`    | Added composite index on StripeWebhookEvent(processed, createdAt) for cleanup query optimization |
+| 2026-02-19 | `20260219_add_customer_plan_index`                | Added index on Customer.plan for subscription tier query optimization                            |
+| 2026-02-18 | `20260218_add_auth_session_indexes`               | Added indexes for Account, Session, VerificationToken tables (userId, expires, identifier)       |
+| 2026-02-18 | `20260218_add_partial_indexes_for_cluster_status` | Added partial indexes for K8sClusterConfig query optimization (active/deleted clusters)          |
+| 2026-02-18 | `20260218_add_webhook_event_type_index`           | Added index on StripeWebhookEvent.eventType for query performance                                |
+| 2026-01-31 | `20260131_add_row_level_security`                 | Added row-level security (RLS) for multi-tenant data protection                                  |
+| 2026-01-31 | `20260131_add_automated_triggers`                 | Added database triggers for automated maintenance (updatedAt updates, user soft delete cascade)  |
+| 2026-01-31 | `20260131_add_check_constraints`                  | Added check constraints for data integrity (name/location length, Stripe ID formats)             |
+| 2026-01-10 | `20260110_add_composite_indexes`                  | Added composite indexes for query performance optimization                                       |
+| 2024-01-07 | `20240107_implement_soft_delete`                  | Implemented soft delete pattern with deletedAt timestamp and partial unique indexes              |
+| 2024-01-07 | `20240107_add_foreign_key_constraints`            | Added foreign key constraints to Customer and K8sClusterConfig tables                            |

@@ -21,10 +21,13 @@ pnpm install
 cp .env.example .env.local
 # Edit .env.local with your credentials
 
-# 3. Initialize the database
+# 3. Verify your environment (optional but recommended)
+pnpm dx:setup
+
+# 4. Initialize the database
 pnpm db:push
 
-# 4. Start development server
+# 5. Start development server
 pnpm dev:web
 ```
 
@@ -53,15 +56,24 @@ pnpm dev:web
 
 ### DX Convenience Scripts
 
-| Command         | Description                                              |
-| --------------- | -------------------------------------------------------- |
-| `pnpm dx:check` | Run all checks: typecheck + lint + test + security audit |
-| `pnpm dx:fix`   | Auto-fix all fixable issues: lint + format               |
+These commands streamline common developer workflows and provide a consistent experience:
 
-These commands streamline common developer workflows:
+| Command         | Description                                            |
+| --------------- | ------------------------------------------------------ |
+| `pnpm dx:quick` | Quick feedback: typecheck + lint only (fastest check)  |
+| `pnpm dx:check` | Full checks: typecheck + lint + test + security audit  |
+| `pnpm dx:fix`   | Auto-fix all fixable issues: lint + format             |
+| `pnpm dx:deps`  | Check for outdated dependencies and run security audit |
+| `pnpm dx:setup` | Verify development environment (env files, deps)       |
+| `pnpm dx:all`   | Comprehensive: setup + check + deps                    |
+| `pnpm dx:ci`    | Simulate CI locally: dx:check + build                  |
 
-- Use `pnpm dx:check` before pushing to catch issues early
-- Use `pnpm dx:fix` to quickly fix formatting and lint issues
+**Recommended workflow:**
+
+- **Before pushing**: `pnpm dx:quick` - Fast feedback in seconds
+- **Before PR**: `pnpm dx:check` - Full quality gate
+- **First setup**: `pnpm dx:setup` - Verify your environment
+- **CI simulation**: `pnpm dx:ci` - Exactly what CI runs
 
 ### Testing
 
@@ -162,7 +174,10 @@ The project uses GitHub Actions for CI/CD. See [CI/CD Documentation](./ci-cd.md)
 To run CI checks locally:
 
 ```bash
-# Run all checks that CI runs
+# Simulate full CI pipeline
+pnpm dx:ci
+
+# Or step by step:
 pnpm typecheck && pnpm lint && pnpm test && pnpm build
 ```
 

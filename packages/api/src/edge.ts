@@ -1,3 +1,4 @@
+import { adminRouter } from "./router/admin";
 import { authRouter } from "./router/auth";
 import { customerRouter } from "./router/customer";
 import { helloRouter } from "./router/health_check";
@@ -11,4 +12,5 @@ export const edgeRouter = createTRPCRouter({
   k8s: k8sRouter,
   auth: authRouter,
   customer: customerRouter,
+  admin: adminRouter,
 });

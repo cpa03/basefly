@@ -15,7 +15,14 @@ function escapeHtml(unsafe: string): string {
 
 // Schema matching the hello router input
 const helloInputSchema = z.object({
-  text: z.string().max(API_VALIDATION.text.maxLength),
+  text: z
+    .string()
+    .trim()
+    .min(API_VALIDATION.text.minLength, "Text cannot be empty")
+    .max(
+      API_VALIDATION.text.maxLength,
+      `Text cannot exceed ${API_VALIDATION.text.maxLength} characters`,
+    ),
 });
 
 describe("Hello Router - Security Tests", () => {
@@ -120,11 +127,40 @@ describe("Hello Router - Security Tests", () => {
       const result = helloInputSchema.safeParse({ text: tooLong });
       expect(result.success).toBe(false);
       if (!result.success) {
-        // Zod v4 uses "Too big" instead of "at most"
         expect(
           result.error.issues.some(
             (i) =>
-              i.message.includes("Too big") || i.message.includes("at most"),
+              i.message.includes("cannot exceed") ||
+              i.message.includes("Too big") ||
+              i.message.includes("at most"),
+          ),
+        ).toBe(true);
+      }
+    });
+
+    it("rejects empty text after trim", () => {
+      const result = helloInputSchema.safeParse({ text: "" });
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(
+          result.error.issues.some(
+            (i) =>
+              i.message.includes("Text cannot be empty") ||
+              i.message.includes("Too small"),
+          ),
+        ).toBe(true);
+      }
+    });
+
+    it("rejects whitespace-only text after trim", () => {
+      const result = helloInputSchema.safeParse({ text: "   " });
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(
+          result.error.issues.some(
+            (i) =>
+              i.message.includes("Text cannot be empty") ||
+              i.message.includes("Too small"),
           ),
         ).toBe(true);
       }

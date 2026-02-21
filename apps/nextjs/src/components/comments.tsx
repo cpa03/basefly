@@ -1,3 +1,4 @@
+import * as React from "react";
 import Image from "next/image";
 
 import { getAvatarUrl } from "@saasfly/common";
@@ -46,7 +47,7 @@ const reviews = [
 const firstRow = reviews.slice(0, reviews.length / 2);
 const secondRow = reviews.slice(reviews.length / 2);
 
-const ReviewCard = ({
+const ReviewCard = React.memo(function ReviewCard({
   img,
   name,
   username,
@@ -56,7 +57,7 @@ const ReviewCard = ({
   name: string;
   username: string;
   body: string;
-}) => {
+}) {
   return (
     <figure
       className={cn(
@@ -85,7 +86,7 @@ const ReviewCard = ({
       <blockquote className="mt-2 text-sm">{body}</blockquote>
     </figure>
   );
-};
+});
 
 const Comments = () => {
   return (

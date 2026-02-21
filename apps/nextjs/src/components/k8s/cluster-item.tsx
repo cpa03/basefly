@@ -63,6 +63,12 @@ export const ClusterItem = React.memo(function ClusterItem({
 }: ClusterItemProps) {
   const clusterUrl = `/${lang}/editor/cluster/${String(cluster.id)}`;
 
+  // Memoize cluster object to preserve ClusterOperations memoization
+  const clusterInfo = React.useMemo(
+    () => ({ id: cluster.id, name: cluster.name }),
+    [cluster.id, cluster.name],
+  );
+
   return (
     <TableRow
       key={String(cluster.id)}
@@ -104,7 +110,7 @@ export const ClusterItem = React.memo(function ClusterItem({
       </TableCell>
       <TableCell className="text-right">
         <ClusterOperations
-          cluster={{ id: cluster.id, name: cluster.name }}
+          cluster={clusterInfo}
           lang={lang}
           dict={dict}
         />

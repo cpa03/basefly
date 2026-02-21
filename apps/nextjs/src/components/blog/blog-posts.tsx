@@ -1,3 +1,4 @@
+import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Balancer from "react-wrap-balancer";
@@ -19,7 +20,7 @@ interface BlogPostsProps {
   posts: Post[];
 }
 
-export function BlogPosts({ posts }: BlogPostsProps) {
+export const BlogPosts = React.memo(function BlogPosts({ posts }: BlogPostsProps) {
   return (
     <div className="container space-y-10 py-6 md:py-10">
       <section>
@@ -91,4 +92,4 @@ export function BlogPosts({ posts }: BlogPostsProps) {
       </section>
     </div>
   );
-}
+});

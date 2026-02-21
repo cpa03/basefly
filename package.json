@@ -38,6 +38,7 @@
     "dx:setup": "echo '🔧 Verifying development environment...' && pnpm env:verify && pnpm check-deps && echo '✅ Development environment verified'",
     "dx:all": "echo '🚀 Running comprehensive DX checks...' && pnpm dx:setup && pnpm dx:check && pnpm dx:deps && echo '✅ All DX checks passed'",
     "dx:ci": "pnpm dx:check && pnpm build",
+    "dx:help": "echo '\\n📦 DX Scripts Available:\\n  dx:quick     - Fast feedback: typecheck + lint only\\n  dx:check     - Full checks: typecheck + lint + test + security audit\\n  dx:fix       - Auto-fix lint and format issues\\n  dx:deps      - Check outdated dependencies and run audit\\n  dx:setup     - Verify development environment\\n  dx:all       - Run all DX checks comprehensively\\n  dx:ci        - Simulate CI: dx:check + build\\n\\n💡 Recommended workflow:\\n  - Before pushing: pnpm dx:quick\\n  - Before PR: pnpm dx:check\\n  - First setup: pnpm dx:setup\\n'",
     "env:verify": "node -e \"const fs=require('fs');const envExample=fs.existsSync('.env.example');const envLocal=fs.existsSync('.env.local');if(!envExample){console.error('❌ .env.example not found');process.exit(1)}if(!envLocal){console.warn('⚠️  .env.local not found. Copy .env.example to .env.local and configure your environment variables.');console.log('  Run: cp .env.example .env.local')}else{console.log('✅ Environment files verified')}\""
   },
   "devDependencies": {

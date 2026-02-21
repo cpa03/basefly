@@ -124,7 +124,7 @@ export const NavBar = React.memo(function NavBar({
             </nav>
           ) : null}
 
-          <div className="h-8 w-[1px] bg-accent"></div>
+          <div className="h-8 w-[1px] bg-accent" aria-hidden="true"></div>
 
           {rightElements}
 

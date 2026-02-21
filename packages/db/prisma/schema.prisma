@@ -100,6 +100,7 @@ model K8sClusterConfig {
   @@index([authUserId])
   @@index([deletedAt])
   @@index([authUserId, deletedAt])
+  @@index([createdAt])
 }
 
 enum Status {

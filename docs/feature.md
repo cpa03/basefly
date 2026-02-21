@@ -180,6 +180,96 @@ As an administrator, I want to view and manage platform users and clusters, so t
 
 ---
 
+### [FEAT-006] Multi-region Cluster Support
+
+**Status**: Draft
+**Priority**: P2
+**Created**: 2026-02-21
+**Updated**: 2026-02-21
+
+#### User Story
+
+As a platform user, I want to deploy Kubernetes clusters in multiple geographic regions, so that I can reduce latency for global users and improve disaster recovery capabilities.
+
+#### Requirements
+
+1. Users can select deployment region during cluster creation
+2. Support for minimum 3 regions (US East, US West, EU West)
+3. Region-aware cluster listing and filtering
+4. Cross-region cluster status monitoring
+5. Region-specific pricing tiers (if applicable)
+
+#### Acceptance Criteria
+
+- [ ] Cluster creation form includes region selector
+- [ ] Region is persisted with cluster metadata
+- [ ] Cluster list displays region information
+- [ ] API supports filtering clusters by region
+- [ ] Region selection affects cluster provisioning endpoint
+- [ ] Documentation updated with region availability
+
+#### Technical Notes
+
+- Requires backend infrastructure for multi-region provisioning
+- Database schema extension: add `region` field to Cluster model
+- Consider latency-based region recommendations
+- May require region-specific Kubernetes configurations
+- Integration with cloud provider APIs for region validation
+
+#### Related Tasks
+
+- [ ] TASK-006-1: Add region field to Cluster schema (Status: Backlog)
+- [ ] TASK-006-2: Update cluster creation API for region support (Status: Backlog)
+- [ ] TASK-006-3: Add region selector UI component (Status: Backlog)
+- [ ] TASK-006-4: Implement region filtering in cluster list (Status: Backlog)
+
+---
+
+### [FEAT-007] Advanced Monitoring Integration
+
+**Status**: Draft
+**Priority**: P2
+**Created**: 2026-02-21
+**Updated**: 2026-02-21
+
+#### User Story
+
+As a platform user, I want to view real-time metrics and health status of my Kubernetes clusters, so that I can proactively monitor performance and troubleshoot issues.
+
+#### Requirements
+
+1. Real-time cluster health status display
+2. Resource utilization metrics (CPU, Memory, Storage)
+3. Pod status overview per cluster
+4. Historical metrics with configurable time ranges
+5. Alert configuration for threshold violations
+
+#### Acceptance Criteria
+
+- [ ] Dashboard displays cluster health indicator
+- [ ] Metrics API endpoint returns cluster statistics
+- [ ] UI charts show CPU/Memory utilization trends
+- [ ] Pod status list available per cluster
+- [ ] Alert rules configurable per cluster
+- [ ] Metrics data retained for 30 days minimum
+
+#### Technical Notes
+
+- Integration with Prometheus/Grafana or similar monitoring stack
+- Consider time-series database for metrics storage
+- WebSocket or SSE for real-time updates
+- Rate limiting for metrics API
+- May require cluster-side metrics agent deployment
+
+#### Related Tasks
+
+- [ ] TASK-007-1: Design metrics data model (Status: Backlog)
+- [ ] TASK-007-2: Implement metrics collection service (Status: Backlog)
+- [ ] TASK-007-3: Create metrics API endpoints (Status: Backlog)
+- [ ] TASK-007-4: Build monitoring dashboard UI (Status: Backlog)
+
+---
+
 ## Feature Template
 
 When adding a new feature, use the following template:

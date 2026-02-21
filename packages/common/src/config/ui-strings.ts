@@ -22,3 +22,9 @@ export const MARKETING_STATS = {
   contributorCount: 9,
   developerCount: 2000,
 } as const;
+
+export const ERROR_MESSAGES = {
+  patternGeneration: "Something went wrong trying to pick a pattern...",
+  somethingWentWrong: "Something went wrong.",
+  genericError: "Error",
+} as const;

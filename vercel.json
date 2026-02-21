@@ -10,7 +10,6 @@
   "ignoreCommand": "npx turbo-ignore --fallback=HEAD^1",
   "cleanUrls": true,
   "trailingSlash": false,
-  "regions": ["iad1", "sfo1"],
   "functions": {
     "apps/nextjs/src/app/api/**/*.ts": {
       "memory": 1024,

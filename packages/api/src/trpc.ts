@@ -3,6 +3,8 @@ import { auth, currentUser, getAuth } from "@clerk/nextjs/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { ZodError } from "zod";
 
+import { AUTH_ERRORS, ERROR_MESSAGES } from "@saasfly/common";
+
 import { createApiError, ErrorCode } from "./errors";
 import { EndpointType, getIdentifier, getLimiter } from "./rate-limiter";
 import { getOrGenerateRequestId } from "./request-id";
@@ -85,7 +87,7 @@ const isAdmin = t.middleware(async ({ next, ctx }) => {
   if (!isAdminEmail(userEmail)) {
     throw new TRPCError({
       code: "FORBIDDEN",
-      message: "Admin access required",
+      message: AUTH_ERRORS.ADMIN_ACCESS_REQUIRED,
     });
   }
 
@@ -105,7 +107,7 @@ export const rateLimit = (endpointType: EndpointType) =>
     if (!result.success) {
       throw createApiError(
         ErrorCode.TOO_MANY_REQUESTS,
-        "Rate limit exceeded. Please try again later.",
+        ERROR_MESSAGES.RATE_LIMIT_EXCEEDED,
         {
           resetAt: result.resetAt,
         },

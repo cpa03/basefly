@@ -30,6 +30,8 @@ export const ERROR_MESSAGES = {
   TIMEOUT_ERROR: "The request timed out. Please try again.",
   /** Service unavailable */
   SERVICE_UNAVAILABLE: "Service temporarily unavailable due to failures.",
+  /** Rate limit exceeded */
+  RATE_LIMIT_EXCEEDED: "Rate limit exceeded. Please try again later.",
 } as const;
 
 /**
@@ -91,7 +93,8 @@ export const AUTH_ERRORS = {
  */
 export const ENV_ERRORS = {
   /** NEXT_PUBLIC_APP_URL not defined */
-  APP_URL_NOT_DEFINED: "NEXT_PUBLIC_APP_URL is not defined. Please set it in your environment variables.",
+  APP_URL_NOT_DEFINED:
+    "NEXT_PUBLIC_APP_URL is not defined. Please set it in your environment variables.",
   /** Generic env var missing */
   ENV_VAR_MISSING: "Required environment variable is not defined.",
 } as const;

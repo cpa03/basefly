@@ -3,11 +3,13 @@
 import React, { useEffect, useMemo, useState, type ReactElement } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
+import { ANIMATION_TIMING } from "@saasfly/common";
+
 export const AnimatedList = React.memo(
   ({
     className,
     children,
-    delay = 1000,
+    delay = ANIMATION_TIMING.normal * 5, // Default: 1000ms (5 * 200ms)
   }: {
     className?: string;
     children: React.ReactNode;

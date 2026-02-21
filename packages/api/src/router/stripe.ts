@@ -12,8 +12,35 @@ import {
 } from "@saasfly/stripe";
 
 import { env } from "../env.mjs";
-import { handleIntegrationError } from "../errors";
+import { createApiError, ErrorCode, handleIntegrationError } from "../errors";
+import { logger } from "../logger";
 import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
+
+function buildReturnUrl(basePath: string): string {
+  const appUrl = env.NEXT_PUBLIC_APP_URL;
+  
+  if (!appUrl) {
+    logger.error("NEXT_PUBLIC_APP_URL is not configured");
+    throw createApiError(
+      ErrorCode.INTERNAL_SERVER_ERROR,
+      "Application URL is not configured",
+    );
+  }
+
+  try {
+    const url = new URL(basePath, appUrl);
+    return url.toString();
+  } catch (error) {
+    logger.error(
+      { appUrl, basePath, error: error instanceof Error ? error.message : String(error) },
+      "Invalid NEXT_PUBLIC_APP_URL configuration",
+    );
+    throw createApiError(
+      ErrorCode.INTERNAL_SERVER_ERROR,
+      "Invalid application URL configuration",
+    );
+  }
+}
 
 export interface SubscriptionPlan {
   title: string;
@@ -40,7 +67,6 @@ export type UserSubscriptionPlan = SubscriptionPlan &
     interval: "month" | "year" | null;
     isCanceled?: boolean;
   };
-// Enhanced schema with comprehensive validation using centralized constants
 export const createSessionSchema = z
   .object({
     planId: z
@@ -63,7 +89,7 @@ export const stripeRouter = createTRPCRouter({
         .where("authUserId", "=", userId)
         .executeTakeFirst();
 
-      const returnUrl = env.NEXT_PUBLIC_APP_URL + "/dashboard";
+      const returnUrl = buildReturnUrl("/dashboard");
 
       try {
         if (customer && customer.plan !== "FREE") {
@@ -125,12 +151,10 @@ export const stripeRouter = createTRPCRouter({
     if (!custom) {
       return;
     }
-    // Check if user is on a paid plan.
     const isPaid =
       custom.stripePriceId &&
       custom.stripeCurrentPeriodEnd &&
       custom.stripeCurrentPeriodEnd.getTime() + TIME_MS.ONE_DAY > Date.now();
-    // Find the pricing data corresponding to the custom's plan
     const customPlan =
       pricingData.find(
         (plan) => plan.stripeIds.monthly === custom.stripePriceId,

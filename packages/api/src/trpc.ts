@@ -85,10 +85,19 @@ export const mergeRouters = t.mergeRouters;
  */
 const isAuthed = t.middleware(({ next, ctx }) => {
   if (!ctx.userId) {
+    logger.warn(
+      {
+        requestId: ctx.requestId,
+        security: true,
+        reason: "missing_user_id",
+      },
+      "Authentication failed - unauthorized access attempt",
+    );
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({ ctx: { userId: ctx.userId } });
 });
+
 
 /**
  * Protected procedure that requires authentication.

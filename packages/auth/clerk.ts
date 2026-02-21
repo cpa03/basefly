@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 
-import { env } from "./env.mjs";
+import { isAdminEmail } from "@saasfly/common";
+
 import { logger } from "./logger";
 
 export function isClerkEnabled(): boolean {
@@ -21,13 +22,8 @@ export async function getSessionUser() {
 
   try {
     const { sessionClaims } = await auth();
-    if (env.ADMIN_EMAIL) {
-      const adminEmails = env.ADMIN_EMAIL.split(",");
-      if (sessionClaims?.user?.email) {
-        sessionClaims.user.isAdmin = adminEmails.includes(
-          sessionClaims?.user?.email,
-        );
-      }
+    if (sessionClaims?.user?.email) {
+      sessionClaims.user.isAdmin = isAdminEmail(sessionClaims.user.email);
     }
     return sessionClaims?.user;
   } catch (error) {

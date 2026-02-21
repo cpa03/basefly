@@ -90,6 +90,13 @@
   }
 }
 
+/* Check animation for copy success feedback */
+.check-draw-path {
+  stroke-dasharray: 24;
+  stroke-dashoffset: 24;
+  animation: check-draw 0.3s ease-out forwards;
+}
+
 [data-vaul-drawer] {
   position: relative;
 }

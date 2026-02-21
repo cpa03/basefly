@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Documentation
 
+- Enhanced SECURITY.md with supported versions table, severity levels with SLAs, vulnerability report template, and safe harbor statement
+- Enhanced CONTRIBUTING.md with branch naming conventions, commit message guidelines (Conventional Commits), PR checklist, and additional resources
 - Removed outdated GraphQL reference from roadmap (not in current tech stack)
 - Added this CHANGELOG.md
 

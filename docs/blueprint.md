@@ -240,7 +240,7 @@ const user = await db.selectFrom("User").select(["id", "name", "email"]).where("
 **Priority**: High
 **Status**: Refactored to use proper Kysely generics with `keyof DB` type constraints. Removed 8 instances of "as any" from table name references. Remaining 5 instances limited to `.set()` calls (Kysely type system limitation).
 
-### 6. N+1 Query Potential
+### 7. N+1 Query Potential
 
 **Location**: Various router files
 **Issue**: No evidence of using join queries
@@ -421,6 +421,7 @@ const summary = await userDeletionService.getUserSummary(userId);
    - Throws IntegrationError on timeout
 
 4. **Idempotency Keys**
+
    ```typescript
    createCheckoutSession(params, `checkout_${userId}_${planId}`);
    ```

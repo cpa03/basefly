@@ -12,6 +12,7 @@
   "trailingSlash": false,
   "regions": ["iad1"],
   "skewProtection": true,
+  "fluid": true,
   "functions": {
     "apps/nextjs/src/app/api/**/*.ts": {
       "memory": 1024,

@@ -74,13 +74,13 @@ function generateUUIDv4Fallback(): string {
   }
 
   // Set version bits (4) and variant bits (8, 9, A, or B)
-  bytes[6]! = (bytes[6]! & 0x0f) | 0x40; // Version 4
-  bytes[8]! = (bytes[8]! & 0x3f) | 0x80; // Variant 1
+  bytes[6] = ((bytes[6] ?? 0) & 0x0f) | 0x40; // Version 4
+  bytes[8] = ((bytes[8] ?? 0) & 0x3f) | 0x80; // Variant 1
 
   // Convert to hex string with dashes (ES5 compatible approach)
   const hex: string[] = [];
   for (let i = 0; i < 16; i++) {
-    hex.push(bytes[i]!.toString(16).padStart(2, "0"));
+    hex.push((bytes[i] ?? 0).toString(16).padStart(2, "0"));
   }
   const hexStr = hex.join("");
 

@@ -12,6 +12,7 @@ import {
 
 import { env } from "../env.mjs";
 import { handleIntegrationError } from "../errors";
+import { logger } from "../logger";
 import {
   createRateLimitedProtectedProcedure,
   createTRPCRouter,
@@ -70,12 +71,21 @@ export const stripeRouter = createTRPCRouter({
 
       try {
         if (customer && customer.plan !== "FREE") {
-          const session = await createBillingSession(
-            customer.stripeCustomerId!,
-            returnUrl,
-            { requestId },
-          );
-          return { success: true as const, url: session.url };
+          // Guard against missing stripeCustomerId - should not happen but provides safety
+          if (!customer.stripeCustomerId) {
+            // Fall through to create new checkout session instead of failing
+            logger.warn(
+              { userId, requestId, customerPlan: customer.plan },
+              "Customer has non-FREE plan but no stripeCustomerId, creating new checkout session",
+            );
+          } else {
+            const session = await createBillingSession(
+              customer.stripeCustomerId,
+              returnUrl,
+              { requestId },
+            );
+            return { success: true as const, url: session.url };
+          }
         }
 
         const user = await db

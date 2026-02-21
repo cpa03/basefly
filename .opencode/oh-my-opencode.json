@@ -29,6 +29,16 @@
       "model": "opencode/minimax-m2.1-free",
       "temperature": 0.5,
       "description": "Visual understanding and UI/UX tasks"
+    },
+    "metis": {
+      "model": "opencode/glm-4.7-free",
+      "temperature": 0.3,
+      "description": "Pre-planning consultant - analyzes requests to identify hidden intentions, ambiguities, and AI failure points"
+    },
+    "momus": {
+      "model": "opencode/glm-4.7-free",
+      "temperature": 0.2,
+      "description": "Expert reviewer - evaluates work plans for clarity, verifiability, and completeness"
     }
   },
 
@@ -67,6 +77,21 @@
       "model": "opencode/kimi-k2.5-free",
       "temperature": 0.7,
       "description": "Unconventional creative approaches"
+    },
+    "writing": {
+      "model": "opencode/glm-4.7-free",
+      "temperature": 0.4,
+      "description": "Documentation, prose, technical writing"
+    },
+    "unspecified-low": {
+      "model": "opencode/gpt-5-nano",
+      "temperature": 0.3,
+      "description": "Tasks that don't fit other categories, low effort required"
+    },
+    "unspecified-high": {
+      "model": "opencode/kimi-k2.5-free",
+      "temperature": 0.5,
+      "description": "Tasks that don't fit other categories, high effort required"
     }
   },
 

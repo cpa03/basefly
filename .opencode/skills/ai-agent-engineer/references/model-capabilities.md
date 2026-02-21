@@ -77,17 +77,34 @@ This document provides detailed capability matrices for models used in OpenX Bas
 - **Rationale**: Best multimodal understanding in free tier; balanced temperature
 - **Best For**: UI component work, visual debugging, screenshot analysis, diagram interpretation
 
+### Metis (Pre-planning Consultant)
+
+- **Model**: `opencode/glm-4.7-free`
+- **Temperature**: 0.3
+- **Rationale**: Excellent analytical precision for identifying hidden intentions and ambiguities; low temperature for consistent analysis
+- **Best For**: Pre-planning analysis, scope clarification, identifying AI failure points, requirement analysis
+
+### Momus (Expert Reviewer)
+
+- **Model**: `opencode/glm-4.7-free`
+- **Temperature**: 0.2
+- **Rationale**: Very low temperature for rigorous, deterministic evaluation; excellent precision for quality assurance
+- **Best For**: Plan review, quality assurance, evaluating work plans for clarity, verifiability, and completeness
+
 ## Category-to-Model Mapping
 
-| Category           | Model                      | Temperature | Description                                     |
-| ------------------ | -------------------------- | ----------- | ----------------------------------------------- |
-| quick              | opencode/gpt-5-nano        | 0.2         | Trivial tasks - single file changes, typo fixes |
-| visual-engineering | opencode/minimax-m2.1-free | 0.5         | Frontend, UI/UX, design, styling, animation     |
-| business-logic     | opencode/kimi-k2.5-free    | 0.6         | General business logic tasks                    |
-| research           | opencode/glm-4.7-free      | 0.3         | Documentation lookup, research, best practices  |
-| ultrabrain         | opencode/kimi-k2.5-free    | 0.5         | Hard logic-heavy tasks requiring deep reasoning |
-| deep               | opencode/glm-4.7-free      | 0.4         | Goal-oriented autonomous problem-solving        |
-| artistry           | opencode/kimi-k2.5-free    | 0.7         | Unconventional creative approaches              |
+| Category           | Model                      | Temperature | Description                                               |
+| ------------------ | -------------------------- | ----------- | --------------------------------------------------------- |
+| quick              | opencode/gpt-5-nano        | 0.2         | Trivial tasks - single file changes, typo fixes           |
+| visual-engineering | opencode/minimax-m2.1-free | 0.5         | Frontend, UI/UX, design, styling, animation               |
+| business-logic     | opencode/kimi-k2.5-free    | 0.6         | General business logic tasks                              |
+| research           | opencode/glm-4.7-free      | 0.3         | Documentation lookup, research, best practices            |
+| ultrabrain         | opencode/kimi-k2.5-free    | 0.5         | Hard logic-heavy tasks requiring deep reasoning           |
+| deep               | opencode/glm-4.7-free      | 0.4         | Goal-oriented autonomous problem-solving                  |
+| artistry           | opencode/kimi-k2.5-free    | 0.7         | Unconventional creative approaches                        |
+| writing            | opencode/glm-4.7-free      | 0.4         | Documentation, prose, technical writing                   |
+| unspecified-low    | opencode/gpt-5-nano        | 0.3         | Tasks that don't fit other categories, low effort         |
+| unspecified-high   | opencode/kimi-k2.5-free    | 0.5         | Tasks that don't fit other categories, high effort        |
 
 ## Temperature Guidelines
 

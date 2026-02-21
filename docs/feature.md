@@ -270,6 +270,152 @@ As a platform user, I want to view real-time metrics and health status of my Kub
 
 ---
 
+### [FEAT-008] Auto-scaling Capabilities
+
+**Status**: Draft
+**Priority**: P2
+**Created**: 2026-02-21
+**Updated**: 2026-02-21
+
+#### User Story
+
+As a platform user, I want my Kubernetes clusters to automatically scale based on workload demand, so that I can handle traffic spikes without manual intervention and optimize costs during low usage.
+
+#### Requirements
+
+1. Horizontal Pod Autoscaler (HPA) configuration per cluster
+2. Vertical Pod Autoscaler (VPA) recommendations
+3. Cluster Autoscaler for node pool management
+4. Configurable scaling policies (min/max replicas, target metrics)
+5. Scale event logging and audit trail
+
+#### Acceptance Criteria
+
+- [ ] Users can enable/disable autoscaling per cluster
+- [ ] HPA configuration exposed via API
+- [ ] Scaling events logged with timestamps and metrics
+- [ ] UI displays current replica count and scaling history
+- [ ] Cost impact preview before scaling policy changes
+- [ ] Integration with existing monitoring (FEAT-007)
+
+#### Technical Notes
+
+- Requires Kubernetes Metrics Server installation
+- HPA v2 API for advanced scaling metrics
+- Cluster Autoscaler integration with cloud provider APIs
+- Consider Custom Metrics API for application-specific scaling
+- Rate limiting on scaling API to prevent rapid scale up/down
+
+#### Related Tasks
+
+- [ ] TASK-008-1: Design autoscaling data model (Status: Backlog)
+- [ ] TASK-008-2: Implement HPA configuration API (Status: Backlog)
+- [ ] TASK-008-3: Create autoscaling UI components (Status: Backlog)
+- [ ] TASK-008-4: Integrate with cluster monitoring (Status: Backlog)
+
+---
+
+### [FEAT-009] Cost Optimization Features
+
+**Status**: Draft
+**Priority**: P2
+**Created**: 2026-02-21
+**Updated**: 2026-02-21
+
+#### User Story
+
+As a platform user, I want to understand and optimize my Kubernetes cluster costs, so that I can make informed decisions about resource allocation and reduce unnecessary spending.
+
+#### Requirements
+
+1. Real-time cost estimation per cluster
+2. Resource utilization vs allocation analysis
+3. Cost breakdown by namespace, workload, and resource type
+4. Recommendations for cost optimization
+5. Budget alerts and spending thresholds
+
+#### Acceptance Criteria
+
+- [ ] Dashboard displays estimated monthly cost per cluster
+- [ ] Cost breakdown available at namespace level
+- [ ] Optimization recommendations shown with estimated savings
+- [ ] Budget alerts configurable per subscription tier
+- [ ] Historical cost trends available (7/30/90 days)
+- [ ] Export cost reports in CSV/JSON format
+
+#### Technical Notes
+
+- Integrate with cloud provider billing APIs (AWS Cost Explorer, GCP Billing)
+- Consider OpenCost project for Kubernetes cost monitoring
+- Cost data granularity: hourly for real-time, daily for historical
+- Cache cost estimates to reduce API calls
+- Privacy: No actual billing data exposure, only estimates
+
+#### Related Tasks
+
+- [ ] TASK-009-1: Design cost data model (Status: Backlog)
+- [ ] TASK-009-2: Implement cost estimation service (Status: Backlog)
+- [ ] TASK-009-3: Create cost dashboard UI (Status: Backlog)
+- [ ] TASK-009-4: Implement budget alert system (Status: Backlog)
+
+---
+
+### [FEAT-010] Role-based Access Control (RBAC)
+
+**Status**: Draft
+**Priority**: P2
+**Created**: 2026-02-21
+**Updated**: 2026-02-21
+
+#### User Story
+
+As a platform administrator, I want to assign different permission levels to team members, so that I can control who can create, modify, or delete clusters and maintain security best practices.
+
+#### Requirements
+
+1. Predefined roles (Owner, Admin, Developer, Viewer)
+2. Custom role creation capability
+3. Role assignment at cluster and organization level
+4. Audit trail for role changes
+5. Integration with existing Clerk authentication
+
+#### Acceptance Criteria
+
+- [ ] Four default roles available: Owner, Admin, Developer, Viewer
+- [ ] Role assignment UI in user management
+- [ ] Permissions enforced at API level
+- [ ] Audit log captures all role changes
+- [ ] Self-service role request workflow (optional)
+- [ ] Role-based UI elements (hide/show based on permissions)
+
+#### Technical Notes
+
+- Extend existing auth middleware with role checking
+- Store roles in database linked to User and Cluster
+- Consider using Casbin for complex permission scenarios
+- Cache role assignments for performance
+- Backward compatible with existing admin email check
+
+#### Permission Matrix
+
+| Action         | Owner | Admin | Developer | Viewer |
+| -------------- | ----- | ----- | --------- | ------ |
+| Create Cluster | ✓     | ✓     | ✗         | ✗      |
+| Delete Cluster | ✓     | ✓     | ✗         | ✗      |
+| Update Cluster | ✓     | ✓     | ✓         | ✗      |
+| View Cluster   | ✓     | ✓     | ✓         | ✓      |
+| Manage Billing | ✓     | ✓     | ✗         | ✗      |
+| Manage Users   | ✓     | ✗     | ✗         | ✗      |
+
+#### Related Tasks
+
+- [ ] TASK-010-1: Design RBAC data model (Status: Backlog)
+- [ ] TASK-010-2: Implement role middleware (Status: Backlog)
+- [ ] TASK-010-3: Create role management UI (Status: Backlog)
+- [ ] TASK-010-4: Migrate existing admin checks (Status: Backlog)
+
+---
+
 ## Feature Template
 
 When adding a new feature, use the following template:

@@ -35,6 +35,10 @@ export const UI_LABELS = {
   searchPlaceholder: "Search...",
   commandSearch: "Type a command or search...",
   noCommandsFound: "No commands found.",
+  /** Mobile navigation labels for accessibility */
+  mobileMenu: "Menu",
+  openMobileMenu: "Open menu",
+  closeMobileMenu: "Close menu",
 } as const;
 
 export const PLACEHOLDER_TEXT = {

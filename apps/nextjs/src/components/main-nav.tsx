@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 
-import { BRAND, EXTERNAL_URLS } from "@saasfly/common";
+import { BRAND, EXTERNAL_URLS, UI_LABELS } from "@saasfly/common";
 import { Close, Logo } from "@saasfly/ui/icons";
 
 import { DocumentGuide } from "~/components/document-guide";
@@ -61,12 +61,12 @@ export const MainNav = React.memo(function MainNav({
       <button
         className="flex items-center space-x-2 rounded-md px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:hidden"
         onClick={toggleMenu}
-        aria-label={showMobileMenu ? "Close menu" : "Open menu"}
+        aria-label={showMobileMenu ? UI_LABELS.closeMobileMenu : UI_LABELS.openMobileMenu}
         aria-expanded={showMobileMenu}
         aria-controls="mobile-navigation"
       >
         {showMobileMenu ? <Close /> : <Logo />}
-        <span className="font-bold">Menu</span>
+        <span className="font-bold">{UI_LABELS.mobileMenu}</span>
       </button>
       {showMobileMenu && items && (
         <MobileNav items={items} menuItemClick={handleMenuItemClick}>

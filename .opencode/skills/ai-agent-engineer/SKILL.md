@@ -55,13 +55,15 @@ Follow the skill-creator patterns:
 
 ## Available Agents
 
-| Agent             | Model                      | Use Case                |
-| ----------------- | -------------------------- | ----------------------- |
-| Sisyphus          | opencode/kimi-k2.5-free    | Main orchestrator       |
-| Oracle            | opencode/glm-4.7-free      | Architecture, debugging |
-| Librarian         | opencode/glm-4.7-free      | Documentation, research |
-| Explore           | opencode/gpt-5-nano        | Fast exploration        |
-| Multimodal Looker | opencode/minimax-m2.1-free | Visual/UI tasks         |
+| Agent             | Model                      | Use Case                         |
+| ----------------- | -------------------------- | -------------------------------- |
+| Sisyphus          | opencode/kimi-k2.5-free    | Main orchestrator                |
+| Oracle            | opencode/glm-4.7-free      | Architecture, debugging          |
+| Librarian         | opencode/glm-4.7-free      | Documentation, research          |
+| Explore           | opencode/gpt-5-nano        | Fast exploration                 |
+| Multimodal Looker | opencode/minimax-m2.1-free | Visual/UI tasks                  |
+| Metis             | opencode/glm-4.7-free      | Pre-planning consultant          |
+| Momus             | opencode/glm-4.7-free      | Expert reviewer, plan evaluation |
 
 ## Verification Checklist
 

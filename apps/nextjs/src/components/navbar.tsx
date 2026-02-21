@@ -87,6 +87,8 @@ export const NavBar = React.memo(function NavBar({
   const signInModal = useSigninModal();
   const segment = useSelectedLayoutSegment();
 
+  const langParams = React.useMemo(() => ({ lang: `${lang}` }), [lang]);
+
   return (
     <header
       className={`sticky top-0 z-40 flex w-full justify-center border-border bg-background/60 backdrop-blur-xl transition-all ${
@@ -96,7 +98,7 @@ export const NavBar = React.memo(function NavBar({
       <div className="container flex h-16 items-center justify-between py-4">
         <MainNav
           items={items}
-          params={{ lang: `${lang}` }}
+          params={langParams}
           marketing={marketing}
         >
           {children}
@@ -145,7 +147,7 @@ export const NavBar = React.memo(function NavBar({
           {user ? (
             <UserAccountNav
               user={user}
-              params={{ lang: `${lang}` }}
+              params={langParams}
               dict={dropdown}
             />
           ) : (

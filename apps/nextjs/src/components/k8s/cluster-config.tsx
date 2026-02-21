@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { CLUSTER_VALIDATION } from "@saasfly/common";
+import { CLUSTER_VALIDATION, PLACEHOLDER_TEXT } from "@saasfly/common";
 import { Button } from "@saasfly/ui/button";
 import {
   Card,
@@ -120,7 +120,7 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
                     <FormItem>
                       <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Name of your cluster" {...field} />
+                        <Input placeholder={PLACEHOLDER_TEXT.clusterName} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -150,7 +150,7 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
                               value={field.value}
                             >
                               <SelectTrigger>
-                                <SelectValue placeholder="Select a region" />
+                                <SelectValue placeholder={PLACEHOLDER_TEXT.selectRegion} />
                               </SelectTrigger>
                               <SelectContent>
                                 <SelectGroup>

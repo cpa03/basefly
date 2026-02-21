@@ -129,6 +129,8 @@ export {
   PAGE_METADATA,
   MARKETING_STATS,
   ERROR_MESSAGES,
+  UI_LABELS,
+  PLACEHOLDER_TEXT,
 } from "./config/ui-strings";
 
 // Asset paths configuration

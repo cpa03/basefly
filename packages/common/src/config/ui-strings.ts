@@ -28,3 +28,16 @@ export const ERROR_MESSAGES = {
   somethingWentWrong: "Something went wrong.",
   genericError: "Error",
 } as const;
+
+export const UI_LABELS = {
+  loading: "Loading...",
+  search: "Search",
+  searchPlaceholder: "Search...",
+  commandSearch: "Type a command or search...",
+  noCommandsFound: "No commands found.",
+} as const;
+
+export const PLACEHOLDER_TEXT = {
+  clusterName: "Name of your cluster",
+  selectRegion: "Select a region",
+} as const;

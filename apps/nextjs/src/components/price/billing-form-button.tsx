@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 
+import { TRANSITION_PRESETS, UI_LABELS } from "@saasfly/common";
 import { Button } from "@saasfly/ui/button";
 import { Spinner } from "@saasfly/ui/icons";
 
@@ -49,7 +50,7 @@ export function BillingFormButton({
       aria-live="polite"
     >
       <span
-        className={`flex items-center justify-center transition-all duration-200 ease-out ${
+        className={`flex items-center justify-center ${TRANSITION_PRESETS.interactive} ${
           isPending ? "translate-y-1 opacity-0" : "translate-y-0 opacity-100"
         }`}
         aria-hidden={isPending}
@@ -58,13 +59,13 @@ export function BillingFormButton({
       </span>
 
       <span
-        className={`absolute inset-0 flex items-center justify-center transition-all duration-200 ease-out ${
+        className={`absolute inset-0 flex items-center justify-center ${TRANSITION_PRESETS.interactive} ${
           isPending ? "translate-y-0 opacity-100" : "-translate-y-1 opacity-0"
         }`}
         aria-hidden={!isPending}
       >
         <Spinner className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
-        <span>Loading...</span>
+        <span>{UI_LABELS.loading}</span>
       </span>
     </Button>
   );

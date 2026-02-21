@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -35,7 +36,7 @@ interface DocsSidebarNavItemsProps {
   pathname: string | null;
 }
 
-export function DocsSidebarNavItems({
+export const DocsSidebarNavItems = React.memo(function DocsSidebarNavItems({
   items,
   pathname,
 }: DocsSidebarNavItemsProps) {
@@ -68,4 +69,4 @@ export function DocsSidebarNavItems({
       )}
     </div>
   ) : null;
-}
+});

@@ -19,7 +19,7 @@ interface MainNavProps {
   marketing?: Record<string, string | object>;
 }
 
-export function MainNav({
+export const MainNav = React.memo(function MainNav({
   items,
   children,
   params: { lang },
@@ -75,4 +75,4 @@ export function MainNav({
       )}
     </div>
   );
-}
+});

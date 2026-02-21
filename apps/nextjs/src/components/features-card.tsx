@@ -62,7 +62,7 @@ const Notification = React.memo(function Notification({
   return (
     <figure
       className={cn(
-        "relative mx-auto min-h-fit w-full max-w-[400px] transform cursor-pointer overflow-hidden rounded-2xl p-4",
+        "relative mx-auto min-h-fit w-full max-w-[400px] transform overflow-hidden rounded-2xl p-4",
         // animation styles
         `transition-all ${ANIMATION.duration.normal} ${ANIMATION.easing.smooth} ${ANIMATION.scale.subtle}`,
         // light styles

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { type ClusterStatus } from "@saasfly/common";
+import { type ClusterStatus, FEEDBACK_TIMING } from "@saasfly/common";
 import {
   Check,
   Clock,
@@ -157,7 +157,7 @@ export function StatusBadge({
   }
 
   return (
-    <TooltipProvider delayDuration={200}>
+    <TooltipProvider delayDuration={FEEDBACK_TIMING.tooltipDelay}>
       <Tooltip>
         <TooltipTrigger asChild>{badge}</TooltipTrigger>
         <TooltipContent side="top" className="max-w-[200px]">

@@ -31,6 +31,7 @@
     "test:coverage": "vitest run --coverage",
     "security:audit": "pnpm audit --audit-level=moderate",
     "security:check": "pnpm audit --audit-level=high && pnpm outdated",
+    "qa:ci-validate": "node tooling/qa/validate-ci-workflows.js",
     "dx:quick": "pnpm typecheck && pnpm lint",
     "dx:check": "pnpm typecheck && pnpm lint && pnpm test && pnpm security:audit",
     "dx:fix": "pnpm lint:fix && pnpm format:fix",

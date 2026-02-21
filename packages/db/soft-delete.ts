@@ -201,6 +201,62 @@ export class SoftDeleteService<T extends keyof DB> {
         .execute()
     );
   }
+
+  /**
+   * Count all active (non-deleted) records for a user
+   *
+   * Useful for pagination, dashboard stats, and admin queries.
+   * Uses the existing index on (authUserId, deletedAt) for optimal performance.
+   *
+   * @param userId - The user ID to count records for
+   * @returns The count of active records belonging to the user
+   *
+   * @example
+   * ```typescript
+   * const activeCount = await k8sClusterService.countActive(userId);
+   * console.log(`User has ${activeCount} active clusters`);
+   * ```
+   */
+  countActive(userId: string) {
+    return (
+      db
+        .selectFrom(this.tableName)
+        // @ts-expect-error Kysely dynamic table/column requires type assertion
+        .where("authUserId", "=", userId)
+        .where("deletedAt", "is", null)
+        .select((eb) => eb.fn.count("id").as("count"))
+        .executeTakeFirst()
+        .then((result) => Number(result?.count ?? 0))
+    );
+  }
+
+  /**
+   * Count all deleted records for a user (audit trail)
+   *
+   * Useful for admin dashboards and compliance reporting.
+   * Uses the existing index on (authUserId, deletedAt) for optimal performance.
+   *
+   * @param userId - The user ID to count deleted records for
+   * @returns The count of deleted records belonging to the user
+   *
+   * @example
+   * ```typescript
+   * const deletedCount = await k8sClusterService.countDeleted(userId);
+   * console.log(`User has ${deletedCount} deleted clusters`);
+   * ```
+   */
+  countDeleted(userId: string) {
+    return (
+      db
+        .selectFrom(this.tableName)
+        // @ts-expect-error Kysely dynamic table/column requires type assertion
+        .where("authUserId", "=", userId)
+        .where("deletedAt", "is not", null)
+        .select((eb) => eb.fn.count("id").as("count"))
+        .executeTakeFirst()
+        .then((result) => Number(result?.count ?? 0))
+    );
+  }
 }
 /* eslint-enable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
 

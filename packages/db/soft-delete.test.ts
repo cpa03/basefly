@@ -352,6 +352,164 @@ describe("SoftDeleteService", () => {
     });
   });
 
+  describe("countActive", () => {
+    let mockCountSelect: ReturnType<typeof vi.fn>;
+    let mockCountWhere1: any;
+    let mockCountWhere2: any;
+    let mockCountExecuteTakeFirst: ReturnType<typeof vi.fn>;
+
+    beforeEach(() => {
+      mockCountSelect = vi.fn().mockReturnThis();
+      mockCountWhere1 = vi.fn();
+      mockCountWhere2 = vi.fn();
+      mockCountExecuteTakeFirst = vi.fn();
+
+      const countChain = {
+        where: vi.fn((...args: unknown[]) => {
+          if (mockCountWhere1.mock.calls.length === 0) {
+            mockCountWhere1(...args);
+          } else {
+            mockCountWhere2(...args);
+          }
+          return countChain;
+        }),
+        select: mockCountSelect,
+        executeTakeFirst: mockCountExecuteTakeFirst,
+      };
+
+      vi.mocked(db.selectFrom).mockReturnValue(
+        countChain as unknown as ReturnType<typeof db.selectFrom>,
+      );
+    });
+
+    it("returns count of active records for a user", async () => {
+      mockCountExecuteTakeFirst.mockResolvedValue({ count: 5 });
+
+      const result = await service.countActive("user_123");
+
+      expect(result).toBe(5);
+      expect(mockCountWhere1).toHaveBeenCalledWith(
+        "authUserId",
+        "=",
+        "user_123",
+      );
+      expect(mockCountWhere2).toHaveBeenCalledWith("deletedAt", "is", null);
+    });
+
+    it("returns 0 when no active records exist", async () => {
+      mockCountExecuteTakeFirst.mockResolvedValue({ count: 0 });
+
+      const result = await service.countActive("user_123");
+
+      expect(result).toBe(0);
+    });
+
+    it("handles null result gracefully", async () => {
+      mockCountExecuteTakeFirst.mockResolvedValue(null);
+
+      const result = await service.countActive("user_123");
+
+      expect(result).toBe(0);
+    });
+
+    it("handles undefined count gracefully", async () => {
+      mockCountExecuteTakeFirst.mockResolvedValue({});
+
+      const result = await service.countActive("user_123");
+
+      expect(result).toBe(0);
+    });
+
+    it("handles database errors gracefully", async () => {
+      mockCountExecuteTakeFirst.mockRejectedValue(new Error("Query failed"));
+
+      await expect(service.countActive("user_123")).rejects.toThrow(
+        "Query failed",
+      );
+    });
+  });
+
+  describe("countDeleted", () => {
+    let mockCountSelect: ReturnType<typeof vi.fn>;
+    let mockCountWhere1: any;
+    let mockCountWhere2: any;
+    let mockCountExecuteTakeFirst: ReturnType<typeof vi.fn>;
+
+    beforeEach(() => {
+      mockCountSelect = vi.fn().mockReturnThis();
+      mockCountWhere1 = vi.fn();
+      mockCountWhere2 = vi.fn();
+      mockCountExecuteTakeFirst = vi.fn();
+
+      const countChain = {
+        where: vi.fn((...args: unknown[]) => {
+          if (mockCountWhere1.mock.calls.length === 0) {
+            mockCountWhere1(...args);
+          } else {
+            mockCountWhere2(...args);
+          }
+          return countChain;
+        }),
+        select: mockCountSelect,
+        executeTakeFirst: mockCountExecuteTakeFirst,
+      };
+
+      vi.mocked(db.selectFrom).mockReturnValue(
+        countChain as unknown as ReturnType<typeof db.selectFrom>,
+      );
+    });
+
+    it("returns count of deleted records for a user", async () => {
+      mockCountExecuteTakeFirst.mockResolvedValue({ count: 3 });
+
+      const result = await service.countDeleted("user_123");
+
+      expect(result).toBe(3);
+      expect(mockCountWhere1).toHaveBeenCalledWith(
+        "authUserId",
+        "=",
+        "user_123",
+      );
+      expect(mockCountWhere2).toHaveBeenCalledWith(
+        "deletedAt",
+        "is not",
+        null,
+      );
+    });
+
+    it("returns 0 when no deleted records exist", async () => {
+      mockCountExecuteTakeFirst.mockResolvedValue({ count: 0 });
+
+      const result = await service.countDeleted("user_123");
+
+      expect(result).toBe(0);
+    });
+
+    it("handles null result gracefully", async () => {
+      mockCountExecuteTakeFirst.mockResolvedValue(null);
+
+      const result = await service.countDeleted("user_123");
+
+      expect(result).toBe(0);
+    });
+
+    it("handles undefined count gracefully", async () => {
+      mockCountExecuteTakeFirst.mockResolvedValue({});
+
+      const result = await service.countDeleted("user_123");
+
+      expect(result).toBe(0);
+    });
+
+    it("handles database errors gracefully", async () => {
+      mockCountExecuteTakeFirst.mockRejectedValue(new Error("Query failed"));
+
+      await expect(service.countDeleted("user_123")).rejects.toThrow(
+        "Query failed",
+      );
+    });
+  });
+
   describe("type safety", () => {
     it("accepts valid table names from DB schema", () => {
       const validService1 = new SoftDeleteService("K8sClusterConfig");

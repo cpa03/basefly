@@ -19,6 +19,8 @@ const config = {
   rules: {
     "turbo/no-undeclared-env-vars": "off",
     "import/consistent-type-specifier-style": "off",
+    "import/no-cycle": "warn",
+    "import/no-self-import": "error",
     "no-console": ["warn", { allow: ["warn", "error"] }],
     "@typescript-eslint/no-unused-vars": [
       "error",

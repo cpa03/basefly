@@ -97,3 +97,7 @@ scripts/init_skill.py <skill-name> --path .opencode/skills/
 | 0.1-0.3     | Factual, deterministic responses |
 | 0.4-0.6     | Balanced reasoning               |
 | 0.7-0.9     | Creative, exploratory            |
+
+## References
+
+- **[model-capabilities.md](./references/model-capabilities.md)** - Detailed model capability matrices, agent-to-model mapping, and performance tips

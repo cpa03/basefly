@@ -40,6 +40,7 @@ const NavLink = React.memo(function NavLink({
         "group relative flex items-center text-lg font-medium sm:text-sm",
         TRANSITION_PRESETS.link,
         "text-foreground/70 hover:text-foreground",
+        "-mx-1 rounded-sm px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         isActive && "font-semibold text-blue-500",
         disabled && "cursor-not-allowed opacity-80",
       )}
@@ -124,7 +125,7 @@ export const NavBar = React.memo(function NavBar({
             </nav>
           ) : null}
 
-          <div className="h-8 w-[1px] bg-accent"></div>
+          <div className="h-8 w-[1px] bg-accent" aria-hidden="true"></div>
 
           {rightElements}
 

@@ -9,10 +9,7 @@ import { createApiError, ErrorCode } from "../errors";
 import { logger } from "../logger";
 import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 
-function isUniqueViolation(
-  error: unknown,
-  constraintName?: string,
-): boolean {
+function isUniqueViolation(error: unknown, constraintName?: string): boolean {
   if (
     error &&
     typeof error === "object" &&
@@ -71,7 +68,10 @@ export const customerRouter = createTRPCRouter({
           { userId, ctxUserId, requestId },
           "Unauthorized user name update attempt",
         );
-        return { success: false, reason: "no auth" };
+        throw createApiError(
+          ErrorCode.UNAUTHORIZED,
+          "You are not authorized to update this user's name",
+        );
       }
 
       try {
@@ -115,7 +115,10 @@ export const customerRouter = createTRPCRouter({
           { userId, ctxUserId, requestId },
           "Unauthorized customer creation attempt",
         );
-        return { success: false, reason: "unauthorized" };
+        throw createApiError(
+          ErrorCode.UNAUTHORIZED,
+          "You are not authorized to create a customer for this user",
+        );
       }
 
       logger.info({ userId, requestId }, "Creating customer");
@@ -170,7 +173,10 @@ export const customerRouter = createTRPCRouter({
           { userId, ctxUserId, requestId },
           "Unauthorized customer query attempt",
         );
-        return null;
+        throw createApiError(
+          ErrorCode.UNAUTHORIZED,
+          "You are not authorized to query this customer",
+        );
       }
 
       logger.debug({ userId, requestId }, "Querying customer");

@@ -302,6 +302,7 @@ export {
   CACHE_CONTROL,
   HTTP_SECURITY_HEADERS,
   NEXTJS_CACHE_HEADERS,
+  TIME_MS,
   generateCacheControl,
   generateNextJsHeaders,
 } from "./config/cache";

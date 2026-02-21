@@ -7,7 +7,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { CLUSTER_VALIDATION } from "@saasfly/common";
+import {
+  CLUSTER_VALIDATION,
+  FORM_DESCRIPTIONS,
+  FORM_LABELS,
+  PLACEHOLDER_TEXT,
+  TOAST_MESSAGES,
+} from "@saasfly/common";
 import { Button } from "@saasfly/ui/button";
 import {
   Card,
@@ -86,8 +92,8 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
     setIsSaving(false);
     if (!response?.success) {
       return toast({
-        title: "Something went wrong.",
-        description: "Your cluster config was not saved. Please try again.",
+        title: TOAST_MESSAGES.error.somethingWentWrong,
+        description: TOAST_MESSAGES.error.clusterNotSaved,
         variant: "destructive",
       });
     }
@@ -96,7 +102,7 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
     router.refresh();
 
     return toast({
-      description: "Your cluster config has been saved.",
+      description: TOAST_MESSAGES.success.clusterSaved,
     });
   }
 
@@ -107,7 +113,7 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
           <CardHeader>
             <CardTitle>Create cluster</CardTitle>
             <CardDescription>
-              Deploy your new k8s cluster in one-click.
+              {FORM_DESCRIPTIONS.createCluster}
             </CardDescription>
           </CardHeader>
           <CardContent className="w-2/3 space-y-6">
@@ -118,9 +124,9 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel>{FORM_LABELS.name}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Name of your cluster" {...field} />
+                        <Input placeholder={PLACEHOLDER_TEXT.clusterName} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -137,7 +143,7 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
                   name="location"
                   render={() => (
                     <FormItem>
-                      <FormLabel>Region</FormLabel>
+                      <FormLabel>{FORM_LABELS.region}</FormLabel>
                       <FormControl>
                         <Controller
                           control={form.control}
@@ -150,7 +156,7 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
                               value={field.value}
                             >
                               <SelectTrigger>
-                                <SelectValue placeholder="Select a region" />
+                                <SelectValue placeholder={PLACEHOLDER_TEXT.selectRegion} />
                               </SelectTrigger>
                               <SelectContent>
                                 <SelectGroup>
@@ -338,7 +344,7 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
           <div className="w-2/3 space-y-6 p-6 pt-0">
             <Button type="submit" disabled={_isSaving}>
               {_isSaving && <Spinner className="mr-2 h-4 w-4 animate-spin" />}
-              Submit
+              {FORM_LABELS.submit}
             </Button>
           </div>
         </Card>

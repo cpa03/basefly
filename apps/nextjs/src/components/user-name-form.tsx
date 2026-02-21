@@ -7,6 +7,11 @@ import { useForm } from "react-hook-form";
 import type * as z from "zod";
 
 import type { User } from "@saasfly/auth";
+import {
+  FORM_DESCRIPTIONS,
+  FORM_LABELS,
+  TOAST_MESSAGES,
+} from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { Button } from "@saasfly/ui/button";
 import {
@@ -61,14 +66,14 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
 
     if (!response?.success) {
       return toast({
-        title: "Something went wrong.",
-        description: "Your name was not updated. Please try again.",
+        title: TOAST_MESSAGES.error.somethingWentWrong,
+        description: TOAST_MESSAGES.error.nameNotUpdated,
         variant: "destructive",
       });
     }
 
     toast({
-      description: "Your name has been updated.",
+      description: TOAST_MESSAGES.success.nameUpdated,
     });
 
     router.refresh();
@@ -82,16 +87,15 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
     >
       <Card>
         <CardHeader>
-          <CardTitle>Your Name</CardTitle>
+          <CardTitle>{FORM_LABELS.yourName}</CardTitle>
           <CardDescription>
-            Please enter your full name or a display name you are comfortable
-            with.
+            {FORM_DESCRIPTIONS.enterName}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="name">
-              Name
+              {FORM_LABELS.name}
             </Label>
             <Input
               id="name"
@@ -114,7 +118,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
         </CardContent>
         <CardFooter>
           <Button type="submit" isLoading={isSaving}>
-            Save
+            {FORM_LABELS.save}
           </Button>
         </CardFooter>
       </Card>

@@ -7,6 +7,8 @@
  * @module @saasfly/common/config/csp
  */
 
+import { DEV_URLS } from "./urls";
+
 /**
  * External service domains used in CSP directives
  * Centralized for easy maintenance and updates
@@ -51,8 +53,8 @@ export const CSP_DOMAINS = {
     stripeApi: "https://api.stripe.com",
     /** PostHog analytics */
     posthog: "https://*.posthog.com",
-    /** Local WebSocket for development */
-    localWs: "ws://localhost:12882/",
+    /** Local WebSocket for development (imported from urls.ts to avoid duplication) */
+    localWs: DEV_URLS.localWs,
   },
   /** Frame sources (iframes) */
   frames: {

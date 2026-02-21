@@ -7,6 +7,7 @@ import { cn } from "@saasfly/ui";
 import { AnimatedList } from "@saasfly/ui/animated-list";
 
 interface Item {
+  id: string;
   name: string;
   description: string;
   icon: string;
@@ -47,8 +48,9 @@ const baseNotifications = [
 ];
 
 // Pre-compute notifications array once at module load time
-// Using Array.from with mapFn is more efficient than flat()
+// Each notification gets a unique ID for stable React keys
 const notifications = Array.from({ length: 40 }, (_, i) => ({
+  id: `notification-${i}`,
   ...baseNotifications[i % baseNotifications.length],
 }));
 
@@ -99,8 +101,8 @@ export function FeaturesCard() {
   return (
     <div className="relative flex max-h-[435px] min-h-[435px] flex-col overflow-hidden rounded-2xl border bg-background p-6 shadow-lg dark:border-[#443c3c]">
       <AnimatedList>
-        {notifications.map((item, idx) => (
-          <Notification {...item} key={idx} />
+        {notifications.map((item) => (
+          <Notification {...item} key={item.id} />
         ))}
       </AnimatedList>
     </div>

@@ -32,15 +32,7 @@ function AnimatedCheck({ className }: { className?: string }) {
       strokeLinejoin="round"
       aria-hidden="true"
     >
-      <path
-        d="M5 12l5 5L20 7"
-        className="animate-check-draw"
-        style={{
-          strokeDasharray: 24,
-          strokeDashoffset: 24,
-          animation: "check-draw 0.3s ease-out forwards",
-        }}
-      />
+      <path d="M5 12l5 5L20 7" className="check-draw-path" />
     </svg>
   );
 }

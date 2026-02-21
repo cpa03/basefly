@@ -3,10 +3,23 @@ import { z } from "zod";
 
 import { CLUSTER_VALIDATION, K8S_DEFAULTS } from "@saasfly/common";
 import { db, k8sClusterService } from "@saasfly/db";
+import type { K8sClusterConfig } from "@saasfly/db";
 
 import { createApiError, ErrorCode } from "../errors";
 import { logger } from "../logger";
 import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
+
+import type { TRPCContext } from "../trpc";
+
+function requireUserId(ctx: TRPCContext): string {
+  if (!ctx.userId) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Authentication required",
+    });
+  }
+  return ctx.userId;
+}
 
 // Enhanced schemas with comprehensive validation using centralized constants
 export const k8sClusterCreateSchema = z
@@ -73,7 +86,11 @@ export const k8sClusterUpdateSchema = z
     "At least one field (name or location) must be provided for update",
   );
 
-async function verifyClusterOwnership(clusterId: number, userId: string) {
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
+async function verifyClusterOwnership(
+  clusterId: number,
+  userId: string,
+): Promise<K8sClusterConfig> {
   const cluster = await k8sClusterService.findActive(clusterId, userId);
   if (!cluster) {
     throw createApiError(ErrorCode.NOT_FOUND, "Cluster not found");
@@ -90,14 +107,16 @@ async function verifyClusterOwnership(clusterId: number, userId: string) {
 export const k8sRouter = createTRPCRouter({
   getClusters: createRateLimitedProtectedProcedure("read").query(
     async (opts) => {
-      const userId = opts.ctx.userId! as string;
+      const userId = requireUserId(opts.ctx);
       return await k8sClusterService.findAllActive(userId);
     },
   ),
+  /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
   createCluster: createRateLimitedProtectedProcedure("write")
+
     .input(k8sClusterCreateSchema)
     .mutation(async ({ ctx, input }) => {
-      const userId = ctx.userId! as string;
+      const userId = requireUserId(ctx);
       const requestId = ctx.requestId;
 
       try {
@@ -171,7 +190,7 @@ export const k8sRouter = createTRPCRouter({
     .input(k8sClusterUpdateSchema)
     .mutation(async (opts) => {
       const id = opts.input.id;
-      const userId = opts.ctx.userId!;
+      const userId = requireUserId(opts.ctx);
       const newName = opts.input.name;
       const newLocation = opts.input.location;
       const requestId = opts.ctx.requestId;
@@ -231,7 +250,7 @@ export const k8sRouter = createTRPCRouter({
     .input(k8sClusterDeleteSchema)
     .mutation(async (opts) => {
       const id = opts.input.id;
-      const userId = opts.ctx.userId!;
+      const userId = requireUserId(opts.ctx);
       const requestId = opts.ctx.requestId;
 
       try {

@@ -57,13 +57,24 @@ export const stripeRouter = createTRPCRouter({
       const userId = opts.ctx.userId;
       const planId = opts.input.planId;
       const requestId = opts.ctx.requestId;
-      const customer = await db
-        .selectFrom("Customer")
-        .select(["id", "plan", "stripeCustomerId"])
-        .where("authUserId", "=", userId)
-        .executeTakeFirst();
+
+      // Performance optimization: Fetch customer and user email in parallel
+      // instead of sequential queries to reduce latency
+      const [customer, user] = await Promise.all([
+        db
+          .selectFrom("Customer")
+          .select(["id", "plan", "stripeCustomerId"])
+          .where("authUserId", "=", userId)
+          .executeTakeFirst(),
+        db
+          .selectFrom("User")
+          .select(["email"])
+          .where("id", "=", userId)
+          .executeTakeFirst(),
+      ]);
 
       const returnUrl = env.NEXT_PUBLIC_APP_URL + "/dashboard";
+      const email = user?.email ?? undefined;
 
       try {
         if (customer && customer.plan !== "FREE") {
@@ -74,14 +85,6 @@ export const stripeRouter = createTRPCRouter({
           );
           return { success: true as const, url: session.url };
         }
-
-        const user = await db
-          .selectFrom("User")
-          .select(["email"])
-          .where("id", "=", userId)
-          .executeTakeFirst();
-
-        const email = user?.email ?? undefined;
 
         const session = await createCheckoutSession(
           {

@@ -38,7 +38,7 @@ interface ClusterOperationsProps {
   dict?: Record<string, unknown>;
 }
 
-export function ClusterOperations({
+export const ClusterOperations = React.memo(function ClusterOperations({
   cluster,
   lang,
   dict,
@@ -94,7 +94,7 @@ export function ClusterOperations({
         return false;
       }
       return true;
-    } catch (error) {
+    } catch {
       toast({
         title: errorsDict?.unexpected_error_title ?? "Error",
         description:
@@ -214,4 +214,4 @@ export function ClusterOperations({
       </AlertDialog>
     </>
   );
-}
+});

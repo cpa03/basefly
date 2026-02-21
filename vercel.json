@@ -10,24 +10,18 @@
   "ignoreCommand": "npx turbo-ignore --fallback=HEAD^1",
   "cleanUrls": true,
   "trailingSlash": false,
-  "regions": ["iad1", "sfo1"],
-  "skewProtection": true,
-  "functionFailoverRegions": ["sfo1"],
   "functions": {
     "apps/nextjs/src/app/api/**/*.ts": {
       "memory": 1024,
-      "maxDuration": 30,
-      "minDuration": 5
+      "maxDuration": 30
     },
     "apps/nextjs/src/app/api/webhooks/**/*.ts": {
       "memory": 1024,
-      "maxDuration": 60,
-      "minDuration": 10
+      "maxDuration": 60
     },
     "apps/nextjs/src/app/api/trpc/**/*.ts": {
       "memory": 1024,
-      "maxDuration": 20,
-      "minDuration": 3
+      "maxDuration": 20
     }
   },
   "headers": [

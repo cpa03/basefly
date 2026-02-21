@@ -180,6 +180,242 @@ As an administrator, I want to view and manage platform users and clusters, so t
 
 ---
 
+### [FEAT-006] Multi-region Cluster Support
+
+**Status**: Draft
+**Priority**: P2
+**Created**: 2026-02-21
+**Updated**: 2026-02-21
+
+#### User Story
+
+As a platform user, I want to deploy Kubernetes clusters in multiple geographic regions, so that I can reduce latency for global users and improve disaster recovery capabilities.
+
+#### Requirements
+
+1. Users can select deployment region during cluster creation
+2. Support for minimum 3 regions (US East, US West, EU West)
+3. Region-aware cluster listing and filtering
+4. Cross-region cluster status monitoring
+5. Region-specific pricing tiers (if applicable)
+
+#### Acceptance Criteria
+
+- [ ] Cluster creation form includes region selector
+- [ ] Region is persisted with cluster metadata
+- [ ] Cluster list displays region information
+- [ ] API supports filtering clusters by region
+- [ ] Region selection affects cluster provisioning endpoint
+- [ ] Documentation updated with region availability
+
+#### Technical Notes
+
+- Requires backend infrastructure for multi-region provisioning
+- Database schema extension: add `region` field to Cluster model
+- Consider latency-based region recommendations
+- May require region-specific Kubernetes configurations
+- Integration with cloud provider APIs for region validation
+
+#### Related Tasks
+
+- [ ] TASK-006-1: Add region field to Cluster schema (Status: Backlog)
+- [ ] TASK-006-2: Update cluster creation API for region support (Status: Backlog)
+- [ ] TASK-006-3: Add region selector UI component (Status: Backlog)
+- [ ] TASK-006-4: Implement region filtering in cluster list (Status: Backlog)
+
+---
+
+### [FEAT-007] Advanced Monitoring Integration
+
+**Status**: Draft
+**Priority**: P2
+**Created**: 2026-02-21
+**Updated**: 2026-02-21
+
+#### User Story
+
+As a platform user, I want to view real-time metrics and health status of my Kubernetes clusters, so that I can proactively monitor performance and troubleshoot issues.
+
+#### Requirements
+
+1. Real-time cluster health status display
+2. Resource utilization metrics (CPU, Memory, Storage)
+3. Pod status overview per cluster
+4. Historical metrics with configurable time ranges
+5. Alert configuration for threshold violations
+
+#### Acceptance Criteria
+
+- [ ] Dashboard displays cluster health indicator
+- [ ] Metrics API endpoint returns cluster statistics
+- [ ] UI charts show CPU/Memory utilization trends
+- [ ] Pod status list available per cluster
+- [ ] Alert rules configurable per cluster
+- [ ] Metrics data retained for 30 days minimum
+
+#### Technical Notes
+
+- Integration with Prometheus/Grafana or similar monitoring stack
+- Consider time-series database for metrics storage
+- WebSocket or SSE for real-time updates
+- Rate limiting for metrics API
+- May require cluster-side metrics agent deployment
+
+#### Related Tasks
+
+- [ ] TASK-007-1: Design metrics data model (Status: Backlog)
+- [ ] TASK-007-2: Implement metrics collection service (Status: Backlog)
+- [ ] TASK-007-3: Create metrics API endpoints (Status: Backlog)
+- [ ] TASK-007-4: Build monitoring dashboard UI (Status: Backlog)
+
+---
+
+### [FEAT-008] Auto-scaling Capabilities
+
+**Status**: Draft
+**Priority**: P2
+**Created**: 2026-02-21
+**Updated**: 2026-02-21
+
+#### User Story
+
+As a platform user, I want my Kubernetes clusters to automatically scale based on workload demand, so that I can handle traffic spikes without manual intervention and optimize costs during low usage.
+
+#### Requirements
+
+1. Horizontal Pod Autoscaler (HPA) configuration per cluster
+2. Vertical Pod Autoscaler (VPA) recommendations
+3. Cluster Autoscaler for node pool management
+4. Configurable scaling policies (min/max replicas, target metrics)
+5. Scale event logging and audit trail
+
+#### Acceptance Criteria
+
+- [ ] Users can enable/disable autoscaling per cluster
+- [ ] HPA configuration exposed via API
+- [ ] Scaling events logged with timestamps and metrics
+- [ ] UI displays current replica count and scaling history
+- [ ] Cost impact preview before scaling policy changes
+- [ ] Integration with existing monitoring (FEAT-007)
+
+#### Technical Notes
+
+- Requires Kubernetes Metrics Server installation
+- HPA v2 API for advanced scaling metrics
+- Cluster Autoscaler integration with cloud provider APIs
+- Consider Custom Metrics API for application-specific scaling
+- Rate limiting on scaling API to prevent rapid scale up/down
+
+#### Related Tasks
+
+- [ ] TASK-008-1: Design autoscaling data model (Status: Backlog)
+- [ ] TASK-008-2: Implement HPA configuration API (Status: Backlog)
+- [ ] TASK-008-3: Create autoscaling UI components (Status: Backlog)
+- [ ] TASK-008-4: Integrate with cluster monitoring (Status: Backlog)
+
+---
+
+### [FEAT-009] Cost Optimization Features
+
+**Status**: Draft
+**Priority**: P2
+**Created**: 2026-02-21
+**Updated**: 2026-02-21
+
+#### User Story
+
+As a platform user, I want to understand and optimize my Kubernetes cluster costs, so that I can make informed decisions about resource allocation and reduce unnecessary spending.
+
+#### Requirements
+
+1. Real-time cost estimation per cluster
+2. Resource utilization vs allocation analysis
+3. Cost breakdown by namespace, workload, and resource type
+4. Recommendations for cost optimization
+5. Budget alerts and spending thresholds
+
+#### Acceptance Criteria
+
+- [ ] Dashboard displays estimated monthly cost per cluster
+- [ ] Cost breakdown available at namespace level
+- [ ] Optimization recommendations shown with estimated savings
+- [ ] Budget alerts configurable per subscription tier
+- [ ] Historical cost trends available (7/30/90 days)
+- [ ] Export cost reports in CSV/JSON format
+
+#### Technical Notes
+
+- Integrate with cloud provider billing APIs (AWS Cost Explorer, GCP Billing)
+- Consider OpenCost project for Kubernetes cost monitoring
+- Cost data granularity: hourly for real-time, daily for historical
+- Cache cost estimates to reduce API calls
+- Privacy: No actual billing data exposure, only estimates
+
+#### Related Tasks
+
+- [ ] TASK-009-1: Design cost data model (Status: Backlog)
+- [ ] TASK-009-2: Implement cost estimation service (Status: Backlog)
+- [ ] TASK-009-3: Create cost dashboard UI (Status: Backlog)
+- [ ] TASK-009-4: Implement budget alert system (Status: Backlog)
+
+---
+
+### [FEAT-010] Role-based Access Control (RBAC)
+
+**Status**: Draft
+**Priority**: P2
+**Created**: 2026-02-21
+**Updated**: 2026-02-21
+
+#### User Story
+
+As a platform administrator, I want to assign different permission levels to team members, so that I can control who can create, modify, or delete clusters and maintain security best practices.
+
+#### Requirements
+
+1. Predefined roles (Owner, Admin, Developer, Viewer)
+2. Custom role creation capability
+3. Role assignment at cluster and organization level
+4. Audit trail for role changes
+5. Integration with existing Clerk authentication
+
+#### Acceptance Criteria
+
+- [ ] Four default roles available: Owner, Admin, Developer, Viewer
+- [ ] Role assignment UI in user management
+- [ ] Permissions enforced at API level
+- [ ] Audit log captures all role changes
+- [ ] Self-service role request workflow (optional)
+- [ ] Role-based UI elements (hide/show based on permissions)
+
+#### Technical Notes
+
+- Extend existing auth middleware with role checking
+- Store roles in database linked to User and Cluster
+- Consider using Casbin for complex permission scenarios
+- Cache role assignments for performance
+- Backward compatible with existing admin email check
+
+#### Permission Matrix
+
+| Action         | Owner | Admin | Developer | Viewer |
+| -------------- | ----- | ----- | --------- | ------ |
+| Create Cluster | ✓     | ✓     | ✗         | ✗      |
+| Delete Cluster | ✓     | ✓     | ✗         | ✗      |
+| Update Cluster | ✓     | ✓     | ✓         | ✗      |
+| View Cluster   | ✓     | ✓     | ✓         | ✓      |
+| Manage Billing | ✓     | ✓     | ✗         | ✗      |
+| Manage Users   | ✓     | ✗     | ✗         | ✗      |
+
+#### Related Tasks
+
+- [ ] TASK-010-1: Design RBAC data model (Status: Backlog)
+- [ ] TASK-010-2: Implement role middleware (Status: Backlog)
+- [ ] TASK-010-3: Create role management UI (Status: Backlog)
+- [ ] TASK-010-4: Migrate existing admin checks (Status: Backlog)
+
+---
+
 ## Feature Template
 
 When adding a new feature, use the following template:

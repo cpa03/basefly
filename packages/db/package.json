@@ -3,10 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "exports": {
-    ".": "./index.ts"
+    ".": "./index.ts",
+    "./soft-delete": "./soft-delete.ts",
+    "./user-deletion": "./user-deletion.ts",
+    "./prisma/types": "./prisma/types.ts",
+    "./prisma/enums": "./prisma/enums.ts",
+    "./logger": "./logger.ts"
   },
   "main": "./index.ts",
   "types": "./index.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./*"
+      ]
+    }
+  },
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint . --cache --cache-location 'node_modules/.cache/.eslintcache'",

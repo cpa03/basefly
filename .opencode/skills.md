@@ -64,14 +64,14 @@ The following MCP servers are enabled:
 
 ## Categories
 
-| Category           | Model                      | Use Case                                 |
-| ------------------ | -------------------------- | ---------------------------------------- |
-| quick              | opencode/gpt-5-nano        | Trivial tasks, typo fixes                |
-| visual-engineering | opencode/minimax-m2.1-free | Frontend, UI/UX, design                  |
-| business-logic     | opencode/kimi-k2.5-free    | General business logic                   |
-| research           | opencode/glm-4.7-free      | Documentation, research                  |
-| ultrabrain         | opencode/kimi-k2.5-free    | Hard logic-heavy tasks                   |
-| deep               | opencode/glm-4.7-free      | Goal-oriented autonomous problem-solving |
-| artistry           | opencode/kimi-k2.5-free    | Unconventional creative approaches       |
+| Category           | Model                      | Description                                     |
+| ------------------ | -------------------------- | ----------------------------------------------- |
+| quick              | opencode/gpt-5-nano        | Trivial tasks - single file changes, typo fixes |
+| visual-engineering | opencode/minimax-m2.1-free | Frontend, UI/UX, design, styling, animation     |
+| business-logic     | opencode/kimi-k2.5-free    | General business logic tasks                    |
+| research           | opencode/glm-4.7-free      | Documentation lookup, research, best practices  |
+| ultrabrain         | opencode/kimi-k2.5-free    | Hard logic-heavy tasks requiring deep reasoning |
+| deep               | opencode/glm-4.7-free      | Goal-oriented autonomous problem-solving        |
+| artistry           | opencode/kimi-k2.5-free    | Unconventional creative approaches              |
 
 For detailed skill documentation, see the individual SKILL.md files in `.opencode/skills/` and `.opencode/superpowers/`.

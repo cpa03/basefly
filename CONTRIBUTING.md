@@ -174,3 +174,81 @@ Before deep into coding, discussion first is preferred. Creating an empty pull r
 ## Code of Conduct
 
 This project adheres to the [Contributor Covenant Code of Conduct](./CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [contact@nextify.ltd](mailto:contact@nextify.ltd).
+
+---
+
+## Git Workflow
+
+### Branch Naming Conventions
+
+Use descriptive branch names with the following prefixes:
+
+| Prefix    | Purpose                          | Example                    |
+| --------- | -------------------------------- | -------------------------- |
+| `feat/`   | New features                     | `feat/cluster-monitoring`  |
+| `fix/`    | Bug fixes                        | `fix/auth-validation`      |
+| `docs/`   | Documentation improvements       | `docs/api-reference`       |
+| `refactor/` | Code refactoring (no new features) | `refactor/user-service` |
+| `test/`   | Adding or updating tests         | `test/subscription-flow`   |
+| `chore/`  | Maintenance tasks                | `chore/update-dependencies`|
+| `security/` | Security-related changes       | `security/input-validation`|
+
+### Commit Message Guidelines
+
+We follow [Conventional Commits](https://www.conventionalcommits.org/). Each commit message should be structured as:
+
+```
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+**Types:**
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes (formatting, semicolons)
+- `refactor`: Code refactoring
+- `test`: Adding or updating tests
+- `chore`: Maintenance tasks
+- `security`: Security improvements
+
+**Examples:**
+
+```bash
+feat(api): add cluster health check endpoint
+fix(auth): resolve token refresh race condition
+docs(readme): update installation instructions
+security(api): add rate limiting to public endpoints
+```
+
+### Pull Request Checklist
+
+Before submitting your PR, ensure:
+
+- [ ] Branch follows naming conventions
+- [ ] Commits follow conventional commit format
+- [ ] All tests pass (`pnpm test`)
+- [ ] TypeScript compiles without errors (`pnpm typecheck`)
+- [ ] Code style is consistent (`pnpm lint`)
+- [ ] Documentation updated if needed
+- [ ] PR description clearly explains the changes
+
+---
+
+## Reporting Security Issues
+
+**Please do not report security vulnerabilities through public GitHub issues.**
+
+For security-related concerns, please follow our [Security Policy](./SECURITY.md) and report vulnerabilities to [contact@nextify.ltd](mailto:contact@nextify.ltd).
+
+---
+
+## Additional Resources
+
+- [API Specification](./docs/api-spec.md) - API endpoints and error handling
+- [Development Guide](./docs/DEVELOPMENT.md) - Detailed setup instructions
+- [CI/CD Documentation](./docs/ci-cd.md) - Build and deployment workflows
+- [Security Policy](./SECURITY.md) - Vulnerability reporting and security guidelines

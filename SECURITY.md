@@ -15,3 +15,71 @@ We greatly value the security community's efforts in helping keep our project sa
 We appreciate your contributions to the security of our project. Contributors who help improve our security may be publicly acknowledged (with consent).
 
 Note: Our security policy may be updated periodically.
+
+## Supported Versions
+
+The following versions of Basefly are currently being supported with security updates:
+
+| Version | Supported          |
+| ------- | ------------------ |
+| 1.0.x   | :white_check_mark: |
+| < 1.0   | :x:                |
+
+## Severity Levels and Response SLAs
+
+We categorize security vulnerabilities using the following severity levels and commit to these response times:
+
+| Severity | Acknowledgment | Initial Assessment | Remediation Target |
+| -------- | -------------- | ------------------ | ------------------ |
+| Critical | 24 hours       | 48 hours           | 7 days             |
+| High     | 48 hours       | 5 days             | 14 days            |
+| Medium   | 5 days         | 10 days            | 30 days            |
+| Low      | 10 days        | 14 days            | 60 days            |
+
+**Severity Classification:**
+- **Critical**: Remote code execution, authentication bypass, data breach
+- **High**: Privilege escalation, significant data exposure
+- **Medium**: Limited data exposure, CSRF, XSS with user interaction
+- **Low**: Minor information disclosure, best practice violations
+
+## Vulnerability Report Template
+
+When reporting a vulnerability, please include the following information:
+
+```markdown
+**Vulnerability Summary:**
+[ Brief description of the vulnerability ]
+
+**Affected Component:**
+[ e.g., API endpoint, authentication module, specific file ]
+
+**Basefly Version:**
+[ Version number where the vulnerability was found ]
+
+**Steps to Reproduce:**
+1. [ Step 1 ]
+2. [ Step 2 ]
+3. [ Step 3 ]
+
+**Proof of Concept:**
+[ Code snippet, screenshot, or detailed instructions ]
+
+**Potential Impact:**
+[ What an attacker could achieve ]
+
+**Suggested Mitigation:**
+[ Optional: Your recommendations for fixing the issue ]
+
+**Environment:**
+- OS: [ e.g., Ubuntu 22.04 ]
+- Browser: [ e.g., Chrome 120 ]
+- Node.js version: [ e.g., 20.10.0 ]
+```
+
+## Safe Harbor
+
+We support responsible security research. We will not pursue legal action against security researchers who:
+- Act in good faith to identify and report vulnerabilities
+- Avoid privacy violations, data destruction, and service interruptions
+- Do not access or modify data that is not their own
+- Provide us with reasonable time to remediate before disclosure

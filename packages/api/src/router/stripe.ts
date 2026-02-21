@@ -1,8 +1,9 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { z } from "zod";
 
-import { PLAN_VALIDATION, pricingData } from "@saasfly/common";
-import { Customer, db } from "@saasfly/db";
+import { PLAN_VALIDATION, pricingData, TIME_MS } from "@saasfly/common";
+import type { Customer} from "@saasfly/db";
+import { db } from "@saasfly/db";
 import {
   createBillingSession,
   createCheckoutSession,
@@ -12,11 +13,7 @@ import {
 
 import { env } from "../env.mjs";
 import { handleIntegrationError } from "../errors";
-import {
-  createRateLimitedProtectedProcedure,
-  createTRPCRouter,
-  EndpointType,
-} from "../trpc";
+import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 
 export interface SubscriptionPlan {
   title: string;
@@ -57,7 +54,7 @@ export const stripeRouter = createTRPCRouter({
   createSession: createRateLimitedProtectedProcedure("stripe")
     .input(createSessionSchema)
     .mutation(async (opts) => {
-      const userId = opts.ctx.userId! as string;
+      const userId = opts.ctx.userId;
       const planId = opts.input.planId;
       const requestId = opts.ctx.requestId;
       const customer = await db
@@ -113,7 +110,7 @@ export const stripeRouter = createTRPCRouter({
 
   userPlans: createRateLimitedProtectedProcedure("read").query(async (opts) => {
     noStore();
-    const userId = opts.ctx.userId! as string;
+    const userId = opts.ctx.userId;
     const requestId = opts.ctx.requestId;
     const custom = await db
       .selectFrom("Customer")
@@ -132,7 +129,7 @@ export const stripeRouter = createTRPCRouter({
     const isPaid =
       custom.stripePriceId &&
       custom.stripeCurrentPeriodEnd &&
-      custom.stripeCurrentPeriodEnd.getTime() + 86_400_000 > Date.now();
+      custom.stripeCurrentPeriodEnd.getTime() + TIME_MS.ONE_DAY > Date.now();
     // Find the pricing data corresponding to the custom's plan
     const customPlan =
       pricingData.find(

@@ -33,6 +33,25 @@ export const CACHE_DURATION = {
 } as const;
 
 /**
+ * Time duration in milliseconds
+ * Use these constants for setTimeout, intervals, and date arithmetic
+ */
+export const TIME_MS = {
+  /** 1 second in milliseconds */
+  ONE_SECOND: 1000,
+  /** 1 minute in milliseconds */
+  ONE_MINUTE: 60 * 1000,
+  /** 5 minutes in milliseconds */
+  FIVE_MINUTES: 5 * 60 * 1000,
+  /** 1 hour in milliseconds */
+  ONE_HOUR: 60 * 60 * 1000,
+  /** 1 day in milliseconds */
+  ONE_DAY: 24 * 60 * 60 * 1000,
+  /** 1 week in milliseconds */
+  ONE_WEEK: 7 * 24 * 60 * 60 * 1000,
+} as const;
+
+/**
  * Cache-Control header values
  * Pre-built directives for common caching scenarios
  */

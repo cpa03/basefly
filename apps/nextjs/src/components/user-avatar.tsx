@@ -1,3 +1,4 @@
+import * as React from "react";
 import type { AvatarProps } from "@radix-ui/react-avatar";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@saasfly/ui/avatar";
@@ -10,7 +11,10 @@ interface UserAvatarProps extends AvatarProps {
   };
 }
 
-export function UserAvatar({ user, ...props }: UserAvatarProps): React.JSX.Element {
+const UserAvatar = React.memo(function UserAvatar({
+  user,
+  ...props
+}: UserAvatarProps): React.JSX.Element {
   return (
     <Avatar {...props}>
       {user.image ? (
@@ -26,4 +30,8 @@ export function UserAvatar({ user, ...props }: UserAvatarProps): React.JSX.Eleme
       )}
     </Avatar>
   );
-}
+});
+
+UserAvatar.displayName = "UserAvatar";
+
+export { UserAvatar };

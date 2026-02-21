@@ -1,9 +1,17 @@
 import { db } from "@saasfly/db";
 
-import { adminProcedure, createTRPCRouter } from "../trpc";
+import {
+  createRateLimitedAdminProcedure,
+  createTRPCRouter,
+} from "../trpc";
 
+/**
+ * Admin router with rate-limited endpoints.
+ * Uses "read" rate limit for stats queries (100 requests/minute).
+ * Admin endpoints are already protected by authentication and admin role checks.
+ */
 export const adminRouter = createTRPCRouter({
-  getStats: adminProcedure.query(async () => {
+  getStats: createRateLimitedAdminProcedure("read").query(async () => {
     const [totalUsers, totalClusters, activeSubscriptions] = await Promise.all([
       db
         .selectFrom("User")

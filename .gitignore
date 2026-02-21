@@ -38,6 +38,9 @@ yarn-error.log*
 # cloudflare wrangler local dev vars (secrets)
 .dev.vars
 
+# wrangler local dev directory
+.wrangler/
+
 # open-next build output
 .open-next/
 

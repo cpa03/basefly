@@ -3,6 +3,9 @@
 import React, { useRef } from "react";
 import { motion, MotionValue, useScroll, useTransform } from "framer-motion";
 
+const RELATIVE_POSITION_STYLE = { position: "relative" as const };
+const PERSPECTIVE_STYLE = { perspective: "1000px" };
+
 export const ContainerScroll = ({
   titleComponent,
   children,
@@ -39,14 +42,9 @@ export const ContainerScroll = ({
     <div
       className="relative flex h-[60rem] items-center justify-center p-2 md:h-[80rem] md:px-20"
       ref={containerRef}
-      style={{ position: "relative" }}
+      style={RELATIVE_POSITION_STYLE}
     >
-      <div
-        className="relative w-full py-10 md:py-10"
-        style={{
-          perspective: "1000px",
-        }}
-      >
+      <div className="relative w-full py-10 md:py-10" style={PERSPECTIVE_STYLE}>
         <Header translate={translate} titleComponent={titleComponent} />
         <Card rotate={rotate} translate={translate} scale={scale}>
           {children}

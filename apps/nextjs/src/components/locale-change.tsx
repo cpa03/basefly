@@ -35,13 +35,14 @@ interface LocaleChangeProps {
  * - Indicates current locale with checkmark and aria-current
  * - Keyboard accessible (Tab, Arrow keys, Enter)
  * - Navigates to same page in selected locale
+ * - Memoized for optimal re-render performance
  *
  * @example
  * ```tsx
  * <LocaleChange url="/dashboard" currentLocale="en" />
  * ```
  */
-export function LocaleChange({ url, currentLocale }: LocaleChangeProps) {
+const LocaleChangeBase = ({ url, currentLocale }: LocaleChangeProps) => {
   const router = useRouter();
 
   const handleLocaleChange = React.useCallback(
@@ -49,6 +50,32 @@ export function LocaleChange({ url, currentLocale }: LocaleChangeProps) {
       router.push(`/${locale}/` + url);
     },
     [router, url],
+  );
+
+  // Memoized locale item renderer to prevent re-creating functions on each render
+  const renderLocaleItem = React.useCallback(
+    (locale: string) => {
+      const isActive = locale === currentLocale;
+      return (
+        <DropdownMenuItem
+          key={locale}
+          onClick={() => handleLocaleChange(locale)}
+          aria-current={isActive ? "true" : undefined}
+          className={cn("cursor-pointer", isActive && "bg-accent/50")}
+        >
+          <span className="flex w-full items-center justify-between">
+            <span>{localeMap[locale]}</span>
+            {isActive && (
+              <Check className="h-4 w-4 text-primary" aria-hidden="true" />
+            )}
+          </span>
+          <span className="sr-only">
+            {isActive ? "(currently selected)" : ""}
+          </span>
+        </DropdownMenuItem>
+      );
+    },
+    [currentLocale, handleLocaleChange],
   );
 
   return (
@@ -65,31 +92,11 @@ export function LocaleChange({ url, currentLocale }: LocaleChangeProps) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        {i18n.locales.map((locale) => {
-          const isActive = locale === currentLocale;
-          return (
-            <DropdownMenuItem
-              key={locale}
-              onClick={() => handleLocaleChange(locale)}
-              aria-current={isActive ? "true" : undefined}
-              className={cn(
-                "cursor-pointer",
-                isActive && "bg-accent/50",
-              )}
-            >
-              <span className="flex w-full items-center justify-between">
-                <span>{localeMap[locale]}</span>
-                {isActive && (
-                  <Check className="h-4 w-4 text-primary" aria-hidden="true" />
-                )}
-              </span>
-              <span className="sr-only">
-                {isActive ? "(currently selected)" : ""}
-              </span>
-            </DropdownMenuItem>
-          );
-        })}
+        {i18n.locales.map(renderLocaleItem)}
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
+};
+
+// Memoize the component to prevent unnecessary re-renders when parent updates
+export const LocaleChange = React.memo(LocaleChangeBase);

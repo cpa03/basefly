@@ -128,6 +128,7 @@ export {
   MARKETING_FALLBACKS,
   PAGE_METADATA,
   MARKETING_STATS,
+  ERROR_MESSAGES,
 } from "./config/ui-strings";
 
 // Asset paths configuration
@@ -158,6 +159,8 @@ export {
   PAGE_PROGRESS_CONFIG,
   NAVBAR_CONFIG,
   Z_INDEX,
+  GRADIENT_COLORS,
+  PATTERN_CONFIG,
 } from "./config/ui";
 export type {
   ToastConfig,

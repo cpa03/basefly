@@ -41,10 +41,14 @@ export function DashboardNav({ items, params: { lang } }: DashboardNavProps) {
             >
               <span
                 className={cn(
-                  "group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
+                  "group flex items-center rounded-md px-3 py-2 text-sm font-medium",
+                  "hover:bg-accent hover:text-accent-foreground",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                   path === item.href ? "bg-accent" : "transparent",
                   item.disabled && "cursor-not-allowed opacity-80",
                 )}
+                aria-current={path === item.href ? "page" : undefined}
+                aria-disabled={item.disabled}
               >
                 <Icon className="mr-2 h-4 w-4" />
                 <span>{item.title}</span>

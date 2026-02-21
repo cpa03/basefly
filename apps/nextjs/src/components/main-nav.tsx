@@ -59,7 +59,7 @@ export function MainNav({
       </div>
 
       <button
-        className="flex items-center space-x-2 md:hidden"
+        className="flex items-center space-x-2 rounded-md px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:hidden"
         onClick={toggleMenu}
         aria-label={showMobileMenu ? "Close menu" : "Open menu"}
         aria-expanded={showMobileMenu}

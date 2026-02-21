@@ -1,7 +1,11 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { z } from "zod";
 
-import { PLAN_VALIDATION, pricingData } from "@saasfly/common";
+import {
+  PLAN_VALIDATION,
+  pricingData,
+  type SubscriptionPlan,
+} from "@saasfly/common";
 import { Customer, db } from "@saasfly/db";
 import {
   createBillingSession,
@@ -18,19 +22,15 @@ import {
   EndpointType,
 } from "../trpc";
 
-export interface SubscriptionPlan {
-  title: string;
-  description: string;
-  benefits: string[];
-  limitations: string[];
-  prices: {
-    monthly: number;
-    yearly: number;
-  };
-  stripeIds: {
-    monthly: string | null;
-    yearly: string | null;
-  };
+// Pre-computed Map for O(1) price ID lookups instead of O(n) .find() calls
+const pricingDataByPriceId = new Map<string, SubscriptionPlan>();
+for (const plan of pricingData) {
+  if (plan.stripeIds.monthly) {
+    pricingDataByPriceId.set(plan.stripeIds.monthly, plan);
+  }
+  if (plan.stripeIds.yearly) {
+    pricingDataByPriceId.set(plan.stripeIds.yearly, plan);
+  }
 }
 
 export type UserSubscriptionPlan = SubscriptionPlan &
@@ -134,13 +134,9 @@ export const stripeRouter = createTRPCRouter({
       custom.stripeCurrentPeriodEnd &&
       custom.stripeCurrentPeriodEnd.getTime() + 86_400_000 > Date.now();
     // Find the pricing data corresponding to the custom's plan
-    const customPlan =
-      pricingData.find(
-        (plan) => plan.stripeIds.monthly === custom.stripePriceId,
-      ) ??
-      pricingData.find(
-        (plan) => plan.stripeIds.yearly === custom.stripePriceId,
-      );
+    const customPlan = custom.stripePriceId
+      ? pricingDataByPriceId.get(custom.stripePriceId)
+      : undefined;
     const plan = isPaid && customPlan ? customPlan : pricingData[0];
 
     const interval = isPaid

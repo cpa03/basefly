@@ -6,13 +6,14 @@ import { cn } from "@saasfly/ui";
 
 import { ModeToggle } from "~/components/mode-toggle";
 
+const CURRENT_YEAR = new Date().getFullYear();
+
 function getCopyrightText(
   dict: Record<string, string | Record<string, string>>,
 ): string | undefined {
-  const currentYear = new Date().getFullYear();
   const copyrightTemplate =
     typeof dict.copyright === "string" ? dict.copyright : "";
-  return copyrightTemplate?.replace("${currentYear}", String(currentYear));
+  return copyrightTemplate?.replace("${currentYear}", String(CURRENT_YEAR));
 }
 
 export function SiteFooter({

@@ -13,6 +13,17 @@ compatibility_flags = ["nodejs_compat", "nodejs_compat_v2", "global_fetch_strict
 directory = ".open-next/assets"
 binding = "ASSETS"
 
+# Module rules for ES modules and WASM files
+# https://developers.cloudflare.com/workers/wrangler/configuration/#rules
+[[rules]]
+type = "ESModule"
+globs = ["**/*.js", "**/*.mjs"]
+fallthrough = true
+
+[[rules]]
+type = "CompiledWasm"
+globs = ["**/*.wasm"]
+
 # Service binding for self-reference (required by OpenNext)
 # https://developers.cloudflare.com/workers/runtime-apis/bindings/service-bindings/
 [[services]]

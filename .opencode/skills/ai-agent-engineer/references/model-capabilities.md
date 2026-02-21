@@ -79,15 +79,15 @@ This document provides detailed capability matrices for models used in OpenX Bas
 
 ## Category-to-Model Mapping
 
-| Category           | Model                      | Temperature | Use Case                                 |
-| ------------------ | -------------------------- | ----------- | ---------------------------------------- |
-| quick              | opencode/gpt-5-nano        | 0.2         | Trivial tasks, typo fixes                |
-| visual-engineering | opencode/minimax-m2.1-free | 0.5         | Frontend, UI/UX, design                  |
-| business-logic     | opencode/kimi-k2.5-free    | 0.6         | General business logic                   |
-| research           | opencode/glm-4.7-free      | 0.3         | Documentation, research                  |
-| ultrabrain         | opencode/kimi-k2.5-free    | 0.5         | Hard logic-heavy tasks                   |
-| deep               | opencode/glm-4.7-free      | 0.4         | Goal-oriented autonomous problem-solving |
-| artistry           | opencode/kimi-k2.5-free    | 0.7         | Unconventional creative approaches       |
+| Category           | Model                      | Temperature | Description                                     |
+| ------------------ | -------------------------- | ----------- | ----------------------------------------------- |
+| quick              | opencode/gpt-5-nano        | 0.2         | Trivial tasks - single file changes, typo fixes |
+| visual-engineering | opencode/minimax-m2.1-free | 0.5         | Frontend, UI/UX, design, styling, animation     |
+| business-logic     | opencode/kimi-k2.5-free    | 0.6         | General business logic tasks                    |
+| research           | opencode/glm-4.7-free      | 0.3         | Documentation lookup, research, best practices  |
+| ultrabrain         | opencode/kimi-k2.5-free    | 0.5         | Hard logic-heavy tasks requiring deep reasoning |
+| deep               | opencode/glm-4.7-free      | 0.4         | Goal-oriented autonomous problem-solving        |
+| artistry           | opencode/kimi-k2.5-free    | 0.7         | Unconventional creative approaches              |
 
 ## Temperature Guidelines
 

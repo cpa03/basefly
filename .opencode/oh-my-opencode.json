@@ -35,19 +35,23 @@
   "categories": {
     "quick": {
       "model": "opencode/gpt-5-nano",
-      "temperature": 0.2
+      "temperature": 0.2,
+      "description": "Trivial tasks - single file changes, typo fixes, simple modifications"
     },
     "visual-engineering": {
       "model": "opencode/minimax-m2.1-free",
-      "temperature": 0.5
+      "temperature": 0.5,
+      "description": "Frontend, UI/UX, design, styling, animation"
     },
     "business-logic": {
       "model": "opencode/kimi-k2.5-free",
-      "temperature": 0.6
+      "temperature": 0.6,
+      "description": "General business logic tasks"
     },
     "research": {
       "model": "opencode/glm-4.7-free",
-      "temperature": 0.3
+      "temperature": 0.3,
+      "description": "Documentation lookup, research, best practices"
     },
     "ultrabrain": {
       "model": "opencode/kimi-k2.5-free",

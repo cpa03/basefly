@@ -101,7 +101,7 @@ All workflows use `ubuntu-24.04-arm` or `ubuntu-22.04-arm` runners for ARM-based
 - Target: Node.js 20
 - Package Manager: pnpm 10.x
 
-> **Note**: Some workflow files may still reference `npm ci`. These should be migrated to use `pnpm/action-setup@v4` with `pnpm install --frozen-lockfile` for consistency with the project's package manager configuration. See the recommended workflow pattern below.
+> **⚠️ Known Issue**: Some workflow files currently use `npm ci` and invalid action versions (`actions/checkout@v6`, `actions/cache@v5`, `actions/setup-node@v6/v5`). These should be migrated to use `pnpm/action-setup@v4` with `pnpm install --frozen-lockfile` and valid action versions (`@v4`). See [Issue #305](https://github.com/cpa03/basefly/issues/305) for details and the recommended workflow pattern below.
 
 ### Permissions
 

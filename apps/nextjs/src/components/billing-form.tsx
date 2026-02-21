@@ -2,6 +2,11 @@
 
 import * as React from "react";
 
+import {
+  FORM_DESCRIPTIONS,
+  FORM_LABELS,
+  TOAST_MESSAGES,
+} from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { Button } from "@saasfly/ui/button";
 import {
@@ -40,8 +45,8 @@ export function BillingForm({
     if (!response?.ok) {
       setIsLoading(false);
       return toast({
-        title: "Something went wrong.",
-        description: "Please refresh the page and try again.",
+        title: TOAST_MESSAGES.error.somethingWentWrong,
+        description: TOAST_MESSAGES.error.refreshAndTryAgain,
         variant: "destructive",
       });
     }
@@ -59,9 +64,9 @@ export function BillingForm({
     <form className={cn(className)} onSubmit={onSubmit} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle>Subscription Plan</CardTitle>
+          <CardTitle>{FORM_LABELS.subscriptionPlan}</CardTitle>
           <CardDescription>
-            You are currently on the <strong>{subscriptionPlan?.title}</strong>{" "}
+            {FORM_DESCRIPTIONS.currentPlan} <strong>{subscriptionPlan?.title}</strong>{" "}
             plan.
           </CardDescription>
         </CardHeader>
@@ -69,14 +74,14 @@ export function BillingForm({
         <CardFooter className="flex flex-col items-start space-y-2 md:flex-row md:justify-between md:space-x-0">
           <Button type="submit" isLoading={isLoading}>
             {subscriptionPlan?.isPaid
-              ? "Manage Subscription"
-              : "Upgrade to PRO"}
+              ? FORM_LABELS.manageSubscription
+              : FORM_LABELS.upgradeToPro}
           </Button>
           {subscriptionPlan?.isPaid ? (
             <p className="rounded-full text-xs font-medium">
               {subscriptionPlan?.isCanceled
-                ? "Your plan will be canceled on "
-                : "Your plan renews on "}
+                ? FORM_LABELS.planCancelsOn
+                : FORM_LABELS.planRenewsOn}
               {formatDate(subscriptionPlan?.stripeCurrentPeriodEnd)}.
             </p>
           ) : null}

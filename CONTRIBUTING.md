@@ -168,3 +168,9 @@ Before deep into coding, discussion first is preferred. Creating an empty pull r
 7. Write a proper description. You can mention @tianzx in it, so @tianzx will get the notification.
 8. Create your pull request as a Draft
 9. Wait for the discussion
+
+---
+
+## Code of Conduct
+
+This project adheres to the [Contributor Covenant Code of Conduct](./CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [contact@nextify.ltd](mailto:contact@nextify.ltd).

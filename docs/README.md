@@ -37,7 +37,7 @@ For AI agent development and configuration, see the main [AGENTS.md](../AGENTS.m
 
 ## System Prompts Reference
 
-The `prompts/` folder contains reference system prompts from various AI systems for research and comparison purposes.
+The `prompts/` folder contains reference system prompts from various AI systems for research and comparison purposes. See [prompts/readme.md](./prompts/readme.md) for an overview.
 
 ## Contributing
 

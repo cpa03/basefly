@@ -5,7 +5,7 @@ import { EXTERNAL_URLS } from "@saasfly/common";
 import { TRANSITION_PRESETS } from "@saasfly/common/config/ui";
 import { FollowerPointerCard } from "@saasfly/ui/following-pointer";
 
-export function XBlogArticle() {
+export const XBlogArticle = React.memo(function XBlogArticle() {
   return (
     <div className="w-full max-w-xs sm:max-w-sm md:w-80">
       <FollowerPointerCard
@@ -50,7 +50,7 @@ export function XBlogArticle() {
       </FollowerPointerCard>
     </div>
   );
-}
+});
 
 const blogContent = {
   slug: "Making-Sense-of-React-Server-Components",

@@ -44,11 +44,11 @@ mode = "smart"
 cpu_ms = 50000
 
 # Development settings for local testing with wrangler
+# Note: wrangler v3+ automatically persists data by default
+# https://developers.cloudflare.com/workers/wrangler/deprecations/
 [dev]
 port = 8788
 local_protocol = "http"
-# Persist KV/D1 data locally for development
-persist = true
 
 # Observability and logging
 # https://developers.cloudflare.com/workers/observability/

@@ -36,12 +36,23 @@ service = "basefly"
 NODE_VERSION = "20"
 
 # Production environment
+# https://developers.cloudflare.com/workers/wrangler/configuration/#environments
 [env.production]
 name = "basefly"
+# Uncomment and configure when deploying to a custom domain
+# routes = [
+#   { pattern = "basefly.io/*", zone_name = "basefly.io" }
+# ]
+# Enable logpush for production logs (requires R2 bucket or external destination)
+# https://developers.cloudflare.com/workers/observability/logpush/
+# logpush = true
 
 # Preview environment for PRs
+# Preview environments inherit from main config
 [env.preview]
 name = "basefly-preview"
+# Workers Dev mode for preview deployments
+workers_dev = true
 
 # Smart placement for optimal global distribution
 # https://developers.cloudflare.com/workers/platform/smart-placement
@@ -64,6 +75,10 @@ local_protocol = "http"
 [observability]
 enabled = true
 head_sampling_rate = 1
+
+# Enable Tail Workers for real-time log streaming (optional)
+# https://developers.cloudflare.com/workers/observability/tail-workers/
+# tail_consumers = [{ service = "tail-worker" }]
 
 # Security recommendations for Cloudflare Dashboard:
 # - Enable Bot Fight Mode

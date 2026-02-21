@@ -1,5 +1,6 @@
 .next/
 .contentlayer/
+cloudflare-env.d.ts
 src/components/billing-form.tsx
 src/components/content/mdx-components.tsx
 src/components/docs/pager.tsx

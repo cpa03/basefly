@@ -16,6 +16,10 @@ This document lists the skills configured for the OpenX Basefly multi-model agen
 
 The following skills are enabled in `.opencode/oh-my-opencode.json`:
 
+### Core Skills
+
+- **using-superpowers** - Skill discovery and invocation patterns (invoke before any response)
+
 ### Planning & Execution
 
 - **brainstorming** - Creative ideation and solution exploration

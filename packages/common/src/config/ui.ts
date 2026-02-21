@@ -265,3 +265,28 @@ export const Z_INDEX = {
 
 /** Type for z-index keys */
 export type ZIndexKey = keyof typeof Z_INDEX;
+
+/**
+ * Gradient color presets for UI components
+ * Centralized to ensure consistent gradient styling across the application
+ */
+export const GRADIENT_COLORS = {
+  /** Primary gradient used for document guide and feature highlights */
+  primary: {
+    start: "#ffaa40",
+    middle: "#9c40ff",
+    end: "#ffaa40",
+  },
+  /** Get Tailwind gradient class string */
+  getPrimaryGradientClass: () =>
+    `from-[#ffaa40] via-[#9c40ff] to-[#ffaa40]`,
+} as const;
+
+/**
+ * Pattern generation configuration
+ * Centralized constants for background pattern generation
+ */
+export const PATTERN_CONFIG = {
+  /** Default opacity for generated patterns */
+  defaultOpacity: 0.4,
+} as const;

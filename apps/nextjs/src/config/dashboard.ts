@@ -6,7 +6,7 @@
  * for dashboard-related settings, making the UI more maintainable and consistent.
  */
 
-import { ANIMATION } from "@saasfly/common";
+import { ANIMATION, PAGE_SIZES, PAGINATION_LIMITS } from "@saasfly/common";
 
 /**
  * Table column configuration for consistent column widths
@@ -110,14 +110,15 @@ export const STATUS_BADGE_CONFIG = {
 
 /**
  * Pagination configuration
+ * Uses shared pagination constants from @saasfly/common for consistency
  */
 export const PAGINATION_CONFIG = {
-  /** Default items per page */
-  defaultPageSize: 10,
-  /** Available page size options */
-  pageSizeOptions: [10, 25, 50, 100],
-  /** Maximum visible page buttons */
-  maxVisiblePages: 5,
+  /** Default items per page - uses small page size for dashboard tables */
+  defaultPageSize: PAGE_SIZES.small,
+  /** Available page size options - derived from shared PAGE_SIZES */
+  pageSizeOptions: [PAGE_SIZES.small, PAGE_SIZES.admin, PAGE_SIZES.large, PAGE_SIZES.max],
+  /** Maximum visible page buttons - uses shared limit */
+  maxVisiblePages: PAGINATION_LIMITS.maxVisiblePages,
 } as const;
 
 /**

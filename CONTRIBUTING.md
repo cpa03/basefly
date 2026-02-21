@@ -72,6 +72,7 @@ tooling/           # Shared configs (ESLint, Prettier, TS)
 - [README.md](./README.md) - Getting started guide
 - [AGENTS.md](./AGENTS.md) - AI agent configuration
 - [docs/](./docs/) - Additional documentation
+- [SECURITY.md](./SECURITY.md) - Security policy and vulnerability reporting
 
 ### Troubleshooting
 
@@ -113,6 +114,59 @@ pnpm dx:quick
 
 # Full CI simulation
 pnpm dx:ci
+```
+
+---
+
+## Branch Naming Conventions
+
+Please follow these naming conventions for your branches:
+
+| Type          | Pattern                  | Example                 |
+| ------------- | ------------------------ | ----------------------- |
+| Feature       | `feat/<description>`     | `feat/add-dark-mode`    |
+| Bug Fix       | `fix/<description>`      | `fix/login-error`       |
+| Documentation | `docs/<description>`     | `docs/update-readme`    |
+| Refactor      | `refactor/<description>` | `refactor/auth-module`  |
+| Performance   | `perf/<description>`     | `perf/optimize-queries` |
+| Security      | `security/<description>` | `security/fix-xss`      |
+| CI/CD         | `ci/<description>`       | `ci/update-workflow`    |
+
+---
+
+## Commit Message Guidelines
+
+We follow [Conventional Commits](https://www.conventionalcommits.org/) specification:
+
+```
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Types
+
+| Type       | Description                         |
+| ---------- | ----------------------------------- |
+| `feat`     | New feature                         |
+| `fix`      | Bug fix                             |
+| `docs`     | Documentation only                  |
+| `style`    | Code style (formatting, semicolons) |
+| `refactor` | Code change without fix or feature  |
+| `perf`     | Performance improvement             |
+| `test`     | Adding or updating tests            |
+| `chore`    | Maintenance tasks                   |
+| `ci`       | CI/CD changes                       |
+
+### Examples
+
+```bash
+feat(auth): add OAuth2 login support
+fix(api): resolve rate limiting edge case
+docs(readme): update installation instructions
+refactor(db): optimize query patterns
 ```
 
 ---
@@ -168,6 +222,28 @@ Before deep into coding, discussion first is preferred. Creating an empty pull r
 7. Write a proper description. You can mention @tianzx in it, so @tianzx will get the notification.
 8. Create your pull request as a Draft
 9. Wait for the discussion
+
+### PR Checklist
+
+Before submitting your PR, ensure:
+
+- [ ] Code follows project style guidelines (`pnpm lint` passes)
+- [ ] All tests pass (`pnpm test`)
+- [ ] TypeScript compiles without errors (`pnpm typecheck`)
+- [ ] Documentation updated if needed
+- [ ] Commit messages follow Conventional Commits
+- [ ] Branch is up-to-date with `main`
+- [ ] PR description links related issues
+
+---
+
+## Additional Resources
+
+- [API Documentation](./docs/api-spec.md) - Complete API reference
+- [Development Guide](./docs/DEVELOPMENT.md) - Detailed development setup
+- [CI/CD Documentation](./docs/ci-cd.md) - Build and deployment workflows
+- [Roadmap](./docs/roadmap.md) - Project roadmap and planning
+- [Security Policy](./SECURITY.md) - Security guidelines and vulnerability reporting
 
 ---
 

@@ -4,7 +4,7 @@ import type { AppRouter } from "./root";
 
 export { createTRPCContext } from "./trpc";
 
-export { t, type TRPCContext } from "./trpc";
+export { t, type TRPCContext, type RateLimitInfo } from "./trpc";
 
 export {
   generateRequestId,

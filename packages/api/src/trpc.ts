@@ -14,6 +14,15 @@ import { transformer } from "./transformer";
 export type { EndpointType } from "./rate-limiter";
 
 /**
+ * Rate limit information for response headers
+ */
+export interface RateLimitInfo {
+  limit: number;
+  remaining: number;
+  resetAt: number;
+}
+
+/**
  * Options for creating tRPC context.
  */
 interface CreateContextOptions {
@@ -39,6 +48,7 @@ export const createTRPCContext = async (opts: {
     userId: opts.auth?.userId ?? null,
     requestId,
     req: opts.req,
+    rateLimitInfo: null as RateLimitInfo | null,
     ...opts,
   };
 };
@@ -133,8 +143,6 @@ export const rateLimit = (endpointType: EndpointType) =>
     const result = limiter.check(identifier);
 
     if (!result.success) {
-      // Security logging for rate limit exceeded events
-      // Helps with intrusion detection and security monitoring
       logger.warn(
         {
           identifier,
@@ -155,7 +163,15 @@ export const rateLimit = (endpointType: EndpointType) =>
       );
     }
 
-    const response = await next();
+    const response = await next({
+      ctx: {
+        rateLimitInfo: {
+          limit: result.limit,
+          remaining: result.remaining,
+          resetAt: result.resetAt,
+        },
+      },
+    });
 
     return response;
   });

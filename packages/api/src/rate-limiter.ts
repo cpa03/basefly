@@ -17,6 +17,7 @@ interface RateLimitResult {
   success: boolean;
   remaining: number;
   resetAt: number;
+  limit: number;
 }
 
 export class RateLimiter {
@@ -51,6 +52,7 @@ export class RateLimiter {
         success: true,
         remaining: this.maxRequests - 1,
         resetAt: now + this.windowMs,
+        limit: this.maxRequests,
       };
     }
 
@@ -67,6 +69,7 @@ export class RateLimiter {
         success: true,
         remaining: entry.tokens,
         resetAt: entry.lastRefill + this.windowMs,
+        limit: this.maxRequests,
       };
     }
 
@@ -85,6 +88,7 @@ export class RateLimiter {
       success: false,
       remaining: 0,
       resetAt: entry.lastRefill + this.windowMs,
+      limit: this.maxRequests,
     };
   }
 

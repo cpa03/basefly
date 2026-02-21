@@ -27,12 +27,32 @@ const createContext = async (req: NextRequest) => {
   });
 };
 
+const RATE_LIMIT_HEADERS = {
+  limit: "X-RateLimit-Limit",
+  remaining: "X-RateLimit-Remaining",
+  reset: "X-RateLimit-Reset",
+} as const;
+
 const handler = (req: NextRequest) =>
   fetchRequestHandler({
     endpoint: "/api/trpc/edge",
     router: edgeRouter,
     req: req,
     createContext: () => createContext(req),
+    responseMeta: ({ ctx }) => {
+      const headers: Record<string, string> = {};
+
+      if (ctx?.rateLimitInfo) {
+        const info = ctx.rateLimitInfo;
+        headers[RATE_LIMIT_HEADERS.limit] = String(info.limit);
+        headers[RATE_LIMIT_HEADERS.remaining] = String(info.remaining);
+        headers[RATE_LIMIT_HEADERS.reset] = String(
+          Math.ceil(info.resetAt / 1000),
+        );
+      }
+
+      return { headers };
+    },
     onError: ({ error, path }) => {
       logger.error("Error in tRPC handler (edge)", error, { path });
     },

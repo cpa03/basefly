@@ -59,72 +59,6 @@ async function isDatabaseEmpty(): Promise<boolean> {
   return Number(userCount?.count) === 0;
 }
 
-async function seedUsers(): Promise<void> {
-  console.log("Seeding users...");
-
-  await db
-    .insertInto("User")
-    .values(SEED_CONFIG.testUser)
-    .onConflict((oc) => oc.column("id").doNothing())
-    .execute();
-
-  await db
-    .insertInto("User")
-    .values(SEED_CONFIG.adminUser)
-    .onConflict((oc) => oc.column("id").doNothing())
-    .execute();
-
-  console.log("✓ Users seeded successfully");
-}
-
-async function seedCustomers(): Promise<void> {
-  console.log("Seeding customers...");
-
-  await db
-    .insertInto("Customer")
-    .values({
-      authUserId: SEED_CONFIG.testUser.id,
-      name: SEED_CONFIG.testUser.name,
-      plan: "FREE",
-    })
-    .onConflict((oc) => oc.column("authUserId").doNothing())
-    .execute();
-
-  await db
-    .insertInto("Customer")
-    .values({
-      authUserId: SEED_CONFIG.adminUser.id,
-      name: SEED_CONFIG.adminUser.name,
-      plan: "BUSINESS",
-    })
-    .onConflict((oc) => oc.column("authUserId").doNothing())
-    .execute();
-
-  console.log("✓ Customers seeded successfully");
-}
-
-async function seedClusters(): Promise<void> {
-  console.log("Seeding clusters...");
-
-  for (const cluster of SEED_CONFIG.testClusters) {
-    await db
-      .insertInto("K8sClusterConfig")
-      .values({
-        name: cluster.name,
-        location: cluster.location,
-        authUserId: SEED_CONFIG.testUser.id,
-        plan: cluster.plan,
-        network: cluster.network,
-        status: cluster.status,
-        deletedAt: null,
-      })
-      .onConflict((oc) => oc.doNothing())
-      .execute();
-  }
-
-  console.log("✓ Clusters seeded successfully");
-}
-
 async function seed(): Promise<void> {
   if (isProduction) {
     console.error("❌ Seeding is disabled in production environment");
@@ -150,12 +84,59 @@ async function seed(): Promise<void> {
       console.log("");
     }
 
-    await db.transaction().execute(async () => {
-      await seedUsers();
-    });
+    await db.transaction().execute(async (trx) => {
+      console.log("Seeding users...");
+      await trx
+        .insertInto("User")
+        .values(SEED_CONFIG.testUser)
+        .onConflict((oc) => oc.column("id").doNothing())
+        .execute();
+      await trx
+        .insertInto("User")
+        .values(SEED_CONFIG.adminUser)
+        .onConflict((oc) => oc.column("id").doNothing())
+        .execute();
+      console.log("✓ Users seeded successfully");
 
-    await seedCustomers();
-    await seedClusters();
+      console.log("Seeding customers...");
+      await trx
+        .insertInto("Customer")
+        .values({
+          authUserId: SEED_CONFIG.testUser.id,
+          name: SEED_CONFIG.testUser.name,
+          plan: "FREE",
+        })
+        .onConflict((oc) => oc.column("authUserId").doNothing())
+        .execute();
+      await trx
+        .insertInto("Customer")
+        .values({
+          authUserId: SEED_CONFIG.adminUser.id,
+          name: SEED_CONFIG.adminUser.name,
+          plan: "BUSINESS",
+        })
+        .onConflict((oc) => oc.column("authUserId").doNothing())
+        .execute();
+      console.log("✓ Customers seeded successfully");
+
+      console.log("Seeding clusters...");
+      for (const cluster of SEED_CONFIG.testClusters) {
+        await trx
+          .insertInto("K8sClusterConfig")
+          .values({
+            name: cluster.name,
+            location: cluster.location,
+            authUserId: SEED_CONFIG.testUser.id,
+            plan: cluster.plan,
+            network: cluster.network,
+            status: cluster.status,
+            deletedAt: null,
+          })
+          .onConflict((oc) => oc.doNothing())
+          .execute();
+      }
+      console.log("✓ Clusters seeded successfully");
+    });
 
     console.log("");
 

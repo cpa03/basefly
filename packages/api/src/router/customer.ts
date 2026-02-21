@@ -1,5 +1,4 @@
 import { unstable_noStore as noStore } from "next/cache";
-import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { USER_VALIDATION } from "@saasfly/common";
@@ -9,10 +8,7 @@ import { createApiError, ErrorCode } from "../errors";
 import { logger } from "../logger";
 import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 
-function isUniqueViolation(
-  error: unknown,
-  constraintName?: string,
-): boolean {
+function isUniqueViolation(error: unknown, constraintName?: string): boolean {
   if (
     error &&
     typeof error === "object" &&

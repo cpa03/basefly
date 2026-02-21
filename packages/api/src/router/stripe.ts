@@ -12,11 +12,7 @@ import {
 
 import { env } from "../env.mjs";
 import { handleIntegrationError } from "../errors";
-import {
-  createRateLimitedProtectedProcedure,
-  createTRPCRouter,
-  EndpointType,
-} from "../trpc";
+import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 
 export interface SubscriptionPlan {
   title: string;

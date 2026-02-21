@@ -48,6 +48,21 @@
     "research": {
       "model": "opencode/glm-4.7-free",
       "temperature": 0.3
+    },
+    "ultrabrain": {
+      "model": "opencode/kimi-k2.5-free",
+      "temperature": 0.5,
+      "description": "Hard logic-heavy tasks requiring deep reasoning"
+    },
+    "deep": {
+      "model": "opencode/glm-4.7-free",
+      "temperature": 0.4,
+      "description": "Goal-oriented autonomous problem-solving"
+    },
+    "artistry": {
+      "model": "opencode/kimi-k2.5-free",
+      "temperature": 0.7,
+      "description": "Unconventional creative approaches"
     }
   },
 

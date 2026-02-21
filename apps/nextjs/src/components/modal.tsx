@@ -11,7 +11,7 @@ interface ModalProps {
   children: React.ReactNode;
   className?: string;
   showModal: boolean;
-  setShowModal: () => void;
+  setShowModal: (open?: boolean) => void;
 }
 
 export function Modal({

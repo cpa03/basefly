@@ -139,6 +139,8 @@ This ensures:
 - Proper caching of pnpm store for faster builds
 - Lockfile integrity with `--frozen-lockfile`
 
+> **Note**: Issue [#305](https://github.com/cpa03/basefly/issues/305) tracks the migration of all workflow files to this standardized pattern. Implementation requires GitHub App with `workflows` permission. See the issue for detailed migration steps.
+
 ### Concurrency
 
 - `on-pull.yml`: Single group `oc-agent` (no cancel on new runs)

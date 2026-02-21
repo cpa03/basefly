@@ -33,6 +33,7 @@ model Customer {
 
   @@index([plan])
   @@index([authUserId, stripeCurrentPeriodEnd])
+  // Partial index on stripeSubscriptionId WHERE IS NOT NULL added via migration 20260221_add_customer_active_subscription_index
 }
 
 model Account {

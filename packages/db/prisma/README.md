@@ -393,6 +393,7 @@ jobs:
 
 | Date       | Migration                                            | Description                                                                                                         |
 | ---------- | ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| 2026-02-21 | `20260221_add_customer_active_subscription_index`    | Added partial index on Customer.stripeSubscriptionId WHERE IS NOT NULL for admin dashboard active subscription counts |
 | 2026-02-21 | `20260221_add_cluster_createdat_index`               | Added index on K8sClusterConfig.createdAt for time-based sorting and filtering (dashboard views, audit queries)     |
 | 2026-02-21 | `20260221_add_cluster_status_composite_index`        | Added composite partial index on K8sClusterConfig(authUserId, status) WHERE deletedAt IS NULL for dashboard queries |
 | 2026-02-20 | `20260220_add_webhook_eventtype_createdat_index`     | Added composite index on StripeWebhookEvent(eventType, createdAt) for time-based event filtering                    |

@@ -1,9 +1,11 @@
 "use client";
 
-import { FC, ReactNode, useRef } from "react";
+import { FC, ReactNode, useMemo, useRef } from "react";
 import { motion, MotionValue, useScroll, useTransform } from "framer-motion";
 
 import { cn } from "./utils/cn";
+
+const RELATIVE_POSITION_STYLE = { position: "relative" as const };
 
 interface TextRevealByWordProps {
   text: string;
@@ -19,13 +21,13 @@ export const TextRevealByWord: FC<TextRevealByWordProps> = ({
   const { scrollYProgress } = useScroll({
     target: targetRef,
   });
-  const words = text.split(" ");
+  const words = useMemo(() => text.split(" "), [text]);
 
   return (
     <div
       ref={targetRef}
       className={cn("relative z-0 h-[200vh]", className)}
-      style={{ position: "relative" }}
+      style={RELATIVE_POSITION_STYLE}
     >
       <div
         className={

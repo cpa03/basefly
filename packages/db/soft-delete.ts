@@ -224,9 +224,11 @@ export class SoftDeleteService<T extends keyof DB> {
         // @ts-expect-error Kysely dynamic table/column requires type assertion
         .where("authUserId", "=", userId)
         .where("deletedAt", "is", null)
-        .select((eb) => eb.fn.count("id").as("count"))
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .select((eb: any) => eb.fn.count("id").as("count"))
         .executeTakeFirst()
-        .then((result) => Number(result?.count ?? 0))
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .then((result: any) => Number(result?.count ?? 0))
     );
   }
 
@@ -252,9 +254,11 @@ export class SoftDeleteService<T extends keyof DB> {
         // @ts-expect-error Kysely dynamic table/column requires type assertion
         .where("authUserId", "=", userId)
         .where("deletedAt", "is not", null)
-        .select((eb) => eb.fn.count("id").as("count"))
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .select((eb: any) => eb.fn.count("id").as("count"))
         .executeTakeFirst()
-        .then((result) => Number(result?.count ?? 0))
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        .then((result: any) => Number(result?.count ?? 0))
     );
   }
 }

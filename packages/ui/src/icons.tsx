@@ -36,6 +36,7 @@ import {
   Trash,
   Twitter,
   User,
+  Users,
   X,
   XCircle,
   type LucideProps,
@@ -60,7 +61,9 @@ export const Cluster = CloudCog;
 export const Close = X;
 export { Copy };
 export const CopyDone = ClipboardCheck;
+export { CreditCard };
 export const Dashboard = Activity;
+export { Activity };
 export const Ellipsis = MoreVertical;
 export const Help = HelpCircle;
 export { Heart };
@@ -83,6 +86,7 @@ export { ThumbsUp };
 export { Trash };
 export { Twitter };
 export { User };
+export { Users };
 export const Warning = AlertTriangle;
 
 export const System: Icon = (props) => (

@@ -11,13 +11,26 @@ import { logger } from "~/lib/logger";
 
 /**
  * Security headers for health endpoint responses
- * Prevents MIME sniffing and clickjacking on health responses
+ * Prevents MIME sniffing, clickjacking, and search engine indexing
  */
 const HEALTH_SECURITY_HEADERS = {
   "Cache-Control": "no-store, no-cache, must-revalidate",
   "Content-Type": "application/json",
   "X-Content-Type-Options": HTTP_SECURITY_HEADERS.CONTENT_TYPE_OPTIONS,
   "X-Frame-Options": HTTP_SECURITY_HEADERS.FRAME_OPTIONS,
+  // Security: Prevent search engines from indexing API endpoints
+  "X-Robots-Tag": "noindex, nofollow, nosnippet, noarchive",
+} as const;
+
+/**
+ * Security headers for HEAD responses (no Content-Type needed)
+ */
+const HEAD_SECURITY_HEADERS = {
+  "Cache-Control": "no-store, no-cache, must-revalidate",
+  "X-Content-Type-Options": HTTP_SECURITY_HEADERS.CONTENT_TYPE_OPTIONS,
+  "X-Frame-Options": HTTP_SECURITY_HEADERS.FRAME_OPTIONS,
+  // Security: Prevent search engines from indexing API endpoints
+  "X-Robots-Tag": "noindex, nofollow, nosnippet, noarchive",
 } as const;
 
 export function GET() {
@@ -49,20 +62,12 @@ export function HEAD() {
   try {
     return new NextResponse(null, {
       status: 200,
-      headers: {
-        "Cache-Control": "no-store, no-cache, must-revalidate",
-        "X-Content-Type-Options": HTTP_SECURITY_HEADERS.CONTENT_TYPE_OPTIONS,
-        "X-Frame-Options": HTTP_SECURITY_HEADERS.FRAME_OPTIONS,
-      },
+      headers: HEAD_SECURITY_HEADERS,
     });
   } catch {
     return new NextResponse(null, {
       status: 503,
-      headers: {
-        "Cache-Control": "no-store, no-cache, must-revalidate",
-        "X-Content-Type-Options": HTTP_SECURITY_HEADERS.CONTENT_TYPE_OPTIONS,
-        "X-Frame-Options": HTTP_SECURITY_HEADERS.FRAME_OPTIONS,
-      },
+      headers: HEAD_SECURITY_HEADERS,
     });
   }
 }

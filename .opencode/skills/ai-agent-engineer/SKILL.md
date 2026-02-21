@@ -98,6 +98,42 @@ scripts/init_skill.py <skill-name> --path .opencode/skills/
 | 0.4-0.6     | Balanced reasoning               |
 | 0.7-0.9     | Creative, exploratory            |
 
+## Troubleshooting
+
+### Common Issues
+
+#### Model Not Responding Correctly
+
+1. **Check temperature settings** - Lower temperature (0.2-0.4) for precision tasks
+2. **Verify model availability** - Ensure the model ID is correct in `oh-my-opencode.json`
+3. **Test with simpler prompts** - Isolate the issue with basic queries
+
+#### Skill Not Loading
+
+1. **Verify skill path** - Check `skills.sources` in `oh-my-opencode.json`
+2. **Check skill enable list** - Ensure skill is in `skills.enable` array
+3. **Validate SKILL.md format** - Ensure proper YAML frontmatter
+
+#### Context Window Issues
+
+1. **Disable unused skills** - Remove from `skills.enable` array
+2. **Disable unused MCP servers** - Set `enabled: false` in MCP configuration
+3. **Use specialized agents** - Delegate to `explore` or `librarian` for focused tasks
+
+#### Category Routing Issues
+
+1. **Check category definitions** - Verify category exists in `oh-my-opencode.json`
+2. **Verify model assignment** - Each category should have a model and temperature
+3. **Test category directly** - Use `task(category="...", ...)` to verify
+
+### Debugging Steps
+
+1. **Check configuration file** - Validate JSON syntax in `oh-my-opencode.json`
+2. **Review agent logs** - Look for error messages in agent output
+3. **Test in isolation** - Create minimal test case to isolate issue
+4. **Compare with working config** - Diff against known working configuration
+
 ## References
 
 - **[model-capabilities.md](./references/model-capabilities.md)** - Detailed model capability matrices, agent-to-model mapping, and performance tips
+- **[mcp-servers.md](./references/mcp-servers.md)** - MCP server configuration, available servers, and best practices

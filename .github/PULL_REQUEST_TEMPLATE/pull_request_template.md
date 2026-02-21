@@ -55,6 +55,20 @@ Please describe the tests that you ran to verify your changes.
 - [ ] Spelling and grammar have been checked
 - [ ] Markdown formatting is consistent
 
+## Quality Assurance Checklist
+
+<!-- For QA-related changes and reviews -->
+
+- [ ] All existing tests pass (`pnpm test`)
+- [ ] New tests added for new functionality
+- [ ] No ESLint warnings (`pnpm lint` exits with 0)
+- [ ] TypeScript compiles without errors (`pnpm typecheck`)
+- [ ] Build succeeds (`pnpm build`)
+- [ ] No regressions in existing functionality
+- [ ] Edge cases considered and tested
+- [ ] Error handling is appropriate
+- [ ] Code follows established patterns in the codebase
+
 ## Screenshots (if applicable)
 
 Add screenshots to help explain your changes.

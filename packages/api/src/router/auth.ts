@@ -21,6 +21,8 @@ export const authRouter = createTRPCRouter({
 
       const requestId = opts.ctx.requestId;
 
+      logger.debug({ userId, requestId }, "Fetching user subscription");
+
       try {
         const customer = await db
           .selectFrom("Customer")
@@ -28,7 +30,19 @@ export const authRouter = createTRPCRouter({
           .where("authUserId", "=", userId)
           .executeTakeFirst();
 
-        if (!customer) return null;
+        if (!customer) {
+          logger.debug(
+            { userId, requestId },
+            "No customer record found for user",
+          );
+          return null;
+        }
+
+        logger.info(
+          { userId, requestId, plan: customer.plan },
+          "Subscription fetched successfully",
+        );
+
         return {
           plan: customer.plan,
           endsAt: customer.stripeCurrentPeriodEnd,

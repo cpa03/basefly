@@ -176,29 +176,56 @@ export const k8sRouter = createTRPCRouter({
       const newLocation = opts.input.location;
       const requestId = opts.ctx.requestId;
 
-      logger.info({ userId, requestId, clusterId: id }, "Updating cluster");
+      try {
+        logger.info({ userId, requestId, clusterId: id }, "Updating cluster");
 
-      await verifyClusterOwnership(id, userId);
+        await verifyClusterOwnership(id, userId);
 
-      if (newName || newLocation) {
-        const updateData: Record<string, string> = {};
-        if (newName) updateData.name = newName;
-        if (newLocation) updateData.location = newLocation;
+        if (newName || newLocation) {
+          const updateData: Record<string, string> = {};
+          if (newName) updateData.name = newName;
+          if (newLocation) updateData.location = newLocation;
 
-        await db
-          .updateTable("K8sClusterConfig")
-          .where("id", "=", id)
-          .set(updateData)
-          .execute();
+          await db
+            .updateTable("K8sClusterConfig")
+            .where("id", "=", id)
+            .set(updateData)
+            .execute();
 
-        logger.info(
-          { userId, requestId, clusterId: id },
-          "Cluster updated successfully",
+          logger.info(
+            { userId, requestId, clusterId: id },
+            "Cluster updated successfully",
+          );
+        }
+        return {
+          success: true,
+        };
+      } catch (error) {
+        if (error instanceof z.ZodError) {
+          throw createApiError(
+            ErrorCode.VALIDATION_ERROR,
+            "Invalid input data",
+            error.issues,
+          );
+        }
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+        logger.error(
+          {
+            userId,
+            requestId,
+            clusterId: id,
+            error: error instanceof Error ? error.message : String(error),
+          },
+          "Failed to update cluster",
+        );
+        throw createApiError(
+          ErrorCode.INTERNAL_SERVER_ERROR,
+          "Failed to update cluster",
+          error,
         );
       }
-      return {
-        success: true,
-      };
     }),
   deleteCluster: createRateLimitedProtectedProcedure("write")
     .input(k8sClusterDeleteSchema)
@@ -207,17 +234,44 @@ export const k8sRouter = createTRPCRouter({
       const userId = opts.ctx.userId!;
       const requestId = opts.ctx.requestId;
 
-      logger.info({ userId, requestId, clusterId: id }, "Deleting cluster");
+      try {
+        logger.info({ userId, requestId, clusterId: id }, "Deleting cluster");
 
-      await verifyClusterOwnership(id, userId);
+        await verifyClusterOwnership(id, userId);
 
-      await k8sClusterService.softDelete(id, userId);
+        await k8sClusterService.softDelete(id, userId);
 
-      logger.info(
-        { userId, requestId, clusterId: id },
-        "Cluster deleted successfully",
-      );
+        logger.info(
+          { userId, requestId, clusterId: id },
+          "Cluster deleted successfully",
+        );
 
-      return { success: true };
+        return { success: true };
+      } catch (error) {
+        if (error instanceof z.ZodError) {
+          throw createApiError(
+            ErrorCode.VALIDATION_ERROR,
+            "Invalid input data",
+            error.issues,
+          );
+        }
+        if (error instanceof TRPCError) {
+          throw error;
+        }
+        logger.error(
+          {
+            userId,
+            requestId,
+            clusterId: id,
+            error: error instanceof Error ? error.message : String(error),
+          },
+          "Failed to delete cluster",
+        );
+        throw createApiError(
+          ErrorCode.INTERNAL_SERVER_ERROR,
+          "Failed to delete cluster",
+          error,
+        );
+      }
     }),
 });

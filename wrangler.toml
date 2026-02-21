@@ -47,8 +47,6 @@ cpu_ms = 50000
 [dev]
 port = 8788
 local_protocol = "http"
-# Persist KV/D1 data locally for development
-persist = true
 
 # Observability and logging
 # https://developers.cloudflare.com/workers/observability/

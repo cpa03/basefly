@@ -3,6 +3,8 @@
  * Licence: CC BY 4.0
  * https://www.heropatterns.com/
  */
+import { ERROR_MESSAGES, PATTERN_CONFIG } from "@saasfly/common";
+
 const patterns = [
   {
     name: "Jigsaw",
@@ -488,10 +490,10 @@ export const getRandomPatternStyle = (seed: string) => {
   const [nPatterns, nColors] = [patterns.length, colors.length];
   const pattern = patterns[((hash % nPatterns) + nPatterns) % nPatterns];
   const fgColor = colors[((hash % nColors) + nColors) % nColors];
-  const opacity = 0.4;
+  const opacity = PATTERN_CONFIG.defaultOpacity;
 
   if (!pattern || !fgColor) {
-    throw new Error("Something went wrong trying to pick a pattern...");
+    throw new Error(ERROR_MESSAGES.patternGeneration);
   }
 
   return {

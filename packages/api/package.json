@@ -8,7 +8,8 @@
     "./edge": "./src/edge.ts",
     "./transformer": "./src/transformer.ts",
     "./subscriptions": "./src/subscriptions.ts",
-    "./request-id": "./src/request-id.ts"
+    "./request-id": "./src/request-id.ts",
+    "./server": "./src/root.ts"
   },
   "typesVersions": {
     "*": {

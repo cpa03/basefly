@@ -16,7 +16,7 @@ import type { AppRouter } from "@saasfly/api";
 import { isClerkEnabled } from "@saasfly/auth";
 import { TRPC_SOURCE_VALUES } from "@saasfly/common";
 
-import { appRouter } from "../../../../packages/api/src/root";
+import { appRouter } from "@saasfly/api/server";
 import { transformer } from "./shared";
 
 type AuthObject = Awaited<ReturnType<typeof auth>>;

@@ -90,6 +90,13 @@
   },
   "common": {
     "copyright": "Copyright © ${currentYear} Nextify Limited. All rights reserved.",
+    "errors": {
+      "title": "Something went wrong!",
+      "dashboard_error": "An error occurred while loading the dashboard.",
+      "page_error": "An error occurred while loading the page.",
+      "try_again": "Try again",
+      "error_id": "Error ID: ${errorId}"
+    },
     "dashboard": {
       "main_nav_documentation": "Documentation",
       "main_nav_support": "Support",

@@ -90,6 +90,13 @@
   },
   "common": {
     "copyright": "版权所有 © ${currentYear} Nextify公司。保留所有权利。",
+    "errors": {
+      "title": "出错了！",
+      "dashboard_error": "加载仪表板时发生错误。",
+      "page_error": "加载页面时发生错误。",
+      "try_again": "重试",
+      "error_id": "错误ID: ${errorId}"
+    },
     "dashboard": {
       "main_nav_documentation": "文档",
       "main_nav_support": "支持",
@@ -116,6 +123,27 @@
       "new_cluster": "创建新的集群",
       "no_cluster_title": "没有创建集群",
       "no_cluster_content": "您还没有任何集群。开始创建集群吧。",
+      "errors": {
+        "create_failed_title": "出错了。",
+        "create_failed_desc": "您的集群未创建。请重试。",
+        "delete_failed_title": "出错了。",
+        "delete_failed_desc": "您的集群未删除。请重试。",
+        "unexpected_error_title": "错误",
+        "unexpected_error_desc": "发生意外错误。请重试。"
+      },
+      "actions": {
+        "edit": "编辑",
+        "copy_id": "复制ID",
+        "copied": "已复制！",
+        "delete": "删除",
+        "cancel": "取消",
+        "copy_success_title": "已复制！",
+        "copy_success_desc": "集群ID已复制到剪贴板。"
+      },
+      "delete_dialog": {
+        "title": "确定要删除此集群吗？",
+        "description": "此操作无法撤销。"
+      },
       "": ""
     },
     "billing": {

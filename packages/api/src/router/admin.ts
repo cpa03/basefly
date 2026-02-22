@@ -12,8 +12,19 @@ import {
  * Uses "read" rate limit for stats queries (100 requests/minute).
  * Admin endpoints are already protected by authentication and admin role checks.
  */
+
+/**
+ * Response type for admin stats endpoint
+ */
+interface AdminStats {
+  totalUsers: number;
+  totalClusters: number;
+  activeSubscriptions: number;
+  recentActivity: number;
+}
+
 export const adminRouter = createTRPCRouter({
-  getStats: createRateLimitedAdminProcedure("read").query(async ({ ctx }) => {
+  getStats: createRateLimitedAdminProcedure("read").query(async ({ ctx }): Promise<AdminStats> => {
     const requestId = ctx.requestId;
 
     try {
@@ -34,12 +45,19 @@ export const adminRouter = createTRPCRouter({
           .executeTakeFirst(),
       ]);
 
-      return {
+      const stats: AdminStats = {
         totalUsers: Number(totalUsers?.count ?? 0),
         totalClusters: Number(totalClusters?.count ?? 0),
         activeSubscriptions: Number(activeSubscriptions?.count ?? 0),
         recentActivity: 0,
       };
+
+      logger.info(
+        { requestId, stats },
+        "Admin stats fetched successfully",
+      );
+
+      return stats;
     } catch (error) {
       logger.error(
         {

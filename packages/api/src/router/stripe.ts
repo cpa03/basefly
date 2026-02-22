@@ -83,6 +83,9 @@ export const stripeRouter = createTRPCRouter({
       const userId = opts.ctx.userId;
       const planId = opts.input.planId;
       const requestId = opts.ctx.requestId;
+
+      logger.debug({ userId, requestId, planId }, "Creating checkout/billing session");
+
       const customer = await db
         .selectFrom("Customer")
         .select(["id", "plan", "stripeCustomerId"])
@@ -98,6 +101,7 @@ export const stripeRouter = createTRPCRouter({
             returnUrl,
             { requestId },
           );
+          logger.info({ userId, requestId }, "Billing session created successfully");
           return { success: true as const, url: session.url };
         }
 
@@ -125,6 +129,7 @@ export const stripeRouter = createTRPCRouter({
         );
 
         if (!session.url) return { success: false as const };
+        logger.info({ userId, requestId }, "Checkout session created successfully");
         return { success: true as const, url: session.url };
       } catch (error) {
         if (error instanceof IntegrationError) {
@@ -138,6 +143,9 @@ export const stripeRouter = createTRPCRouter({
     noStore();
     const userId = opts.ctx.userId;
     const requestId = opts.ctx.requestId;
+
+    logger.debug({ userId, requestId }, "Fetching user subscription plans");
+
     const custom = await db
       .selectFrom("Customer")
       .select([

@@ -8,7 +8,6 @@ import { createApiError, ErrorCode } from "../errors";
 import { logger } from "../logger";
 import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 
-// Enhanced schemas with comprehensive validation using centralized constants
 export const k8sClusterCreateSchema = z
   .object({
     id: z.number().int().positive().optional(),
@@ -142,13 +141,6 @@ export const k8sRouter = createTRPCRouter({
           success: true,
         };
       } catch (error) {
-        if (error instanceof z.ZodError) {
-          throw createApiError(
-            ErrorCode.VALIDATION_ERROR,
-            "Invalid input data",
-            error.issues,
-          );
-        }
         if (error instanceof TRPCError) {
           throw error;
         }
@@ -201,13 +193,6 @@ export const k8sRouter = createTRPCRouter({
           success: true,
         };
       } catch (error) {
-        if (error instanceof z.ZodError) {
-          throw createApiError(
-            ErrorCode.VALIDATION_ERROR,
-            "Invalid input data",
-            error.issues,
-          );
-        }
         if (error instanceof TRPCError) {
           throw error;
         }
@@ -248,13 +233,6 @@ export const k8sRouter = createTRPCRouter({
 
         return { success: true };
       } catch (error) {
-        if (error instanceof z.ZodError) {
-          throw createApiError(
-            ErrorCode.VALIDATION_ERROR,
-            "Invalid input data",
-            error.issues,
-          );
-        }
         if (error instanceof TRPCError) {
           throw error;
         }

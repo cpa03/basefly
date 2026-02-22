@@ -30,6 +30,14 @@ globs = ["**/*.wasm"]
 binding = "WORKER_SELF_REFERENCE"
 service = "basefly"
 
+# KV Namespace for ISR/SSG incremental cache
+# Create namespace: npx wrangler kv namespace create NEXT_INC_CACHE_KV
+# Note: R2 is recommended over KV for production due to eventual consistency
+# See: https://opennext.js.org/cloudflare/caching
+# [[kv_namespaces]]
+# binding = "NEXT_INC_CACHE_KV"
+# id = "<KV_NAMESPACE_ID>"
+
 # Environment variables (set via Cloudflare Dashboard or wrangler secrets)
 # Required environment variables are documented in docs/ci-cd.md
 [vars]

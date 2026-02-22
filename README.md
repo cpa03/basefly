@@ -13,7 +13,7 @@
 ![COMMIT_ACTIVITY](https://img.shields.io/github/commit-activity/m/basefly/basefly?style=for-the-badge)
 [![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2Fcpa03%2Fbasefly&labelColor=%23f47373&countColor=%23263759)](https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2Fcpa03%2Fbasefly)
 
-An enterprise-grade Kubernetes cluster management platform.
+An enterprise-grade SaaS template with Kubernetes cluster management capabilities.
 
 ## 📑 Table of Contents
 
@@ -200,21 +200,24 @@ pnpm run dev:web
 
 ## 🥺 Project Roadmap
 
-1. Enhanced Admin Dashboard
-   1. Currently in alpha - provides basic administrative views
-   2. Configure admin emails in `ADMIN_EMAIL` environment variable
-   3. Access at `/admin/dashboard`
-   4. Security: No online admin demos available
+### Enhanced Admin Dashboard
 
-2. Advanced Kubernetes Features
-   1. Cluster monitoring and metrics integration
-   2. Node pool management
-   3. Auto-scaling configuration
+- Currently in alpha - provides basic administrative views
+- Configure admin emails in `ADMIN_EMAIL` environment variable
+- Access at `/admin/dashboard`
+- Security: No online admin demos available
 
-3. Additional Integrations
-   1. Consider integrating Payload CMS for content management
-   2. Enhanced notification system
-   3. Usage analytics and reporting
+### Advanced Kubernetes Features
+
+- Cluster monitoring and metrics integration
+- Node pool management
+- Auto-scaling configuration
+
+### Additional Integrations
+
+- Consider integrating Payload CMS for content management
+- Enhanced notification system
+- Usage analytics and reporting
 
 ## ⭐ Features
 

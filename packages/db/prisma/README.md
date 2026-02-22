@@ -393,6 +393,7 @@ jobs:
 
 | Date       | Migration                                            | Description                                                                                                           |
 | ---------- | ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| 2026-02-22 | `20260222_add_customer_price_id_index`              | Added partial index on Customer.stripePriceId WHERE IS NOT NULL for subscription analytics and plan distribution      |
 | 2026-02-21 | `20260221_add_database_comments`                     | Added descriptive comments to all tables and columns for improved documentation in database admin tools               |
 | 2026-02-21 | `20260221_add_customer_active_subscription_index`    | Added partial index on Customer.stripeSubscriptionId WHERE IS NOT NULL for admin dashboard active subscription counts |
 | 2026-02-21 | `20260221_add_cluster_createdat_index`               | Added index on K8sClusterConfig.createdAt for time-based sorting and filtering (dashboard views, audit queries)       |

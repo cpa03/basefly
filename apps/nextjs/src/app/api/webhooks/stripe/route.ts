@@ -22,6 +22,8 @@ const WEBHOOK_SECURITY_HEADERS = {
   "Content-Type": "application/json",
   "X-Content-Type-Options": HTTP_SECURITY_HEADERS.CONTENT_TYPE_OPTIONS,
   "X-Frame-Options": HTTP_SECURITY_HEADERS.FRAME_OPTIONS,
+  // Security: Prevent search engines from indexing webhook endpoints
+  "X-Robots-Tag": "noindex, nofollow, nosnippet, noarchive",
 } as const;
 
 // Vercel best practice: Set maxDuration for webhooks that may require

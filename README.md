@@ -13,7 +13,7 @@
 ![COMMIT_ACTIVITY](https://img.shields.io/github/commit-activity/m/basefly/basefly?style=for-the-badge)
 [![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2Fcpa03%2Fbasefly&labelColor=%23f47373&countColor=%23263759)](https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2Fcpa03%2Fbasefly)
 
-An enterprise-grade Kubernetes cluster management platform.
+An enterprise-grade SaaS template with Kubernetes cluster management capabilities.
 
 ## 📑 Table of Contents
 

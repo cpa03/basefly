@@ -58,7 +58,7 @@ export default async function DashboardLayout({
         </div>
       </header>
       <div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
-        <aside className="hidden w-[200px] flex-col md:flex">
+        <aside className="hidden w-[200px] flex-col md:flex" aria-label="Sidebar">
           <DashboardNav
             items={dashboardConfig.sidebarNav}
             params={{ lang: `${lang}` }}

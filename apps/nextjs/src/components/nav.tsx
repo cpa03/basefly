@@ -29,7 +29,7 @@ export function DashboardNav({ items, params: { lang } }: DashboardNavProps) {
   }
 
   return (
-    <nav className="grid items-start gap-2">
+    <nav className="grid items-start gap-2" aria-label="Sidebar navigation">
       {items.map((item) => {
         // const Icon = item.icon;
         const Icon = iconMapObj.get(item.id) ?? ArrowRight;

@@ -90,6 +90,13 @@
   },
   "common": {
     "copyright": "저작권 © ${currentYear} Nextify 주식회사. 모든 권리 보유.",
+    "errors": {
+      "title": "문제가 발생했습니다!",
+      "dashboard_error": "대시보드를 로드하는 중 오류가 발생했습니다.",
+      "page_error": "페이지를 로드하는 중 오류가 발생했습니다.",
+      "try_again": "다시 시도",
+      "error_id": "오류 ID: ${errorId}"
+    },
     "dashboard": {
       "main_nav_documentation": "문서",
       "main_nav_support": "지원",
@@ -116,7 +123,29 @@
     "k8s": {
       "new_cluster": "새 클러스터 생성",
       "no_cluster_title": "클러스터가 생성되지 않았습니다",
-      "no_cluster_content": "아직 클러스터가 없습니다. 클러스터 생성을 시작하세요."
+      "no_cluster_content": "아직 클러스터가 없습니다. 클러스터 생성을 시작하세요.",
+      "errors": {
+        "create_failed_title": "문제가 발생했습니다.",
+        "create_failed_desc": "클러스터가 생성되지 않았습니다. 다시 시도해 주세요.",
+        "delete_failed_title": "문제가 발생했습니다.",
+        "delete_failed_desc": "클러스터가 삭제되지 않았습니다. 다시 시도해 주세요.",
+        "unexpected_error_title": "오류",
+        "unexpected_error_desc": "예기치 않은 오류가 발생했습니다. 다시 시도해 주세요."
+      },
+      "actions": {
+        "edit": "편집",
+        "copy_id": "ID 복사",
+        "copied": "복사됨!",
+        "delete": "삭제",
+        "cancel": "취소",
+        "copy_success_title": "복사됨!",
+        "copy_success_desc": "클러스터 ID가 클립보드에 복사되었습니다."
+      },
+      "delete_dialog": {
+        "title": "이 클러스터를 삭제하시겠습니까?",
+        "description": "이 작업은 취소할 수 없습니다."
+      },
+      "": ""
     },
     "billing": {
       "billing": "청구",

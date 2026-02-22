@@ -90,6 +90,13 @@
   },
   "common": {
     "copyright": "著作権 © ${currentYear} Nextify株式会社。全ての権利を保有。",
+    "errors": {
+      "title": "問題が発生しました！",
+      "dashboard_error": "ダッシュボードの読み込み中にエラーが発生しました。",
+      "page_error": "ページの読み込み中にエラーが発生しました。",
+      "try_again": "再試行",
+      "error_id": "エラーID: ${errorId}"
+    },
     "dashboard": {
       "main_nav_documentation": "ドキュメンテーション",
       "main_nav_support": "サポート",
@@ -116,7 +123,29 @@
     "k8s": {
       "new_cluster": "新しいクラスターを作成する",
       "no_cluster_title": "クラスターが作成されていません",
-      "no_cluster_content": "まだクラスターがありません。クラスターの作成を始めましょう。"
+      "no_cluster_content": "まだクラスターがありません。クラスターの作成を始めましょう。",
+      "errors": {
+        "create_failed_title": "問題が発生しました。",
+        "create_failed_desc": "クラスターが作成されませんでした。もう一度お試しください。",
+        "delete_failed_title": "問題が発生しました。",
+        "delete_failed_desc": "クラスターが削除されませんでした。もう一度お試しください。",
+        "unexpected_error_title": "エラー",
+        "unexpected_error_desc": "予期しないエラーが発生しました。もう一度お試しください。"
+      },
+      "actions": {
+        "edit": "編集",
+        "copy_id": "IDをコピー",
+        "copied": "コピーしました！",
+        "delete": "削除",
+        "cancel": "キャンセル",
+        "copy_success_title": "コピーしました！",
+        "copy_success_desc": "クラスタIDがクリップボードにコピーされました。"
+      },
+      "delete_dialog": {
+        "title": "このクラスターを削除してもよろしいですか？",
+        "description": "この操作は元に戻せません。"
+      },
+      "": ""
     },
     "billing": {
       "billing": "請求書",
@@ -124,7 +153,8 @@
       "noSubscription": "どのプランにも登録されていません。",
       "subscriptionInfo": "現在、<strong>{plan}</strong> プランを利用しています。ご登録のサブスクリプションは <strong>{date}</strong> に更新されます。",
       "manage_subscription": "サブスクリプションの管理",
-      "upgrade": "アップグレード"
+      "upgrade": "アップグレード",
+      "": ""
     },
     "": ""
   },

@@ -1,5 +1,3 @@
-import Stripe from "stripe";
-
 import { env } from "./env.mjs";
 import { createStripeClientWithDefaults } from "./integration";
 import { logger } from "./logger";
@@ -9,7 +7,11 @@ export * from "./integration";
 export * from "./client";
 export * from "./webhook-idempotency";
 
-type StripeClient = ReturnType<typeof createStripeClientWithDefaults>;
+/**
+ * Type alias for the configured Stripe client instance
+ * @see createStripeClientWithDefaults
+ */
+export type StripeClient = ReturnType<typeof createStripeClientWithDefaults>;
 
 function createStripeClientSafe(): StripeClient | null {
   try {

@@ -28,8 +28,12 @@ export const getPlans = () => {
 
 export const PLANS = getPlans();
 
-type PlanType = (typeof SubscriptionPlan)[keyof typeof SubscriptionPlan];
+/**
+ * Type representing valid subscription plan values
+ * @see SubscriptionPlan
+ */
+export type PlanType = (typeof SubscriptionPlan)[keyof typeof SubscriptionPlan];
 
 export function getSubscriptionPlan(priceId: string | undefined): PlanType {
-  return priceId && PLANS[priceId] ? PLANS[priceId]! : SubscriptionPlan.FREE;
+  return priceId && PLANS[priceId] ? PLANS[priceId] : SubscriptionPlan.FREE;
 }

@@ -2,6 +2,9 @@
   "name": "@saasfly/auth",
   "version": "0.1.0",
   "private": true,
+  "exports": {
+    ".": "./index.ts"
+  },
   "main": "./index.ts",
   "types": "./index.ts",
   "scripts": {

@@ -424,6 +424,11 @@ export type CompanyConfig = typeof COMPANY_CONFIG;
 export type RepositoryConfig = typeof REPOSITORY_CONFIG;
 
 /**
+ * Type for integration configuration
+ */
+export type IntegrationConfig = typeof INTEGRATION_CONFIG;
+
+/**
  * Helper function to get the current base URL based on environment
  */
 export function getCurrentBaseUrl(envUrl?: string, nodeEnv?: string): string {

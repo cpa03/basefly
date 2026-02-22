@@ -29,7 +29,7 @@ export function DashboardNav({ items, params: { lang } }: DashboardNavProps) {
   }
 
   return (
-    <nav className="grid items-start gap-2">
+    <nav className="grid items-start gap-2" aria-label="Sidebar navigation">
       {items.map((item) => {
         // const Icon = item.icon;
         const Icon = iconMapObj.get(item.id) ?? ArrowRight;
@@ -38,6 +38,9 @@ export function DashboardNav({ items, params: { lang } }: DashboardNavProps) {
             <Link
               key={item.id}
               href={item.disabled ? "/" : `/${lang}` + item.href}
+              aria-current={path === item.href ? "page" : undefined}
+              aria-disabled={item.disabled}
+              tabIndex={item.disabled ? -1 : undefined}
             >
               <span
                 className={cn(
@@ -47,8 +50,6 @@ export function DashboardNav({ items, params: { lang } }: DashboardNavProps) {
                   path === item.href ? "bg-accent" : "transparent",
                   item.disabled && "cursor-not-allowed opacity-80",
                 )}
-                aria-current={path === item.href ? "page" : undefined}
-                aria-disabled={item.disabled}
               >
                 <Icon className="mr-2 h-4 w-4" />
                 <span>{item.title}</span>

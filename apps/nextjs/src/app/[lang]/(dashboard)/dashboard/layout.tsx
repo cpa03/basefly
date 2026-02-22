@@ -1,3 +1,5 @@
+import { Z_INDEX } from "@saasfly/common";
+
 import { redirect } from "next/navigation";
 
 import { authOptions, getCurrentUser } from "@saasfly/auth";
@@ -37,7 +39,7 @@ export default async function DashboardLayout({
   return (
     <div className="flex min-h-screen flex-col space-y-6">
       <SkipLink />
-      <header className="sticky top-0 z-40 border-b bg-background">
+      <header className={`sticky top-0 ${Z_INDEX.navbar} border-b bg-background`}>
         <div className="container flex h-16 items-center justify-between py-4">
           <MainNav
             items={dashboardConfig.mainNav}

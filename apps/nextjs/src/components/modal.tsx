@@ -2,6 +2,7 @@
 
 import { Drawer } from "vaul";
 
+import { Z_INDEX } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { Dialog, DialogContent } from "@saasfly/ui/dialog";
 
@@ -26,17 +27,17 @@ export function Modal({
     return (
       <div className="relative">
         <Drawer.Root open={showModal} onClose={setShowModal}>
-          <Drawer.Overlay className="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm" />
+          <Drawer.Overlay className={`fixed inset-0 ${Z_INDEX.overlay} bg-background/80 backdrop-blur-sm`} />
           <Drawer.Portal>
             <Drawer.Content
               className={cn(
-                "fixed inset-x-0 bottom-0 z-50 mt-24 overflow-hidden rounded-t-2xl border bg-background",
+                `fixed inset-x-0 bottom-0 ${Z_INDEX.modal} mt-24 overflow-hidden rounded-t-2xl border bg-background`,
                 className,
               )}
               aria-label="Modal content"
             >
               <div
-                className="sticky top-0 z-20 flex w-full items-center justify-center bg-inherit"
+                className={`sticky top-0 ${Z_INDEX.content} flex w-full items-center justify-center bg-inherit`}
                 aria-hidden="true"
               >
                 <div className="my-3 h-1.5 w-16 rounded-full bg-muted-foreground/20" />

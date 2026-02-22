@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { isAdminEmail } from "@saasfly/common";
+import { isAdminEmail, Z_INDEX } from "@saasfly/common";
 import { getCurrentUser } from "@saasfly/auth";
 
 interface AdminLayoutProps {
@@ -20,7 +20,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <div className="min-h-screen bg-muted/30">
-      <header className="sticky top-0 z-40 border-b bg-background">
+      <header className={`sticky top-0 ${Z_INDEX.navbar} border-b bg-background`}>
         <div className="container flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-4">
             <h1 className="text-lg font-semibold">Admin Dashboard</h1>

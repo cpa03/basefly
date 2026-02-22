@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 
 import type { User } from "@saasfly/auth";
-import { NAVBAR_CONFIG, TRANSITION_PRESETS, UI_STRINGS } from "@saasfly/common";
+import { NAVBAR_CONFIG, TRANSITION_PRESETS, UI_STRINGS, Z_INDEX } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { Button } from "@saasfly/ui/button";
 
@@ -91,7 +91,7 @@ export const NavBar = React.memo(function NavBar({
 
   return (
     <header
-      className={`sticky top-0 z-40 flex w-full justify-center border-border bg-background/60 backdrop-blur-xl transition-all ${
+      className={`sticky top-0 ${Z_INDEX.navbar} flex w-full justify-center border-border bg-background/60 backdrop-blur-xl transition-all ${
         scroll ? (scrolled ? "border-b" : "bg-background/0") : "border-b"
       }`}
     >

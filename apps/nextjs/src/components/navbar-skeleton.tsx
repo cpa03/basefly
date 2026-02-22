@@ -1,3 +1,4 @@
+import { Z_INDEX } from "@saasfly/common";
 import { Skeleton } from "@saasfly/ui/skeleton";
 
 /**
@@ -12,7 +13,7 @@ import { Skeleton } from "@saasfly/ui/skeleton";
 export function NavbarSkeleton() {
   return (
     <header
-      className="sticky top-0 z-40 flex w-full justify-center border-b border-border bg-background/60 backdrop-blur-xl"
+      className={`sticky top-0 ${Z_INDEX.navbar} flex w-full justify-center border-b border-border bg-background/60 backdrop-blur-xl`}
       aria-busy="true"
       aria-label="Loading navigation"
     >

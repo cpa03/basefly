@@ -58,7 +58,7 @@ export const middleware = clerkMiddleware(async (auth, req: NextRequest) => {
   );
   // Redirect if there is no locale
   if (!isNoRedirect(req) && pathnameIsMissingLocale) {
-    const locale = getLocale(req);
+    const locale = getLocale(req) ?? i18n.defaultLocale;
     return NextResponse.redirect(
       new URL(
         `/${locale}${pathname.startsWith("/") ? "" : "/"}${pathname}`,
@@ -79,7 +79,7 @@ export const middleware = clerkMiddleware(async (auth, req: NextRequest) => {
     req.nextUrl.pathname,
   );
   const isAuthRoute = req.nextUrl.pathname.startsWith("/api/trpc/");
-  const locale = getLocale(req);
+  const locale = getLocale(req) ?? i18n.defaultLocale;
   if (isAuthRoute && isAuth) {
     return NextResponse.next();
   }

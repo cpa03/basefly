@@ -393,7 +393,7 @@ jobs:
 
 | Date       | Migration                                            | Description                                                                                                           |
 | ---------- | ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| 2026-02-22 | `20260222_add_customer_price_id_index`              | Added partial index on Customer.stripePriceId WHERE IS NOT NULL for subscription analytics and plan distribution      |
+| 2026-02-22 | `20260222_add_customer_price_id_index`               | Added partial index on Customer.stripePriceId WHERE IS NOT NULL for subscription analytics and plan distribution      |
 | 2026-02-21 | `20260221_add_database_comments`                     | Added descriptive comments to all tables and columns for improved documentation in database admin tools               |
 | 2026-02-21 | `20260221_add_customer_active_subscription_index`    | Added partial index on Customer.stripeSubscriptionId WHERE IS NOT NULL for admin dashboard active subscription counts |
 | 2026-02-21 | `20260221_add_cluster_createdat_index`               | Added index on K8sClusterConfig.createdAt for time-based sorting and filtering (dashboard views, audit queries)       |
@@ -408,6 +408,7 @@ jobs:
 | 2026-02-18 | `20260218_add_partial_indexes_for_cluster_status`    | Added partial indexes for K8sClusterConfig query optimization (active/deleted clusters)                               |
 | 2026-02-18 | `20260218_add_webhook_event_type_index`              | Added index on StripeWebhookEvent.eventType for query performance                                                     |
 | 2026-01-31 | `20260131_add_row_level_security`                    | Added row-level security (RLS) for multi-tenant data protection                                                       |
+| 2026-01-31 | `20260131_add_webhook_idempotency`                   | Created StripeWebhookEvent table for idempotent webhook processing with indexes and check constraints                 |
 | 2026-01-31 | `20260131_add_automated_triggers`                    | Added database triggers for automated maintenance (updatedAt updates, user soft delete cascade)                       |
 | 2026-01-31 | `20260131_add_check_constraints`                     | Added check constraints for data integrity (name/location length, Stripe ID formats)                                  |
 | 2026-01-10 | `20260110_add_composite_indexes`                     | Added composite indexes for query performance optimization                                                            |

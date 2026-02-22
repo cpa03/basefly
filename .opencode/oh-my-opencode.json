@@ -109,10 +109,12 @@
       "systematic-debugging",
       "using-git-worktrees",
       "requesting-code-review",
+      "receiving-code-review",
       "finishing-a-development-branch",
       "subagent-driven-development",
       "dispatching-parallel-agents",
       "github-workflow-automation",
+      "verification-before-completion",
       "ai-agent-engineer"
     ]
   },

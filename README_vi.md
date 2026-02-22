@@ -2,7 +2,7 @@
     <img src="./saasfly-logo.svg" width="128" alt="" />
 </div>
 
-# Basefly </br>
+# Basefly
 
 <a href="https://trendshift.io/repositories/8929" target="_blank"><img src="https://trendshift.io/api/badge/repositories/8929" alt="basefly%2Fbasefly | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
@@ -102,7 +102,7 @@ Trước khi bắt đầu, hãy đảm bảo bạn đã cài đặt các thành 
 2. [PostgreSQL](https://www.postgresql.org/) - Cần thiết cho cấu hình cụm và dữ liệu người dùng
    1. Bạn có thể sử dụng Vercel Postgres hoặc máy chủ PostgreSQL cục bộ (thêm biến môi trường POSTGRES_URL trong .env.local)
       ```bash
-         POSTGRES_URL = ''
+         POSTGRES_URL=''
       ```
 
 3. [Clerk](https://clerk.com/) tài khoản - Để xác thực

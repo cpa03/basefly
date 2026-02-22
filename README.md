@@ -2,7 +2,7 @@
     <img src="./saasfly-logo.svg" width="128" alt="" />
 </div>
 
-# Basefly </br>
+# Basefly
 
 <a href="https://trendshift.io/repositories/8929" target="_blank"><img src="https://trendshift.io/api/badge/repositories/8929" alt="basefly%2Fbasefly | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
@@ -120,7 +120,7 @@ Before you start, make sure you have the following installed:
 2. [PostgreSQL](https://www.postgresql.org/) - Required for cluster configuration and user data
    1. You can use Vercel Postgres or a local PostgreSQL server (add POSTGRES_URL env in .env.local)
       ```bash
-         POSTGRES_URL = ''
+         POSTGRES_URL=''
       ```
 
 3. [Clerk](https://clerk.com/) account - For authentication

@@ -2,7 +2,7 @@
     <img src="./saasfly-logo.svg" width="128" alt="" />
 </div>
 
-# Basefly </br>
+# Basefly
 
 <a href="https://trendshift.io/repositories/8929" target="_blank"><img src="https://trendshift.io/api/badge/repositories/8929" alt="basefly%2Fbasefly | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
@@ -102,7 +102,7 @@ Stellen Sie vor dem Start sicher, dass Sie Folgendes installiert haben:
 2. [PostgreSQL](https://www.postgresql.org/) - Erforderlich für Cluster-Konfiguration und Benutzerdaten
    1. Sie können entweder Vercel Postgres oder einen lokalen PostgreSQL-Server verwenden (fügen Sie die POSTGRES_URL-Umgebungsvariable in .env.local hinzu)
       ```bash
-         POSTGRES_URL = ''
+         POSTGRES_URL=''
       ```
 
 3. [Clerk](https://clerk.com/) Konto - Für die Authentifizierung

@@ -1,0 +1,6 @@
+Contact: mailto:contact@nextify.ltd
+Expires: 2027-02-22T00:00:00.000Z
+Preferred-Languages: en, zh, de, vi
+Canonical: https://basefly.io/.well-known/security.txt
+Policy: https://github.com/cpa03/basefly/blob/main/SECURITY.md
+Hiring: https://nextify.ltd/careers

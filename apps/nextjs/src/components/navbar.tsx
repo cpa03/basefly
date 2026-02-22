@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 
 import type { User } from "@saasfly/auth";
-import { NAVBAR_CONFIG, TRANSITION_PRESETS, UI_STRINGS } from "@saasfly/common";
+import { ANIMATION, NAVBAR_CONFIG, TRANSITION_PRESETS, UI_STRINGS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { Button } from "@saasfly/ui/button";
 
@@ -49,7 +49,7 @@ const NavLink = React.memo(function NavLink({
         className={cn(
           "absolute -bottom-1 left-0 h-0.5 w-full origin-left",
           "bg-current",
-          "motion-safe:scale-x-0 motion-safe:transition-transform motion-safe:duration-200 motion-safe:ease-out",
+          "motion-safe:scale-x-0 motion-safe:transition-transform", ANIMATION.duration.normal, ANIMATION.easing.default,
           "group-hover:motion-safe:scale-x-100",
           "group-focus-visible:motion-safe:scale-x-100",
           isActive && "motion-safe:scale-x-100",

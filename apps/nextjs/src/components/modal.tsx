@@ -13,6 +13,10 @@ interface ModalProps {
   className?: string;
   showModal: boolean;
   setShowModal: (open?: boolean) => void;
+  /** Title for accessibility (used as aria-labelledby) */
+  title?: string;
+  /** Description for accessibility (used as aria-describedby) */
+  description?: string;
 }
 
 export function Modal({
@@ -20,6 +24,8 @@ export function Modal({
   className,
   showModal,
   setShowModal,
+  title,
+  description,
 }: ModalProps) {
   const { isMobile } = useMediaQuery();
 
@@ -34,8 +40,20 @@ export function Modal({
                 `fixed inset-x-0 bottom-0 ${Z_INDEX.modal} mt-24 overflow-hidden rounded-t-2xl border bg-background`,
                 className,
               )}
-              aria-label="Modal content"
+              aria-label={title ?? "Modal content"}
+              aria-labelledby={title ? "modal-title" : undefined}
+              aria-describedby={description ? "modal-description" : undefined}
             >
+              {title && (
+                <h2 id="modal-title" className="sr-only">
+                  {title}
+                </h2>
+              )}
+              {description && (
+                <p id="modal-description" className="sr-only">
+                  {description}
+                </p>
+              )}
               <div
                 className={`sticky top-0 ${Z_INDEX.content} flex w-full items-center justify-center bg-inherit`}
                 aria-hidden="true"
@@ -54,8 +72,20 @@ export function Modal({
     <Dialog open={showModal} onOpenChange={setShowModal}>
       <DialogContent
         className="overflow-hidden border-neutral-200 p-0 dark:border-neutral-800 md:max-w-md md:rounded-2xl md:border"
-        aria-label="Modal content"
+        aria-label={title ?? "Modal content"}
+        aria-labelledby={title ? "modal-title" : undefined}
+        aria-describedby={description ? "modal-description" : undefined}
       >
+        {title && (
+          <h2 id="modal-title" className="sr-only">
+            {title}
+          </h2>
+        )}
+        {description && (
+          <p id="modal-description" className="sr-only">
+            {description}
+          </p>
+        )}
         {children}
       </DialogContent>
     </Dialog>

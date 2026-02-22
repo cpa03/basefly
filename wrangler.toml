@@ -47,8 +47,7 @@ cpu_ms = 50000
 [dev]
 port = 8788
 local_protocol = "http"
-# Persist KV/D1 data locally for development
-persist = true
+# Note: persist option removed - deprecated in current wrangler version
 
 # Observability and logging
 # https://developers.cloudflare.com/workers/observability/

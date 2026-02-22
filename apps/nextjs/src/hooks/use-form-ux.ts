@@ -30,18 +30,20 @@ export function useFormFocus(
   options: UseFormFocusOptions = {},
 ): UseFormFocusReturn {
   const { delay = 0, scrollIntoView = false } = options;
-  const ref = React.useRef<HTMLElement>(null);
+  const ref = React.useRef<HTMLElement | null>(null);
   const [isFocused, setIsFocused] = React.useState(false);
 
+  const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const onFocus = React.useCallback(() => {
     setIsFocused(true);
 
     if (scrollIntoView && ref.current) {
-      setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         ref.current?.scrollIntoView({ behavior: "smooth", block: "center" });
       }, delay);
     }
   }, [delay, scrollIntoView]);
+
 
   const onBlur = React.useCallback(() => {
     setIsFocused(false);
@@ -50,13 +52,14 @@ export function useFormFocus(
   React.useEffect(() => {
     const element = ref.current;
     if (!element) return;
-
     element.addEventListener("focus", onFocus);
     element.addEventListener("blur", onBlur);
-
     return () => {
       element.removeEventListener("focus", onFocus);
       element.removeEventListener("blur", onBlur);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
     };
   }, [onFocus, onBlur]);
 

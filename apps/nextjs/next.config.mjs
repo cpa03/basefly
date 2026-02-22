@@ -77,6 +77,12 @@ const config = {
     "@saasfly/ui",
     "@saasfly/stripe",
   ],
+  /**
+   * External packages that should not be bundled into serverless functions
+   * This improves cold start performance on Vercel by reducing bundle size
+   * See: https://vercel.com/docs/concepts/functions/serverless-functions/runtimes#including-external-packages
+   */
+  serverExternalPackages: ["@prisma/client", "@prisma/engines"],
   pageExtensions: ["ts", "tsx", "mdx"],
   images: {
     formats: ["image/avif", "image/webp"],

@@ -8,6 +8,14 @@ import { isClerkEnabled } from "@saasfly/auth";
 
 import { logger } from "~/lib/logger";
 
+/**
+ * Explicit edge runtime declaration for Vercel optimization
+ * - Enables global edge distribution
+ * - Near-zero cold start latency
+ * - Required for edge-compatible tRPC router
+ */
+export const runtime = "edge";
+
 const createContext = async (req: NextRequest) => {
   let authResult = null;
   if (isClerkEnabled()) {

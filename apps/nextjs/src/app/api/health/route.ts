@@ -10,6 +10,14 @@ import { logger } from "~/lib/logger";
  */
 
 /**
+ * Edge runtime for ultra-fast health checks
+ * - Near-zero cold start latency
+ * - Global edge distribution
+ * - Ideal for Kubernetes probes and load balancers
+ */
+export const runtime = "edge";
+
+/**
  * Security headers for health endpoint responses
  * Prevents MIME sniffing, clickjacking, and search engine indexing
  */

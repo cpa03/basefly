@@ -2,6 +2,7 @@
   "name": "@saasfly/db",
   "version": "0.1.0",
   "private": true,
+  "sideEffects": false,
   "exports": {
     ".": "./index.ts",
     "./soft-delete": "./soft-delete.ts",

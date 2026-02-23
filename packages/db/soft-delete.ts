@@ -14,6 +14,8 @@
  * - Request ID support for distributed tracing (passed to callers for logging)
  */
 
+import type { ExpressionBuilder } from "kysely";
+
 import { db } from ".";
 import { logger } from "./logger";
 import type { DB } from "./prisma/types";
@@ -24,6 +26,14 @@ import type { DB } from "./prisma/types";
  */
 export interface SoftDeleteEntity {
   deletedAt: Date | null;
+}
+
+/**
+ * Result type for COUNT queries
+ * PostgreSQL COUNT returns bigint, but Kysely may return string or number depending on context
+ */
+interface CountResult {
+  count: bigint | string | number;
 }
 
 // Kysely requires dynamic table references to use type assertions
@@ -224,11 +234,10 @@ export class SoftDeleteService<T extends keyof DB> {
         // @ts-expect-error Kysely dynamic table/column requires type assertion
         .where("authUserId", "=", userId)
         .where("deletedAt", "is", null)
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .select((eb: any) => eb.fn.count("id").as("count"))
+        // @ts-expect-error Kysely dynamic table/column requires type assertion
+        .select((eb: ExpressionBuilder<DB, T>) => eb.fn.count("id").as("count"))
         .executeTakeFirst()
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .then((result: any) => Number(result?.count ?? 0))
+        .then((result: CountResult | undefined) => Number(result?.count ?? 0))
     );
   }
 
@@ -254,11 +263,10 @@ export class SoftDeleteService<T extends keyof DB> {
         // @ts-expect-error Kysely dynamic table/column requires type assertion
         .where("authUserId", "=", userId)
         .where("deletedAt", "is not", null)
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .select((eb: any) => eb.fn.count("id").as("count"))
+        // @ts-expect-error Kysely dynamic table/column requires type assertion
+        .select((eb: ExpressionBuilder<DB, T>) => eb.fn.count("id").as("count"))
         .executeTakeFirst()
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .then((result: any) => Number(result?.count ?? 0))
+        .then((result: CountResult | undefined) => Number(result?.count ?? 0))
     );
   }
 }

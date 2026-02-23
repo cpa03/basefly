@@ -20,6 +20,9 @@ export function MobileNav({ items, children, menuItemClick }: MobileNavProps) {
   return (
     <section
       id="mobile-navigation"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Mobile navigation menu"
       className={cn(
         "fixed inset-0 top-16",
         Z_INDEX.modal,
@@ -39,10 +42,11 @@ export function MobileNav({ items, children, menuItemClick }: MobileNavProps) {
                   href={item.disabled ? "#" : item.href}
                   className={cn(
                     "flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline",
-                    item.disabled && "cursor-not-allowed opacity-60",
+                    item.disabled && "cursor-not-allowed opacity-60 pointer-events-none",
                   )}
-                  onClick={menuItemClick}
+                  onClick={item.disabled ? (e) => e.preventDefault() : menuItemClick}
                   aria-disabled={item.disabled}
+                  tabIndex={item.disabled ? -1 : undefined}
                 >
                   {item.title}
                 </Link>

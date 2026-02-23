@@ -31,9 +31,26 @@ export const MainNav = React.memo(function MainNav({
     setShowMobileMenu((prev) => !prev);
   }, []);
   
+  const closeMenu = React.useCallback(() => {
+    setShowMobileMenu(false);
+  }, []);
+  
   const handleMenuItemClick = React.useCallback(() => {
     toggleMenu();
   }, [toggleMenu]);
+
+  React.useEffect(() => {
+    if (!showMobileMenu) return;
+    
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeMenu();
+      }
+    };
+    
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [showMobileMenu, closeMenu]);
 
   return (
     <div className="flex gap-6 md:gap-10">

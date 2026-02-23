@@ -9,7 +9,7 @@ import { logger } from "../logger";
 import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 
 // Schema for mySubscription query - enforces no input parameters
-export const mySubscriptionSchema = z.object({}).strict();
+export const mySubscriptionSchema = z.object({}).strict().optional();
 
 export const authRouter = createTRPCRouter({
   mySubscription: createRateLimitedProtectedProcedure("read")

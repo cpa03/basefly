@@ -1,10 +1,12 @@
-/* eslint-disable no-console */
+import pino from "pino";
+
+import { IS_DEV, LOG_LEVEL } from "@saasfly/common";
+
 /**
- * Simple JSON logger for database operations
+ * Structured logger for database operations
  *
- * Provides structured logging for database operations with request ID support
- * for distributed tracing. Uses console-based output to avoid additional
- * dependencies while maintaining consistent log format.
+ * Uses pino for consistent, structured logging across all packages.
+ * Provides request ID support for distributed tracing.
  *
  * @example
  * ```ts
@@ -15,57 +17,38 @@
  * ```
  */
 
-interface LoggerMetadata {
-  requestId?: string;
-  [key: string]: unknown;
-}
+type LoggerMetadata = Record<string, unknown>;
 
-const isTest = process.env.NODE_ENV === "test";
+const pinoLogger = pino({
+  level: LOG_LEVEL,
+  transport: IS_DEV
+    ? { target: "pino-pretty", options: { colorize: true } }
+    : undefined,
+});
 
 /**
  * Database operation logger
  *
- * - info/warn: Disabled in test mode to reduce noise
- * - error: Always logged for debugging production issues
+ * - Uses pino for structured JSON logging
+ * - Log level configurable via LOG_LEVEL environment variable
+ * - Pretty output in development mode
  */
-export const logger = {
-  info(message: string, data?: LoggerMetadata): void {
-    if (isTest) return;
-    console.log(
-      JSON.stringify({
-        level: 30, // pino info level
-        time: Date.now(),
-        msg: message,
-        ...data,
-      }),
-    );
+const logger = {
+  debug(message: string, data?: LoggerMetadata) {
+    pinoLogger.debug(data ?? {}, message);
   },
 
-  warn(message: string, data?: LoggerMetadata): void {
-    if (isTest) return;
-    console.warn(
-      JSON.stringify({
-        level: 40, // pino warn level
-        time: Date.now(),
-        msg: message,
-        ...data,
-      }),
-    );
+  info(message: string, data?: LoggerMetadata) {
+    pinoLogger.info(data ?? {}, message);
   },
 
-  error(message: string, error?: unknown, data?: LoggerMetadata): void {
-    // Always log errors, even in test mode
-    console.error(
-      JSON.stringify({
-        level: 50, // pino error level
-        time: Date.now(),
-        msg: message,
-        error:
-          error instanceof Error
-            ? { name: error.name, message: error.message, stack: error.stack }
-            : error,
-        ...data,
-      }),
-    );
+  warn(message: string, data?: LoggerMetadata) {
+    pinoLogger.warn(data ?? {}, message);
+  },
+
+  error(message: string, error?: unknown, data?: LoggerMetadata) {
+    pinoLogger.error({ error, ...data }, message);
   },
 };
+
+export { logger };

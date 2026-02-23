@@ -64,7 +64,7 @@ export const IS_TEST: boolean = NODE_ENV === "test";
  * Admin emails from environment (comma-separated)
  * Used for admin access control
  */
-export const ADMIN_EMAILS: string = process.env.ADMIN_EMAIL ?? "";
+export const ADMIN_EMAIL: string = process.env.ADMIN_EMAIL ?? "";
 
 /**
  * Checks if an email is in the admin list.
@@ -82,8 +82,8 @@ export const ADMIN_EMAILS: string = process.env.ADMIN_EMAIL ?? "";
  */
 export function isAdminEmail(email: string | null | undefined): boolean {
   if (!email) return false;
-  if (!ADMIN_EMAILS) return false;
-  return ADMIN_EMAILS.split(",")
+  if (!ADMIN_EMAIL) return false;
+  return ADMIN_EMAIL.split(",")
     .map((e) => e.trim().toLowerCase())
     .includes(email.toLowerCase());
 }

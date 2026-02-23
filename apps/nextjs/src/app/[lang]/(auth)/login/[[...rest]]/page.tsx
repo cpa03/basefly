@@ -59,6 +59,7 @@ export default async function LoginPage({
             width="64"
             height="64"
             alt="Saasfly Logo"
+            sizes="64px"
           />
           <h1 className="text-2xl font-semibold tracking-tight">
             {dict.login.welcome_back}

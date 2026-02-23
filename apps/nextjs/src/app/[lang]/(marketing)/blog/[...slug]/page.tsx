@@ -160,6 +160,7 @@ export default function PostPage({ params }: PostPageProps) {
           height={405}
           className="my-8 rounded-md border bg-muted transition-colors"
           priority
+          sizes="(max-width: 768px) 100vw, 720px"
         />
       )}
       <Mdx code={post.body.code} />

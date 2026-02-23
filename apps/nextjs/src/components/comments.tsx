@@ -75,6 +75,7 @@ const ReviewCard = React.memo(function ReviewCard({
           height="32"
           alt={`${name}'s avatar`}
           src={img}
+          sizes="32px"
         />
         <div className="flex flex-col">
           <figcaption className="text-sm font-medium dark:text-white">

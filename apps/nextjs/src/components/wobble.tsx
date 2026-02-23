@@ -29,6 +29,7 @@ export function WobbleCardShow() {
           alt=""
           aria-hidden="true"
           className="absolute -bottom-10 -right-4 rounded-2xl object-contain grayscale filter lg:-right-[40%]"
+          sizes="(max-width: 1024px) 100vw, 66vw"
         />
       </WobbleCard>
       <WobbleCard containerClassName="col-span-1 min-h-[300px]">
@@ -57,6 +58,7 @@ export function WobbleCardShow() {
           alt=""
           aria-hidden="true"
           className="absolute -bottom-10 -right-10 rounded-2xl object-contain md:-right-[40%] lg:-right-[20%]"
+          sizes="100vw"
         />
       </WobbleCard>
     </div>

@@ -26,6 +26,7 @@ export const XBlogArticle = React.memo(function XBlogArticle() {
               width={640}
               height={400}
               className={`transform object-cover transition ${TRANSITION_PRESETS.container} group-hover:scale-95 group-hover:rounded-2xl`}
+              sizes="(max-width: 640px) 320px, (max-width: 768px) 384px, 320px"
             />
           </div>
           <div className="p-4">
@@ -78,6 +79,7 @@ const TitleComponent = React.memo(function TitleComponent({
         width={20}
         alt={`${title}'s avatar`}
         className="rounded-full border-2 border-white"
+        sizes="20px"
       />
       <p>{title}</p>
     </div>

@@ -34,6 +34,7 @@ export const BlogPosts = React.memo(function BlogPosts({ posts }: BlogPostsProps
                 height={452}
                 src={posts[0].image}
                 width={804}
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             )}
           </div>
@@ -68,6 +69,7 @@ export const BlogPosts = React.memo(function BlogPosts({ posts }: BlogPostsProps
                   width={804}
                   height={452}
                   className="rounded-md border bg-muted transition-colors"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                 />
               )}
               <h2 className="font-heading line-clamp-1 text-2xl">

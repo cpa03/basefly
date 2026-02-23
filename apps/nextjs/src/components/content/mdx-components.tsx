@@ -116,6 +116,7 @@ const components = {
           height={parseInt(String(height), 10)}
           className={cn("rounded-md border", className)}
           loading="lazy"
+          sizes="(max-width: 768px) 100vw, 65ch"
           {...props}
         />
       );

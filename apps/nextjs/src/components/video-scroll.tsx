@@ -37,6 +37,7 @@ export function VideoScroll({
             width={1400}
             className="mx-auto h-full rounded-2xl object-cover object-left-top"
             draggable={false}
+            sizes="100vw"
           />
         </Link>
       </ContainerScroll>

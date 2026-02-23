@@ -206,6 +206,7 @@ export default async function IndexPage({
                 width="48"
                 height="48"
                 alt="clerk"
+                sizes="48px"
               />
             </Link>
             <Link href={EXTERNAL_URLS.twillot.home} target="_blank">
@@ -214,6 +215,7 @@ export default async function IndexPage({
                 width="48"
                 height="48"
                 alt="twillot"
+                sizes="48px"
               />
             </Link>
             <Link href={EXTERNAL_URLS.setupyourpay.home} target="_blank">
@@ -222,6 +224,7 @@ export default async function IndexPage({
                 width="48"
                 height="48"
                 alt="setupyourpay"
+                sizes="48px"
               />
             </Link>
             <Link href={EXTERNAL_URLS.opencollective.saasfly} target="_blank">

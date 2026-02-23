@@ -2,12 +2,19 @@ import { unstable_noStore as noStore } from "next/cache";
 
 import { db } from "@saasfly/db";
 
+import { z } from "zod";
+
 import { createApiError, ErrorCode } from "../errors";
 import { logger } from "../logger";
 import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 
+// Schema for mySubscription query - enforces no input parameters
+export const mySubscriptionSchema = z.object({}).strict();
+
 export const authRouter = createTRPCRouter({
-  mySubscription: createRateLimitedProtectedProcedure("read").query(
+  mySubscription: createRateLimitedProtectedProcedure("read")
+    .input(mySubscriptionSchema)
+    .query(
     async (opts) => {
       noStore();
       const userId = opts.ctx.userId;

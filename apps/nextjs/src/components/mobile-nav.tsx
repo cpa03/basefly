@@ -1,5 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { Z_INDEX } from "@saasfly/common/config/ui";
 import { cn } from "@saasfly/ui";
@@ -17,6 +18,7 @@ interface MobileNavProps {
 
 export function MobileNav({ items, children, menuItemClick }: MobileNavProps) {
   useLockBody();
+  const path = usePathname();
   return (
     <section
       id="mobile-navigation"
@@ -39,10 +41,12 @@ export function MobileNav({ items, children, menuItemClick }: MobileNavProps) {
                   href={item.disabled ? "#" : item.href}
                   className={cn(
                     "flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline",
+                    path === item.href && "bg-accent text-accent-foreground",
                     item.disabled && "cursor-not-allowed opacity-60",
                   )}
                   onClick={menuItemClick}
                   aria-disabled={item.disabled}
+                  aria-current={path === item.href ? "page" : undefined}
                 >
                   {item.title}
                 </Link>

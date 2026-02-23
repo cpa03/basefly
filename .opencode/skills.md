@@ -77,5 +77,8 @@ The following MCP servers are enabled:
 | ultrabrain         | opencode/kimi-k2.5-free    | Hard logic-heavy tasks requiring deep reasoning |
 | deep               | opencode/glm-4.7-free      | Goal-oriented autonomous problem-solving        |
 | artistry           | opencode/kimi-k2.5-free    | Unconventional creative approaches              |
+| writing            | opencode/glm-4.7-free      | Documentation, prose, technical writing         |
+| unspecified-low    | opencode/gpt-5-nano        | Tasks that don't fit other categories, low effort required    |
+| unspecified-high   | opencode/kimi-k2.5-free    | Tasks that don't fit other categories, high effort required   |
 
 For detailed skill documentation, see the individual SKILL.md files in `.opencode/skills/` and `.opencode/superpowers/`.

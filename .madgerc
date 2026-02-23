@@ -1,0 +1,18 @@
+{
+  "detectiveOptions": {
+    "ts": {
+      "skipTypeImports": true
+    },
+    "tsx": {
+      "skipTypeImports": true
+    }
+  },
+  "excludeRegExp": [
+    "node_modules",
+    "dist",
+    ".next",
+    ".turbo",
+    "coverage"
+  ],
+  "fileExtensions": ["ts", "tsx", "js", "jsx", "mjs"]
+}

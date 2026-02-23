@@ -117,6 +117,41 @@ pnpm typecheck      # TypeScript check
 pnpm format         # Format code
 ```
 
+## Code Quality Tools
+
+### Circular Dependency Detection
+
+The project uses [madge](https://github.com/pahen/madge) to detect circular dependencies. Circular dependencies can lead to:
+
+- Runtime errors
+- Build failures
+- Difficult-to-debug issues
+- Bundle size bloat
+
+Run the circular dependency check:
+
+```bash
+pnpm check:circular
+```
+
+This command scans all `packages/` and `apps/` directories for circular dependencies.
+
+**Configuration**: See `.madgerc` for detection settings.
+
+### DX Scripts
+
+The project includes comprehensive DX (Developer Experience) scripts:
+
+```bash
+pnpm dx:quick     # Fast feedback: typecheck + lint only
+pnpm dx:check     # Full checks: typecheck + lint + test + security audit
+pnpm dx:fix       # Auto-fix lint and format issues
+pnpm dx:deps      # Check outdated dependencies and run audit
+pnpm dx:setup     # Verify development environment
+pnpm dx:all       # Run all DX checks comprehensively
+pnpm dx:pr        # Prepare for PR: dx:check + ready confirmation
+```
+
 ## Important Notes
 
 - This is a monorepo using pnpm workspaces

@@ -11,7 +11,7 @@ import {
   ErrorCode,
   handleIntegrationError,
 } from "../errors";
-import { authRouter } from "./auth";
+import { authRouter, mySubscriptionSchema } from "./auth";
 import {
   customerRouter,
   insertCustomerSchema,
@@ -400,6 +400,56 @@ describe("API Validation Tests", () => {
       it("rejects non-UUID userId", () => {
         const invalidData = { userId: "user_123" };
         const result = insertCustomerSchema.safeParse(invalidData);
+        expect(result.success).toBe(false);
+      });
+    });
+  });
+
+
+  describe("authRouter - Schema Validation", () => {
+    describe("mySubscriptionSchema", () => {
+      it("accepts empty object for query with no input", () => {
+        const validData = {};
+        const result = mySubscriptionSchema.safeParse(validData);
+        expect(result.success).toBe(true);
+      });
+
+      it("accepts undefined input", () => {
+        const result = mySubscriptionSchema.safeParse(undefined);
+        expect(result.success).toBe(true);
+      });
+
+      it("rejects extra fields", () => {
+        const dataWithExtra = { extraField: "should be rejected" };
+        const result = mySubscriptionSchema.safeParse(dataWithExtra);
+        expect(result.success).toBe(false);
+        if (!result.success) {
+          expect(
+            result.error.issues.some(
+              (e) => e.code === "unrecognized_keys",
+            ),
+          ).toBe(true);
+        }
+      });
+
+      it("rejects any non-empty input", () => {
+        const invalidData = { userId: "some-id" };
+        const result = mySubscriptionSchema.safeParse(invalidData);
+        expect(result.success).toBe(false);
+      });
+
+      it("rejects null input", () => {
+        const result = mySubscriptionSchema.safeParse(null);
+        expect(result.success).toBe(false);
+      });
+
+      it("rejects string input", () => {
+        const result = mySubscriptionSchema.safeParse("invalid");
+        expect(result.success).toBe(false);
+      });
+
+      it("rejects array input", () => {
+        const result = mySubscriptionSchema.safeParse([]);
         expect(result.success).toBe(false);
       });
     });

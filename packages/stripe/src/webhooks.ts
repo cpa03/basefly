@@ -78,7 +78,9 @@ async function handleCheckoutSessionCompleted(
   if (customer) {
     const priceId = subscription.items.data[0]?.price.id;
     if (!priceId) {
-      logger.warn("No priceId in subscription for checkout.session.completed, skipping update");
+      logger.warn(
+        "No priceId in subscription for checkout.session.completed, skipping update",
+      );
       return;
     }
 

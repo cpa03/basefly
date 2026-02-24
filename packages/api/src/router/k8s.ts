@@ -2,14 +2,15 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { CLUSTER_VALIDATION, K8S_DEFAULTS } from "@saasfly/common";
-import { db, k8sClusterService } from "@saasfly/db";
-import type { K8sClusterConfig } from "@saasfly/db";
+import { db, k8sClusterService, type K8sClusterConfig } from "@saasfly/db";
 
 import { createApiError, ErrorCode } from "../errors";
 import { logger } from "../logger";
-import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
-
-import type { TRPCContext } from "../trpc";
+import {
+  createRateLimitedProtectedProcedure,
+  createTRPCRouter,
+  type TRPCContext,
+} from "../trpc";
 
 function requireUserId(ctx: TRPCContext): string {
   if (!ctx.userId) {
@@ -113,7 +114,6 @@ export const k8sRouter = createTRPCRouter({
   ),
   /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
   createCluster: createRateLimitedProtectedProcedure("write")
-
     .input(k8sClusterCreateSchema)
     .mutation(async ({ ctx, input }) => {
       const userId = requireUserId(ctx);

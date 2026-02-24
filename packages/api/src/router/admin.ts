@@ -1,9 +1,6 @@
 import { db } from "@saasfly/db";
 
-import {
-  createRateLimitedAdminProcedure,
-  createTRPCRouter,
-} from "../trpc";
+import { createRateLimitedAdminProcedure, createTRPCRouter } from "../trpc";
 
 /**
  * Admin router with rate-limited endpoints.

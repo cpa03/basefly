@@ -37,7 +37,10 @@ export function NavbarSkeleton() {
         {/* Right side elements */}
         <div className="flex items-center space-x-3">
           {/* Divider */}
-          <div className="hidden h-8 w-[1px] bg-accent md:block" aria-hidden="true" />
+          <div
+            className="hidden h-8 w-[1px] bg-accent md:block"
+            aria-hidden="true"
+          />
 
           {/* GitHub star placeholder */}
           <Skeleton className="hidden h-8 w-20 motion-safe:animate-pulse motion-reduce:animate-none md:block" />

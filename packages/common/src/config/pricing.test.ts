@@ -74,8 +74,12 @@ describe("Pricing Configuration", () => {
     });
 
     it("should have different values than current PRICING_TIERS for non-free tiers", () => {
-      expect(LEGACY_PRICING_TIERS.PRO.monthly).not.toBe(PRICING_TIERS.PRO.monthly);
-      expect(LEGACY_PRICING_TIERS.BUSINESS.monthly).not.toBe(PRICING_TIERS.BUSINESS.monthly);
+      expect(LEGACY_PRICING_TIERS.PRO.monthly).not.toBe(
+        PRICING_TIERS.PRO.monthly,
+      );
+      expect(LEGACY_PRICING_TIERS.BUSINESS.monthly).not.toBe(
+        PRICING_TIERS.BUSINESS.monthly,
+      );
     });
   });
 
@@ -120,13 +124,21 @@ describe("Pricing Configuration", () => {
 
   describe("STRIPE_PRICE_IDS", () => {
     it("should have PRO price ID environment variable names", () => {
-      expect(STRIPE_PRICE_IDS.PRO.monthly).toBe("NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID");
-      expect(STRIPE_PRICE_IDS.PRO.yearly).toBe("NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID");
+      expect(STRIPE_PRICE_IDS.PRO.monthly).toBe(
+        "NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID",
+      );
+      expect(STRIPE_PRICE_IDS.PRO.yearly).toBe(
+        "NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID",
+      );
     });
 
     it("should have BUSINESS price ID environment variable names", () => {
-      expect(STRIPE_PRICE_IDS.BUSINESS.monthly).toBe("NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID");
-      expect(STRIPE_PRICE_IDS.BUSINESS.yearly).toBe("NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID");
+      expect(STRIPE_PRICE_IDS.BUSINESS.monthly).toBe(
+        "NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID",
+      );
+      expect(STRIPE_PRICE_IDS.BUSINESS.yearly).toBe(
+        "NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID",
+      );
     });
 
     it("should not have STARTER price IDs (free tier)", () => {
@@ -151,8 +163,10 @@ describe("Pricing Configuration", () => {
     it("should return environment variable values when set", () => {
       process.env.NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID = "price_pro_monthly";
       process.env.NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID = "price_pro_yearly";
-      process.env.NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID = "price_business_monthly";
-      process.env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID = "price_business_yearly";
+      process.env.NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID =
+        "price_business_monthly";
+      process.env.NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID =
+        "price_business_yearly";
 
       const ids = getStripePriceIds();
       expect(ids.pro.monthly).toBe("price_pro_monthly");

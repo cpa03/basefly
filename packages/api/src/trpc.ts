@@ -98,7 +98,6 @@ const isAuthed = t.middleware(({ next, ctx }) => {
   return next({ ctx: { userId: ctx.userId } });
 });
 
-
 /**
  * Protected procedure that requires authentication.
  * Use this for endpoints that require a logged-in user.

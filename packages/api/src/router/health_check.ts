@@ -25,7 +25,10 @@ const helloInputSchema = z.object({
     .string()
     .trim()
     .min(API_VALIDATION.text.minLength, "Text cannot be empty")
-    .max(API_VALIDATION.text.maxLength, `Text cannot exceed ${API_VALIDATION.text.maxLength} characters`),
+    .max(
+      API_VALIDATION.text.maxLength,
+      `Text cannot exceed ${API_VALIDATION.text.maxLength} characters`,
+    ),
 });
 
 export const helloRouter = createTRPCRouter({

@@ -405,7 +405,6 @@ describe("API Validation Tests", () => {
     });
   });
 
-
   describe("authRouter - Schema Validation", () => {
     describe("mySubscriptionSchema", () => {
       it("accepts empty object for query with no input", () => {
@@ -425,9 +424,7 @@ describe("API Validation Tests", () => {
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(
-            result.error.issues.some(
-              (e) => e.code === "unrecognized_keys",
-            ),
+            result.error.issues.some((e) => e.code === "unrecognized_keys"),
           ).toBe(true);
         }
       });

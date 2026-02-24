@@ -2,8 +2,7 @@ import { unstable_noStore as noStore } from "next/cache";
 import { z } from "zod";
 
 import { PLAN_VALIDATION, pricingData, TIME_MS } from "@saasfly/common";
-import type { Customer} from "@saasfly/db";
-import { db } from "@saasfly/db";
+import { db, type Customer } from "@saasfly/db";
 import {
   createBillingSession,
   createCheckoutSession,

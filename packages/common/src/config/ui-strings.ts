@@ -85,7 +85,8 @@ export const FORM_LABELS = {
 } as const;
 
 export const FORM_DESCRIPTIONS = {
-  enterName: "Please enter your full name or a display name you are comfortable with.",
+  enterName:
+    "Please enter your full name or a display name you are comfortable with.",
   currentPlan: "You are currently on the",
   createCluster: "Deploy your new k8s cluster in one-click.",
 } as const;

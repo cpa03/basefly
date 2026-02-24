@@ -16,6 +16,7 @@
  * in wrangler.toml and configure incrementalCache accordingly.
  */
 import { defineCloudflareConfig } from "@opennextjs/cloudflare";
+
 // Uncomment the following imports when enabling ISR caching:
 // import kvIncrementalCache from "@opennextjs/cloudflare/overrides/incremental-cache/kv-incremental-cache";
 // import r2IncrementalCache from "@opennextjs/cloudflare/overrides/incremental-cache/r2-incremental-cache";

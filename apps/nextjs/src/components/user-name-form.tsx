@@ -88,9 +88,7 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
       <Card>
         <CardHeader>
           <CardTitle>{FORM_LABELS.yourName}</CardTitle>
-          <CardDescription>
-            {FORM_DESCRIPTIONS.enterName}
-          </CardDescription>
+          <CardDescription>{FORM_DESCRIPTIONS.enterName}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-1">

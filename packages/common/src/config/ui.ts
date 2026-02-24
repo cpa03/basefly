@@ -278,8 +278,7 @@ export const GRADIENT_COLORS = {
     end: "#ffaa40",
   },
   /** Get Tailwind gradient class string */
-  getPrimaryGradientClass: () =>
-    `from-[#ffaa40] via-[#9c40ff] to-[#ffaa40]`,
+  getPrimaryGradientClass: () => `from-[#ffaa40] via-[#9c40ff] to-[#ffaa40]`,
 } as const;
 
 /**

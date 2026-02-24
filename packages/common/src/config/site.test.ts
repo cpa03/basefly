@@ -23,7 +23,9 @@ describe("Site Configuration", () => {
     });
 
     it("should have correct GitHub link", () => {
-      expect(siteConfig.links.github).toBe("https://github.com/saasfly/saasfly");
+      expect(siteConfig.links.github).toBe(
+        "https://github.com/saasfly/saasfly",
+      );
     });
 
     it("should be a plain object with expected structure", () => {

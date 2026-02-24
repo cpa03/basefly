@@ -26,28 +26,28 @@ export const MainNav = React.memo(function MainNav({
   marketing,
 }: MainNavProps) {
   const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false);
-  
+
   const toggleMenu = React.useCallback(() => {
     setShowMobileMenu((prev) => !prev);
   }, []);
-  
+
   const closeMenu = React.useCallback(() => {
     setShowMobileMenu(false);
   }, []);
-  
+
   const handleMenuItemClick = React.useCallback(() => {
     toggleMenu();
   }, [toggleMenu]);
 
   React.useEffect(() => {
     if (!showMobileMenu) return;
-    
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         closeMenu();
       }
     };
-    
+
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [showMobileMenu, closeMenu]);
@@ -78,7 +78,9 @@ export const MainNav = React.memo(function MainNav({
       <button
         className="flex items-center space-x-2 rounded-md px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:hidden"
         onClick={toggleMenu}
-        aria-label={showMobileMenu ? UI_LABELS.closeMobileMenu : UI_LABELS.openMobileMenu}
+        aria-label={
+          showMobileMenu ? UI_LABELS.closeMobileMenu : UI_LABELS.openMobileMenu
+        }
         aria-expanded={showMobileMenu}
         aria-controls="mobile-navigation"
       >

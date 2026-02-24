@@ -4,9 +4,7 @@ import {
   AVAILABLE_CLUSTER_REGIONS,
   CLUSTER_DEFAULTS,
   CLUSTER_LOCATIONS,
-  type ClusterLocation,
   CLUSTER_STATUSES,
-  type ClusterStatus,
   CLUSTER_TIER_LIMITS,
   DEFAULT_CLUSTER_CONFIG,
   DEFAULT_CLUSTER_LOCATION,
@@ -16,6 +14,8 @@ import {
   isValidClusterName,
   K8S_DEFAULTS,
   sanitizeClusterName,
+  type ClusterLocation,
+  type ClusterStatus,
   type SubscriptionTier,
 } from "./k8s";
 
@@ -116,7 +116,9 @@ describe("Kubernetes Configuration", () => {
 
     it("should increase limits with higher tiers", () => {
       expect(CLUSTER_TIER_LIMITS.PRO).toBeGreaterThan(CLUSTER_TIER_LIMITS.FREE);
-      expect(CLUSTER_TIER_LIMITS.BUSINESS).toBeGreaterThan(CLUSTER_TIER_LIMITS.PRO);
+      expect(CLUSTER_TIER_LIMITS.BUSINESS).toBeGreaterThan(
+        CLUSTER_TIER_LIMITS.PRO,
+      );
     });
   });
 

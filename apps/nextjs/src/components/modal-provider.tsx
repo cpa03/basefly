@@ -1,6 +1,8 @@
 "use client";
+
 import { SignInClerkModal } from "~/components/sign-in-modal-clerk";
 import { useMounted } from "~/hooks/use-mounted";
+
 /**
  * Checks if Clerk authentication is properly configured.
  *

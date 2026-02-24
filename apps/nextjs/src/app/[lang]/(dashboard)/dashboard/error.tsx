@@ -32,12 +32,15 @@ export default function DashboardError({
     <div className="flex min-h-[400px] flex-col items-center justify-center space-y-4 p-8">
       <div className="space-y-2 text-center">
         <h2 className="text-2xl font-bold tracking-tight">
-          {isLoading ? "Something went wrong!" : (errors?.title ?? "Something went wrong!")}
+          {isLoading
+            ? "Something went wrong!"
+            : (errors?.title ?? "Something went wrong!")}
         </h2>
         <p className="text-muted-foreground">
           {isLoading
             ? "An error occurred while loading the dashboard."
-            : (errors?.dashboard_error ?? "An error occurred while loading the dashboard.")}
+            : (errors?.dashboard_error ??
+              "An error occurred while loading the dashboard.")}
         </p>
       </div>
       <Button onClick={reset} variant="outline">

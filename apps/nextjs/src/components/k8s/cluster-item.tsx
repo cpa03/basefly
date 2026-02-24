@@ -109,11 +109,7 @@ export const ClusterItem = React.memo(function ClusterItem({
         )}
       </TableCell>
       <TableCell className="text-right">
-        <ClusterOperations
-          cluster={clusterInfo}
-          lang={lang}
-          dict={dict}
-        />
+        <ClusterOperations cluster={clusterInfo} lang={lang} dict={dict} />
       </TableCell>
     </TableRow>
   );

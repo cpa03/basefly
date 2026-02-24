@@ -30,10 +30,10 @@ model Customer {
   updatedAt              DateTime          @default(now())
 
   user User @relation(fields: [authUserId], references: [id], onDelete: Restrict)
+  // Partial index on stripeSubscriptionId WHERE IS NOT NULL added via migration 20260221_add_customer_active_subscription_index
 
   @@index([plan])
   @@index([authUserId, stripeCurrentPeriodEnd])
-  // Partial index on stripeSubscriptionId WHERE IS NOT NULL added via migration 20260221_add_customer_active_subscription_index
 }
 
 model Account {

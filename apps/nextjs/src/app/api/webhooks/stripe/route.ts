@@ -39,7 +39,10 @@ const handler = async (req: NextRequest) => {
       { error: "Stripe not configured" },
       {
         status: HTTP_STATUS.SERVICE_UNAVAILABLE,
-        headers: { ...WEBHOOK_SECURITY_HEADERS, [REQUEST_ID_HEADER]: requestId },
+        headers: {
+          ...WEBHOOK_SECURITY_HEADERS,
+          [REQUEST_ID_HEADER]: requestId,
+        },
       },
     );
   }
@@ -53,7 +56,10 @@ const handler = async (req: NextRequest) => {
       { error: "Empty payload" },
       {
         status: HTTP_STATUS.BAD_REQUEST,
-        headers: { ...WEBHOOK_SECURITY_HEADERS, [REQUEST_ID_HEADER]: requestId },
+        headers: {
+          ...WEBHOOK_SECURITY_HEADERS,
+          [REQUEST_ID_HEADER]: requestId,
+        },
       },
     );
   }
@@ -64,7 +70,10 @@ const handler = async (req: NextRequest) => {
       { error: "Stripe webhook not configured" },
       {
         status: HTTP_STATUS.SERVICE_UNAVAILABLE,
-        headers: { ...WEBHOOK_SECURITY_HEADERS, [REQUEST_ID_HEADER]: requestId },
+        headers: {
+          ...WEBHOOK_SECURITY_HEADERS,
+          [REQUEST_ID_HEADER]: requestId,
+        },
       },
     );
   }
@@ -75,7 +84,10 @@ const handler = async (req: NextRequest) => {
       { error: "Missing Stripe-Signature header" },
       {
         status: HTTP_STATUS.BAD_REQUEST,
-        headers: { ...WEBHOOK_SECURITY_HEADERS, [REQUEST_ID_HEADER]: requestId },
+        headers: {
+          ...WEBHOOK_SECURITY_HEADERS,
+          [REQUEST_ID_HEADER]: requestId,
+        },
       },
     );
   }
@@ -94,17 +106,26 @@ const handler = async (req: NextRequest) => {
       { received: true },
       {
         status: HTTP_STATUS.OK,
-        headers: { ...WEBHOOK_SECURITY_HEADERS, [REQUEST_ID_HEADER]: requestId },
+        headers: {
+          ...WEBHOOK_SECURITY_HEADERS,
+          [REQUEST_ID_HEADER]: requestId,
+        },
       },
     );
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
-    logger.error("Error when handling Stripe Event", error, { message, requestId });
+    logger.error("Error when handling Stripe Event", error, {
+      message,
+      requestId,
+    });
     return NextResponse.json(
       { error: message },
       {
         status: HTTP_STATUS.BAD_REQUEST,
-        headers: { ...WEBHOOK_SECURITY_HEADERS, [REQUEST_ID_HEADER]: requestId },
+        headers: {
+          ...WEBHOOK_SECURITY_HEADERS,
+          [REQUEST_ID_HEADER]: requestId,
+        },
       },
     );
   }

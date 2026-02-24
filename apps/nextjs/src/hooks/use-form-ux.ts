@@ -44,7 +44,6 @@ export function useFormFocus(
     }
   }, [delay, scrollIntoView]);
 
-
   const onBlur = React.useCallback(() => {
     setIsFocused(false);
   }, []);

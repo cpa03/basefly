@@ -16,7 +16,9 @@ interface UseFormErrorScrollOptions {
   focus?: boolean;
 }
 
-export function useFormErrorScroll(options: UseFormErrorScrollOptions = {}): (errors: Record<string, unknown>) => void {
+export function useFormErrorScroll(
+  options: UseFormErrorScrollOptions = {},
+): (errors: Record<string, unknown>) => void {
   const {
     delay = SCROLL_DELAYS.formError,
     offset = SCROLL_OFFSETS.formError,

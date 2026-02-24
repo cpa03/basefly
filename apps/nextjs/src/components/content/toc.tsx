@@ -4,8 +4,8 @@ import * as React from "react";
 
 import { cn } from "@saasfly/ui";
 
-import type { TableOfContents } from "~/lib/toc";
 import { useMounted } from "~/hooks/use-mounted";
+import type { TableOfContents } from "~/lib/toc";
 
 interface TocProps {
   toc: TableOfContents;
@@ -97,12 +97,14 @@ function Tree({ tree, level = 1, activeItem }: TreeProps) {
               href={item.url}
               className={cn(
                 "inline-block no-underline transition-colors",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm",
+                "rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                 item.url === `#${activeItem}`
                   ? "font-medium text-primary"
                   : "text-sm text-muted-foreground hover:text-foreground",
               )}
-              aria-current={item.url === `#${activeItem}` ? "location" : undefined}
+              aria-current={
+                item.url === `#${activeItem}` ? "location" : undefined
+              }
             >
               {item.title}
             </a>

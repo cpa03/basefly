@@ -42,9 +42,12 @@ export function MobileNav({ items, children, menuItemClick }: MobileNavProps) {
                   href={item.disabled ? "#" : item.href}
                   className={cn(
                     "flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline",
-                    item.disabled && "cursor-not-allowed opacity-60 pointer-events-none",
+                    item.disabled &&
+                      "pointer-events-none cursor-not-allowed opacity-60",
                   )}
-                  onClick={item.disabled ? (e) => e.preventDefault() : menuItemClick}
+                  onClick={
+                    item.disabled ? (e) => e.preventDefault() : menuItemClick
+                  }
                   aria-disabled={item.disabled}
                   tabIndex={item.disabled ? -1 : undefined}
                 >

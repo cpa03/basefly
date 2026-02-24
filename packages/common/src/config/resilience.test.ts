@@ -2,16 +2,16 @@ import { describe, expect, it } from "vitest";
 
 import {
   CIRCUIT_BREAKER_CONFIG,
-  type CircuitBreakerConfig,
   DEFAULT_RETRYABLE_ERRORS,
-  type EndpointType,
-  type RateLimitConfig,
   RATE_LIMIT_DEFAULTS,
   RETRY_CONFIG,
-  type RetryConfig,
   STRIPE_CONFIG,
-  type StripeConfig,
   TIMEOUT_CONFIG,
+  type CircuitBreakerConfig,
+  type EndpointType,
+  type RateLimitConfig,
+  type RetryConfig,
+  type StripeConfig,
   type TimeoutConfig,
 } from "./resilience";
 
@@ -26,7 +26,9 @@ describe("Resilience Configuration", () => {
     });
 
     it("should have default service name", () => {
-      expect(CIRCUIT_BREAKER_CONFIG.defaultServiceName).toBe("External Service");
+      expect(CIRCUIT_BREAKER_CONFIG.defaultServiceName).toBe(
+        "External Service",
+      );
     });
 
     it("should have all required properties", () => {

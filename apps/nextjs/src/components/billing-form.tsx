@@ -66,8 +66,8 @@ export function BillingForm({
         <CardHeader>
           <CardTitle>{FORM_LABELS.subscriptionPlan}</CardTitle>
           <CardDescription>
-            {FORM_DESCRIPTIONS.currentPlan} <strong>{subscriptionPlan?.title}</strong>{" "}
-            plan.
+            {FORM_DESCRIPTIONS.currentPlan}{" "}
+            <strong>{subscriptionPlan?.title}</strong> plan.
           </CardDescription>
         </CardHeader>
         <CardContent>{subscriptionPlan?.description}</CardContent>

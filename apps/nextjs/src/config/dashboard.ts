@@ -116,7 +116,12 @@ export const PAGINATION_CONFIG = {
   /** Default items per page - uses small page size for dashboard tables */
   defaultPageSize: PAGE_SIZES.small,
   /** Available page size options - derived from shared PAGE_SIZES */
-  pageSizeOptions: [PAGE_SIZES.small, PAGE_SIZES.admin, PAGE_SIZES.large, PAGE_SIZES.max],
+  pageSizeOptions: [
+    PAGE_SIZES.small,
+    PAGE_SIZES.admin,
+    PAGE_SIZES.large,
+    PAGE_SIZES.max,
+  ],
   /** Maximum visible page buttons - uses shared limit */
   maxVisiblePages: PAGINATION_LIMITS.maxVisiblePages,
 } as const;

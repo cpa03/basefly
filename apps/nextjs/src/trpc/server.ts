@@ -13,10 +13,10 @@ import { observable } from "@trpc/server/observable";
 import type { TRPCErrorResponse } from "@trpc/server/rpc";
 
 import type { AppRouter } from "@saasfly/api";
+import { appRouter } from "@saasfly/api/server";
 import { isClerkEnabled } from "@saasfly/auth";
 import { TRPC_SOURCE_VALUES } from "@saasfly/common";
 
-import { appRouter } from "@saasfly/api/server";
 import { transformer } from "./shared";
 
 type AuthObject = Awaited<ReturnType<typeof auth>>;

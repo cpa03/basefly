@@ -470,11 +470,7 @@ describe("SoftDeleteService", () => {
         "=",
         "user_123",
       );
-      expect(mockCountWhere2).toHaveBeenCalledWith(
-        "deletedAt",
-        "is not",
-        null,
-      );
+      expect(mockCountWhere2).toHaveBeenCalledWith("deletedAt", "is not", null);
     });
 
     it("returns 0 when no deleted records exist", async () => {

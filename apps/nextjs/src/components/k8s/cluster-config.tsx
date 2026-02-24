@@ -112,9 +112,7 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
         <Card>
           <CardHeader>
             <CardTitle>Create cluster</CardTitle>
-            <CardDescription>
-              {FORM_DESCRIPTIONS.createCluster}
-            </CardDescription>
+            <CardDescription>{FORM_DESCRIPTIONS.createCluster}</CardDescription>
           </CardHeader>
           <CardContent className="w-2/3 space-y-6">
             <div className="grid w-full items-center gap-4">
@@ -126,7 +124,10 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
                     <FormItem>
                       <FormLabel>{FORM_LABELS.name}</FormLabel>
                       <FormControl>
-                        <Input placeholder={PLACEHOLDER_TEXT.clusterName} {...field} />
+                        <Input
+                          placeholder={PLACEHOLDER_TEXT.clusterName}
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -156,7 +157,9 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
                               value={field.value}
                             >
                               <SelectTrigger>
-                                <SelectValue placeholder={PLACEHOLDER_TEXT.selectRegion} />
+                                <SelectValue
+                                  placeholder={PLACEHOLDER_TEXT.selectRegion}
+                                />
                               </SelectTrigger>
                               <SelectContent>
                                 <SelectGroup>

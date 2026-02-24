@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { type ClusterStatus, FEEDBACK_TIMING } from "@saasfly/common";
+import { FEEDBACK_TIMING, type ClusterStatus } from "@saasfly/common";
 import {
   Check,
   Clock,

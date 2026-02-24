@@ -4,11 +4,7 @@ import {
   getOrGenerateRequestId,
   REQUEST_ID_HEADER,
 } from "@saasfly/api/request-id";
-import {
-  getMinifiedCSPHeader,
-  HEADERS,
-  HTTP_STATUS,
-} from "@saasfly/common";
+import { getMinifiedCSPHeader, HEADERS, HTTP_STATUS } from "@saasfly/common";
 
 import { i18n } from "./config/i18n-config";
 import { middleware as clerkMiddleware } from "./utils/clerk";

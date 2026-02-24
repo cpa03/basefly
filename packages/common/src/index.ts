@@ -41,7 +41,7 @@ export {
   IS_DEV,
   IS_PROD,
   IS_TEST,
-  ADMIN_EMAILS,
+  ADMIN_EMAIL,
   isAdminEmail,
   isValidLogLevel,
 } from "./config/env";

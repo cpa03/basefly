@@ -1,3 +1,13 @@
+/**
+ * Kubernetes Cluster Management Router
+ *
+ * Provides CRUD operations for Kubernetes cluster configurations.
+ * All endpoints are rate-limited and require authentication.
+ *
+ * @module k8sRouter
+ * @see {@link https://docs.saasfly.io/api/k8s | K8s API Documentation}
+ */
+
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 

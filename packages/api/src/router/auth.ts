@@ -1,3 +1,13 @@
+/**
+ * Authentication Router
+ *
+ * Provides subscription information for authenticated users.
+ * All endpoints are rate-limited and require authentication.
+ *
+ * @module authRouter
+ * @see {@link https://docs.saasfly.io/api/auth | Auth API Documentation}
+ */
+
 import { unstable_noStore as noStore } from "next/cache";
 
 import { db } from "@saasfly/db";

@@ -19,6 +19,7 @@ interface MobileNavProps {
 
 export function MobileNav({ items, children, menuItemClick }: MobileNavProps) {
   useLockBody();
+
   return (
     <section
       id="mobile-navigation"

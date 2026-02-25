@@ -3,11 +3,14 @@
 import React from "react";
 import Link from "next/link";
 
+import React from "react";
+
 import { BRAND, EXTERNAL_URLS, UI_LABELS } from "@saasfly/common";
 import { Close, Logo } from "@saasfly/ui/icons";
 
 import { DocumentGuide } from "~/components/document-guide";
 import { MobileNav } from "~/components/mobile-nav";
+import { useMobileMenu } from "~/hooks/use-mobile-menu";
 import type { MainNavItem } from "~/types";
 
 interface MainNavProps {
@@ -25,46 +28,11 @@ export const MainNav = React.memo(function MainNav({
   params: { lang },
   marketing,
 }: MainNavProps) {
-  const [showMobileMenu, setShowMobileMenu] = React.useState<boolean>(false);
-
-  const toggleMenu = React.useCallback(() => {
-    setShowMobileMenu((prev) => !prev);
-  }, []);
-
-  const closeMenu = React.useCallback(() => {
-    setShowMobileMenu(false);
-  }, []);
+  const { isOpen, toggle, close } = useMobileMenu();
 
   const handleMenuItemClick = React.useCallback(() => {
-    toggleMenu();
-  }, [toggleMenu]);
-
-  // Keyboard navigation and focus management for mobile menu
-  React.useEffect(() => {
-    if (!showMobileMenu) return;
-
-    // Handle Escape key to close menu
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        closeMenu();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-
-    // Focus management: move focus to first menu item when mobile menu opens
-    const timer = setTimeout(() => {
-      const firstLink = document.querySelector<HTMLAnchorElement>(
-        "#mobile-navigation a, #mobile-navigation button"
-      );
-      firstLink?.focus();
-    }, 50);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      clearTimeout(timer);
-    };
-  }, [showMobileMenu, closeMenu]);
+    close();
+  }, [close]);
 
   return (
     <div className="flex gap-6 md:gap-10">
@@ -91,17 +59,17 @@ export const MainNav = React.memo(function MainNav({
 
       <button
         className="flex items-center space-x-2 rounded-md px-2 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:hidden"
-        onClick={toggleMenu}
+        onClick={toggle}
         aria-label={
-          showMobileMenu ? UI_LABELS.closeMobileMenu : UI_LABELS.openMobileMenu
+          isOpen ? UI_LABELS.closeMobileMenu : UI_LABELS.openMobileMenu
         }
-        aria-expanded={showMobileMenu}
+        aria-expanded={isOpen}
         aria-controls="mobile-navigation"
       >
-        {showMobileMenu ? <Close /> : <Logo />}
+        {isOpen ? <Close /> : <Logo />}
         <span className="font-bold">{UI_LABELS.mobileMenu}</span>
       </button>
-      {showMobileMenu && items && (
+      {isOpen && items && (
         <MobileNav items={items} menuItemClick={handleMenuItemClick}>
           {children}
         </MobileNav>

@@ -1,0 +1,39 @@
+import type { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
+
+import type { AppRouter } from "./root";
+
+export { createTRPCContext } from "./trpc";
+
+export { t, type TRPCContext, type RateLimitInfo } from "./trpc";
+
+export {
+  generateRequestId,
+  extractRequestId,
+  getOrGenerateRequestId,
+  isValidRequestId,
+  createRequestContext,
+  REQUEST_ID_HEADER,
+} from "./request-id";
+
+export {
+  ErrorCode,
+  createApiError,
+  handleIntegrationError,
+  createValidationErrorMessage,
+  InvalidRequestIdError,
+  type ApiErrorResponse,
+} from "./errors";
+
+export type { AppRouter } from "./root";
+
+/**
+ * Inference helpers for input types
+ * @example type HelloInput = RouterInputs['example']['hello']
+ **/
+export type RouterInputs = inferRouterInputs<AppRouter>;
+
+/**
+ * Inference helpers for output types
+ * @example type HelloOutput = RouterOutputs['example']['hello']
+ **/
+export type RouterOutputs = inferRouterOutputs<AppRouter>;

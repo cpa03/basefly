@@ -1,0 +1,8 @@
+Contact: contact@nextify.ltd
+Expires: 2027-02-18T23:59:00.000Z
+Preferred-Languages: en
+Canonical: https://basefly.com/.well-known/security.txt
+Policy: https://github.com/basefly/basefly/blob/main/SECURITY.md
+
+This file is hosted in accordance with RFC 9116.
+Please report security vulnerabilities to contact@nextify.ltd.

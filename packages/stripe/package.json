@@ -1,0 +1,52 @@
+{
+  "name": "@saasfly/stripe",
+  "private": true,
+  "version": "0.1.0",
+  "exports": {
+    ".": "./src/index.ts",
+    "./plans": "./src/plans.ts",
+    "./env": "./src/env.mjs",
+    "./client": "./src/client.ts",
+    "./integration": "./src/integration.ts",
+    "./logger": "./src/logger.ts",
+    "./webhook-idempotency": "./src/webhook-idempotency.ts"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "src/*"
+      ]
+    }
+  },
+  "scripts": {
+    "clean": "rm -rf .turbo node_modules",
+    "dev": "stripe listen --forward-to localhost:3000/api/webhooks/stripe",
+    "lint": "eslint . --cache --cache-location 'node_modules/.cache/.eslintcache'",
+    "format": "prettier --check '**/*.{mjs,ts,json}' ",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@saasfly/common": "workspace:*",
+    "@saasfly/db": "workspace:*",
+    "@t3-oss/env-nextjs": "0.13.10",
+    "pino": "10.3.1",
+    "stripe": "20.3.1",
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@saasfly/eslint-config": "workspace:*",
+    "@saasfly/prettier-config": "workspace:*",
+    "@saasfly/typescript-config": "workspace:*",
+    "eslint": "8.57.0",
+    "prettier": "3.8.1",
+    "typescript": "5.9.3",
+    "@typescript-eslint/eslint-plugin": "8.56.0",
+    "eslint-plugin-import": "2.32.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@saasfly/eslint-config/base"
+    ]
+  },
+  "prettier": "@saasfly/prettier-config"
+}

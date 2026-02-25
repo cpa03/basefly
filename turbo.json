@@ -41,10 +41,15 @@
     },
     "test": {
       "dependsOn": ["^topo"],
+      "cache": true,
+      "inputs": [
+        "packages/**/*.ts",
+        "packages/**/*.tsx",
+        "packages/**/package.json",
+        "vitest.config.ts",
+        "tsconfig.json"
+      ],
       "outputs": ["coverage/**"]
-    },
-    "clean": {
-      "cache": false
     }
   }
 }

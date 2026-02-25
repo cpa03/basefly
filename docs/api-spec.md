@@ -1,4 +1,24 @@
-# Basefly API Specification
+#XP|# Basefly API Specification
+MS|
+HN|The Basefly API is built on tRPC (TypeScript Remote Procedure Call) and provides endpoints for managing Kubernetes clusters, customer subscriptions, and Stripe billing integration. All endpoints use a standardized error response format and implement resilience patterns including circuit breakers, retries, and timeouts.
+SY|
+
+## OpenAPI Documentation
+
+RN|
+BX|Machine-readable API specification available in OpenAPI 3.0 format:
+NB|
+ZX|- **OpenAPI JSON**: `GET /api/docs`
+TX|
+BH|- **Usage**: Compatible with Swagger UI, ReDoc, Postman, and other API tools
+VP|
+
+```bash
+KJ|# Example: Fetch OpenAPI spec
+KV|curl https://your-domain.com/api/docs
+```
+
+XS|## Base URL
 
 ## Overview
 

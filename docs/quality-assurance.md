@@ -1,110 +1,98 @@
-# Quality Assurance Documentation
+# Quality Assurance Agent - Long-term Memory
 
-## Overview
+## Agent: QA Specialist
 
-This document serves as the long-time memory for the Quality Assurance agent working on the basefly repository.
+## Date: 2026-02-25
 
-## Active Work
+---
 
-- **Issue #482**: Add E2E tests for critical user flows (P1, quality-assurance)
-  - Status: In Progress
-  - Deliverables: Playwright configuration, test fixtures, 3+ critical flow tests, CI integration, documentation
+## Current State
+
+### Open QA Issues
+
+1. **Issue #481**: Add integration tests for tRPC routers (P1, quality-assurance) - **IN PROGRESS (PR #574)**
+2. **Issue #482**: Add E2E tests for critical user flows (P1, quality-assurance) - **NOT STARTED**
+
+### Previous Work Done (2026-01-08)
+
+- Created comprehensive unit tests for:
+  - Database service layer (soft-delete, user-deletion)
+  - Integration layer (circuit breaker, retry, timeout)
+  - Stripe client wrapper
+- Test coverage increased by 1103%
+- Documentation: docs/qa-task-summary.md, docs/test-coverage.md
+
+### Current Focus
+
+**Completed (2026-02-25)**:
+
+- PR #574: Added test-utils.ts with mock context factory for testing protected procedures
+- Fixed TypeScript error: `claims` property doesn't exist in Clerk's SignedInAuthObject type
+- Verified: typecheck ✅, lint ✅, 565 tests ✅
+
+---
+
+## Router Structure
+
+### Routers to Test
+
+1. `authRouter` - Subscription information (1 procedure: mySubscription)
+2. `customerRouter` - Customer CRUD (3 procedures: updateUserName, insertCustomer, queryCustomer)
+3. `stripeRouter` - Stripe operations
+4. `k8sRouter` - Kubernetes cluster management
+
+### Key Dependencies
+
+- `@saasfly/db` - Database access via Kysely
+- `@clerk/nextjs/server` - Authentication
+- `@saasfly/common` - Shared constants
+- Rate limiting middleware
+
+### Testing Approach
+
+- Create mock context factory for tRPC
+- Mock database layer
+- Test protected procedures with authenticated/unauthenticated contexts
+
+---
 
 ## Test Infrastructure
 
-### Current State
+- Framework: Vitest
+- Run: `pnpm test`
+- Location: `packages/api/src/router/*.test.ts`
 
-- **Unit Tests**: Vitest (19 test files in packages/)
-- **E2E Tests**: Playwright (configured and ready)
-- **CI**: GitHub Actions workflows
+---
 
-### Previous QA Work (Merged PRs)
+## Action Items
 
-- #574: qa: Add integration tests verification for tRPC routers
-- #537: qa: add lcov reporter to vitest config for CI coverage integration
-- #508: test: Add unit tests for common config modules
-- #426: qa: add CI workflow validation tool
-- #419: qa: add Quality Assurance checklist to PR template
-- #202: test(common): add tests for feature flags module
+- [x] Created quality-assurance.md memory
+- [x] Create test utilities for tRPC context mocking (PR #574)
+- [ ] Implement authRouter tests
+- [ ] Implement customerRouter tests
+- [ ] Implement stripeRouter tests
+- [ ] Implement k8sRouter tests
+- [x] Verify all tests pass
+- [x] Create PR linked to issue #481 (PR #574)
 
-## E2E Test Implementation
+---
 
-### Critical User Flows Tested
+## PR #574 Details
 
-1. **Authentication Flow** (`e2e/auth.spec.ts`)
-   - Login page loads correctly
-   - Signup page loads correctly
-   - Form elements present
+**Status**: Open, 2 commits, needs merge
 
-2. **Dashboard Flow** (`e2e/dashboard.spec.ts`)
-   - Dashboard page redirects to login when not authenticated
-   - Marketing page loads correctly
-   - Protected routes work correctly
+**Commits**:
 
-3. **Pricing/Subscription Flow** (`e2e/pricing.spec.ts`)
-   - Pricing page loads correctly
-   - Subscription plans display
-   - Navigation works
+1. `c59bee1` - qa: Add integration tests for tRPC routers and test utilities
+2. `2d59b41` - fix: type error in test-utils auth mock
 
-### Configuration Files
+**Changes**:
 
-- `playwright.config.ts` - Main Playwright configuration
-- `e2e/fixtures.ts` - Test fixtures and helper functions
-- `e2e/auth.spec.ts` - Authentication flow tests
-- `e2e/dashboard.spec.ts` - Dashboard flow tests
-- `e2e/pricing.spec.ts` - Pricing flow tests
+- `docs/quality-assurance.md` - QA memory document
+- `packages/api/src/test-utils.ts` - Test utilities for mocking tRPC contexts
 
-### Running E2E Tests Locally
+**Verification**:
 
-**Prerequisites:**
-
-```bash
-# Install dependencies
-pnpm install
-
-# Install Playwright browsers
-pnpm test:e2e:install
-```
-
-**Run E2E Tests:**
-
-```bash
-# Run all E2E tests
-pnpm test:e2e
-
-# Run with UI mode
-pnpm test:e2e:ui
-
-# Run in headed mode (see browser)
-pnpm test:e2e:headed
-
-# Run specific test file
-pnpm playwright test e2e/auth.spec.ts
-
-# Run specific test
-pnpm playwright test e2e/auth.spec.ts --grep "login page"
-```
-
-**Environment Variables:**
-
-- `BASE_URL` - Override default URL (default: http://localhost:3000)
-- `E2E_TEST_USER_EMAIL` - Test user email
-- `E2E_TEST_USER_PASSWORD` - Test user password
-
-### CI Integration
-
-E2E tests run via `.github/workflows/e2e.yml` workflow:
-
-- Runs on schedule (every 6 hours)
-- Can be triggered manually via workflow_dispatch
-- Uploads Playwright report on completion
-
-## Notes
-
-- Auth is handled by Clerk (external service)
-- Tests use environment variables for URLs
-- Playwright handles web server startup automatically in local mode
-
-## Last Updated
-
-2026-02-25
+- Typecheck: ✅ Pass
+- Lint: ✅ Pass
+- Tests: ✅ 565 tests pass

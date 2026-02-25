@@ -138,22 +138,40 @@ const sheetVariants = cva(
   },
 );
 
-export interface DialogContentProps
+export interface SheetContentProps
   extends
     React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
-    VariantProps<typeof sheetVariants> {}
+    VariantProps<typeof sheetVariants> {
+  /** Title for accessibility (used as aria-labelledby) */
+  title?: string;
+  /** Description for accessibility (used as aria-describedby) */
+  description?: string;
+}
 
 const SheetContent = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Content>,
-  DialogContentProps
->(({ position, size, className, children, ...props }, ref) => (
+  SheetContentProps
+>(({ position, size, className, children, title, description, ...props }, ref) => (
   <SheetPortal position={position}>
     <SheetOverlay />
     <SheetPrimitive.Content
       ref={ref}
       className={cn(sheetVariants({ position, size }), className)}
+      aria-modal="true"
+      aria-labelledby={title ? "sheet-title" : undefined}
+      aria-describedby={description ? "sheet-description" : undefined}
       {...props}
     >
+      {title && (
+        <h2 id="sheet-title" className="sr-only">
+          {title}
+        </h2>
+      )}
+      {description && (
+        <p id="sheet-description" className="sr-only">
+          {description}
+        </p>
+      )}
       {children}
       <SheetPrimitive.Close
         aria-label="Close"

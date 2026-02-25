@@ -1,7 +1,45 @@
 #R&D Documentation
 
 ## Active R&D Work
+RW|
+### Issue #649: Remove eslint-disable comments in k8s.ts router
 
+**Status**: PR #657
+
+**Objective**: Remove eslint-disable comments that were disabling TypeScript safety checks in the k8s router.
+
+**Implementation**:
+
+1. **Removed** eslint-disable comment at line 101:
+   - Was disabling: `@typescript-eslint/no-unsafe-assignment`
+   - Was disabling: `@typescript-eslint/no-unsafe-member-access`
+   - Was disabling: `@typescript-eslint/no-unsafe-return`
+
+2. **Added** explicit type annotation to satisfy ESLint rules:
+   - Changed: `const cluster = await k8sClusterService.findActive(clusterId, userId);`
+   - To: `const cluster: K8sClusterConfig | undefined = await k8sClusterService.findActive(clusterId, userId);`
+
+3. **Removed** redundant eslint-enable comment at line 126
+
+**Benefits**:
+
+- **Improved type safety**: No more suppressing TypeScript checks
+- **Better code quality**: Explicit types make the code more maintainable
+- **Fewer potential runtime errors**: Type safety prevents null pointer issues
+
+**Files Changed**:
+
+- `packages/api/src/router/k8s.ts` - Removed eslint-disable comments, added explicit type
+
+**Verification**:
+
+- [x] ESLint comments removed
+- [x] Code compiles with explicit types
+- [x] Git diff is minimal and focused
+
+---
+
+BY|### Issue #636: ISR Caching for Dashboard Data
 ### Issue #636: ISR Caching for Dashboard Data
 
 **Status**: PR #648

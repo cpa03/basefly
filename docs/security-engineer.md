@@ -1,5 +1,34 @@
 # Security Engineer Work Log
 
+## 2026-02-25 - Issue #477: Make CLERK_SECRET_KEY Required
+
+### Actions Completed:
+
+1. Fixed security issue in `apps/nextjs/src/env.mjs`
+   - Removed `.optional()` from CLERK_SECRET_KEY validation
+   - Changed from `z.string().min(1).optional()` to `z.string().min(1)`
+2. Created PR #585 with security-engineer label
+3. Verified all checks pass:
+   - TypeScript: ✅ PASSED
+   - ESLint: ✅ PASSED
+
+### Changes:
+
+- `apps/nextjs/src/env.mjs` - Made CLERK_SECRET_KEY required for server-side operations
+
+### Impact:
+
+- **Security**: Server-side Clerk operations now require secret key, preventing potential auth bypass
+- **Risk**: Low - aligns with other required server variables (STRIPE_API_KEY, STRIPE_WEBHOOK_SECRET)
+
+### Verification:
+
+- Issue #477: CLERK_SECRET_KEY required - **RESOLVED** (PR #585)
+
+---
+
+# Security Engineer Work Log
+
 ## 2026-02-25 - Issue #478: Fix CORS Wildcard
 
 ### Actions Completed:

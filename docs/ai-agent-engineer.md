@@ -18,40 +18,6 @@ This document serves as the long-term memory for the ai-agent-engineer domain in
 | Metis             | opencode/glm-4.7-free      | Pre-planning consultant                |
 | Momus             | opencode/glm-4.7-free      | Expert reviewer                        |
 | Plan              | opencode/kimi-k2.5-free    | Planning and task orchestration        |
-| ----------------- | -------------------------- | -------------------------------------- |
-| Sisyphus          | opencode/kimi-k2.5-free    | Main orchestrator for complex tasks    |
-| Oracle            | opencode/glm-4.7-free      | Architecture, debugging, deep analysis |
-| Librarian         | opencode/glm-4.7-free      | Documentation and research             |
-| Explore           | opencode/gpt-5-nano        | Fast exploration and grep              |
-| Multimodal Looker | opencode/minimax-m2.1-free | Visual/UI tasks                        |
-| Metis             | opencode/glm-4.7-free      | Pre-planning consultant                |
-| Momus             | opencode/glm-4.7-free      | Expert reviewer                        |
-<<<<<<< HEAD
-| Plan              | opencode/kimi-k2.5-free    | Planning and task orchestration        |
-| Agent             | Model                      | Purpose                                |
-| ----------------- | -------------------------- | -------------------------------------- |
-| Sisyphus          | opencode/kimi-k2.5-free    | Main orchestrator for complex tasks    |
-| Oracle            | opencode/glm-4.7-free      | Architecture, debugging, deep analysis |
-| Librarian         | opencode/glm-4.7-free      | Documentation and research             |
-| Explore           | opencode/gpt-5-nano        | Fast exploration and grep              |
-| Multimodal Looker | opencode/minimax-m2.1-free | Visual/UI tasks                        |
-| Metis             | opencode/glm-4.7-free      | Pre-planning consultant                |
-| Momus             | opencode/glm-4.7-free      | Expert reviewer                        |
-=======
-| Agent | Model | Purpose |
-|-------|-------|---------|
-| Sisyphus | opencode/kimi-k2.5-free | Main orchestrator for complex tasks |
-| Oracle | opencode/glm-4.7-free | Architecture, debugging, deep analysis |
-| Librarian | opencode/glm-4.7-free | Documentation and research |
-| Explore | opencode/gpt-5-nano | Fast exploration and grep |
-| Multimodal Looker | opencode/minimax-m2.1-free | Visual/UI tasks |
-| Metis | opencode/glm-4.7-free | Pre-planning consultant |
-| Momus | opencode/glm-4.7-free | Expert reviewer |
-| Plan | opencode/kimi-k2.5-free | Planning and task orchestration |
->>>>>>> 8f65161 (feat(ai-agent): add missing plan agent configuration)
-=======
-| Plan             | opencode/kimi-k2.5-free    | Planning and task orchestration        |
->>>>>>> 8084ae7 (feat(ai-agent): add missing plan agent configuration)
 
 ### Available Categories
 
@@ -105,6 +71,7 @@ All ai-agent-engineer skill files are located in `.opencode/skills/ai-agent-engi
 - Verified typecheck and lint pass locally
 - Confirmed Vercel failure is pre-existing infrastructure issue
 - Commented on PR with verification results
+- Fixed git merge conflict markers in this document
 
 ### 2026-02-25 (Session 1)
 
@@ -112,14 +79,6 @@ All ai-agent-engineer skill files are located in `.opencode/skills/ai-agent-engi
 - Documented current agent configuration
 - Established baseline for future improvements
 - Added planning skills reference and /start-work command to SKILL.md (PR #571)
-
-## Best Practices
-
-### 2026-02-25
-
-- Created this long-term memory document
-- Documented current agent configuration
-- Established baseline for future improvements
 
 ## Best Practices
 

@@ -11,7 +11,7 @@
 ### Open QA Issues
 
 1. **Issue #481**: Add integration tests for tRPC routers (P1, quality-assurance) - **IN PROGRESS (PR #574)**
-2. **Issue #482**: Add E2E tests for critical user flows (P1, quality-assurance) - **NOT STARTED**
+2. **Issue #482**: Add E2E tests for critical user flows (P1, quality-assurance) - **IMPLEMENTED**
 
 ### Previous Work Done (2026-01-08)
 
@@ -28,37 +28,48 @@
 
 - PR #574: Added test-utils.ts with mock context factory for testing protected procedures
 - Fixed TypeScript error: `claims` property doesn't exist in Clerk's SignedInAuthObject type
-- Verified: typecheck ✅, lint ✅, 565 tests ✅
+- Verified: typecheck ✅, lint ✅, 585 tests ✅
+- **Issue #482**: Added E2E test infrastructure with Playwright
+  - Created playwright.config.ts
+  - Created test fixtures in tests/e2e/fixtures.ts
+  - Created E2E tests: auth, pricing, dashboard, home pages
+  - Added E2E test scripts to package.json
 
 ---
 
-## Router Structure
+## E2E Test Infrastructure
 
-### Routers to Test
+### Framework: Playwright
 
-1. `authRouter` - Subscription information (1 procedure: mySubscription)
-2. `customerRouter` - Customer CRUD (3 procedures: updateUserName, insertCustomer, queryCustomer)
-3. `stripeRouter` - Stripe operations
-4. `k8sRouter` - Kubernetes cluster management
+- Run: `pnpm test:e2e`
+- Run with UI: `pnpm test:e2e:ui`
+- Run headed: `pnpm test:e2e:headed`
+- Install browsers: `pnpm test:e2e:install`
+- Location: `tests/e2e/*.spec.ts`
 
-### Key Dependencies
+### Test Files Created
 
-- `@saasfly/db` - Database access via Kysely
-- `@clerk/nextjs/server` - Authentication
-- `@saasfly/common` - Shared constants
-- Rate limiting middleware
+| File                | Description                |
+| ------------------- | -------------------------- |
+| `fixtures.ts`       | Test utilities and helpers |
+| `auth.spec.ts`      | Login page tests           |
+| `pricing.spec.ts`   | Pricing page tests         |
+| `dashboard.spec.ts` | Dashboard access tests     |
+| `home.spec.ts`      | Home page tests            |
 
-### Testing Approach
+### Critical Flows Covered
 
-- Create mock context factory for tRPC
-- Mock database layer
-- Test protected procedures with authenticated/unauthenticated contexts
+1. **Authentication Flow** - Login page loads, Clerk component renders
+2. **Pricing Flow** - Pricing page loads, pricing cards and FAQ display
+3. **Dashboard Flow** - Unauthenticated users redirected to login
+4. **Home Page Flow** - Home page loads, navigation works
 
 ---
 
-## Test Infrastructure
+## Unit Test Infrastructure
 
-- Framework: Vitest
+### Framework: Vitest
+
 - Run: `pnpm test`
 - Location: `packages/api/src/router/*.test.ts`
 
@@ -68,12 +79,35 @@
 
 - [x] Created quality-assurance.md memory
 - [x] Create test utilities for tRPC context mocking (PR #574)
+- [x] Implement E2E test infrastructure (Issue #482)
+- [x] Verify all tests pass
+- [x] Create PR linked to issue #481 (PR #574)
 - [ ] Implement authRouter tests
 - [ ] Implement customerRouter tests
 - [ ] Implement stripeRouter tests
 - [ ] Implement k8sRouter tests
-- [x] Verify all tests pass
-- [x] Create PR linked to issue #481 (PR #574)
+
+---
+
+## PR #482 (E2E Tests) Details
+
+**Status**: Ready for PR
+
+**Changes**:
+
+- `playwright.config.ts` - Playwright configuration
+- `tests/e2e/fixtures.ts` - Test utilities
+- `tests/e2e/auth.spec.ts` - Authentication flow tests
+- `tests/e2e/pricing.spec.ts` - Pricing page tests
+- `tests/e2e/dashboard.spec.ts` - Dashboard access tests
+- `tests/e2e/home.spec.ts` - Home page tests
+- `package.json` - Added E2E test scripts
+
+**Verification**:
+
+- Typecheck: ✅ Pass
+- Lint: ✅ Pass
+- Unit Tests: ✅ 585 tests pass
 
 ---
 
@@ -95,4 +129,4 @@
 
 - Typecheck: ✅ Pass
 - Lint: ✅ Pass
-- Tests: ✅ 565 tests pass
+- Tests: ✅ 585 tests pass

@@ -346,6 +346,17 @@ export type {
   BadgeSize,
   FocusVariant,
 } from "./ui-tokens";
-
 export type { SubscriptionPlan } from "./subscriptions";
 export { pricingData } from "./subscriptions";
+
+// Logger - centralized logging solution
+export {
+  logger,
+  apiLogger,
+  dbLogger,
+  stripeLogger,
+  authLogger,
+  createLogger,
+  createLoggerWrapper,
+} from "./logger";
+export type { LoggerConfig, LogMetadata, PackageName, BaseLogger } from "./logger";

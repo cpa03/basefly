@@ -45,11 +45,12 @@ const HTTP_SECURITY_HEADERS = {
   // CORP: Prevents cross-origin resource leaks
   CROSS_ORIGIN_RESOURCE_POLICY: "same-origin",
   // Content-Security-Policy for XSS protection
-  // Note: 'unsafe-eval' and 'unsafe-inline' are needed for Next.js dev mode and some UI libraries
+  // Note: 'unsafe-inline' is needed for Next.js dynamic styles and some UI libraries
+  // In production, consider using nonces for stricter CSP
   // In production, consider using nonces/hashes for stricter CSP
   CSP: [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://challenges.cloudflare.com",
+    "script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob: https: http:",
     "font-src 'self' data:",

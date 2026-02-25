@@ -1,4 +1,8 @@
-import { test as base, Page } from "@playwright/test";
+import { test as base, Page, expect } from "@playwright/test";
+
+export { expect } from "@playwright/test";
+export const test = base;
+export type TestType = typeof base;
 
 export const testData = {
   validEmail: "test@example.com",

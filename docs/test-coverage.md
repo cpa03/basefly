@@ -387,9 +387,74 @@ Critical paths and edge cases covered comprehensively.
 - [ ] Integration tests for full request flows
 - [ ] Performance regression tests
 
+## E2E Test Infrastructure
+
+### Framework: Playwright
+
+| Command | Description |
+| ------- | ----------- |
+| `pnpm test:e2e` | Run all E2E tests |
+| `pnpm test:e2e:ui` | Run E2E tests with UI |
+| `pnpm test:e2e:headed` | Run E2E tests with browser visible |
+| `pnpm test:e2e:install` | Install Playwright browsers |
+| `pnpm test:e2e:report` | View HTML test report |
+
+### Test Files
+
+| File | Description |
+| ---- | ----------- |
+| `tests/e2e/fixtures.ts` | Test utilities and helpers |
+| `tests/e2e/auth.spec.ts` | Login page and authentication tests |
+| `tests/e2e/pricing.spec.ts` | Pricing page tests |
+| `tests/e2e/dashboard.spec.ts` | Dashboard access control tests |
+| `tests/e2e/home.spec.ts` | Home page tests |
+| `tests/e2e/cluster.spec.ts` | Cluster management flow tests |
+| `tests/e2e/admin.spec.ts` | Admin dashboard access tests |
+
+### Critical Flows Covered
+
+1. **Authentication Flow** - Login page loads, Clerk component renders, back link works
+2. **Pricing Flow** - Pricing page loads, pricing cards and FAQ display
+3. **Dashboard Flow** - Unauthenticated users redirected to login
+4. **Home Page Flow** - Home page loads, navigation works
+5. **Cluster Management Flow** - Dashboard access, cluster create page, cluster details protection
+6. **Admin Flow** - Admin dashboard access control
+
+### Running E2E Tests Locally
+
+```bash
+# Install dependencies
+pnpm install
+
+# Install Playwright browsers
+pnpm test:e2e:install
+
+# Start development server
+pnpm run dev:web
+
+# Run E2E tests in separate terminal
+pnpm test:e2e
+
+# Or run with UI for debugging
+pnpm test:e2e:ui
+```
+
+### CI Integration
+
+E2E tests are automatically run in GitHub Actions. See `.github/workflows/e2e.yml` for configuration.
+
+To run E2E tests manually in CI:
+
+```bash
+# Trigger E2E workflow
+gh workflow run e2e.yml
+```
+
+---
+
 ### Low Priority
 
-- [ ] E2E tests with Playwright/Cypress
+- [x] E2E tests with Playwright/Cypress
 - [ ] Visual regression tests
 - [ ] Load testing
 

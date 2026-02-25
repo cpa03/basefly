@@ -11,6 +11,11 @@
 ### Open QA Issues
 
 1. **Issue #481**: Add integration tests for tRPC routers (P1, quality-assurance) - **IN PROGRESS (PR #574)**
+2. **Issue #482**: Add E2E tests for critical user flows (P1, quality-assurance) - **COMPLETED**
+
+### Open QA Issues
+
+1. **Issue #481**: Add integration tests for tRPC routers (P1, quality-assurance) - **IN PROGRESS (PR #574)**
 2. **Issue #482**: Add E2E tests for critical user flows (P1, quality-assurance) - **IMPLEMENTED**
 
 ### Previous Work Done (2026-01-08)
@@ -23,6 +28,21 @@
 - Documentation: docs/qa-task-summary.md, docs/test-coverage.md
 
 ### Current Focus
+
+**Completed (2026-02-25)**:
+
+- PR #574: Added test-utils.ts with mock context factory for testing protected procedures
+- Fixed TypeScript error: `claims` property doesn't exist in Clerk's SignedInAuthObject type
+- Verified: typecheck ✅, lint ✅, 585 tests ✅
+- **Issue #482**: Added E2E test infrastructure with Playwright
+  - Created playwright.config.ts
+  - Created test fixtures in tests/e2e/fixtures.ts
+  - Created E2E tests: auth, pricing, dashboard, home pages
+  - Added E2E test scripts to package.json
+  - **Added cluster management tests** (tests/e2e/cluster.spec.ts)
+  - **Added admin dashboard tests** (tests/e2e/admin.spec.ts)
+  - **Added E2E CI workflow** (.github/workflows/e2e.yml)
+  - **Added E2E documentation** to docs/test-coverage.md
 
 **Completed (2026-02-25)**:
 
@@ -56,8 +76,30 @@
 | `pricing.spec.ts`   | Pricing page tests         |
 | `dashboard.spec.ts` | Dashboard access tests     |
 | `home.spec.ts`      | Home page tests            |
+| `cluster.spec.ts`   | Cluster management tests   |
+| `admin.spec.ts`     | Admin dashboard tests      |
+
+| File                | Description                |
+| ------------------- | -------------------------- |
+| `fixtures.ts`       | Test utilities and helpers |
+| `auth.spec.ts`      | Login page tests           |
+| `pricing.spec.ts`   | Pricing page tests         |
+| `dashboard.spec.ts` | Dashboard access tests     |
+| `home.spec.ts`      | Home page tests            |
 
 ### Critical Flows Covered
+
+1. **Authentication Flow** - Login page loads, Clerk component renders
+2. **Pricing Flow** - Pricing page loads, pricing cards and FAQ display
+3. **Dashboard Flow** - Unauthenticated users redirected to login
+4. **Home Page Flow** - Home page loads, navigation works
+5. **Cluster Management Flow** - Dashboard access, cluster create page, cluster details protection
+6. **Admin Flow** - Admin dashboard access control
+
+### CI Integration
+
+- E2E tests run via GitHub Actions (.github/workflows/e2e.yml)
+- Triggered on PR changes to tests/e2e/ or manually
 
 1. **Authentication Flow** - Login page loads, Clerk component renders
 2. **Pricing Flow** - Pricing page loads, pricing cards and FAQ display
@@ -76,6 +118,23 @@
 ---
 
 ## Action Items
+
+- [x] Created quality-assurance.md memory
+- [x] Create test utilities for tRPC context mocking (PR #574)
+- [x] Implement E2E test infrastructure (Issue #482)
+  - [x] Create playwright.config.ts
+  - [x] Create test fixtures
+  - [x] Create E2E test files (auth, pricing, dashboard, home)
+  - [x] Add cluster management tests
+  - [x] Add admin dashboard tests
+  - [x] Add E2E CI workflow
+  - [x] Add E2E documentation
+- [x] Verify all tests pass
+- [x] Create PR linked to issue #481 (PR #574)
+- [ ] Implement authRouter tests
+- [ ] Implement customerRouter tests
+- [ ] Implement stripeRouter tests
+- [ ] Implement k8sRouter tests
 
 - [x] Created quality-assurance.md memory
 - [x] Create test utilities for tRPC context mocking (PR #574)

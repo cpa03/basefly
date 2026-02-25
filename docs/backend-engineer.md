@@ -19,14 +19,24 @@ Basefly is a Next.js-based SaaS template with:
 
 ### Issue 479: Centralized Logging Facade
 
-- **Status**: In Progress
-- **Problem**: Each package implements its own logging solution with pino, leading to inconsistent formats
-- **Solution**: Create shared logger in packages/common/src/logger.ts
+- **Status**: Completed (PR #572 merged)
+- **Solution**: Created shared logger in packages/common/src/logger.ts
+
+### Issue 548: Replace console-based logging in packages/db
+
+- **Status**: Completed (PR #587 merged)
+- **Problem**: console.log/error statements in seed.ts
+- **Solution**: Replaced with logger from packages/db/logger.ts
 
 ### Issue 549: Add tests for packages/auth module
 
 - **Status**: Pending
 - **Problem**: Auth module has 0% test coverage
+
+### Issue 551: Add tests for k8s router
+
+- **Status**: Pending
+- **Problem**: Core business logic needs test coverage
 
 ## Existing Patterns
 
@@ -46,6 +56,17 @@ Located in `packages/common/src/index.ts`:
 - LOG_LEVEL, IS_DEV, IS_PROD, IS_TEST from config/env.ts
 - Various configuration exports
 
+### Using the Logger
+
+Import logger from local package:
+
+```typescript
+// or
+import { createLoggerWrapper, dbLogger } from "@saasfly/common";
+
+import { logger } from "./logger";
+```
+
 ## Dependencies
 
 ### Pino Versions
@@ -55,17 +76,49 @@ Located in `packages/common/src/index.ts`:
 - packages/stripe: pino 10.3.1
 - packages/auth: pino ^9.6.0
 
+## Vercel Configuration
+
+### Valid vercel.json Properties
+
+When configuring vercel.json, only use these function properties:
+
+- `memory` - integer (1024-3009 MB)
+- `maxDuration` - integer (seconds, depends on plan)
+
+**Invalid properties (do NOT use):**
+
+- `skewProtection` - NOT a valid vercel.json property
+- `minDuration` - NOT a valid vercel.json property
+- `fluid` - Only valid in dashboard, not in vercel.json
+
+### Example Functions Config
+
+```json
+{
+  "functions": {
+    "apps/nextjs/src/app/api/**/*.ts": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  }
+}
+```
+
 ## Testing Patterns
 
 Tests are located alongside source files with `.test.ts` suffix:
 
 - `packages/common/src/config/*.test.ts`
 
-## Work In Progress
+## Session Notes
 
-### Centralized Logger Implementation
+### 2026-02-25 Session
 
-1. Create `packages/common/src/logger.ts`
-2. Add pino dependency to common package
-3. Export from common package
-4. Migrate all packages to use centralized logger
+1. **Fixed PR #572**: Rebased onto updated main (vercel.json fix) and merged
+2. **Created PR #582**: Fixed vercel.json schema - removed invalid properties (skewProtection, minDuration)
+3. **Created PR #587**: Replaced console statements in packages/db/seed.ts with logger
+
+### Common Issues
+
+- Vercel rate limiting: "api-deployments-free-per-day" - wait 2 hours or merge without Vercel check
+- Console in seed scripts: Can use logger, but eslint-disable-no-console is also acceptable for dev scripts

@@ -36,7 +36,16 @@
 - Fixed `iterate.yml`: Changed `npm ci` to `pnpm install`
 - Updated cache paths to use pnpm's cache location
 
+### 2026-02-25: Extract Embedded AI Prompts from on-pull.yml
+**Issue**: The on-pull.yml workflow contained ~360 lines of embedded AI prompt, making the file difficult to maintain, review, and debug.
+**Impact**: Improved CI/CD maintainability, easier code reviews, better version control for prompt changes.
+**Changes**:
+- Created `.github/prompts/agent-operating-contract.md` for extracted prompt
+- Updated on-pull.yml to read prompt from external file using `$(cat .github/prompts/agent-operating-contract.md)`
+- Reduced workflow file from 436 lines to 77 lines
+
 ## Known Issues / Opportunities
 
 - [ ] Consider adding pnpm action-setup for better caching
 - [x] Review other workflows for consistency (removed duplicate)
+- [x] Extract embedded AI prompts from workflow files (created .github/prompts/)

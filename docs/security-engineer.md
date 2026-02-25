@@ -1,5 +1,38 @@
 # Security Engineer Work Log
 
+## 2026-02-25 - Issue #478: Fix CORS Wildcard
+
+### Actions Completed:
+
+1. Fixed CORS security issue in `apps/nextjs/public/_headers`
+   - Changed `Access-Control-Allow-Origin: *` to `Access-Control-Allow-Origin: same-origin`
+   - This is the most restrictive and secure option for font files
+2. Added `ALLOWED_ORIGINS` environment variable to `.env.example`
+   - Documents the expected configuration for production deployments
+   - Provides flexibility for future middleware-based CORS validation
+3. Verified all checks pass:
+   - TypeScript: ✅ PASSED (8 packages)
+   - ESLint: ✅ PASSED (0 warnings)
+
+### Changes:
+
+- `apps/nextjs/public/_headers` - Changed CORS from wildcard to same-origin
+- `.env.example` - Added ALLOWED_ORIGINS documentation
+
+### Impact:
+
+- **Security**: Prevents unauthorized cross-origin requests to font resources
+- **Compatibility**: Maintains local development functionality (localhost:3000 works)
+- **Risk**: Low - same-origin is a safe default that allows fonts from the same domain
+
+### Verification:
+
+- Issue #478: CORS configuration - **RESOLVED**
+
+---
+
+# Security Engineer Work Log
+
 ## 2026-02-25 - PR #542 Update
 
 ### Actions Completed:

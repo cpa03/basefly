@@ -39,6 +39,11 @@
       "model": "opencode/glm-4.7-free",
       "temperature": 0.2,
       "description": "Expert reviewer - evaluates work plans for clarity, verifiability, and completeness"
+    },
+    "plan": {
+      "model": "opencode/kimi-k2.5-free",
+      "temperature": 0.4,
+      "description": "Planning agent - creates detailed work breakdowns and task orchestration"
     }
   },
 
@@ -92,6 +97,11 @@
       "model": "opencode/kimi-k2.5-free",
       "temperature": 0.5,
       "description": "Tasks that don't fit other categories, high effort required"
+    },
+    "plan": {
+      "model": "opencode/kimi-k2.5-free",
+      "temperature": 0.4,
+      "description": "Planning and task orchestration"
     }
   },
 

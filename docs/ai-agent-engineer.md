@@ -8,15 +8,15 @@ This document serves as the long-term memory for the ai-agent-engineer domain in
 
 ### Available Agents
 
-| Agent | Model | Purpose |
-|-------|-------|---------|
-| Sisyphus | opencode/kimi-k2.5-free | Main orchestrator for complex tasks |
-| Oracle | opencode/glm-4.7-free | Architecture, debugging, deep analysis |
-| Librarian | opencode/glm-4.7-free | Documentation and research |
-| Explore | opencode/gpt-5-nano | Fast exploration and grep |
-| Multimodal Looker | opencode/minimax-m2.1-free | Visual/UI tasks |
-| Metis | opencode/glm-4.7-free | Pre-planning consultant |
-| Momus | opencode/glm-4.7-free | Expert reviewer |
+| Agent             | Model                      | Purpose                                |
+| ----------------- | -------------------------- | -------------------------------------- |
+| Sisyphus          | opencode/kimi-k2.5-free    | Main orchestrator for complex tasks    |
+| Oracle            | opencode/glm-4.7-free      | Architecture, debugging, deep analysis |
+| Librarian         | opencode/glm-4.7-free      | Documentation and research             |
+| Explore           | opencode/gpt-5-nano        | Fast exploration and grep              |
+| Multimodal Looker | opencode/minimax-m2.1-free | Visual/UI tasks                        |
+| Metis             | opencode/glm-4.7-free      | Pre-planning consultant                |
+| Momus             | opencode/glm-4.7-free      | Expert reviewer                        |
 
 ### Available Categories
 
@@ -68,6 +68,15 @@ All ai-agent-engineer skill files are located in `.opencode/skills/ai-agent-engi
 - Created this long-term memory document
 - Documented current agent configuration
 - Established baseline for future improvements
+- Added planning skills reference and /start-work command to SKILL.md (PR #571)
+
+## Best Practices
+
+### 2026-02-25
+
+- Created this long-term memory document
+- Documented current agent configuration
+- Established baseline for future improvements
 
 ## Best Practices
 
@@ -80,11 +89,11 @@ All ai-agent-engineer skill files are located in `.opencode/skills/ai-agent-engi
 
 ### Temperature Guidelines
 
-| Range | Use Case |
-|-------|----------|
+| Range   | Use Case               |
+| ------- | ---------------------- |
 | 0.1-0.3 | Factual, deterministic |
-| 0.4-0.6 | Balanced reasoning |
-| 0.7-0.9 | Creative, exploratory |
+| 0.4-0.6 | Balanced reasoning     |
+| 0.7-0.9 | Creative, exploratory  |
 
 ### Workflow
 

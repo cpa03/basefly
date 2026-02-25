@@ -95,3 +95,15 @@ export function isAdminEmail(email: string | null | undefined): boolean {
 export function isValidLogLevel(level: string): level is LogLevel {
   return Object.values(LogLevel).includes(level as LogLevel);
 }
+
+/**
+ * Redis connection URL for distributed rate limiting
+ * Format: redis://[[username:]password@]host[:port][/database]
+ * Leave empty to use in-memory rate limiter (development)
+ */
+export const REDIS_URL: string = process.env.REDIS_URL ?? "";
+
+/**
+ * Check if Redis is configured (for production/distributed deployments)
+ */
+export const IS_REDIS_CONFIGURED = !!REDIS_URL;

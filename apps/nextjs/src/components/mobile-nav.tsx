@@ -1,0 +1,67 @@
+"use client";
+
+import * as React from "react";
+import Link from "next/link";
+
+import { Z_INDEX } from "@saasfly/common/config/ui";
+import { cn } from "@saasfly/ui";
+import { Logo } from "@saasfly/ui/icons";
+
+import { siteConfig } from "~/config/site";
+import { useLockBody } from "~/hooks/use-lock-body";
+import type { MainNavItem } from "~/types";
+
+interface MobileNavProps {
+  items: MainNavItem[];
+  children?: React.ReactNode;
+  menuItemClick?: () => void;
+}
+
+export function MobileNav({ items, children, menuItemClick }: MobileNavProps) {
+  useLockBody();
+
+  return (
+    <section
+      id="mobile-navigation"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Mobile navigation menu"
+      className={cn(
+        "fixed inset-0 top-16",
+        Z_INDEX.modal,
+        "grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto p-6 pb-32 shadow-md animate-in slide-in-from-bottom-80 md:hidden",
+      )}
+    >
+      <div className="relative z-20 grid gap-6 rounded-md bg-popover p-4 text-popover-foreground shadow-md">
+        <Link href="/" className="flex items-center space-x-2">
+          <Logo />
+          <span className="font-bold">{siteConfig.name}</span>
+        </Link>
+        <nav className="text-sm" aria-label="Main navigation">
+          <ul className="grid grid-flow-row auto-rows-max">
+            {items.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.disabled ? "#" : item.href}
+                  className={cn(
+                    "flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline",
+                    item.disabled &&
+                      "pointer-events-none cursor-not-allowed opacity-60",
+                  )}
+                  onClick={
+                    item.disabled ? (e) => e.preventDefault() : menuItemClick
+                  }
+                  aria-disabled={item.disabled}
+                  tabIndex={item.disabled ? -1 : undefined}
+                >
+                  {item.title}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        {children}
+      </div>
+    </section>
+  );
+}

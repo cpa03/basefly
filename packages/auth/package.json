@@ -1,0 +1,48 @@
+{
+  "name": "@saasfly/auth",
+  "version": "0.1.0",
+  "private": true,
+  "exports": {
+    ".": "./index.ts",
+    "./env.mjs": "./env.mjs"
+  },
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "scripts": {
+    "clean": "rm -rf .turbo node_modules",
+    "lint": "eslint . --cache --cache-location 'node_modules/.cache/.eslintcache'",
+    "format": "prettier --check '**/*.{mjs,ts,json}' ",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@clerk/nextjs": "^6.37.5",
+    "@saasfly/common": "workspace:*",
+    "@saasfly/db": "workspace:*",
+    "@t3-oss/env-nextjs": "0.13.10",
+    "kysely": "0.28.11",
+    "@vercel/postgres-kysely": "0.10.0",
+    "next": "14.2.35",
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@saasfly/eslint-config": "workspace:*",
+    "@saasfly/prettier-config": "workspace:*",
+    "@saasfly/typescript-config": "workspace:*",
+    "eslint": "8.57.0",
+    "prettier": "3.8.1",
+    "typescript": "5.9.3",
+    "@typescript-eslint/eslint-plugin": "8.56.0",
+    "eslint-plugin-import": "2.32.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@saasfly/eslint-config/base"
+    ]
+  },
+  "prettier": "@saasfly/prettier-config"
+}

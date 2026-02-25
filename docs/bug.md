@@ -1,0 +1,136 @@
+# BugLover - Bug Tracking Document
+
+## Active Bugs
+
+- [x] bug: Build failure - `buttonVariants()` called from server component in docs pages.
+- [x] bug: `packages/stripe/src/plans.test.ts` fails due to module-level `process.env` usage in `plans.ts`.
+- [x] bug: Inconsistent logging in `packages/api/src/router/k8s.ts` (using `console.info` instead of `logger`).
+- [x] bug: Unused `eslint-disable` directives in `packages/ui/src/text-generate-effect.tsx` and `packages/ui/src/typewriter-effect.tsx`.
+- [x] bug: Potential "Invalid Date" in `DashboardPage` and `ClusterItem` when `updatedAt` is null/undefined.
+
+## Verification Summary (2026-02-17)
+
+### Code Quality Checks
+
+- ✅ **TypeScript**: All 8 packages pass typecheck with 0 errors
+- ✅ **ESLint**: All 7 packages pass lint with 0 errors
+- ✅ **Tests**: All 325 tests passing across 12 test files
+- ✅ **Build**: Successful with 56 static pages generated
+
+### Test Coverage
+
+- **Stripe Client**: 22 tests ✓
+- **Rate Limiter**: 40 tests ✓
+- **Soft Delete Service**: 23 tests ✓
+- **Request ID**: 23 tests ✓
+- **Webhook Idempotency**: 11 tests ✓
+- **Webhooks**: 8 tests ✓
+- **UI Utils**: 15 tests ✓
+- **Plans**: 7 tests ✓
+- **Additional router tests**: 175+ tests ✓
+
+## Fixed Bugs
+
+### [x] Build failure: buttonVariants called from server component
+
+**Date**: 2026-02-17  
+**File**: `apps/nextjs/src/components/docs/pager.tsx`  
+**Issue**: Next.js build failed with error: "Attempted to call buttonVariants() from the server but buttonVariants is on the client. It's not possible to invoke a client function from the server."  
+**Root Cause**: `DocsPager` component imports and uses `buttonVariants` from `@saasfly/ui/button`, which is a client component file (has `"use client"` directive). The docs pages are server components, so they cannot directly use functions exported from client components.  
+**Solution**: Added `"use client"` directive to `apps/nextjs/src/components/docs/pager.tsx` to make it a client component. This is appropriate since the component uses client-side navigation via Next.js `<Link>` component.  
+**Impact**: Build now succeeds with all 56 pages generated successfully.
+
+### [x] Cyclic dependency between @saasfly/ui and @saasfly/common
+
+**Date**: 2026-02-07  
+**File**: `packages/ui/package.json`, `packages/common/package.json`  
+**Issue**: Cyclic dependency detected: @saasfly/ui -> @saasfly/common -> @saasfly/ui  
+**Solution**: Moved MagicLinkEmail component from @saasfly/common to @saasfly/ui package to break the cycle  
+**Impact**: Turbo build and typecheck now working correctly
+
+## Recent Improvements
+
+### Phase 1: Palette 🎨 - UX Micro-Improvements (2026-02-07)
+
+**File:** `apps/nextjs/src/components/locale-change.tsx`
+
+- Added proper `aria-label="Change language"` to language switcher button
+- Added descriptive `sr-only` text for screen reader support
+- Added `aria-hidden="true"` to decorative icon
+- Added focus ring and hover transitions for better accessibility
+
+### Phase 2: Flexy 💪 - Modular Configuration (2026-02-07)
+
+**Files Created:**
+
+- `packages/common/src/config/ui.ts` - UI configuration constants
+- `packages/common/src/config/resilience.ts` - Circuit breaker and retry configuration
+
+**Files Updated:**
+
+- `packages/ui/src/use-toast.tsx` - Now imports toast limits from config
+- `packages/stripe/src/integration.ts` - Now imports all resilience defaults from config
+- `packages/common/package.json` - Added explicit exports for config modules
+
+**Improvements:**
+
+- Extracted hardcoded magic numbers to configuration files
+- Centralized resilience patterns (circuit breaker, retry, timeout)
+- Made UI timing constants configurable
+- Easier to adjust behavior without code changes
+- Better maintainability and testability
+
+### Configuration Values Extracted:
+
+**Toast Configuration:**
+
+- `TOAST_LIMIT` - Maximum simultaneous toasts
+- `TOAST_REMOVE_DELAY` - Delay before DOM removal
+- `FEEDBACK_TIMING` - Copy success, toast display, tooltip delays
+- `ANIMATION_TIMING` - Standard animation durations
+
+**Resilience Configuration:**
+
+- `CIRCUIT_BREAKER_CONFIG` - Failure threshold, reset timeout
+- `RETRY_CONFIG` - Max attempts, base/max delay, backoff multiplier
+- `TIMEOUT_CONFIG` - Default, short, long timeout values
+- `STRIPE_CONFIG` - Stripe SDK defaults
+- `DEFAULT_RETRYABLE_ERRORS` - Retryable error codes
+
+---
+
+## Phase 1: BugLover Fixes (2026-02-07)
+
+### Summary
+
+Fixed critical TypeScript error and cleaned up code quality issues:
+
+**Critical Bug Fixed:**
+
+- `trpc/server.ts`: Fixed async cookies() handling in Next.js 14 App Router
+
+**Code Quality Improvements:**
+
+- Removed 4 unused eslint-disable directives
+- Fixed 4 files with proper `import type` syntax
+- Replaced 3 `<img>` tags with Next.js `<Image />` component
+- Added 2 domains to next.config.mjs for image optimization
+
+**Verification:**
+
+- ✅ ESLint: 0 errors, 0 warnings
+- ✅ TypeScript: All packages pass typecheck
+- ✅ Tests: All 324 tests passing
+- ✅ Build: Clean build with no errors
+
+**Files Modified:**
+
+1. `apps/nextjs/src/trpc/server.ts` - Fixed cookies() Promise handling
+2. `apps/nextjs/src/app/api/webhooks/stripe/route.ts` - Removed unused eslint-disable
+3. `apps/nextjs/src/components/document-guide.tsx` - Fixed type import
+4. `apps/nextjs/src/components/sign-in-modal-clerk.tsx` - Fixed type import
+5. `apps/nextjs/src/utils/clerk.ts` - Fixed type import
+6. `apps/nextjs/src/components/k8s/cluster-create-button.tsx` - Removed unused eslint-disable
+7. `apps/nextjs/src/components/comments.tsx` - Replaced img with Image
+8. `apps/nextjs/src/components/wobble.tsx` - Replaced img with Image
+9. `apps/nextjs/next.config.mjs` - Added image domains

@@ -1,0 +1,68 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "share": "disabled",
+  "autoupdate": true,
+  "model": "iflowcn/big-pickle",
+  "small_model": "opencode/big-pickle",
+  "compaction": {
+    "auto": true,
+    "prune": true
+  },
+  "watcher": {
+    "ignore": [
+      "node_modules/**",
+      "dist/**",
+      "build/**",
+      "coverage/**",
+      ".git/**",
+      "*.log",
+      ".next/**",
+      ".nuxt/**",
+      "target/**"
+    ]
+  },
+  "plugin": [
+    "oh-my-opencode"
+  ],
+  "tools": {
+    "bash": true,
+    "write": true,
+    "edit": true,
+    "read": true,
+    "grep": true,
+    "glob": true,
+    "list": true,
+    "patch": true,
+    "todowrite": true,
+    "todoread": true,
+    "webfetch": true,
+    "websearch": true,
+    "codesearch": true,
+    "skill": true
+  },
+  "permission": {
+    "edit": "allow",
+    "write": "allow",
+    "webfetch": "allow",
+    "websearch": "allow",
+    "codesearch": "allow",
+    "bash": {
+      "pwd": "allow",
+      "ls": "allow",
+      "dir": "allow",
+      "cat": "allow",
+      "type": "allow",
+      "Get-*": "allow",
+      "Test-Path": "allow",
+      "git *": "allow",
+      "gh *": "allow",
+      "npm *": "allow",
+      "yarn *": "allow",
+      "bun *": "allow",
+      "pnpm *": "allow",
+      "docker *": "allow",
+      "kubectl *": "allow",
+      "ssh *": "allow"
+    }
+  }
+}

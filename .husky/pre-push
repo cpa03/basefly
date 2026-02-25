@@ -1,0 +1,5 @@
+# Pre-push hook: Run DX quick checks before pushing
+# This catches type errors and lint issues early, before CI
+# Skip with: git push --no-verify
+
+pnpm dx:quick

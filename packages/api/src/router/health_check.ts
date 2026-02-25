@@ -31,7 +31,33 @@ const helloInputSchema = z.object({
     ),
 });
 
+/**
+ * Health Check Router
+ *
+ * Provides basic health check and greeting endpoints for API validation.
+ * Used to verify the API is running and responding correctly.
+ *
+ * @module helloRouter
+ */
 export const helloRouter = createTRPCRouter({
+  /**
+   * Hello/Greeting Endpoint
+   *
+   * Returns a sanitized greeting message for the authenticated user.
+   * Input text is HTML-escaped to prevent XSS attacks.
+   *
+   * @param input - User-provided text (will be sanitized)
+   * @returns Greeting object with sanitized text
+   * @throws {TRPCError} UNAUTHORIZED - If user is not authenticated
+   * @throws {TRPCError} INTERNAL_SERVER_ERROR - If processing fails
+   *
+   * @example
+   * ```typescript
+   * // Request
+   * const result = await client.hello.hello.query({ text: "World" });
+   * // Response: { greeting: "hello World" }
+   * ```
+   */
   hello: createRateLimitedProtectedProcedure("read")
     .input(helloInputSchema)
     .query((opts) => {

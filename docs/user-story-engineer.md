@@ -44,6 +44,44 @@ This agent focuses on delivering small, safe, measurable improvements to the bas
 
 ### 2026-02-25
 
+- **Issue**: #651 - Add unit tests for stripe and customer tRPC routers
+- **Status**: Completed
+- **Analysis**:
+  - Issue requested adding unit tests for stripe.ts and customer.ts routers
+  - These routers lacked dedicated test files, creating testing gaps
+  - Test files existed for hello.test.ts but not for stripe/customer
+- **Implementation**:
+  - Created `packages/api/src/router/stripe.test.ts` with 16 test cases
+  - Created `packages/api/src/router/customer.test.ts` with 30 test cases
+  - Both test files focus on Zod schema validation (input validation)
+  - Schemas defined inline to avoid database connection issues during tests
+  - Tests follow the same pattern as hello.test.ts
+- **Verification**: All 631 tests pass (including 46 new tests)
+- **PR**: (to be created)
+
+### 2026-02-25
+
+- **Issue**: #612 - Vercel deployment failure
+- **Status**: Fixed
+- **Root Cause**: Next.js 16 no longer supports having both `middleware.ts` and `proxy.ts` files
+- **Solution**:
+  - Merged authentication logic from `middleware.ts` into `proxy.ts`
+  - Uses `isPublicRoute` from `utils/clerk` for route protection
+  - Deleted `middleware.ts` to resolve the conflict
+- **Verification**: Build, lint, and typecheck all pass locally
+- **PR**: #618
+
+### 2026-02-25
+
+- **Issue**: #558 - Enable test caching in turbo.json for faster CI
+- **Status**: Completed
+- **Analysis**:
+  - Current turbo.json test task already has proper cache configuration
+  - Has `cache: true`, explicit `inputs`, and `outputs` defined
+- **Verification**: Tests run with caching enabled
+
+### 2026-02-25
+
 - **Issue**: #612 - Vercel deployment failure
 - **Status**: Fixed
 - **Root Cause**: Next.js 16 no longer supports having both `middleware.ts` and `proxy.ts` files

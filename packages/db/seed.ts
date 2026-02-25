@@ -132,14 +132,15 @@ async function seed(): Promise<void> {
     process.exit(1);
   }
 
-  logger.info("Starting database seeding...");
-  logger.info(`Environment: ${process.env.NODE_ENV ?? "development"}`);
+  logger.info("Starting database seeding...", {
+    environment: process.env.NODE_ENV ?? "development",
+  });
 
   try {
     const empty = await isDatabaseEmpty();
     if (!empty) {
       logger.warn("Database is not empty. Seed will skip existing records.");
-      logger.warn("Use 'db:seed:reset' to clear and reseed.");
+      logger.info("Use 'db:seed:reset' to clear and reseed.");
     }
 
     await db.transaction().execute(async () => {
@@ -149,13 +150,12 @@ async function seed(): Promise<void> {
     });
 
     logger.info("Database seeding completed successfully!");
-    logger.info("Seeded data:");
-    logger.info(
-      `  - Users: ${SEED_CONFIG.testUser.email}, ${SEED_CONFIG.adminUser.email}`,
-    );
-    logger.info(
-      `  - Clusters: ${SEED_CONFIG.testClusters.map((c) => c.name).join(", ")}`,
-    );
+    logger.info("Seeded users:", {
+      users: [SEED_CONFIG.testUser.email, SEED_CONFIG.adminUser.email],
+    });
+    logger.info("Seeded clusters:", {
+      clusters: SEED_CONFIG.testClusters.map((c) => c.name),
+    });
   } catch (error) {
     logger.error("Seeding failed with error:", error);
     process.exit(1);

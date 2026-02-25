@@ -10,15 +10,15 @@
 
 **Implementation**:
 
-1. **Created** `packages/auth/clerk.test.ts` with 17 test cases covering:
+1. **Created** `packages/auth/clerk.test.ts` with 20 test cases covering:
    - `isClerkEnabled()` function:
      - Returns false when env var not set
      - Returns false when key contains 'dummy'
      - Returns false when key contains 'placeholder'
-     - Returns false when key doesn't start with 'pk_'
+     - Returns false when key doesn't start with 'pk\_'
      - Returns false when key is too short (< 20 chars after prefix)
-     - Returns true with valid test key (pk_test_...)
-     - Returns true with valid production key (pk_live_...)
+     - Returns true with valid test key (pk*test*...)
+     - Returns true with valid production key (pk*live*...)
    - Logger tests:
      - All logger methods exist (debug, info, warn, error)
      - All methods can be called without throwing
@@ -27,9 +27,11 @@
      - pages.signIn is correctly configured to "/login"
 
 **Files Changed**:
+
 - `packages/auth/clerk.test.ts` - New test file
 
 **Next Steps**:
+
 1. Run tests locally to verify they pass
 2. Consider adding integration tests for getSessionUser() with mocked Clerk auth
 3. Add more edge case tests as needed
@@ -49,6 +51,7 @@
 2. **packages/common/src/index.ts**: Large barrel with 351 lines of exports. Many subpath exports were missing, preventing optimal tree-shaking.
 
 **Analysis Results**:
+
 - 88 files import from @saasfly/common (main barrel)
 - 5 files use subpath exports (e.g., @saasfly/common/config/ui)
 - Multiple config modules have significant usage but lacked subpath exports
@@ -75,15 +78,18 @@
    - Documented all available subpath exports
 
 **Benefits**:
+
 - Consumers can now import directly from specific modules (e.g., `import { HTTP_STATUS } from "@saasfly/common/config/http"`)
 - Better tree-shaking - bundlers can eliminate unused code
 - Reduced bundle size potential for consumers who only need specific modules
 
 **Files Changed**:
+
 - `packages/common/package.json` - Added subpath exports
 - `packages/common/src/index.ts` - Improved JSDoc documentation
 
 **Next Steps** (for future iterations):
+
 1. Consider adding ESLint rules to encourage subpath imports
 2. Monitor bundle size impact after consumers migrate to subpath imports
 3. Evaluate removing truly unused exports (carefully, with testing)

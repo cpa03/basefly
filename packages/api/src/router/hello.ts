@@ -32,9 +32,9 @@ const helloInputSchema = z.object({
 });
 
 /**
- * Health Check Router
+ * Hello Router
  *
- * Provides basic health check and greeting endpoints for API validation.
+ * Provides greeting endpoints for API validation.
  * Used to verify the API is running and responding correctly.
  *
  * @module helloRouter

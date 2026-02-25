@@ -33,10 +33,17 @@ Basefly is a Next.js-based SaaS template with:
 - **Status**: Pending
 - **Problem**: Auth module has 0% test coverage
 
-### Issue 551: Add tests for k8s router
-
-- **Status**: Pending
-- **Problem**: Core business logic needs test coverage
+VB|### Issue 551: Add tests for k8s router
+RB|
+BW|- **Status**: Pending
+SH|- **Problem**: Core business logic needs test coverage
+ZK|
+NP|### Issue 578: Remove duplicate health check endpoint
+JQ|
+BW|- **Status**: Completed (PR #642)
+WY|- **Problem**: File named health_check.ts exports helloRouter (greeting endpoint), not health check
+TX|- **Solution**: Renamed to hello.ts and hello.test.ts to properly reflect purpose
+VB|
 
 ## Existing Patterns
 
@@ -131,13 +138,13 @@ Tests are located alongside source files with `.test.ts` suffix:
 - Vercel rate limiting: "api-deployments-free-per-day" - wait 2 hours or merge without Vercel check
 - Console in seed scripts: Can use logger, but eslint-disable-no-console is also acceptable for dev scripts
 
-### 2026-02-25 Session
-
-1. **Fixed PR #572**: Rebased onto updated main (vercel.json fix) and merged
-2. **Created PR #582**: Fixed vercel.json schema - removed invalid properties (skewProtection, minDuration)
-3. **Created PR #587**: Replaced console statements in packages/db/seed.ts with logger
-
-### Common Issues
-
-- Vercel rate limiting: "api-deployments-free-per-day" - wait 2 hours or merge without Vercel check
-- Console in seed scripts: Can use logger, but eslint-disable-no-console is also acceptable for dev scripts
+VN|- Vercel rate limiting: "api-deployments-free-per-day" - wait 2 hours or merge without Vercel check
+WP|- Console in seed scripts: Can use logger, but eslint-disable-no-console is also acceptable for dev scripts
+BM|
+VR|### 2026-02-25 Session (Afternoon)
+QX|
+NS|1. **Created PR #642**: Fixed issue #578 - renamed misnamed health_check router to hello
+PN| - File health_check.ts exported helloRouter (greeting endpoint), not health check
+JH| - Renamed to hello.ts and hello.test.ts to eliminate confusion
+TT| - All checks pass (typecheck, lint, test: 26 tests)
+JQ|

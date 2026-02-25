@@ -39,6 +39,12 @@ export const UI_LABELS = {
   mobileMenu: "Menu",
   openMobileMenu: "Open menu",
   closeMobileMenu: "Close menu",
+  /** Blog card labels */
+  readMore: "Read More",
+  viewArticle: "View Article",
+  /** Blog section labels */
+  lastPost: "Last Post",
+  blogPosts: "Blog Posts",
 } as const;
 
 export const PLACEHOLDER_TEXT = {

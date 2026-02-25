@@ -60,5 +60,14 @@ export {
   userDeletionService,
 } from "./user-deletion";
 
+// RLS (Row-Level Security) middleware exports
+export {
+  setRLSSession,
+  executeWithRLS,
+  createRLSDatabase,
+  executeWithOptionalRLS,
+  type RLSOptions,
+} from "./rls-middleware";
+
 // Database instance
 export const db = createKysely<DB>();

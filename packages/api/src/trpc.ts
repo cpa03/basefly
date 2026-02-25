@@ -11,6 +11,8 @@ import { EndpointType, getIdentifier, getLimiter } from "./rate-limiter";
 import { getOrGenerateRequestId } from "./request-id";
 import { transformer } from "./transformer";
 
+import { db, setRLSSession } from "@saasfly/db";
+
 export type { EndpointType } from "./rate-limiter";
 
 /**
@@ -83,7 +85,45 @@ export const mergeRouters = t.mergeRouters;
  * Throws UNAUTHORIZED error if no userId is present in context.
  * After this middleware, ctx.userId is guaranteed to be a non-null string.
  */
-const isAuthed = t.middleware(({ next, ctx }) => {
+/**
+ * Middleware that ensures the user is authenticated.
+ * Throws UNAUTHORIZED error if no userId is present in context.
+ * After this middleware, ctx.userId is guaranteed to be a non-null string.
+ *
+ * Also sets RLS (Row-Level Security) session variable for multi-tenant isolation.
+ */
+const isAuthed = t.middleware(async ({ next, ctx }) => {
+  if (!ctx.userId) {
+    logger.warn(
+      {
+        requestId: ctx.requestId,
+        security: true,
+        reason: "missing_user_id",
+      },
+      "Authentication failed - unauthorized access attempt",
+    );
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  // Set RLS session variable for database queries
+  // This enables Row-Level Security policies to filter data by tenant
+  try {
+    await setRLSSession(db, ctx.userId);
+  } catch (error) {
+    logger.error(
+      {
+        requestId: ctx.requestId,
+        userId: ctx.userId,
+        error: error instanceof Error ? error.message : String(error),
+      },
+      "Failed to set RLS session - continuing without tenant isolation",
+    );
+    // Continue even if RLS fails - don't block the request
+    // RLS is defense-in-depth, not a hard requirement
+  }
+
+  return next({ ctx: { userId: ctx.userId } });
+});
   if (!ctx.userId) {
     logger.warn(
       {

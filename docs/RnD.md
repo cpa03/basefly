@@ -1,46 +1,55 @@
-# RnD Specialist Memory
+# R&D Documentation
 
-**Role**: Autonomous RnD Specialist
-**Domain**: RnD (Research and Development)
-**Objective**: Deliver small, safe, measurable improvements
+## Active R&D Work
 
-## Working Mode
+### Issue #523: Barrel Exports Optimization
 
-- If open PR with label RnD exists → ensure up to date with default branch, review, fix if necessary and comment
-- If Issue exists → execute
-- If none → proactive scan limited to domain
-- If nothing valuable → exit safely
+**Status**: Completed
 
-## Execution Protocol
+**Objective**: Audit and optimize barrel exports for better tree-shaking in @saasfly/common package.
 
-1. **RESEARCH** → Investigate current state, check for existing PRs and issues
-2. **PLAN** → Select the best candidate issue, create work breakdown
-3. **IMPLEMENT** → Make the change, follow existing patterns
-4. **VERIFY** → Run typecheck, tests, ensure no regressions
-5. **SELF-REVIEW** → Review the change, ensure it meets acceptance criteria
-6. **DELIVER** → Create PR with RnD label, link to issue
+**Findings**:
 
-## Quality Standards
+1. **packages/ui/src/index.ts**: Already minimal with only 5 exports (cn, Textarea, DataTableEmpty, buttonVariants, CopyButton) - no changes needed.
 
-- **Small atomic diff**: One focused change per PR
-- **Zero warnings**: Build/lint/test must pass
-- **Label**: PR must have "RnD" label
-- **Link**: PR must be linked to an issue
-- **No conflict**: PR must be up to date with default branch
+2. **packages/common/src/index.ts**: Large barrel with 351 lines of exports. Many subpath exports were missing, preventing optimal tree-shaking.
 
-## Project Context
+**Analysis Results**:
+- 88 files import from @saasfly/common (main barrel)
+- 5 files use subpath exports (e.g., @saasfly/common/config/ui)
+- Multiple config modules have significant usage but lacked subpath exports
 
-- **Stack**: Next.js 14, TypeScript, tRPC, Prisma, Tailwind
-- **Monorepo**: pnpm workspaces with Turbo
-- **Testing**: Vitest
-- **Code Quality**: ESLint, Prettier, strict TypeScript
+**Implementation**:
 
-## Previous Work
+1. **Added 13 new subpath exports** in `packages/common/package.json`:
+   - `./config/http` - HTTP status codes
+   - `./config/headers` - HTTP headers
+   - `./config/features` - Feature flags
+   - `./config/urls` - Routes and URLs
+   - `./config/validation` - Validation configs
+   - `./config/pagination` - Pagination settings
+   - `./config/cache` - Cache configuration
+   - `./config/scroll` - Scroll settings
+   - `./config/csp` - CSP headers
+   - `./config/env` - Environment variables
+   - `./animation` - Animation types
+   - `./icon-sizes` - Icon size utilities
+   - `./ui-tokens` - UI design tokens
 
-(No previous work logged yet - starting fresh)
+2. **Improved JSDoc documentation** in `packages/common/src/index.ts`:
+   - Added comprehensive examples showing both barrel and subpath imports
+   - Documented all available subpath exports
 
-## Notes
+**Benefits**:
+- Consumers can now import directly from specific modules (e.g., `import { HTTP_STATUS } from "@saasfly/common/config/http"`)
+- Better tree-shaking - bundlers can eliminate unused code
+- Reduced bundle size potential for consumers who only need specific modules
 
-- Focus on frontend fixes, small improvements, and code quality enhancements
-- Avoid large refactors or risky changes
-- Always verify with typecheck and tests before creating PR
+**Files Changed**:
+- `packages/common/package.json` - Added subpath exports
+- `packages/common/src/index.ts` - Improved JSDoc documentation
+
+**Next Steps** (for future iterations):
+1. Consider adding ESLint rules to encourage subpath imports
+2. Monitor bundle size impact after consumers migrate to subpath imports
+3. Evaluate removing truly unused exports (carefully, with testing)

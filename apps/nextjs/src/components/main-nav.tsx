@@ -39,9 +39,11 @@ export const MainNav = React.memo(function MainNav({
     toggleMenu();
   }, [toggleMenu]);
 
+  // Keyboard navigation and focus management for mobile menu
   React.useEffect(() => {
     if (!showMobileMenu) return;
 
+    // Handle Escape key to close menu
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         closeMenu();
@@ -49,7 +51,19 @@ export const MainNav = React.memo(function MainNav({
     };
 
     document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+
+    // Focus management: move focus to first menu item when mobile menu opens
+    const timer = setTimeout(() => {
+      const firstLink = document.querySelector<HTMLAnchorElement>(
+        "#mobile-navigation a, #mobile-navigation button"
+      );
+      firstLink?.focus();
+    }, 50);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      clearTimeout(timer);
+    };
   }, [showMobileMenu, closeMenu]);
 
   return (

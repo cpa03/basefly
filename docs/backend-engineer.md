@@ -112,6 +112,25 @@ Tests are located alongside source files with `.test.ts` suffix:
 
 ## Session Notes
 
+### 2026-02-25 Session (Morning)
+
+1. **Reviewed PR #601**: Found it had old main history merged in causing huge diff
+2. **Created PR #625**: Clean implementation of structured logging in seed.ts
+   - Single commit, atomic change
+   - Up to date with main
+   - All checks pass (typecheck, lint, test)
+
+### 2026-02-25 Session
+
+1. **Fixed PR #572**: Rebased onto updated main (vercel.json fix) and merged
+2. **Created PR #582**: Fixed vercel.json schema - removed invalid properties (skewProtection, minDuration)
+3. **Created PR #587**: Replaced console statements in packages/db/seed.ts with logger
+
+### Common Issues
+
+- Vercel rate limiting: "api-deployments-free-per-day" - wait 2 hours or merge without Vercel check
+- Console in seed scripts: Can use logger, but eslint-disable-no-console is also acceptable for dev scripts
+
 ### 2026-02-25 Session
 
 1. **Fixed PR #572**: Rebased onto updated main (vercel.json fix) and merged

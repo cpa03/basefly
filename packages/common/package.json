@@ -14,7 +14,21 @@
     "./config/site": "./src/config/site.ts",
     "./config/ui-strings": "./src/config/ui-strings.ts",
     "./config/assets": "./src/config/assets.ts",
-    "./config/project": "./src/config/project.ts"
+    "./config/http": "./src/config/http.ts",
+    "./config/headers": "./src/config/headers.ts",
+    "./config/features": "./src/config/features.ts",
+    "./config/urls": "./src/config/urls.ts",
+    "./config/validation": "./src/config/validation.ts",
+    "./config/pagination": "./src/config/pagination.ts",
+    "./config/cache": "./src/config/cache.ts",
+    "./config/scroll": "./src/config/scroll.ts",
+    "./config/csp": "./src/config/csp.ts",
+    "./config/env": "./src/config/env.ts",
+    "./animation": "./src/animation.ts",
+    "./icon-sizes": "./src/icon-sizes.ts",
+    "./ui-tokens": "./src/ui-tokens.ts"
+  },
+  "typesVersions": {
   },
   "typesVersions": {
     "*": {

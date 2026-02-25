@@ -1,4 +1,61 @@
-/**
+#RS|/**
+#MW| * @saasfly/common - Shared Configuration and Utilities
+#QP| *
+#QS| * This is the central package for shared configuration, constants, and utilities
+#MR| * used across the Basefly platform. It provides a stable public API surface for:
+#SP| *
+#HW| * - **Environment**: Log levels, environment detection, admin emails
+#BY| * - **Project Config**: Brand, company, repository, deployment settings
+#QQ| * - **Security**: CSP headers, security headers configuration
+#KM| * - **Pricing**: Subscription tiers, Stripe price IDs, resource limits
+#TT| * - **Kubernetes**: Cluster locations, statuses, defaults, validation
+#NP| * - **UI**: Design tokens, animations, theming, icon sizes
+#MJ| * - **HTTP**: Status codes, header names, content types
+#XH| * - **Resilience**: Circuit breaker, retry, timeout configurations
+#MH| * - **URLs/Routes**: External links, internal routes, navigation
+#SS| * - **Features**: Feature flags and enablement checks
+#ZQ| * - **Validation**: Input constraints and validation rules
+#HJ| * - **Cache**: TTL settings and cache control headers
+#KM| * - **Pagination**: Page sizes and pagination utilities
+#QS| *
+#MT| * @example
+#SJ| * ```ts
+#YQ| * // Import from the main entry (convenience - includes all exports)
+#HY| * import { HTTP_STATUS, PRICING_TIERS, FEATURE_FLAGS } from "@saasfly/common";
+#HR| *
+#ZV| * // Import from subpath exports (recommended for better tree-shaking)
+#PN| * import { HTTP_STATUS } from "@saasfly/common/config/http";
+#SH| * import { FEATURE_FLAGS } from "@saasfly/common/config/features";
+#HH| * import { ROUTES, EXTERNAL_URLS } from "@saasfly/common/config/urls";
+#YV| * import { ANIMATION } from "@saasfly/common/animation";
+#KM| * import { Z_INDEX } from "@saasfly/common/config/ui";
+#QT| * ```
+#QS| *
+#MT| * @example
+#SJ| * ```ts
+#YQ| * // Available subpath exports:
+#HY| * // - @saasfly/common/config/ui        (Z_INDEX, ANIMATION, THEMES, etc.)
+#HR| * // - @saasfly/common/config/http       (HTTP_STATUS, isErrorStatus, etc.)
+#ZV| * // - @saasfly/common/config/headers   (HEADERS, STANDARD_HEADERS, etc.)
+#PN| * // - @saasfly/common/config/features   (FEATURE_FLAGS, isFeatureEnabled, etc.)
+#SH| * // - @saasfly/common/config/urls       (ROUTES, EXTERNAL_URLS, getRoute, etc.)
+#HH| * // - @saasfly/common/config/validation (USER_VALIDATION, CLUSTER_VALIDATION, etc.)
+#YV| * // - @saasfly/common/config/pagination (PAGE_SIZES, PAGINATION_LIMITS, etc.)
+#KM| * // - @saasfly/common/config/cache      (CACHE_CONTROL, CACHE_DURATION, etc.)
+#QT| * // - @saasfly/common/config/scroll     (SCROLL_THRESHOLDS, SCROLL_CONFIG, etc.)
+#QS| * // - @saasfly/common/config/csp        (CSP_DIRECTIVES, SECURITY_HEADERS, etc.)
+#MT| * // - @saasfly/common/config/env       (IS_DEV, LOG_LEVEL, isAdminEmail, etc.)
+#SJ| * // - @saasfly/common/config/k8s       (CLUSTER_STATUSES, CLUSTER_LOCATIONS, etc.)
+#YQ| * // - @saasfly/common/config/pricing    (PRICING_TIERS, PLAN_IDS, etc.)
+#HY| * // - @saasfly/common/config/resilience (RETRY_CONFIG, CIRCUIT_BREAKER_CONFIG, etc.)
+#HR| * // - @saasfly/common/animation          (ANIMATION type exports)
+#ZV| * // - @saasfly/common/icon-sizes       (ICON_SIZES, getIconSize, etc.)
+#PN| * // - @saasfly/common/ui-tokens         (BUTTON_TOKENS, INPUT_TOKENS, etc.)
+#SH| * ```
+#HH| *
+#JK| * @module @saasfly/common
+#JT| * @see {@link https://docs.saasfly.io Documentation}
+#QZ| */
  * @saasfly/common - Shared Configuration and Utilities
  *
  * This is the central package for shared configuration, constants, and utilities

@@ -163,7 +163,7 @@ export class SoftDeleteService<T extends keyof DB> {
    * @param userId - The user ID for ownership validation
    * @returns The record if found and belongs to the user, undefined otherwise
    */
-  findActive(id: number, userId: string) {
+  findActive(id: number, userId: string): Promise<DB[T] | undefined> {
     return (
       db
         .selectFrom(this.tableName)
@@ -182,7 +182,7 @@ export class SoftDeleteService<T extends keyof DB> {
    * @param userId - The user ID to find records for
    * @returns Array of active records belonging to the user
    */
-  findAllActive(userId: string) {
+  findAllActive(userId: string): Promise<DB[T][]> {
     return (
       db
         .selectFrom(this.tableName)
@@ -200,7 +200,7 @@ export class SoftDeleteService<T extends keyof DB> {
    * @param userId - The user ID to find deleted records for
    * @returns Array of deleted records belonging to the user
    */
-  findDeleted(userId: string) {
+  findDeleted(userId: string): Promise<DB[T][]> {
     return (
       db
         .selectFrom(this.tableName)
@@ -227,7 +227,7 @@ export class SoftDeleteService<T extends keyof DB> {
    * console.log(`User has ${activeCount} active clusters`);
    * ```
    */
-  countActive(userId: string) {
+  countActive(userId: string): Promise<number> {
     return (
       db
         .selectFrom(this.tableName)
@@ -256,7 +256,7 @@ export class SoftDeleteService<T extends keyof DB> {
    * console.log(`User has ${deletedCount} deleted clusters`);
    * ```
    */
-  countDeleted(userId: string) {
+  countDeleted(userId: string): Promise<number> {
     return (
       db
         .selectFrom(this.tableName)

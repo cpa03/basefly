@@ -98,7 +98,7 @@ export const k8sClusterUpdateSchema = z
     "At least one field (name or location) must be provided for update",
   );
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
+
 async function verifyClusterOwnership(
   clusterId: number,
   userId: string,
@@ -123,7 +123,7 @@ export const k8sRouter = createTRPCRouter({
       return await k8sClusterService.findAllActive(userId);
     },
   ),
-  /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
+
   createCluster: createRateLimitedProtectedProcedure("write")
     .input(k8sClusterCreateSchema)
     .mutation(async ({ ctx, input }) => {

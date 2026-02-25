@@ -30,46 +30,33 @@ Deliver small, safe, measurable improvements strictly inside the documentation d
 - Small atomic diff
 
 ## History
+### 2026-02-25 (Session 3)
+- PR #654: Fix corrupted text prefixes in remaining documentation files
+  - Fixed AGENTS.md, docs/technical-writer.md, docs/ai-agent-engineer.md
+  - Fixed docs/api-spec.md, packages/db/prisma/README.md
+  - Fixed docs/prompts/Anthropic/xlsx.md, pptx.md, claude-for-excel.md
+  - Removed corrupted patterns (#XX|#) that were missed in previous cleanup
+  - Proactive scan found 8 files with remaining corruption
+
 ### 2026-02-25 (Session 2)
 - PR #645: Fix corrupted formatting in AGENTS.md
-  - Removed corrupted text prefixes (`#QM|`, `#BM|`, `#TH|`, etc.) from Metis, Momus, and Plan Agent sections
+  - Removed corrupted text prefixes from Metis, Momus, and Plan Agent sections
   - Removed duplicate '### Plan Agent' heading
   - Fixed formatting to improve readability
-  - Proactive scan found issues during AGENTS.md review
-
-### 2026-02-25 (continued)
-- PR #616: Fix duplicate sections in ONBOARDING.md
-  - Removed duplicate "Getting Help" and "Related Resources" sections
-  - File reduced from 243 to 233 lines
-  - Proactive scan found issue during documentation review
-### 2026-02-25 (continued)
-- PR #616: Fix duplicate sections in ONBOARDING.md
-  - Removed duplicate "Getting Help" and "Related Resources" sections
-  - File reduced from 243 to 233 lines
-  - Proactive scan found issue during documentation review
-
 
 ### 2026-02-25
+- PR #616: Fix duplicate sections in ONBOARDING.md
+  - Removed duplicate "Getting Help" and "Related Resources" sections
+  - File reduced from 243 to 233 lines
+
+### 2026-02-25 (initial)
 - Created initial technical-writer.md memory file
-- Analyzed existing documentation structure:
-  - docs/README.md - Main documentation index
-  - docs/ONBOARDING.md - Contributor onboarding (already exists)
-  - docs/DEVELOPMENT.md - Development quick start
-  - docs/api-spec.md - API specification (986 lines)
-  - docs/blueprint.md - Database architecture
-  - Other agent memories: ai-agent-engineer.md, platform-engineer.md, security-engineer.md
+- Analyzed existing documentation structure
 
-### Key Observations
-1. ONBOARDING.md already exists but could be enhanced
-2. AGENTS.md in root contains detailed AI agent configuration
-3. Multiple language READMEs exist (Chinese, German, Vietnamese)
-4. Documentation follows consistent style with markdown tables
-
-### Potential Improvements
-- [ ] Enhance ONBOARDING.md with AI agent workflow patterns from AGENTS.md
-- [ ] Add documentation for new AI agent categories and skills
-- [ ] Review and update any outdated documentation
-- [ ] Add missing inline code comments where needed
+## Key Observations
+1. Documentation corruption (#XX|# prefixes) was a systematic issue across many files
+2. Previous cleanup efforts fixed most files but missed 8
+3. AGENTS.md and docs/*.md files require thorough review
 
 ## References
 - docs/README.md - Documentation index

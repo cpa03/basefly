@@ -1,67 +1,67 @@
-#NOTE
+TE
 
-##FAQ
+Q
 if you found can't generate prisma types, please use bun i -g prisma-kysely
 
 ---
 
-# Migration Guide
+ Migration Guide
 
 This document outlines the proper migration workflow for the Basefly platform using Prisma Migrate.
 
-## Overview
+ Overview
 
 We use **Prisma Migrate** for production-safe schema changes, replacing the previous `prisma db push` approach which is not suitable for production environments.
 
-## Migration Commands
+ Migration Commands
 
-### Development Workflow
+ Development Workflow
 
 ```bash
-# Create a new migration (and apply it to dev database)
+ Create a new migration (and apply it to dev database)
 bun db:migrate:dev
 
-# Create migration only (without applying)
+ Create migration only (without applying)
 bun db:migrate:create
 
-# Reset database and reapply all migrations
+ Reset database and reapply all migrations
 bun db:migrate:reset
 ```
 
-### Production Workflow
+ Production Workflow
 
 ```bash
-# Apply pending migrations to production database
+ Apply pending migrations to production database
 bun db:migrate:deploy
 
-# Generate Prisma Client/Kysely types
+ Generate Prisma Client/Kysely types
 bun db:generate
 ```
 
-### Utility Commands
+ Utility Commands
 
 ```bash
-# View database in Prisma Studio
+ View database in Prisma Studio
 bun db:studio
 
-# Seed database with test data (development only)
+ Seed database with test data (development only)
 bun db:seed
 
-# Clear seed data and reseed
+ Clear seed data and reseed
 bun db:seed:reset
 
-# Resolve a failed migration
+ Resolve a failed migration
 bun db:migrate:resolve
 
-# Format schema file
+ Format schema file
 bun prisma format
 ```
 
-## Seeding
+ Seeding
 
 The database package includes a seed script for populating development and test environments with sample data.
 
-### Seed Data
+ Seed Data
 
 The seed script creates:
 
@@ -69,23 +69,23 @@ The seed script creates:
 - **Admin User**: `admin@example.com` with BUSINESS plan
 - **Sample Clusters**: Two K8s cluster configurations
 
-### Running Seeds
+ Running Seeds
 
 ```bash
-# Seed database (skips existing records)
+ Seed database (skips existing records)
 bun db:seed
 
-# Clear seed data only
+ Clear seed data only
 bun db:seed:reset
 ```
 
-### Safety Features
+ Safety Features
 
 - **Production Protection**: Seed script exits early if `NODE_ENV=production`
 - **Idempotent**: Uses `ON CONFLICT DO NOTHING` to skip existing records
 - **Transactional**: Operations run in transactions for atomicity
 
-### Customizing Seed Data
+ Customizing Seed Data
 
 Edit `packages/db/seed.ts` to modify the `SEED_CONFIG` object:
 
@@ -101,9 +101,9 @@ const SEED_CONFIG = {
 };
 ```
 
-## Creating a Migration
+ Creating a Migration
 
-### Step 1: Modify Schema
+ Step 1: Modify Schema
 
 Edit `packages/db/prisma/schema.prisma` to make your changes:
 
@@ -115,7 +115,7 @@ model Example {
 }
 ```
 
-### Step 2: Create Migration
+ Step 2: Create Migration
 
 ```bash
 cd packages/db
@@ -128,7 +128,7 @@ This will:
 - Apply it to your development database
 - Update the `_prisma_migrations` table
 
-### Step 3: Review Generated SQL
+ Step 3: Review Generated SQL
 
 Review the generated migration file in `prisma/migrations/`:
 
@@ -139,7 +139,7 @@ Review the generated migration file in `prisma/migrations/`:
 ALTER TABLE "Example" ADD COLUMN "newField" TEXT;
 ```
 
-### Step 4: Test Locally
+ Step 4: Test Locally
 
 Verify the changes work correctly:
 
@@ -147,7 +147,7 @@ Verify the changes work correctly:
 - Test affected features
 - Check for data integrity issues
 
-### Step 5: Commit Migration
+ Step 5: Commit Migration
 
 Commit both the schema and migration files:
 
@@ -156,9 +156,9 @@ git add packages/db/prisma/
 git commit -m "feat: add new field to Example model"
 ```
 
-## Applying Migrations to Production
+ Applying Migrations to Production
 
-### Pre-deployment Checklist
+ Pre-deployment Checklist
 
 - [ ] All migrations tested in development
 - [ ] Migration files reviewed and committed
@@ -166,13 +166,13 @@ git commit -m "feat: add new field to Example model"
 - [ ] Rollback procedure documented
 - [ ] Staging environment tested (if available)
 
-### Deployment Steps
+ Deployment Steps
 
 1. **Backup Database**
 
    ```bash
-   # Create backup using your database provider's tools
-   # Example for PostgreSQL:
+    Create backup using your database provider's tools
+    Example for PostgreSQL:
    pg_dump $DATABASE_URL > backup_$(date +%Y%m%d_%H%M%S).sql
    ```
 
@@ -197,14 +197,14 @@ git commit -m "feat: add new field to Example model"
    - Test critical functionality
    - Monitor database metrics
 
-## Rollback Procedure
+ Rollback Procedure
 
-### Option 1: Create Reverse Migration
+ Option 1: Create Reverse Migration
 
 If you need to revert changes, create a new migration that reverses the previous one:
 
 ```bash
-# Create reverse migration
+ Create reverse migration
 bun db:migrate:dev --name reverse_descriptive_migration_name
 ```
 
@@ -215,30 +215,30 @@ Example reverse migration:
 ALTER TABLE "Example" DROP COLUMN "newField";
 ```
 
-### Option 2: Restore from Backup
+ Option 2: Restore from Backup
 
 If rollback is urgent and migration cannot be reversed:
 
 ```bash
-# Stop application
-# Restore database from backup
+ Stop application
+ Restore database from backup
 psql $DATABASE_URL < backup_20240107_120000.sql
 ```
 
-### Option 3: Manual Migration Resolution
+ Option 3: Manual Migration Resolution
 
 If a migration fails during deployment:
 
 ```bash
-# Mark migration as resolved (applied or rolled back)
+ Mark migration as resolved (applied or rolled back)
 bun db:migrate:resolve --applied <migration-name>
-# or
+ or
 bun db:migrate:resolve --rolled-back <migration-name>
 ```
 
-## Migration Best Practices
+ Migration Best Practices
 
-### 1. Descriptive Migration Names
+ 1. Descriptive Migration Names
 
 Use clear, descriptive names:
 
@@ -247,7 +247,7 @@ Use clear, descriptive names:
 - ❌ `update_schema`
 - ❌ `changes`
 
-### 2. Non-Destructive Changes
+ 2. Non-Destructive Changes
 
 Prefer adding over modifying when possible:
 
@@ -258,7 +258,7 @@ Prefer adding over modifying when possible:
 - ❌ Drop column (data loss)
 - ❌ Drop table (data loss)
 
-### 3. Data Migrations
+ 3. Data Migrations
 
 For complex data changes, separate schema and data migrations:
 
@@ -273,7 +273,7 @@ UPDATE "Example" SET "newField" = "oldField" WHERE "newField" IS NULL;
 ALTER TABLE "Example" DROP COLUMN "oldField";
 ```
 
-### 4. Batch Large Operations
+ 4. Batch Large Operations
 
 For large tables, batch operations to avoid long locks:
 
@@ -285,7 +285,7 @@ WHERE id BETWEEN 1 AND 1000;
 -- Repeat for subsequent batches
 ```
 
-### 5. Test with Realistic Data
+ 5. Test with Realistic Data
 
 Test migrations with realistic data volumes:
 
@@ -293,43 +293,43 @@ Test migrations with realistic data volumes:
 - Test on staging environment
 - Monitor performance impact
 
-## Migration File Structure
+ Migration File Structure
 
 ```
 prisma/
-├── schema.prisma              # Current schema definition
-├── migration_lock.toml       # Prisma migration lock file
+├── schema.prisma               Current schema definition
+├── migration_lock.toml        Prisma migration lock file
 └── migrations/
     ├── 20240107_initial_migration/
-    │   └── migration.sql       # Migration SQL
+    │   └── migration.sql        Migration SQL
     ├── 20240107_add_foreign_key_constraints/
-    │   ├── migration.sql       # Migration SQL
-    │   └── rollback.sql        # Rollback SQL (optional)
+    │   ├── migration.sql        Migration SQL
+    │   └── rollback.sql         Rollback SQL (optional)
     └── ...
 ```
 
-## Troubleshooting
+ Troubleshooting
 
-### Migration Fails to Apply
+ Migration Fails to Apply
 
 1. Check database connection
 2. Verify PostgreSQL version compatibility
 3. Review migration SQL for syntax errors
 4. Check for conflicting constraints
 
-### Schema Drift Detected
+ Schema Drift Detected
 
 If `prisma migrate deploy` detects schema drift:
 
 ```bash
-# Option 1: Reset (development only)
+ Option 1: Reset (development only)
 bun db:migrate:reset
 
-# Option 2: Create baseline migration
+ Option 2: Create baseline migration
 bun db:migrate:dev --name baseline_existing_schema
 ```
 
-### Foreign Key Errors
+ Foreign Key Errors
 
 When adding foreign keys with existing data:
 
@@ -348,9 +348,9 @@ NOT VALID;
 ALTER TABLE "ChildTable" VALIDATE CONSTRAINT "fk_name";
 ```
 
-## CI/CD Integration
+ CI/CD Integration
 
-### Example GitHub Action
+ Example GitHub Action
 
 ```yaml
 name: Database Migrations
@@ -383,13 +383,13 @@ jobs:
         working-directory: ./packages/db
 ```
 
-## References
+ References
 
 - [Prisma Migrate Documentation](https://www.prisma.io/docs/concepts/components/prisma-migrate)
 - [Prisma Schema Reference](https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference)
 - [PostgreSQL ALTER TABLE](https://www.postgresql.org/docs/current/sql-altertable.html)
 
-## Current Migration History
+ Current Migration History
 
 | Date       | Migration                                            | Description                                                                                                           |
 | ---------- | ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |

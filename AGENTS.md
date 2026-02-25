@@ -1,6 +1,6 @@
-# OpenX Basefly - Agent Guidelines
+ OpenX Basefly - Agent Guidelines
 
-## Project Overview
+ Project Overview
 
 Basefly is a Next.js-based SaaS template with modern architecture including:
 
@@ -14,64 +14,64 @@ Basefly is a Next.js-based SaaS template with modern architecture including:
 - Stripe payments
 - Vitest for testing
 
-## Agent Configuration
+ Agent Configuration
 
 This project uses OpenX - a multi-model agent harness with the following agents:
 
-### Sisyphus (Main Orchestrator)
+ Sisyphus (Main Orchestrator)
 
 - **Model**: opencode/kimi-k2.5-free
 - **Role**: Complex task coordination and orchestration
 - **Use for**: Major features, architecture decisions, multi-step workflows
 
-### Oracle
+ Oracle
 
 - **Model**: opencode/glm-4.7-free
 - **Role**: Architecture and debugging specialist
 - **Use for**: Code review, debugging, technical decisions
 
-### Librarian
+ Librarian
 
 - **Model**: opencode/glm-4.7-free
 - **Role**: Documentation and research
 - **Use for**: Finding files, understanding codebase, documentation lookup
 
-### Explore
+ Explore
 
 - **Model**: opencode/gpt-5-nano
 - **Role**: Fast exploration
 - **Use for**: Quick file searches, grep operations, initial codebase mapping
 
-### Multimodal Looker
+ Multimodal Looker
 
 - **Model**: opencode/minimax-m2.1-free
 - **Role**: Visual/UI tasks
 - **Use for**: UI component work, visual debugging, screenshots
-### Metis
+ Metis
 
 - **Model**: opencode/glm-4.7-free
 - **Role**: Pre-planning consultant
 - **Use for**: Analyzing requests to identify hidden intentions, ambiguities, and AI failure points
 
-### Momus
+ Momus
 
 - **Model**: opencode/glm-4.7-free
 - **Role**: Expert reviewer
 - **Use for**: Evaluating work plans for clarity, verifiability, and completeness
 
-### Plan Agent
+ Plan Agent
 
 - **Model**: opencode/kimi-k2.5-free
 - **Role**: Planning and task orchestration
 - **Use for**: Creating detailed work breakdowns, parallel task graphs, and structured TODO lists
 
-## Workflow Triggers
+ Workflow Triggers
 
 - `ultrawork` or `ulw` - Activate full agent harness
 - `/start-work` - Execute plans
 - Tab key - Enter Prometheus (Planner) mode
 
-## Code Standards
+ Code Standards
 
 - **TypeScript**: Strict mode enabled
 - **ESLint**: Custom configuration with Turbo rules
@@ -79,7 +79,7 @@ This project uses OpenX - a multi-model agent harness with the following agents:
 - **Testing**: Vitest with coverage requirements
 - **Git**: Atomic commits with conventional messages
 
-## Development Guidelines
+ Development Guidelines
 
 1. Always run tests before committing
 2. Follow existing code patterns and conventions
@@ -87,58 +87,58 @@ This project uses OpenX - a multi-model agent harness with the following agents:
 4. Check types with `turbo typecheck`
 5. Format code with `turbo format`
 
-## Project Structure
+ Project Structure
 
 ```
 /
 ├── apps/
-│   ├── nextjs/          # Main Next.js application
+│   ├── nextjs/           Main Next.js application
 │   └── ...
 ├── packages/
-│   ├── api/             # tRPC API definitions
-│   ├── auth/            # Clerk auth configuration
-│   ├── db/              # Prisma schema and migrations
-│   ├── ui/              # Shared UI components
+│   ├── api/              tRPC API definitions
+│   ├── auth/             Clerk auth configuration
+│   ├── db/               Prisma schema and migrations
+│   ├── ui/               Shared UI components
 │   └── ...
 ├── tooling/
-│   ├── eslint/          # Shared ESLint configs
-│   ├── prettier/        # Shared Prettier configs
-│   ├── tailwind/        # Shared Tailwind config
-│   └── typescript/      # Shared TS configs
-├── .opencode/           # OpenCode configuration
+│   ├── eslint/           Shared ESLint configs
+│   ├── prettier/         Shared Prettier configs
+│   ├── tailwind/         Shared Tailwind config
+│   └── typescript/       Shared TS configs
+├── .opencode/            OpenCode configuration
 │   ├── oh-my-opencode.json
-│   ├── skills/          # Custom skills
-│   ├── superpowers/     # Superpowers skills
-│   └── plugins/         # Custom plugins
+│   ├── skills/           Custom skills
+│   ├── superpowers/      Superpowers skills
+│   └── plugins/          Custom plugins
 └── docs/
-    └── prompts/         # System prompts reference
+    └── prompts/          System prompts reference
 ```
 
-## Testing
+ Testing
 
 Run tests with:
 
 ```bash
-pnpm test           # Run all tests
-pnpm test:ui        # Run with UI
-pnpm test:coverage  # Run with coverage
+pnpm test            Run all tests
+pnpm test:ui         Run with UI
+pnpm test:coverage   Run with coverage
 ```
 
-## Build Commands
+ Build Commands
 
 ```bash
-pnpm dev            # Development mode
-pnpm build          # Production build
-pnpm lint           # Run ESLint
-pnpm typecheck      # TypeScript check
-pnpm format         # Format code
+pnpm dev             Development mode
+pnpm build           Production build
+pnpm lint            Run ESLint
+pnpm typecheck       TypeScript check
+pnpm format          Format code
 ```
-#YR|
-## Quick Start: Using AI Agents
+|
+ Quick Start: Using AI Agents
 
 This section provides concrete examples of how to leverage AI agents for common development tasks.
 
-### Explore Agent - Codebase Discovery
+ Explore Agent - Codebase Discovery
 
 The Explore agent is your go-to for understanding existing code patterns, finding files, and mapping codebase structure.
 
@@ -165,7 +165,7 @@ task(subagent_type="explore", load_skills=[], prompt="Map all files related to t
 ```
 **Expected output:** A list of interconnected files showing the billing flow from API to UI.
 
-### Librarian Agent - Documentation & External Research
+ Librarian Agent - Documentation & External Research
 
 The Librarian agent searches external resources, official documentation, and best practices.
 
@@ -193,7 +193,7 @@ task(subagent_type="librarian", load_skills=[], prompt="Find Prisma interactive 
 ```
 **Expected output:** Prisma docs with transaction examples and best practices.
 
-### Oracle Agent - Architecture & Debugging
+ Oracle Agent - Architecture & Debugging
 
 The Oracle agent provides high-quality reasoning for complex architectural decisions and debugging challenges.
 
@@ -221,7 +221,7 @@ task(subagent_type="oracle", load_skills=[], prompt="Design architecture for add
 ```
 **Expected output:** Architecture recommendation with schema designs, API patterns, and implementation steps.
 
-### Sisyphus (Orchestrator) - Complex Workflows
+ Sisyphus (Orchestrator) - Complex Workflows
 
 Sisyphus coordinates multiple agents and manages complex multi-step tasks.
 
@@ -233,35 +233,35 @@ Sisyphus coordinates multiple agents and manages complex multi-step tasks.
 
 **Example 1: Implement new API endpoint**
 ```
-# Task breakdown: 1) Explore existing router structure, 2) Find similar endpoints for patterns, 3) Implement new route with proper types, 4) Add tests
+ Task breakdown: 1) Explore existing router structure, 2) Find similar endpoints for patterns, 3) Implement new route with proper types, 4) Add tests
 task(subagent_type="explore", load_skills=[], prompt="Find tRPC router structure in packages/api/src/. Show me how routes are defined, organized, and typed.", run_in_background=true)
-# Then implement based on findings
+ Then implement based on findings
 ```
 **Expected output:** Understanding of router patterns, then full implementation.
 
 **Example 2: Full-stack feature implementation**
 ```
-# 1) Explore DB schema for related models
-# 2) Find similar features for UI patterns
-# 3) Implement API, DB changes, and UI in parallel
-# 4) Integrate and test
+ 1) Explore DB schema for related models
+ 2) Find similar features for UI patterns
+ 3) Implement API, DB changes, and UI in parallel
+ 4) Integrate and test
 ```
 **Expected output:** Complete feature with all layers implemented.
 
 **Example 3: Refactor with safety**
 ```
-# 1) Map all usages of code to refactor
-# 2) Plan migration path
-# 3) Implement with backward compatibility
-# 4) Verify no regressions
+ 1) Map all usages of code to refactor
+ 2) Plan migration path
+ 3) Implement with backward compatibility
+ 4) Verify no regressions
 ```
 **Expected output:** Safe refactoring with all dependencies updated.
 
-## Workflow Patterns
+ Workflow Patterns
 
 These step-by-step workflows help you tackle common development tasks efficiently.
 
-### Feature Development Workflow
+ Feature Development Workflow
 
 1. **Explore** - Map existing codebase for the feature area
    - Find related models, API routes, UI components
@@ -277,7 +277,7 @@ These step-by-step workflows help you tackle common development tasks efficientl
 5. **Verify** - Run typecheck, lint, tests
 6. **Review** - Use Oracle for complex logic
 
-### Bug Investigation Workflow
+ Bug Investigation Workflow
 
 1. **Reproduce** - Get exact error message and stack trace
 2. **Explore** - Find relevant code paths
@@ -289,7 +289,7 @@ These step-by-step workflows help you tackle common development tasks efficientl
 5. **Verify** - Confirm fix resolves the issue
 6. **Test** - Add regression test
 
-### Code Review Workflow
+ Code Review Workflow
 
 1. **Explore** - Understand the changed code
    - Read modified files
@@ -301,9 +301,9 @@ These step-by-step workflows help you tackle common development tasks efficientl
 3. **Consult** - Use Oracle for architectural concerns
 4. **Recommend** - Suggest improvements with rationale
 
-## Best Practices
+ Best Practices
 
-### When to Use Each Agent
+ When to Use Each Agent
 
 ```
 Explore    → Understanding existing code
@@ -313,7 +313,7 @@ Sisyphus   → Coordinating multiple agents
 Multimodal → Visual/UI tasks
 ```
 
-### Effective Prompt Structure
+ Effective Prompt Structure
 
 Always include in your prompts:
 
@@ -332,7 +332,7 @@ Skip: tests.
 Return: file paths with pattern descriptions.
 ```
 
-### Session Continuity
+ Session Continuity
 
 - Always use session_id for follow-up tasks
 - Preserves context across turns
@@ -340,14 +340,14 @@ Return: file paths with pattern descriptions.
 - Avoids repeated exploration
 
 ```
-# CORRECT: Continues context
+ CORRECT: Continues context
 task(session_id="ses_abc123", prompt="Fix: Type error on line 42")
 
-# WRONG: Loses all context
+ WRONG: Loses all context
 task(category="quick", prompt="Fix the type error...")
 ```
 
-### Agent Selection Guide
+ Agent Selection Guide
 
 Use this decision tree:
 
@@ -357,7 +357,7 @@ Use this decision tree:
 4. **Need multiple agents working together?** → Sisyphus
 5. **Need visual/UI analysis?** → Multimodal
 
-## Related Documentation
+ Related Documentation
 
 - [OpenCode Documentation](https://docs.opencode.ai)
 - [Next.js Documentation](https://nextjs.org/docs)
@@ -366,7 +366,7 @@ Use this decision tree:
 - [Clerk Documentation](https://clerk.com/docs)
 
 
-## Important Notes
+ Important Notes
 
 - This is a monorepo using pnpm workspaces
 - Database migrations are in packages/db

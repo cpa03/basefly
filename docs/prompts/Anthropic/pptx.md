@@ -1,4 +1,4 @@
-# PowerPoint Suite (/mnt/skills/public/pptx/SKILL.md)
+ PowerPoint Suite (/mnt/skills/public/pptx/SKILL.md)
 
 ---
 
@@ -12,30 +12,30 @@
 
 ---
 
-# PPTX creation, editing, and analysis
+ PPTX creation, editing, and analysis
 
-## Overview
+ Overview
 
 A user may ask you to create, edit, or analyze the contents of a .pptx file. A .pptx file is essentially a ZIP archive containing XML files and other resources that you can read or edit. You have different tools and workflows available for different tasks.
 
-## Reading and analyzing content
+ Reading and analyzing content
 
-### Text extraction
+ Text extraction
 If you just need to read the text contents of a presentation, you should convert the document to markdown:
 ```bash
-# Convert document to markdown
+ Convert document to markdown
 python -m markitdown path-to-file.pptx
 ```
 
-### Raw XML access
+ Raw XML access
 You need raw XML access for: comments, speaker notes, slide layouts, animations, design elements, and complex formatting. For any of these features, you'll need to unpack a presentation and read its raw XML contents.
 
-#### Unpacking a file
+ Unpacking a file
 `python ooxml/scripts/unpack.py <office_file> <output_dir>`
 
 **Note**: The unpack.py script is located at `skills/pptx/ooxml/scripts/unpack.py` relative to the project root. If the script doesn't exist at this path, use `find . -name "unpack.py"` to locate it.
 
-#### Key file structures
+ Key file structures
 * `ppt/presentation.xml` - Main presentation metadata and slide references
 * `ppt/slides/slide{N}.xml` - Individual slide contents (slide1.xml, slide2.xml, etc.)
 * `ppt/notesSlides/notesSlide{N}.xml` - Speaker notes for each slide
@@ -45,17 +45,17 @@ You need raw XML access for: comments, speaker notes, slide layouts, animations,
 * `ppt/theme/` - Theme and styling information
 * `ppt/media/` - Images and other media files
 
-#### Typography and color extraction
+ Typography and color extraction
 **When given an example design to emulate**: Always analyze the presentation's typography and colors first using the methods below:
 1. **Read theme file**: Check `ppt/theme/theme1.xml` for colors (`<a:clrScheme>`) and fonts (`<a:fontScheme>`)
 2. **Sample slide content**: Examine `ppt/slides/slide1.xml` for actual font usage (`<a:rPr>`) and colors
 3. **Search for patterns**: Use grep to find color (`<a:solidFill>`, `<a:srgbClr>`) and font references across all XML files
 
-## Creating a new PowerPoint presentation **without a template**
+ Creating a new PowerPoint presentation **without a template**
 
 When creating a new PowerPoint presentation from scratch, use the **html2pptx** workflow to convert HTML slides to PowerPoint with accurate positioning.
 
-### Design Principles
+ Design Principles
 
 **CRITICAL**: Before creating any presentation, analyze the content and choose appropriate design elements:
 1. **Consider the subject matter**: What is this presentation about? What tone, industry, or mood does it suggest?
@@ -70,7 +70,7 @@ When creating a new PowerPoint presentation from scratch, use the **html2pptx** 
 - ✅ Ensure readability: strong contrast, appropriately sized text, clean alignment
 - ✅ Be consistent: repeat patterns, spacing, and visual language across slides
 
-#### Color Palette Selection
+ Color Palette Selection
 
 **Choosing colors creatively**:
 - **Think beyond defaults**: What colors genuinely match this specific topic? Avoid autopilot choices.
@@ -81,26 +81,26 @@ When creating a new PowerPoint presentation from scratch, use the **html2pptx** 
 
 **Example color palettes** (use these to spark creativity - choose one, adapt it, or create your own):
 
-1. **Classic Blue**: Deep navy (#1C2833), slate gray (#2E4053), silver (#AAB7B8), off-white (#F4F6F6)
-2. **Teal & Coral**: Teal (#5EA8A7), deep teal (#277884), coral (#FE4447), white (#FFFFFF)
-3. **Bold Red**: Red (#C0392B), bright red (#E74C3C), orange (#F39C12), yellow (#F1C40F), green (#2ECC71)
-4. **Warm Blush**: Mauve (#A49393), blush (#EED6D3), rose (#E8B4B8), cream (#FAF7F2)
-5. **Burgundy Luxury**: Burgundy (#5D1D2E), crimson (#951233), rust (#C15937), gold (#997929)
-6. **Deep Purple & Emerald**: Purple (#B165FB), dark blue (#181B24), emerald (#40695B), white (#FFFFFF)
-7. **Cream & Forest Green**: Cream (#FFE1C7), forest green (#40695B), white (#FCFCFC)
-8. **Pink & Purple**: Pink (#F8275B), coral (#FF574A), rose (#FF737D), purple (#3D2F68)
-9. **Lime & Plum**: Lime (#C5DE82), plum (#7C3A5F), coral (#FD8C6E), blue-gray (#98ACB5)
-10. **Black & Gold**: Gold (#BF9A4A), black (#000000), cream (#F4F6F6)
-11. **Sage & Terracotta**: Sage (#87A96B), terracotta (#E07A5F), cream (#F4F1DE), charcoal (#2C2C2C)
-12. **Charcoal & Red**: Charcoal (#292929), red (#E33737), light gray (#CCCBCB)
-13. **Vibrant Orange**: Orange (#F96D00), light gray (#F2F2F2), charcoal (#222831)
-14. **Forest Green**: Black (#191A19), green (#4E9F3D), dark green (#1E5128), white (#FFFFFF)
-15. **Retro Rainbow**: Purple (#722880), pink (#D72D51), orange (#EB5C18), amber (#F08800), gold (#DEB600)
-16. **Vintage Earthy**: Mustard (#E3B448), sage (#CBD18F), forest green (#3A6B35), cream (#F4F1DE)
-17. **Coastal Rose**: Old rose (#AD7670), beaver (#B49886), eggshell (#F3ECDC), ash gray (#BFD5BE)
-18. **Orange & Turquoise**: Light orange (#FC993E), grayish turquoise (#667C6F), white (#FCFCFC)
+1. **Classic Blue**: Deep navy (1C2833), slate gray (2E4053), silver (B7B8), off-white (F4F6F6)
+2. **Teal & Coral**: Teal (5EA8A7), deep teal (277884), coral (4447), white (FFFF)
+3. **Bold Red**: Red (C0392B), bright red (E74C3C), orange (F39C12), yellow (F1C40F), green (2ECC71)
+4. **Warm Blush**: Mauve (A49393), blush (D6D3), rose (E8B4B8), cream (F7F2)
+5. **Burgundy Luxury**: Burgundy (5D1D2E), crimson (951233), rust (C15937), gold (997929)
+6. **Deep Purple & Emerald**: Purple (B165FB), dark blue (181B24), emerald (40695B), white (FFFF)
+7. **Cream & Forest Green**: Cream (E1C7), forest green (40695B), white (FCFC)
+8. **Pink & Purple**: Pink (F8275B), coral (574A), rose (737D), purple (3D2F68)
+9. **Lime & Plum**: Lime (C5DE82), plum (7C3A5F), coral (8C6E), blue-gray (98ACB5)
+10. **Black & Gold**: Gold (9A4A), black (000000), cream (F4F6F6)
+11. **Sage & Terracotta**: Sage (87A96B), terracotta (E07A5F), cream (F4F1DE), charcoal (2C2C2C)
+12. **Charcoal & Red**: Charcoal (292929), red (E33737), light gray (CBCB)
+13. **Vibrant Orange**: Orange (F96D00), light gray (F2F2F2), charcoal (222831)
+14. **Forest Green**: Black (191A19), green (4E9F3D), dark green (1E5128), white (FFFF)
+15. **Retro Rainbow**: Purple (722880), pink (D72D51), orange (5C18), amber (F08800), gold (B600)
+16. **Vintage Earthy**: Mustard (E3B448), sage (D18F), forest green (3A6B35), cream (F4F1DE)
+17. **Coastal Rose**: Old rose (7670), beaver (B49886), eggshell (F3ECDC), ash gray (D5BE)
+18. **Orange & Turquoise**: Light orange (993E), grayish turquoise (667C6F), white (FCFC)
 
-#### Visual Details Options
+ Visual Details Options
 
 **Geometric Patterns**:
 - Diagonal section dividers instead of horizontal
@@ -148,13 +148,13 @@ When creating a new PowerPoint presentation from scratch, use the **html2pptx** 
 - Edge-to-edge color bands
 - Negative space as a design element
 
-### Layout Tips
+ Layout Tips
 **When creating slides with charts or tables:**
 - **Two-column layout (PREFERRED)**: Use a header spanning the full width, then two columns below - text/bullets in one column and the featured content in the other. This provides better balance and makes charts/tables more readable. Use flexbox with unequal column widths (e.g., 40%/60% split) to optimize space for each content type.
 - **Full-slide layout**: Let the featured content (chart/table) take up the entire slide for maximum impact and readability
 - **NEVER vertically stack**: Do not place charts/tables below text in a single column - this causes poor readability and layout issues
 
-### Workflow
+ Workflow
 1. **MANDATORY - READ ENTIRE FILE**: Read [`html2pptx.md`](html2pptx.md) completely from start to finish. **NEVER set any range limits when reading this file.** Read the full file content for detailed syntax, critical formatting rules, and best practices before proceeding with presentation creation.
 2. Create an HTML file for each slide with proper dimensions (e.g., 720pt × 405pt for 16:9)
    - Use `<p>`, `<h1>`-`<h6>`, `<ul>`, `<ol>` for all text content
@@ -175,11 +175,11 @@ When creating a new PowerPoint presentation from scratch, use the **html2pptx** 
      * Layout problems
    - If issues found, diagnose and fix before proceeding
 
-## Creating a new PowerPoint presentation **from a template**
+ Creating a new PowerPoint presentation **from a template**
 
 When given a PowerPoint template, you can create a new presentation by replacing the text content in the template slides.
 
-### Workflow
+ Workflow
 
 1. **Unpack the template**: Extract the template's XML structure
 ```bash
@@ -190,7 +190,7 @@ When given a PowerPoint template, you can create a new presentation by replacing
 
 3. **Examine template slides**: Check the first few slide XML files to understand the structure
 ```bash
-   # View slide structure
+    View slide structure
    python -c "from lxml import etree; tree = etree.parse('unpacked_template/ppt/slides/slide1.xml'); print(etree.tostring(tree, pretty_print=True, encoding='unicode'))"
 ```
 
@@ -338,7 +338,7 @@ When given a PowerPoint template, you can create a new presentation by replacing
      - slide-0/shape-2: overflow worsened by 1.25" (was 0.00", now 1.25")
 ```
 
-## Creating Thumbnail Grids
+ Creating Thumbnail Grids
 
 To create visual thumbnail grids of PowerPoint slides for quick analysis and reference:
 ```bash
@@ -362,14 +362,14 @@ python scripts/thumbnail.py template.pptx [output_prefix]
 
 **Examples**:
 ```bash
-# Basic usage
+ Basic usage
 python scripts/thumbnail.py presentation.pptx
 
-# Combine options: custom name, columns
+ Combine options: custom name, columns
 python scripts/thumbnail.py template.pptx analysis --cols 4
 ```
 
-## Converting Slides to Images
+ Converting Slides to Images
 
 To visually analyze PowerPoint slides, convert them to images using a two-step process:
 
@@ -393,16 +393,16 @@ Options:
 
 Example for specific range:
 ```bash
-pdftoppm -jpeg -r 150 -f 2 -l 5 template.pdf slide  # Converts only pages 2-5
+pdftoppm -jpeg -r 150 -f 2 -l 5 template.pdf slide   Converts only pages 2-5
 ```
 
-## Code Style Guidelines
+ Code Style Guidelines
 **IMPORTANT**: When generating code for PPTX operations:
 - Write concise code
 - Avoid verbose variable names and redundant operations
 - Avoid unnecessary print statements
 
-## Dependencies
+ Dependencies
 
 Required dependencies (should already be installed):
 

@@ -1,12 +1,12 @@
-# AI Agent Engineer - Long-term Memory
+ AI Agent Engineer - Long-term Memory
 
-## Overview
+ Overview
 
 This document serves as the long-term memory for the ai-agent-engineer domain in the OpenX Basefly project.
 
-## Current State (2026-02-25)
+ Current State (2026-02-25)
 
-### Available Agents
+ Available Agents
 
 | Agent             | Model                      | Purpose                                |
 | ----------------- | -------------------------- | -------------------------------------- |
@@ -19,7 +19,7 @@ This document serves as the long-term memory for the ai-agent-engineer domain in
 | Momus             | opencode/glm-4.7-free      | Expert reviewer                        |
 | Plan              | opencode/kimi-k2.5-free    | Planning and task orchestration        |
 
-### Available Categories
+ Available Categories
 
 - `quick` - Trivial tasks (gpt-5-nano)
 - `visual-engineering` - Frontend/UI (minimax-m2.1-free)
@@ -31,7 +31,7 @@ This document serves as the long-term memory for the ai-agent-engineer domain in
 - `writing` - Documentation (glm-4.7-free)
 - `plan` - Planning and task orchestration (kimi-k2.5-free)
 
-### Enabled Skills
+ Enabled Skills
 
 - using-superpowers
 - brainstorming
@@ -49,13 +49,13 @@ This document serves as the long-term memory for the ai-agent-engineer domain in
 - verification-before-completion
 - **ai-agent-engineer** (this skill)
 
-### MCP Servers
+ MCP Servers
 
 - websearch (Exa) - Enabled
 - context7 - Enabled
 - github-search - Enabled
 
-## Skill Files Location
+ Skill Files Location
 
 All ai-agent-engineer skill files are located in `.opencode/skills/ai-agent-engineer/`:
 
@@ -63,40 +63,40 @@ All ai-agent-engineer skill files are located in `.opencode/skills/ai-agent-engi
 - `references/mcp-servers.md` - MCP server configuration
 - `references/model-capabilities.md` - Model capability matrices
 
-## Past Improvements
+ Past Improvements
 
-#YZ|
-#YZ|### 2026-02-25 (Session 3)
-#KB|
-#RT|- Fixed PR #615 - verified it's already merged (commit 8f6399a)
-#MT|- Added comment to PR #615 noting merge status
-#PJ|- Proactive scan found AGENTS.md missing Metis and Momus documentation
-#XH|- Created PR #623 to add missing agent documentation to AGENTS.md
-#SZ|
+|
+ 2026-02-25 (Session 3)
+|
+|- Fixed PR 615 - verified it's already merged (commit 8f6399a)
+|- Added comment to PR 615 noting merge status
+|- Proactive scan found AGENTS.md missing Metis and Momus documentation
+|- Created PR 623 to add missing agent documentation to AGENTS.md
+|
 
-- Reviewed existing PR #571 - verified up-to-date with main, mergeable
+- Reviewed existing PR 571 - verified up-to-date with main, mergeable
 - Verified typecheck and lint pass locally
 - Confirmed Vercel failure is pre-existing infrastructure issue
 - Commented on PR with verification results
 - Fixed git merge conflict markers in this document
 
-### 2026-02-25 (Session 1)
+ 2026-02-25 (Session 1)
 
 - Created this long-term memory document
 - Documented current agent configuration
 - Established baseline for future improvements
-- Added planning skills reference and /start-work command to SKILL.md (PR #571)
+- Added planning skills reference and /start-work command to SKILL.md (PR 571)
 
-## Best Practices
+ Best Practices
 
-### Model Selection
+ Model Selection
 
 1. **Orchestration** → kimi-k2.5-free (complex reasoning)
 2. **Architecture/Debug** → glm-4.7-free (precision)
 3. **Quick searches** → gpt-5-nano (speed)
 4. **Visual/UI** → minimax-m2.1-free (multimodal)
 
-### Temperature Guidelines
+ Temperature Guidelines
 
 | Range   | Use Case               |
 | ------- | ---------------------- |
@@ -104,7 +104,7 @@ All ai-agent-engineer skill files are located in `.opencode/skills/ai-agent-engi
 | 0.4-0.6 | Balanced reasoning     |
 | 0.7-0.9 | Creative, exploratory  |
 
-### Workflow
+ Workflow
 
 1. Check for existing ai-agent-engineer PRs/issues
 2. Make small, focused changes
@@ -112,23 +112,23 @@ All ai-agent-engineer skill files are located in `.opencode/skills/ai-agent-engi
 4. Create PR with `ai-agent-engineer` label
 5. Keep branch up-to-date with main
 
-## Session Insights
+ Session Insights
 
-### Key Observations
+ Key Observations
 
 1. **Existing PRs**: Always check for existing ai-agent-engineer PRs before creating new ones
 2. **Vercel Failures**: Can be pre-existing infrastructure issues unrelated to code changes - verify with typecheck/lint locally
 3. **Documentation-Only PRs**: Don't require build verification the same way as code changes
 4. **Proactive Scan**: When no issues exist, scan domain for improvements - configuration was complete
 
-## Open Questions / TODO
+ Open Questions / TODO
 
 - [ ] Evaluate if new models become available
 - [ ] Consider adding more MCP servers for agent capabilities
 - [ ] Review category routing for optimization
 - [ ] Assess skill enablement for context optimization
 
-## References
+ References
 
 - AGENTS.md - Project agent guidelines
 - .opencode/oh-my-opencode.json - Agent configuration

@@ -25,6 +25,7 @@ export const XBlogArticle = React.memo(function XBlogArticle() {
               alt={blogContent.title}
               width={640}
               height={400}
+              sizes="(max-width: 640px) 100vw, 320px"
               className={`transform object-cover transition ${TRANSITION_PRESETS.container} group-hover:scale-95 group-hover:rounded-2xl`}
             />
           </div>

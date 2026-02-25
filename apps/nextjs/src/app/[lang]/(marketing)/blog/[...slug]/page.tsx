@@ -158,6 +158,7 @@ export default function PostPage({ params }: PostPageProps) {
           alt={post.title}
           width={720}
           height={405}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 720px"
           className="my-8 rounded-md border bg-muted transition-colors"
           priority
         />

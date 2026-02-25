@@ -36,6 +36,7 @@ export const BlogPosts = React.memo(function BlogPosts({
                 alt={posts[0].title}
                 className="w-full rounded-lg border object-cover object-center md:h-64 lg:h-72"
                 height={452}
+                sizes="(max-width: 768px) 100vw, 50vw"
                 src={posts[0].image}
                 width={804}
               />
@@ -71,6 +72,7 @@ export const BlogPosts = React.memo(function BlogPosts({
                   src={post.image}
                   width={804}
                   height={452}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   className="rounded-md border bg-muted transition-colors"
                 />
               )}

@@ -138,6 +138,7 @@ async function seed(): Promise<void> {
 
   try {
     const empty = await isDatabaseEmpty();
+    if (!empty) {
       logger.warn("Database is not empty. Seed will skip existing records.");
       logger.info("Use 'db:seed:reset' to clear and reseed.");
     }

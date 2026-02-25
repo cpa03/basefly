@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { API_VALIDATION } from "@saasfly/common";
 
-// Re-implement escapeHtml for testing (same logic as in health_check.ts)
+// Re-implement escapeHtml for testing (same logic as in hello.ts)
 function escapeHtml(unsafe: string): string {
   return unsafe
     .replace(/&/g, "&amp;")

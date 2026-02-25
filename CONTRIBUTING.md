@@ -5,11 +5,19 @@ Welcome, new contributor! This section helps you get up to speed quickly.
 ### Quick Start Checklist
 
 1. **Prerequisites**
+   - [Node.js 20](https://nodejs.org/) installed (see [.nvmrc](../../.nvmrc) for version)
+   - [pnpm](https://pnpm.io/) installed - Required version: 10.x
+     - **macOS/Linux**: `curl -fsSL https://get.pnpm.io/install.sh | sh -`
+     - **Windows**: `npm install -g pnpm`
+     - **Corepack** (Node 16+): `corepack enable && corepack prepare pnpm@latest --activate`
+   - [PostgreSQL](https://www.postgresql.org/) (local or remote)
+
+1. **Prerequisites**
    - [Node.js 18+](https://nodejs.org/) installed
    - [pnpm](https://pnpm.io/) installed (`npm install -g pnpm`)
    - [PostgreSQL](https://www.postgresql.org/) (local or remote)
 
-2. **Initial Setup**
+1. **Initial Setup**
 
    ```bash
    # Clone and install dependencies
@@ -25,7 +33,7 @@ Welcome, new contributor! This section helps you get up to speed quickly.
    # Edit .env.local with your credentials
    ```
 
-3. **Daily Development Commands**
+1. **Daily Development Commands**
 
    ```bash
    pnpm dev          # Start development server
@@ -35,7 +43,7 @@ Welcome, new contributor! This section helps you get up to speed quickly.
    pnpm typecheck    # Type check
    ```
 
-4. **DX Convenience Scripts**
+1. **DX Convenience Scripts**
 
    ```bash
    pnpm dx:quick     # Fast feedback: typecheck + lint only
@@ -47,7 +55,7 @@ Welcome, new contributor! This section helps you get up to speed quickly.
    pnpm dx:ci        # Simulate CI: dx:check + build
    ```
 
-5. **Before Submitting a PR**
+1. **Before Submitting a PR**
 
    ```bash
    # Run comprehensive checks

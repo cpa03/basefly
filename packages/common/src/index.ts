@@ -44,6 +44,8 @@ export {
   ADMIN_EMAIL,
   isAdminEmail,
   isValidLogLevel,
+  REDIS_URL,
+  IS_REDIS_CONFIGURED,
 } from "./config/env";
 
 // Project configuration - ROOT configuration for brand, company, and project settings

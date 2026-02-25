@@ -17,6 +17,28 @@ This document serves as the long-term memory for the ai-agent-engineer domain in
 | Multimodal Looker | opencode/minimax-m2.1-free | Visual/UI tasks                        |
 | Metis             | opencode/glm-4.7-free      | Pre-planning consultant                |
 | Momus             | opencode/glm-4.7-free      | Expert reviewer                        |
+| Plan              | opencode/kimi-k2.5-free    | Planning and task orchestration        |
+| Agent             | Model                      | Purpose                                |
+| ----------------- | -------------------------- | -------------------------------------- |
+| Sisyphus          | opencode/kimi-k2.5-free    | Main orchestrator for complex tasks    |
+| Oracle            | opencode/glm-4.7-free      | Architecture, debugging, deep analysis |
+| Librarian         | opencode/glm-4.7-free      | Documentation and research             |
+| Explore           | opencode/gpt-5-nano        | Fast exploration and grep              |
+| Multimodal Looker | opencode/minimax-m2.1-free | Visual/UI tasks                        |
+| Metis             | opencode/glm-4.7-free      | Pre-planning consultant                |
+| Momus             | opencode/glm-4.7-free      | Expert reviewer                        |
+=======
+| Agent | Model | Purpose |
+|-------|-------|---------|
+| Sisyphus | opencode/kimi-k2.5-free | Main orchestrator for complex tasks |
+| Oracle | opencode/glm-4.7-free | Architecture, debugging, deep analysis |
+| Librarian | opencode/glm-4.7-free | Documentation and research |
+| Explore | opencode/gpt-5-nano | Fast exploration and grep |
+| Multimodal Looker | opencode/minimax-m2.1-free | Visual/UI tasks |
+| Metis | opencode/glm-4.7-free | Pre-planning consultant |
+| Momus | opencode/glm-4.7-free | Expert reviewer |
+| Plan | opencode/kimi-k2.5-free | Planning and task orchestration |
+>>>>>>> 8f65161 (feat(ai-agent): add missing plan agent configuration)
 
 ### Available Categories
 
@@ -28,6 +50,7 @@ This document serves as the long-term memory for the ai-agent-engineer domain in
 - `deep` - Autonomous problem-solving (glm-4.7-free)
 - `artistry` - Creative approaches (kimi-k2.5-free)
 - `writing` - Documentation (glm-4.7-free)
+- `plan` - Planning and task orchestration (kimi-k2.5-free)
 
 ### Enabled Skills
 

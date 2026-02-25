@@ -48,6 +48,12 @@ This project uses OpenX - a multi-model agent harness with the following agents:
 - **Role**: Visual/UI tasks
 - **Use for**: UI component work, visual debugging, screenshots
 
+### Plan Agent
+
+- **Model**: opencode/kimi-k2.5-free
+- **Role**: Planning and task orchestration
+- **Use for**: Creating detailed work breakdowns, parallel task graphs, and structured TODO lists
+
 ## Workflow Triggers
 
 - `ultrawork` or `ulw` - Activate full agent harness

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /**
  * Database Seed Script
  *
@@ -16,6 +15,7 @@
  */
 
 import { db } from "./index";
+import { logger } from "./logger";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -60,7 +60,7 @@ async function isDatabaseEmpty(): Promise<boolean> {
 }
 
 async function seedUsers(): Promise<void> {
-  console.log("Seeding users...");
+  logger.info("Seeding users...");
 
   await db
     .insertInto("User")
@@ -74,11 +74,11 @@ async function seedUsers(): Promise<void> {
     .onConflict((oc) => oc.column("id").doNothing())
     .execute();
 
-  console.log("✓ Users seeded successfully");
+  logger.info("Users seeded successfully");
 }
 
 async function seedCustomers(): Promise<void> {
-  console.log("Seeding customers...");
+  logger.info("Seeding customers...");
 
   await db
     .insertInto("Customer")
@@ -100,11 +100,11 @@ async function seedCustomers(): Promise<void> {
     .onConflict((oc) => oc.column("authUserId").doNothing())
     .execute();
 
-  console.log("✓ Customers seeded successfully");
+  logger.info("Customers seeded successfully");
 }
 
 async function seedClusters(): Promise<void> {
-  console.log("Seeding clusters...");
+  logger.info("Seeding clusters...");
 
   for (const cluster of SEED_CONFIG.testClusters) {
     await db
@@ -122,32 +122,25 @@ async function seedClusters(): Promise<void> {
       .execute();
   }
 
-  console.log("✓ Clusters seeded successfully");
+  logger.info("Clusters seeded successfully");
 }
 
 async function seed(): Promise<void> {
   if (isProduction) {
-    console.error("❌ Seeding is disabled in production environment");
-    console.error("Set NODE_ENV to 'development' or 'test' to enable seeding");
+    logger.error("Seeding is disabled in production environment");
+    logger.error("Set NODE_ENV to 'development' or 'test' to enable seeding");
     process.exit(1);
   }
 
-  console.log("🌱 Starting database seeding...");
-
-  console.log(`Environment: ${process.env.NODE_ENV ?? "development"}`);
-
-  console.log("");
+  logger.info("Starting database seeding...", {
+    environment: process.env.NODE_ENV ?? "development",
+  });
 
   try {
     const empty = await isDatabaseEmpty();
     if (!empty) {
-      console.log(
-        "⚠️  Database is not empty. Seed will skip existing records.",
-      );
-
-      console.log("   Use 'db:seed:reset' to clear and reseed.");
-
-      console.log("");
+      logger.warn("Database is not empty. Seed will skip existing records.");
+      logger.info("Use 'db:seed:reset' to clear and reseed.");
     }
 
     await db.transaction().execute(async () => {
@@ -156,25 +149,15 @@ async function seed(): Promise<void> {
       await seedClusters();
     });
 
-    console.log("");
-
-    console.log("✅ Database seeding completed successfully!");
-
-    console.log("");
-
-    console.log("Seeded data:");
-
-    console.log(
-      `  - Users: ${SEED_CONFIG.testUser.email}, ${SEED_CONFIG.adminUser.email}`,
-    );
-
-    console.log(
-      `  - Clusters: ${SEED_CONFIG.testClusters.map((c) => c.name).join(", ")}`,
-    );
+    logger.info("Database seeding completed successfully!");
+    logger.info("Seeded users:", {
+      users: [SEED_CONFIG.testUser.email, SEED_CONFIG.adminUser.email],
+    });
+    logger.info("Seeded clusters:", {
+      clusters: SEED_CONFIG.testClusters.map((c) => c.name),
+    });
   } catch (error) {
-    console.error("");
-    console.error("❌ Seeding failed with error:");
-    console.error(error);
+    logger.error("Seeding failed with error:", error);
     process.exit(1);
   }
 }
@@ -184,7 +167,7 @@ export async function clearSeedData(): Promise<void> {
     throw new Error("Cannot clear seed data in production");
   }
 
-  console.log("🧹 Clearing seed data...");
+  logger.info("Clearing seed data...");
 
   const seedUserIds = [SEED_CONFIG.testUser.id, SEED_CONFIG.adminUser.id];
 
@@ -202,7 +185,7 @@ export async function clearSeedData(): Promise<void> {
     await trx.deleteFrom("User").where("id", "in", seedUserIds).execute();
   });
 
-  console.log("✓ Seed data cleared");
+  logger.info("Seed data cleared");
 }
 
 void seed();

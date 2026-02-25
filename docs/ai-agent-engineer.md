@@ -63,7 +63,14 @@ All ai-agent-engineer skill files are located in `.opencode/skills/ai-agent-engi
 
 ## Past Improvements
 
-### 2026-02-25
+### 2026-02-25 (Session 2)
+
+- Reviewed existing PR #571 - verified up-to-date with main, mergeable
+- Verified typecheck and lint pass locally
+- Confirmed Vercel failure is pre-existing infrastructure issue
+- Commented on PR with verification results
+
+### 2026-02-25 (Session 1)
 
 - Created this long-term memory document
 - Documented current agent configuration
@@ -102,6 +109,15 @@ All ai-agent-engineer skill files are located in `.opencode/skills/ai-agent-engi
 3. Verify build/lint/test pass
 4. Create PR with `ai-agent-engineer` label
 5. Keep branch up-to-date with main
+
+## Session Insights
+
+### Key Observations
+
+1. **Existing PRs**: Always check for existing ai-agent-engineer PRs before creating new ones
+2. **Vercel Failures**: Can be pre-existing infrastructure issues unrelated to code changes - verify with typecheck/lint locally
+3. **Documentation-Only PRs**: Don't require build verification the same way as code changes
+4. **Proactive Scan**: When no issues exist, scan domain for improvements - configuration was complete
 
 ## Open Questions / TODO
 

@@ -38,15 +38,15 @@ These components are primarily used for marketing pages and visual effects. They
 | `popover`          | ✅ Stable | ❌ No       | Popover content                     |
 | `dropdown-menu`    | ✅ Stable | ✅ Yes      | Dropdown menu                       |
 | `table`            | ✅ Stable | ✅ Yes      | Data table structure                |
-| `data-table`       | ✅ Stable | ✅ Yes      | TanStack Table integration          |
-| `data-table-empty` | ✅ Stable | ✅ Yes      | Empty state for tables              |
+| `data-table`       | ✅ Stable | ❌ No       | TanStack Table integration          |
+| `data-table-empty` | ✅ Stable | ❌ No       | Empty state for tables              |
 | `alert`            | ✅ Stable | ❌ No       | Alert message                       |
 | `alert-dialog`     | ✅ Stable | ✅ Yes      | Confirmation dialog                 |
 | `toast`            | ✅ Stable | ✅ Yes      | Toast notification                  |
 | `use-toast`        | ✅ Stable | ✅ Yes      | Toast hook                          |
 | `toaster`          | ✅ Stable | ✅ Yes      | Toast provider                      |
 | `switch`           | ✅ Stable | ✅ Yes      | Toggle switch                       |
-| `checkbox`         | ✅ Stable | ✅ Yes      | Checkbox input                      |
+| `checkbox`         | ✅ Stable | ❌ No       | Checkbox input                      |
 | `avatar`           | ✅ Stable | ✅ Yes      | User avatar                         |
 | `skeleton`         | ✅ Stable | ✅ Yes      | Loading skeleton                    |
 | `tooltip`          | ✅ Stable | ✅ Yes      | Tooltip overlay                     |
@@ -54,7 +54,7 @@ These components are primarily used for marketing pages and visual effects. They
 | `command`          | ✅ Stable | ✅ Yes      | Command palette                     |
 | `status-badge`     | ✅ Stable | ✅ Yes      | Status indicator                    |
 | `calendar`         | ✅ Stable | ❌ No       | Date picker                         |
-| `copy-button`      | ✅ Stable | ✅ Yes      | Copy to clipboard                   |
+| `copy-button`      | ✅ Stable | ❌ No       | Copy to clipboard                   |
 | `textarea`         | ✅ Stable | ❌ No       | Multi-line input                    |
 | `icons`            | ✅ Stable | ✅ Yes      | Lucide icons                        |
 
@@ -82,12 +82,18 @@ These components are primarily used for marketing pages and visual effects. They
 | `background-lines`           | 🔶 Experimental | ✅ Yes      | Background line pattern    |
 | `card-hover-effect`          | 🔶 Experimental | ✅ Yes      | Hover animation effect     |
 
-### Utility | Status | Used Components
+### Email Components
 
-| Component in App | Notes     |
-| ---------------- | --------- | ------ | ----------------------------------------- |
-| `cn`             | ✅ Stable | ✅ Yes | Classname utility (clsx + tailwind-merge) |
-| `callout`        | ✅ Stable | ✅ Yes | Callout/notice box                        |
+| Component          | Status          | Used in App | Notes                 |
+| ------------------ | --------------- | ----------- | --------------------- |
+| `magic-link-email` | 🔶 Experimental | ❌ No       | React Email component |
+
+### Utilities
+
+| Component | Status    | Used in App | Notes                                     |
+| --------- | --------- | ----------- | ----------------------------------------- |
+| `cn`      | ✅ Stable | ✅ Yes      | Classname utility (clsx + tailwind-merge) |
+| `callout` | ✅ Stable | ✅ Yes      | Callout/notice box                        |
 
 ---
 
@@ -95,10 +101,44 @@ These components are primarily used for marketing pages and visual effects. They
 
 | Category          | Total  | Used in App | Not Used |
 | ----------------- | ------ | ----------- | -------- |
-| Core Components   | 34     | 24          | 10       |
+| Core Components   | 34     | 21          | 13       |
 | Marketing Effects | 19     | 15          | 4        |
-| Utilities         | 1      | 1           | 0        |
-| **Total**         | **54** | **40**      | **14**   |
+| Email Components  | 1      | 0           | 1        |
+| Utilities         | 2      | 2           | 0        |
+| **Total**         | **56** | **38**      | **18**   |
+
+---
+
+## Bundle Optimization Notes
+
+### Barrel Export (index.ts)
+
+The barrel export (`packages/ui/src/index.ts`) now only exports:
+
+- `cn` - Classname utility
+- `buttonVariants` - Button variant configuration
+
+This minimal barrel export ensures optimal tree-shaking. Only import components you need via subpath imports:
+
+```typescript
+// Good - explicit import for tree-shaking
+import { Button } from "@saasfly/ui/button";
+
+// Avoid - barrel import may include unused code
+// import { Button } from "@saasfly/ui";
+```
+
+### Unused Components
+
+The following 18 components are NOT used in the main application and could be candidates for:
+
+1. Future use
+2. Package splitting (@saasfly/ui-marketing)
+3. Deprecation
+
+**Core (13):** sheet, popover, data-table, data-table-empty, alert, checkbox, scroll-area, calendar, copy-button, textarea, form, magic-link-email
+
+**Marketing (4):** sparkles, shake-wrapper, 3d-card
 
 ---
 

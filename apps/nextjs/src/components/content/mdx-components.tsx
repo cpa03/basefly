@@ -114,6 +114,7 @@ const components = {
           alt={alt || ""}
           width={parseInt(String(width), 10)}
           height={parseInt(String(height), 10)}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 60vw"
           className={cn("rounded-md border", className)}
           loading="lazy"
           {...props}
@@ -181,7 +182,7 @@ const components = {
       {...props}
     />
   ),
-  Image: (props: ImageProps) => <NextImage {...props} />,
+  Image: (props: ImageProps) => <NextImage {...props} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 60vw" />,
   Callout,
   Card: MdxCard,
 };

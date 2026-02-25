@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 
-import { EXTERNAL_URLS } from "@saasfly/common";
+import { EXTERNAL_URLS, UI_LABELS } from "@saasfly/common";
 import { TRANSITION_PRESETS } from "@saasfly/common/config/ui";
 import { FollowerPointerCard } from "@saasfly/ui/following-pointer";
 
@@ -42,7 +42,7 @@ export const XBlogArticle = React.memo(function XBlogArticle() {
                 className={`relative z-10 rounded-xl bg-black px-6 py-2 text-xs font-bold text-white transition-all ${TRANSITION_PRESETS.container} hover:scale-105 hover:bg-zinc-800 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 active:scale-95`}
                 aria-label={`Read article: ${blogContent.title}`}
               >
-                Read More
+                {UI_LABELS.readMore}
               </button>
             </div>
           </div>

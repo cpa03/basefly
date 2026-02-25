@@ -1,22 +1,21 @@
 import { Resend } from "resend";
 
 import { env } from "./env.mjs";
+import { logger } from "./logger";
 
 /**
  * Simple logger for Resend integration
- * Uses console in development, silent in production
+ * Uses pino logger for structured logging
  */
 const emailLogger = {
   info(message: string, data?: Record<string, unknown>) {
-    if (process.env.NODE_ENV !== "production") {
-      console.log(`[Resend] ${message}`, data ?? "");
-    }
+    logger.info({ data }, message);
   },
   warn(message: string, data?: Record<string, unknown>) {
-    console.warn(`[Resend] ${message}`, data ?? "");
+    logger.warn({ data }, message);
   },
   error(message: string, error?: unknown, data?: Record<string, unknown>) {
-    console.error(`[Resend] ${message}`, { error, ...data });
+    logger.error({ error, ...data }, message);
   },
 };
 

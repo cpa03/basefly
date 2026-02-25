@@ -5,6 +5,24 @@ Welcome, new contributor! This section helps you get up to speed quickly.
 ### Quick Start Checklist
 
 1. **Prerequisites**
+   - [Node.js 20+](https://nodejs.org/) installed (use [nvm](https://github.com/nvm-sh/nvm) for easy version management)
+   - [pnpm](https://pnpm.io/) installed (`npm install -g pnpm`)
+   - [PostgreSQL](https://www.postgresql.org/) (local or remote)
+
+2. **Initial Setup**
+
+   ```bash
+   # Clone the repository
+   git clone https://github.com/cpa03/basefly.git
+   cd basefly
+
+   # Install Node.js version from .nvmrc (optional but recommended)
+   nvm use
+
+   # Install dependencies (will verify pnpm is used)
+   pnpm install
+
+1. **Prerequisites**
    - [Node.js 18+](https://nodejs.org/) installed
    - [pnpm](https://pnpm.io/) installed (`npm install -g pnpm`)
    - [PostgreSQL](https://www.postgresql.org/) (local or remote)

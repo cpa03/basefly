@@ -2,6 +2,18 @@
   "name": "basefly",
   "private": true,
   "scripts": {
+    "preinstall": "node -e \\"
+      const pm = process.env.npm_package_manager || '';
+      if (!/^pnpm(@\\\\S+)?$/.test(pm)) {
+        console.error('❌ Please use pnpm to install dependencies.');
+        console.log('');
+        console.log('This project requires pnpm as the package manager.');
+        console.log('Install it with:');
+        console.log('  npm install -g pnpm');
+        console.log('');
+        console.log('Or follow the official guide: https://pnpm.io/installation');
+        process.exit(1);
+      }\n    \"",
     "build": "turbo build",
     "ci:check": "pnpm typecheck && pnpm lint && pnpm test",
     "clean": "git clean -xdf node_modules",

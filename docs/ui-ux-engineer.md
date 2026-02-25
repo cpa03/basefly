@@ -4,6 +4,21 @@
 
 ## Work History
 
+### 2026-02-25: Additional Reduced Motion Support (PR #639)
+
+**Research Findings**:
+- `infinite-moving-cards.tsx` used CSS animation (`animate-scroll`) without reduced motion support
+- `meteors.tsx` used CSS animation (`animate-meteor-effect`) without reduced motion support
+- Both are marketing effect components used on landing pages
+
+**Components Fixed**:
+1. **infinite-moving-cards.tsx** - Added `motion-reduce:animate-none` Tailwind class
+2. **meteors.tsx** - Added `motion-reduce:animate-none` Tailwind class
+
+---
+
+### 2026-02-25: Accessibility Improvements (Issue #484)
+
 ### 2026-02-25: Accessibility Improvements (Issue #484)
 
 **Issue**: frontend: Improve accessibility with consistent ARIA implementation

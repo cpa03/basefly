@@ -18,6 +18,10 @@ export default function Marquee({
   repeat = 4,
   ...props
 }: MarqueeProps) {
+  // Use CSS to detect reduced motion preference
+  // The 'motion-reduce:animate-none' class will disable animations for users
+  // who have "prefers-reduced-motion: reduce" in their OS settings
+
   return (
     <div
       {...props}
@@ -36,9 +40,9 @@ export default function Marquee({
           <div
             key={i}
             className={cn("flex shrink-0 justify-around [gap:var(--gap)]", {
-              "animate-marquee flex-row": !vertical,
-              "animate-marquee-vertical flex-col": vertical,
-              "group-hover:[animation-play-state:paused]": pauseOnHover,
+              "animate-marquee flex-row motion-reduce:animate-none": !vertical,
+              "animate-marquee-vertical flex-col motion-reduce:animate-none": vertical,
+              "group-hover:[animation-play-state:paused] motion-reduce:group-hover:[animation-play-state:running]": pauseOnHover,
               "[animation-direction:reverse]": reverse,
             })}
           >

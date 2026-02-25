@@ -1,3 +1,34 @@
+### Issue #666: [Architecture] Add global error boundary and error handling for Next.js app
+
+**Status**: In Progress (PR #669)
+
+**Problem**:
+- Missing error.tsx at (auth) route group level
+- Missing error.tsx at (dashboard) route group level
+- Inconsistent error handling across route groups
+
+**Solution**:
+
+1. Created `(auth)/error.tsx` - Error boundary for auth routes
+   - Follows existing error.tsx patterns (marketing, dashboard/*)
+   - Uses useClientDictionary for i18n support
+   - Consistent logging with logger
+
+2. Created `(dashboard)/error.tsx` - Error boundary for dashboard routes
+   - Same pattern as auth error boundary
+   - Context-specific error messages
+
+**Verification**:
+- Code follows existing patterns in codebase
+- Uses same imports and structure as marketing/error.tsx
+
+**Files Changed**:
+
+- Added: `apps/nextjs/src/app/[lang]/(auth)/error.tsx`
+- Added: `apps/nextjs/src/app/[lang]/(dashboard)/error.tsx`
+
+---
+
 ### Issue #506: [P3][Code Quality] Consolidate navigation component duplication
 
 **Status**: Completed

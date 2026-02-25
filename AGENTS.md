@@ -48,19 +48,18 @@ This project uses OpenX - a multi-model agent harness with the following agents:
 - **Role**: Visual/UI tasks
 - **Use for**: UI component work, visual debugging, screenshots
 QW|
-#QM|### Metis
-#BM|
-#TH|- **Model**: opencode/glm-4.7-free
-#HM|- **Role**: Pre-planning consultant
-#HQ|- **Use for**: Analyzing requests to identify hidden intentions, ambiguities, and AI failure points
-#QM|
-#QS|### Momus
-#BM|
-#TH|- **Model**: opencode/glm-4.7-free
-#HM|- **Role**: Expert reviewer
-#HQ|- **Use for**: Evaluating work plans for clarity, verifiability, and completeness
-#BM|
-#NS|### Plan Agent
+### Metis
+
+- **Model**: opencode/glm-4.7-free
+- **Role**: Pre-planning consultant
+- **Use for**: Analyzing requests to identify hidden intentions, ambiguities, and AI failure points
+
+### Momus
+
+- **Model**: opencode/glm-4.7-free
+- **Role**: Expert reviewer
+- **Use for**: Evaluating work plans for clarity, verifiability, and completeness
+
 ### Plan Agent
 
 - **Model**: opencode/kimi-k2.5-free

@@ -7,7 +7,7 @@ import {
 import { getMinifiedCSPHeader, HEADERS, HTTP_STATUS } from "@saasfly/common";
 
 import { i18n } from "./config/i18n-config";
-import { middleware as clerkMiddleware } from "./utils/clerk";
+import { middleware as clerkMiddleware, isPublicRoute } from "./utils/clerk";
 
 export const config = {
   matcher: [
@@ -113,6 +113,20 @@ export default async function proxy(
   const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
   try {
+    // If the route is not public, require authentication via clerkMiddleware
+    if (!isPublicRoute(req)) {
+      const authResult = await clerkMiddleware(req);
+      if (
+        authResult &&
+        typeof authResult === "object" &&
+        "headers" in authResult
+      ) {
+        (authResult as NextResponse).headers.set(REQUEST_ID_HEADER, requestId);
+        applySecurityHeaders(authResult as NextResponse);
+        return authResult;
+      }
+    }
+
     if (!isValidClerkKey(clerkKey)) {
       const response = NextResponse.next({
         request: {

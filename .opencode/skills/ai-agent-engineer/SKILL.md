@@ -52,6 +52,16 @@ Follow the skill-creator patterns:
 - Branch name: `ai-agent-engineer`
 - Label: `ai-agent-engineer`
 - Keep up-to-date with default branch
+- Use `/start-work` to execute implementation plans
+
+### Planning Skills
+
+When implementing improvements, use the planning skills for structured execution:
+
+- **`writing-plans`** - Create detailed implementation plans with task breakdowns
+- **`executing-plans`** - Execute plans with review checkpoints
+
+These skills help maintain focus and verify completeness.
 
 ## Available Agents
 

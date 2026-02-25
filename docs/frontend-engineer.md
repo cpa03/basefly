@@ -29,16 +29,18 @@ This document serves as the long-term memory for the frontend-engineer domain in
 
 ### Recent Work
 
+- PR #672: Add error boundary to (auth) route group (fixes #666)
+- PR #662: Add sizes attribute to Next.js Image components (fixes #492)
 - Created COMPONENTS.md documentation categorizing all 54 components
 - Categorized components into Core (stable) vs Marketing Effects (experimental)
 - Identified which components are actually used in apps/nextjs
 
 ## Open Issues
 
+- #666 - [Architecture] Add global error boundary - IN PROGRESS (PR #672)
 - #592 - [P2][Performance] Optimize bundle size
 - #590 - [P2][Architecture] Audit UI component library for enterprise readiness
 - #521 - [P2][Frontend] Review hydration consistency with client dictionary loading
-- #492 - frontend: Add proper sizes attribute for responsive images
 - #485 - frontend: Add Suspense boundaries for granular loading states
 - #484 - frontend: Improve accessibility with consistent ARIA implementation
 

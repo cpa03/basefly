@@ -1,34 +1,38 @@
-import pino from "pino";
+/**
+ * Stripe Logger
+ *
+ * Centralized logger for the Stripe package with request context support.
+ * Uses the shared logging solution from @saasfly/common/logger
+ */
 
-import { IS_DEV, LOG_LEVEL } from "@saasfly/common";
+import { stripeLogger, createLoggerWrapper, type BaseLogger } from "@saasfly/common";
 
 interface LoggerMetadata {
   requestId?: string;
   [key: string]: unknown;
 }
 
-const pinoLogger = pino({
-  level: LOG_LEVEL,
-  transport: IS_DEV
-    ? { target: "pino-pretty", options: { colorize: true } }
-    : undefined,
-});
+/**
+ * Stripe-specific logger with typed methods
+ * Provides consistent interface with request tracking
+ */
+const stripeLoggerWrapper: BaseLogger = createLoggerWrapper(stripeLogger);
 
 const logger = {
   debug(message: string, data?: LoggerMetadata) {
-    pinoLogger.debug(data ?? {}, message);
+    stripeLoggerWrapper.debug(message, data);
   },
 
   info(message: string, data?: LoggerMetadata) {
-    pinoLogger.info(data ?? {}, message);
+    stripeLoggerWrapper.info(message, data);
   },
 
   warn(message: string, data?: LoggerMetadata) {
-    pinoLogger.warn(data ?? {}, message);
+    stripeLoggerWrapper.warn(message, data);
   },
 
   error(message: string, error?: unknown, data?: LoggerMetadata) {
-    pinoLogger.error({ error, ...data }, message);
+    stripeLoggerWrapper.error(message, error, data);
   },
 };
 

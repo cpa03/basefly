@@ -1,29 +1,30 @@
-import pino from "pino";
+/**
+ * Database Logger
+ *
+ * Centralized logger for the DB package with typed wrapper.
+ * Uses the shared logging solution from @saasfly/common/logger
+ */
 
-import { IS_DEV, LOG_LEVEL } from "@saasfly/common";
+import { dbLogger, createLoggerWrapper, type BaseLogger } from "@saasfly/common";
 
 type LoggerMetadata = Record<string, unknown>;
 
-const isTest = process.env.NODE_ENV === "test";
-
-const pinoLogger = pino({
-  level: isTest ? "silent" : LOG_LEVEL,
-  transport:
-    IS_DEV && !isTest
-      ? { target: "pino-pretty", options: { colorize: true } }
-      : undefined,
-});
+/**
+ * Database-specific logger with typed methods
+ * Provides consistent interface for database operations
+ */
+const dbLoggerWrapper: BaseLogger = createLoggerWrapper(dbLogger);
 
 export const logger = {
   info(message: string, data?: LoggerMetadata): void {
-    pinoLogger.info(data ?? {}, message);
+    dbLoggerWrapper.info(message, data);
   },
 
   warn(message: string, data?: LoggerMetadata): void {
-    pinoLogger.warn(data ?? {}, message);
+    dbLoggerWrapper.warn(message, data);
   },
 
   error(message: string, error?: unknown, data?: LoggerMetadata): void {
-    pinoLogger.error({ error, ...data }, message);
+    dbLoggerWrapper.error(message, error, data);
   },
 };

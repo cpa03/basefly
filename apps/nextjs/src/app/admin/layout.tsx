@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@saasfly/auth";
 import { isAdminEmail, Z_INDEX } from "@saasfly/common";
 
+import { SkipLink } from "~/components/skip-link";
+
 interface AdminLayoutProps {
   children: React.ReactNode;
 }
@@ -20,6 +22,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <div className="min-h-screen bg-muted/30">
+      <SkipLink />
       <header
         className={`sticky top-0 ${Z_INDEX.navbar} border-b bg-background`}
       >
@@ -32,7 +35,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
           </div>
         </div>
       </header>
-      <main className="container px-4 py-6">{children}</main>
+      <main id="main-content" className="container px-4 py-6">{children}</main>
     </div>
   );
 }

@@ -6,6 +6,18 @@ DX-Engineer focuses on improving Developer Experience through automation, toolin
 
 ## Completed Work
 
+### Issue #589: Reduce console.log usage - pino logger not consistently used (2026-02-25)
+
+- **Status**: PR Created (#643)
+- **Description**: Replace direct console.\* calls with centralized pino logger for consistent logging
+- **Changes**:
+  - Modified `packages/common/src/email.ts` to use pino logger instead of console.log/warn/error
+  - Updated JSDoc comment to reflect the change
+- **Verification**:
+  - ✅ Typecheck passes
+  - ✅ Lint passes
+- **Related**: Partially addresses issue #589
+
 ### Issue #579: Improve Environment Setup Error Messages (2026-02-25)
 
 - **Status**: PR Created (#606)
@@ -19,45 +31,6 @@ DX-Engineer focuses on improving Developer Experience through automation, toolin
   - ✅ `pnpm env:verify` works correctly
   - ✅ Typecheck passes
   - ✅ Lint passes
-
-### Issue #488: Add Circular Dependency Detection
-
-- **Status**: Partially Implemented (script and config added, CI job pending due to permissions)
-- **Date**: 2026-02-25
-- **Description**: Added madge for circular dependency detection in monorepo
-- **Changes**:
-  - Added `madge@^7.0.0` as devDependency to root `package.json`
-  - Added `check:circular` script: `madge --circular --warning --extensions ts,tsx,js,jsx,mjs,cjs apps/ packages/`
-  - Created `.madgerc` configuration file with TypeScript and ESM support
-  - **Note**: CI workflow job could not be added due to GitHub App permissions restriction
-- **Verification**:
-  - ✅ `pnpm check:circular` runs successfully
-  - ✅ Typecheck passes
-  - ✅ Lint passes
-  - ⚠️ Detects 4 existing circular dependencies in codebase
-
-## Scripts Available
-
-- `pnpm check:circular` - Detect circular dependencies
-- `pnpm env:verify` - Verify development environment (pnpm, Node version, env files)
-- `pnpm dx:setup` - Full environment verification
-
-## Known Limitations
-
-- GitHub App lacks workflow file permissions - cannot push workflow changes directly
-
-## Future Improvements Ideas
-
-- Add dependency-cruiser as alternative to madge
-- Add package size tracking
-- Add unused dependency detection
-- Add duplicate dependency detection
-
-## Overview
-
-DX-Engineer focuses on improving Developer Experience through automation, tooling, and process improvements.
-
-## Active Work
 
 ### Issue #488: Add Circular Dependency Detection
 
@@ -79,6 +52,12 @@ DX-Engineer focuses on improving Developer Experience through automation, toolin
 ## Scripts Available
 
 - `pnpm check:circular` - Detect circular dependencies
+- `pnpm env:verify` - Verify development environment (pnpm, Node version, env files)
+- `pnpm dx:setup` - Full environment verification
+
+## Known Limitations
+
+- GitHub App lacks workflow file permissions - cannot push workflow changes directly
 
 ## Future Improvements Ideas
 

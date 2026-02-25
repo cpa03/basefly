@@ -41,15 +41,21 @@ const RATE_LIMIT_HEADERS = {
   reset: "X-RateLimit-Reset",
 } as const;
 
+/**
+ * Cacheable public routes that can be cached at the edge
+ */
+const CACHEABLE_ROUTES = ["hello.hello"];
+
 const handler = (req: NextRequest) =>
   fetchRequestHandler({
     endpoint: "/api/trpc/edge",
     router: edgeRouter,
     req: req,
     createContext: () => createContext(req),
-    responseMeta: ({ ctx }) => {
+    responseMeta: ({ ctx, paths, errors, type }) => {
       const headers: Record<string, string> = {};
 
+      // Add rate limit headers if available
       if (ctx?.rateLimitInfo) {
         const info = ctx.rateLimitInfo;
         headers[RATE_LIMIT_HEADERS.limit] = String(info.limit);
@@ -57,6 +63,20 @@ const handler = (req: NextRequest) =>
         headers[RATE_LIMIT_HEADERS.reset] = String(
           Math.ceil(info.resetAt / 1000),
         );
+      }
+
+      // Add cache headers for public, cacheable queries
+      const isQuery = type === "query";
+      const hasNoErrors = errors.length === 0;
+
+      const allCacheable =
+        paths?.every(
+          (path) =>
+            path.startsWith("public.") || CACHEABLE_ROUTES.includes(path),
+        ) ?? false;
+
+      if (isQuery && hasNoErrors && allCacheable) {
+        headers["cache-control"] = "s-maxage=60, stale-while-revalidate=300";
       }
 
       return { headers };

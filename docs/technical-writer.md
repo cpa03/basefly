@@ -30,6 +30,12 @@ Deliver small, safe, measurable improvements strictly inside the documentation d
 - Small atomic diff
 
 ## History
+### 2026-02-25 (continued)
+- PR #616: Fix duplicate sections in ONBOARDING.md
+  - Removed duplicate "Getting Help" and "Related Resources" sections
+  - File reduced from 243 to 233 lines
+  - Proactive scan found issue during documentation review
+
 
 ### 2026-02-25
 - Created initial technical-writer.md memory file

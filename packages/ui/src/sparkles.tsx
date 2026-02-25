@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import type { Container, SingleOrMultiple } from "@tsparticles/engine";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
-import { motion, useAnimation } from "framer-motion";
+import { motion, useAnimation, useReducedMotion } from "framer-motion";
 
 import { cn } from "./utils/cn";
 
@@ -31,6 +31,8 @@ export const SparklesCore = (props: ParticlesProps) => {
     particleDensity,
   } = props;
   const [init, setInit] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
+
   useEffect(() => {
     initParticlesEngine(async (engine) => {
       await loadSlim(engine);
@@ -225,7 +227,7 @@ export const SparklesCore = (props: ParticlesProps) => {
           animation: {
             count: 0,
             enable: true,
-            speed: speed ?? 4,
+            speed: shouldReduceMotion ? 0 : (speed ?? 4),
             decay: 0,
             delay: 0,
             sync: false,
@@ -412,22 +414,34 @@ export const SparklesCore = (props: ParticlesProps) => {
       },
       detectRetina: true,
     }),
-    [background, particleColor, speed, particleDensity, minSize, maxSize],
+    [background, particleColor, speed, particleDensity, minSize, maxSize, shouldReduceMotion],
   );
 
   const particlesLoaded = async (container?: Container) => {
     if (container) {
-      await controls.start({
-        opacity: 1,
-        transition: {
-          duration: 1,
-        },
-      });
+      // Skip animation for reduced motion preference
+      if (!shouldReduceMotion) {
+        await controls.start({
+          opacity: 1,
+          transition: {
+            duration: 1,
+          },
+        });
+      } else {
+        await controls.start({ opacity: 1 });
+      }
     }
   };
 
+  // For reduced motion: instant visibility
+  const initialState = shouldReduceMotion ? { opacity: 1 } : { opacity: 0 };
+
   return (
-    <motion.div animate={controls} className={cn("opacity-0", className)}>
+    <motion.div
+      animate={controls}
+      initial={initialState}
+      className={cn("opacity-0", className)}
+    >
       {init && (
         <Particles
           id={id ?? "tsparticles"}

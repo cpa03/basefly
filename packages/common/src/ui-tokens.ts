@@ -6,7 +6,7 @@
  * making the design system more maintainable and customizable.
  */
 
-import { ANIMATION } from "@saasfly/common";
+import { ANIMATION } from "./animation";
 
 /**
  * Button design tokens

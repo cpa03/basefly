@@ -26,8 +26,7 @@ export function createMockContext(options?: {
     auth: {
       userId: options?.userId ?? "test-user-id",
       sessionId: "test",
-      claims: {},
-    },
+    } as TRPCContext["auth"],
     req: undefined,
   };
 }

@@ -34,7 +34,7 @@ import type { DB } from "./prisma/types";
  * @param db - Kysely database instance
  * @param userId - The authenticated user's ID ( Clerk user ID)
  */
-export async function setRLSSession(db: Kysely<DB>, userId: string | null): Promise<void> {
+export async function setRLSSession(db: Kysely<DB>, userId: string | null | undefined): Promise<void> {
   // Handle null/undefined userId - set to empty string so RLS returns no rows
   const sessionValue = userId ?? "";
 
@@ -60,7 +60,7 @@ export async function executeWithRLS<T>(
   callback: (db: Kysely<DB>) => Promise<T>
 ): Promise<T> {
   // Set the RLS session variable before executing
-  await setRLSSession(db, userId);
+  await setRLSSession(db, userId ?? null);
 
   // Execute the callback with the RLS context already set
   return callback(db);
@@ -96,7 +96,7 @@ export function createRLSDatabase(
       if (typeof value === "function" && (prop === "execute" || prop === "executeTakeFirst" || prop === "executeTakeFirstOrDefault" || prop === "executeBatch")) {
         return async function (...args: unknown[]) {
           const userId = getUserId();
-          await setRLSSession(target, userId);
+          await setRLSSession(target, userId ?? null);
           return (value as (...args: unknown[]) => Promise<unknown>).apply(target, args);
         };
       }
@@ -111,7 +111,7 @@ export function createRLSDatabase(
             if (typeof method === "function") {
               return async function (...args: unknown[]) {
                 const userId = getUserId();
-                await setRLSSession(target, userId);
+                await setRLSSession(target, userId ?? null);
                 return (method as (...args: unknown[]) => Promise<unknown>).apply(target2, args);
               };
             }

@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
-import { auth, currentUser, getAuth } from "@clerk/nextjs/server";
+import type { getAuth } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { ZodError } from "zod";
 
@@ -7,7 +8,8 @@ import { isAdminEmail } from "@saasfly/common";
 
 import { createApiError, ErrorCode } from "./errors";
 import { logger } from "./logger";
-import { EndpointType, getIdentifier, getLimiter } from "./rate-limiter";
+import type { EndpointType} from "./rate-limiter";
+import { getIdentifier, getLimiter } from "./rate-limiter";
 import { getOrGenerateRequestId } from "./request-id";
 import { transformer } from "./transformer";
 
@@ -27,11 +29,17 @@ export interface RateLimitInfo {
 /**
  * Options for creating tRPC context.
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface CreateContextOptions {
   req?: NextRequest;
   auth?: ReturnType<typeof getAuth> | null;
 }
+
+ 
 type AuthObject = ReturnType<typeof getAuth> | null;
+
+/**
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 
 /**
  * Creates the tRPC context for each request.
@@ -40,7 +48,7 @@ type AuthObject = ReturnType<typeof getAuth> | null;
  * @param opts - Context creation options
  * @returns tRPC context with userId, requestId, and headers
  */
-export const createTRPCContext = async (opts: {
+export const createTRPCContext = (opts: {
   headers: Headers;
   auth: AuthObject;
   req?: NextRequest;
@@ -124,6 +132,9 @@ const isAuthed = t.middleware(async ({ next, ctx }) => {
 
   return next({ ctx: { userId: ctx.userId } });
 });
+
+/**
+ * Protected procedure that requires authentication.
   if (!ctx.userId) {
     logger.warn(
       {
@@ -136,7 +147,6 @@ const isAuthed = t.middleware(async ({ next, ctx }) => {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({ ctx: { userId: ctx.userId } });
-});
 
 /**
  * Protected procedure that requires authentication.
@@ -185,7 +195,7 @@ export const adminProcedure = protectedProcedure.use(isAdmin);
 export const rateLimit = (endpointType: EndpointType) =>
   t.middleware(async ({ ctx, next }) => {
     const limiter = getLimiter(endpointType);
-    const req = "req" in ctx ? (ctx.req as NextRequest | undefined) : undefined;
+    const req = "req" in ctx ? (ctx.req) : undefined;
     const identifier = getIdentifier(ctx.userId, req);
 
     const result = limiter.check(identifier);

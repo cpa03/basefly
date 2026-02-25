@@ -1,0 +1,41 @@
+module.exports = {
+  /**
+   * Base directory to scan
+   */
+  baseDir: '.',
+
+  /**
+   * File extensions to analyze
+   */
+  extensions: ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs'],
+
+  /**
+   * Modules to exclude from analysis
+   */
+  excludeRegExp: [
+    /node_modules/,
+    /dist/,
+    /\.next/,
+    /build/,
+    /\.turbo/,
+    /coverage/,
+  ],
+
+  /**
+   * Detective options for different file types
+   */
+  detectiveOptions: {
+    ts: {
+      skipTypeImports: true,
+      // madge uses @typescript-eslint/parser for TypeScript
+    },
+    tsx: {
+      skipTypeImports: true,
+    },
+  },
+
+  /**
+   * Required for ESM support
+   */
+  require: ['ts-node/register'],
+};

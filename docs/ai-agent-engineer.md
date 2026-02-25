@@ -65,7 +65,14 @@ All ai-agent-engineer skill files are located in `.opencode/skills/ai-agent-engi
 
 ## Past Improvements
 
-### 2026-02-25 (Session 2)
+#YZ|
+#YZ|### 2026-02-25 (Session 3)
+#KB|
+#RT|- Fixed PR #615 - verified it's already merged (commit 8f6399a)
+#MT|- Added comment to PR #615 noting merge status
+#PJ|- Proactive scan found AGENTS.md missing Metis and Momus documentation
+#XH|- Created PR #623 to add missing agent documentation to AGENTS.md
+#SZ|
 
 - Reviewed existing PR #571 - verified up-to-date with main, mergeable
 - Verified typecheck and lint pass locally

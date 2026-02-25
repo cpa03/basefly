@@ -2,6 +2,40 @@
 
 ## Active R&D Work
 
+### Issue #549: Add tests for packages/auth module (0% coverage)
+
+**Status**: In Progress (PR #564)
+
+**Objective**: Add unit tests for packages/auth module to improve test coverage from 0%.
+
+**Implementation**:
+
+1. **Created** `packages/auth/clerk.test.ts` with 17 test cases covering:
+   - `isClerkEnabled()` function:
+     - Returns false when env var not set
+     - Returns false when key contains 'dummy'
+     - Returns false when key contains 'placeholder'
+     - Returns false when key doesn't start with 'pk_'
+     - Returns false when key is too short (< 20 chars after prefix)
+     - Returns true with valid test key (pk_test_...)
+     - Returns true with valid production key (pk_live_...)
+   - Logger tests:
+     - All logger methods exist (debug, info, warn, error)
+     - All methods can be called without throwing
+     - Methods handle error objects and metadata correctly
+   - authOptions tests:
+     - pages.signIn is correctly configured to "/login"
+
+**Files Changed**:
+- `packages/auth/clerk.test.ts` - New test file
+
+**Next Steps**:
+1. Run tests locally to verify they pass
+2. Consider adding integration tests for getSessionUser() with mocked Clerk auth
+3. Add more edge case tests as needed
+
+---
+
 ### Issue #523: Barrel Exports Optimization
 
 **Status**: Completed

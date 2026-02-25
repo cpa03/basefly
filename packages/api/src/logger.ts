@@ -1,12 +1,10 @@
-import pino from "pino";
+/**
+ * API Logger
+ *
+ * Centralized logger for the API package.
+ * Uses the shared logging solution from @saasfly/common/logger
+ */
 
-import { IS_DEV, LOG_LEVEL } from "@saasfly/common";
+import { apiLogger } from "@saasfly/common";
 
-const logger = pino({
-  level: LOG_LEVEL,
-  transport: IS_DEV
-    ? { target: "pino-pretty", options: { colorize: true } }
-    : undefined,
-});
-
-export { logger };
+export { apiLogger as logger };

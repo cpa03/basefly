@@ -1,31 +1,35 @@
-import pino from "pino";
+/**
+ * Auth Logger
+ *
+ * Centralized logger for the Auth package.
+ * Uses the shared logging solution from @saasfly/common/logger
+ */
 
-import { IS_DEV, LOG_LEVEL } from "@saasfly/common";
+import { authLogger, createLoggerWrapper, type BaseLogger } from "@saasfly/common";
 
 type LoggerMetadata = Record<string, unknown>;
 
-const pinoLogger = pino({
-  level: LOG_LEVEL,
-  transport: IS_DEV
-    ? { target: "pino-pretty", options: { colorize: true } }
-    : undefined,
-});
+/**
+ * Auth-specific logger with typed methods
+ * Provides consistent interface for authentication operations
+ */
+const authLoggerWrapper: BaseLogger = createLoggerWrapper(authLogger);
 
 const logger = {
   debug(message: string, data?: LoggerMetadata) {
-    pinoLogger.debug(data ?? {}, message);
+    authLoggerWrapper.debug(message, data);
   },
 
   info(message: string, data?: LoggerMetadata) {
-    pinoLogger.info(data ?? {}, message);
+    authLoggerWrapper.info(message, data);
   },
 
   warn(message: string, data?: LoggerMetadata) {
-    pinoLogger.warn(data ?? {}, message);
+    authLoggerWrapper.warn(message, data);
   },
 
   error(message: string, error?: unknown, data?: LoggerMetadata) {
-    pinoLogger.error({ error, ...data }, message);
+    authLoggerWrapper.error(message, error, data);
   },
 };
 

@@ -8,6 +8,7 @@
  * @see {@link https://docs.saasfly.io/api/k8s | K8s API Documentation}
  */
 
+import { revalidatePath } from "next/cache";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
@@ -164,6 +165,9 @@ export const k8sRouter = createTRPCRouter({
           "Cluster created successfully",
         );
 
+
+        // ISR: Invalidate dashboard cache after cluster creation
+        revalidatePath("/[lang]/dashboard");
         return {
           id: newCluster.id,
           clusterName: input.name,
@@ -226,6 +230,9 @@ export const k8sRouter = createTRPCRouter({
             "Cluster updated successfully",
           );
         }
+
+          // ISR: Invalidate dashboard cache after cluster update
+          revalidatePath("/[lang]/dashboard");
         return {
           success: true,
         };
@@ -275,6 +282,9 @@ export const k8sRouter = createTRPCRouter({
           "Cluster deleted successfully",
         );
 
+
+        // ISR: Invalidate dashboard cache after cluster deletion
+        revalidatePath("/[lang]/dashboard");
         return { success: true };
       } catch (error) {
         if (error instanceof z.ZodError) {

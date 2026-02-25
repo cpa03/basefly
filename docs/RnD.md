@@ -1,4 +1,45 @@
-# R&D Documentation
+#R&D Documentation
+
+## Active R&D Work
+
+### Issue #636: ISR Caching for Dashboard Data
+
+**Status**: PR #648
+
+**Objective**: Implement Incremental Static Regeneration (ISR) for dashboard data to improve performance while maintaining data freshness.
+
+**Implementation**:
+
+1. **Dashboard Page** (`apps/nextjs/src/app/[lang]/(dashboard)/dashboard/page.tsx`):
+   - Added `export const revalidate = 60` for ISR (60 second revalidation)
+   - Keeps `dynamic = "force-dynamic"` for auth but adds ISR cache
+
+2. **K8s Router** (`packages/api/src/router/k8s.ts`):
+   - Added `import { revalidatePath } from "next/cache"`
+   - Added `revalidatePath("/[lang]/dashboard")` after successful cluster creation
+   - Added `revalidatePath("/[lang]/dashboard")` after successful cluster update
+   - Added `revalidatePath("/[lang]/dashboard")` after successful cluster deletion
+
+**Benefits**:
+
+- **Performance**: Dashboard loads faster with ISR caching (served from cache for 60 seconds)
+- **Data Freshness**: Automatic revalidation ensures data stays fresh
+- **Reduced Server Load**: Fewer server-side renders for read-heavy dashboard
+
+**Files Changed**:
+
+- `apps/nextjs/src/app/[lang]/(dashboard)/dashboard/page.tsx` - Added revalidate export
+- `packages/api/src/router/k8s.ts` - Added revalidatePath calls
+
+**Verification**:
+
+- [x] TypeScript typecheck passes
+- [x] ESLint passes
+- [x] Build passes
+
+---
+
+### Issue #549: Add tests for packages/auth module (0% coverage)
 
 ## Active R&D Work
 
@@ -102,7 +143,6 @@
 2. Monitor bundle size impact after consumers migrate to subpath imports
 3. Evaluate removing truly unused exports (carefully, with testing)
 
-
 ---
 
 ### Issue #591: Next.js Middleware for Enhanced Request Handling
@@ -131,9 +171,11 @@
    - Consistent auth middleware across all protected routes
 
 **Files Changed**:
+
 - `apps/nextjs/src/middleware.ts` (new file)
 
 **Next Steps** (for future iterations):
+
 1. Add request logging middleware for observability
 2. Consider geo-blocking capability at edge
 3. Add rate limiting at edge level

@@ -26,6 +26,7 @@ import { formatDate } from "~/lib/utils";
 import { trpc } from "~/trpc/server";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 60; // ISR: revalidate every 60 seconds
 
 export const metadata = {
   title: "Dashboard",

@@ -1,3 +1,14 @@
+/**
+ * Stripe Billing Router
+ *
+ * Provides subscription management and checkout session creation.
+ * Integrates with Stripe for payment processing.
+ * All endpoints are rate-limited and require authentication.
+ *
+ * @module stripeRouter
+ * @see {@link https://docs.saasfly.io/api/stripe | Stripe API Documentation}
+ */
+
 import { unstable_noStore as noStore } from "next/cache";
 import { z } from "zod";
 

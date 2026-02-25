@@ -1,5 +1,15 @@
+/**
+ * Customer Management Router
+ *
+ * Provides CRUD operations for customer records and user profile management.
+ * All endpoints are rate-limited and require authentication.
+ *
+ * @module customerRouter
+ * @see {@link https://docs.saasfly.io/api/customer | Customer API Documentation}
+ */
+
 import { unstable_noStore as noStore } from "next/cache";
-import { TRPCError } from "@trpc/server";
+
 import { z } from "zod";
 
 import { USER_VALIDATION } from "@saasfly/common";

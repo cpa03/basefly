@@ -101,3 +101,39 @@
 1. Consider adding ESLint rules to encourage subpath imports
 2. Monitor bundle size impact after consumers migrate to subpath imports
 3. Evaluate removing truly unused exports (carefully, with testing)
+
+
+---
+
+### Issue #591: Next.js Middleware for Enhanced Request Handling
+
+**Status**: Completed (PR #603)
+
+**Objective**: Add Next.js middleware.ts for enhanced request handling, security headers, and authentication.
+
+**Findings**:
+
+1. No middleware.ts existed in apps/nextjs/src/
+2. CSP headers already configured in next.config.mjs
+3. Clerk authentication available via @clerk/nextjs but not used as middleware
+
+**Implementation**:
+
+1. **Created** `apps/nextjs/src/middleware.ts`:
+   - Uses `clerkMiddleware` from `@clerk/nextjs/server`
+   - Defines public routes: `/`, `/sign-in`, `/sign-up`, `/api/trpc/auth`, `/api/webhooks`, `/api/health`
+   - Uses `createRouteMatcher` for route pattern matching
+   - All other routes require authentication via `auth.protect()`
+
+2. **Security Benefits**:
+   - Request-level authentication before hitting API routes
+   - Protected routes redirect to sign-in automatically
+   - Consistent auth middleware across all protected routes
+
+**Files Changed**:
+- `apps/nextjs/src/middleware.ts` (new file)
+
+**Next Steps** (for future iterations):
+1. Add request logging middleware for observability
+2. Consider geo-blocking capability at edge
+3. Add rate limiting at edge level

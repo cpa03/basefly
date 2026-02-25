@@ -29,6 +29,8 @@ An enterprise-grade SaaS template with Kubernetes cluster management capabilitie
 - [🥺 Project Roadmap](#-project-roadmap)
 - [⭐ Features](#-features)
 - [📦 Apps and Packages](#-apps-and-packages)
+- [📝 Contributing to Documentation](#-contributing-to-documentation)
+
 - [📜 License](#-license)
 - [🙏 Credits](#-credits)
 - [👨‍💻 Contributors](#-contributors)
@@ -285,6 +287,10 @@ pnpm run dev:web
 - `api`: tRPC routers and API endpoint handlers
 - `stripe`: Stripe integration with retry logic, circuit breaker, and webhook handlers
 - `common`: Shared utilities, types, and constants across packages
+
+## 📝 Contributing to Documentation
+
+New to contributing documentation? Check out our [Documentation Contributor Onboarding Guide](./docs/ONBOARDING.md) for style guidelines, contribution process, and best practices.
 
 ## 📜 License
 

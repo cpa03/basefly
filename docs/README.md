@@ -6,6 +6,8 @@ Welcome to the Basefly documentation. This folder contains comprehensive guides,
 
 | Document                               | Description                                                                     |
 | -------------------------------------- | ------------------------------------------------------------------------------- |
+| [Onboarding Guide](./ONBOARDING.md)    | Documentation contributor onboarding with style guide and contribution process  |
+
 | [API Specification](./api-spec.md)     | Complete tRPC API documentation with endpoints, error codes, and usage examples |
 | [Data Blueprint](./blueprint.md)       | Database architecture, data models, and integration patterns                    |
 | [Feature Specifications](./feature.md) | Feature requirements, acceptance criteria, and status tracking                  |

@@ -70,6 +70,8 @@ tooling/           # Shared configs (ESLint, Prettier, TS)
 ### Useful Links
 
 - [README.md](./README.md) - Getting started guide
+- [Documentation Onboarding](./docs/ONBOARDING.md) - Guide for documentation contributors
+
 - [AGENTS.md](./AGENTS.md) - AI agent configuration
 - [docs/](./docs/) - Additional documentation
 - [SECURITY.md](./SECURITY.md) - Security policy and vulnerability reporting

@@ -5,7 +5,7 @@ export const env = createEnv({
   server: {
     STRIPE_API_KEY: z.string().min(1),
     STRIPE_WEBHOOK_SECRET: z.string().min(1),
-    CLERK_SECRET_KEY: z.string().min(1).optional(),
+    CLERK_SECRET_KEY: z.string().min(1),
   },
   client: {
     NEXT_PUBLIC_APP_URL: z.string().min(1),

@@ -41,7 +41,7 @@
     },
     "test": {
       "dependsOn": ["^topo"],
-      "cache": false
+      "outputs": ["coverage/**"]
     },
     "clean": {
       "cache": false

@@ -169,7 +169,68 @@ name: string;
 - `INTERNAL_SERVER_ERROR`: Database query failed
 ```
 
+## AI Agent Collaboration
+
+Basefly uses AI agents to assist with development. Understanding how to work with these agents improves contributor productivity.
+
+### Available AI Agents
+
+| Agent | Purpose | Best For |
+| ---- | --------| --------- |
+| **Sisyphus** | Main orchestrator | Complex tasks, multi-step workflows |
+| **Oracle** | Architecture/debugging | Code review, debugging, technical decisions |
+| **Librarian** | Documentation research | Finding files, understanding code |
+| **Explore** | Fast exploration | Quick searches, grep operations |
+| **Multimodal** | Visual/UI tasks | UI work, screenshots |
+
+### How to Trigger Agents
+
+- `ultrawork` or `ulw` - Activate full agent harness
+- `/start-work` - Execute plans from Prometheus
+- Tab key - Enter Planner mode
+
+### Agent Categories (for task delegation)
+
+| Category | Use Case |
+| -------- | ---------- |
+| `quick` | Trivial fixes, single file changes |
+| `visual-engineering` | Frontend/UI work |
+| `ultrabrain` | Hard logic-heavy tasks |
+| `deep` | Autonomous problem-solving |
+| `business-logic` | Business logic implementation |
+| `research` | Documentation lookup |
+
+### Writing Prompts for Agents
+
+When working with AI agents, include:
+1. **Context** - What you're working on
+2. **Goal** - What you need to achieve
+3. **Downstream** - How you'll use the results
+4. **Request** - Specific search instructions
+
+Example:
+```
+I'm implementing JWT auth for the REST API in src/api/routes/. 
+I need to match existing auth conventions so my code fits seamlessly.
+I'll use this to decide middleware structure and token flow.
+Find: auth middleware, login/signup handlers, token generation.
+Skip: tests.
+Return: file paths with pattern descriptions.
+```
+
 ## Getting Help
+
+- **Questions**: Open a GitHub issue with `docs` label
+- **Suggestions**: Check [open issues](https://github.com/cpa03/basefly/issues) for documentation tasks
+- **Style questions**: Refer to existing documentation as examples
+- **AI Agent Help**: Use `/ulw-loop` for autonomous agent workflows
+
+## Related Resources
+
+- [CONTRIBUTING.md](../CONTRIBUTING.md) - General contribution guidelines
+- [docs/README.md](./README.md) - Documentation index
+- [docs/api-spec.md](./api-spec.md) - API documentation reference
+- [AGENTS.md](../AGENTS.md) - AI agent configuration details
 
 - **Questions**: Open a GitHub issue with `docs` label
 - **Suggestions**: Check [open issues](https://github.com/cpa03/basefly/issues) for documentation tasks

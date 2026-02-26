@@ -30,6 +30,17 @@ Basefly is a Next.js-based SaaS template with:
 
 ### Issue 549: Add tests for packages/auth module
 
+- **Status**: Complete (tests exist in main, 20 tests pass)
+- **Problem**: Auth module had 0% test coverage
+- **Solution**: Created packages/auth/clerk.test.ts with 20 test cases
+- **Note**: PR #563 was closed due to conflicts, but work was merged to main separately
+
+### Issue 551: Add tests for k8s router
+
+- **Status**: Complete (PR #674 merged)
+- **Problem**: Core business logic needed test coverage
+- **Solution**: Added comprehensive tests in packages/api/src/router/k8s.test.ts
+
 - **Status**: Pending
 - **Problem**: Auth module has 0% test coverage
 
@@ -118,6 +129,17 @@ Tests are located alongside source files with `.test.ts` suffix:
 - `packages/common/src/config/*.test.ts`
 
 ## Session Notes
+
+### 2026-02-26 Session (Early Morning)
+
+1. **Verified Issue #549 & #551**: Tests already exist in main and all 679 tests pass
+2. **Created PR #681**: Added Zod output validation to hello router as proof-of-concept for issue #493
+   - Added helloOutputSchema
+   - Added .output() to procedure chain
+   - All checks pass (typecheck, lint, test: 26 tests)
+3. **Note on pnpm**: pnpm not installed in environment - installed via npm to run tests
+
+### 2026-02-25 Session (Morning)
 
 ### 2026-02-25 Session (Morning)
 

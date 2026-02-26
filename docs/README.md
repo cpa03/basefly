@@ -20,6 +20,21 @@ Welcome to the Basefly documentation. This folder contains comprehensive guides,
 
 - **[Blueprint](./blueprint.md)** - Core data models, Kysely query patterns, Stripe integration, and security headers
 - **[API Spec](./api-spec.md)** - All tRPC endpoints with TypeScript interfaces, error handling, and rate limiting
+- **[ADR](./adr/)** - Architecture Decision Records documenting key technical choices
+
+## Architecture Decision Records (ADRs)
+
+| ADR | Title | Status |
+| --- | ----- | ------ |
+| [0001](./adr/0001-use-prisma-as-orm.md) | Use Prisma as ORM | Accepted |
+| [0002](./adr/0002-adopt-kysely-query-builder.md) | Adopt Kysely as Query Builder | Accepted |
+| [0003](./adr/0003-use-clerk-for-authentication.md) | Use Clerk for Authentication | Accepted |
+| [0004](./adr/0004-adopt-trpc-for-api.md) | Adopt tRPC for API | Accepted |
+| [0005](./adr/0005-use-stripe-for-billing.md) | Use Stripe for Billing | Accepted |
+| [0006](./adr/0006-use-turbo-monorepo-structure.md) | Use Turbo Monorepo Structure | Accepted |
+
+- **[Blueprint](./blueprint.md)** - Core data models, Kysely query patterns, Stripe integration, and security headers
+- **[API Spec](./api-spec.md)** - All tRPC endpoints with TypeScript interfaces, error handling, and rate limiting
 
 ## Development
 

@@ -418,18 +418,9 @@ importers:
       '@saasfly/common':
         specifier: workspace:*
         version: link:../common
-      '@saasfly/db':
-        specifier: workspace:*
-        version: link:../db
       '@t3-oss/env-nextjs':
         specifier: 0.13.10
         version: 0.13.10(typescript@5.9.3)(zod@4.3.6)
-      '@vercel/postgres-kysely':
-        specifier: 0.10.0
-        version: 0.10.0(kysely@0.28.11)
-      kysely:
-        specifier: 0.28.11
-        version: 0.28.11
       next:
         specifier: '>=15.0.8'
         version: 16.1.6(@babel/core@7.29.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.58.2)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)

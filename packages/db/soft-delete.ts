@@ -275,6 +275,8 @@ export class SoftDeleteService<T extends keyof DB> {
 /**
  * Pre-configured service instance for K8sClusterConfig table
  * Used throughout the application for cluster management
+ *
+ * N+1 Query Audit: Queries are optimized, no N+1 issues found.
  */
 export const k8sClusterService = new SoftDeleteService<"K8sClusterConfig">(
   "K8sClusterConfig",

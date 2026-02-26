@@ -12,12 +12,7 @@ Welcome, new contributor! This section helps you get up to speed quickly.
      - **Corepack** (Node 16+): `corepack enable && corepack prepare pnpm@latest --activate`
    - [PostgreSQL](https://www.postgresql.org/) (local or remote)
 
-1. **Prerequisites**
-   - [Node.js 18+](https://nodejs.org/) installed
-   - [pnpm](https://pnpm.io/) installed (`npm install -g pnpm`)
-   - [PostgreSQL](https://www.postgresql.org/) (local or remote)
-
-1. **Initial Setup**
+2. **Initial Setup**
 
    ```bash
    # Clone and install dependencies
@@ -33,7 +28,7 @@ Welcome, new contributor! This section helps you get up to speed quickly.
    # Edit .env.local with your credentials
    ```
 
-1. **Daily Development Commands**
+3. **Daily Development Commands**
 
    ```bash
    pnpm dev          # Start development server
@@ -43,7 +38,7 @@ Welcome, new contributor! This section helps you get up to speed quickly.
    pnpm typecheck    # Type check
    ```
 
-1. **DX Convenience Scripts**
+4. **DX Convenience Scripts**
 
    ```bash
    pnpm dx:quick     # Fast feedback: typecheck + lint only
@@ -55,7 +50,7 @@ Welcome, new contributor! This section helps you get up to speed quickly.
    pnpm dx:ci        # Simulate CI: dx:check + build
    ```
 
-1. **Before Submitting a PR**
+5. **Before Submitting a PR**
 
    ```bash
    # Run comprehensive checks

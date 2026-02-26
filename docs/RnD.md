@@ -1,7 +1,51 @@
 #R&D Documentation
 
 ## Active R&D Work
+
+### Issue #686: Remove unused NextAuth database schema
+
+**Status**: PR #689
+
+**Objective**: Remove unused NextAuth database schema from packages/auth to eliminate dead code and confusion.
+
+**Implementation**:
+
+1. **Deleted** `packages/auth/db.ts`:
+   - Contained unused NextAuth schema (User, Account, Session, VerificationToken)
+   - Never imported or used anywhere in codebase
+   - Was creating confusion about authentication approach
+
+2. **Removed unused dependencies** from `packages/auth/package.json`:
+   - `kysely: 0.28.11` - only used in db.ts
+   - `@vercel/postgres-kysely: 0.10.0` - only used in db.ts
+   - `@saasfly/db: workspace:*` - never actually imported in source
+
+**Benefits**:
+
+- **Reduced bundle size**: Removed unused dependencies
+- **Improved code clarity**: No more confusion about auth approach (Clerk is the provider)
+- **Better maintainability**: Less dead code to maintain
+- **Cleaner package**: Only contains actually-used code
+
+**Files Changed**:
+
+- `packages/auth/db.ts` - Deleted (unused NextAuth schema)
+- `packages/auth/package.json` - Removed 3 unused dependencies
+
+**Verification**:
+
+- [x] TypeScript typecheck passes (`pnpm --filter @saasfly/auth typecheck`)
+- [x] ESLint passes (`pnpm --filter @saasfly/auth lint`)
+- [x] All 713 tests pass
+
+---
+
+### Issue #649: Remove eslint-disable comments in k8s.ts router
+
+## Active R&D Work
+
 RW|
+
 ### Issue #649: Remove eslint-disable comments in k8s.ts router
 
 **Status**: PR #657
@@ -40,6 +84,7 @@ RW|
 ---
 
 BY|### Issue #636: ISR Caching for Dashboard Data
+
 ### Issue #636: ISR Caching for Dashboard Data
 
 **Status**: PR #648

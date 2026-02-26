@@ -250,10 +250,6 @@ pnpm run dev:web
 - **[trpc](https://trpc.io/)** – End-to-end typesafe APIs made easy
 - **[tanstack/react-query](https://react-query.tanstack.com/)** – Hooks for fetching, caching and updating asynchronous data in React
 
-### 🐲 Global State Management
-
-- **[Zustand](https://zustand.surge.sh/)** – Small, fast and scalable state management for React
-
 ### 🐒 UI
 
 - **[Tailwind CSS](https://tailwindcss.com/)** – Utility-first CSS framework for rapid UI development

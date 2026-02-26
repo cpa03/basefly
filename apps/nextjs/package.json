@@ -57,8 +57,7 @@
     "superjson": "2.2.6",
     "tailwindcss-animate": "1.0.7",
     "vaul": "1.1.2",
-    "zod": "4.3.6",
-    "zustand": "5.0.11"
+    "zod": "4.3.6"
   },
   "devDependencies": {
     "@opennextjs/cloudflare": "^1.0.0",
@@ -73,16 +72,6 @@
     "@testing-library/react": "^16.0.0",
     "@testing-library/dom": "^10.0.0",
     "@testing-library/jest-dom": "^6.4.0",
-    "@types/mdx": "2.0.10",
-    "@opennextjs/cloudflare": "^1.0.0",
-    "@clerk/types": "^4.101.15",
-    "@next-devtools/core": "0.2.0",
-    "@next/bundle-analyzer": "14.2.15",
-    "@next/eslint-plugin-next": "16.1.6",
-    "@saasfly/eslint-config": "workspace:*",
-    "@saasfly/prettier-config": "workspace:*",
-    "@saasfly/tailwind-config": "workspace:*",
-    "@saasfly/typescript-config": "workspace:*",
     "@types/mdx": "2.0.10",
     "@types/negotiator": "0.6.3",
     "@types/node": "20.12.12",

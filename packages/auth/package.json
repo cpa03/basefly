@@ -17,7 +17,6 @@
   "dependencies": {
     "@clerk/nextjs": "^6.37.5",
     "@saasfly/common": "workspace:*",
-    "@saasfly/db": "workspace:*",
     "@t3-oss/env-nextjs": "0.13.10",
     "next": "14.2.35",
     "pino": "^9.6.0",

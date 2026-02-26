@@ -313,7 +313,7 @@ This document provides a comprehensive overview of the test suite for the Basefl
 | --------------------- | ---------- | ---------- | ------------ |
 | **Database Services** | 2          | 65+        | Critical     |
 | **Integration Layer** | 2          | 82+        | Critical     |
-| **API Routers**       | 0          | 0          | ❌ Pending   |
+| **API Routers**       | 8          | 260+       | ✅ Excellent |
 | **Stripe Webhooks**   | 1          | 9          | ✅ Good      |
 | **Business Logic**    | 1          | 7          | ✅ Good      |
 | **UI Utilities**      | 1          | 15         | ✅ Excellent |
@@ -377,7 +377,7 @@ Critical paths and edge cases covered comprehensively.
 
 ### High Priority
 
-- [ ] API Router tests (k8s, customer, stripe routers)
+- [x] API Router tests (k8s, customer, stripe, auth, admin routers) - 8 files, 260+ test cases
 - [ ] Edge case testing for API endpoints
 - [ ] Error handling tests for authentication/authorization
 
@@ -391,25 +391,25 @@ Critical paths and edge cases covered comprehensively.
 
 ### Framework: Playwright
 
-| Command | Description |
-| ------- | ----------- |
-| `pnpm test:e2e` | Run all E2E tests |
-| `pnpm test:e2e:ui` | Run E2E tests with UI |
-| `pnpm test:e2e:headed` | Run E2E tests with browser visible |
-| `pnpm test:e2e:install` | Install Playwright browsers |
-| `pnpm test:e2e:report` | View HTML test report |
+| Command                 | Description                        |
+| ----------------------- | ---------------------------------- |
+| `pnpm test:e2e`         | Run all E2E tests                  |
+| `pnpm test:e2e:ui`      | Run E2E tests with UI              |
+| `pnpm test:e2e:headed`  | Run E2E tests with browser visible |
+| `pnpm test:e2e:install` | Install Playwright browsers        |
+| `pnpm test:e2e:report`  | View HTML test report              |
 
 ### Test Files
 
-| File | Description |
-| ---- | ----------- |
-| `tests/e2e/fixtures.ts` | Test utilities and helpers |
-| `tests/e2e/auth.spec.ts` | Login page and authentication tests |
-| `tests/e2e/pricing.spec.ts` | Pricing page tests |
-| `tests/e2e/dashboard.spec.ts` | Dashboard access control tests |
-| `tests/e2e/home.spec.ts` | Home page tests |
-| `tests/e2e/cluster.spec.ts` | Cluster management flow tests |
-| `tests/e2e/admin.spec.ts` | Admin dashboard access tests |
+| File                          | Description                         |
+| ----------------------------- | ----------------------------------- |
+| `tests/e2e/fixtures.ts`       | Test utilities and helpers          |
+| `tests/e2e/auth.spec.ts`      | Login page and authentication tests |
+| `tests/e2e/pricing.spec.ts`   | Pricing page tests                  |
+| `tests/e2e/dashboard.spec.ts` | Dashboard access control tests      |
+| `tests/e2e/home.spec.ts`      | Home page tests                     |
+| `tests/e2e/cluster.spec.ts`   | Cluster management flow tests       |
+| `tests/e2e/admin.spec.ts`     | Admin dashboard access tests        |
 
 ### Critical Flows Covered
 

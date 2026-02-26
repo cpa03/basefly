@@ -40,6 +40,26 @@ This agent focuses on delivering small, safe, measurable improvements to the bas
 - Prioritize measurable impact (faster builds, better tests, fewer warnings)
 - Focus on atomic, single-purpose changes
 
+YY|## History
+
+ZQ|### 2026-02-26
+
+RP|- **Improvement**: Update test-coverage.md to reflect completed API router tests
+MT|- **Status**: Completed
+VS|- **Analysis**:
+YM| - docs/test-coverage.md showed API Router tests as pending when they're complete
+KB| - Coverage table showed "0 files, 0 tests" for API Routers
+WQ| - Next Steps section still had checkbox for API Router tests
+VP|- **Implementation**:
+TH| - Updated Coverage by Layer table: API Routers 0→8 files, 0→260+ tests
+BR| - Marked API Router tests as ✅ Excellent coverage
+XZ| - Updated Next Steps to mark k8s, customer, stripe, auth, admin routers as complete
+VZ|- **Verification**:
+YQ| - Typecheck: ✅ Pass
+YM| - Lint: ✅ Pass (0 warnings)
+XH| - Tests: ✅ 713 tests pass
+KD|- **PR**: #691
+
 ## History
 
 ### 2026-02-26

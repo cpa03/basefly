@@ -42,6 +42,25 @@ This agent focuses on delivering small, safe, measurable improvements to the bas
 
 ## History
 
+### 2026-02-26
+
+- **Improvement**: Add unit tests for auth and admin tRPC routers
+- **Status**: Completed
+- **Analysis**:
+  - Proactive scan found auth.ts and admin.ts routers without test coverage
+  - Test-coverage.md marked API router tests as high priority
+  - Both routers lacked dedicated test files
+- **Implementation**:
+  - Created `packages/api/src/router/auth.test.ts` with 13 test cases
+  - Created `packages/api/src/router/admin.test.ts` with 12 test cases
+  - Tests focus on Zod schema validation and type definitions
+  - Schemas defined inline to avoid database connection issues during tests
+  - Tests follow the same pattern as existing router tests (hello.test.ts, stripe.test.ts)
+- **Verification**: All 704 tests pass (25 test files)
+- **PR**: (to be created)
+
+## History
+
 ### 2026-02-25
 
 - **Issue**: #651 - Add unit tests for stripe and customer tRPC routers

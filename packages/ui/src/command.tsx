@@ -76,6 +76,8 @@ const CommandEmpty = React.forwardRef<
 >((props, ref) => (
   <CommandPrimitive.Empty
     ref={ref}
+    // role="status" announces to screen readers that there are no results
+    role="status"
     className="py-6 text-center text-sm"
     {...props}
   />

@@ -16,6 +16,9 @@ export function EmptyPlaceholder({
 }: EmptyPlaceholderProps) {
   return (
     <div
+      // Accessibility: role="status" announces to screen readers that there is no content
+      role="status"
+      aria-label="No content available"
       className={cn(
         `group flex min-h-[400px] flex-col items-center justify-center rounded-md border border-dashed p-8 text-center transition-all animate-in fade-in-50 ${ANIMATION.duration.medium} ${ANIMATION.easing.default} hover:border-primary/50 hover:bg-muted/30 hover:shadow-sm`,
         className,

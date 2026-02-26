@@ -8,7 +8,7 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "html", "lcov"],
-      include: ["packages/**/*.{ts,tsx}"],
+      include: ["packages/**/*.{ts,tsx}", "apps/nextjs/src/lib/**/*.{ts,tsx}"],
       exclude: [
         "node_modules/",
         "apps/",
@@ -19,8 +19,13 @@ export default defineConfig({
         "**/index.ts",
       ],
     },
-    include: ["packages/**/*.test.{ts,tsx}"],
+    include: ["packages/**/*.test.{ts,tsx}", "apps/nextjs/**/*.test.{ts,tsx}"],
     exclude: [
+      "node_modules/",
+      "tooling/",
+      "**/node_modules/**",
+      "packages/**/node_modules/**",
+    ],
       "node_modules/",
       "apps/",
       "tooling/",

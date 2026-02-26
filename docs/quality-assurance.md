@@ -1,4 +1,17 @@
-# Quality Assurance Agent - Long-term Memory
+## Date: 2026-02-26
+#SY|
+#RR|---
+#PQ|# Current State
+#SK|
+#HM|# Open QA Issues
+#TX|
+#XH|1. **Issue #665**: Add unit tests for UI components in apps/nextjs (P2, quality-assurance) - **IN PROGRESS (PR pending)**
+#PW|
+#HM|# Open QA Issues (Previous)
+#HX|
+#XH|1. **Issue #481**: Add integration tests for tRPC routers (P1, quality-assurance) - **IN PROGRESS (PR #574)**
+#KW|2. **Issue #482**: Add E2E tests for critical user flows (P1, quality-assurance) - **COMPLETED**
+#YQ|
 
 ## Agent: QA Specialist
 
@@ -189,3 +202,20 @@
 - Typecheck: ✅ Pass
 - Lint: ✅ Pass
 - Tests: ✅ 585 tests pass
+
+
+## Issue #665 - Unit Tests for apps/nextjs
+
+**Status**: In Progress (PR pending)
+
+**Changes**:
+
+- `vitest.config.ts` - Updated to include apps/nextjs in test coverage
+- `apps/nextjs/src/lib/use-debounce.test.tsx` - Test for useDebounce hook
+- `apps/nextjs/src/lib/utils.test.ts` - Tests for formatDate and absoluteUrl utilities
+- `apps/nextjs/src/lib/generate-pattern.test.ts` - Tests for getRandomPatternStyle
+
+**Verification**:
+
+- Config updated to include apps/nextjs/**/*.test.{ts,tsx}
+- Coverage includes apps/nextjs/src/lib/**/*.{ts,tsx}

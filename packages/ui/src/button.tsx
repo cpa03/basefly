@@ -92,59 +92,68 @@ export interface ButtonProps
   enableRipple?: boolean;
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  (
-    {
-      className,
-      variant,
-      size,
-      asChild = false,
-      isLoading,
-      enableRipple = true,
-      children,
-      onClick,
-      ...props
-    },
-    ref,
-  ) => {
-    const { ripples, createRipple } = useButtonRipple();
-    const Comp = asChild ? Slot : "button";
-
-    const handleClick = React.useCallback(
-      (event: React.MouseEvent<HTMLButtonElement>) => {
-        if (enableRipple && !asChild && !isLoading && !props.disabled) {
-          createRipple(event);
-        }
-        onClick?.(event);
+const Button = React.memo(
+  React.forwardRef<HTMLButtonElement, ButtonProps>(
+    (
+      {
+        className,
+        variant,
+        size,
+        asChild = false,
+        isLoading,
+        enableRipple = true,
+        children,
+        onClick,
+        ...props
       },
-      [enableRipple, asChild, isLoading, props.disabled, createRipple, onClick],
-    );
+      ref,
+    ) => {
+      const { ripples, createRipple } = useButtonRipple();
+      const Comp = asChild ? Slot : "button";
 
-    return (
-      <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
-        disabled={isLoading || props.disabled}
-        aria-busy={isLoading}
-        onClick={handleClick}
-        {...props}
-      >
-        {isLoading && (
-          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-        )}
-        {enableRipple &&
-          !asChild &&
-          ripples.map((ripple) => (
-            <ButtonRipple
-              key={ripple.id}
-              ripple={ripple}
-              variant={variant ?? "default"}
-            />
-          ))}
-        {children}
-      </Comp>
-    );
-  },
+      const handleClick = React.useCallback(
+        (event: React.MouseEvent<HTMLButtonElement>) => {
+          if (enableRipple && !asChild && !isLoading && !props.disabled) {
+            createRipple(event);
+          }
+          onClick?.(event);
+        },
+        [
+          enableRipple,
+          asChild,
+          isLoading,
+          props.disabled,
+          createRipple,
+          onClick,
+        ],
+      );
+
+      return (
+        <Comp
+          className={cn(buttonVariants({ variant, size, className }))}
+          ref={ref}
+          disabled={isLoading ?? props.disabled}
+          aria-busy={isLoading}
+          onClick={handleClick}
+          {...props}
+        >
+          {isLoading && (
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+          )}
+          {enableRipple &&
+            !asChild &&
+            ripples.map((ripple) => (
+              <ButtonRipple
+                key={ripple.id}
+                ripple={ripple}
+                variant={variant ?? "default"}
+              />
+            ))}
+          {children}
+        </Comp>
+      );
+    },
+  ),
 );
 Button.displayName = "Button";
 

@@ -30,6 +30,25 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
     />
   ),
 );
+const Card = React.memo(React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, interactive = false, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(
+        "rounded-lg border bg-card text-card-foreground shadow-sm",
+        interactive && [
+          "cursor-pointer",
+          "transition-all duration-200 ease-out",
+          "motion-safe:hover:-translate-y-0.5",
+          "motion-safe:hover:shadow-md",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+        ],
+        className,
+      )}
+      {...props}
+    />
+  ),
+));
 Card.displayName = "Card";
 
 const CardHeader = React.forwardRef<
@@ -42,6 +61,17 @@ const CardHeader = React.forwardRef<
     {...props}
   />
 ));
+const CardHeader = React.memo(React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>((
+  { className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex flex-col space-y-1.5 p-6", className)}
+    {...props}
+  />
+)));
 CardHeader.displayName = "CardHeader";
 
 const CardTitle = React.forwardRef<
@@ -59,6 +89,22 @@ const CardTitle = React.forwardRef<
     {props.children}
   </h3>
 ));
+const CardTitle = React.memo(React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLHeadingElement>
+>((
+  { className, ...props }, ref) => (
+  <h3
+    ref={ref}
+    className={cn(
+      "text-lg font-semibold leading-none tracking-tight",
+      className,
+    )}
+    {...props}
+  >
+    {props.children}
+  </h3>
+)));
 CardTitle.displayName = "CardTitle";
 
 const CardDescription = React.forwardRef<
@@ -71,6 +117,17 @@ const CardDescription = React.forwardRef<
     {...props}
   />
 ));
+const CardDescription = React.memo(React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>((
+  { className, ...props }, ref) => (
+  <p
+    ref={ref}
+    className={cn("text-sm text-muted-foreground", className)}
+    {...props}
+  />
+)));
 CardDescription.displayName = "CardDescription";
 
 const CardContent = React.forwardRef<
@@ -79,6 +136,13 @@ const CardContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
 ));
+const CardContent = React.memo(React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>((
+  { className, ...props }, ref) => (
+  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+)));
 CardContent.displayName = "CardContent";
 
 const CardFooter = React.forwardRef<
@@ -91,6 +155,17 @@ const CardFooter = React.forwardRef<
     {...props}
   />
 ));
+const CardFooter = React.memo(React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>((
+  { className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex items-center p-6 pt-0", className)}
+    {...props}
+  />
+)));
 CardFooter.displayName = "CardFooter";
 
 export {

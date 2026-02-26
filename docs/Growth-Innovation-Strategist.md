@@ -44,33 +44,29 @@
 - Updated on-pull.yml to read prompt from external file using `$(cat .github/prompts/agent-operating-contract.md)`
 - Reduced workflow file from 436 lines to 77 lines
 
-### 2026-02-26: Fix iterate.yml pnpm Consistency
-**Issue**: The iterate.yml workflow still used `npm ci` instead of `pnpm install`, and cache configuration used npm paths instead of pnpm paths.
-**Impact**: Improved CI consistency with project's package manager, better caching efficiency for pnpm.
-**Changes**:
-- Changed `npm ci || true` to `pnpm install --frozen-lockfile || true` in architect job (line 72)
-- Changed `npm ci || true` to `pnpm install --frozen-lockfile || true` in Fixer job (line 342)
-- Updated cache path from `~/.npm` to `~/.pnpm-store`
-- Updated cache key to use `pnpm-lock.yaml` hash instead of `package-lock.json`
-
 ### 2026-02-26: Fix Dependabot pnpm Package Ecosystem
 **Issue**: Dependabot was configured with `package-ecosystem: "npm"` instead of `"pnpm"`, which could cause issues with pnpm-specific dependency resolution.
 **Impact**: More reliable dependency updates, proper pnpm workspace support.
 **Changes**:
 - Changed `package-ecosystem: "npm"` to `package-ecosystem: "pnpm"`
 - Removed commented-out ignore section that was no longer relevant
+- PR: https://github.com/cpa03/basefly/pull/717
 
-## Known Issues / Opportunities
+### 2026-02-26: Fix iterate.yml pnpm Consistency (PREPARED - NOT PUSHED)
+**Issue**: The iterate.yml workflow uses `npm ci` instead of `pnpm install`, and cache configuration uses npm paths instead of pnpm paths.
+**Impact**: Improved CI consistency with project's package manager, better caching efficiency for pnpm.
+**Changes** (prepared locally, pending push due to GitHub Actions restrictions):
+- Changed `npm ci || true` to `pnpm install --frozen-lockfile || true` in architect job (line 72)
+- Changed `npm ci || true` to `pnpm install --frozen-lockfile || true` in Fixer job (line 342)
+- Updated cache path from `~/.npm` to `~/.pnpm-store`
+- Updated cache key to use `pnpm-lock.yaml` hash instead of `package-lock.json`
 
-
-- [x] Consider adding pnpm action-setup for better caching
-- [x] Review other workflows for consistency (removed duplicate)
-- [x] Extract embedded AI prompts from workflow files (created .github/prompts/)
-- [x] Fix iterate.yml pnpm consistency (completed today)
-- [x] Fix Dependabot pnpm package ecosystem (completed today)
+**Note**: These changes could not be pushed due to GitHub Actions security restrictions (the GitHub App token doesn't have `workflows` permission). The changes need to be applied manually or pushed from a local environment.
 
 ## Known Issues / Opportunities
 
 - [ ] Consider adding pnpm action-setup for better caching
 - [x] Review other workflows for consistency (removed duplicate)
 - [x] Extract embedded AI prompts from workflow files (created .github/prompts/)
+- [x] Fix Dependabot pnpm package ecosystem (PR #717)
+- [ ] Fix iterate.yml pnpm consistency (changes prepared locally - needs manual push)

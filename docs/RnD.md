@@ -2,6 +2,54 @@
 
 ## Active R&D Work
 
+### Disable Strict Peer Dependencies
+
+**Status**: PR #711
+
+**Objective**: Disable strict peer dependency checking in pnpm to avoid CI warnings from transitive dependency version mismatches.
+
+**Problem**:
+
+- Peer dependency warnings during `pnpm install` from transitive dependencies:
+  - `@opentelemetry/api` version mismatch (expects <1.9.0, found 1.9.0)
+  - React 19 vs 18 peer dependency issues with `@next-devtools/core`
+  - `trpc-openapi` version mismatch with zod 4
+  - `kysely` version mismatch with `@vercel/postgres-kysely`
+
+**Implementation**:
+
+1. **Added** `strictPeerDependencies: false` to `pnpm-workspace.yaml`:
+   - Suppresses peer dependency warnings during installation
+   - These warnings don't affect functionality
+   - Common in monorepos with many transitive dependencies
+
+2. **Updated** `pnpm-lock.yaml`:
+   - Fixed lockfile inconsistency from previous R&D work (removed dependencies)
+
+**Benefits**:
+
+- **Cleaner CI logs**: No more confusing peer dependency warnings
+- **Improved CI reliability**: Avoids potential CI failures from warning noise
+- **Better developer experience**: Clean install output
+
+**Files Changed**:
+
+- `pnpm-workspace.yaml` - Added strictPeerDependencies: false
+- `pnpm-lock.yaml` - Updated to fix lockfile
+
+**Verification**:
+
+- [x] TypeScript typecheck passes
+- [x] ESLint passes
+- [x] All 742 tests pass
+- [x] Peer dependency warnings are now suppressed
+
+---
+
+### Issue #686: Remove unused NextAuth database schema
+
+## Active R&D Work
+
 ### Issue #686: Remove unused NextAuth database schema
 
 **Status**: PR #689

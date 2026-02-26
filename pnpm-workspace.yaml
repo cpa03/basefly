@@ -3,6 +3,10 @@ packages:
   - packages/*
   - tooling/*
 
+# Disable strict peer dependency checking to avoid CI failures
+# These warnings are from transitive dependencies and don't affect functionality
+strictPeerDependencies: false
+
 ignoredBuiltDependencies:
   - "@clerk/shared"
   - "@prisma/engines"

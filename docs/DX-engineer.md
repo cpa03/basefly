@@ -22,26 +22,21 @@ DX-Engineer focuses on improving Developer Experience through automation, toolin
 
 ### Issue #590: Add Unused Dependency Detection (2026-02-25)
 
-#YQ|
+- **Status**: Implemented
+- **Description**: Added depcheck for detecting unused dependencies in monorepo
+- **Changes**:
+  - Added `depcheck@^1.4.7` as devDependency to root `package.json`
+  - Added `dx:unused` script: `depcheck . --detailed=false --json`
+  - Updated `dx:help` with new command documentation
+- **Verification**:
+  - ✅ Script added to package.json
+  - ✅ Help text updated
+- **Related**: Follows up on DX-engineer.md future improvements idea
 
-### Issue #590: Add Unused Dependency Detection (2026-02-25)
-
-#ZP|
-#WT|- **Status**: Implemented
-#MH|- **Description**: Added depcheck for detecting unused dependencies in monorepo
-#ZB|- **Changes**:
-#NB| - Added `depcheck@^1.4.7` as devDependency to root `package.json`
-#ST| - Added `dx:unused` script: `depcheck . --detailed=false --json`
-#WT| - Updated `dx:help` with new command documentation
-#YK|- **Verification**:
-#KT| - ✅ Script added to package.json
-#SY| - ✅ Help text updated
-#JJ|- **Related**: Follows up on DX-engineer.md future improvements idea
-#YQ|
-#NB|### Issue #579: Improve Environment Setup Error Messages (2026-02-25)
+### Issue #579: Improve Environment Setup Error Messages (2026-02-25)
 
 - **Status**: PR Created (#643)
-- **Description**: Replace direct console.\* calls with centralized pino logger for consistent logging
+- **Description**: Replace direct console.* calls with centralized pino logger for consistent logging
 - **Changes**:
   - Modified `packages/common/src/email.ts` to use pino logger instead of console.log/warn/error
   - Updated JSDoc comment to reflect the change

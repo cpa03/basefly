@@ -133,7 +133,7 @@ pnpm lint           # Run ESLint
 pnpm typecheck      # TypeScript check
 pnpm format         # Format code
 ```
-#YR|
+
 ## Quick Start: Using AI Agents
 
 This section provides concrete examples of how to leverage AI agents for common development tasks.

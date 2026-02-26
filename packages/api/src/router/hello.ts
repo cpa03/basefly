@@ -31,6 +31,13 @@ const helloInputSchema = z.object({
     ),
 });
 
+// Output validation schema - ensures response shape is guaranteed
+const helloOutputSchema = z.object({
+  greeting: z
+    .string()
+    .startsWith("hello ", "Greeting must start with 'hello '"),
+});
+
 /**
  * Hello Router
  *
@@ -60,6 +67,7 @@ export const helloRouter = createTRPCRouter({
    */
   hello: createRateLimitedProtectedProcedure("read")
     .input(helloInputSchema)
+    .output(helloOutputSchema)
     .query((opts) => {
       const userId = opts.ctx.userId as string | undefined;
       const requestId = opts.ctx.requestId;

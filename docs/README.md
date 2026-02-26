@@ -20,6 +20,7 @@ Welcome to the Basefly documentation. This folder contains comprehensive guides,
 
 - **[Blueprint](./blueprint.md)** - Core data models, Kysely query patterns, Stripe integration, and security headers
 - **[API Spec](./api-spec.md)** - All tRPC endpoints with TypeScript interfaces, error handling, and rate limiting
+- **[Architecture Decision Records](./adr/README.md)** - Key technical decisions and their rationale
 
 ## Development
 

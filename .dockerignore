@@ -1,0 +1,66 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build outputs
+.next
+out
+build
+dist
+.turbo
+
+# Cache directories
+.cache
+.eslintcache
+.prettiercache
+.npm
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# IDE and editor files
+.idea
+.vscode
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage
+.nyc_output
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Temporary files
+tmp
+temp
+*.tmp
+
+# Contentlayer generated files
+.contentlayer
+
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile*
+docker-compose*
+.docker
+
+# Documentation (not needed in runtime image)
+docs
+*.md
+!README.md
+
+# CI/CD
+.github

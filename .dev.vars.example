@@ -1,0 +1,71 @@
+# -----------------------------------------------------------------------------
+# Cloudflare Wrangler Development Variables
+# -----------------------------------------------------------------------------
+# Copy this file to .dev.vars for local development with wrangler dev
+# These variables are injected into your Cloudflare Worker during local dev
+# See: https://developers.cloudflare.com/workers/wrangler/system-flags/#dev_vars
+#
+# IMPORTANT: Never commit .dev.vars to version control!
+# Add .dev.vars to your .gitignore
+# -----------------------------------------------------------------------------
+
+# Application URL for local development
+NEXT_PUBLIC_APP_URL="http://localhost:8788"
+
+# -----------------------------------------------------------------------------
+# Authentication (Clerk)
+# -----------------------------------------------------------------------------
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="pk_test_..."
+CLERK_SECRET_KEY="sk_test_..."
+
+# -----------------------------------------------------------------------------
+# Database
+# -----------------------------------------------------------------------------
+POSTGRES_URL="postgresql://user:password@localhost:5432/db"
+
+# -----------------------------------------------------------------------------
+# Subscriptions (Stripe)
+# -----------------------------------------------------------------------------
+STRIPE_API_KEY="sk_test_xxxxxxxxxxxxxx"
+STRIPE_WEBHOOK_SECRET="whsec_xxxxxxxxxxxxxx"
+
+# Stripe Product IDs (for billing)
+NEXT_PUBLIC_STRIPE_STD_PRODUCT_ID="prod_"
+NEXT_PUBLIC_STRIPE_STD_MONTHLY_PRICE_ID="price_"
+NEXT_PUBLIC_STRIPE_PRO_PRODUCT_ID="prod_"
+NEXT_PUBLIC_STRIPE_PRO_MONTHLY_PRICE_ID="price_"
+NEXT_PUBLIC_STRIPE_PRO_YEARLY_PRICE_ID="price_"
+NEXT_PUBLIC_STRIPE_BUSINESS_PRODUCT_ID="prod_"
+NEXT_PUBLIC_STRIPE_BUSINESS_MONTHLY_PRICE_ID="price_"
+NEXT_PUBLIC_STRIPE_BUSINESS_YEARLY_PRICE_ID="price_"
+
+# -----------------------------------------------------------------------------
+# Email (Resend)
+# -----------------------------------------------------------------------------
+RESEND_API_KEY="re_xxxxxxxxxxxxxx"
+RESEND_FROM="noreply@example.com"
+
+# -----------------------------------------------------------------------------
+# Admin
+# -----------------------------------------------------------------------------
+ADMIN_EMAIL="admin@saasfly.io,root@saasfly.io"
+
+# -----------------------------------------------------------------------------
+# Analytics (Optional)
+# -----------------------------------------------------------------------------
+NEXT_PUBLIC_POSTHOG_KEY=""
+NEXT_PUBLIC_POSTHOG_HOST="https://app.posthog.com"
+
+# -----------------------------------------------------------------------------
+# Feature Flags
+# -----------------------------------------------------------------------------
+ENABLE_BILLING="true"
+ENABLE_CLUSTERS="true"
+ENABLE_ADMIN_DASHBOARD="true"
+ENABLE_EMAIL_NOTIFICATIONS="true"
+
+# -----------------------------------------------------------------------------
+# Debug
+# -----------------------------------------------------------------------------
+IS_DEBUG="false"
+VERBOSE_LOGGING="false"

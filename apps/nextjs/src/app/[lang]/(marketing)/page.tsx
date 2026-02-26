@@ -1,0 +1,261 @@
+import dynamic from "next/dynamic";
+import Image from "next/image";
+import Link from "next/link";
+
+import {
+  ASSETS,
+  EXTERNAL_URLS,
+  getGitHubProfileUrl,
+  MARKETING_FALLBACKS,
+  MARKETING_STATS,
+} from "@saasfly/common";
+import { AnimatedTooltip } from "@saasfly/ui/animated-tooltip";
+import { BackgroundLines } from "@saasfly/ui/background-lines";
+import { Button } from "@saasfly/ui/button";
+import { ColourfulText } from "@saasfly/ui/colorful-text";
+import { ArrowRight, Heart } from "@saasfly/ui/icons";
+
+import { CodeCopy } from "~/components/code-copy";
+import type { Locale } from "~/config/i18n-config";
+import { siteConfig } from "~/config/site";
+import { getDictionary } from "~/lib/get-dictionary";
+
+const FeaturesGrid = dynamic(
+  () =>
+    import("~/components/features-grid").then((mod) => ({
+      default: mod.FeaturesGrid,
+    })),
+  {
+    ssr: true,
+    loading: () => (
+      <div className="h-[400px] w-full animate-pulse rounded-lg bg-muted" />
+    ),
+  },
+);
+
+const RightsideMarketing = dynamic(
+  () =>
+    import("~/components/rightside-marketing").then((mod) => ({
+      default: mod.RightsideMarketing,
+    })),
+  {
+    ssr: true,
+    loading: () => (
+      <div className="h-full w-full animate-pulse rounded-lg bg-muted" />
+    ),
+  },
+);
+
+const Comments = dynamic(
+  () =>
+    import("~/components/comments").then((mod) => ({ default: mod.Comments })),
+  {
+    ssr: true,
+    loading: () => (
+      <div className="h-[200px] w-full animate-pulse rounded-lg bg-muted" />
+    ),
+  },
+);
+
+const VideoScroll = dynamic(
+  () =>
+    import("~/components/video-scroll").then((mod) => ({
+      default: mod.VideoScroll,
+    })),
+  {
+    ssr: true,
+    loading: () => (
+      <div className="h-[500px] w-full animate-pulse rounded-lg bg-muted" />
+    ),
+  },
+);
+
+const people = [
+  {
+    id: 1,
+    name: "tianzx",
+    designation: "CEO at Nextify",
+    image: getGitHubProfileUrl("10096899"),
+    link: EXTERNAL_URLS.twitter.nextify,
+  },
+  {
+    id: 2,
+    name: "jackc3",
+    designation: "Co-founder at Nextify",
+    image: getGitHubProfileUrl("10334353"),
+    link: EXTERNAL_URLS.twitter.bingxunYao,
+  },
+  {
+    id: 3,
+    name: "imesong",
+    designation: "Contributor",
+    image: getGitHubProfileUrl("3849293"),
+  },
+  {
+    id: 4,
+    name: "ziveen",
+    designation: "Contributor",
+    image: getGitHubProfileUrl("22560152"),
+  },
+  {
+    id: 5,
+    name: "Zenuncl",
+    designation: "Independent Software Developer",
+    image: getGitHubProfileUrl("3316062"),
+  },
+  {
+    id: 6,
+    name: "Innei",
+    designation: "Indie Developer",
+    image: getGitHubProfileUrl("41265413"),
+  },
+];
+
+export default async function IndexPage({
+  params,
+}: {
+  params: Promise<{
+    lang: Locale;
+  }>;
+}) {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+
+  return (
+    <>
+      <section className="container">
+        <div className="grid grid-cols-1 gap-10 xl:grid-cols-2">
+          <div className="flex h-full flex-col items-start">
+            <BackgroundLines className="h-full">
+              <div className="flex flex-col pt-4 md:pt-36 lg:pt-36 xl:pt-36">
+                <div className="mt-20">
+                  <div className="mb-6 max-w-4xl text-left text-4xl font-semibold dark:text-zinc-100 md:text-5xl md:leading-[4rem] xl:text-5xl xl:leading-[4rem]">
+                    {dict.marketing.title || MARKETING_FALLBACKS.title}
+                    <ColourfulText text="Saasfly" />
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <span className="text-neutral-500 dark:text-neutral-400 sm:text-lg">
+                    {dict.marketing.sub_title || MARKETING_FALLBACKS.subtitle}
+                  </span>
+                </div>
+
+                <div className="z-10 mb-4 mt-6 flex w-full flex-col justify-center space-y-4 sm:flex-row sm:justify-start sm:space-x-8 sm:space-y-0">
+                  <Link href={siteConfig.links.github} target="_blank">
+                    <Button className="h-12 rounded-full px-6 text-lg font-medium transition-all duration-200 ease-out hover:scale-105 hover:shadow-lg active:scale-95">
+                      {dict.marketing.get_started}
+                      <ArrowRight className="h-5 w-5" />
+                    </Button>
+                  </Link>
+
+                  <CodeCopy />
+                </div>
+
+                <div className="mt-4 flex w-full flex-col items-center justify-start xl:flex-row">
+                  <div className="flex">
+                    <AnimatedTooltip items={people} />
+                  </div>
+                  <div className="ml-8 flex flex-col items-center justify-start">
+                    <div className="w-[340px]">
+                      <span className="font-semibold">
+                        {MARKETING_STATS.contributorCount}{" "}
+                      </span>
+                      <span className="text-neutral-500 dark:text-neutral-400">
+                        {dict.marketing.contributors.contributors_desc}
+                      </span>
+                    </div>
+                    <div className="w-[340px]">
+                      <span className="text-neutral-500 dark:text-neutral-400">
+                        {dict.marketing.contributors.developers_first}
+                      </span>
+                      <ColourfulText
+                        text={String(MARKETING_STATS.developerCount)}
+                      />
+                      <span className="text-neutral-500 dark:text-neutral-400">
+                        {dict.marketing.contributors.developers_second}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </BackgroundLines>
+          </div>
+
+          <div className="hidden h-full w-full bg-background xl:block">
+            <div className="flex flex-col pt-44">
+              <RightsideMarketing dict={dict.marketing.right_side} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="container mt-8 md:mt-[-180px] xl:mt-[-180px]">
+        <FeaturesGrid dict={dict.marketing.features_grid} />
+      </section>
+
+      <section className="container pt-24">
+        <div className="flex flex-col items-center justify-center pt-10">
+          <div className="text-lg text-neutral-500 dark:text-neutral-400">
+            {dict.marketing.sponsor.title}
+          </div>
+          <div className="mt-4 flex items-center gap-4">
+            <Link href={EXTERNAL_URLS.clerk.referral} target="_blank">
+              <Image
+                src={ASSETS.clerkLogo}
+                width="48"
+                height="48"
+                alt="clerk"
+              />
+            </Link>
+            <Link href={EXTERNAL_URLS.twillot.home} target="_blank">
+              <Image
+                src={EXTERNAL_URLS.twillot.logo}
+                width="48"
+                height="48"
+                alt="twillot"
+              />
+            </Link>
+            <Link href={EXTERNAL_URLS.setupyourpay.home} target="_blank">
+              <Image
+                src={EXTERNAL_URLS.setupyourpay.logo}
+                width="48"
+                height="48"
+                alt="setupyourpay"
+              />
+            </Link>
+            <Link href={EXTERNAL_URLS.opencollective.saasfly} target="_blank">
+              <div className="flex items-center gap-2 rounded-xl border-2 border-dashed border-neutral-300 px-4 py-2 hover:bg-accent dark:border-neutral-700 dark:hover:bg-neutral-800/30">
+                <Heart className="h-5 w-5 fill-pink-600 text-pink-600 dark:fill-pink-700 dark:text-pink-700" />
+                <span className="text-sm font-medium text-neutral-500 dark:text-neutral-200">
+                  {dict.marketing.sponsor.donate || ""}
+                </span>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="container pt-8">
+        <VideoScroll dict={dict.marketing.video} />
+      </section>
+
+      <section className="w-full px-8 pt-10 sm:px-0 sm:pt-24 md:px-0 md:pt-24 xl:px-0 xl:pt-24">
+        <div className="flex h-full w-full flex-col items-center pb-[100px] pt-10">
+          <div>
+            <h1 className="mb-6 text-center text-3xl font-bold dark:text-zinc-100 md:text-5xl">
+              {dict.marketing.people_comment.title}
+            </h1>
+          </div>
+          <div className="mb-6 text-lg text-neutral-500 dark:text-neutral-400">
+            {dict.marketing.people_comment.desc}
+          </div>
+
+          <div className="w-full overflow-x-hidden">
+            <Comments />
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}

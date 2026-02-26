@@ -4,6 +4,21 @@
 
 ## Work History
 
+### 2026-02-26: AlertDialog Accessibility Consistency (PR #707)
+
+**Research Findings**:
+- AlertDialogContent was missing `aria-modal="true"` for consistency with Dialog and Sheet
+- This helps screen readers understand the dialog overlays other content
+
+**Components Fixed**:
+
+1. **alert-dialog.tsx** - Added `aria-modal="true"` to AlertDialogContent for consistency
+
+---
+
+### 2026-02-25: Additional Reduced Motion Support (PR #639)
+## Work History
+
 ### 2026-02-25: Additional Reduced Motion Support (PR #639)
 
 **Research Findings**:

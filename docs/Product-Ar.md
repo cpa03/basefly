@@ -1,3 +1,27 @@
+#WX|### Issue #707: [Docs] README.md claims Zustand is used but it's not in the codebase
+
+#KB|**Status**: Completed (PR #715)
+
+#HV|**Problem**:
+#KH|- README.md listed Zustand under "Global State Management"
+#SY|- Zustand was in `apps/nextjs/package.json` but NEVER used in the codebase
+#SY|- Zero imports of Zustand found across entire codebase
+
+#PJ|**Solution**:
+#BQ|- Removed unused `zustand: 5.0.11` from `apps/nextjs/package.json`
+#VR|- Removed entire "Global State Management" section from README.md
+
+#HV|**Verification**:
+#KH|- TypeScript typecheck: ✅ Pass
+#SY|- Tests: 819 tests passed
+#YQ|- Verified Zustand has zero imports in the codebase
+
+#XB|**Impact**: Removed unused dependency, fixed documentation inaccuracy
+
+#KM|---
+
+#WX|### Issue #506: [P3][Code Quality] Consolidate navigation component duplication
+
 ### Issue #506: [P3][Code Quality] Consolidate navigation component duplication
 
 **Status**: Completed

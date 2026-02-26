@@ -30,6 +30,15 @@ Deliver small, safe, measurable improvements strictly inside the documentation d
 - Small atomic diff
 
 ## History
+### 2026-02-26 (Session 3)
+- PR #703: Fix corrupted text prefixes in documentation files
+  - Fixed docs/DX-engineer.md: Removed duplicate sections (Issue #590, Issue #579 appeared twice) and cleaned #XX| prefixes
+  - Fixed docs/ai-agent-engineer.md: Removed #XX| corruption prefixes
+  - Fixed docs/api-spec.md: Removed corruption patterns across 1000+ line file
+  - Verified AGENTS.md is already clean
+  - Proactive scan found corruption via grep pattern search
+  - Also fixed duplicate "### 2026-02-25 (Session 2)" and duplicate "### 2026-02-25 (continued)" entries in this memory file
+
 ### 2026-02-25 (Session 2)
 - PR #645: Fix corrupted formatting in AGENTS.md
   - Removed corrupted text prefixes (`#QM|`, `#BM|`, `#TH|`, etc.) from Metis, Momus, and Plan Agent sections
@@ -42,12 +51,6 @@ Deliver small, safe, measurable improvements strictly inside the documentation d
   - Removed duplicate "Getting Help" and "Related Resources" sections
   - File reduced from 243 to 233 lines
   - Proactive scan found issue during documentation review
-### 2026-02-25 (continued)
-- PR #616: Fix duplicate sections in ONBOARDING.md
-  - Removed duplicate "Getting Help" and "Related Resources" sections
-  - File reduced from 243 to 233 lines
-  - Proactive scan found issue during documentation review
-
 
 ### 2026-02-25
 - Created initial technical-writer.md memory file

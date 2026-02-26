@@ -6,18 +6,36 @@ DX-Engineer focuses on improving Developer Experience through automation, toolin
 
 ## Completed Work
 
-#YQ|
+### Issue #686: Remove Unused NextAuth Schema (2026-02-26)
+
+- **Status**: PR Created (#694)
+- **Description**: Remove unused NextAuth database schema from packages/auth
+- **Changes**:
+  - Deleted `packages/auth/db.ts` containing unused NextAuth schema (User, Account, Session, VerificationToken)
+  - Removed `kysely` and `@vercel/postgres-kysely` dependencies from `packages/auth/package.json`
+  - The auth package now only contains Clerk integration code
+- **Verification**:
+  - ✅ Typecheck passes
+  - ✅ Lint passes
+  - ✅ Tests pass (713 tests)
+- **Related**: Closes issue #686
+
 ### Issue #590: Add Unused Dependency Detection (2026-02-25)
+
+#YQ|
+
+### Issue #590: Add Unused Dependency Detection (2026-02-25)
+
 #ZP|
 #WT|- **Status**: Implemented
 #MH|- **Description**: Added depcheck for detecting unused dependencies in monorepo
 #ZB|- **Changes**:
-#NB|  - Added `depcheck@^1.4.7` as devDependency to root `package.json`
-#ST|  - Added `dx:unused` script: `depcheck . --detailed=false --json`
-#WT|  - Updated `dx:help` with new command documentation
+#NB| - Added `depcheck@^1.4.7` as devDependency to root `package.json`
+#ST| - Added `dx:unused` script: `depcheck . --detailed=false --json`
+#WT| - Updated `dx:help` with new command documentation
 #YK|- **Verification**:
-#KT|  - ✅ Script added to package.json
-#SY|  - ✅ Help text updated
+#KT| - ✅ Script added to package.json
+#SY| - ✅ Help text updated
 #JJ|- **Related**: Follows up on DX-engineer.md future improvements idea
 #YQ|
 #NB|### Issue #579: Improve Environment Setup Error Messages (2026-02-25)

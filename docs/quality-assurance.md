@@ -8,6 +8,14 @@
 - **Issue #549**: Add tests for packages/auth module - **COMPLETED** (clerk.test.ts exists with 20 tests)
 
 ### Test Statistics
+- **Total unit tests**: 742+ passing (81 new tests in PR #710)
+- **Test files**: 31 (2 new)
+- **Packages with tests**: api, auth, common, db, stripe, ui, nextjs/hooks
+
+### New Test Added (2026-02-26)
+- `packages/common/src/config/validation.test.ts` - 29 tests for validation constants
+- `packages/ui/src/button-variants.test.ts` - 21 tests for button variants
+- `packages/common/src/config/cache.test.ts` - 60 tests for cache configuration
 - **Total unit tests**: 742 passing
 - **Test files**: 29
 - **Packages with tests**: api, auth, common, db, stripe, ui, nextjs/hooks
@@ -167,6 +175,12 @@
 - [x] Add validation.ts tests (validation.test.ts)
 
 ### Remaining QA Opportunities
+
+- [x] Add tests for packages/ui button-variants.ts (PR #710)
+- [x] Add tests for packages/common cache.ts (PR #710)
+- [ ] Add tests for packages/ui other components
+- [ ] Add tests for packages/common other modules
+- [ ] Increase E2E test coverage
 
 - [ ] Add tests for packages/ui button-variants.ts
 - [ ] Add tests for packages/auth/db.ts

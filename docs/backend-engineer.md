@@ -41,20 +41,18 @@ Basefly is a Next.js-based SaaS template with:
 - **Problem**: Core business logic needed test coverage
 - **Solution**: Added comprehensive tests in packages/api/src/router/k8s.test.ts
 
-- **Status**: Pending
-- **Problem**: Auth module has 0% test coverage
+### Issue 633: N+1 Query Patterns
 
-VB|### Issue 551: Add tests for k8s router
-RB|
-BW|- **Status**: Pending
-SH|- **Problem**: Core business logic needs test coverage
-ZK|
-NP|### Issue 578: Remove duplicate health check endpoint
-JQ|
-BW|- **Status**: Completed (PR #642)
-WY|- **Problem**: File named health_check.ts exports helloRouter (greeting endpoint), not health check
-TX|- **Solution**: Renamed to hello.ts and hello.test.ts to properly reflect purpose
-VB|
+- **Status**: Completed
+- **Problem**: N+1 query patterns in API routers
+- **Solution**: Audited all routers - no N+1 issues found. All queries use indexed columns (authUserId, deletedAt), composite indexes cover query patterns, Promise.all used for parallel queries
+- **Documentation**: Added N+1 audit comments to packages/db/soft-delete.ts
+
+### Issue 578: Remove duplicate health check endpoint
+
+- **Status**: Completed (PR #642 merged)
+- **Problem**: File named health_check.ts exports helloRouter (greeting endpoint), not health check
+- **Solution**: Renamed to hello.ts and hello.test.ts to properly reflect purpose
 
 ## Existing Patterns
 
@@ -129,6 +127,18 @@ Tests are located alongside source files with `.test.ts` suffix:
 - `packages/common/src/config/*.test.ts`
 
 ## Session Notes
+
+### 2026-02-26 Session (Evening)
+
+1. **PR #698 Review**: Found stale PR with backend-engineer label
+   - PR contained N+1 query audit documentation changes
+   - Changes already in main (merged via other PRs)
+   - Closed stale PR #698
+   - Closed Issue #633 as work is completed
+   - All checks pass (typecheck, lint, test: 742 tests)
+   - Verified changes in: packages/db/soft-delete.ts and docs/backend-engineer.md
+
+### 2026-02-26 Session (Morning)
 
 ### 2026-02-26 Session (Morning)
 

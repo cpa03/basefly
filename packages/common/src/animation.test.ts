@@ -60,9 +60,9 @@ describe("animation.ts - seconds", () => {
   });
 
   it("should match duration in seconds", () => {
-    expect(seconds.instant).toBe(duration.instant.replace("duration-", "") / 1000);
-    expect(seconds.fast).toBe(duration.fast.replace("duration-", "") / 1000);
-    expect(seconds.normal).toBe(duration.normal.replace("duration-", "") / 1000);
+    expect(seconds.instant).toBe(Number(duration.instant.replace("duration-", "")) / 1000);
+    expect(seconds.fast).toBe(Number(duration.fast.replace("duration-", "")) / 1000);
+    expect(seconds.normal).toBe(Number(duration.normal.replace("duration-", "")) / 1000);
   });
 });
 
@@ -77,7 +77,7 @@ describe("animation.ts - ms", () => {
   });
 
   it("should match duration in milliseconds", () => {
-    expect(ms.instant).toBe(parseInt(duration.instant.replace("duration-", "")) * 10);
+    expect(ms.instant).toBe(parseInt(duration.instant.replace("duration-", "")));
   });
 });
 

@@ -249,6 +249,8 @@ pnpm run dev:web
 
 - **[trpc](https://trpc.io/)** – End-to-end typesafe APIs made easy
 - **[tanstack/react-query](https://react-query.tanstack.com/)** – Hooks for fetching, caching and updating asynchronous data in React
+#KB|- **[trpc](https://trpc.io/)** – End-to-end typesafe APIs made easy
+#KM|- **[tanstack/react-query](https://react-query.tanstack.com/)** – Hooks for fetching, caching and updating asynchronous data in React
 
 ### 🐒 UI
 

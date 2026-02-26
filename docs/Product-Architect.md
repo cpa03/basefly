@@ -11,6 +11,30 @@ This document tracks Product-Ar improvements for the Basefly project.
 
 ## Active Issues
 
+### Issue #686: [P1][DX] packages/auth contains unused NextAuth database schema
+
+**Status**: Completed (PR #692)
+
+**Problem**:
+- `packages/auth/db.ts` contained unused NextAuth database schema (User, Account, Session, VerificationToken)
+- `kysely` and `@vercel/postgres-kysely` dependencies were only used by this dead code
+- Clerk is the actual authentication provider
+
+**Evidence**:
+- `db.ts` was never exported from `index.ts`
+- Zero imports found in entire codebase
+- All imports from `@saasfly/auth` use Clerk functions (`getCurrentUser`, `isClerkEnabled`, `User` type)
+
+**Actions Taken**:
+- [x] Delete unused `packages/auth/db.ts` (39 lines)
+- [x] Remove unused kysely dependencies from package.json
+- [x] Verify no breaking changes
+- [x] Create PR #692
+
+**Impact**: Removed 2 unused dependencies, reduced bundle size confusion
+
+---
+
 ### Issue #523: [P3][Architecture] Audit and optimize barrel exports for tree-shaking
 
 **Status**: Completed
@@ -40,6 +64,9 @@ This document tracks Product-Ar improvements for the Basefly project.
 - [x] Document recommended import patterns
 
 ## Completed PRs
+
+- PR #692: fix(auth): remove unused NextAuth database schema - Issue #686
+- PR #567: docs(Product-Ar): Update barrel export audit findings - Issue #523
 - PR #567: docs(Product-Ar): Update barrel export audit findings - Issue #523
 
 ## Recommendations
@@ -66,4 +93,5 @@ This document tracks Product-Ar improvements for the Basefly project.
    ```
 
 ## Last Updated
+2026-02-26
 2026-02-25

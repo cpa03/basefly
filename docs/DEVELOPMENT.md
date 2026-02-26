@@ -117,6 +117,47 @@ basefly/
 
 ## Environment Variables
 
+This project uses many environment variables for integrations. See `.env.example` for the complete list with detailed comments.
+
+### Required Variables
+
+| Variable | Description | How to Get |
+| -------- | ----------- | ---------- |
+| `NEXT_PUBLIC_APP_URL` | Your app's URL (e.g., `http://localhost:3000`) | Set to your local URL |
+| `POSTGRES_URL` | PostgreSQL connection string | Create a Vercel Postgres or use local Postgres |
+| `CLERK_SECRET_KEY` | Clerk backend secret | [Clerk Dashboard](https://dashboard.clerk.com) → API Keys |
+| `CLERK_PUBLISHABLE_KEY` | Clerk frontend key | [Clerk Dashboard](https://dashboard.clerk.com) → API Keys |
+
+### Payment Integration (Stripe)
+
+| Variable | Description | How to Get |
+| -------- | ----------- | ---------- |
+| `STRIPE_API_KEY` | Stripe secret key | [Stripe Dashboard](https://dashboard.stripe.com) → Developers → API Keys |
+| `STRIPE_WEBHOOK_SECRET` | Webhook signing secret | [Stripe Dashboard](https://dashboard.stripe.com) → Developers → Webhooks |
+| `NEXT_PUBLIC_STRIPE_*` | Stripe publishable keys | From Stripe API Keys page |
+
+### Email Integration (Resend)
+
+| Variable | Description | How to Get |
+| -------- | ----------- | ---------- |
+| `RESEND_API_KEY` | Resend API key | [Resend Dashboard](https://resend.com) → API Keys |
+| `RESEND_FROM` | Sender email address | Verify a domain in Resend |
+
+### Admin Access
+
+| Variable | Description |
+| -------- | ----------- |
+| `ADMIN_EMAIL` | Comma-separated email addresses that get admin access |
+
+### Quick Setup Tips
+
+1. **Minimum required for local dev**: `NEXT_PUBLIC_APP_URL`, `POSTGRES_URL`, `CLERK_SECRET_KEY`, `CLERK_PUBLISHABLE_KEY`
+2. **For payments**: Add Stripe keys (can use test mode)
+3. **For emails**: Add Resend key (can use Resend's test API)
+4. **For admin**: Set `ADMIN_EMAIL` to your email
+
+> **Pro tip**: Start with just the required variables. Add integrations one at a time as you need them.
+
 See `.env.example` for all required environment variables. Key variables:
 
 | Variable              | Description                  |
@@ -166,6 +207,40 @@ pnpm turbo build --force
 # Reset database (WARNING: destructive)
 pnpm db:push --force-reset
 ```
+## Common Pitfalls
+
+### Environment Setup
+
+- **Missing `.env.local`**: Always copy `.env.example` to `.env.local` before starting. The app will fail to start without required environment variables.
+
+- **Wrong pnpm version**: This project requires pnpm v10.x. Check with `pnpm --version` and install via `corepack enable` or the [official installer](https://pnpm.io/installation).
+
+- **PostgreSQL not running**: Ensure PostgreSQL is running locally or use a cloud provider (Vercel, Supabase). Check `POSTGRES_URL` format: `postgresql://user:password@host:5432/dbname`.
+
+### Development Server
+
+- **Port already in use**: If port 3000 is taken, kill the process or use `pnpm dev:web -p 3001` to specify a different port.
+
+- **Hot reload not working**: Try clearing `.next` cache: `rm -rf apps/nextjs/.next`.
+
+### Dependencies
+
+- **Lock file conflicts**: If you see strange dependency errors, try `pnpm dedupe` or `pnpm reset`.
+
+- **Missing peer dependencies**: Always run `pnpm install` after pulling changes - don't use `npm install` or `yarn`.
+
+### TypeScript & Linting
+
+- **Type errors blocking build**: Run `pnpm dx:fix` first - many issues can be auto-fixed.
+
+- **ESLint taking too long**: Use `pnpm dx:quick` for fast feedback (skips tests and security audit).
+
+### Database
+
+- **Schema out of sync**: Always run `pnpm db:push` after pulling schema changes.
+
+- **Migration conflicts**: If migrations fail, check for conflicting schema changes in `packages/db/prisma/schema.prisma`.
+
 
 ## CI/CD
 

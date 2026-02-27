@@ -4,7 +4,7 @@
 
 This document serves as the long-term memory for the frontend-engineer domain in the OpenX Basefly project.
 
-## Current State (2026-02-26)
+## Current State (2026-02-27)
 
 ### Focus Areas
 
@@ -37,6 +37,7 @@ This document serves as the long-term memory for the frontend-engineer domain in
 
 ### Recent Work
 
+- PR #772: Add Suspense boundaries for granular loading states (fixes #485)
 - PR #679: Add unit tests for UI components in apps/nextjs (fixes #665)
 - PR #672: Add error boundary to (auth) route group (fixes #666)
 - PR #662: Add sizes attribute to Next.js Image components (fixes #492)
@@ -51,7 +52,7 @@ This document serves as the long-term memory for the frontend-engineer domain in
 - #592 - [P2][Performance] Optimize bundle size
 - #590 - [P2][Architecture] Audit UI component library for enterprise readiness
 - #521 - [P2][Frontend] Review hydration consistency with client dictionary loading
-- #485 - frontend: Add Suspense boundaries for granular loading states
+- #485 - frontend: Add Suspense boundaries for granular loading states - DONE (PR #772)
 - #484 - frontend: Improve accessibility with consistent ARIA implementation
 
 ## Best Practices

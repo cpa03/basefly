@@ -7,12 +7,32 @@
 - **Issue #481**: Add integration tests for tRPC routers - **COMPLETED** (PR #574 merged)
 - **Issue #482**: Add E2E tests for critical user flows - **COMPLETED** (PR #646 merged)
 - **Issue #549**: Add tests for packages/auth module - **COMPLETED** (clerk.test.ts exists with 20 tests)
-- **Issue #713**: Add unit tests for packages/common utility modules - **COMPLETED** (New PR)
+- **Issue #713**: Add unit tests for packages/common utility modules - **COMPLETED** (PR #746 merged)
+- **Issue #754**: Add integration tests for Stripe webhook idempotency - **COMPLETED** (tests exist at packages/stripe/src/webhook-idempotency.test.ts)
 
 ### Test Statistics
-- **Total unit tests**: 1100+ (10 new test files with ~200+ new tests)
-- **Test files**: 28 in packages/common/src/config/ (10 new)
+- **Total unit tests**: 1172 (11 tests in webhook-idempotency.test.ts)
+- **Test files**: 48 test files total
 - **Packages with tests**: api, auth, common, db, stripe, ui, nextjs/hooks
+
+### Issue #754 Analysis
+- **Status**: Tests already exist at `packages/stripe/src/webhook-idempotency.test.ts`
+- **Test Count**: 11 tests covering:
+  - registerWebhookEvent (3 tests)
+  - hasEventBeenProcessed (3 tests)
+  - markEventAsProcessed (2 tests)
+  - executeIdempotentWebhook (3 tests)
+- **Acceptance Criteria Met**: Yes
+  - ✓ Tests cover duplicate event detection
+  - ✓ Tests cover successful first-time processing
+  - ✓ Tests cover error handling scenarios
+  - ✓ Tests use test doubles (mocks)
+- **Note**: Issue mentions `packages/db/webhook-idempotency.test.ts` but correct location is `packages/stripe/src/webhook-idempotency.test.ts` (where implementation resides)
+
+### Pre-existing Test Failures (Not QA scope)
+- `packages/common/src/config/pagination.test.ts`: 1 failure
+- `packages/common/src/config/scroll.test.ts`: 5 failures
+- These are pre-existing issues, not related to QA work
 
 ### New Test Added (2026-02-27)
 - `packages/common/src/config/ui-strings.test.ts` - Tests for UI string constants

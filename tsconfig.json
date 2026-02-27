@@ -1,0 +1,8 @@
+{
+  "extends": "./tooling/typescript-config/base.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json"
+  },
+  "include": ["apps/nextjs", "packages/*"],
+  "exclude": ["node_modules", ".next", "dist", "build"]
+}

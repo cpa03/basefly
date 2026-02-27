@@ -33,7 +33,7 @@ export const PAGINATION_CONFIG = {
 export type PageSizeKey = keyof typeof PAGE_SIZES;
 
 export function getPageSize(key: PageSizeKey = "default"): number {
-  return PAGE_SIZES[key];
+  return PAGE_SIZES[key] ?? PAGE_SIZES.default;
 }
 
 export function validatePageSize(size: number): number {

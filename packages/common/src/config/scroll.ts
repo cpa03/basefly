@@ -15,6 +15,7 @@ export const SCROLL_DELAYS = {
 } as const;
 
 export const SCROLL_THRESHOLDS = {
+  default: 100,
   navbar: 50,
   infiniteScroll: 200,
   scrollToTop: 400,
@@ -39,39 +40,47 @@ export type ScrollDelayKey = keyof typeof SCROLL_DELAYS;
 export type ScrollThresholdKey = keyof typeof SCROLL_THRESHOLDS;
 
 export function getScrollOffset(key: ScrollOffsetKey): number {
-  return SCROLL_OFFSETS[key];
+  return SCROLL_OFFSETS[key] ?? SCROLL_OFFSETS.default;
 }
 
 export function getScrollDelay(key: ScrollDelayKey): number {
-  return SCROLL_DELAYS[key];
+  return SCROLL_DELAYS[key] ?? SCROLL_DELAYS.default;
 }
 
 export function getScrollThreshold(key: ScrollThresholdKey): number {
-  return SCROLL_THRESHOLDS[key];
+  return SCROLL_THRESHOLDS[key] ?? SCROLL_THRESHOLDS.default;
+}
+
+interface ScrollOptionsWithKeys {
+  top?: number;
+  left?: number;
+  behavior?: ScrollBehavior;
+  offsetKey?: ScrollOffsetKey;
+  delayKey?: ScrollDelayKey;
 }
 
 export function createScrollOptions(
-  options: Partial<ScrollToOptions> & {
+  scrollOptions: ScrollOptionsWithKeys = {},
+  config?: {
     offsetKey?: ScrollOffsetKey;
     delayKey?: ScrollDelayKey;
-  } = {},
+  },
 ): { options: ScrollToOptions; delay: number } {
-  const {
-    offsetKey = "default",
-    delayKey = "default",
-    behavior = SCROLL_BEHAVIOR.default,
-    ...scrollOptions
-  } = options;
+  // Support both: offsetKey/delayKey in first param OR second param
+  const offsetKey = scrollOptions.offsetKey ?? config?.offsetKey ?? "default";
+  const delayKey = scrollOptions.delayKey ?? config?.delayKey ?? "default";
+  const behavior = scrollOptions.behavior ?? SCROLL_BEHAVIOR.default;
 
   return {
     options: {
       top:
         scrollOptions.top !== undefined
-          ? scrollOptions.top - SCROLL_OFFSETS[offsetKey]
+          ? scrollOptions.top -
+            (SCROLL_OFFSETS[offsetKey] ?? SCROLL_OFFSETS.default)
           : undefined,
       left: scrollOptions.left,
       behavior,
     },
-    delay: SCROLL_DELAYS[delayKey],
+    delay: SCROLL_DELAYS[delayKey] ?? SCROLL_DELAYS.default,
   };
 }

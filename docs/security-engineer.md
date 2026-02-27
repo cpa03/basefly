@@ -1,5 +1,41 @@
 # Security Engineer Work Log
 
+## 2026-02-27 - PR #737: Environment Variable Validation at Startup
+
+### Actions Completed:
+
+1. Found Issue #722: "[Security] Add environment variable validation at startup"
+2. Implemented environment variable validation:
+   - Added `REQUIRED_ENV_VARS` constant with critical env vars: CLERK_SECRET_KEY, NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY, POSTGRES_URL, NEXT_PUBLIC_APP_URL
+   - Added `RECOMMENDED_ENV_VARS` constant with optional vars: STRIPE_API_KEY, STRIPE_WEBHOOK_SECRET, RESEND_API_KEY, ADMIN_EMAIL
+   - Added `validateEnvVars()` function to check for missing environment variables
+   - Added `getEnvValidationMessage()` for human-readable error messages
+   - Added `initEnvValidation()` function to be called at application startup
+3. Verified all checks pass:
+   - TypeScript: ✅ PASSED
+   - ESLint: ✅ PASSED (0 warnings)
+   - Tests: ✅ 951 tests PASSED
+
+### PR #737 Status:
+
+- **Branch**: fix/security-env-validation-737
+- **Changes**: 2 files, +148 lines
+- **Label**: security-engineer
+- **Issue**: #722 - Environment variable validation at startup
+
+### Usage
+
+Call `initEnvValidation()` at application startup:
+
+```ts
+import { initEnvValidation } from "@saasfly/common";
+
+// Call at startup - will throw in production if required vars are missing
+initEnvValidation();
+```
+
+---
+
 ## 2026-02-25 - PR #627: Redis-based Distributed Rate Limiter
 
 ### Actions Completed:
@@ -25,44 +61,6 @@
 
 ---
 
-## 2026-02-25 - PR #542 Update
-
-### Actions Completed:
-
-1. Found existing security-engineer PR #542 (was 465 commits behind main)
-2. Rebased branch onto latest main
-3. Verified all checks pass:
-   - TypeScript: ✅ PASSED
-   - ESLint: ✅ PASSED (0 warnings)
-   - Tests: ✅ 565 tests PASSED
-   - Build: ✅ PASSED
-4. Added review comment to PR
-
-### PR #542 Status:
-
-- **Branch**: security-engineer (up to date with main)
-- **Changes**: 3 files, +40/-4 lines
-- **Label**: security-engineer
-- **Vercel**: Deployment failure is PRE-EXISTING (missing env vars in Vercel project, not caused by PR changes)
-
----
-
-## Active PRs
-
-### PR #627: feat(security): Redis-based distributed rate limiter
-
-- **Status**: OPEN
-- **Issue**: #480 - P1
-- **Fix**: Implement Redis-based rate limiter with sliding window algorithm
-- **Files Changed**:
-  - packages/common/src/config/env.ts - Add REDIS_URL and IS_REDIS_CONFIGURED exports
-  - packages/common/src/index.ts - Export new Redis configuration
-  - packages/api/package.json - Add ioredis dependency
-  - packages/api/src/distributed-rate-limiter.ts - New file with DistributedRateLimiter and SyncRateLimiter
-- **Verification**: Branch is up to date with main
-
----
-
 ## Known Security Issues (from issue list)
 
 ### P0
@@ -74,112 +72,11 @@
 
 - #553: Add CSRF protection for form submissions
 - #498: Replace email-based admin RBAC with role-based access control
-- #480: Replace in-memory rate limiter with Redis-based solution (RESOLVED in PR #627)
+
+---
 
 ## Notes
 
 - Following strict execution rules: if security-engineer PR exists, update and review it first
 - Prioritizing small, atomic security fixes
 - Vercel deployment failures are typically due to missing environment variables in Vercel project settings, not code issues
-
-## 2026-02-25 - PR #542 Update
-
-### Actions Completed:
-
-1. Found existing security-engineer PR #542 (was 465 commits behind main)
-2. Rebased branch onto latest main
-3. Verified all checks pass:
-   - TypeScript: ✅ PASSED
-   - ESLint: ✅ PASSED (0 warnings)
-   - Tests: ✅ 565 tests PASSED
-   - Build: ✅ PASSED
-4. Added review comment to PR
-
-### PR #542 Status:
-
-- **Branch**: security-engineer (up to date with main)
-- **Changes**: 3 files, +40/-4 lines
-- **Label**: security-engineer
-- **Vercel**: Deployment failure is PRE-EXISTING (missing env vars in Vercel project, not caused by PR changes)
-
----
-
-## Active PRs
-
-### PR #542: fix(security): align ADMIN_EMAIL export name with environment variable
-
-- **Status**: OPEN, UP TO DATE with main
-- **Issue**: #512 - P0 security issue
-- **Fix**: Renamed `ADMIN_EMAILS` export to `ADMIN_EMAIL` to match .env.example convention
-- **Files Changed**:
-  - packages/common/src/config/env.ts - Renamed export and updated internal function
-  - packages/common/src/index.ts - Updated re-export
-  - docs/security-engineer.md - Added work log
-- **Verification**: Branch is up to date with main, no conflicts
-
-## Recent Work
-
-### 2026-02-24
-
-- Found existing security-engineer PR #542
-- Rebased onto latest main (was 465 commits behind)
-- Fixed naming inconsistency: `ADMIN_EMAILS` (plural export) → `ADMIN_EMAIL` (singular)
-- Now matches `process.env.ADMIN_EMAIL` naming convention in .env.example
-
-## Known Security Issues (from issue list)
-
-### P0
-
-- #546: Fix permissive CORS - Access-Control-Allow-Origin: \*
-- #545: Remove unsafe-inline and unsafe-eval from CSP in production
-- #512: ADMIN_EMAIL/ADMIN_EMAILS environment variable mismatch (RESOLVED in PR #542)
-
-### P1
-
-- #553: Add CSRF protection for form submissions
-- #498: Replace email-based admin RBAC with role-based access control
-
-## Notes
-
-- Following strict execution rules: if security-engineer PR exists, update and review it first
-- Prioritizing small, atomic security fixes
-- Vercel deployment failures are typically due to missing environment variables in Vercel project settings, not code issues
-
-## Active PRs
-
-### PR #542: fix(security): align ADMIN_EMAIL export name with environment variable
-
-- **Status**: OPEN, UP TO DATE with main
-- **Issue**: #512 - P0 security issue
-- **Fix**: Renamed `ADMIN_EMAILS` export to `ADMIN_EMAIL` to match .env.example convention
-- **Files Changed**:
-  - packages/common/src/config/env.ts - Renamed export and updated internal function
-  - packages/common/src/index.ts - Updated re-export
-- **Verification**: Branch is up to date with main, no conflicts
-
-## Recent Work
-
-### 2026-02-24
-
-- Found existing security-engineer PR #542
-- Rebased onto latest main (was 465 commits behind)
-- Fixed naming inconsistency: `ADMIN_EMAILS` (plural export) → `ADMIN_EMAIL` (singular)
-- Now matches `process.env.ADMIN_EMAIL` naming convention in .env.example
-
-## Known Security Issues (from issue list)
-
-### P0
-
-- #546: Fix permissive CORS - Access-Control-Allow-Origin: \*
-- #545: Remove unsafe-inline and unsafe-eval from CSP in production
-- #512: ADMIN_EMAIL/ADMIN_EMAILS environment variable mismatch (RESOLVED in PR #542)
-
-### P1
-
-- #553: Add CSRF protection for form submissions
-- #498: Replace email-based admin RBAC with role-based access control
-
-## Notes
-
-- Following strict execution rules: if security-engineer PR exists, update and review it first
-- Prioritizing small, atomic security fixes

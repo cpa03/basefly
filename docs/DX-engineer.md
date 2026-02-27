@@ -4,6 +4,27 @@
 
 DX-Engineer focuses on improving Developer Experience through automation, tooling, and process improvements.
 
+### Issue #748: Fix Invalid .nvmrc Value (2026-02-27)
+
+- **Status**: PR Created (#758)
+- **Description**: Update .nvmrc from invalid value "20" to valid Node.js LTS version
+- **Changes**:
+  - Updated `.nvmrc` from "20" to "20.18.0" (valid Node.js LTS version)
+- **Verification**:
+  - ✅ Valid Node.js version format
+  - ✅ nvm use command works correctly
+  - ✅ CI/CD pipeline can use specified Node version
+- **Related**: Closes issue #748
+
+### Issue #720: Add .nvmrc for Node.js Version Consistency (2026-02-27)
+
+- **Status**: Completed
+- **Description**: Created .nvmrc file to specify required Node.js version
+- **Changes**:
+  - Created `.nvmrc` file at repository root (initially with "20", later fixed to "20.18.0")
+- **Related**: Addresses issue #720
+
+
 ## Completed Work
 
 ### Issue #686: Remove Unused NextAuth Schema (2026-02-26)

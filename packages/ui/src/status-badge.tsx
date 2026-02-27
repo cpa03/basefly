@@ -140,12 +140,12 @@ export function StatusBadge({
           "rounded-full",
           styles.dot,
           config.dotColor,
-          config.animate && "animate-pulse",
+          config.animate && "animate-pulse motion-reduce:animate-none",
         )}
         aria-hidden="true"
       />
       <Icon
-        className={cn(styles.icon, config.animate && "animate-spin")}
+        className={cn(styles.icon, config.animate && "animate-spin motion-reduce:animate-none")}
         aria-hidden="true"
       />
       <span className="sr-only">{config.label}</span>

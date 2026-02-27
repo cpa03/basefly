@@ -13,7 +13,7 @@ interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
  *
  * Features:
  * - Smooth shimmer animation that sweeps across the placeholder
- * - Respects user's motion preferences via motion-safe
+ * - Respects user's motion preferences via motion-safe and motion-reduce
  * - Accessible with proper aria attributes
  * - Customizable via className
  *
@@ -41,12 +41,12 @@ function Skeleton({ className, shimmer = true, ...props }: SkeletonProps) {
       className={cn(
         "relative overflow-hidden rounded-md bg-muted",
         shimmer && [
-          // Base shimmer animation
-          "motion-safe:animate-shimmer",
+          // Base shimmer animation - disabled for reduced motion users
+          "motion-safe:animate-shimmer motion-reduce:animate-none",
           // Gradient overlay that creates the shine effect
           "after:absolute after:inset-0",
           "after:bg-gradient-to-r after:from-transparent after:via-muted-foreground/10 after:to-transparent",
-          "after:translate-x-[-100%] motion-safe:after:animate-shimmer-sweep",
+          "after:translate-x-[-100%] motion-safe:motion-reduce:after:animate-shimmer-sweep",
         ],
         className,
       )}

@@ -1,0 +1,98 @@
+# Cloudflare Workers Configuration for Basefly
+# OpenNext Adapter: https://opennext.js.org/cloudflare
+# Documentation: https://developers.cloudflare.com/workers/
+
+name = "basefly"
+main = ".open-next/worker.js"
+compatibility_date = "2026-02-18"
+compatibility_flags = ["nodejs_compat", "nodejs_compat_v2", "global_fetch_strictly_public"]
+
+# Assets configuration for OpenNext
+# https://opennext.js.org/cloudflare/get-started
+[assets]
+directory = ".open-next/assets"
+binding = "ASSETS"
+
+# Module rules for ES modules and WASM files
+# https://developers.cloudflare.com/workers/wrangler/configuration/#rules
+[[rules]]
+type = "ESModule"
+globs = ["**/*.js", "**/*.mjs"]
+fallthrough = true
+
+[[rules]]
+type = "CompiledWasm"
+globs = ["**/*.wasm"]
+
+# Service binding for self-reference (required by OpenNext)
+# https://developers.cloudflare.com/workers/runtime-apis/bindings/service-bindings/
+[[services]]
+binding = "WORKER_SELF_REFERENCE"
+service = "basefly"
+
+# KV Namespace for ISR/SSG incremental cache
+# Create namespace: npx wrangler kv namespace create NEXT_INC_CACHE_KV
+# Note: R2 is recommended over KV for production due to eventual consistency
+# See: https://opennext.js.org/cloudflare/caching
+# [[kv_namespaces]]
+# binding = "NEXT_INC_CACHE_KV"
+# id = "<KV_NAMESPACE_ID>"
+
+# Environment variables (set via Cloudflare Dashboard or wrangler secrets)
+# Required environment variables are documented in docs/ci-cd.md
+[vars]
+NODE_VERSION = "20"
+
+# Production environment
+# https://developers.cloudflare.com/workers/wrangler/configuration/#environments
+[env.production]
+name = "basefly"
+# Uncomment and configure when deploying to a custom domain
+# routes = [
+#   { pattern = "basefly.io/*", zone_name = "basefly.io" }
+# ]
+# Enable logpush for production logs (requires R2 bucket or external destination)
+# https://developers.cloudflare.com/workers/observability/logpush/
+# logpush = true
+
+# Preview environment for PRs
+# Preview environments inherit from main config
+[env.preview]
+name = "basefly-preview"
+# Workers Dev mode for preview deployments
+workers_dev = true
+
+# Smart placement for optimal global distribution
+# https://developers.cloudflare.com/workers/platform/smart-placement
+[placement]
+mode = "smart"
+
+# Limits configuration (adjust based on your Cloudflare plan)
+# https://developers.cloudflare.com/workers/platform/limits
+# Bundled plans: 10ms CPU, Unbound: up to 30s
+[limits]
+cpu_ms = 50000
+
+# Development settings for local testing with wrangler
+[dev]
+port = 8788
+local_protocol = "http"
+
+# Observability and logging
+# https://developers.cloudflare.com/workers/observability/
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+# Enable Tail Workers for real-time log streaming (optional)
+# https://developers.cloudflare.com/workers/observability/tail-workers/
+# tail_consumers = [{ service = "tail-worker" }]
+
+# Security recommendations for Cloudflare Dashboard:
+# - Enable Bot Fight Mode
+# - Enable Browser Integrity Check
+# - Set Security Level: Medium or Higher
+# - SSL/TLS: Full (Strict)
+# - Enable Always Use HTTPS
+# - Enable Automatic HTTPS Rewrites
+# - Enable HTTP/3 (QUIC)

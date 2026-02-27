@@ -1,0 +1,62 @@
+{
+  "name": "@saasfly/api",
+  "version": "0.1.0",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./env": "./src/env.mjs",
+    "./edge": "./src/edge.ts",
+    "./transformer": "./src/transformer.ts",
+    "./subscriptions": "./src/subscriptions.ts",
+    "./request-id": "./src/request-id.ts",
+    "./server": "./src/root.ts",
+    "./openapi": "./src/openapi.ts"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "src/*"
+      ]
+    }
+  },
+  "scripts": {
+    "clean": "rm -rf .turbo node_modules",
+    "format": "prettier --check '**/*.{ts,mjs}' ",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@clerk/nextjs": "^6.37.5",
+    "@saasfly/auth": "workspace:*",
+    "@saasfly/common": "workspace:*",
+    "@saasfly/db": "workspace:*",
+    "@saasfly/stripe": "workspace:*",
+    "@trpc/client": "11.10.0",
+    "@trpc/server": "11.10.0",
+    "@t3-oss/env-nextjs": "0.13.10",
+    "ioredis": "^5.6.0",
+    "next": "14.2.35",
+    "next": "14.2.35",
+    "superjson": "2.2.6",
+    "dinero.js": "2.0.0-alpha.16",
+    "@dinero.js/currencies": "2.0.0-alpha.15",
+    "zod": "4.3.6",
+    "zod-form-data": "3.0.1",
+    "pino": "10.3.1",
+    "trpc-openapi": "^1.2.0"
+  },
+  "devDependencies": {
+    "@saasfly/eslint-config": "workspace:*",
+    "@saasfly/prettier-config": "workspace:*",
+    "@saasfly/typescript-config": "workspace:*",
+    "eslint": "8.57.0",
+    "prettier": "3.8.1",
+    "typescript": "5.9.3"
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "@saasfly/eslint-config/base"
+    ]
+  },
+  "prettier": "@saasfly/prettier-config"
+}

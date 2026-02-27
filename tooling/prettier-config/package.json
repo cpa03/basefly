@@ -1,0 +1,22 @@
+{
+  "name": "@saasfly/prettier-config",
+  "private": true,
+  "version": "0.1.0",
+  "main": "index.mjs",
+  "scripts": {
+    "clean": "rm -rf .turbo node_modules",
+    "format": "prettier --check '**/*.{mjs,json}' ",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ianvs/prettier-plugin-sort-imports": "4.7.1",
+    "prettier": "3.8.1",
+    "prettier-plugin-tailwindcss": "0.7.2"
+  },
+  "devDependencies": {
+    "@saasfly/typescript-config": "workspace:*",
+    "@types/node": "20.12.12",
+    "typescript": "5.9.3"
+  },
+  "prettier": "@saasfly/prettier-config"
+}

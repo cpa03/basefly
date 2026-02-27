@@ -1,0 +1,43 @@
+# Dependencies
+node_modules
+.pnpm-debug.log
+
+# Build outputs (will be built on Vercel)
+.turbo
+.next
+out
+dist
+build
+
+# Development files
+.env
+.env.local
+.env.*.local
+*.log
+
+# IDE and editor files
+.idea
+.vscode
+*.swp
+*.swo
+
+# Testing
+coverage
+
+# OS files
+.DS_Store
+
+# Project-specific
+.opencode
+.sisyphus
+docs
+*.md
+!README.md
+
+# Assets not needed for deployment
+*.png
+*.svg
+!public/**
+
+# Lock files (will be regenerated)
+bun.lock

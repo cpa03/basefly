@@ -1,0 +1,48 @@
+# Cloudflare Pages Redirects Configuration
+# See: https://developers.cloudflare.com/pages/platform/redirects
+# Format: /old-path /new-path status-code
+
+# -----------------------------------------------------------------------------
+# Trailing Slash Normalization
+# -----------------------------------------------------------------------------
+# Redirect URLs with trailing slashes to non-trailing slash versions
+# This helps with SEO and prevents duplicate content issues
+# Note: Cloudflare Pages handles this automatically, but explicit rules can help
+
+# -----------------------------------------------------------------------------
+# Legacy Routes (uncomment and customize as needed)
+# -----------------------------------------------------------------------------
+# /old-page /new-page 301
+# /blog/old-post /blog/new-post 301
+
+# -----------------------------------------------------------------------------
+# API Routes
+# -----------------------------------------------------------------------------
+# Ensure API routes are handled by the worker, not static files
+/api/*  /api/:splat  200
+
+# -----------------------------------------------------------------------------
+# Internationalization (i18n)
+# -----------------------------------------------------------------------------
+# Redirect root to default locale
+# /  /en  302
+
+# -----------------------------------------------------------------------------
+# Authentication Routes
+# -----------------------------------------------------------------------------
+# Ensure auth routes are handled properly
+/login  /en/login  302
+/signup  /en/signup  302
+
+# -----------------------------------------------------------------------------
+# Dashboard Routes
+# -----------------------------------------------------------------------------
+# Protect dashboard routes - handled by middleware
+/dashboard  /en/dashboard  302
+
+# -----------------------------------------------------------------------------
+# SPA Fallback
+# -----------------------------------------------------------------------------
+# For client-side routing, serve index.html for unmatched routes
+# This is handled automatically by Cloudflare Pages for Next.js
+# /*  /index.html  200

@@ -1,0 +1,32 @@
+# Code Owners
+
+# Repository maintainers
+* @cpa03
+
+# Documentation
+*.md @cpa03
+docs/ @cpa03
+
+# CI/CD
+.github/workflows/ @cpa03
+
+# Database
+packages/db/ @cpa03
+
+# API
+packages/api/ @cpa03
+
+# Frontend
+apps/nextjs/ @cpa03
+packages/ui/ @cpa03
+
+# Authentication
+packages/auth/ @cpa03
+
+# Stripe integration
+packages/stripe/ @cpa03
+
+# Configuration
+tooling/ @cpa03
+package.json @cpa03
+pnpm-workspace.yaml @cpa03

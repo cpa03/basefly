@@ -1,0 +1,227 @@
+/**
+ * User Deletion Service
+ *
+ * Provides controlled user deletion with cascading effects on related data.
+ * Implements both hard delete (permanent removal) and soft delete (audit trail preservation)
+ * strategies for GDPR compliance and data management requirements.
+ *
+ * Key features:
+ * - Transaction-based atomicity (all operations succeed or fail together)
+ * - Soft delete of K8sClusterConfig before user deletion (preserves audit trail)
+ * - Two deletion modes: hard delete (permanent) and soft delete (compliance)
+ * - Pre-deletion summary to validate data before deletion
+ * - Ownership checks via authUserId foreign keys
+ * - Request ID logging for distributed tracing
+ *
+ * Deletion Strategy:
+ * - Database level: ON DELETE RESTRICT prevents accidental data loss
+ * - Application level: UserDeletionService handles controlled cascade
+ * - Cluster data: Soft deleted for audit trail preservation
+ * - Customer data: Hard deleted after ensuring no outstanding billing
+ */
+
+import { db } from ".";
+import { logger } from "./logger";
+
+/**
+ * Service for managing user deletion with controlled cascading
+ *
+ * @example
+ * ```typescript
+ * // Get summary before deletion (user confirmation)
+ * const summary = await userDeletionService.getUserSummary(userId);
+ * console.log(`User has ${summary.activeClusters} active clusters`);
+ *
+ * // Hard delete user with cascade (with request tracking)
+ * await userDeletionService.deleteUser(userId, { requestId: "uuid" });
+ *
+ * // Soft delete for compliance (keeps record)
+ * await userDeletionService.softDeleteUser(userId, { requestId: "uuid" });
+ * ```
+ */
+export class UserDeletionService {
+  /**
+   * Hard delete a user with cascading effects
+   *
+   * This performs a permanent deletion of user and related data:
+   * 1. Soft deletes all K8sClusterConfig records (preserves audit trail)
+   * 2. Hard deletes Customer records (billing data removed)
+   * 3. Hard deletes User record (permanent removal)
+   *
+   * All operations run in a single transaction for atomicity.
+   * If any operation fails, the entire transaction rolls back.
+   *
+   * @param userId - The user ID to delete
+   * @param options - Optional request ID for distributed tracing
+   * @throws Error if transaction fails or any deletion operation fails
+   *
+   * @warning This operation is irreversible and permanently removes user data
+   */
+  async deleteUser(
+    userId: string,
+    options?: { requestId?: string },
+  ): Promise<void> {
+    const { requestId } = options ?? {};
+    logger.info("Starting user deletion", { requestId, userId });
+
+    try {
+      await db.transaction().execute(async (trx) => {
+        // Step 1: Soft delete all K8s clusters (preserves audit trail)
+        // Using soft delete ensures we can track cluster history
+        logger.info("Soft deleting user clusters", { requestId, userId });
+        await trx
+          .updateTable("K8sClusterConfig")
+          .set({ deletedAt: new Date() })
+          .where("authUserId", "=", userId)
+          .where("deletedAt", "is", null)
+          .execute();
+
+        // Step 2: Hard delete customer records (billing data)
+        // Stripe customer references should be cleaned up before this point
+        logger.info("Deleting customer records", { requestId, userId });
+        await trx
+          .deleteFrom("Customer")
+          .where("authUserId", "=", userId)
+          .execute();
+
+        // Step 3: Hard delete user record
+        // This is the final step after all dependent data is handled
+        logger.info("Deleting user record", { requestId, userId });
+        await trx.deleteFrom("User").where("id", "=", userId).execute();
+      });
+
+      logger.info("User deletion completed", { requestId, userId });
+    } catch (error) {
+      logger.error("User deletion failed", error, { requestId, userId });
+      throw error;
+    }
+  }
+
+  /**
+   * Soft delete a user for compliance purposes
+   *
+   * This preserves the user record for GDPR compliance while:
+   * 1. Soft deleting all K8sClusterConfig records (preserves audit trail)
+   * 2. Anonymizing user email (prevents re-login but keeps record)
+   *
+   * All operations run in a single transaction for atomicity.
+   *
+   * @param userId - The user ID to soft delete
+   * @param options - Optional request ID for distributed tracing
+   * @throws Error if transaction fails or any update operation fails
+   *
+   * @note User email is anonymized to `deleted_{userId}@example.com` to prevent
+   *       future login attempts while preserving the record for compliance
+   */
+  async softDeleteUser(
+    userId: string,
+    options?: { requestId?: string },
+  ): Promise<void> {
+    const { requestId } = options ?? {};
+    logger.info("Starting soft user deletion", { requestId, userId });
+
+    try {
+      await db.transaction().execute(async (trx) => {
+        // Step 1: Soft delete all K8s clusters
+        logger.info("Soft deleting user clusters", { requestId, userId });
+        await trx
+          .updateTable("K8sClusterConfig")
+          .set({ deletedAt: new Date() })
+          .where("authUserId", "=", userId)
+          .where("deletedAt", "is", null)
+          .execute();
+
+        // Step 2: Anonymize user email (prevents login, keeps record)
+        // Email is set to a placeholder format to preserve uniqueness
+        logger.info("Anonymizing user email", { requestId, userId });
+        await trx
+          .updateTable("User")
+          .set({ email: `deleted_${userId}@example.com` })
+          .where("id", "=", userId)
+          .execute();
+      });
+
+      logger.info("Soft user deletion completed", { requestId, userId });
+    } catch (error) {
+      logger.error("Soft user deletion failed", error, { requestId, userId });
+      throw error;
+    }
+  }
+
+  /**
+   * Get a summary of user data before deletion
+   *
+   * Useful for:
+   * - User confirmation before deletion
+   * - Displaying what will be affected
+   * - Validation checks (e.g., ensure no active subscriptions)
+   *
+   * @param userId - The user ID to get summary for
+   * @param options - Optional request ID for distributed tracing
+   * @returns Object containing user info, customer data, and cluster count, or null if user not found
+   *
+   * @example
+   * ```typescript
+   * const summary = await userDeletionService.getUserSummary(userId, { requestId: "uuid" });
+   * if (summary) {
+   *   console.log(`User: ${summary.user.name}`);
+   *   console.log(`Plan: ${summary.customer?.plan || 'None'}`);
+   *   console.log(`Active clusters: ${summary.activeClusters}`);
+   * }
+   * ```
+   */
+  async getUserSummary(userId: string, options?: { requestId?: string }) {
+    const { requestId } = options ?? {};
+    logger.info("Fetching user summary", { requestId, userId });
+
+    try {
+      const user = await db
+        .selectFrom("User")
+        .select(["id", "name", "email", "image"])
+        .where("id", "=", userId)
+        .executeTakeFirst();
+
+      if (!user) {
+        logger.info("User not found for summary", { requestId, userId });
+        return null;
+      }
+
+      const [customer, clusters] = await Promise.all([
+        db
+          .selectFrom("Customer")
+          .selectAll()
+          .where("authUserId", "=", userId)
+          .executeTakeFirst(),
+        db
+          .selectFrom("K8sClusterConfig")
+          .selectAll()
+          .where("authUserId", "=", userId)
+          .where("deletedAt", "is", null)
+          .execute(),
+      ]);
+
+      logger.info("User summary retrieved", {
+        requestId,
+        userId,
+        activeClusterCount: clusters.length,
+        hasCustomer: !!customer,
+      });
+
+      return {
+        user,
+        customer,
+        activeClusters: clusters.length,
+        clusters,
+      };
+    } catch (error) {
+      logger.error("Failed to get user summary", error, { requestId, userId });
+      throw error;
+    }
+  }
+}
+
+/**
+ * Pre-configured service instance for user deletion operations
+ * Used throughout the application for user account management
+ */
+export const userDeletionService = new UserDeletionService();

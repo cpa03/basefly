@@ -1,0 +1,46 @@
+import { ROUTES } from "@saasfly/common";
+
+import type { Locale } from "~/config/i18n-config";
+import { getDictionary } from "~/lib/get-dictionary";
+import type { DashboardConfig } from "~/types";
+
+export const getDashboardConfig = async ({
+  params: { lang },
+}: {
+  params: {
+    lang: Locale;
+  };
+}): Promise<DashboardConfig> => {
+  const dict = await getDictionary(lang);
+
+  return {
+    mainNav: [
+      {
+        title: dict.common.dashboard.main_nav_documentation,
+        href: ROUTES.docs.home,
+      },
+      {
+        title: dict.common.dashboard.main_nav_support,
+        href: "/support",
+        disabled: true,
+      },
+    ],
+    sidebarNav: [
+      {
+        id: "clusters",
+        title: dict.common.dashboard.sidebar_nav_clusters,
+        href: ROUTES.dashboard.home,
+      },
+      {
+        id: "billing",
+        title: dict.common.dashboard.sidebar_nav_billing,
+        href: ROUTES.dashboard.billing,
+      },
+      {
+        id: "settings",
+        title: dict.common.dashboard.sidebar_nav_settings,
+        href: ROUTES.dashboard.settings,
+      },
+    ],
+  };
+};

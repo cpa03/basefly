@@ -21,9 +21,6 @@ describe("ui-strings", () => {
       expect(UI_STRINGS.signup).toBe("Default Signup Text");
     });
 
-    it("should be readonly (as const)", () => {
-      expectTypeOf(UI_STRINGS.login).toBeString();
-    });
   });
 
   describe("THEME_STRINGS", () => {

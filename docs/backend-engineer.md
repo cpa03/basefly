@@ -169,4 +169,14 @@ NS|1. **Created PR #642**: Fixed issue #578 - renamed misnamed health_check rout
 PN| - File health_check.ts exported helloRouter (greeting endpoint), not health check
 JH| - Renamed to hello.ts and hello.test.ts to eliminate confusion
 TT| - All checks pass (typecheck, lint, test: 26 tests)
-JQ|
+MX|JQ|
+
+NP|### 2026-02-27 Session
+
+PQ|1. **Issue #483**: Added transaction handling to webhook handlers
+
+- Problem: Webhook handlers had separate SELECT + UPDATE operations without atomicity
+- Solution: Wrapped both handleCheckoutSessionCompleted and handleInvoicePaymentSucceeded in db.transaction()
+- Files changed: packages/stripe/src/webhooks.ts, packages/stripe/src/webhooks.test.ts
+- Created PR #738
+- All 856 tests pass, typecheck passes, stripe lint passes

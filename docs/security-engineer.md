@@ -1,5 +1,46 @@
 # Security Engineer Work Log
 
+## 2026-02-27 - PR #761: RLS Session Variable Middleware
+
+### Actions Completed:
+
+1. Found Issue #497: "[P0][Security] Implement RLS session variable middleware for multi-tenant isolation"
+2. Implemented RLS session variable middleware:
+   - Created `packages/db/rls-middleware.ts` with:
+     - `setRlsSession(db, userId)` - Sets PostgreSQL session variable for RLS
+     - `clearRlsSession(db)` - Clears session variable for unauthenticated ops
+     - `rlsTransaction(db, userId, callback)` - Auto-sets RLS in transactions
+     - `createRlsHelper(db, userId)` - RLS-aware database helper
+   - Updated `packages/db/index.ts` to export RLS functions
+3. Verified all checks pass:
+   - TypeScript: ✅ PASSED
+   - ESLint: ✅ PASSED (0 warnings)
+   - Tests: ✅ 5 tests PASSED
+
+### PR #761 Status:
+
+- **Branch**: fix/rls-session-middleware-497
+- **Changes**: 2 files, +188 lines
+- **Label**: security-engineer
+- **Issue**: #497 - P0 RLS session variable middleware
+
+### Usage
+
+```ts
+import { db, rlsTransaction, setRlsSession } from "@saasfly/db";
+
+// Option 1: Set session variable before queries
+await setRlsSession(db, userId);
+const clusters = await db.selectFrom("K8sClusterConfig").selectAll().execute();
+
+// Option 2: Use transaction wrapper (recommended)
+const result = await rlsTransaction(db, userId, async (trx) => {
+  return await trx.selectFrom("K8sClusterConfig").selectAll().execute();
+});
+```
+
+---
+
 ## 2026-02-27 - PR #737: Environment Variable Validation at Startup
 
 ### Actions Completed:
@@ -65,6 +106,7 @@ initEnvValidation();
 
 ### P0
 
+- ~~#497: Implement RLS session variable middleware for multi-tenant isolation~~ (Fixed in PR #761)
 - #546: Fix permissive CORS - Access-Control-Allow-Origin: \*
 - #545: Remove unsafe-inline and unsafe-eval from CSP in production
 

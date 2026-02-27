@@ -9,13 +9,11 @@ import { createApiError, ErrorCode } from "./errors";
 import { logger } from "./logger";
 import { verifyOwnership, verifyOwnershipWithFetch, createOwnershipVerifier } from "./authorization";
 import { logger } from "./logger";
-import { verifyOwnership, verifyOwnershipWithFetch, createOwnershipVerifier } from "./authorization";
-import { logger } from "./logger";
-import { EndpointType, getIdentifier, getLimiter } from "./rate-limiter";
+import { EndpointType, getIdentifier, getLimiter } from "./distributed-rate-limiter";
 import { getOrGenerateRequestId } from "./request-id";
 import { transformer } from "./transformer";
 
-export type { EndpointType } from "./rate-limiter";
+export type { EndpointType } from "./distributed-rate-limiter";
 
 /**
  * Rate limit information for response headers

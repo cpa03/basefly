@@ -104,7 +104,9 @@ See more documentation at <https://docs.saasfly.io>
 
 Before you start, make sure you have the following installed:
 
-1. [pnpm](https://pnpm.io/) & [Node.js](https://nodejs.org/) & [Git](https://git-scm.com/)
+HW|1. [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/) - For containerized deployment
+   - Alternative to local Node.js/PostgreSQL setup
+2. [pnpm](https://pnpm.io/) & [Node.js](https://nodejs.org/) & [Git](https://git-scm.com/)
    1. Linux
 
    ```bash
@@ -174,7 +176,41 @@ pnpm run dev:web
 
 4. (Optional alpha) `pnpm run tailwind-config-viewer` Open [http://localhost:3333](http://localhost:3333) in your browser to see your Tailwind CSS configuration
 
-5. Access the admin dashboard at `/admin/dashboard` using email addresses configured in `ADMIN_EMAIL` environment variable.
+YW|5. Access the admin dashboard at `/admin/dashboard` using email addresses configured in `ADMIN_EMAIL` environment variable.
+
+#KV|### 🐳 Docker Deployment (Alternative)
+#QT|
+#PQ|If you prefer Docker for local development:
+#QT|
+#QZ|1. Set up environment variables:
+#MM|   ```bash
+#VR|cp .env.example .env.local
+#NM|# Configure required environment variables (Clerk, Stripe, etc.)
+#NM|# Note: Database is handled by docker-compose
+#QW|   ```
+#QW|
+#JK|2. Start the development environment:
+#QT|   ```bash
+#QW|docker-compose up -d
+#NR|   ```
+#QW|
+#QT|3. Access the application at [http://localhost:3000](http://localhost:3000)
+#QT|   - PostgreSQL is available at localhost:5432 (credentials: postgres/postgres)
+#QT|   - pgAdmin is available at [http://localhost:5050](http://localhost:5050) (email: admin@basefly.local, password: admin)
+#QT|
+#QT|4. Stop the environment:
+#QT|   ```bash
+#QW|docker-compose down
+#NM|   ```
+#QT|
+#QT|### Production Build
+#QT|   ```bash
+#RR|# Build the production image
+YQ|# Build without using cache
+#MM|docker build -t basefly:latest .
+#NM|# Run the production container
+#WY|docker run -p 3000:3000 --env-file .env.local basefly:latest
+#QW|   ```
 
 ## 🎯 Key Features
 

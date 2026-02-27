@@ -7,6 +7,10 @@ import { isAdminEmail } from "@saasfly/common";
 
 import { createApiError, ErrorCode } from "./errors";
 import { logger } from "./logger";
+import { verifyOwnership, verifyOwnershipWithFetch, createOwnershipVerifier } from "./authorization";
+import { logger } from "./logger";
+import { verifyOwnership, verifyOwnershipWithFetch, createOwnershipVerifier } from "./authorization";
+import { logger } from "./logger";
 import { EndpointType, getIdentifier, getLimiter } from "./rate-limiter";
 import { getOrGenerateRequestId } from "./request-id";
 import { transformer } from "./transformer";
@@ -77,6 +81,11 @@ export const createTRPCRouter = t.router;
 export const procedure = t.procedure;
 /** Merges multiple routers into one */
 export const mergeRouters = t.mergeRouters;
+/** Merges multiple routers into one */
+export const mergeRouters = t.mergeRouters;
+
+// Authorization helpers - re-export for convenience
+export { verifyOwnership, verifyOwnershipWithFetch, createOwnershipVerifier };
 
 /**
  * Middleware that ensures the user is authenticated.

@@ -4,6 +4,34 @@
 
 ## Work History
 
+### 2026-02-27: Dialog & AlertDialog ARIA Labels (PR #736)
+
+**Research Findings**:
+
+- AlertDialog and Dialog components were missing `aria-labelledby` and `aria-describedby` attributes
+- Sheet component already had these attributes implemented
+- Screen readers need explicit associations between dialog content and title/description elements
+
+**Components Fixed**:
+
+1. **alert-dialog.tsx** - Added `aria-labelledby` and `aria-describedby` using React.useId() and Children.map() to inject IDs into Title/Description children
+2. **dialog.tsx** - Same pattern applied for consistency
+
+**Implementation Approach**:
+
+- Used `React.useId()` to generate unique IDs
+- Used `React.Children.map()` to find and clone Title/Description children with the generated IDs
+- Applied `aria-labelledby` and `aria-describedby` to Content components
+- Maintains backward compatibility - works with existing usage patterns
+
+**Key Learnings**:
+
+- Sheet already had the pattern; Dialog and AlertDialog needed the same treatment
+- Using Children.map allows injection of IDs without requiring users to manually add them
+- Consistency between similar components (Dialog vs Sheet vs AlertDialog) improves accessibility predictability
+
+---
+
 ### 2026-02-26: AlertDialog Accessibility Consistency (PR #707)
 
 **Research Findings**:
@@ -40,8 +68,6 @@
 ---
 
 ### 2026-02-25: Additional Reduced Motion Support (PR #639)
-
----
 
 ### 2026-02-25: Additional Reduced Motion Support (PR #639)
 

@@ -14,6 +14,9 @@
  *
  * // Import enums
  * import { SubscriptionPlan, Status } from "@saasfly/db";
+ *
+ * // Import RLS middleware for multi-tenant isolation
+ * import { rlsTransaction, setRlsSession } from "@saasfly/db";
  * ```
  *
  * @module @saasfly/db
@@ -59,6 +62,15 @@ export {
   UserDeletionService,
   userDeletionService,
 } from "./user-deletion";
+
+// RLS middleware exports for multi-tenant isolation
+export {
+  setRlsSession,
+  clearRlsSession,
+  rlsTransaction,
+  createRlsHelper,
+} from "./rls-middleware";
+export type { RlsDatabase } from "./rls-middleware";
 
 // Database instance
 export const db = createKysely<DB>();

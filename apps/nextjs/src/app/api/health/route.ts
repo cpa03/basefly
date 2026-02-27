@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { HTTP_SECURITY_HEADERS } from "@saasfly/common";
 
 import { logger } from "~/lib/logger";
-import { performHealthCheck, type HealthCheckResult } from "~/lib/health-check";
+import { performHealthCheck } from "~/lib/health-check";
 
 /**
  * Health check endpoint for Kubernetes probes and load balancers.

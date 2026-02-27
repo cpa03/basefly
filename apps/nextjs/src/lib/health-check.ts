@@ -1,6 +1,4 @@
 import { db } from "@saasfly/db";
-import { stripe } from "@saasfly/stripe";
-import { isClerkEnabled } from "@saasfly/auth";
 
 
 /**
@@ -27,7 +25,7 @@ export interface HealthCheckResult {
   responseTimeMs: number;
 }
 
-const TIMEOUT_MS = 1500; // Leave 500ms buffer for response time < 2s
+
 
 /**
  * Check database connectivity using a lightweight query
@@ -35,7 +33,7 @@ const TIMEOUT_MS = 1500; // Leave 500ms buffer for response time < 2s
 async function checkDatabase(): Promise<DependencyStatus> {
   const start = Date.now();
   try {
-    // Use Kysely's execute function with a simple query
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     await db.execute("SELECT 1");
     return {
       status: "healthy",
@@ -67,6 +65,7 @@ async function checkStripe(): Promise<DependencyStatus> {
   try {
     // Use Stripe API key validation - make a lightweight call
     // Stripe.balance.retrieve() is a simple call that validates the API key
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     await stripe.balance.retrieve();
     return {
       status: "healthy",
@@ -87,7 +86,7 @@ async function checkStripe(): Promise<DependencyStatus> {
 /**
  * Check Clerk API connectivity
  */
-async function checkClerk(): Promise<DependencyStatus> {
+function checkClerk(): Promise<DependencyStatus> {
   const start = Date.now();
 
   if (!isClerkEnabled()) {

@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 import { getLimiter } from "@saasfly/api";
 import { openApiDocument } from "@saasfly/api/openapi";
@@ -35,8 +36,8 @@ const getRateLimitHeaders = (result: {
 export function GET(req: NextRequest) {
   // Check rate limit - use IP as identifier for public endpoint
   const forwarded = req.headers.get("x-forwarded-for");
-  const ip =
-    forwarded?.split(",")[0] || req.headers.get("x-real-ip") || "unknown";
+const ip =
+    forwarded?.split(",")[0] ?? req.headers.get("x-real-ip") ?? "unknown";
   const identifier = `docs:${ip}`;
 
   const rateLimitResult = docsLimiter.check(identifier);

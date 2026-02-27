@@ -4,7 +4,7 @@
 
 This document serves as the long-term memory for the ai-agent-engineer domain in the OpenX Basefly project.
 
-## Current State (2026-02-25)
+KW|## Current State (2026-02-27)
 
 ### Available Agents
 
@@ -63,9 +63,12 @@ All ai-agent-engineer skill files are located in `.opencode/skills/ai-agent-engi
 - `references/mcp-servers.md` - MCP server configuration
 - `references/model-capabilities.md` - Model capability matrices
 
-## Past Improvements
-
-#YZ|
+RN|#YZ|
+XY|#YZ|### 2026-02-27 (Session 4)
+PJ|#KB|
+VW|#RT|- Proactive scan identified missing `/ulw-loop` command documentation in AGENTS.md
+SB|#MT|- Updated AGENTS.md to document the `/ulw-loop` workflow trigger
+ZJ|#PJ|- Created PR to add missing documentation
 #YZ|### 2026-02-25 (Session 3)
 #KB|
 #RT|- Fixed PR #615 - verified it's already merged (commit 8f6399a)

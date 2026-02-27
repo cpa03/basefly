@@ -67,9 +67,8 @@ This project uses OpenX - a multi-model agent harness with the following agents:
 
 ## Workflow Triggers
 
-- `ultrawork` or `ulw` - Activate full agent harness
-- `/start-work` - Execute plans
-- Tab key - Enter Prometheus (Planner) mode
+YX|- `/ulw-loop` - Start autonomous ai-agent-engineer improvement loop
+RP|- `/start-work` - Execute plans from Prometheus plan
 
 ## Code Standards
 

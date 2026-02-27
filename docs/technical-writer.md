@@ -70,3 +70,19 @@ Deliver small, safe, measurable improvements strictly inside the documentation d
 - docs/ONBOARDING.md - Contributor onboarding guide
 - docs/DEVELOPMENT.md - Development guide
 - AGENTS.md - AI agent configuration
+
+
+### 2026-02-27
+- PR #776: Add JSDoc comments to public API routers
+  - Added comprehensive JSDoc documentation to 10 router procedures
+  - Files modified: k8s.ts, stripe.ts, customer.ts, admin.ts
+  - Addresses issue #503
+  - Each JSDoc includes @param, @returns, and @throws tags
+  - Enables future auto-generation of API docs with TypeDoc
+
+### 2026-02-27 (continued)
+- Identified issue #503 as documentation task
+- Issue requested JSDoc comments for API router procedures
+- Executed the work: Added JSDoc to all exported procedures
+- Created PR with technical-writer label
+- PR linked to issue #503

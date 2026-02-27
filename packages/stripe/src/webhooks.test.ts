@@ -7,21 +7,39 @@ import { stripe } from ".";
 import { logger } from "./logger";
 import { handleEvent } from "./webhooks";
 
-vi.mock("@saasfly/db", () => ({
-  db: {
-    selectFrom: vi.fn(),
-    updateTable: vi.fn(),
-    insertInto: vi.fn().mockReturnValue({
-      values: vi.fn().mockReturnThis(),
-      execute: vi.fn().mockResolvedValue(undefined),
-    }),
-  },
-  SubscriptionPlan: {
-    FREE: "FREE",
-    PRO: "PRO",
-    BUSINESS: "BUSINESS",
-  },
-}));
+vi.mock("@saasfly/db", () => {
+  const mockSelectFrom = vi.fn();
+  const mockUpdateTable = vi.fn();
+  const mockInsertInto = vi.fn().mockReturnValue({
+    values: vi.fn().mockReturnThis(),
+    execute: vi.fn().mockResolvedValue(undefined),
+  });
+
+  return {
+    db: {
+      selectFrom: mockSelectFrom,
+      updateTable: mockUpdateTable,
+      insertInto: mockInsertInto,
+      transaction: vi.fn().mockReturnValue({
+        execute: vi.fn().mockImplementation((callback: (trx: any) => any) => {
+          // Create a mock transaction that delegates to the same mock functions
+          const mockTrx = {
+            selectFrom: mockSelectFrom,
+            updateTable: mockUpdateTable,
+            insertInto: mockInsertInto,
+            deleteFrom: vi.fn(),
+          };
+          return callback(mockTrx);
+        }),
+      }),
+    },
+    SubscriptionPlan: {
+      FREE: "FREE",
+      PRO: "PRO",
+      BUSINESS: "BUSINESS",
+    },
+  };
+});
 
 vi.mock(".", () => ({
   stripe: {

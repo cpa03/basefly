@@ -69,31 +69,34 @@ async function handleCheckoutSessionCompleted(
     );
   }
 
-  const customer = await db
-    .selectFrom("Customer")
-    .selectAll()
-    .where("authUserId", "=", userId)
-    .executeTakeFirst();
+  // Use transaction for atomicity: select and update in single transaction
+  await db.transaction().execute(async (trx) => {
+    const customer = await trx
+      .selectFrom("Customer")
+      .selectAll()
+      .where("authUserId", "=", userId)
+      .executeTakeFirst();
 
-  if (customer) {
-    const priceId = subscription.items.data[0]?.price.id;
-    if (!priceId) {
-      logger.warn(
-        "No priceId in subscription for checkout.session.completed, skipping update",
-      );
-      return;
+    if (customer) {
+      const priceId = subscription.items.data[0]?.price.id;
+      if (!priceId) {
+        logger.warn(
+          "No priceId in subscription for checkout.session.completed, skipping update",
+        );
+        return;
+      }
+
+      await trx
+        .updateTable("Customer")
+        .where("id", "=", customer.id)
+        .set({
+          stripeCustomerId: customerId,
+          stripeSubscriptionId: subscription.id,
+          stripePriceId: priceId,
+        })
+        .execute();
     }
-
-    await db
-      .updateTable("Customer")
-      .where("id", "=", customer.id)
-      .set({
-        stripeCustomerId: customerId,
-        stripeSubscriptionId: subscription.id,
-        stripePriceId: priceId,
-      })
-      .execute();
-  }
+  });
 }
 
 async function handleInvoicePaymentSucceeded(session: Stripe.Checkout.Session) {
@@ -112,33 +115,36 @@ async function handleInvoicePaymentSucceeded(session: Stripe.Checkout.Session) {
     );
   }
 
-  const customer = await db
-    .selectFrom("Customer")
-    .selectAll()
-    .where("authUserId", "=", userId)
-    .executeTakeFirst();
+  // Use transaction for atomicity: select and update in single transaction
+  await db.transaction().execute(async (trx) => {
+    const customer = await trx
+      .selectFrom("Customer")
+      .selectAll()
+      .where("authUserId", "=", userId)
+      .executeTakeFirst();
 
-  if (customer) {
-    const priceId = subscription.items.data[0]?.price.id;
-    if (!priceId) {
-      logger.warn("No priceId in subscription, skipping update");
-      return;
+    if (customer) {
+      const priceId = subscription.items.data[0]?.price.id;
+      if (!priceId) {
+        logger.warn("No priceId in subscription, skipping update");
+        return;
+      }
+
+      const plan = getSubscriptionPlan(priceId);
+      const currentPeriodEnd = subscription.items.data[0]?.current_period_end;
+      await trx
+        .updateTable("Customer")
+        .where("id", "=", customer.id)
+        .set({
+          stripeCustomerId: customerId,
+          stripeSubscriptionId: subscription.id,
+          stripePriceId: priceId,
+          stripeCurrentPeriodEnd: currentPeriodEnd
+            ? new Date(currentPeriodEnd * 1000)
+            : null,
+          plan: plan || SubscriptionPlan.FREE,
+        })
+        .execute();
     }
-
-    const plan = getSubscriptionPlan(priceId);
-    const currentPeriodEnd = subscription.items.data[0]?.current_period_end;
-    await db
-      .updateTable("Customer")
-      .where("id", "=", customer.id)
-      .set({
-        stripeCustomerId: customerId,
-        stripeSubscriptionId: subscription.id,
-        stripePriceId: priceId,
-        stripeCurrentPeriodEnd: currentPeriodEnd
-          ? new Date(currentPeriodEnd * 1000)
-          : null,
-        plan: plan || SubscriptionPlan.FREE,
-      })
-      .execute();
-  }
+  });
 }

@@ -4,7 +4,7 @@
  * This is the central package for shared configuration, constants, and utilities
  * used across the Basefly platform. It provides a stable public API surface for:
  *
- * - **Environment**: Log levels, environment detection, admin emails
+ * - **Environment**: Log levels, environment detection, admin emails, validation
  * - **Project Config**: Brand, company, repository, deployment settings
  * - **Security**: CSP headers, security headers configuration
  * - **Pricing**: Subscription tiers, Stripe price IDs, resource limits
@@ -46,6 +46,12 @@ export {
   isValidLogLevel,
   REDIS_URL,
   IS_REDIS_CONFIGURED,
+  REQUIRED_ENV_VARS,
+  RECOMMENDED_ENV_VARS,
+  validateEnvVars,
+  getEnvValidationMessage,
+  initEnvValidation,
+  type EnvValidationResult,
 } from "./config/env";
 
 // Project configuration - ROOT configuration for brand, company, and project settings
@@ -361,4 +367,9 @@ export {
   createLogger,
   createLoggerWrapper,
 } from "./logger";
-export type { LoggerConfig, LogMetadata, PackageName, BaseLogger } from "./logger";
+export type {
+  LoggerConfig,
+  LogMetadata,
+  PackageName,
+  BaseLogger,
+} from "./logger";

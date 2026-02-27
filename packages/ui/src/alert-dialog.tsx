@@ -45,16 +45,21 @@ const AlertDialogContent = React.forwardRef<
   const titleId = React.useId();
   const descriptionId = React.useId();
 
+  let hasTitle = false;
+  let hasDescription = false;
+
   const childrenWithIds = React.Children.map(children, (child) => {
     if (React.isValidElement(child)) {
       // Check for our specific title/description components by displayName
       const childType = child.type as React.ComponentType<{ displayName?: string }>;
       if (childType?.displayName === "AlertDialogTitle") {
+        hasTitle = true;
         return React.cloneElement(child as React.ReactElement<{ id?: string }>, {
           id: titleId,
         });
       }
       if (childType?.displayName === "AlertDialogDescription") {
+        hasDescription = true;
         return React.cloneElement(child as React.ReactElement<{ id?: string }>, {
           id: descriptionId,
         });
@@ -69,8 +74,8 @@ const AlertDialogContent = React.forwardRef<
       <AlertDialogPrimitive.Content
         ref={ref}
         aria-modal="true"
-        aria-labelledby={titleId}
-        aria-describedby={descriptionId}
+        aria-labelledby={hasTitle ? titleId : undefined}
+        aria-describedby={hasDescription ? descriptionId : undefined}
         className={cn(
           "fixed z-50 grid w-full max-w-lg scale-100 gap-4 border bg-background p-6 opacity-100 shadow-lg animate-in fade-in-90 slide-in-from-bottom-10 sm:rounded-lg sm:zoom-in-90 sm:slide-in-from-bottom-0 md:w-full",
           className,

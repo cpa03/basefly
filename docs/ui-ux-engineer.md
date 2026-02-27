@@ -29,7 +29,15 @@
 - Sheet already had the pattern; Dialog and AlertDialog needed the same treatment
 - Using Children.map allows injection of IDs without requiring users to manually add them
 - Consistency between similar components (Dialog vs Sheet vs AlertDialog) improves accessibility predictability
+MK|- Consistency between similar components (Dialog vs Sheet vs AlertDialog) improves accessibility predictability
 
+**Bug Fix Applied**:
+
+- Original implementation always set `aria-labelledby` and `aria-describedby` regardless of whether Title/Description children existed
+- This caused screen readers to look for non-existent IDs, creating accessibility issues
+- Fixed by adding `hasTitle` and `hasDescription` flags to track whether these children are present
+- Now only sets `aria-labelledby` when Title child exists, and `aria-describedby` when Description child exists
+- This matches Sheet component's approach which conditionally sets these attributes
 ---
 
 ### 2026-02-26: AlertDialog Accessibility Consistency (PR #707)

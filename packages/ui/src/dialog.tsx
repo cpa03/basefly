@@ -47,16 +47,21 @@ const DialogContent = React.memo(
     const titleId = React.useId();
     const descriptionId = React.useId();
 
+    let hasTitle = false;
+    let hasDescription = false;
+
     const childrenWithIds = React.Children.map(children, (child) => {
       if (React.isValidElement(child)) {
         // Check for our specific title/description components by displayName
         const childType = child.type as React.ComponentType<{ displayName?: string }>;
         if (childType?.displayName === "DialogTitle") {
+          hasTitle = true;
           return React.cloneElement(child as React.ReactElement<{ id?: string }>, {
             id: titleId,
           });
         }
         if (childType?.displayName === "DialogDescription") {
+          hasDescription = true;
           return React.cloneElement(child as React.ReactElement<{ id?: string }>, {
             id: descriptionId,
           });
@@ -71,8 +76,8 @@ const DialogContent = React.memo(
         <DialogPrimitive.Content
           ref={ref}
           aria-modal="true"
-          aria-labelledby={titleId}
-          aria-describedby={descriptionId}
+          aria-labelledby={hasTitle ? titleId : undefined}
+          aria-describedby={hasDescription ? descriptionId : undefined}
           className={cn(
             "fixed bottom-0 z-50 grid w-full gap-4 rounded-b-lg border bg-background p-6 shadow-lg animate-in md:bottom-auto",
             "data-[state=open]:fade-in-90 data-[state=open]:slide-in-from-bottom-10 md:max-w-lg md:rounded-lg md:zoom-in-90 data-[state=open]:md:slide-in-from-bottom-0",

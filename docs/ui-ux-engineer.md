@@ -4,6 +4,30 @@
 
 ## Work History
 
+### 2026-02-27: Focus-Visible Styles for Keyboard Navigation (PR #766)
+
+**Research Findings**:
+
+- card-hover-effect.tsx used Link component without focus-visible styles
+- animated-tooltip.tsx used Link component without focus-visible styles
+- Keyboard users couldn't see focus indicators when navigating via Tab key
+
+**Components Fixed**:
+
+1. **card-hover-effect.tsx** - Added `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background` to Link
+2. **animated-tooltip.tsx** - Added focus-visible styles to Link component
+
+**Key Learnings**:
+
+- focus-visible CSS pseudo-class only shows focus ring for keyboard users, not mouse users
+- Use standard Tailwind focus-visible classes: `focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`
+- All interactive elements (links, buttons) should have visible focus indicators for keyboard accessibility
+
+---
+
+### 2026-02-26: AlertDialog Accessibility Consistency (PR #707)
+## Work History
+
 ### 2026-02-26: AlertDialog Accessibility Consistency (PR #707)
 
 **Research Findings**:

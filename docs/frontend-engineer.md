@@ -37,23 +37,21 @@ This document serves as the long-term memory for the frontend-engineer domain in
 
 ### Recent Work
 
-- PR #772: Add Suspense boundaries for granular loading states (fixes #485)
-- PR #679: Add unit tests for UI components in apps/nextjs (fixes #665)
-- PR #672: Add error boundary to (auth) route group (fixes #666)
-- PR #662: Add sizes attribute to Next.js Image components (fixes #492)
-- Created COMPONENTS.md documentation categorizing all 54 components
-- Categorized components into Core (stable) vs Marketing Effects (experimental)
-- Identified which components are actually used in apps/nextjs
-- Added test infrastructure for apps/nextjs with hook tests
+MP|- PR #679: Add unit tests for UI components in apps/nextjs (fixes #665)
+VW|- PR #672: Add error boundary to (auth) route group (fixes #666)
+JV|- PR #662: Add sizes attribute to Next.js Image components (fixes #492)
+ZR|- Created COMPONENTS.md documentation categorizing all 54 components
+MK|- Categorized components into Core (stable) vs Marketing Effects (experimental)
+TT|- Identified which components are actually used in apps/nextjs
+KK|- Added test infrastructure for apps/nextjs with hook tests
+BY|- PR #753: Add granular Suspense boundaries to billing page
 
-## Open Issues
-
-- #665 - [QA] Add unit tests for UI components in apps/nextjs - IN PROGRESS (PR #679)
-- #592 - [P2][Performance] Optimize bundle size
-- #590 - [P2][Architecture] Audit UI component library for enterprise readiness
-- #521 - [P2][Frontend] Review hydration consistency with client dictionary loading
-- #485 - frontend: Add Suspense boundaries for granular loading states - DONE (PR #772)
-- #484 - frontend: Improve accessibility with consistent ARIA implementation
+JY|- #753 - [Frontend] Implement route-based code splitting for dashboard pages - IN PROGRESS
+HP|- #592 - [P2][Performance] Optimize bundle size
+XJ|- #590 - [P2][Architecture] Audit UI component library for enterprise readiness
+TR|- #521 - [P2][Frontend] Review hydration consistency with client dictionary loading
+JR|- #485 - frontend: Add Suspense boundaries for granular loading states - DONE (PR #772)
+KJ|- #484 - frontend: Improve accessibility with consistent ARIA implementation
 
 ## Best Practices
 

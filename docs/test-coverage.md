@@ -290,22 +290,70 @@ This document provides a comprehensive overview of the test suite for the Basefl
 ✅ Returns subscription object with all expected fields
 
 **Quality**: Excellent - Integration flow and resilience patterns tested
+VK|
 
 ---
+
+### 7. Common Utilities (`packages/common/src/*.test.ts`)
+
+**Status**: ✅ Complete
+**Test Count**: 35+ tests
+**Priority**: Medium - Shared utilities across packages
+
+**Coverage Breakdown**:
+
+#### Email Module - 5 tests
+
+✅ isResendConfigured() - Returns true when API key is valid
+✅ isResendConfigured() - Returns false when API key is missing
+✅ getResendClientOrThrow() - Returns Resend client when configured
+✅ getResendClientOrThrow() - Throws error when not configured
+✅ createResendClientSafe() - Handles placeholder values
+
+#### Animation Module - 8 tests
+
+✅ ANIMATION.duration - All duration values defined
+✅ ANIMATION.easing - All easing curves defined
+✅ ANIMATION.scale - Scale presets defined
+✅ ANIMATION.seconds - Second conversions work
+✅ ANIMATION.ms - Millisecond conversions work
+✅ ANIMATION.bezier - Bezier curves defined
+
+#### Icon Sizes Module - 10 tests
+
+✅ ICON_SIZES - All size presets defined
+✅ getIconSize() - Returns correct size for valid input
+✅ getIconSize() - Returns default for invalid input
+✅ Presets match design system requirements
+
+#### Logger Module - 7 tests
+
+✅ createLogger() - Creates logger with correct config
+✅ createLogger() - Handles custom log levels
+✅ createLoggerWrapper() - Wraps pino logger correctly
+✅ BaseLogger interface compliance
+
+#### UI Tokens Module - 5 tests
+
+✅ UI tokens match design system
+✅ Color tokens are properly typed
+✅ Spacing tokens are consistent
+
+**Quality**: Excellent - All utility modules have comprehensive test coverage
 
 ## Test Coverage Statistics
 
 ### Total Test Files
 
 - **Before**: 3 test files
-- **After**: 14 test files (+11 new)
-- **Growth**: +367%
+QW|- **After**: 19 test files (+5 new)
+PW|- **Growth**: +36%
 
 ### Total Test Cases
 
 - **Before**: 31 tests
-- **After**: 385 tests
-- **Growth**: +1142%
+PR|- **After**: 420 tests (+35 new)
+XN|- **Growth**: +9%
 
 ### Coverage by Layer
 
@@ -316,16 +364,16 @@ This document provides a comprehensive overview of the test suite for the Basefl
 | **API Routers**       | 8          | 260+       | ✅ Excellent |
 | **Stripe Webhooks**   | 1          | 9          | ✅ Good      |
 | **Business Logic**    | 1          | 7          | ✅ Good      |
-| **UI Utilities**      | 1          | 15         | ✅ Excellent |
-
+TQ|| **UI Utilities**      | 1          | 15         | ✅ Excellent |
+NW|| **Common Utilities**   | 5          | 35+        | ✅ Excellent |
 ### Coverage by Priority
 
 | Priority     | Test Files | Test Cases | Status         |
 | ------------ | ---------- | ---------- | -------------- |
 | **Critical** | 8          | 320+       | ✅ Covered     |
 | **High**     | 4          | 38         | ✅ Covered     |
-| **Medium**   | 2          | 15         | ⚠️ Partial     |
-| **Low**      | 0          | 0          | ❌ Not Started |
+RX|| **Medium**   | 7          | 50+        | ✅ Covered     |
+JJ|| **Low**      | 0          | 0          | ❌ Not Started |
 
 ---
 

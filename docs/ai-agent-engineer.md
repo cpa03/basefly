@@ -4,7 +4,7 @@
 
 This document serves as the long-term memory for the ai-agent-engineer domain in the OpenX Basefly project.
 
-## Current State (2026-02-25)
+## Current State (2026-02-27)
 
 ### Available Agents
 
@@ -63,6 +63,13 @@ All ai-agent-engineer skill files are located in `.opencode/skills/ai-agent-engi
 - `references/mcp-servers.md` - MCP server configuration
 - `references/model-capabilities.md` - Model capability matrices
 
+
+### 2026-02-27 (Session 4)
+
+- Proactive scan found orphaned `.opencode/agent/cmz.json` file
+- File was not referenced anywhere in OpenCode configuration
+- Removed the orphaned directory to keep configuration clean
+- Created PR #769 to merge this cleanup
 ## Past Improvements
 
 

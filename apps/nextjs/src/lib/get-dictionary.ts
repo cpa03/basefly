@@ -14,10 +14,11 @@ interface CacheEntry<T> {
 }
 
 /**
- * Cache time-to-live in milliseconds (5 minutes)
+ * Cache time-to-live in milliseconds (default: 5 minutes)
+ * Can be overridden via DICTIONARY_CACHE_TTL_MS environment variable
  * This ensures dictionaries stay fresh while reducing I/O overhead
  */
-const CACHE_TTL_MS = 5 * 60 * 1000;
+const CACHE_TTL_MS = Number(process.env.DICTIONARY_CACHE_TTL_MS) || 5 * 60 * 1000;
 
 /**
  * In-memory cache for loaded dictionaries

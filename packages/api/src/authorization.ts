@@ -82,11 +82,12 @@ export function verifyOwnership(
  * @throws {TRPCError} FORBIDDEN if user does not own the resource
  * @throws {TRPCError} NOT_FOUND if resource doesn't exist
  */
-export async function verifyOwnershipWithFetch<T>(
+export async function verifyOwnershipWithFetch<T extends { ownerId?: string }>(
   ctx: TRPCContext,
   fetchResource: () => Promise<T | undefined | null>,
   resourceType: string,
   notFoundMessage: string,
+  getOwnerId?: (resource: T) => string | null | undefined,
 ): Promise<T> {
   // Check authentication
   if (!ctx.userId) {
@@ -110,6 +111,26 @@ export async function verifyOwnershipWithFetch<T>(
 
   if (!resource) {
     throw createApiError(ErrorCode.NOT_FOUND, notFoundMessage);
+  }
+
+  // Check ownership
+  const ownerIdToCheck = getOwnerId ? getOwnerId(resource) : resource.ownerId;
+  if (ownerIdToCheck && ownerIdToCheck !== ctx.userId) {
+    logger.warn(
+      {
+        requestId: ctx.requestId,
+        userId: ctx.userId,
+        ownerId: ownerIdToCheck,
+        resourceType,
+        security: true,
+        reason: "ownership_mismatch",
+      },
+      `Forbidden: User attempted to access ${resourceType} owned by another user`
+    );
+    throw createApiError(
+      ErrorCode.FORBIDDEN,
+      `You don't have access to this ${resourceType}`
+    );
   }
 
   return resource;
@@ -136,7 +157,7 @@ export async function verifyOwnershipWithFetch<T>(
  */
 export function createOwnershipVerifier<T>(
   resourceType: string,
-  getOwnerId: (resource: T) => string | null | undefined,
+  getOwnerId: (resource: T) => string | null | undefined | Promise<string | null | undefined>,
 ) {
   return async function verify(
     ctx: TRPCContext,
@@ -168,7 +189,7 @@ export function createOwnershipVerifier<T>(
     }
 
     // Check ownership
-    const ownerId = getOwnerId(resource);
+    const ownerId = await getOwnerId(resource);
     if (!ownerId || ownerId !== ctx.userId) {
       logger.warn(
         {

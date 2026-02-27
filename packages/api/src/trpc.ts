@@ -79,9 +79,6 @@ export const t = initTRPC.context<TRPCContext>().create({
 export const createTRPCRouter = t.router;
 /** Base procedure without any middleware */
 export const procedure = t.procedure;
-/** Merges multiple routers into one */
-export const mergeRouters = t.mergeRouters;
-/** Merges multiple routers into one */
 export const mergeRouters = t.mergeRouters;
 
 // Authorization helpers - re-export for convenience

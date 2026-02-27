@@ -40,7 +40,7 @@ Basefly simplifies Kubernetes cluster deployment and management with a modern we
 > **[Nextify](https://nextify.ltd)** provides a complete Enterprise SaaS solution. Contact us at [contact@nextify.ltd](mailto:contact@nextify.ltd) if you're interested in discussing your project, or if you'd simply like to have a conversation with us, please feel free to reach out.
 
 > ❤️ We provide **free technical support and deployment services to non-profit organizations**.
->
+
 > 🙌 All profits obtained from our open source projects will be **entirely dedicated to supporting open source initiatives and charitable causes**.
 
 ## ⚡ Live Demo
@@ -249,8 +249,6 @@ pnpm run dev:web
 
 - **[trpc](https://trpc.io/)** – End-to-end typesafe APIs made easy
 - **[tanstack/react-query](https://react-query.tanstack.com/)** – Hooks for fetching, caching and updating asynchronous data in React
-#KB|- **[trpc](https://trpc.io/)** – End-to-end typesafe APIs made easy
-#KM|- **[tanstack/react-query](https://react-query.tanstack.com/)** – Hooks for fetching, caching and updating asynchronous data in React
 
 ### 🐒 UI
 

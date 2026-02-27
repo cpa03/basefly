@@ -1,4 +1,4 @@
-#QK|# OpenX Basefly - Agent Guidelines
+# OpenX Basefly - Agent Guidelines
 
 ## Project Overview
 

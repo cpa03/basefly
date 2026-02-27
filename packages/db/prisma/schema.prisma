@@ -34,6 +34,7 @@ model Customer {
 
   @@index([plan])
   @@index([authUserId, stripeCurrentPeriodEnd])
+  @@index([authUserId, plan, stripeCurrentPeriodEnd])
 }
 
 model Account {

@@ -22,6 +22,11 @@
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "format": "prettier --check '**/*.{ts,mjs}' ",
+    "typecheck": "tsc --noEmit",
+    "generate-docs": "npx tsx src/docs-generator.ts"
+  },
+    "clean": "rm -rf .turbo node_modules",
+    "format": "prettier --check '**/*.{ts,mjs}' ",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

@@ -1,0 +1,109 @@
+# =============================================================================
+# Basefly - Docker Compose for local development
+# =============================================================================
+# This compose file sets up the complete development environment including:
+# - Next.js application
+# - PostgreSQL database
+# - Development services
+# =============================================================================
+
+services:
+  # --------------------------------------------------------------------------
+  # Next.js Application
+  # --------------------------------------------------------------------------
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    container_name: basefly-app
+    ports:
+      - "3000:3000"
+    environment:
+      # App
+      - NEXT_PUBLIC_APP_URL=http://localhost:3000
+      
+      # Database
+      - POSTGRES_URL=postgresql://postgres:postgres@db:5432/basefly
+      
+      # Clerk Authentication (replace with your keys)
+      - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:-pk_test_xxx}
+      - CLERK_SECRET_KEY=${CLERK_SECRET_KEY:-sk_test_xxx}
+      
+      # Stripe (replace with your keys)
+      - STRIPE_API_KEY=${STRIPE_API_KEY:-sk_test_xxx}
+      - NEXT_PUBLIC_STRIPE_STD_PRODUCT_ID=${NEXT_PUBLIC_STRIPE_STD_PRODUCT_ID:-prod_xxx}
+      - NEXT_PUBLIC_STRIPE_STD_MONTHLY_PRICE_ID=${NEXT_PUBLIC_STRIPE_STD_MONTHLY_PRICE_ID:-price_xxx}
+      
+      # Resend (replace with your key)
+      - RESEND_API_KEY=${RESEND_API_KEY:-re_xxx}
+      - RESEND_FROM=${RESEND_FROM:-noreply@example.com}
+      
+      # Feature Flags
+      - ENABLE_BILLING=true
+      - ENABLE_CLUSTERS=true
+      - ENABLE_ADMIN_DASHBOARD=true
+      
+      # Development
+      - IS_DEBUG=false
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/apps/nextjs/.next
+    command: pnpm --filter @saasfly/nextjs dev
+    restart: unless-stopped
+    networks:
+      - basefly-network
+
+  # --------------------------------------------------------------------------
+  # PostgreSQL Database
+  # --------------------------------------------------------------------------
+  db:
+    image: postgres:16-alpine
+    container_name: basefly-db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=basefly
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - basefly-network
+
+  # --------------------------------------------------------------------------
+  # Database Admin (pgAdmin - optional)
+  # --------------------------------------------------------------------------
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: basefly-pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@basefly.local
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db
+    restart: unless-stopped
+    networks:
+      - basefly-network
+
+networks:
+  basefly-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  pgadmin_data:

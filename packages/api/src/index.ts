@@ -24,7 +24,9 @@ export {
   type ApiErrorResponse,
 } from "./errors";
 
-export type { AppRouter } from "./root";
+export { getLimiter, SyncRateLimiter } from "./distributed-rate-limiter";
+
+export type { EndpointType, RateLimitConfig } from "@saasfly/common";
 
 /**
  * Inference helpers for input types

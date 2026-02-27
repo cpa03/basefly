@@ -15,7 +15,7 @@
 
 An enterprise-grade SaaS template with Kubernetes cluster management capabilities.
 
-## 📑 Table of Contents
+## Table of Contents
 
 - [⚡ Live Demo](#-live-demo)
 - [🌟 Star History](#-star-history)
@@ -37,7 +37,7 @@ An enterprise-grade SaaS template with Kubernetes cluster management capabilitie
 
 Basefly simplifies Kubernetes cluster deployment and management with a modern web interface, subscription-based access tiers, and integrated billing through Stripe.
 
-> **[Nextify](https://nextify.ltd)** provides a complete Enterprise SaaS solution. Contact us at [contact@nextify.ltd](mailto:contact@nextify.ltd) if you're interested in discussing your project, or if you'd simply like to have a conversation with us, please feel free to reach out.
+> **[Nextify](https://nextify.ltd)** provides a complete Enterprise SaaS solution. Contact us at [contact@nextify.ltd](mailto:contact@nextify.ltd) if you are interested in discussing your project, or if you would simply like to have a conversation with us, please feel free to reach out.
 
 > ❤️ We provide **free technical support and deployment services to non-profit organizations**.
 
@@ -66,21 +66,21 @@ See more documentation at <https://docs.saasfly.io>
         </div>
       </a>
     </td>
-    <td style="width: 64px;">
+   <td style="width: 64px;">
       <a href="https://go.clerk.com/uKDp7Au">
         <div style="width: 64px;">
           <img alt="Clerk" src="./clerk.png">
         </div>
       </a>
     </td>
-    <td style="width: 64px;">
+   <td style="width: 64px;">
       <a href="https://www.twillot.com/">
         <div style="width: 64px;">
           <img alt="Take Control of All Your Twitter Assets" src="./twillot.png">
         </div>
       </a>
     </td>
-    <td style="width: 64px;">
+   <td style="width: 64px;">
       <a href="https://www.setupyourpay.com/" title="如何注册美国公司进行收款">
         <div style="width: 64px;">
           <img alt="全球收款手册" src="./setupyourpay.png">
@@ -114,9 +114,9 @@ Before you start, make sure you have the following installed:
    2. MacOS
 
    ```bash
-     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-     brew install git
-     brew install pnpm
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   brew install git
+   brew install pnpm
    ```
 
 2. [PostgreSQL](https://www.postgresql.org/) - Required for cluster configuration and user data
@@ -234,9 +234,9 @@ pnpm run dev:web
 ### 🐮 Platforms & Integrations
 
 - **[Clerk](https://go.clerk.com/uKDp7Au)** - Complete user authentication and management
-- **[Vercel](https://vercel.com/)** – Deploy your Next.js app with ease
-- **[Stripe](https://stripe.com/)** – Payment processing and subscription billing
-- **[Resend](https://resend.com/)** – Email marketing platform for transactional emails
+- **[Vercel](https://vercel.com/)** - Deploy your Next.js app with ease
+- **[Stripe](https://stripe.com/)** - Payment processing and subscription billing
+- **[Resend](https://resend.com/)** - Email marketing platform for transactional emails
 
 ### 🐯 Enterprise Features
 
@@ -247,32 +247,32 @@ pnpm run dev:web
 
 ### 🐰 Data Fetching
 
-- **[trpc](https://trpc.io/)** – End-to-end typesafe APIs made easy
-- **[tanstack/react-query](https://react-query.tanstack.com/)** – Hooks for fetching, caching and updating asynchronous data in React
+- **[trpc](https://trpc.io/)** - End-to-end typesafe APIs made easy
+- **[tanstack/react-query](https://react-query.tanstack.com/)** - Hooks for fetching, caching and updating asynchronous data in React
 
 ### 🐒 UI
 
-- **[Tailwind CSS](https://tailwindcss.com/)** – Utility-first CSS framework for rapid UI development
-- **[Shadcn/ui](https://ui.shadcn.com/)** – Re-usable components built using Radix UI and Tailwind CSS
-- **[Framer Motion](https://framer.com/motion)** – Motion library for React to animate components with ease
-- **[Lucide](https://lucide.dev/)** – Beautifully simple, pixel-perfect icons
-- **[next/font](https://nextjs.org/docs/basic-features/font-optimization)** – Optimize custom fonts and remove external network requests for improved performance
+- **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework for rapid UI development
+- **[Shadcn/ui](https://ui.shadcn.com/)** - Re-usable components built using Radix UI and Tailwind CSS
+- **[Framer Motion](https://framer.com/motion)** - Motion library for React to animate components with ease
+- **[Lucide](https://lucide.dev/)** - Beautifully simple, pixel-perfect icons
+- **[next/font](https://nextjs.org/docs/basic-features/font-optimization)** - Optimize custom fonts and remove external network requests for improved performance
 
 ### 🐴 Code Quality
 
-- **[TypeScript](https://www.typescriptlang.org/)** – Static type checker for end-to-end type safety
-- **[Prettier](https://prettier.io/)** – Opinionated code formatter for consistent code style
-- **[ESLint](https://eslint.org/)** – Pluggable linter for Next.js and TypeScript
-- **[Husky](https://typicode.github.io/husky)** – Git hooks made easy
+- **[TypeScript](https://www.typescriptlang.org/)** - Static type checker for end-to-end type safety
+- **[Prettier](https://prettier.io/)** - Opinionated code formatter for consistent code style
+- **[ESLint](https://eslint.org/)** - Pluggable linter for Next.js and TypeScript
+- **[Husky](https://typicode.github.io/husky)** - Git hooks made easy
 
 ### 🐑 Performance
 
-- **[Vercel Analytics](https://vercel.com/analytics)** – Real-time performance metrics for your Next.js app
-- **[pnpm](https://pnpm.io/)** – Fast, disk space efficient package manager
+- **[Vercel Analytics](https://vercel.com/analytics)** - Real-time performance metrics for your Next.js app
+- **[pnpm](https://pnpm.io/)** - Fast, disk space efficient package manager
 
 ### 🐘 Database
 
-- **[PostgreSQL](https://www.postgresql.org/)** – The world's most advanced open source database
+- **[PostgreSQL](https://www.postgresql.org/)** - The world's most advanced open source database
 
 ## 📦 Apps and Packages
 

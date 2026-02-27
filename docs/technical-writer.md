@@ -37,6 +37,7 @@ Deliver small, safe, measurable improvements strictly inside the documentation d
   - Removed duplicate entries for trpc and tanstack/react-query
   - File reduced from 318 to 317 lines
   - Fixed issue #697
+  - Also cleaned docs/technical-writer.md memory file
 
 ### 2026-02-25 (Session 2)
 - PR #645: Fix corrupted formatting in AGENTS.md
@@ -69,13 +70,14 @@ Deliver small, safe, measurable improvements strictly inside the documentation d
 5. Several files have corrupted text prefixes that need cleaning
 
 ### Potential Improvements
-- [ ] Fix corrupted text in docs/technical-writer.md (this file!)
+- [x] Fix corrupted text in README.md (PR #732)
+- [x] Fix corrupted text in docs/technical-writer.md (this session)
 - [ ] Fix corrupted text in other documentation files
 - [ ] Enhance ONBOARDING.md with AI agent workflow patterns from AGENTS.md
 - [ ] Add documentation for new AI agent categories and skills
 - [ ] Review and update any outdated documentation
 
-## Active Issues (Technical-Writer Label)
+### Active Issues (Technical-Writer Label)
 - #707: README.md claims Zustand is used but it's not in the codebase
   - Note: Investigation showed Zustand IS actually used in use-signin-modal.ts (with corrupted text)
   - The README no longer mentions Zustand after corruption fix

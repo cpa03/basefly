@@ -117,6 +117,54 @@ initEnvValidation();
 
 ---
 
+## 2026-02-27 - PR #762: tRPC Authorization Audit & Hardening
+
+### Actions Completed:
+
+1. **Issue #750**: Audited all tRPC routers for authorization checks
+2. **Audit Findings**:
+   - All 6 routers (k8s, customer, auth, stripe, admin, hello) properly enforce user-specific data access
+   - No authorization bypass vulnerabilities found
+   - Pattern inconsistency identified: some routers use explicit checks, others rely on query filtering
+
+3. **Implemented Authorization Helpers**:
+   - Created `packages/api/src/authorization.ts` with:
+     - `verifyOwnership()` - Basic ownership verification
+     - `verifyOwnershipWithFetch()` - Async ownership verification
+     - `createOwnershipVerifier()` - Factory for creating resource-specific verifiers
+   - Added comprehensive tests in `packages/api/src/authorization.test.ts`
+   - Re-exported helpers from `packages/api/src/trpc.ts` for convenient use
+
+4. **Verification**:
+   - All routers use protectedProcedure (ensures authenticated)
+   - All user-specific queries include userId filtering
+   - k8s.ts uses verifyClusterOwnership() helper
+   - customer.ts, stripe.ts, auth.ts use query-level filtering
+
+### Authorization Pattern Summary:
+
+| Router | Auth Method | Ownership Check | Status |
+|--------|------------|----------------|--------|
+| k8s | protectedProcedure | verifyClusterOwnership() | ✅ Secure |
+| customer | protectedProcedure | Query filtering + explicit checks | ✅ Secure |
+| auth | protectedProcedure | Query filtering | ✅ Secure |
+| stripe | protectedProcedure | Query filtering | ✅ Secure |
+| admin | adminProcedure | Admin role check | ✅ Secure |
+| hello | protectedProcedure | N/A (user info only) | ✅ Secure |
+
+### Files Changed:
+- `packages/api/src/authorization.ts` (NEW)
+- `packages/api/src/authorization.test.ts` (NEW)
+- `packages/api/src/trpc.ts` (export authorization helpers)
+
+---
+
+## Notes
+
+- Following strict execution rules: if security-engineer PR exists, update and review it first
+- Prioritizing small, atomic security fixes
+- Vercel deployment failures are typically due to missing environment variables in Vercel project settings, not code issues
+
 ## Notes
 
 - Following strict execution rules: if security-engineer PR exists, update and review it first

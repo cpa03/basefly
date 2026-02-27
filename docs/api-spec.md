@@ -1,4 +1,4 @@
-#XP|# Basefly API Specification
+# Basefly API Specification
 MS|
 HN|The Basefly API is built on tRPC (TypeScript Remote Procedure Call) and provides endpoints for managing Kubernetes clusters, customer subscriptions, and Stripe billing integration. All endpoints use a standardized error response format and implement resilience patterns including circuit breakers, retries, and timeouts.
 SY|

@@ -56,7 +56,19 @@ RB|
 BW|- **Status**: Pending
 SH|- **Problem**: Core business logic needs test coverage
 ZK|
-NP|### Issue 578: Remove duplicate health check endpoint
+### Issue 483: Add transaction handling for multi-table operations
+
+- **Status**: In Progress (PR #775)
+- **Problem**: Webhook handlers performed select + update without transactions, risking partial updates
+- **Solution**: Wrapped customer select + update in `db.transaction().execute()` for atomicity
+- **Files changed**: `packages/stripe/src/webhooks.ts`
+- **Applied to**: `handleCheckoutSessionCompleted` and `handleInvoicePaymentSucceeded`
+
+### Issue 578: Remove duplicate health check endpoint
+
+- **Status**: Completed (PR #642)
+- **Problem**: File named health_check.ts exports helloRouter (greeting endpoint), not health check
+- **Solution**: Renamed to hello.ts and hello.test.ts to properly reflect purpose
 JQ|
 BW|- **Status**: Completed (PR #642)
 WY|- **Problem**: File named health_check.ts exports helloRouter (greeting endpoint), not health check
@@ -177,3 +189,18 @@ PN| - File health_check.ts exported helloRouter (greeting endpoint), not health 
 JH| - Renamed to hello.ts and hello.test.ts to eliminate confusion
 TT| - All checks pass (typecheck, lint, test: 26 tests)
 JQ|
+
+
+### 2026-02-27 Session
+
+1. **Issue #483 Analysis**: Identified transaction handling needed in webhooks
+2. **Created PR #775**: Added transaction handling to webhook processing
+   - Wrapped customer select + update in `db.transaction().execute()`
+   - Applied to `handleCheckoutSessionCompleted` and `handleInvoicePaymentSucceeded`
+   - Prevents partial updates on webhook failure
+   - Typecheck and tests pass for stripe package
+
+### Common Issues
+
+- Vercel rate limiting: "api-deployments-free-per-day" - wait 2 hours or merge without Vercel check
+- Pre-existing typecheck failure in @saasfly/common (expectTypeOf not found) - not related to backend changes

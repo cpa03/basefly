@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 
-import React from "react";
+
 
 import { BRAND, EXTERNAL_URLS, UI_LABELS } from "@saasfly/common";
 import { Close, Logo } from "@saasfly/ui/icons";

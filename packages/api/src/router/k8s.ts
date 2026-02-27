@@ -12,7 +12,7 @@ import { revalidatePath } from "next/cache";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { CLUSTER_VALIDATION, K8S_DEFAULTS } from "@saasfly/common";
+import { K8S_DEFAULTS } from "@saasfly/common";
 import { db, k8sClusterService, type K8sClusterConfig } from "@saasfly/db";
 
 import { createApiError, ErrorCode } from "../errors";
@@ -22,6 +22,11 @@ import {
   createTRPCRouter,
   type TRPCContext,
 } from "../trpc";
+import {
+  enhancedK8sClusterCreateSchema,
+  enhancedK8sClusterDeleteSchema,
+  enhancedK8sClusterUpdateSchema,
+} from "./schemas";
 
 function requireUserId(ctx: TRPCContext): string {
   if (!ctx.userId) {
@@ -33,77 +38,13 @@ function requireUserId(ctx: TRPCContext): string {
   return ctx.userId;
 }
 
-// Enhanced schemas with comprehensive validation using centralized constants
-export const k8sClusterCreateSchema = z
-  .object({
-    id: z.number().int().positive().optional(),
-    name: z
-      .string()
-      .trim()
-      .min(CLUSTER_VALIDATION.name.minLength, "Cluster name cannot be empty")
-      .max(
-        CLUSTER_VALIDATION.name.maxLength,
-        `Cluster name cannot exceed ${CLUSTER_VALIDATION.name.maxLength} characters`,
-      )
-      .regex(
-        CLUSTER_VALIDATION.name.pattern,
-        CLUSTER_VALIDATION.name.patternMessage,
-      ),
-    location: z
-      .string()
-      .trim()
-      .min(CLUSTER_VALIDATION.location.minLength, "Location cannot be empty")
-      .max(
-        CLUSTER_VALIDATION.location.maxLength,
-        `Location cannot exceed ${CLUSTER_VALIDATION.location.maxLength} characters`,
-      ),
-  })
-  .strict();
-
-export const k8sClusterDeleteSchema = z
-  .object({
-    id: z.number().int("ID must be an integer").positive("ID must be positive"),
-  })
-  .strict();
-
-export const k8sClusterUpdateSchema = z
-  .object({
-    id: z.number().int("ID must be an integer").positive("ID must be positive"),
-    name: z
-      .string()
-      .trim()
-      .min(CLUSTER_VALIDATION.name.minLength, "Cluster name cannot be empty")
-      .max(
-        CLUSTER_VALIDATION.name.maxLength,
-        `Cluster name cannot exceed ${CLUSTER_VALIDATION.name.maxLength} characters`,
-      )
-      .regex(
-        CLUSTER_VALIDATION.name.pattern,
-        CLUSTER_VALIDATION.name.patternMessage,
-      )
-      .optional(),
-    location: z
-      .string()
-      .trim()
-      .min(CLUSTER_VALIDATION.location.minLength, "Location cannot be empty")
-      .max(
-        CLUSTER_VALIDATION.location.maxLength,
-        `Location cannot exceed ${CLUSTER_VALIDATION.location.maxLength} characters`,
-      )
-      .optional(),
-  })
-  .strict()
-  .refine(
-    (data) => data.name !== undefined || data.location !== undefined,
-    "At least one field (name or location) must be provided for update",
-  );
-
 // Helper function to verify cluster ownership
 async function verifyClusterOwnership(
   clusterId: number,
   userId: string,
 ): Promise<K8sClusterConfig> {
-  const cluster: K8sClusterConfig | undefined = await k8sClusterService.findActive(clusterId, userId);
+  const cluster: K8sClusterConfig | undefined =
+    await k8sClusterService.findActive(clusterId, userId);
   if (!cluster) {
     throw createApiError(ErrorCode.NOT_FOUND, "Cluster not found");
   }
@@ -124,7 +65,7 @@ export const k8sRouter = createTRPCRouter({
     },
   ),
   createCluster: createRateLimitedProtectedProcedure("write")
-    .input(k8sClusterCreateSchema)
+    .input(enhancedK8sClusterCreateSchema)
     .mutation(async ({ ctx, input }) => {
       const userId = requireUserId(ctx);
       const requestId = ctx.requestId;
@@ -164,7 +105,6 @@ export const k8sRouter = createTRPCRouter({
           "Cluster created successfully",
         );
 
-
         // ISR: Invalidate dashboard cache after cluster creation
         revalidatePath("/[lang]/dashboard");
         return {
@@ -200,7 +140,7 @@ export const k8sRouter = createTRPCRouter({
       }
     }),
   updateCluster: createRateLimitedProtectedProcedure("write")
-    .input(k8sClusterUpdateSchema)
+    .input(enhancedK8sClusterUpdateSchema)
     .mutation(async (opts) => {
       const id = opts.input.id;
       const userId = requireUserId(opts.ctx);
@@ -230,8 +170,8 @@ export const k8sRouter = createTRPCRouter({
           );
         }
 
-          // ISR: Invalidate dashboard cache after cluster update
-          revalidatePath("/[lang]/dashboard");
+        // ISR: Invalidate dashboard cache after cluster update
+        revalidatePath("/[lang]/dashboard");
         return {
           success: true,
         };
@@ -263,7 +203,7 @@ export const k8sRouter = createTRPCRouter({
       }
     }),
   deleteCluster: createRateLimitedProtectedProcedure("write")
-    .input(k8sClusterDeleteSchema)
+    .input(enhancedK8sClusterDeleteSchema)
     .mutation(async (opts) => {
       const id = opts.input.id;
       const userId = requireUserId(opts.ctx);
@@ -280,7 +220,6 @@ export const k8sRouter = createTRPCRouter({
           { userId, requestId, clusterId: id },
           "Cluster deleted successfully",
         );
-
 
         // ISR: Invalidate dashboard cache after cluster deletion
         revalidatePath("/[lang]/dashboard");

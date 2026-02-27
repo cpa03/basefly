@@ -12,17 +12,15 @@ import {
   handleIntegrationError,
 } from "../errors";
 import { authRouter, mySubscriptionSchema } from "./auth";
-import {
-  customerRouter,
-  insertCustomerSchema,
-  updateUserNameSchema,
-} from "./customer";
-import {
-  k8sClusterCreateSchema,
-  k8sClusterDeleteSchema,
-  k8sRouter,
-} from "./k8s";
+import { customerRouter } from "./customer";
+import { k8sRouter } from "./k8s";
 import { createSessionSchema, stripeRouter } from "./stripe";
+import {
+  enhancedK8sClusterCreateSchema,
+  enhancedK8sClusterDeleteSchema,
+  enhancedInsertCustomerSchema,
+  enhancedUpdateUserNameSchema,
+} from "./schemas";
 
 vi.mock("@saasfly/db", () => ({
   db: {
@@ -82,13 +80,13 @@ vi.mock("../../common/src/subscriptions", () => ({
 
 describe("API Validation Tests", () => {
   describe("k8sRouter - Schema Validation", () => {
-    describe("k8sClusterCreateSchema", () => {
+    describe("enhancedK8sClusterCreateSchema", () => {
       it("accepts valid cluster creation data", () => {
         const validData = {
           name: "test-cluster",
           location: "us-east-1",
         };
-        const result = k8sClusterCreateSchema.safeParse(validData);
+        const result = enhancedK8sClusterCreateSchema.safeParse(validData);
         expect(result.success).toBe(true);
       });
 
@@ -98,7 +96,7 @@ describe("API Validation Tests", () => {
           name: "test-cluster",
           location: "us-east-1",
         };
-        const result = k8sClusterCreateSchema.safeParse(validData);
+        const result = enhancedK8sClusterCreateSchema.safeParse(validData);
         expect(result.success).toBe(true);
       });
 
@@ -106,7 +104,7 @@ describe("API Validation Tests", () => {
         const invalidData = {
           name: "test-cluster",
         };
-        const result = k8sClusterCreateSchema.safeParse(invalidData);
+        const result = enhancedK8sClusterCreateSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(result.error.issues).toHaveLength(1);
@@ -119,7 +117,7 @@ describe("API Validation Tests", () => {
           name: 123,
           location: "us-east-1",
         };
-        const result = k8sClusterCreateSchema.safeParse(invalidData);
+        const result = enhancedK8sClusterCreateSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(result.error.issues.some((e) => e.path.includes("name"))).toBe(
@@ -133,7 +131,7 @@ describe("API Validation Tests", () => {
           name: "test-cluster",
           location: null,
         };
-        const result = k8sClusterCreateSchema.safeParse(invalidData);
+        const result = enhancedK8sClusterCreateSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(
@@ -147,7 +145,7 @@ describe("API Validation Tests", () => {
           name: "",
           location: "us-east-1",
         };
-        const result = k8sClusterCreateSchema.safeParse(invalidData);
+        const result = enhancedK8sClusterCreateSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(result.error.issues.some((e) => e.path.includes("name"))).toBe(
@@ -161,7 +159,7 @@ describe("API Validation Tests", () => {
           name: "test-cluster",
           location: "",
         };
-        const result = k8sClusterCreateSchema.safeParse(invalidData);
+        const result = enhancedK8sClusterCreateSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(
@@ -176,7 +174,7 @@ describe("API Validation Tests", () => {
           location: "us-east-1",
           extraField: "should be rejected",
         };
-        const result = k8sClusterCreateSchema.safeParse(dataWithExtra);
+        const result = enhancedK8sClusterCreateSchema.safeParse(dataWithExtra);
         expect(result.success).toBe(false);
       });
 
@@ -185,23 +183,23 @@ describe("API Validation Tests", () => {
           name: undefined,
           location: "us-east-1",
         };
-        const result = k8sClusterCreateSchema.safeParse(invalidData);
+        const result = enhancedK8sClusterCreateSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
       });
     });
 
-    describe("k8sClusterDeleteSchema", () => {
+    describe("enhancedK8sClusterDeleteSchema", () => {
       it("accepts valid cluster deletion data", () => {
         const validData = {
           id: 1,
         };
-        const result = k8sClusterDeleteSchema.safeParse(validData);
+        const result = enhancedK8sClusterDeleteSchema.safeParse(validData);
         expect(result.success).toBe(true);
       });
 
       it("rejects missing id", () => {
         const invalidData = {};
-        const result = k8sClusterDeleteSchema.safeParse(invalidData);
+        const result = enhancedK8sClusterDeleteSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(result.error.issues).toHaveLength(1);
@@ -213,7 +211,7 @@ describe("API Validation Tests", () => {
         const invalidData = {
           id: "1",
         };
-        const result = k8sClusterDeleteSchema.safeParse(invalidData);
+        const result = enhancedK8sClusterDeleteSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(result.error.issues.some((e) => e.path.includes("id"))).toBe(
@@ -226,7 +224,7 @@ describe("API Validation Tests", () => {
         const invalidData = {
           id: -1,
         };
-        const result = k8sClusterDeleteSchema.safeParse(invalidData);
+        const result = enhancedK8sClusterDeleteSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
       });
 
@@ -234,7 +232,7 @@ describe("API Validation Tests", () => {
         const invalidData = {
           id: 0,
         };
-        const result = k8sClusterDeleteSchema.safeParse(invalidData);
+        const result = enhancedK8sClusterDeleteSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
       });
 
@@ -242,7 +240,7 @@ describe("API Validation Tests", () => {
         const invalidData = {
           id: 1.5,
         };
-        const result = k8sClusterDeleteSchema.safeParse(invalidData);
+        const result = enhancedK8sClusterDeleteSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
       });
     });
@@ -294,19 +292,19 @@ describe("API Validation Tests", () => {
   });
 
   describe("customerRouter - Schema Validation", () => {
-    describe("updateUserNameSchema", () => {
+    describe("enhancedUpdateUserNameSchema", () => {
       it("accepts valid user name update", () => {
         const validData = {
           name: "John Doe",
           userId: "550e8400-e29b-41d4-a716-446655440000",
         };
-        const result = updateUserNameSchema.safeParse(validData);
+        const result = enhancedUpdateUserNameSchema.safeParse(validData);
         expect(result.success).toBe(true);
       });
 
       it("rejects missing name", () => {
         const invalidData = { userId: "550e8400-e29b-41d4-a716-446655440000" };
-        const result = updateUserNameSchema.safeParse(invalidData);
+        const result = enhancedUpdateUserNameSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(result.error.issues.some((e) => e.path.includes("name"))).toBe(
@@ -317,7 +315,7 @@ describe("API Validation Tests", () => {
 
       it("rejects missing userId", () => {
         const invalidData = { name: "John Doe" };
-        const result = updateUserNameSchema.safeParse(invalidData);
+        const result = enhancedUpdateUserNameSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(
@@ -331,7 +329,7 @@ describe("API Validation Tests", () => {
           name: "",
           userId: "550e8400-e29b-41d4-a716-446655440000",
         };
-        const result = updateUserNameSchema.safeParse(invalidData);
+        const result = enhancedUpdateUserNameSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
       });
 
@@ -340,13 +338,13 @@ describe("API Validation Tests", () => {
           name: 123,
           userId: "550e8400-e29b-41d4-a716-446655440000",
         };
-        const result = updateUserNameSchema.safeParse(invalidData);
+        const result = enhancedUpdateUserNameSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
       });
 
       it("rejects non-string userId", () => {
         const invalidData = { name: "John Doe", userId: 123 };
-        const result = updateUserNameSchema.safeParse(invalidData);
+        const result = enhancedUpdateUserNameSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
       });
 
@@ -356,21 +354,21 @@ describe("API Validation Tests", () => {
           name: longName,
           userId: "550e8400-e29b-41d4-a716-446655440000",
         };
-        const result = updateUserNameSchema.safeParse(invalidData);
+        const result = enhancedUpdateUserNameSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
       });
     });
 
-    describe("insertCustomerSchema", () => {
+    describe("enhancedInsertCustomerSchema", () => {
       it("accepts valid user id", () => {
         const validData = { userId: "550e8400-e29b-41d4-a716-446655440000" };
-        const result = insertCustomerSchema.safeParse(validData);
+        const result = enhancedInsertCustomerSchema.safeParse(validData);
         expect(result.success).toBe(true);
       });
 
       it("rejects missing userId", () => {
         const invalidData = {};
-        const result = insertCustomerSchema.safeParse(invalidData);
+        const result = enhancedInsertCustomerSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(
@@ -381,25 +379,25 @@ describe("API Validation Tests", () => {
 
       it("rejects null userId", () => {
         const invalidData = { userId: null };
-        const result = insertCustomerSchema.safeParse(invalidData);
+        const result = enhancedInsertCustomerSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
       });
 
       it("rejects number userId", () => {
         const invalidData = { userId: 123 };
-        const result = insertCustomerSchema.safeParse(invalidData);
+        const result = enhancedInsertCustomerSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
       });
 
       it("rejects empty string userId", () => {
         const invalidData = { userId: "" };
-        const result = insertCustomerSchema.safeParse(invalidData);
+        const result = enhancedInsertCustomerSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
       });
 
       it("rejects non-UUID userId", () => {
         const invalidData = { userId: "user_123" };
-        const result = insertCustomerSchema.safeParse(invalidData);
+        const result = enhancedInsertCustomerSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
       });
     });

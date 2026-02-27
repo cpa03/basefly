@@ -30,6 +30,14 @@ Deliver small, safe, measurable improvements strictly inside the documentation d
 - Small atomic diff
 
 ## History
+
+### 2026-02-27 (Session 3)
+- PR #732: Fix corrupted text formatting in README.md
+  - Removed corrupted text prefixes (`#XX|` patterns) from all 318 lines
+  - Removed duplicate entries for trpc and tanstack/react-query
+  - File reduced from 318 to 317 lines
+  - Fixed issue #697
+
 ### 2026-02-25 (Session 2)
 - PR #645: Fix corrupted formatting in AGENTS.md
   - Removed corrupted text prefixes (`#QM|`, `#BM|`, `#TH|`, etc.) from Metis, Momus, and Plan Agent sections
@@ -42,12 +50,6 @@ Deliver small, safe, measurable improvements strictly inside the documentation d
   - Removed duplicate "Getting Help" and "Related Resources" sections
   - File reduced from 243 to 233 lines
   - Proactive scan found issue during documentation review
-### 2026-02-25 (continued)
-- PR #616: Fix duplicate sections in ONBOARDING.md
-  - Removed duplicate "Getting Help" and "Related Resources" sections
-  - File reduced from 243 to 233 lines
-  - Proactive scan found issue during documentation review
-
 
 ### 2026-02-25
 - Created initial technical-writer.md memory file
@@ -64,12 +66,21 @@ Deliver small, safe, measurable improvements strictly inside the documentation d
 2. AGENTS.md in root contains detailed AI agent configuration
 3. Multiple language READMEs exist (Chinese, German, Vietnamese)
 4. Documentation follows consistent style with markdown tables
+5. Several files have corrupted text prefixes that need cleaning
 
 ### Potential Improvements
+- [ ] Fix corrupted text in docs/technical-writer.md (this file!)
+- [ ] Fix corrupted text in other documentation files
 - [ ] Enhance ONBOARDING.md with AI agent workflow patterns from AGENTS.md
 - [ ] Add documentation for new AI agent categories and skills
 - [ ] Review and update any outdated documentation
-- [ ] Add missing inline code comments where needed
+
+## Active Issues (Technical-Writer Label)
+- #707: README.md claims Zustand is used but it's not in the codebase
+  - Note: Investigation showed Zustand IS actually used in use-signin-modal.ts (with corrupted text)
+  - The README no longer mentions Zustand after corruption fix
+- #697: Fix corrupted text formatting in documentation files
+  - Fixed: README.md cleaned (PR #732)
 
 ## References
 - docs/README.md - Documentation index

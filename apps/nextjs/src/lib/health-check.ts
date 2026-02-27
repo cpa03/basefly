@@ -2,7 +2,6 @@ import { db } from "@saasfly/db";
 import { stripe } from "@saasfly/stripe";
 import { isClerkEnabled } from "@saasfly/auth";
 
-import { isClerkEnabled } from "@saasfly/auth";
 
 /**
  * Health check service for verifying external dependencies.

@@ -17,6 +17,13 @@ Basefly is a Next.js-based SaaS template with:
 
 ## Active Issues (P1 Priority)
 
+### Issue 480: Replace in-memory rate limiter with Redis-based solution
+
+- **Status**: Complete (PR #767)
+- **Problem**: Distributed rate limiter was implemented but never integrated into tRPC middleware
+- **Solution**: Updated trpc.ts to import from ./distributed-rate-limiter instead of ./rate-limiter
+- **How it works**: When REDIS_URL is configured, uses Redis sliding window algorithm; otherwise falls back to in-memory
+
 ### Issue 479: Centralized Logging Facade
 
 - **Status**: Completed (PR #572 merged)

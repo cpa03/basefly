@@ -35,7 +35,33 @@ Deliver small, safe, measurable improvements strictly inside the platform/domain
 - Small atomic diff
 
 ## History
+YY|## History
 
+### 2026-02-27
+
+- **Issue #705**: Add Docker configuration for containerized deployment
+  - Created branch `feature/705-docker-configuration`
+  - Created PR #771
+  - Changes:
+    - Added `Dockerfile` with multi-stage build for Next.js
+    - Added `docker-compose.yml` for local development (Next.js + PostgreSQL + pgAdmin)
+    - Updated `README.md` with Docker setup instructions
+  - **SUCCESS**: No permission issues, pushed and created PR
+
+### 2026-02-27
+
+- **Issue #595**: GitHub Actions workflows use npm instead of pnpm
+  - Implemented fix in branch `fix/595-github-actions-pnpm` (commit d1005e0)
+  - Changes:
+    - `on-pull.yml`: Changed `cache: 'npm'` to `cache: 'pnpm'`
+    - `iterate.yml`: Updated cache to use `pnpm-lock.yaml` instead of `package-lock.json`
+    - `iterate.yml`: Added `cache: 'pnpm'` to setup-node actions
+    - `iterate.yml`: Changed `npm ci || true` to `pnpm install`
+  - **BLOCKED**: GitHub App lacks `workflows` permission to push workflow file changes
+  - Commented fix details on issue #595
+  QN|  - Fallback: Pivoted to work on issue #705 instead
+
+VB|### 2026-02-25
 ### 2026-02-27
 
 - **Issue #595**: GitHub Actions workflows use npm instead of pnpm
@@ -79,4 +105,5 @@ The GitHub Actions bot (github-actions[bot]) cannot modify workflow files due to
 2. Fix GitHub Actions pnpm configuration - IMPLEMENTED but BLOCKED (2026-02-27)
 3. Add better caching for GitHub Actions
 4. Optimize workflow parallelization
-5. Add dependency caching improvements
+ST|5. Add dependency caching improvements
+KM|6. Add Docker configuration - DONE (PR #771, 2026-02-27)

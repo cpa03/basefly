@@ -58,14 +58,33 @@ async function verifyClusterOwnership(
 }
 
 export const k8sRouter = createTRPCRouter({
+  /**
+   * Retrieves all active Kubernetes clusters for the authenticated user.
+   * 
+   * @returns Array of active cluster configurations
+   * @throws {TRPCError} UNAUTHORIZED if not authenticated
+   */
   getClusters: createRateLimitedProtectedProcedure("read").query(
     async (opts) => {
       const userId = requireUserId(opts.ctx);
       return await k8sClusterService.findAllActive(userId);
     },
   ),
+  /**
+   * Creates a new Kubernetes cluster for the authenticated user.
+   * 
+   * @param input - Cluster configuration (name, location)
+   * @returns The created cluster with ID, name, and location
+   * @throws {TRPCError} UNAUTHORIZED if not authenticated
+   * @throws {TRPCError} BAD_REQUEST if validation fails
+   */
   createCluster: createRateLimitedProtectedProcedure("write")
     .input(enhancedK8sClusterCreateSchema)
+   * @throws {TRPCError} UNAUTHORIZED if not authenticated
+   * @throws {TRPCError} BAD_REQUEST if validation fails
+   */
+createCluster: createRateLimitedProtectedProcedure("write")
+>>>>>>> 9da5ad2 (docs(api): add JSDoc comments to public API routers)
     .mutation(async ({ ctx, input }) => {
       const userId = requireUserId(ctx);
       const requestId = ctx.requestId;
@@ -139,6 +158,16 @@ export const k8sRouter = createTRPCRouter({
         );
       }
     }),
+  /**
+   * Updates an existing Kubernetes cluster's configuration.
+   * 
+   * @param input - Cluster update (id, optional name, optional location)
+   * @returns Success status
+   * @throws {TRPCError} UNAUTHORIZED if not authenticated
+   * @throws {TRPCError} NOT_FOUND if cluster not found
+   * @throws {TRPCError} FORBIDDEN if user doesn't own the cluster
+   * @throws {TRPCError} BAD_REQUEST if validation fails
+   */
   updateCluster: createRateLimitedProtectedProcedure("write")
     .input(enhancedK8sClusterUpdateSchema)
     .mutation(async (opts) => {
@@ -202,6 +231,16 @@ export const k8sRouter = createTRPCRouter({
         );
       }
     }),
+  /**
+   * Soft deletes a Kubernetes cluster (marks as deleted).
+   * 
+   * @param input - Cluster ID to delete
+   * @returns Success status
+   * @throws {TRPCError} UNAUTHORIZED if not authenticated
+   * @throws {TRPCError} NOT_FOUND if cluster not found
+   * @throws {TRPCError} FORBIDDEN if user doesn't own the cluster
+   * @throws {TRPCError} BAD_REQUEST if validation fails
+   */
   deleteCluster: createRateLimitedProtectedProcedure("write")
     .input(enhancedK8sClusterDeleteSchema)
     .mutation(async (opts) => {

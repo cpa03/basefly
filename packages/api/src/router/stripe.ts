@@ -61,8 +61,18 @@ export const createSessionSchema = z
   .strict();
 
 export const stripeRouter = createTRPCRouter({
-  createSession: createRateLimitedProtectedProcedure("stripe")
-    .input(createSessionSchema)
+  /**
+   * Creates a Stripe checkout or billing portal session.
+   * If user already has a paid plan, creates a billing portal session.
+   * Otherwise creates a checkout session for subscription.
+   * 
+   * @param input - Session creation input (planId)
+   * @returns Success status and URL to redirect to
+   * @throws {TRPCError} UNAUTHORIZED if not authenticated
+   * @throws {TRPCError} BAD_REQUEST if planId is invalid
+   * @throws {TRPCError} INTEGRATION_ERROR if Stripe API fails
+   */
+createSession: createRateLimitedProtectedProcedure("stripe")
     .mutation(async (opts) => {
       const userId = opts.ctx.userId;
       const planId = opts.input.planId;
@@ -121,8 +131,15 @@ export const stripeRouter = createTRPCRouter({
       }
     }),
 
-  userPlans: createRateLimitedProtectedProcedure("read").query(async (opts) => {
-    noStore();
+  /**
+   * Retrieves the current user's subscription plan details.
+   * Includes plan benefits, pricing, and payment status.
+   * 
+   * @returns User's subscription plan details or undefined
+   * @throws {TRPCError} UNAUTHORIZED if not authenticated
+   * @throws {TRPCError} INTEGRATION_ERROR if Stripe API fails
+   */
+userPlans: createRateLimitedProtectedProcedure("read").query(async (opts) => {
     const userId = opts.ctx.userId;
     const requestId = opts.ctx.requestId;
     const custom = await db

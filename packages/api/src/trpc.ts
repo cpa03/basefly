@@ -91,7 +91,7 @@ const isAuthed = t.middleware(({ next, ctx }) => {
         security: true,
         reason: "missing_user_id",
       },
-      "Authentication failed - unauthorized access attempt",
+      "Authentication failed - unauthorized access attempt"
     );
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
@@ -138,6 +138,7 @@ export const adminProcedure = protectedProcedure.use(isAdmin);
 /**
  * Creates a rate-limiting middleware for the specified endpoint type.
  * Uses token bucket algorithm with configurable limits per endpoint type.
+ * Sets rateLimitInfo in context for response header injection.
  *
  * @param endpointType - The type of endpoint (read, write, stripe)
  * @returns tRPC middleware that enforces rate limiting
@@ -159,7 +160,7 @@ export const rateLimit = (endpointType: EndpointType) =>
           userId: ctx.userId,
           resetAt: result.resetAt,
         },
-        "Rate limit exceeded - potential abuse detected",
+        "Rate limit exceeded - potential abuse detected"
       );
 
       throw createApiError(
@@ -167,17 +168,21 @@ export const rateLimit = (endpointType: EndpointType) =>
         "Rate limit exceeded. Please try again later.",
         {
           resetAt: result.resetAt,
-        },
+        }
       );
     }
 
+    // Store rate limit info in context for response header injection
+    const rateLimitInfo: RateLimitInfo = {
+      limit: result.limit,
+      remaining: result.remaining,
+      resetAt: result.resetAt,
+    };
+
     const response = await next({
       ctx: {
-        rateLimitInfo: {
-          limit: result.limit,
-          remaining: result.remaining,
-          resetAt: result.resetAt,
-        },
+        ...ctx,
+        rateLimitInfo,
       },
     });
 

@@ -91,6 +91,23 @@ Rate limiting is enforced for all API endpoints to protect against abuse and ens
 
 ### Rate Limits
 
+| Endpoint Type     | Limit               | Window     | Example Endpoints                                                                                     |
+| ----------------- | ------------------- | ---------- | ----------------------------------------------------------------------------------------------------- |
+| Read Operations   | 100 requests/minute | 60 seconds | `getClusters`, `userPlans`, `queryCustomer`, `mySubscription`, `hello`, `/api/docs`                     |
+| Write Operations | 20 requests/minute  | 60 seconds | `createCluster`, `updateCluster`, `deleteCluster`, `updateUserName`, `insertCustomer`                  |
+| Stripe Operations | 10 requests/minute  | 60 seconds | `createSession`, `/api/webhooks/stripe`                                                                |
+
+### Rate Limit Headers
+
+All rate-limited responses include the following HTTP headers:
+
+| Header                    | Description                                      |
+| ------------------------- | ------------------------------------------------ |
+| `X-RateLimit-Limit`      | Maximum requests allowed in the window          |
+| `X-RateLimit-Remaining`  | Remaining requests in current window             |
+| `X-RateLimit-Reset`       | Unix timestamp when the rate limit window resets |
+| `Retry-After`             | Seconds to wait before retrying (on 429 errors) |
+
 | Endpoint Type     | Limit               | Window     | Example Endpoints                                                                     |
 | ----------------- | ------------------- | ---------- | ------------------------------------------------------------------------------------- |
 | Read Operations   | 100 requests/minute | 60 seconds | `getClusters`, `userPlans`, `queryCustomer`, `mySubscription`, `hello`                |

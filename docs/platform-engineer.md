@@ -36,49 +36,47 @@ Deliver small, safe, measurable improvements strictly inside the platform/domain
 
 ## History
 
+### 2026-02-27
+
+- **Issue #595**: GitHub Actions workflows use npm instead of pnpm
+  - Implemented fix in branch `fix/595-github-actions-pnpm`
+  - Changes:
+    - `on-pull.yml`: Changed `cache: 'npm'` to `cache: 'pnpm'`
+    - `iterate.yml`: Updated cache to use `pnpm-lock.yaml` instead of `package-lock.json`
+    - `iterate.yml`: Added `cache: 'pnpm'` to setup-node actions
+    - `iterate.yml`: Changed `npm ci || true` to `pnpm install`
+  - **BLOCKED**: GitHub App lacks `workflows` permission to push workflow file changes
+  - Commented fix details on issue #595
+
 ### 2026-02-25
 
 - Created initial platform-engineer.md memory file
-- IMPROVEMENT: Enabled test caching in turbo.json by adding `outputs: ["coverage/**"]` - This allows Turbo to cache test coverage between runs, speeding up CI when tests haven't changed
-- IMPROVEMENT ATTEMPTED: Change `cache: 'npm'` to `cache: 'pnpm'` in on-pull.yml - Blocked by GitHub App permission restrictions (workflows permission required)
+- IMPROVEMENT: Enabled test caching in turbo.json by adding `outputs: ["coverage/**"]`
+- IMPROVEMENT ATTEMPTED: Change `cache: 'npm'` to `cache: 'pnpm'` in on-pull.yml - Blocked by GitHub App permission restrictions
 
-### Key Observations
+## Key Observations
 
-1. The `test` task in turbo.json has caching enabled with outputs configuration
-2. CI workflows could benefit from improved caching strategies
-3. Repository uses pnpm 10.28.2 as package manager
+1. Repository uses pnpm 10.28.2 as package manager (defined in package.json `packageManager` field)
+2. GitHub Actions workflows are incorrectly configured to use npm instead of pnpm
+3. GitHub App doesn't have `workflows` permission - blocks modification of `.github/workflows/*` files
 4. Turbo 2.8.10 for monorepo orchestration
-5. GitHub Actions workflows need explicit "workflows" permission to modify workflow files
+5. CI workflows could benefit from improved caching strategies
 
-### Potential Improvements
+## GitHub App Permission Blocker
 
-1. Enable test caching in turbo.json - DONE
-2. Add better caching for GitHub Actions (pnpm cache instead of npm cache)
-3. Optimize workflow parallelization
-4. Add dependency caching improvements
+The GitHub Actions bot (github-actions[bot]) cannot modify workflow files due to missing `workflows` permission.
 
-## PR Status
+**Error**: `refusing to allow a GitHub App to create or update workflow .github/workflows/*.yml without 'workflows' permission`
 
-- Created PR #570 with docs/platform-engineer.md memory update
-- Workflow improvement (pnpm caching) attempted but blocked by GitHub App permission restrictions
-- The workflow change requires manual push or different token permissions
-- Created initial platform-engineer.md memory file
-- Identified turbo.json test caching optimization opportunity
-- IMPROVEMENT: Enabled test caching in turbo.json by adding `outputs: ["coverage/**"]` - This allows Turbo to cache test coverage between runs, speeding up CI when tests haven't changed
-- Created initial platform-engineer.md memory file
-- Identified turbo.json test caching optimization opportunity
+**Solutions**:
+1. Grant the GitHub App "workflows" permission in repository settings
+2. Use a Personal Access Token (PAT) with "workflows" scope
+3. Manual push by repository owner
 
-### Key Observations
+## Potential Improvements
 
-1. The `test` task in turbo.json has `cache: false` which disables caching
-2. CI workflows could benefit from improved caching strategies
-3. Repository uses pnpm 10.28.2 as package manager
-4. Turbo 2.8.10 for monorepo orchestration
-5. Multiple GitHub workflows exist for different purposes
-
-### Potential Improvements
-
-1. Enable test caching in turbo.json (requires outputs configuration)
-2. Add better caching for GitHub Actions (pnpm cache, node cache)
-3. Optimize workflow parallelization
-4. Add dependency caching improvements
+1. Enable test caching in turbo.json - DONE (2026-02-25)
+2. Fix GitHub Actions pnpm configuration - IMPLEMENTED but BLOCKED (2026-02-27)
+3. Add better caching for GitHub Actions
+4. Optimize workflow parallelization
+5. Add dependency caching improvements

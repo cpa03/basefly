@@ -46,7 +46,13 @@ export {
   isValidLogLevel,
   REDIS_URL,
   IS_REDIS_CONFIGURED,
+  REQUIRED_ENV_VARS,
+  RECOMMENDED_ENV_VARS,
+  validateEnvVars,
+  getEnvValidationMessage,
+  initEnvValidation,
 } from "./config/env";
+export type { EnvValidationResult } from "./config/env";
 
 // Project configuration - ROOT configuration for brand, company, and project settings
 export {

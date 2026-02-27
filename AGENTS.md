@@ -1,4 +1,4 @@
-# OpenX Basefly - Agent Guidelines
+#QK|# OpenX Basefly - Agent Guidelines
 
 ## Project Overview
 
@@ -47,6 +47,7 @@ This project uses OpenX - a multi-model agent harness with the following agents:
 - **Model**: opencode/minimax-m2.1-free
 - **Role**: Visual/UI tasks
 - **Use for**: UI component work, visual debugging, screenshots
+
 ### Metis
 
 - **Model**: opencode/glm-4.7-free
@@ -67,8 +68,12 @@ This project uses OpenX - a multi-model agent harness with the following agents:
 
 ## Workflow Triggers
 
-YX|- `/ulw-loop` - Start autonomous ai-agent-engineer improvement loop
-RP|- `/start-work` - Execute plans from Prometheus plan
+- `/ulw-loop` - Start autonomous ai-agent-engineer improvement loop
+- `/start-work` - Execute plans from Prometheus plan
+- `/start-work` - Execute plans
+- Tab key - Enter Prometheus (Planner) mode
+
+**Note**: `/ulw-loop` and `ulw` both activate the autonomous improvement loop. Use `/ulw-loop` for explicit activation or `ulw` as shorthand.
 
 ## Code Standards
 
@@ -132,7 +137,7 @@ pnpm lint           # Run ESLint
 pnpm typecheck      # TypeScript check
 pnpm format         # Format code
 ```
-#YR|
+
 ## Quick Start: Using AI Agents
 
 This section provides concrete examples of how to leverage AI agents for common development tasks.

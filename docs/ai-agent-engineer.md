@@ -4,7 +4,7 @@
 
 This document serves as the long-term memory for the ai-agent-engineer domain in the OpenX Basefly project.
 
-KW|## Current State (2026-02-27)
+## Current State (2026-02-27)
 
 ### Available Agents
 
@@ -63,19 +63,20 @@ All ai-agent-engineer skill files are located in `.opencode/skills/ai-agent-engi
 - `references/mcp-servers.md` - MCP server configuration
 - `references/model-capabilities.md` - Model capability matrices
 
-RN|#YZ|
-XY|#YZ|### 2026-02-27 (Session 4)
-PJ|#KB|
-VW|#RT|- Proactive scan identified missing `/ulw-loop` command documentation in AGENTS.md
-SB|#MT|- Updated AGENTS.md to document the `/ulw-loop` workflow trigger
-ZJ|#PJ|- Created PR to add missing documentation
-#YZ|### 2026-02-25 (Session 3)
-#KB|
-#RT|- Fixed PR #615 - verified it's already merged (commit 8f6399a)
-#MT|- Added comment to PR #615 noting merge status
-#PJ|- Proactive scan found AGENTS.md missing Metis and Momus documentation
-#XH|- Created PR #623 to add missing agent documentation to AGENTS.md
-#SZ|
+## Past Improvements
+
+### 2026-02-27 (Session 4)
+
+- Proactive scan identified missing `/ulw-loop` command documentation in AGENTS.md
+- Updated AGENTS.md to document the `/ulw-loop` workflow trigger
+- Created PR #742 to add missing documentation
+
+### 2026-02-25 (Session 3)
+
+- Fixed PR #615 - verified it's already merged (commit 8f6399a)
+- Added comment to PR #615 noting merge status
+- Proactive scan found AGENTS.md missing Metis and Momus documentation
+- Created PR #623 to add missing agent documentation to AGENTS.md
 
 - Reviewed existing PR #571 - verified up-to-date with main, mergeable
 - Verified typecheck and lint pass locally

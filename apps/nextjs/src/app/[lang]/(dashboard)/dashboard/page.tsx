@@ -1,7 +1,5 @@
 import React, { Suspense } from "react";
 import { redirect } from "next/navigation";
-import React, { Suspense } from "react";
-import { redirect } from "next/navigation";
 
 import { authOptions, getCurrentUser } from "@saasfly/auth";
 

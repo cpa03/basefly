@@ -90,10 +90,11 @@ export const AnimatedTooltip = ({
               </motion.div>
             )}
           </AnimatePresence>
+          {item.link ? (
             <Link
               href={item.link}
               target="_blank"
-              className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-full"
+              className="rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
               <Image
                 onMouseMove={handleMouseMove}

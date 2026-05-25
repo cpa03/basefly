@@ -52,6 +52,13 @@ export type Session = {
   userId: string;
   expires: Timestamp;
 };
+export type StripeWebhookEvent = {
+  id: string;
+  eventType: string;
+  processed: Generated<boolean>;
+  createdAt: Generated<Timestamp>;
+  updatedAt: Generated<Timestamp>;
+};
 export type User = {
   id: Generated<string>;
   name: string | null;
@@ -63,13 +70,6 @@ export type VerificationToken = {
   identifier: string;
   token: string;
   expires: Timestamp;
-};
-export type StripeWebhookEvent = {
-  id: string;
-  eventType: string;
-  processed: Generated<boolean>;
-  createdAt: Generated<Timestamp>;
-  updatedAt: Generated<Timestamp>;
 };
 export type DB = {
   Account: Account;

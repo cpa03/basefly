@@ -5,6 +5,8 @@
 import type Stripe from "stripe";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { TIMEOUT_CONFIG } from "@saasfly/common";
+
 import {
   createBillingSession,
   createCheckoutSession,
@@ -55,7 +57,7 @@ describe("createBillingSession", () => {
       serviceName: "Stripe Billing Portal",
       circuitBreaker: expect.any(Object),
       maxAttempts: 3,
-      timeoutMs: 30000,
+      timeoutMs: TIMEOUT_CONFIG.default,
     });
   });
 
@@ -107,13 +109,13 @@ describe("createBillingSession", () => {
     expect(callOptions?.maxAttempts).toBe(3);
   });
 
-  it("sets timeout to 30000ms", async () => {
+  it(`sets timeout to ${TIMEOUT_CONFIG.default}ms`, async () => {
     vi.mocked(safeStripeCall).mockResolvedValue({ url: "https://example.com" });
 
     await createBillingSession("cus_123", "https://example.com");
 
     const callOptions = vi.mocked(safeStripeCall).mock.calls[0]?.[1] as any;
-    expect(callOptions?.timeoutMs).toBe(30000);
+    expect(callOptions?.timeoutMs).toBe(TIMEOUT_CONFIG.default);
   });
 });
 
@@ -150,7 +152,7 @@ describe("createCheckoutSession", () => {
       serviceName: "Stripe Checkout",
       circuitBreaker: expect.any(Object),
       maxAttempts: 3,
-      timeoutMs: 30000,
+      timeoutMs: TIMEOUT_CONFIG.default,
     });
   });
 
@@ -259,7 +261,7 @@ describe("createCheckoutSession", () => {
     expect(callOptions?.maxAttempts).toBe(3);
   });
 
-  it("sets timeout to 30000ms", async () => {
+  it(`sets timeout to ${TIMEOUT_CONFIG.default}ms`, async () => {
     vi.mocked(safeStripeCall).mockResolvedValue({ url: "https://example.com" });
 
     await createCheckoutSession({
@@ -268,7 +270,7 @@ describe("createCheckoutSession", () => {
     });
 
     const callOptions = vi.mocked(safeStripeCall).mock.calls[0]?.[1] as any;
-    expect(callOptions?.timeoutMs).toBe(30000);
+    expect(callOptions?.timeoutMs).toBe(TIMEOUT_CONFIG.default);
   });
 
   it("passes all session parameters to Stripe API", async () => {
@@ -328,7 +330,7 @@ describe("retrieveSubscription", () => {
       serviceName: "Stripe Subscriptions",
       circuitBreaker: expect.any(Object),
       maxAttempts: 3,
-      timeoutMs: 30000,
+      timeoutMs: TIMEOUT_CONFIG.default,
     });
   });
 
@@ -375,13 +377,13 @@ describe("retrieveSubscription", () => {
     expect(callOptions?.maxAttempts).toBe(3);
   });
 
-  it("sets timeout to 30000ms", async () => {
+  it(`sets timeout to ${TIMEOUT_CONFIG.default}ms`, async () => {
     vi.mocked(safeStripeCall).mockResolvedValue({ id: "sub_123" });
 
     await retrieveSubscription("sub_123");
 
     const callOptions = vi.mocked(safeStripeCall).mock.calls[0]?.[1] as any;
-    expect(callOptions?.timeoutMs).toBe(30000);
+    expect(callOptions?.timeoutMs).toBe(TIMEOUT_CONFIG.default);
   });
 
   it("returns subscription object with all expected fields", async () => {

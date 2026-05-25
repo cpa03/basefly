@@ -20,7 +20,7 @@ This project uses OpenX - a multi-model agent harness with the following agents:
 
 ### Sisyphus (Main Orchestrator)
 
-- **Model**: opencode/kimi-k2.5-free
+- **Model**: opencode/deepseek-v4-flash-free
 - **Role**: Complex task coordination and orchestration
 - **Use for**: Major features, architecture decisions, multi-step workflows
 
@@ -61,7 +61,7 @@ This project uses OpenX - a multi-model agent harness with the following agents:
 
 ### Plan Agent
 
-- **Model**: opencode/kimi-k2.5-free
+- **Model**: opencode/deepseek-v4-flash-free
 - **Role**: Planning and task orchestration
 - **Use for**: Creating detailed work breakdowns, parallel task graphs, and structured TODO lists
 

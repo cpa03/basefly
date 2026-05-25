@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import {
   Card,
   CardContent,
@@ -6,6 +8,8 @@ import {
   CardTitle,
 } from "@saasfly/ui/card";
 
+import { SubscriptionCardSkeleton } from "~/components/billing/subscription-card-skeleton";
+import { UsageCardSkeleton } from "~/components/billing/usage-card-skeleton";
 import { DashboardShell } from "~/components/shell";
 import type { Locale } from "~/config/i18n-config";
 import { getDictionary } from "~/lib/get-dictionary";
@@ -39,9 +43,15 @@ export default async function BillingPage({
       description={dict.business.billing.content}
       className="space-y-4"
     >
-      <SubscriptionCard dict={dict.business.billing} />
+      <Suspense
+        fallback={<SubscriptionCardSkeleton dict={dict.business.billing} />}
+      >
+        <SubscriptionCard dict={dict.business.billing} />
+      </Suspense>
 
-      <UsageCard dict={dict.business.billing} />
+      <Suspense fallback={<UsageCardSkeleton dict={dict.business.billing} />}>
+        <UsageCard dict={dict.business.billing} />
+      </Suspense>
     </DashboardShell>
   );
 }

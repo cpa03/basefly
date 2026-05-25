@@ -1,5 +1,5 @@
 import type { NextRequest } from "next/server";
-import { auth, currentUser, getAuth } from "@clerk/nextjs/server";
+import { currentUser, type getAuth } from "@clerk/nextjs/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { ZodError } from "zod";
 
@@ -8,7 +8,7 @@ import { isAdminEmail } from "@saasfly/common";
 import { createApiError, ErrorCode } from "./errors";
 import { logger } from "./logger";
 import { verifyOwnership, verifyOwnershipWithFetch, createOwnershipVerifier } from "./authorization";
-import { EndpointType, getIdentifier, getLimiter } from "./distributed-rate-limiter";
+import { type EndpointType, getIdentifier, getLimiter } from "./distributed-rate-limiter";
 import { getOrGenerateRequestId } from "./request-id";
 import { transformer } from "./transformer";
 
@@ -23,13 +23,6 @@ export interface RateLimitInfo {
   resetAt: number;
 }
 
-/**
- * Options for creating tRPC context.
- */
-interface CreateContextOptions {
-  req?: NextRequest;
-  auth?: ReturnType<typeof getAuth> | null;
-}
 type AuthObject = ReturnType<typeof getAuth> | null;
 
 /**
@@ -39,7 +32,7 @@ type AuthObject = ReturnType<typeof getAuth> | null;
  * @param opts - Context creation options
  * @returns tRPC context with userId, requestId, and headers
  */
-export const createTRPCContext = async (opts: {
+export const createTRPCContext = (opts: {
   headers: Headers;
   auth: AuthObject;
   req?: NextRequest;
@@ -149,10 +142,10 @@ export const adminProcedure = protectedProcedure.use(isAdmin);
 export const rateLimit = (endpointType: EndpointType) =>
   t.middleware(async ({ ctx, next }) => {
     const limiter = getLimiter(endpointType);
-    const req = "req" in ctx ? (ctx.req as NextRequest | undefined) : undefined;
+    const req = ctx.req;
     const identifier = getIdentifier(ctx.userId, req);
 
-    const result = limiter.check(identifier);
+    const result = await limiter.checkAsync(identifier);
 
     if (!result.success) {
       logger.warn(

@@ -270,7 +270,7 @@ export function isRetryableError(
  * @example
  * ```typescript
  * try {
- *   const result = await withTimeout(fetchApi(), 30000, "API call timed out");
+ *   const result = await withTimeout(fetchApi(), TIMEOUT_CONFIG.default, "API call timed out");
  * } catch (error) {
  *   if (error instanceof IntegrationError && error.code === "TIMEOUT") {
  *     console.log("Operation took too long");
@@ -327,7 +327,7 @@ export function createStripeClientWithDefaults(
  * const session = await safeStripeCall(
  *   () => stripe.checkout.sessions.create(params, { idempotencyKey }),
  *   {
- *     timeoutMs: 30000,
+ *     timeoutMs: TIMEOUT_CONFIG.default,
  *     maxAttempts: 3,
  *     serviceName: "Stripe Checkout",
  *     circuitBreaker: stripeBreaker,

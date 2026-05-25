@@ -28,7 +28,7 @@ async function PricingCardsWithData({
   if (user) {
     try {
       const { trpc } = await import("~/trpc/server");
-      subscriptionPlan = await trpc.stripe.userPlans.query();
+      subscriptionPlan = await trpc.stripe.userPlans();
     } catch (error) {
       logger.error("Failed to fetch user subscription plan:", error);
       subscriptionPlan = undefined;

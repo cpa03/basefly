@@ -434,5 +434,5 @@ jobs:
           END OF PROMPT
           PROMPT
           )" \
-            --model opencode/minimax-m2.5-free \
+            --model opencode/deepseek-v4-flash-free \
             --share false

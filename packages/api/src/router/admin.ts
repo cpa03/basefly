@@ -8,7 +8,15 @@ import { createRateLimitedAdminProcedure, createTRPCRouter } from "../trpc";
  * Admin endpoints are already protected by authentication and admin role checks.
  */
 export const adminRouter = createTRPCRouter({
-  getStats: createRateLimitedAdminProcedure("read").query(async () => {
+  /**
+   * Retrieves aggregate statistics for the admin dashboard.
+   * Returns counts of total users, active clusters, and paid subscriptions.
+   * 
+   * @returns Dashboard statistics (totalUsers, totalClusters, activeSubscriptions)
+   * @throws {TRPCError} UNAUTHORIZED if not authenticated
+   * @throws {TRPCError} FORBIDDEN if user is not an admin
+   */
+getStats: createRateLimitedAdminProcedure("read").query(async () => {
     const [totalUsers, totalClusters, activeSubscriptions] = await Promise.all([
       db
         .selectFrom("User")

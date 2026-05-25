@@ -50,10 +50,8 @@ const getRateLimitHeaders = (result: {
 const handler = async (req: NextRequest) => {
   const requestId = getOrGenerateRequestId(req.headers);
 
-  // Rate limiting check - use Stripe webhook secret as identifier
-  const identifier = env.STRIPE_WEBHOOK_SECRET
-    ? `stripe-webhook:${env.STRIPE_WEBHOOK_SECRET.slice(-8)}`
-    : "stripe-webhook:unconfigured";
+  // Rate limiting check - use a non-secret identifier
+  const identifier = "stripe-webhook";
 
   const rateLimitResult = webhookLimiter.check(identifier);
 

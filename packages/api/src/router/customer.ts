@@ -10,14 +10,16 @@
 
 import { unstable_noStore as noStore } from "next/cache";
 
-import { z } from "zod";
-
-import { USER_VALIDATION } from "@saasfly/common";
 import { db, SubscriptionPlan } from "@saasfly/db";
 
 import { createApiError, ErrorCode } from "../errors";
 import { logger } from "../logger";
 import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
+import {
+  enhancedInsertCustomerSchema,
+  enhancedQueryCustomerSchema,
+  enhancedUpdateUserNameSchema,
+} from "./schemas";
 
 function isUniqueViolation(error: unknown, constraintName?: string): boolean {
   if (
@@ -37,35 +39,9 @@ function isUniqueViolation(error: unknown, constraintName?: string): boolean {
   return false;
 }
 
-// Enhanced schemas with comprehensive validation using centralized constants
-export const updateUserNameSchema = z
-  .object({
-    name: z
-      .string()
-      .trim()
-      .min(USER_VALIDATION.displayName.minLength, "Name cannot be empty")
-      .max(
-        USER_VALIDATION.displayName.maxLength,
-        `Name cannot exceed ${USER_VALIDATION.displayName.maxLength} characters`,
-      ),
-    userId: z.string().uuid("Invalid user ID format"),
-  })
-  .strict();
-
-export const insertCustomerSchema = z
-  .object({
-    userId: z.string().uuid("Invalid user ID format"),
-  })
-  .strict();
-
-export const queryCustomerSchema = z
-  .object({
-    userId: z.string().uuid("Invalid user ID format"),
-  })
-  .strict();
 export const customerRouter = createTRPCRouter({
   updateUserName: createRateLimitedProtectedProcedure("write")
-    .input(updateUserNameSchema)
+    .input(enhancedUpdateUserNameSchema)
     .mutation(async ({ ctx, input }) => {
       const { userId } = input;
       const ctxUserId = ctx.userId;
@@ -114,7 +90,7 @@ export const customerRouter = createTRPCRouter({
     }),
 
   insertCustomer: createRateLimitedProtectedProcedure("write")
-    .input(insertCustomerSchema)
+    .input(enhancedInsertCustomerSchema)
     .mutation(async ({ ctx, input }) => {
       const { userId } = input;
       const ctxUserId = ctx.userId;
@@ -171,7 +147,7 @@ export const customerRouter = createTRPCRouter({
     }),
 
   queryCustomer: createRateLimitedProtectedProcedure("read")
-    .input(queryCustomerSchema)
+    .input(enhancedQueryCustomerSchema)
     .query(async ({ ctx, input }) => {
       noStore();
       const { userId } = input;

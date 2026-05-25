@@ -1,3 +1,36 @@
+### Issue #609: [P2][Code Quality] Consolidate duplicate Zod schemas in tRPC routers
+
+**Status**: Completed (PR #784)
+
+**Problem**:
+- Duplicate Zod schemas defined in both `k8s.ts` AND `schemas.ts`
+- Same duplication for customer schemas
+- Routers used inline schemas instead of centralized ones
+
+**Solution**:
+1. Removed inline schema definitions from `packages/api/src/router/k8s.ts`
+   - `k8sClusterCreateSchema`, `k8sClusterDeleteSchema`, `k8sClusterUpdateSchema`
+
+2. Removed inline schema definitions from `packages/api/src/router/customer.ts`
+   - `updateUserNameSchema`, `insertCustomerSchema`, `queryCustomerSchema`
+
+3. Updated routers to import from centralized `./schemas`
+
+4. Updated `validation.test.ts` to use enhanced schema names
+
+**Verification**:
+- TypeScript typecheck: ✅ Pass (for packages/api)
+- Tests: 1188 tests passed
+
+**Files Changed**:
+- Modified: `packages/api/src/router/k8s.ts`
+- Modified: `packages/api/src/router/customer.ts`
+- Modified: `packages/api/src/router/validation.test.ts`
+
+**Impact**: Consolidated schema definitions, improved maintainability
+
+---
+
 ### Issue #707: [Docs] README.md claims Zustand is used but it's not in the codebase
 
 **Status**: Completed (PR #715)

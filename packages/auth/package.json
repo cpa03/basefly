@@ -15,7 +15,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.37.5",
+    "@clerk/nextjs": "^6.39.4",
     "@saasfly/common": "workspace:*",
     "@t3-oss/env-nextjs": "0.13.10",
     "next": "14.2.35",

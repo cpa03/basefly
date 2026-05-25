@@ -73,6 +73,7 @@ export const stripeRouter = createTRPCRouter({
    * @throws {TRPCError} INTEGRATION_ERROR if Stripe API fails
    */
 createSession: createRateLimitedProtectedProcedure("stripe")
+    .input(createSessionSchema)
     .mutation(async (opts) => {
       const userId = opts.ctx.userId;
       const planId = opts.input.planId;

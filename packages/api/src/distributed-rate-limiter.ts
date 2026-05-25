@@ -43,7 +43,7 @@ type RedisClient = InstanceType<typeof import("ioredis").Redis>;
 /**
  * In-memory rate limiter (fallback when Redis is not available)
  */
-class InMemoryRateLimiter {
+export class InMemoryRateLimiter {
   private store = new Map<string, RateLimitEntry>();
   private maxRequests: number;
   private windowMs: number;

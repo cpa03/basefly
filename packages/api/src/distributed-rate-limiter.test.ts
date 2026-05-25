@@ -227,9 +227,11 @@ describe("DistributedRateLimiter (Redis-based)", () => {
       ]),
     };
 
-    // @ts-expect-error - accessing private property for test
+    // access private property for test
     limiter["redis"] = {
       pipeline: vi.fn().mockReturnValue(mockPipeline),
+      zrem: vi.fn().mockResolvedValue(1),
+      quit: vi.fn().mockResolvedValue("OK"),
     } as any;
 
     const result = await limiter.check("user1");
@@ -283,7 +285,7 @@ describe("DistributedRateLimiter (Redis-based)", () => {
 
     await limiter.reset("user1");
 
-    // @ts-expect-error - accessing private property for test
+    // access private property for test
     const redis = limiter["redis"] as any;
     expect(redis.del).toHaveBeenCalledWith("ratelimit:user1");
   });
@@ -302,7 +304,7 @@ describe("DistributedRateLimiter (Redis-based)", () => {
 
     await limiter.destroy();
 
-    // @ts-expect-error - accessing private property for test
+    // access private property for test
     const redis = limiter["redis"] as any;
     expect(redis.quit).toHaveBeenCalled();
   });

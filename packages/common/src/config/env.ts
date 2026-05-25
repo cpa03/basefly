@@ -134,6 +134,7 @@ export const RECOMMENDED_ENV_VARS = [
   "STRIPE_WEBHOOK_SECRET",
   "RESEND_API_KEY",
   "ADMIN_EMAIL",
+  "REDIS_URL",
 ] as const;
 
 /**

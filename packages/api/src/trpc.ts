@@ -152,7 +152,7 @@ export const rateLimit = (endpointType: EndpointType) =>
     const req = "req" in ctx ? (ctx.req as NextRequest | undefined) : undefined;
     const identifier = getIdentifier(ctx.userId, req);
 
-    const result = limiter.check(identifier);
+    const result = await limiter.checkAsync(identifier);
 
     if (!result.success) {
       logger.warn(

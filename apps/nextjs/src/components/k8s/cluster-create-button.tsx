@@ -38,6 +38,7 @@ export function K8sCreateButton({
   async function onClick() {
     setIsLoading(true);
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment -- tRPC proxy types are dynamically resolved
       const res = await trpc.k8s.createCluster.mutate({
         name: DEFAULT_CLUSTER_CONFIG.name,
         location: DEFAULT_CLUSTER_CONFIG.location,

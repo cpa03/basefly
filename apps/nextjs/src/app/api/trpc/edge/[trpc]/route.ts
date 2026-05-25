@@ -16,7 +16,7 @@ import { logger } from "~/lib/logger";
  */
 export const runtime = "edge";
 
-const createContext = async (req: NextRequest) => {
+const createContext = (req: NextRequest) => {
   let authResult = null;
   if (isClerkEnabled()) {
     try {

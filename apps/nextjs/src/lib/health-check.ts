@@ -65,7 +65,7 @@ async function checkStripe(): Promise<DependencyStatus> {
   try {
     // Use Stripe API key validation - make a lightweight call
     // Stripe.balance.retrieve() is a simple call that validates the API key
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     await stripe.balance.retrieve();
     return {
       status: "healthy",
@@ -89,6 +89,7 @@ async function checkStripe(): Promise<DependencyStatus> {
 function checkClerk(): Promise<DependencyStatus> {
   const start = Date.now();
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call -- isClerkEnabled() type not fully resolved by ESLint
   if (!isClerkEnabled()) {
     return {
       status: "degraded",

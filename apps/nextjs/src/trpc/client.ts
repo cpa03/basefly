@@ -17,6 +17,7 @@ const REACT_QUERY_DEFAULTS = {
   gcTime: 5 * 60 * 1000, // 5 minutes (formerly cacheTime)
 } as const;
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- tRPC proxy types are dynamically resolved
 export const trpc = experimental_createTRPCNextAppDirClient<AppRouter>({
   config() {
     return {

@@ -25,7 +25,8 @@ export function BillingFormButton({
   const [isPending, startTransition] = useTransition();
 
   async function createSession(planId: string) {
-    const res = await trpc.stripe.createSession.mutate({ planId: planId });
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call -- tRPC proxy types are dynamically resolved
+    const res = await trpc.stripe.createSession.mutate({ planId: planId }) as { url?: string };
     if (res?.url) window.location.href = res?.url;
   }
 

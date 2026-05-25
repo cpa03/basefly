@@ -77,6 +77,7 @@ function SubscriptionContent({
 }
 
 async function SubscriptionCard({ dict }: { dict: Record<string, string> }) {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call -- tRPC proxy types are dynamically resolved
   const subscription = (await trpc.auth.mySubscription()) as Subscription;
   return (
     <Card>

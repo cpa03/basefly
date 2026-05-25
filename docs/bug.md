@@ -134,3 +134,6 @@ Fixed critical TypeScript error and cleaned up code quality issues:
 7. `apps/nextjs/src/components/comments.tsx` - Replaced img with Image
 8. `apps/nextjs/src/components/wobble.tsx` - Replaced img with Image
 9. `apps/nextjs/next.config.mjs` - Added image domains
+- [ ] bug: ESLint warnings about unused eslint-disable directives in packages/ui.
+- [ ] bug: Many "Unsafe call" and "Unsafe member access" lint errors in apps/nextjs related to tRPC usage.
+- [ ] bug: Build failure in apps/nextjs (edge runtime) because ioredis is imported in distributed-rate-limiter.ts, which is used by the edge router.

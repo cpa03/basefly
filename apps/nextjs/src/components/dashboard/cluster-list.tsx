@@ -27,7 +27,7 @@ interface ClusterListProps {
 }
 
 export async function ClusterList({ lang, dict }: ClusterListProps) {
-  const clusters = (await trpc.k8s.getClusters.query()) ?? [];
+  const clusters = (await trpc.k8s.getClusters()) ?? [];
 
   if (!clusters.length) {
     return (

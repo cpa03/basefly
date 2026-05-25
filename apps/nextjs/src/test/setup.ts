@@ -1,5 +1,6 @@
 import "@testing-library/jest-dom/vitest";
 import { vi } from "vitest";
+import React from "react";
 
 // Mock next/navigation
 vi.mock("next/navigation", () => ({
@@ -20,7 +21,7 @@ vi.mock("next/navigation", () => ({
 vi.mock("next/link", () => ({
   __esModule: true,
   default: ({ children, ...props }: { children: React.ReactNode }) => {
-    return <a {...props}>{children}</a>;
+    return React.createElement("a", props, children);
   },
 }));
 

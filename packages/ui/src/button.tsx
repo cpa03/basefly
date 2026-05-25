@@ -85,6 +85,7 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>, ButtonVariantProps {
   asChild?: boolean;
   isLoading?: boolean;
+  loadingText?: string;
   /**
    * Whether to enable the ripple click effect
    * @default true
@@ -101,6 +102,7 @@ const Button = React.memo(
         size,
         asChild = false,
         isLoading,
+        loadingText,
         enableRipple = true,
         children,
         onClick,
@@ -138,8 +140,16 @@ const Button = React.memo(
           {...props}
         >
           {isLoading && (
-            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+            <Loader2
+              className={cn("h-4 w-4 animate-spin", loadingText ? "mr-2" : "")}
+              aria-hidden="true"
+            />
           )}
+          {isLoading && loadingText ? (
+            <span className="truncate">{loadingText}</span>
+          ) : !isLoading ? (
+            children
+          ) : null}
           {enableRipple &&
             !asChild &&
             ripples.map((ripple) => (

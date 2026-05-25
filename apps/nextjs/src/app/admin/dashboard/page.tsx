@@ -28,7 +28,7 @@ export default async function AdminDashboardPage() {
     redirect("/dashboard");
   }
 
-  const stats = await trpc.admin.getStats.query().catch(() => ({
+  const stats = await trpc.admin.getStats().catch(() => ({
     totalUsers: 0,
     totalClusters: 0,
     activeSubscriptions: 0,

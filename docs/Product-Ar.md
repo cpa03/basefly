@@ -1,3 +1,23 @@
+### Issue #[TBD]: [Performance] Make dictionary cache TTL configurable via environment variable
+
+**Status**: PR #768 (Open)
+
+**Problem**:
+- Dictionary cache TTL was hardcoded to 5 minutes
+- No way to tune cache performance without code changes
+- Operations teams needed flexibility for different deployment patterns
+
+**Solution**:
+- Added `DICTIONARY_CACHE_TTL_MS` environment variable support
+- Default remains 5 minutes for backward compatibility
+
+**Files Changed**:
+- Modified: `apps/nextjs/src/lib/get-dictionary.ts`
+
+**Impact**: Allows ops to tune dictionary cache performance via env var
+
+---
+
 ### Issue #609: [P2][Code Quality] Consolidate duplicate Zod schemas in tRPC routers
 
 **Status**: Completed (PR #784)

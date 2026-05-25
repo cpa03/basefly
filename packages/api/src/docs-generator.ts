@@ -70,7 +70,7 @@ function capitalizeFirst(str: string): string {
 function getTypeString(schema: Record<string, unknown> | undefined): string {
   if (!schema) return "any";
   if (schema.$ref) {
-    return schema.$ref.split("/").pop() || "unknown";
+    return (schema.$ref as string).split("/").pop() || "unknown";
   }
   if (schema.type === "array" && schema.items) {
     return `${getTypeString(schema.items as Record<string, unknown>)}[]`;
@@ -144,10 +144,10 @@ function generateTypeScriptExample(
 }
 
 function generateMarkdown(): string {
-  const doc = openApiDocument;
-  let markdown = `# ${doc.title}\n\n`;
-  markdown += `${doc.description}\n\n`;
-  markdown += `**Version**: ${doc.version}\n\n`;
+  const doc = openApiDocument as { info: { title: string; description: string; version: string }; paths: Record<string, unknown> };
+  let markdown = `# ${doc.info.title}\n\n`;
+  markdown += `${doc.info.description}\n\n`;
+  markdown += `**Version**: ${doc.info.version}\n\n`;
   markdown += `---\n\n`;
 
   // Group operations by tag

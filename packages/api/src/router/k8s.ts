@@ -80,11 +80,6 @@ export const k8sRouter = createTRPCRouter({
    */
   createCluster: createRateLimitedProtectedProcedure("write")
     .input(enhancedK8sClusterCreateSchema)
-   * @throws {TRPCError} UNAUTHORIZED if not authenticated
-   * @throws {TRPCError} BAD_REQUEST if validation fails
-   */
-createCluster: createRateLimitedProtectedProcedure("write")
->>>>>>> 9da5ad2 (docs(api): add JSDoc comments to public API routers)
     .mutation(async ({ ctx, input }) => {
       const userId = requireUserId(ctx);
       const requestId = ctx.requestId;

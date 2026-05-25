@@ -26,7 +26,7 @@
     "generate-docs": "npx tsx src/docs-generator.ts"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.37.5",
+    "@clerk/nextjs": "^6.39.4",
     "@saasfly/auth": "workspace:*",
     "@saasfly/common": "workspace:*",
     "@saasfly/db": "workspace:*",

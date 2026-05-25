@@ -17,6 +17,13 @@ export const metadata = {
   title: "Admin Dashboard",
 };
 
+interface AdminDashboardStats {
+  totalUsers: number;
+  totalClusters: number;
+  activeSubscriptions: number;
+  recentActivity: number;
+}
+
 export default async function AdminDashboardPage() {
   const user = await getCurrentUser();
 
@@ -28,7 +35,8 @@ export default async function AdminDashboardPage() {
     redirect("/dashboard");
   }
 
-  const stats = await trpc.admin.getStats().catch(() => ({
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call -- tRPC proxy types are dynamically resolved
+  const stats: AdminDashboardStats = await (trpc.admin.getStats() as Promise<AdminDashboardStats>).catch((): AdminDashboardStats => ({
     totalUsers: 0,
     totalClusters: 0,
     activeSubscriptions: 0,

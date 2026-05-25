@@ -17,7 +17,7 @@
     "with-env": "echo 'Use individual scripts with dotenv-cli prefix instead'"
   },
   "dependencies": {
-    "@clerk/nextjs": "^6.37.5",
+    "@clerk/nextjs": "^6.39.4",
     "@dinero.js/currencies": "2.0.0-alpha.15",
     "@formatjs/intl-localematcher": "0.8.1",
     "@hookform/resolvers": "5.2.2",
@@ -61,7 +61,7 @@
   },
   "devDependencies": {
     "@opennextjs/cloudflare": "^1.0.0",
-    "@clerk/types": "^4.101.15",
+    "@clerk/types": "^4.101.20",
     "@next-devtools/core": "0.2.0",
     "@next/bundle-analyzer": "14.2.15",
     "@next/eslint-plugin-next": "16.1.6",

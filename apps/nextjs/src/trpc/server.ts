@@ -64,6 +64,7 @@ const createContext = cache(async () => {
   });
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- tRPC proxy types are dynamically resolved
 export const trpc = createTRPCProxyClient<AppRouter>({
   transformer,
   links: [

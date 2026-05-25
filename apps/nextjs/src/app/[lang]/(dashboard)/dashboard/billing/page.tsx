@@ -67,7 +67,7 @@ function SubscriptionContent({
 }
 
 async function SubscriptionCard({ dict }: { dict: Record<string, string> }) {
-  const subscription = (await trpc.auth.mySubscription.query()) as Subscription;
+  const subscription = (await trpc.auth.mySubscription()) as Subscription;
   return (
     <Card>
       <CardHeader>

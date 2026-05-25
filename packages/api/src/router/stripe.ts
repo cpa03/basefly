@@ -101,7 +101,7 @@ export const stripeRouter = createTRPCRouter({
             mode: "subscription",
             payment_method_types: ["card"],
             customer_email: email,
-            client_reference_id: userId,
+            client_reference_id: userId ?? undefined,
             subscription_data: { metadata: { userId } },
             cancel_url: returnUrl,
             success_url: returnUrl,

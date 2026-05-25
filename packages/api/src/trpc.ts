@@ -8,7 +8,6 @@ import { isAdminEmail } from "@saasfly/common";
 import { createApiError, ErrorCode } from "./errors";
 import { logger } from "./logger";
 import { verifyOwnership, verifyOwnershipWithFetch, createOwnershipVerifier } from "./authorization";
-import { logger } from "./logger";
 import { EndpointType, getIdentifier, getLimiter } from "./distributed-rate-limiter";
 import { getOrGenerateRequestId } from "./request-id";
 import { transformer } from "./transformer";

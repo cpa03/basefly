@@ -2,6 +2,10 @@
 
 **Role**: Growth-Innovation-Strategist
 **Domain**: Repository efficiency, Developer Experience improvements, small measurable enhancements
+**Last Updated**: 2026-02-27
+
+**Role**: Growth-Innovation-Strategist
+**Domain**: Repository efficiency, Developer Experience improvements, small measurable enhancements
 **Last Updated**: 2026-02-26
 
 ## Operating Principles
@@ -52,7 +56,34 @@
 - Removed commented-out ignore section that was no longer relevant
 - PR: https://github.com/cpa03/basefly/pull/717
 
+### 2026-02-27: API Documentation Generator (Issue #749)
+**Issue**: Issue #749 requests AI-powered API endpoint testing and documentation generator. Needed a foundational tool to generate documentation from existing OpenAPI specs.
+**Impact**: Enables automated API documentation generation, improves developer experience.
+**Changes**:
+- Created `packages/api/src/docs-generator.ts` - generates markdown documentation from OpenAPI spec
+- Generates curl and TypeScript client examples for each endpoint
+- Added `generate-docs` script to package.json
+- PR: https://github.com/cpa03/basefly/pull/777
+
 ### 2026-02-26: Fix iterate.yml pnpm Consistency (PREPARED - NOT PUSHED)
+**Issue**: The iterate.yml workflow uses `npm ci` instead of `pnpm install`, and cache configuration uses npm paths instead of pnpm paths.
+**Impact**: Improved CI consistency with project's package manager, better caching efficiency for pnpm.
+**Changes** (prepared locally, pending push due to GitHub Actions restrictions):
+- Changed `npm ci || true` to `pnpm install --frozen-lockfile || true` in architect job (line 72)
+- Changed `npm ci || true` to `pnpm install --frozen-lockfile || true` in Fixer job (line 342)
+- Updated cache path from `~/.npm` to `~/.pnpm-store`
+- Updated cache key to use `pnpm-lock.yaml` hash instead of `package-lock.json`
+
+**Note**: These changes could not be pushed due to GitHub Actions security restrictions (the GitHub App token doesn't have `workflows` permission). The changes need to be applied manually or pushed from a local environment.
+
+## Known Issues / Opportunities
+
+- [ ] Consider adding pnpm action-setup for better caching
+- [x] Review other workflows for consistency (removed duplicate)
+- [x] Extract embedded AI prompts from workflow files (created .github/prompts/)
+- [x] Fix Dependabot pnpm package ecosystem (PR #717)
+- [ ] Fix iterate.yml pnpm consistency (changes prepared locally - needs manual push)
+- [x] Add API documentation generator (PR #777)
 **Issue**: The iterate.yml workflow uses `npm ci` instead of `pnpm install`, and cache configuration uses npm paths instead of pnpm paths.
 **Impact**: Improved CI consistency with project's package manager, better caching efficiency for pnpm.
 **Changes** (prepared locally, pending push due to GitHub Actions restrictions):

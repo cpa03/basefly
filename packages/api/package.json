@@ -22,7 +22,8 @@
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "format": "prettier --check '**/*.{ts,mjs}' ",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "generate-docs": "npx tsx src/docs-generator.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.37.5",

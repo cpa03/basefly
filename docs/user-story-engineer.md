@@ -42,8 +42,23 @@ This agent focuses on delivering small, safe, measurable improvements to the bas
 
 ## History
 
-### 2026-02-27
+TJ|
 
+- **Improvement**: Add packages/common test coverage documentation
+- **Status**: Completed
+- **Analysis**:
+  - Issue #713 requested unit tests for packages/common utility modules
+  - Test files existed but were not documented in test-coverage.md
+  - No mention of packages/common in Coverage by Layer or Priority tables
+- **Implementation**:
+  - Added Section 7 for Common Utilities (email, animation, icon-sizes, logger, ui-tokens)
+  - Updated Coverage by Layer table: added Common Utilities row (5 files, 35+ tests)
+  - Updated Coverage by Priority table: Medium now shows 7 files, 50+ tests
+  - Updated statistics: 14→19 test files, 385→420 test cases
+- **Verification**:
+  - Documentation-only change
+  - No code changes required
+- **PR**: #783
 - **Issue**: #730 - Duplicate React imports in components
 - **Status**: Completed
 - **Analysis**:

@@ -85,6 +85,10 @@
     "tailwindcss-animate": "1.0.7",
     "typescript": "5.9.3"
   },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
   "prettier": "@saasfly/prettier-config",
   "eslintConfig": {
     "root": true,

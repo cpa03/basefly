@@ -35,6 +35,7 @@ export default defineConfig({
     alias: {
       "@saasfly/auth": resolve(__dirname, "./packages/auth"),
       "@saasfly/db": resolve(__dirname, "./packages/db"),
+      "@saasfly/ui/icons": resolve(__dirname, "./packages/ui/src/icons.tsx"),
       "@saasfly/ui": resolve(__dirname, "./packages/ui"),
       "@saasfly/common": resolve(__dirname, "./packages/common"),
       "@saasfly/common/config/resilience": resolve(

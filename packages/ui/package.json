@@ -15,7 +15,6 @@
     "lint": "eslint . --cache --cache-location 'node_modules/.cache/.eslintcache'"
   },
   "dependencies": {
-    "@saasfly/common": "workspace:*",
     "@radix-ui/react-accessible-icon": "next",
     "@radix-ui/react-accordion": "next",
     "@radix-ui/react-alert-dialog": "next",
@@ -47,36 +46,38 @@
     "@react-email/button": "0.2.1",
     "@react-email/components": "1.0.8",
     "@react-email/html": "0.0.12",
+    "@react-three/drei": "10.7.7",
+    "@react-three/fiber": "9.5.0",
+    "@saasfly/common": "workspace:*",
+    "@tsparticles/engine": "3.9.1",
+    "@tsparticles/react": "3.0.0",
+    "@tsparticles/slim": "3.9.1",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "cmdk": "1.1.1",
     "framer-motion": "12.34.2",
     "lucide-react": "0.574.0",
     "tailwind-merge": "3.4.1",
-    "zod": "4.3.6",
-    "@tsparticles/react": "3.0.0",
-    "@tsparticles/engine": "3.9.1",
-    "@tsparticles/slim": "3.9.1",
-    "@react-three/fiber": "9.5.0",
-    "@react-three/drei": "10.7.7",
     "three": "0.183.0",
-    "three-globe": "2.45.0"
+    "three-globe": "2.45.0",
+    "zod": "4.3.6"
   },
   "devDependencies": {
     "@saasfly/eslint-config": "workspace:*",
     "@saasfly/prettier-config": "workspace:*",
-    "@saasfly/typescript-config": "workspace:*",
     "@saasfly/tailwind-config": "workspace:*",
-    "@types/react": "19.2.14",
+    "@saasfly/typescript-config": "workspace:*",
     "@tanstack/react-table": "8.21.3",
+    "@testing-library/react": "^16.3.2",
+    "@types/react": "19.2.14",
+    "@typescript-eslint/eslint-plugin": "8.56.0",
     "date-fns": "4.1.0",
     "eslint": "8.57.0",
-    "prettier": "3.8.1",
-    "@typescript-eslint/eslint-plugin": "8.56.0",
     "eslint-plugin-import": "2.32.0",
+    "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-react-hooks": "7.0.1",
-    "eslint-plugin-jsx-a11y": "6.10.2",
+    "prettier": "3.8.1",
     "react": "19.2.4",
     "react-day-picker": "9.13.2",
     "react-dom": "19.2.4",
@@ -95,6 +96,19 @@
     "extends": [
       "@saasfly/eslint-config/base",
       "@saasfly/eslint-config/react"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.test.*",
+          "**/*.spec.*"
+        ],
+        "rules": {
+          "@typescript-eslint/no-unsafe-call": "off",
+          "@typescript-eslint/no-unsafe-member-access": "off",
+          "@typescript-eslint/no-unsafe-assignment": "off"
+        }
+      }
     ]
   },
   "exports": {

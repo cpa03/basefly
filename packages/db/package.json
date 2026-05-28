@@ -41,7 +41,7 @@
     "@saasfly/common": "workspace:*",
     "kysely": "0.28.11",
     "@vercel/postgres-kysely": "0.10.0",
-    "pino": "^9.6.0"
+    "pino": "10.3.1"
   },
   "devDependencies": {
     "@saasfly/eslint-config": "workspace:*",

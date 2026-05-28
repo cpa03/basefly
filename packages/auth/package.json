@@ -19,7 +19,7 @@
     "@saasfly/common": "workspace:*",
     "@t3-oss/env-nextjs": "0.13.10",
     "next": "14.2.35",
-    "pino": "^9.6.0",
+    "pino": "10.3.1",
     "pino-pretty": "^13.0.0",
     "react": "19.2.4",
     "react-dom": "19.2.4",

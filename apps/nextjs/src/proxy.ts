@@ -9,6 +9,87 @@ import { getMinifiedCSPHeader, HEADERS, HTTP_STATUS } from "@saasfly/common";
 import { i18n } from "./config/i18n-config";
 import { middleware as clerkMiddleware, isPublicRoute } from "./utils/clerk";
 
+/**
+ * CSRF Protection: validate state-changing requests originate from the
+ * application's own origin. Strategies used in priority order:
+ * 1. Origin header (most reliable)
+ * 2. Referer header (fallback)
+ * Both are compared against NEXT_PUBLIC_APP_URL.
+ * Safe methods (GET/HEAD/OPTIONS) and API/tRPC routes are excluded.
+ */
+const SAFE_METHODS = new Set(["GET", "HEAD", "OPTIONS"]);
+
+function isSafeMethod(method: string): boolean {
+  return SAFE_METHODS.has(method);
+}
+
+function isApiRoute(pathname: string): boolean {
+  return (
+    pathname.startsWith("/api/") ||
+    pathname.startsWith("/trpc/") ||
+    pathname === "/api" ||
+    pathname === "/trpc"
+  );
+}
+
+function getExpectedOrigin(): string | null {
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL;
+  if (!appUrl) return null;
+  try {
+    return new URL(appUrl).origin;
+  } catch {
+    return null;
+  }
+}
+
+function extractOrigin(urlString: string): string | null {
+  try {
+    return new URL(urlString).origin;
+  } catch {
+    return null;
+  }
+}
+
+function validateCSRF(req: NextRequest): boolean {
+  if (isSafeMethod(req.method) || isApiRoute(req.nextUrl.pathname)) {
+    return true;
+  }
+  if (process.env.NODE_ENV === "development") {
+    return true;
+  }
+
+  const expectedOrigin = getExpectedOrigin();
+  if (!expectedOrigin) {
+    return true;
+  }
+
+  const origin = req.headers.get("origin");
+  if (origin) {
+    const reqOrigin = extractOrigin(origin);
+    if (reqOrigin === expectedOrigin) {
+      return true;
+    }
+    const allowedOrigins = process.env.CSRF_ALLOWED_ORIGINS;
+    if (allowedOrigins) {
+      const origins = allowedOrigins.split(",").map((o) => o.trim());
+      if (origins.includes(origin) || origins.includes(reqOrigin ?? "")) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  const referer = req.headers.get("referer");
+  if (referer) {
+    const refOrigin = extractOrigin(referer);
+    if (refOrigin === expectedOrigin) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 export const config = {
   matcher: [
     "/((?!.*\\..*|_next).*)",
@@ -110,6 +191,18 @@ export default async function proxy(
   }
 
   const requestId = getOrGenerateRequestId(req.headers);
+
+  // CSRF validation gate — before any auth or business logic
+  if (!validateCSRF(req)) {
+    const response = NextResponse.json(
+      { error: "CSRF validation failed", requestId },
+      { status: HTTP_STATUS.FORBIDDEN },
+    );
+    response.headers.set(REQUEST_ID_HEADER, requestId);
+    applySecurityHeaders(response);
+    return response;
+  }
+
   const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
   try {

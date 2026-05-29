@@ -82,7 +82,17 @@ const handler = (req: NextRequest) =>
       return { headers };
     },
     onError: ({ error, path }) => {
-      logger.error("Error in tRPC handler (edge)", error, { path });
+      // Security: Log only error code, message, and path — NOT the full error object
+      // The error.cause may contain raw DB errors, integration details, or stack traces
+      // that could leak internal system information to log consumers
+      logger.error(
+        {
+          code: error.code,
+          path,
+          message: error.message,
+        },
+        "Error in tRPC handler (edge)",
+      );
     },
   });
 

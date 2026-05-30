@@ -105,7 +105,9 @@ See more documentation at <https://docs.saasfly.io>
 Before you start, make sure you have the following installed:
 
 HW|1. [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/) - For containerized deployment
-   - Alternative to local Node.js/PostgreSQL setup
+
+- Alternative to local Node.js/PostgreSQL setup
+
 2. [pnpm](https://pnpm.io/) & [Node.js](https://nodejs.org/) & [Git](https://git-scm.com/)
    1. Linux
 
@@ -121,17 +123,17 @@ HW|1. [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.c
      brew install pnpm
    ```
 
-2. [PostgreSQL](https://www.postgresql.org/) - Required for cluster configuration and user data
+3. [PostgreSQL](https://www.postgresql.org/) - Required for cluster configuration and user data
    1. You can use Vercel Postgres or a local PostgreSQL server (add POSTGRES_URL env in .env.local)
       ```bash
          POSTGRES_URL=''
       ```
 
-3. [Clerk](https://clerk.com/) account - For authentication
+4. [Clerk](https://clerk.com/) account - For authentication
    1. Create a Clerk account and get API keys
    2. Add Clerk application with Next.js configuration
 
-4. [Stripe](https://stripe.com/) account - For subscription billing
+5. [Stripe](https://stripe.com/) account - For subscription billing
    1. Create a Stripe account
    2. Get API keys and set up webhook endpoint
 
@@ -176,41 +178,46 @@ pnpm run dev:web
 
 4. (Optional alpha) `pnpm run tailwind-config-viewer` Open [http://localhost:3333](http://localhost:3333) in your browser to see your Tailwind CSS configuration
 
-YW|5. Access the admin dashboard at `/admin/dashboard` using email addresses configured in `ADMIN_EMAIL` environment variable.
+5. Access the admin dashboard at `/admin/dashboard` using email addresses configured in `ADMIN_EMAIL` environment variable.
 
-#KV|### 🐳 Docker Deployment (Alternative)
-#QT|
-#PQ|If you prefer Docker for local development:
-#QT|
-#QZ|1. Set up environment variables:
-#MM|   ```bash
-#VR|cp .env.example .env.local
-#NM|# Configure required environment variables (Clerk, Stripe, etc.)
-#NM|# Note: Database is handled by docker-compose
-#QW|   ```
-#QW|
-#JK|2. Start the development environment:
-#QT|   ```bash
-#QW|docker-compose up -d
-#NR|   ```
-#QW|
-#QT|3. Access the application at [http://localhost:3000](http://localhost:3000)
-#QT|   - PostgreSQL is available at localhost:5432 (credentials: postgres/postgres)
-#QT|   - pgAdmin is available at [http://localhost:5050](http://localhost:5050) (email: admin@basefly.local, password: admin)
-#QT|
-#QT|4. Stop the environment:
-#QT|   ```bash
-#QW|docker-compose down
-#NM|   ```
-#QT|
-#QT|### Production Build
-#QT|   ```bash
-#RR|# Build the production image
-YQ|# Build without using cache
-#MM|docker build -t basefly:latest .
-#NM|# Run the production container
-#WY|docker run -p 3000:3000 --env-file .env.local basefly:latest
-#QW|   ```
+### 🐳 Docker Deployment (Alternative)
+
+If you prefer Docker for local development:
+
+1. Set up environment variables:
+   ```bash
+   cp .env.example .env.local
+   ```
+
+# Configure required environment variables (Clerk, Stripe, etc.)
+
+# Note: Database is handled by docker-compose
+
+````
+
+2. Start the development environment:
+```bash
+docker-compose up -d
+````
+
+3. Access the application at [http://localhost:3000](http://localhost:3000)
+   - PostgreSQL is available at localhost:5432 (credentials: postgres/postgres)
+   - pgAdmin is available at [http://localhost:5050](http://localhost:5050) (email: admin@basefly.local, password: admin)
+
+4. Stop the environment:
+   ```bash
+   docker-compose down
+   ```
+
+### Production Build
+
+```bash
+# Build the production image
+# Build without using cache
+docker build -t basefly:latest .
+# Run the production container
+docker run -p 3000:3000 --env-file .env.local basefly:latest
+```
 
 ## 🎯 Key Features
 
@@ -285,8 +292,6 @@ YQ|# Build without using cache
 
 - **[trpc](https://trpc.io/)** – End-to-end typesafe APIs made easy
 - **[tanstack/react-query](https://react-query.tanstack.com/)** – Hooks for fetching, caching and updating asynchronous data in React
-#KB|- **[trpc](https://trpc.io/)** – End-to-end typesafe APIs made easy
-#KM|- **[tanstack/react-query](https://react-query.tanstack.com/)** – Hooks for fetching, caching and updating asynchronous data in React
 
 ### 🐒 UI
 

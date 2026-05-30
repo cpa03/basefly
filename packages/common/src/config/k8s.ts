@@ -138,7 +138,7 @@ export function sanitizeClusterName(name: string): string {
   return name.trim();
 }
 
-export function generateClusterName(baseName: string = "Cluster"): string {
+export function generateClusterName(baseName = "Cluster"): string {
   const timestamp = new Date().toISOString().split("T")[0];
   return `${baseName} ${timestamp}`;
 }

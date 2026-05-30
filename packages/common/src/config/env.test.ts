@@ -2,7 +2,6 @@ import { describe, it, expect } from "vitest";
 import {
   LogLevel,
   DEFAULT_LOG_LEVEL,
-  LOG_LEVEL,
   NODE_ENV,
   IS_DEV,
   IS_PROD,

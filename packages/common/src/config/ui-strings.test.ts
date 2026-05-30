@@ -1,4 +1,4 @@
-import { describe, it, expect, expectTypeOf } from "vitest";
+import { describe, it, expect } from "vitest";
 import {
   UI_STRINGS,
   THEME_STRINGS,

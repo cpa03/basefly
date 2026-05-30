@@ -1,7 +1,5 @@
 import { TRPCError } from "@trpc/server";
 
-import { IntegrationError } from "@saasfly/stripe";
-
 /**
  * Custom error class for invalid request IDs
  *
@@ -100,17 +98,17 @@ export function handleIntegrationError(error: unknown): TRPCError {
       case "CIRCUIT_BREAKER_OPEN":
         return createApiError(
           ErrorCode.CIRCUIT_BREAKER_OPEN,
-          err.message || "Service temporarily unavailable due to failures",
+          err.message ?? "Service temporarily unavailable due to failures",
         );
       case "TIMEOUT":
         return createApiError(
           ErrorCode.TIMEOUT_ERROR,
-          err.message || "Request timed out",
+          err.message ?? "Request timed out",
         );
       case "API_ERROR":
         return createApiError(
           ErrorCode.INTEGRATION_ERROR,
-          err.message || "External service error",
+          err.message ?? "External service error",
           error,
         );
     }
@@ -127,13 +125,13 @@ export function handleIntegrationError(error: unknown): TRPCError {
 }
 
 export function createValidationErrorMessage(
-  errors: Array<{ message: string; path?: (string | number)[] }>,
+  errors: { message: string; path?: (string | number)[] }[],
 ): string {
   if (errors.length === 0) {
     return "Validation error";
   }
   if (errors.length === 1) {
-    return errors[0]?.message || "Validation error";
+    return errors[0]?.message ?? "Validation error";
   }
   return `Validation failed: ${errors.map((e) => e.message).join(", ")}`;
 }

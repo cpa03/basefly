@@ -9,13 +9,21 @@
 
 import { createApiError, ErrorCode } from "./errors";
 import { logger } from "./logger";
-import type { TRPCContext } from "./trpc";
+
+/**
+ * Minimal context type for authorization functions.
+ * Defined here to avoid circular dependency with trpc.ts.
+ */
+export interface AuthorizationContext {
+  userId: string | null;
+  requestId: string;
+}
 
 /**
  * Verifies that the authenticated user has access to a resource
  * owned by the specified userId.
  *
- * @param ctx - The tRPC context containing userId
+ * @param ctx - The authorization context containing userId
  * @param resourceOwnerId - The userId that owns the resource
  * @param resourceType - Type of resource for logging (e.g., "cluster", "customer")
  * @param resourceId - ID of the resource for logging
@@ -23,7 +31,7 @@ import type { TRPCContext } from "./trpc";
  * @throws {TRPCError} FORBIDDEN if user does not own the resource
  */
 export function verifyOwnership(
-  ctx: TRPCContext,
+  ctx: AuthorizationContext,
   resourceOwnerId: string,
   resourceType: string,
   resourceId?: number | string,
@@ -71,7 +79,7 @@ export function verifyOwnership(
  * Verifies ownership with async resource lookup.
  * Use this when you need to fetch the resource first to determine ownership.
  *
- * @param ctx - The tRPC context containing userId
+ * @param ctx - The authorization context containing userId
  * @param fetchResource - Async function to fetch the resource
  * @param resourceType - Type of resource for logging
  * @param notFoundMessage - Error message if resource not found
@@ -81,7 +89,7 @@ export function verifyOwnership(
  * @throws {TRPCError} NOT_FOUND if resource doesn't exist
  */
 export async function verifyOwnershipWithFetch<T extends { ownerId?: string }>(
-  ctx: TRPCContext,
+  ctx: AuthorizationContext,
   fetchResource: () => Promise<T | undefined | null>,
   resourceType: string,
   notFoundMessage: string,
@@ -158,7 +166,7 @@ export function createOwnershipVerifier<T>(
   getOwnerId: (resource: T) => string | null | undefined | Promise<string | null | undefined>,
 ) {
   return async function verify(
-    ctx: TRPCContext,
+    ctx: AuthorizationContext,
     resource: T | undefined | null,
   ): Promise<T> {
     // Check authentication

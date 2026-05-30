@@ -6,7 +6,7 @@ import {
   TIMEOUT_CONFIG,
 } from "@saasfly/common";
 
-import { stripe } from "./index";
+import { stripe } from "./stripe-instance";
 import { CircuitBreaker, safeStripeCall } from "./integration";
 import { logger } from "./logger";
 

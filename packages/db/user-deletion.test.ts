@@ -9,7 +9,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { db } from "./index";
 import { UserDeletionService } from "./user-deletion";
 
-vi.mock("./index", () => ({
+vi.mock("./db-instance", () => ({
   db: {
     transaction: vi.fn().mockReturnValue({
       execute: vi.fn(),

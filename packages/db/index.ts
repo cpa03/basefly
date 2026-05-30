@@ -22,10 +22,6 @@
  * @module @saasfly/db
  */
 
-import { createKysely } from "@vercel/postgres-kysely";
-
-import type { DB } from "./prisma/types";
-
 // Kysely helpers for PostgreSQL
 export { jsonArrayFrom, jsonObjectFrom } from "kysely/helpers/postgres";
 
@@ -72,5 +68,5 @@ export {
 } from "./rls-middleware";
 export type { RlsDatabase } from "./rls-middleware";
 
-// Database instance
-export const db = createKysely<DB>();
+// Database instance (from separate module to avoid circular dependencies)
+export { db } from "./db-instance";

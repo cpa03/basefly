@@ -30,7 +30,7 @@ vi.mock("@saasfly/db", () => ({
   },
 }));
 
-vi.mock(".", () => ({
+vi.mock("./stripe-instance", () => ({
   stripe: {
     subscriptions: {
       retrieve: vi.fn(),

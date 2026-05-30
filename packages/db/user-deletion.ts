@@ -20,7 +20,7 @@
  * - Customer data: Hard deleted after ensuring no outstanding billing
  */
 
-import { db } from ".";
+import { db } from "./db-instance";
 import { logger } from "./logger";
 
 /**

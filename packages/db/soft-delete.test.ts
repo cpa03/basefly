@@ -10,7 +10,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { db } from "./index";
 import { SoftDeleteService } from "./soft-delete";
 
-vi.mock("./index", () => ({
+vi.mock("./db-instance", () => ({
   db: {
     selectFrom: vi.fn(),
     updateTable: vi.fn(),

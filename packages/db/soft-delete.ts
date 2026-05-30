@@ -16,7 +16,7 @@
 
 import type { ExpressionBuilder } from "kysely";
 
-import { db } from ".";
+import { db } from "./db-instance";
 import { logger } from "./logger";
 import type { DB } from "./prisma/types";
 

@@ -12,7 +12,7 @@ import {
   createCheckoutSession,
   retrieveSubscription,
 } from "./client";
-import { stripe } from "./index";
+import { stripe } from "./stripe-instance";
 import { safeStripeCall } from "./integration";
 
 vi.mock("./integration", () => ({
@@ -20,7 +20,7 @@ vi.mock("./integration", () => ({
   CircuitBreaker: vi.fn(),
 }));
 
-vi.mock("./index", () => ({
+vi.mock("./stripe-instance", () => ({
   stripe: {
     billingPortal: {
       sessions: {

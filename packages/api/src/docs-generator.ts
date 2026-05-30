@@ -70,7 +70,7 @@ function capitalizeFirst(str: string): string {
 function getTypeString(schema: Record<string, unknown> | undefined): string {
   if (!schema) return "any";
   if (schema.$ref) {
-    return (schema.$ref as string).split("/").pop() || "unknown";
+    return (schema.$ref as string).split("/").pop() ?? "unknown";
   }
   if (schema.type === "array" && schema.items) {
     return `${getTypeString(schema.items as Record<string, unknown>)}[]`;
@@ -158,9 +158,9 @@ function generateMarkdown(): string {
     for (const [method, operation] of Object.entries(item)) {
       if (["get", "post", "put", "delete", "patch"].includes(method)) {
         const op = operation as Operation;
-        const tags = op.tags || ["Other"];
+        const tags = op.tags ?? ["Other"];
         for (const tag of tags) {
-          if (!pathsByTag[tag]) pathsByTag[tag] = [];
+          (pathsByTag[tag] ??= []);
           pathsByTag[tag].push({ path, method, op });
         }
       }
@@ -172,7 +172,7 @@ function generateMarkdown(): string {
     markdown += `## ${capitalizeFirst(tag)}\n\n`;
 
     for (const { path, method, op } of operations) {
-      markdown += `### ${op.summary || op.operationId || `${method} ${path}`}\n\n`;
+      markdown += `### ${op.summary ?? op.operationId ?? `${method} ${path}`}\n\n`;
 
       if (op.description) {
         markdown += `${op.description}\n\n`;
@@ -190,9 +190,9 @@ function generateMarkdown(): string {
         markdown += `| Name | Location | Type | Required | Description |\n`;
         markdown += `|------|----------|------|----------|-------------|\n`;
         for (const param of op.parameters) {
-          const type = param.schema?.type || "string";
+          const type = param.schema?.type ?? "string";
           const required = param.required ? "Yes" : "No";
-          markdown += `| \`${param.name}\` | ${param.in} | ${type} | ${required} | ${param.description || "-"} |\n`;
+          markdown += `| \`${param.name}\` | ${param.in} | ${type} | ${required} | ${param.description ?? "-"} |\n`;
         }
         markdown += `\n`;
       }
@@ -240,4 +240,4 @@ function generateMarkdown(): string {
 
 // Generate and output
 const markdown = generateMarkdown();
-console.log(markdown);
+process.stdout.write(markdown + "\n");

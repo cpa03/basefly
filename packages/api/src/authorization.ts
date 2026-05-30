@@ -7,8 +7,6 @@
  * @module authorization
  */
 
-import { TRPCError } from "@trpc/server";
-
 import { createApiError, ErrorCode } from "./errors";
 import { logger } from "./logger";
 import type { TRPCContext } from "./trpc";

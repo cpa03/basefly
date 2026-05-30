@@ -44,6 +44,7 @@
     "eslint-plugin-import": "2.32.0"
   },
   "eslintConfig": {
+    "root": true,
     "extends": [
       "@saasfly/eslint-config/base"
     ]

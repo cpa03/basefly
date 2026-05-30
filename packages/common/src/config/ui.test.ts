@@ -16,9 +16,7 @@ import {
   GRADIENT_COLORS,
   PATTERN_CONFIG,
   type TransitionPresetKey,
-  type VisualEffects,
   type Theme,
-  type NotificationColorKey,
   type ZIndexKey,
 } from "./ui";
 

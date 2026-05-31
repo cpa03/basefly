@@ -1,0 +1,15 @@
+name: "Basefly CodeQL Configuration"
+
+queries:
+  - uses: security-and-quality
+
+paths:
+  - apps
+  - packages
+  - tooling
+paths-ignore:
+  - "**/node_modules"
+  - "**/*.test.ts"
+  - "**/*.spec.ts"
+  - "**/dist"
+  - "**/.next"

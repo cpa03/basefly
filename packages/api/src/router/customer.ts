@@ -43,7 +43,7 @@ export const customerRouter = createTRPCRouter({
   /**
    * Updates the authenticated user's display name.
    * User can only update their own name.
-   * 
+   *
    * @param input - User update (userId, name)
    * @returns Success status
    * @throws {TRPCError} UNAUTHORIZED if not authenticated
@@ -102,7 +102,7 @@ export const customerRouter = createTRPCRouter({
   /**
    * Creates a new customer record for the authenticated user.
    * Links the Clerk user to the internal customer system.
-   * 
+   *
    * @param input - Customer creation input (userId)
    * @returns Created customer record
    * @throws {TRPCError} UNAUTHORIZED if not authenticated
@@ -169,7 +169,7 @@ export const customerRouter = createTRPCRouter({
   /**
    * Queries the customer record for the authenticated user.
    * Returns customer details including subscription plan.
-   * 
+   *
    * @param input - Customer query input (userId)
    * @returns Customer record or undefined
    * @throws {TRPCError} UNAUTHORIZED if not authenticated

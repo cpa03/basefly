@@ -18,7 +18,8 @@ interface CacheEntry<T> {
  * Can be overridden via DICTIONARY_CACHE_TTL_MS environment variable
  * This ensures dictionaries stay fresh while reducing I/O overhead
  */
-const CACHE_TTL_MS = Number(process.env.DICTIONARY_CACHE_TTL_MS) || 5 * 60 * 1000;
+const CACHE_TTL_MS =
+  Number(process.env.DICTIONARY_CACHE_TTL_MS) || 5 * 60 * 1000;
 
 /**
  * In-memory cache for loaded dictionaries

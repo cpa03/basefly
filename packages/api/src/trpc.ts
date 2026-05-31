@@ -5,10 +5,18 @@ import { ZodError } from "zod";
 
 import { isAdminEmail } from "@saasfly/common";
 
+import {
+  createOwnershipVerifier,
+  verifyOwnership,
+  verifyOwnershipWithFetch,
+} from "./authorization";
+import {
+  getIdentifier,
+  getLimiter,
+  type EndpointType,
+} from "./distributed-rate-limiter";
 import { createApiError, ErrorCode } from "./errors";
 import { logger } from "./logger";
-import { verifyOwnership, verifyOwnershipWithFetch, createOwnershipVerifier } from "./authorization";
-import { type EndpointType, getIdentifier, getLimiter } from "./distributed-rate-limiter";
 import { getOrGenerateRequestId } from "./request-id";
 import { transformer } from "./transformer";
 
@@ -87,7 +95,7 @@ const isAuthed = t.middleware(({ next, ctx }) => {
         security: true,
         reason: "missing_user_id",
       },
-      "Authentication failed - unauthorized access attempt"
+      "Authentication failed - unauthorized access attempt",
     );
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
@@ -156,7 +164,7 @@ export const rateLimit = (endpointType: EndpointType) =>
           userId: ctx.userId,
           resetAt: result.resetAt,
         },
-        "Rate limit exceeded - potential abuse detected"
+        "Rate limit exceeded - potential abuse detected",
       );
 
       throw createApiError(
@@ -164,7 +172,7 @@ export const rateLimit = (endpointType: EndpointType) =>
         "Rate limit exceeded. Please try again later.",
         {
           resetAt: result.resetAt,
-        }
+        },
       );
     }
 

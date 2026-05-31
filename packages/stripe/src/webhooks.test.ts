@@ -16,11 +16,11 @@ vi.mock("@saasfly/db", () => ({
       execute: vi.fn().mockResolvedValue(undefined),
     }),
     transaction: vi.fn().mockReturnValue({
-      execute: vi.fn().mockImplementation(
-        async (cb: (trx: typeof db) => Promise<void>) => {
+      execute: vi
+        .fn()
+        .mockImplementation(async (cb: (trx: typeof db) => Promise<void>) => {
           await cb(db);
-        },
-      ),
+        }),
     }),
   },
   SubscriptionPlan: {

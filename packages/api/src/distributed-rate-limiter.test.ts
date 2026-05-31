@@ -6,7 +6,16 @@
  * Tests for Redis-based rate limiting and fallback behavior.
  */
 
-import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+import {
+  DistributedRateLimiter,
+  getLimiter,
+  InMemoryRateLimiter,
+  rateLimitConfigs,
+  SyncRateLimiter,
+} from "./distributed-rate-limiter";
+import { logger } from "./logger";
 
 // Create a reusable mock Redis instance factory
 function createMockRedis() {
@@ -51,15 +60,6 @@ vi.mock("./logger", () => ({
     error: vi.fn(),
   },
 }));
-
-import {
-  DistributedRateLimiter,
-  InMemoryRateLimiter,
-  SyncRateLimiter,
-  getLimiter,
-  rateLimitConfigs,
-} from "./distributed-rate-limiter";
-import { logger } from "./logger";
 
 describe("InMemoryRateLimiter (Fallback)", () => {
   let limiter: InMemoryRateLimiter;
@@ -177,7 +177,7 @@ describe("DistributedRateLimiter (Redis-based)", () => {
         maxRequests: 5,
         windowMs: 1000,
       },
-      "redis://localhost:6379"
+      "redis://localhost:6379",
     );
 
     // Wait for async initialization
@@ -188,7 +188,7 @@ describe("DistributedRateLimiter (Redis-based)", () => {
         maxRequests: 5,
         windowMs: 1000,
       }),
-      "DistributedRateLimiter connected to Redis"
+      "DistributedRateLimiter connected to Redis",
     );
   });
 
@@ -198,7 +198,7 @@ describe("DistributedRateLimiter (Redis-based)", () => {
         maxRequests: 5,
         windowMs: 1000,
       },
-      "redis://localhost:6379"
+      "redis://localhost:6379",
     );
 
     // Wait for initialization
@@ -217,7 +217,7 @@ describe("DistributedRateLimiter (Redis-based)", () => {
         maxRequests: 1,
         windowMs: 1000,
       },
-      "redis://localhost:6379"
+      "redis://localhost:6379",
     );
 
     // Wait for initialization
@@ -268,7 +268,7 @@ describe("DistributedRateLimiter (Redis-based)", () => {
         maxRequests: 5,
         windowMs: 1000,
       },
-      "redis://localhost:6379"
+      "redis://localhost:6379",
     );
 
     // Wait for initialization
@@ -287,7 +287,7 @@ describe("DistributedRateLimiter (Redis-based)", () => {
         maxRequests: 5,
         windowMs: 1000,
       },
-      "redis://localhost:6379"
+      "redis://localhost:6379",
     );
 
     // Wait for initialization
@@ -497,7 +497,7 @@ describe("Logging", () => {
         identifier: "user1",
         remaining: 0,
       }),
-      "Rate limit exceeded"
+      "Rate limit exceeded",
     );
   });
 

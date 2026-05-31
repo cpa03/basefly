@@ -182,7 +182,12 @@ const components = {
       {...props}
     />
   ),
-  Image: (props: ImageProps) => <NextImage {...props} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 60vw" />,
+  Image: (props: ImageProps) => (
+    <NextImage
+      {...props}
+      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 60vw"
+    />
+  ),
   Callout,
   Card: MdxCard,
 };

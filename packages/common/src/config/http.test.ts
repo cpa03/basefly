@@ -1,15 +1,16 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
+
 import {
+  getStatusCategory,
+  getStatusMessage,
   HTTP_STATUS,
   HTTP_STATUS_CATEGORIES,
-  isSuccessStatus,
-  isRedirectStatus,
-  isClientErrorStatus,
-  isServerErrorStatus,
-  isErrorStatus,
-  getStatusCategory,
   HTTP_STATUS_MESSAGES,
-  getStatusMessage,
+  isClientErrorStatus,
+  isErrorStatus,
+  isRedirectStatus,
+  isServerErrorStatus,
+  isSuccessStatus,
   type HttpStatusCode,
 } from "./http";
 

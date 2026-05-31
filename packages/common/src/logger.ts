@@ -11,10 +11,9 @@
  * @module @saasfly/common/logger
  */
 
-import type { Logger } from "pino";
-import pino from "pino";
+import pino, { type Logger } from "pino";
 
-import { IS_DEV, LOG_LEVEL, IS_TEST } from "./config/env";
+import { IS_DEV, IS_TEST, LOG_LEVEL } from "./config/env";
 
 /**
  * Supported package names for logging context

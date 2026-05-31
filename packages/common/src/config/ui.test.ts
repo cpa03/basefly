@@ -1,22 +1,23 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
+
 import {
-  TRANSITION_PRESETS,
-  VISUAL_EFFECTS,
-  TOAST_CONFIG,
-  FEEDBACK_TIMING,
   ANIMATION_TIMING,
-  SEMANTIC_COLORS,
+  FEEDBACK_TIMING,
   FORM_COLORS,
   FORM_TIMING,
-  NOTIFICATION_COLORS,
-  THEMES,
-  PAGE_PROGRESS_CONFIG,
-  NAVBAR_CONFIG,
-  Z_INDEX,
   GRADIENT_COLORS,
+  NAVBAR_CONFIG,
+  NOTIFICATION_COLORS,
+  PAGE_PROGRESS_CONFIG,
   PATTERN_CONFIG,
-  type TransitionPresetKey,
+  SEMANTIC_COLORS,
+  THEMES,
+  TOAST_CONFIG,
+  TRANSITION_PRESETS,
+  VISUAL_EFFECTS,
+  Z_INDEX,
   type Theme,
+  type TransitionPresetKey,
   type ZIndexKey,
 } from "./ui";
 

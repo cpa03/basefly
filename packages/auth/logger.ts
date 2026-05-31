@@ -5,7 +5,11 @@
  * Uses the shared logging solution from @saasfly/common/logger
  */
 
-import { authLogger, createLoggerWrapper, type BaseLogger } from "@saasfly/common";
+import {
+  authLogger,
+  createLoggerWrapper,
+  type BaseLogger,
+} from "@saasfly/common";
 
 type LoggerMetadata = Record<string, unknown>;
 

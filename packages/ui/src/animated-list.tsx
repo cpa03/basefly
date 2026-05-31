@@ -43,7 +43,10 @@ export const AnimatedList = React.memo(
       <div className={`flex flex-col items-center gap-4 ${className}`}>
         <AnimatePresence mode="popLayout">
           {itemsToShow.map((item) => (
-            <AnimatedListItem key={(item as ReactElement).key} shouldReduceMotion={shouldReduceMotion}>
+            <AnimatedListItem
+              key={(item as ReactElement).key}
+              shouldReduceMotion={shouldReduceMotion}
+            >
               {item}
             </AnimatedListItem>
           ))}

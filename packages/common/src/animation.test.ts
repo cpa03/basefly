@@ -1,24 +1,24 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  ANIMATION,
+  bezier,
   duration,
   easing,
-  scale,
-  seconds,
-  ms,
-  bezier,
-  stagger,
-  transition,
-  radixAnimations,
   focusRing,
   hoverScale,
+  ms,
+  radixAnimations,
+  scale,
+  seconds,
   shake,
-  ANIMATION,
+  stagger,
+  transition,
   type DurationKey,
   type EasingKey,
-  type ScaleKey,
   type FocusRingKey,
   type HoverScaleKey,
+  type ScaleKey,
 } from "./animation";
 
 describe("animation.ts - duration", () => {
@@ -60,9 +60,15 @@ describe("animation.ts - seconds", () => {
   });
 
   it("should match duration in seconds", () => {
-    expect(seconds.instant).toBe(Number(duration.instant.replace("duration-", "")) / 1000);
-    expect(seconds.fast).toBe(Number(duration.fast.replace("duration-", "")) / 1000);
-    expect(seconds.normal).toBe(Number(duration.normal.replace("duration-", "")) / 1000);
+    expect(seconds.instant).toBe(
+      Number(duration.instant.replace("duration-", "")) / 1000,
+    );
+    expect(seconds.fast).toBe(
+      Number(duration.fast.replace("duration-", "")) / 1000,
+    );
+    expect(seconds.normal).toBe(
+      Number(duration.normal.replace("duration-", "")) / 1000,
+    );
   });
 });
 
@@ -77,7 +83,9 @@ describe("animation.ts - ms", () => {
   });
 
   it("should match duration in milliseconds", () => {
-    expect(ms.instant).toBe(parseInt(duration.instant.replace("duration-", "")));
+    expect(ms.instant).toBe(
+      parseInt(duration.instant.replace("duration-", "")),
+    );
   });
 });
 
@@ -109,8 +117,12 @@ describe("animation.ts - transition", () => {
 
 describe("animation.ts - radixAnimations", () => {
   it("should have tooltip animations", () => {
-    expect(radixAnimations.tooltip.open).toBe("animate-in fade-in-0 zoom-in-95");
-    expect(radixAnimations.tooltip.closed).toBe("animate-out fade-out-0 zoom-out-95");
+    expect(radixAnimations.tooltip.open).toBe(
+      "animate-in fade-in-0 zoom-in-95",
+    );
+    expect(radixAnimations.tooltip.closed).toBe(
+      "animate-out fade-out-0 zoom-out-95",
+    );
   });
 
   it("should have dropdown animations", () => {
@@ -163,7 +175,14 @@ describe("animation.ts - ANIMATION", () => {
 
 describe("animation.ts - Type exports", () => {
   it("should export DurationKey type", () => {
-    const keys: DurationKey[] = ["instant", "fast", "normal", "medium", "slow", "dramatic"];
+    const keys: DurationKey[] = [
+      "instant",
+      "fast",
+      "normal",
+      "medium",
+      "slow",
+      "dramatic",
+    ];
     expect(keys.length).toBe(6);
   });
 

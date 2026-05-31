@@ -374,15 +374,15 @@ describe("Webhook Idempotency", () => {
       const mockInsertSuccess = vi
         .fn()
         .mockResolvedValue({ numInsertedRows: 1n });
-      const mockInsertFail = vi
-        .fn()
-        .mockRejectedValue({ code: "23505", constraint: "StripeWebhookEvent_pkey" });
+      const mockInsertFail = vi.fn().mockRejectedValue({
+        code: "23505",
+        constraint: "StripeWebhookEvent_pkey",
+      });
 
       let callCount = 0;
       vi.mocked(db.insertInto).mockImplementation(() => {
         callCount++;
-        const execute =
-          callCount === 1 ? mockInsertSuccess : mockInsertFail;
+        const execute = callCount === 1 ? mockInsertSuccess : mockInsertFail;
         return {
           values: vi.fn().mockReturnValue({
             execute,
@@ -404,8 +404,16 @@ describe("Webhook Idempotency", () => {
       );
 
       const [result1, result2] = await Promise.all([
-        executeIdempotentWebhook("evt_race123", "checkout.session.completed", handler),
-        executeIdempotentWebhook("evt_race123", "checkout.session.completed", handler),
+        executeIdempotentWebhook(
+          "evt_race123",
+          "checkout.session.completed",
+          handler,
+        ),
+        executeIdempotentWebhook(
+          "evt_race123",
+          "checkout.session.completed",
+          handler,
+        ),
       ]);
 
       expect(handler).toHaveBeenCalledTimes(1);

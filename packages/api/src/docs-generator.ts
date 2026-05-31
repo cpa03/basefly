@@ -77,7 +77,10 @@ function getTypeString(schema: Record<string, unknown> | undefined): string {
   }
   if (schema.type === "object" && schema.properties) {
     const props = Object.entries(schema.properties as Record<string, unknown>)
-      .map(([key, val]) => `${key}: ${getTypeString(val as Record<string, unknown>)}`)
+      .map(
+        ([key, val]) =>
+          `${key}: ${getTypeString(val as Record<string, unknown>)}`,
+      )
       .join(", ");
     return `{ ${props} }`;
   }
@@ -87,7 +90,7 @@ function getTypeString(schema: Record<string, unknown> | undefined): string {
 function generateCurlExample(
   path: string,
   method: string,
-  operation: Operation
+  operation: Operation,
 ): string {
   const baseUrl = openApiDocument.servers?.[0]?.url || "/api/trpc";
   const endpoint = path.replace("/{", "/:").replace("}", "");
@@ -119,7 +122,7 @@ function generateCurlExample(
 function generateTypeScriptExample(
   path: string,
   method: string,
-  operation: Operation
+  operation: Operation,
 ): string {
   const endpoint = path.replace("/{", "/:").replace("}", "");
   let example = `// Using tRPC client\n`;
@@ -144,14 +147,20 @@ function generateTypeScriptExample(
 }
 
 function generateMarkdown(): string {
-  const doc = openApiDocument as { info: { title: string; description: string; version: string }; paths: Record<string, unknown> };
+  const doc = openApiDocument as {
+    info: { title: string; description: string; version: string };
+    paths: Record<string, unknown>;
+  };
   let markdown = `# ${doc.info.title}\n\n`;
   markdown += `${doc.info.description}\n\n`;
   markdown += `**Version**: ${doc.info.version}\n\n`;
   markdown += `---\n\n`;
 
   // Group operations by tag
-  const pathsByTag: Record<string, { path: string; method: string; op: Operation }[]> = {};
+  const pathsByTag: Record<
+    string,
+    { path: string; method: string; op: Operation }[]
+  > = {};
 
   for (const [path, pathItem] of Object.entries(doc.paths || {})) {
     const item = pathItem as PathItem;
@@ -160,7 +169,7 @@ function generateMarkdown(): string {
         const op = operation as Operation;
         const tags = op.tags ?? ["Other"];
         for (const tag of tags) {
-          (pathsByTag[tag] ??= []);
+          pathsByTag[tag] ??= [];
           pathsByTag[tag].push({ path, method, op });
         }
       }

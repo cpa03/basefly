@@ -2,13 +2,13 @@ import { NextResponse } from "next/server";
 
 import { HTTP_SECURITY_HEADERS } from "@saasfly/common";
 
-import { logger } from "~/lib/logger";
 import { performHealthCheck } from "~/lib/health-check";
+import { logger } from "~/lib/logger";
 
 /**
  * Health check endpoint for Kubernetes probes and load balancers.
  * No authentication - intentionally public for fast health monitoring.
- * 
+ *
  * This endpoint checks all external dependencies:
  * - Database (PostgreSQL)
  * - Stripe API
@@ -49,18 +49,21 @@ const HEAD_SECURITY_HEADERS = {
 
 /**
  * GET /api/health
- * 
+ *
  * Returns detailed health status including dependency checks.
  * Response time target: < 2 seconds
  */
 export async function GET() {
   try {
     const healthResult = await performHealthCheck();
-    
+
     // Determine HTTP status code based on health
-    const httpStatus = healthResult.status === "healthy" ? 200 
-      : healthResult.status === "degraded" ? 200  // Still operational
-      : 503;  // Not operational
+    const httpStatus =
+      healthResult.status === "healthy"
+        ? 200
+        : healthResult.status === "degraded"
+          ? 200 // Still operational
+          : 503; // Not operational
 
     return NextResponse.json(healthResult, {
       status: httpStatus,
@@ -78,21 +81,21 @@ export async function GET() {
       {
         status: 503,
         headers: HEALTH_SECURITY_HEADERS,
-      }
+      },
     );
   }
 }
 
 /**
  * HEAD /api/health
- * 
+ *
  * Ultra-fast health check for load balancers.
  * Returns 200 if service is up, 503 if down.
  */
 export async function HEAD() {
   try {
     const healthResult = await performHealthCheck();
-    
+
     // Return 503 if unhealthy
     const status = healthResult.status === "unhealthy" ? 503 : 200;
 

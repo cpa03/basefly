@@ -367,4 +367,9 @@ export {
   createLogger,
   createLoggerWrapper,
 } from "./logger";
-export type { LoggerConfig, LogMetadata, PackageName, BaseLogger } from "./logger";
+export type {
+  LoggerConfig,
+  LogMetadata,
+  PackageName,
+  BaseLogger,
+} from "./logger";

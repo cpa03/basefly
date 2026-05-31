@@ -1,17 +1,18 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
+
 import {
-  UI_STRINGS,
-  THEME_STRINGS,
-  MARKETING_FALLBACKS,
-  PAGE_METADATA,
-  MARKETING_STATS,
-  ERROR_MESSAGES,
-  UI_LABELS,
-  PLACEHOLDER_TEXT,
-  TOAST_MESSAGES,
-  FORM_LABELS,
-  FORM_DESCRIPTIONS,
   DIALOG_MESSAGES,
+  ERROR_MESSAGES,
+  FORM_DESCRIPTIONS,
+  FORM_LABELS,
+  MARKETING_FALLBACKS,
+  MARKETING_STATS,
+  PAGE_METADATA,
+  PLACEHOLDER_TEXT,
+  THEME_STRINGS,
+  TOAST_MESSAGES,
+  UI_LABELS,
+  UI_STRINGS,
 } from "./ui-strings";
 
 describe("ui-strings", () => {
@@ -20,7 +21,6 @@ describe("ui-strings", () => {
       expect(UI_STRINGS.login).toBe("Default Login Text");
       expect(UI_STRINGS.signup).toBe("Default Signup Text");
     });
-
   });
 
   describe("THEME_STRINGS", () => {
@@ -87,15 +87,17 @@ describe("ui-strings", () => {
 
   describe("TOAST_MESSAGES", () => {
     it("should have success messages", () => {
-      expect(TOAST_MESSAGES.success.saved).toBe("Your changes have been saved.");
+      expect(TOAST_MESSAGES.success.saved).toBe(
+        "Your changes have been saved.",
+      );
       expect(TOAST_MESSAGES.success.clusterCreated).toBe(
-        "Your cluster has been created."
+        "Your cluster has been created.",
       );
     });
 
     it("should have error messages", () => {
       expect(TOAST_MESSAGES.error.somethingWentWrong).toBe(
-        "Something went wrong."
+        "Something went wrong.",
       );
       expect(TOAST_MESSAGES.error.pleaseTryAgain).toBe("Please try again.");
     });
@@ -125,10 +127,10 @@ describe("ui-strings", () => {
   describe("DIALOG_MESSAGES", () => {
     it("should have delete cluster dialog messages", () => {
       expect(DIALOG_MESSAGES.deleteCluster.title).toBe(
-        "Are you sure you want to delete this cluster?"
+        "Are you sure you want to delete this cluster?",
       );
       expect(DIALOG_MESSAGES.deleteCluster.description).toBe(
-        "This action cannot be undone."
+        "This action cannot be undone.",
       );
     });
   });

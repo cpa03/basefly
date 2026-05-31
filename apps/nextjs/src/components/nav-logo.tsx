@@ -28,7 +28,7 @@ interface NavLogoProps {
 /**
  * Shared navigation logo component used across MainNav and MobileNav.
  * Provides consistent logo rendering with proper accessibility attributes.
- * 
+ *
  * @example
  * ```tsx
  * <NavLogo lang="en" />

@@ -414,7 +414,15 @@ export const SparklesCore = (props: ParticlesProps) => {
       },
       detectRetina: true,
     }),
-    [background, particleColor, speed, particleDensity, minSize, maxSize, shouldReduceMotion],
+    [
+      background,
+      particleColor,
+      speed,
+      particleDensity,
+      minSize,
+      maxSize,
+      shouldReduceMotion,
+    ],
   );
 
   const particlesLoaded = async (container?: Container) => {

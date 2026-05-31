@@ -3,11 +3,11 @@ import { describe, expect, it } from "vitest";
 import {
   CACHE_CONTROL,
   CACHE_DURATION,
+  generateCacheControl,
+  generateNextJsHeaders,
   HTTP_SECURITY_HEADERS,
   NEXTJS_CACHE_HEADERS,
   TIME_MS,
-  generateCacheControl,
-  generateNextJsHeaders,
   type CacheControlKey,
   type CacheDurationKey,
 } from "./cache";
@@ -130,9 +130,7 @@ describe("cache.ts - HTTP_SECURITY_HEADERS", () => {
 
   it("should have PERMISSIONS_POLICY with restricted features", () => {
     expect(HTTP_SECURITY_HEADERS.PERMISSIONS_POLICY).toContain("camera=()");
-    expect(HTTP_SECURITY_HEADERS.PERMISSIONS_POLICY).toContain(
-      "microphone=()",
-    );
+    expect(HTTP_SECURITY_HEADERS.PERMISSIONS_POLICY).toContain("microphone=()");
     expect(HTTP_SECURITY_HEADERS.PERMISSIONS_POLICY).toContain(
       "geolocation=()",
     );
@@ -193,16 +191,12 @@ describe("cache.ts - generateCacheControl", () => {
 describe("cache.ts - NEXTJS_CACHE_HEADERS", () => {
   it("should have default header with NO_CACHE", () => {
     expect(NEXTJS_CACHE_HEADERS.default.key).toBe("Cache-Control");
-    expect(NEXTJS_CACHE_HEADERS.default.value).toBe(
-      CACHE_CONTROL.NO_CACHE,
-    );
+    expect(NEXTJS_CACHE_HEADERS.default.value).toBe(CACHE_CONTROL.NO_CACHE);
   });
 
   it("should have immutable header with IMMUTABLE cache", () => {
     expect(NEXTJS_CACHE_HEADERS.immutable.key).toBe("Cache-Control");
-    expect(NEXTJS_CACHE_HEADERS.immutable.value).toBe(
-      CACHE_CONTROL.IMMUTABLE,
-    );
+    expect(NEXTJS_CACHE_HEADERS.immutable.value).toBe(CACHE_CONTROL.IMMUTABLE);
   });
 
   it("should have api header with CONTENT_TYPE_OPTIONS", () => {
@@ -222,9 +216,7 @@ describe("cache.ts - generateNextJsHeaders", () => {
 
   it("should include catch-all route", () => {
     const result = generateNextJsHeaders();
-    const catchAll = result.find(
-      (config) => config.source === "/(.*)",
-    );
+    const catchAll = result.find((config) => config.source === "/(.*)");
     expect(catchAll).toBeDefined();
     expect(catchAll?.headers).toBeDefined();
     expect(catchAll?.headers?.length).toBeGreaterThan(0);
@@ -232,9 +224,7 @@ describe("cache.ts - generateNextJsHeaders", () => {
 
   it("should include HSTS header in catch-all", () => {
     const result = generateNextJsHeaders();
-    const catchAll = result.find(
-      (config) => config.source === "/(.*)",
-    );
+    const catchAll = result.find((config) => config.source === "/(.*)");
     const hstsHeader = catchAll?.headers?.find(
       (h) => h.key === "Strict-Transport-Security",
     );
@@ -244,9 +234,7 @@ describe("cache.ts - generateNextJsHeaders", () => {
 
   it("should include X-Frame-Options header", () => {
     const result = generateNextJsHeaders();
-    const catchAll = result.find(
-      (config) => config.source === "/(.*)",
-    );
+    const catchAll = result.find((config) => config.source === "/(.*)");
     const frameOptionsHeader = catchAll?.headers?.find(
       (h) => h.key === "X-Frame-Options",
     );
@@ -255,9 +243,7 @@ describe("cache.ts - generateNextJsHeaders", () => {
 
   it("should include X-Content-Type-Options header", () => {
     const result = generateNextJsHeaders();
-    const catchAll = result.find(
-      (config) => config.source === "/(.*)",
-    );
+    const catchAll = result.find((config) => config.source === "/(.*)");
     const contentTypeHeader = catchAll?.headers?.find(
       (h) => h.key === "X-Content-Type-Options",
     );
@@ -266,9 +252,7 @@ describe("cache.ts - generateNextJsHeaders", () => {
 
   it("should include Referrer-Policy header", () => {
     const result = generateNextJsHeaders();
-    const catchAll = result.find(
-      (config) => config.source === "/(.*)",
-    );
+    const catchAll = result.find((config) => config.source === "/(.*)");
     const referrerHeader = catchAll?.headers?.find(
       (h) => h.key === "Referrer-Policy",
     );
@@ -277,9 +261,7 @@ describe("cache.ts - generateNextJsHeaders", () => {
 
   it("should include Permissions-Policy header", () => {
     const result = generateNextJsHeaders();
-    const catchAll = result.find(
-      (config) => config.source === "/(.*)",
-    );
+    const catchAll = result.find((config) => config.source === "/(.*)");
     const permissionsHeader = catchAll?.headers?.find(
       (h) => h.key === "Permissions-Policy",
     );
@@ -288,9 +270,7 @@ describe("cache.ts - generateNextJsHeaders", () => {
 
   it("should include DNS-Prefetch-Control header", () => {
     const result = generateNextJsHeaders();
-    const catchAll = result.find(
-      (config) => config.source === "/(.*)",
-    );
+    const catchAll = result.find((config) => config.source === "/(.*)");
     const dnsHeader = catchAll?.headers?.find(
       (h) => h.key === "X-DNS-Prefetch-Control",
     );
@@ -309,7 +289,8 @@ describe("cache.ts - generateNextJsHeaders", () => {
   it("should include hashed assets configuration", () => {
     const result = generateNextJsHeaders();
     const hashedAssets = result.find(
-      (config) => config.source === "/:path*.:ext(js|css|woff2|png|jpg|jpeg|gif|ico|svg)",
+      (config) =>
+        config.source === "/:path*.:ext(js|css|woff2|png|jpg|jpeg|gif|ico|svg)",
     );
     expect(hashedAssets).toBeDefined();
   });

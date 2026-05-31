@@ -4,11 +4,11 @@ import { redirect } from "next/navigation";
 
 import { authOptions, getCurrentUser } from "@saasfly/auth";
 
+import { ClusterList } from "~/components/dashboard/cluster-list";
+import { ClusterListSkeleton } from "~/components/dashboard/cluster-list-skeleton";
 import { DashboardHeader } from "~/components/header";
 import { K8sCreateButton } from "~/components/k8s/cluster-create-button";
 import { DashboardShell } from "~/components/shell";
-import { ClusterList } from "~/components/dashboard/cluster-list";
-import { ClusterListSkeleton } from "~/components/dashboard/cluster-list-skeleton";
 import type { Locale } from "~/config/i18n-config";
 import { getDictionary } from "~/lib/get-dictionary";
 import { trpc } from "~/trpc/server";

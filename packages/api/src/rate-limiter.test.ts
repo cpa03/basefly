@@ -3,10 +3,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { logger } from "./logger";
 import {
-  RateLimiter,
-  rateLimitConfigs,
   getIdentifier,
   getLimiter,
+  rateLimitConfigs,
+  RateLimiter,
 } from "./rate-limiter";
 
 describe("RateLimiter", () => {

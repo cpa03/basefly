@@ -60,7 +60,7 @@ async function verifyClusterOwnership(
 export const k8sRouter = createTRPCRouter({
   /**
    * Retrieves all active Kubernetes clusters for the authenticated user.
-   * 
+   *
    * @returns Array of active cluster configurations
    * @throws {TRPCError} UNAUTHORIZED if not authenticated
    */
@@ -72,7 +72,7 @@ export const k8sRouter = createTRPCRouter({
   ),
   /**
    * Creates a new Kubernetes cluster for the authenticated user.
-   * 
+   *
    * @param input - Cluster configuration (name, location)
    * @returns The created cluster with ID, name, and location
    * @throws {TRPCError} UNAUTHORIZED if not authenticated
@@ -155,7 +155,7 @@ export const k8sRouter = createTRPCRouter({
     }),
   /**
    * Updates an existing Kubernetes cluster's configuration.
-   * 
+   *
    * @param input - Cluster update (id, optional name, optional location)
    * @returns Success status
    * @throws {TRPCError} UNAUTHORIZED if not authenticated
@@ -228,7 +228,7 @@ export const k8sRouter = createTRPCRouter({
     }),
   /**
    * Soft deletes a Kubernetes cluster (marks as deleted).
-   * 
+   *
    * @param input - Cluster ID to delete
    * @returns Success status
    * @throws {TRPCError} UNAUTHORIZED if not authenticated

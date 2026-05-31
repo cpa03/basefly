@@ -44,7 +44,9 @@ export const AnimatedTooltip = ({
   };
 
   // Reduced motion: instant visibility without animation
-  const reducedMotionInitial = shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.6 };
+  const reducedMotionInitial = shouldReduceMotion
+    ? { opacity: 0 }
+    : { opacity: 0, y: 20, scale: 0.6 };
   const reducedMotionAnimate = shouldReduceMotion
     ? { opacity: 1 }
     : {
@@ -57,7 +59,9 @@ export const AnimatedTooltip = ({
           damping: 10,
         },
       };
-  const reducedMotionExit = shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.6 };
+  const reducedMotionExit = shouldReduceMotion
+    ? { opacity: 0 }
+    : { opacity: 0, y: 20, scale: 0.6 };
 
   return (
     <>
@@ -102,7 +106,7 @@ export const AnimatedTooltip = ({
                 width={100}
                 src={item.image}
                 alt={item.name}
-                className="relative !m-0 h-14 w-14 rounded-full border-2 border-white object-cover object-top !p-0 transition duration-500 group-hover:z-30 group-hover:scale-105 focus-visible:z-30"
+                className="relative !m-0 h-14 w-14 rounded-full border-2 border-white object-cover object-top !p-0 transition duration-500 focus-visible:z-30 group-hover:z-30 group-hover:scale-105"
               />
             </Link>
           ) : (

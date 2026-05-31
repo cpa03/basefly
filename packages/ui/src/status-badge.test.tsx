@@ -1,6 +1,6 @@
 import React from "react";
-import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
 
 import { StatusBadge } from "./status-badge";
 
@@ -42,15 +42,23 @@ describe("StatusBadge", () => {
   });
 
   it("should render without tooltip when showTooltip is false", () => {
-    const { container } = render(<StatusBadge status="RUNNING" showTooltip={false} />);
+    const { container } = render(
+      <StatusBadge status="RUNNING" showTooltip={false} />,
+    );
     // Should render as a simple div without TooltipProvider wrapping
     expect(container.querySelector('[role="status"]')).toBeInTheDocument();
-    expect(container.querySelector('[data-state="instant-open"]')).not.toBeInTheDocument();
+    expect(
+      container.querySelector('[data-state="instant-open"]'),
+    ).not.toBeInTheDocument();
   });
 
   it("should apply custom className", () => {
     const { container } = render(
-      <StatusBadge status="PENDING" className="custom-class" showTooltip={false} />,
+      <StatusBadge
+        status="PENDING"
+        className="custom-class"
+        showTooltip={false}
+      />,
     );
     const badge = container.querySelector('[role="status"]');
     expect(badge).toHaveClass("custom-class");
@@ -58,7 +66,10 @@ describe("StatusBadge", () => {
 
   it("should render with aria-label", () => {
     render(<StatusBadge status="RUNNING" />);
-    expect(screen.getByRole("status")).toHaveAttribute("aria-label", "Running status");
+    expect(screen.getByRole("status")).toHaveAttribute(
+      "aria-label",
+      "Running status",
+    );
   });
 
   it("should render small size", () => {

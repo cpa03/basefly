@@ -192,13 +192,13 @@ export function getEnvValidationMessage(): string {
 
   if (result.missing.length > 0) {
     messages.push(
-      `Missing required environment variables: ${result.missing.join(", ")}`
+      `Missing required environment variables: ${result.missing.join(", ")}`,
     );
   }
 
   if (result.missingRecommended.length > 0) {
     messages.push(
-      `Missing recommended environment variables: ${result.missingRecommended.join(", ")}`
+      `Missing recommended environment variables: ${result.missingRecommended.join(", ")}`,
     );
   }
 
@@ -225,7 +225,7 @@ export function initEnvValidation(): void {
     console.warn(`[env-validation] ${message}`);
   } else if (result.missingRecommended.length > 0) {
     console.warn(
-      `[env-validation] Missing recommended environment variables: ${result.missingRecommended.join(", ")}`
+      `[env-validation] Missing recommended environment variables: ${result.missingRecommended.join(", ")}`,
     );
   }
 }

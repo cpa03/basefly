@@ -48,15 +48,12 @@ export const SignInClerkModal = ({
         redirectUrlComplete: `${protocol}//${host}/dashboard`,
       })
       .then((res) => {
-        logger.info("Sign in successful", { result: res });
+        logger.info("Sign in successful", { status: res.status });
       })
       .catch((err: Error) => {
         // See https://clerk.com/docs/custom-flows/error-handling
         // for more info on error handling
-        logger.info("Sign in errors", {
-          errors: (err as { errors?: unknown[] }).errors,
-        });
-        logger.error("Sign in failed", err);
+        logger.error("Sign in failed", { message: err.message });
       });
   };
 

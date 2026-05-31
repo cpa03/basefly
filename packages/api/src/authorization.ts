@@ -46,12 +46,9 @@ export function verifyOwnership(
         resourceType,
         resourceId,
       },
-      `Unauthorized access attempt to ${resourceType}`
+      `Unauthorized access attempt to ${resourceType}`,
     );
-    throw createApiError(
-      ErrorCode.UNAUTHORIZED,
-      "Authentication required"
-    );
+    throw createApiError(ErrorCode.UNAUTHORIZED, "Authentication required");
   }
 
   // Check ownership
@@ -66,11 +63,11 @@ export function verifyOwnership(
         security: true,
         reason: "ownership_mismatch",
       },
-      `Forbidden: User attempted to access ${resourceType} owned by another user`
+      `Forbidden: User attempted to access ${resourceType} owned by another user`,
     );
     throw createApiError(
       ErrorCode.FORBIDDEN,
-      `You don't have access to this ${resourceType}`
+      `You don't have access to this ${resourceType}`,
     );
   }
 }
@@ -104,12 +101,9 @@ export async function verifyOwnershipWithFetch<T extends { ownerId?: string }>(
         reason: "missing_user_id",
         resourceType,
       },
-      `Unauthorized access attempt to ${resourceType}`
+      `Unauthorized access attempt to ${resourceType}`,
     );
-    throw createApiError(
-      ErrorCode.UNAUTHORIZED,
-      "Authentication required"
-    );
+    throw createApiError(ErrorCode.UNAUTHORIZED, "Authentication required");
   }
 
   // Fetch resource
@@ -131,11 +125,11 @@ export async function verifyOwnershipWithFetch<T extends { ownerId?: string }>(
         security: true,
         reason: "ownership_mismatch",
       },
-      `Forbidden: User attempted to access ${resourceType} owned by another user`
+      `Forbidden: User attempted to access ${resourceType} owned by another user`,
     );
     throw createApiError(
       ErrorCode.FORBIDDEN,
-      `You don't have access to this ${resourceType}`
+      `You don't have access to this ${resourceType}`,
     );
   }
 
@@ -163,7 +157,9 @@ export async function verifyOwnershipWithFetch<T extends { ownerId?: string }>(
  */
 export function createOwnershipVerifier<T>(
   resourceType: string,
-  getOwnerId: (resource: T) => string | null | undefined | Promise<string | null | undefined>,
+  getOwnerId: (
+    resource: T,
+  ) => string | null | undefined | Promise<string | null | undefined>,
 ) {
   return async function verify(
     ctx: AuthorizationContext,
@@ -178,20 +174,14 @@ export function createOwnershipVerifier<T>(
           reason: "missing_user_id",
           resourceType,
         },
-        `Unauthorized access attempt to ${resourceType}`
+        `Unauthorized access attempt to ${resourceType}`,
       );
-      throw createApiError(
-        ErrorCode.UNAUTHORIZED,
-        "Authentication required"
-      );
+      throw createApiError(ErrorCode.UNAUTHORIZED, "Authentication required");
     }
 
     // Check resource exists
     if (!resource) {
-      throw createApiError(
-        ErrorCode.NOT_FOUND,
-        `${resourceType} not found`
-      );
+      throw createApiError(ErrorCode.NOT_FOUND, `${resourceType} not found`);
     }
 
     // Check ownership
@@ -206,11 +196,11 @@ export function createOwnershipVerifier<T>(
           security: true,
           reason: "ownership_mismatch",
         },
-        `Forbidden: User attempted to access ${resourceType} owned by another user`
+        `Forbidden: User attempted to access ${resourceType} owned by another user`,
       );
       throw createApiError(
         ErrorCode.FORBIDDEN,
-        `You don't have access to this ${resourceType}`
+        `You don't have access to this ${resourceType}`,
       );
     }
 

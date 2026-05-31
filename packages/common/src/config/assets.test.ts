@@ -1,9 +1,6 @@
-import { describe, it, expect } from "vitest";
-import {
-  ASSET_BASE_PATHS,
-  ASSETS,
-  getAssetPath,
-} from "./assets";
+import { describe, expect, it } from "vitest";
+
+import { ASSET_BASE_PATHS, ASSETS, getAssetPath } from "./assets";
 
 describe("assets", () => {
   describe("ASSET_BASE_PATHS", () => {
@@ -31,13 +28,13 @@ describe("assets", () => {
 
     it("should prepend base URL when provided", () => {
       expect(getAssetPath("/images/logo.png", "https://cdn.example.com")).toBe(
-        "https://cdn.example.com/images/logo.png"
+        "https://cdn.example.com/images/logo.png",
       );
     });
 
     it("should handle empty path", () => {
       expect(getAssetPath("", "https://cdn.example.com")).toBe(
-        "https://cdn.example.com"
+        "https://cdn.example.com",
       );
     });
   });

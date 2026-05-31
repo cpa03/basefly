@@ -1,5 +1,5 @@
-import { Skeleton } from "@saasfly/ui/skeleton";
 import { Card, CardContent, CardHeader } from "@saasfly/ui/card";
+import { Skeleton } from "@saasfly/ui/skeleton";
 
 export function PricingCardsSkeleton() {
   return (

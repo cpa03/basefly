@@ -1,16 +1,17 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
+
 import {
-  SCROLL_OFFSETS,
-  SCROLL_DELAYS,
-  SCROLL_THRESHOLDS,
+  createScrollOptions,
+  getScrollDelay,
+  getScrollOffset,
+  getScrollThreshold,
   SCROLL_BEHAVIOR,
   SCROLL_CONFIG,
-  getScrollOffset,
-  getScrollDelay,
-  getScrollThreshold,
-  createScrollOptions,
-  type ScrollOffsetKey,
+  SCROLL_DELAYS,
+  SCROLL_OFFSETS,
+  SCROLL_THRESHOLDS,
   type ScrollDelayKey,
+  type ScrollOffsetKey,
   type ScrollThresholdKey,
 } from "./scroll";
 
@@ -142,7 +143,7 @@ describe("scroll", () => {
     it("should handle all options together", () => {
       const result = createScrollOptions(
         { top: 300, left: 100, behavior: "auto" },
-        { offsetKey: "stickyHeader", delayKey: "routeChange" }
+        { offsetKey: "stickyHeader", delayKey: "routeChange" },
       );
       expect(result.options.top).toBe(236); // 300 - stickyHeader offset (64)
       expect(result.options.left).toBe(100);

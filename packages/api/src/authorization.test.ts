@@ -7,11 +7,15 @@
  * @module authorization.test
  */
 
-import { describe, expect, it } from "vitest";
 import { TRPCError } from "@trpc/server";
+import { describe, expect, it } from "vitest";
 
-import { verifyOwnership, verifyOwnershipWithFetch, createOwnershipVerifier } from "./authorization";
-import { createMockContext, createAnonymousContext } from "./test-utils";
+import {
+  createOwnershipVerifier,
+  verifyOwnership,
+  verifyOwnershipWithFetch,
+} from "./authorization";
+import { createAnonymousContext, createMockContext } from "./test-utils";
 
 interface TestCluster {
   id: number;
@@ -34,21 +38,31 @@ describe("Authorization Utilities", () => {
     it("should throw UNAUTHORIZED when user is not authenticated", () => {
       const ctx = createAnonymousContext();
 
-      expect(() => verifyOwnership(ctx, userId, "test-resource")).toThrow(TRPCError);
-      expect(() => verifyOwnership(ctx, userId, "test-resource")).toThrow(/authentication required/i);
+      expect(() => verifyOwnership(ctx, userId, "test-resource")).toThrow(
+        TRPCError,
+      );
+      expect(() => verifyOwnership(ctx, userId, "test-resource")).toThrow(
+        /authentication required/i,
+      );
     });
 
     it("should throw FORBIDDEN when user does not own the resource", () => {
       const ctx = createMockContext({ userId });
 
-      expect(() => verifyOwnership(ctx, otherUserId, "test-resource")).toThrow(TRPCError);
-      expect(() => verifyOwnership(ctx, otherUserId, "test-resource")).toThrow(/don't have access/i);
+      expect(() => verifyOwnership(ctx, otherUserId, "test-resource")).toThrow(
+        TRPCError,
+      );
+      expect(() => verifyOwnership(ctx, otherUserId, "test-resource")).toThrow(
+        /don't have access/i,
+      );
     });
 
     it("should include resource type in error message", () => {
       const ctx = createMockContext({ userId });
 
-      expect(() => verifyOwnership(ctx, otherUserId, "cluster")).toThrow(/cluster/i);
+      expect(() => verifyOwnership(ctx, otherUserId, "cluster")).toThrow(
+        /cluster/i,
+      );
     });
 
     it("should include resourceId in context when provided", () => {
@@ -71,7 +85,7 @@ describe("Authorization Utilities", () => {
         ctx,
         () => Promise.resolve(resource),
         "test-resource",
-        "Resource not found"
+        "Resource not found",
       );
 
       expect(result).toEqual(resource);
@@ -85,8 +99,8 @@ describe("Authorization Utilities", () => {
           ctx,
           () => Promise.resolve({ id: 1, ownerId: userId }),
           "test-resource",
-          "Resource not found"
-        )
+          "Resource not found",
+        ),
       ).rejects.toThrow(TRPCError);
     });
 
@@ -98,8 +112,8 @@ describe("Authorization Utilities", () => {
           ctx,
           () => Promise.resolve(undefined),
           "test-resource",
-          "Resource not found"
-        )
+          "Resource not found",
+        ),
       ).rejects.toThrow(/not found/i);
     });
 
@@ -112,8 +126,8 @@ describe("Authorization Utilities", () => {
           ctx,
           () => Promise.resolve(resource),
           "test-resource",
-          "Resource not found"
-        )
+          "Resource not found",
+        ),
       ).rejects.toThrow(TRPCError);
     });
   });
@@ -125,7 +139,7 @@ describe("Authorization Utilities", () => {
     it("should return resource when user owns it", async () => {
       const verifyClusterOwnership = createOwnershipVerifier(
         "cluster",
-        (cluster: TestCluster) => cluster.authUserId
+        (cluster: TestCluster) => cluster.authUserId,
       );
 
       const ctx = createMockContext({ userId });
@@ -138,59 +152,69 @@ describe("Authorization Utilities", () => {
     it("should throw UNAUTHORIZED when user is not authenticated", async () => {
       const verifyClusterOwnership = createOwnershipVerifier(
         "cluster",
-        (cluster: TestCluster) => cluster.authUserId
+        (cluster: TestCluster) => cluster.authUserId,
       );
 
       const ctx = createAnonymousContext();
       const cluster = { id: 1, name: "test", authUserId: userId };
 
-      await expect(verifyClusterOwnership(ctx, cluster)).rejects.toThrow(TRPCError);
+      await expect(verifyClusterOwnership(ctx, cluster)).rejects.toThrow(
+        TRPCError,
+      );
     });
 
     it("should throw NOT_FOUND when resource is null", async () => {
       const verifyClusterOwnership = createOwnershipVerifier(
         "cluster",
-        (cluster: TestCluster) => cluster.authUserId
+        (cluster: TestCluster) => cluster.authUserId,
       );
 
       const ctx = createMockContext({ userId });
 
-      await expect(verifyClusterOwnership(ctx, null)).rejects.toThrow(/not found/i);
+      await expect(verifyClusterOwnership(ctx, null)).rejects.toThrow(
+        /not found/i,
+      );
     });
 
     it("should throw NOT_FOUND when resource is undefined", async () => {
       const verifyClusterOwnership = createOwnershipVerifier(
         "cluster",
-        (cluster: TestCluster) => cluster.authUserId
+        (cluster: TestCluster) => cluster.authUserId,
       );
 
       const ctx = createMockContext({ userId });
 
-      await expect(verifyClusterOwnership(ctx, undefined)).rejects.toThrow(/not found/i);
+      await expect(verifyClusterOwnership(ctx, undefined)).rejects.toThrow(
+        /not found/i,
+      );
     });
 
     it("should throw FORBIDDEN when user does not own the resource", async () => {
       const verifyClusterOwnership = createOwnershipVerifier(
         "cluster",
-        (cluster: TestCluster) => cluster.authUserId
+        (cluster: TestCluster) => cluster.authUserId,
       );
 
       const ctx = createMockContext({ userId });
       const cluster = { id: 1, name: "test", authUserId: otherUserId };
 
-      await expect(verifyClusterOwnership(ctx, cluster)).rejects.toThrow(TRPCError);
+      await expect(verifyClusterOwnership(ctx, cluster)).rejects.toThrow(
+        TRPCError,
+      );
     });
 
     it("should throw FORBIDDEN when resource has null ownerId", async () => {
       const verifyClusterOwnership = createOwnershipVerifier(
         "cluster",
-        (cluster: TestCluster) => cluster.authUserId
+        (cluster: TestCluster) => cluster.authUserId,
       );
 
       const ctx = createMockContext({ userId });
       const cluster = { id: 1, name: "test", authUserId: null };
 
-      await expect(verifyClusterOwnership(ctx, cluster)).rejects.toThrow(TRPCError);
+      await expect(verifyClusterOwnership(ctx, cluster)).rejects.toThrow(
+        TRPCError,
+      );
     });
 
     it("should work with async getOwnerId functions", async () => {
@@ -200,7 +224,7 @@ describe("Authorization Utilities", () => {
           // Simulate async lookup
           await Promise.resolve();
           return cluster.authUserId;
-        }
+        },
       );
 
       const ctx = createMockContext({ userId });

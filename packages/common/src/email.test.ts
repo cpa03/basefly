@@ -1,10 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  isResendConfigured,
-  getResendClientOrThrow,
-  resend,
-} from "./email";
+import { getResendClientOrThrow, isResendConfigured, resend } from "./email";
 
 describe("email.ts - Resend Configuration", () => {
   describe("isResendConfigured", () => {

@@ -145,7 +145,10 @@ export function StatusBadge({
         aria-hidden="true"
       />
       <Icon
-        className={cn(styles.icon, config.animate && "animate-spin motion-reduce:animate-none")}
+        className={cn(
+          styles.icon,
+          config.animate && "animate-spin motion-reduce:animate-none",
+        )}
         aria-hidden="true"
       />
       <span className="sr-only">{config.label}</span>

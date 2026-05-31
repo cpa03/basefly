@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
 
 import {
-  ICON_SIZES,
-  getIconSize,
   BUTTON_ICON_SIZES,
-  NAV_ICON_SIZES,
   FEATURE_ICON_SIZES,
-  STATUS_ICON_SIZES,
-  SOCIAL_ICON_SIZES,
+  getIconSize,
   ICON_PRESETS,
+  ICON_SIZES,
+  NAV_ICON_SIZES,
+  SOCIAL_ICON_SIZES,
+  STATUS_ICON_SIZES,
   type IconSizeKey,
 } from "./icon-sizes";
 

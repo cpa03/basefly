@@ -35,7 +35,9 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
           </div>
         </div>
       </header>
-      <main id="main-content" className="container px-4 py-6">{children}</main>
+      <main id="main-content" className="container px-4 py-6">
+        {children}
+      </main>
     </div>
   );
 }

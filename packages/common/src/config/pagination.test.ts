@@ -1,14 +1,15 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
+
 import {
-  PAGE_SIZES,
-  PAGINATION_LIMITS,
-  INFINITE_SCROLL,
-  PAGINATION_CONFIG,
-  getPageSize,
-  validatePageSize,
   calculateOffset,
   calculateTotalPages,
   generatePaginationMeta,
+  getPageSize,
+  INFINITE_SCROLL,
+  PAGE_SIZES,
+  PAGINATION_CONFIG,
+  PAGINATION_LIMITS,
+  validatePageSize,
   type PageSizeKey,
 } from "./pagination";
 

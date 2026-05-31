@@ -1,11 +1,12 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
+
 import {
-  CSP_DOMAINS,
-  CSP_DIRECTIVES,
-  SECURITY_HEADERS,
   buildCSPHeader,
-  getMinifiedCSPHeader,
   CSP_CONFIG,
+  CSP_DIRECTIVES,
+  CSP_DOMAINS,
+  getMinifiedCSPHeader,
+  SECURITY_HEADERS,
 } from "./csp";
 
 describe("csp", () => {
@@ -76,13 +77,13 @@ describe("csp", () => {
   describe("SECURITY_HEADERS", () => {
     it("should have block-all-mixed-content", () => {
       expect(SECURITY_HEADERS.blockAllMixedContent).toBe(
-        "block-all-mixed-content"
+        "block-all-mixed-content",
       );
     });
 
     it("should have upgrade-insecure-requests", () => {
       expect(SECURITY_HEADERS.upgradeInsecureRequests).toBe(
-        "upgrade-insecure-requests"
+        "upgrade-insecure-requests",
       );
     });
   });

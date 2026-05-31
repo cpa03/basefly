@@ -1,6 +1,5 @@
 import { db } from "@saasfly/db";
 
-
 /**
  * Health check service for verifying external dependencies.
  * All checks run concurrently for optimal response time.
@@ -25,8 +24,6 @@ export interface HealthCheckResult {
   responseTimeMs: number;
 }
 
-
-
 /**
  * Check database connectivity using a lightweight query
  */
@@ -43,7 +40,8 @@ async function checkDatabase(): Promise<DependencyStatus> {
     return {
       status: "unhealthy",
       latencyMs: Date.now() - start,
-      error: error instanceof Error ? error.message : "Database connection failed",
+      error:
+        error instanceof Error ? error.message : "Database connection failed",
     };
   }
 }
@@ -53,7 +51,7 @@ async function checkDatabase(): Promise<DependencyStatus> {
  */
 async function checkStripe(): Promise<DependencyStatus> {
   const start = Date.now();
-  
+
   if (!stripe) {
     return {
       status: "degraded",
@@ -73,12 +71,15 @@ async function checkStripe(): Promise<DependencyStatus> {
     };
   } catch (error) {
     // Timeout or connection error
-    const isTimeout = error instanceof Error && 
-      (error.message?.includes("timeout") || error.message?.includes("TIMEOUT"));
+    const isTimeout =
+      error instanceof Error &&
+      (error.message?.includes("timeout") ||
+        error.message?.includes("TIMEOUT"));
     return {
       status: isTimeout ? "degraded" : "unhealthy",
       latencyMs: Date.now() - start,
-      error: error instanceof Error ? error.message : "Stripe connection failed",
+      error:
+        error instanceof Error ? error.message : "Stripe connection failed",
     };
   }
 }
@@ -149,9 +150,17 @@ export async function performHealthCheck(): Promise<HealthCheckResult> {
 
   // Determine overall status
   let overallStatus: "healthy" | "degraded" | "unhealthy";
-  if (database.status === "unhealthy" || stripe.status === "unhealthy" || clerk.status === "unhealthy") {
+  if (
+    database.status === "unhealthy" ||
+    stripe.status === "unhealthy" ||
+    clerk.status === "unhealthy"
+  ) {
     overallStatus = "unhealthy";
-  } else if (database.status === "degraded" || stripe.status === "degraded" || clerk.status === "degraded") {
+  } else if (
+    database.status === "degraded" ||
+    stripe.status === "degraded" ||
+    clerk.status === "degraded"
+  ) {
     overallStatus = "degraded";
   } else {
     overallStatus = "healthy";

@@ -59,10 +59,10 @@ export function UserNameForm({ user, className, ...props }: UserNameFormProps) {
     setIsSaving(true);
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call -- tRPC proxy types are dynamically resolved
-    const response = await trpc.customer.updateUserName.mutate({
+    const response = (await trpc.customer.updateUserName.mutate({
       name: data.name,
       userId: user.id,
-    }) as { success?: boolean };
+    })) as { success?: boolean };
     setIsSaving(false);
 
     if (!response?.success) {

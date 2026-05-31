@@ -5,7 +5,11 @@
  * Uses the shared logging solution from @saasfly/common/logger
  */
 
-import { stripeLogger, createLoggerWrapper, type BaseLogger } from "@saasfly/common";
+import {
+  createLoggerWrapper,
+  stripeLogger,
+  type BaseLogger,
+} from "@saasfly/common";
 
 interface LoggerMetadata {
   requestId?: string;

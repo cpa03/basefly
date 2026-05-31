@@ -2,10 +2,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/unbound-method */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
+import type { Kysely } from "kysely";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import type { Kysely } from "kysely";
 import type { DB } from "./prisma/types";
+import {
+  clearRlsSession,
+  createRlsHelper,
+  rlsTransaction,
+  setRlsSession,
+} from "./rls-middleware";
 
 vi.mock("./logger", () => ({
   logger: {
@@ -22,13 +28,6 @@ vi.mock("kysely", () => ({
     execute: mockSqlExecute,
   })),
 }));
-
-import {
-  clearRlsSession,
-  createRlsHelper,
-  rlsTransaction,
-  setRlsSession,
-} from "./rls-middleware";
 
 describe("setRlsSession", () => {
   let mockDb: Kysely<DB>;
@@ -50,10 +49,9 @@ describe("setRlsSession", () => {
 
     await setRlsSession(mockDb, "user_test");
 
-    expect(logger.info).toHaveBeenCalledWith(
-      "RLS session variable set",
-      { userId: "user_test" },
-    );
+    expect(logger.info).toHaveBeenCalledWith("RLS session variable set", {
+      userId: "user_test",
+    });
   });
 
   it("throws and logs error when the SQL execution fails", async () => {
@@ -119,10 +117,12 @@ describe("rlsTransaction", () => {
     mockTrx = {} as any;
     mockDb = {
       transaction: vi.fn().mockReturnValue({
-        execute: vi.fn().mockImplementation(
-          (callback: (trx: Kysely<DB>) => Promise<unknown>) =>
-            callback(mockTrx),
-        ),
+        execute: vi
+          .fn()
+          .mockImplementation(
+            (callback: (trx: Kysely<DB>) => Promise<unknown>) =>
+              callback(mockTrx),
+          ),
       }),
     } as unknown as Kysely<DB>;
   });
@@ -170,9 +170,9 @@ describe("rlsTransaction", () => {
     mockSqlExecute.mockRejectedValue(dbError);
     const callback = vi.fn();
 
-    await expect(
-      rlsTransaction(mockDb, "user_fail", callback),
-    ).rejects.toThrow("RLS setup failed");
+    await expect(rlsTransaction(mockDb, "user_fail", callback)).rejects.toThrow(
+      "RLS setup failed",
+    );
     expect(callback).not.toHaveBeenCalled();
   });
 
@@ -180,9 +180,9 @@ describe("rlsTransaction", () => {
     const cbError = new Error("Query failed");
     const callback = vi.fn().mockRejectedValue(cbError);
 
-    await expect(
-      rlsTransaction(mockDb, "user_err", callback),
-    ).rejects.toThrow("Query failed");
+    await expect(rlsTransaction(mockDb, "user_err", callback)).rejects.toThrow(
+      "Query failed",
+    );
   });
 });
 
@@ -195,10 +195,12 @@ describe("createRlsHelper", () => {
 
     mockDb = {
       transaction: vi.fn().mockReturnValue({
-        execute: vi.fn().mockImplementation(
-          (callback: (trx: Kysely<DB>) => Promise<unknown>) =>
-            callback({} as unknown as Kysely<DB>),
-        ),
+        execute: vi
+          .fn()
+          .mockImplementation(
+            (callback: (trx: Kysely<DB>) => Promise<unknown>) =>
+              callback({} as unknown as Kysely<DB>),
+          ),
       }),
     } as unknown as Kysely<DB>;
   });

@@ -30,16 +30,18 @@ interface UseMobileMenuReturn {
 
 /**
  * Shared hook for managing mobile navigation menu state.
- * 
+ *
  * Provides consistent mobile menu behavior across MainNav and MobileNav components.
  * Handles state management, keyboard navigation (Escape to close), and focus management.
- * 
+ *
  * @example
  * ```tsx
  * const { isOpen, toggle, open, close } = useMobileMenu();
  * ```
  */
-export function useMobileMenu(options: UseMobileMenuOptions = {}): UseMobileMenuReturn {
+export function useMobileMenu(
+  options: UseMobileMenuOptions = {},
+): UseMobileMenuReturn {
   const { onClose } = options;
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
 
@@ -76,7 +78,7 @@ export function useMobileMenu(options: UseMobileMenuOptions = {}): UseMobileMenu
 
     const timer = setTimeout(() => {
       const firstLink = document.querySelector<HTMLAnchorElement>(
-        "#mobile-navigation a, #mobile-navigation button"
+        "#mobile-navigation a, #mobile-navigation button",
       );
       firstLink?.focus();
     }, 50);

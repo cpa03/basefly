@@ -1,16 +1,17 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
+
 import {
-  LogLevel,
+  ADMIN_EMAIL,
   DEFAULT_LOG_LEVEL,
-  NODE_ENV,
   IS_DEV,
   IS_PROD,
+  IS_REDIS_CONFIGURED,
   IS_TEST,
-  ADMIN_EMAIL,
   isAdminEmail,
   isValidLogLevel,
+  LogLevel,
+  NODE_ENV,
   REDIS_URL,
-  IS_REDIS_CONFIGURED,
 } from "./env";
 
 describe("env", () => {

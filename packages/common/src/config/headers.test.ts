@@ -1,15 +1,16 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
+
 import {
-  STANDARD_HEADERS,
-  CUSTOM_HEADERS,
-  TRPC_SOURCE_VALUES,
   CONTENT_TYPES,
+  CUSTOM_HEADERS,
   HEADERS,
-  type StandardHeader,
+  STANDARD_HEADERS,
+  TRPC_SOURCE_VALUES,
+  type ContentType,
   type CustomHeader,
   type HeaderName,
+  type StandardHeader,
   type TrpcSourceValue,
-  type ContentType,
 } from "./headers";
 
 describe("headers", () => {
@@ -24,22 +25,22 @@ describe("headers", () => {
 
     it("should have CORS headers", () => {
       expect(STANDARD_HEADERS.ACCESS_CONTROL_ALLOW_ORIGIN).toBe(
-        "Access-Control-Allow-Origin"
+        "Access-Control-Allow-Origin",
       );
       expect(STANDARD_HEADERS.ACCESS_CONTROL_ALLOW_METHODS).toBe(
-        "Access-Control-Allow-Methods"
+        "Access-Control-Allow-Methods",
       );
     });
 
     it("should have security headers", () => {
       expect(STANDARD_HEADERS.X_CONTENT_TYPE_OPTIONS).toBe(
-        "X-Content-Type-Options"
+        "X-Content-Type-Options",
       );
       expect(STANDARD_HEADERS.STRICT_TRANSPORT_SECURITY).toBe(
-        "Strict-Transport-Security"
+        "Strict-Transport-Security",
       );
       expect(STANDARD_HEADERS.CONTENT_SECURITY_POLICY).toBe(
-        "Content-Security-Policy"
+        "Content-Security-Policy",
       );
     });
   });
@@ -84,7 +85,7 @@ describe("headers", () => {
       expect(CONTENT_TYPES.HTML).toBe("text/html");
       expect(CONTENT_TYPES.TEXT).toBe("text/plain");
       expect(CONTENT_TYPES.FORM_URLENCODED).toBe(
-        "application/x-www-form-urlencoded"
+        "application/x-www-form-urlencoded",
       );
       expect(CONTENT_TYPES.MULTIPART_FORM_DATA).toBe("multipart/form-data");
     });

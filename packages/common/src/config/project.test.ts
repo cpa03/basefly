@@ -1,19 +1,20 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
+
 import {
-  BRAND_CONFIG,
-  COMPANY_CONFIG,
-  REPOSITORY_CONFIG,
   APP_URLS,
-  FEATURE_CONFIG,
-  DEPLOYMENT_CONFIG,
+  BRAND_CONFIG,
   CLI_CONFIG,
-  MARKETING_CONFIG,
-  INTEGRATION_CONFIG,
-  PROJECT_CONFIG,
-  getCurrentBaseUrl,
-  isProjectFeatureEnabled,
+  COMPANY_CONFIG,
+  DEPLOYMENT_CONFIG,
+  FEATURE_CONFIG,
   getBrandName,
+  getCurrentBaseUrl,
   getRepositoryUrl,
+  INTEGRATION_CONFIG,
+  isProjectFeatureEnabled,
+  MARKETING_CONFIG,
+  PROJECT_CONFIG,
+  REPOSITORY_CONFIG,
 } from "./project";
 
 describe("project", () => {
@@ -69,7 +70,7 @@ describe("project", () => {
     it("should generate correct URLs", () => {
       expect(REPOSITORY_CONFIG.url).toBe("https://github.com/basefly/basefly");
       expect(REPOSITORY_CONFIG.legacyUrl).toBe(
-        "https://github.com/saasfly/saasfly"
+        "https://github.com/saasfly/saasfly",
       );
     });
 
@@ -166,18 +167,20 @@ describe("project", () => {
 
   describe("getCurrentBaseUrl", () => {
     it("should return env URL when provided", () => {
-      expect(getCurrentBaseUrl("https://custom.com")).toBe("https://custom.com");
+      expect(getCurrentBaseUrl("https://custom.com")).toBe(
+        "https://custom.com",
+      );
     });
 
     it("should return development URL in development mode", () => {
       expect(getCurrentBaseUrl(undefined, "development")).toBe(
-        "http://localhost:3000"
+        "http://localhost:3000",
       );
     });
 
     it("should return production URL by default", () => {
       expect(getCurrentBaseUrl(undefined, "production")).toBe(
-        "https://saasfly.io"
+        "https://saasfly.io",
       );
     });
   });

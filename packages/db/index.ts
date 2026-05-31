@@ -47,17 +47,11 @@ export type {
 } from "./prisma/enums";
 
 // Soft delete service exports
-export {
-  SoftDeleteService,
-  k8sClusterService,
-} from "./soft-delete";
+export { SoftDeleteService, k8sClusterService } from "./soft-delete";
 export type { SoftDeleteEntity } from "./soft-delete";
 
 // User deletion service exports
-export {
-  UserDeletionService,
-  userDeletionService,
-} from "./user-deletion";
+export { UserDeletionService, userDeletionService } from "./user-deletion";
 
 // RLS middleware exports for multi-tenant isolation
 export {

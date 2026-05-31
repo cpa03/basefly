@@ -1,19 +1,19 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  BADGE_TOKENS,
   BUTTON_TOKENS,
-  INPUT_TOKENS,
   CARD_TOKENS,
   DIALOG_TOKENS,
-  BADGE_TOKENS,
   FOCUS_TOKENS,
+  INPUT_TOKENS,
   UI_ANIMATION,
+  type BadgeSize,
   type ButtonHeight,
   type ButtonPadding,
-  type InputHeight,
   type CardPadding,
-  type BadgeSize,
   type FocusVariant,
+  type InputHeight,
 } from "./ui-tokens";
 
 describe("ui-tokens.ts - BUTTON_TOKENS", () => {
@@ -73,10 +73,16 @@ describe("ui-tokens.ts - INPUT_TOKENS", () => {
   });
 
   it("should have focus ring variants", () => {
-    expect(INPUT_TOKENS.focusRing.default).toContain("focus-visible:outline-none");
+    expect(INPUT_TOKENS.focusRing.default).toContain(
+      "focus-visible:outline-none",
+    );
     expect(INPUT_TOKENS.focusRing.default).toContain("focus-visible:ring-2");
-    expect(INPUT_TOKENS.focusRing.error).toContain("focus-visible:ring-red-500");
-    expect(INPUT_TOKENS.focusRing.success).toContain("focus-visible:ring-green-500");
+    expect(INPUT_TOKENS.focusRing.error).toContain(
+      "focus-visible:ring-red-500",
+    );
+    expect(INPUT_TOKENS.focusRing.success).toContain(
+      "focus-visible:ring-green-500",
+    );
   });
 
   it("should have border styling", () => {
@@ -275,7 +281,12 @@ describe("ui-tokens.ts - Type exports", () => {
   });
 
   it("should export FocusVariant type", () => {
-    const variants: FocusVariant[] = ["default", "subtle", "none", "destructive"];
+    const variants: FocusVariant[] = [
+      "default",
+      "subtle",
+      "none",
+      "destructive",
+    ];
     expect(variants.length).toBe(4);
   });
 });

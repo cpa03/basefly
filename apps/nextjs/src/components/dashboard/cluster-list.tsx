@@ -17,9 +17,9 @@ import { K8sCreateButton } from "~/components/k8s/cluster-create-button";
 import { ClusterItem } from "~/components/k8s/cluster-item";
 import { ClusterOperations } from "~/components/k8s/cluster-operation";
 import type { Locale } from "~/config/i18n-config";
+import type { BusinessDictionary } from "~/lib/get-dictionary";
 import { formatDate } from "~/lib/utils";
 import { trpc } from "~/trpc/server";
-import type { BusinessDictionary } from "~/lib/get-dictionary";
 
 interface ClusterListProps {
   lang: Locale;
@@ -39,11 +39,7 @@ export async function ClusterList({ lang, dict }: ClusterListProps) {
         <EmptyPlaceholder.Description>
           {dict.k8s.no_cluster_content}
         </EmptyPlaceholder.Description>
-        <K8sCreateButton
-          variant="outline"
-          dict={dict}
-          lang={lang}
-        />
+        <K8sCreateButton variant="outline" dict={dict} lang={lang} />
       </EmptyPlaceholder>
     );
   }
@@ -53,9 +49,7 @@ export async function ClusterList({ lang, dict }: ClusterListProps) {
       <div className="hidden divide-y divide-border rounded-md border md:block">
         <div className="flex items-center justify-between p-4">
           <Table className="divide-y divide-gray-200">
-            <TableCaption>
-              {dict.common.dashboard.table_caption}
-            </TableCaption>
+            <TableCaption>{dict.common.dashboard.table_caption}</TableCaption>
             <TableHeader>
               <TableRow className="hover:bg-gray-50">
                 <TableHead scope="col" className="w-[100px]">

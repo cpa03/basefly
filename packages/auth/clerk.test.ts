@@ -1,8 +1,8 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { isClerkEnabled } from "./clerk";
-import { logger } from "./logger";
 import { authOptions } from "./index";
+import { logger } from "./logger";
 
 describe("Auth Module", () => {
   describe("clerk.ts - isClerkEnabled", () => {
@@ -28,8 +28,7 @@ describe("Auth Module", () => {
     });
 
     it("should return false when clerk key contains 'placeholder'", () => {
-      process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY =
-        "pk_test_placeholder_key";
+      process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = "pk_test_placeholder_key";
       expect(isClerkEnabled()).toBe(false);
     });
 
@@ -103,7 +102,7 @@ describe("Auth Module", () => {
       const error = new Error("test error");
       const metadata = { userId: "123", action: "test" };
       expect(() =>
-        logger.error("test error with metadata", error, metadata)
+        logger.error("test error with metadata", error, metadata),
       ).not.toThrow();
     });
   });

@@ -12,8 +12,8 @@ import {
   createCheckoutSession,
   retrieveSubscription,
 } from "./client";
-import { stripe } from "./stripe-instance";
 import { safeStripeCall } from "./integration";
+import { stripe } from "./stripe-instance";
 
 vi.mock("./integration", () => ({
   safeStripeCall: vi.fn(),

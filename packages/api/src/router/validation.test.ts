@@ -14,13 +14,13 @@ import {
 import { authRouter, mySubscriptionSchema } from "./auth";
 import { customerRouter } from "./customer";
 import { k8sRouter } from "./k8s";
-import { createSessionSchema, stripeRouter } from "./stripe";
 import {
+  enhancedInsertCustomerSchema,
   enhancedK8sClusterCreateSchema,
   enhancedK8sClusterDeleteSchema,
-  enhancedInsertCustomerSchema,
   enhancedUpdateUserNameSchema,
 } from "./schemas";
+import { createSessionSchema, stripeRouter } from "./stripe";
 
 vi.mock("@saasfly/db", () => ({
   db: {

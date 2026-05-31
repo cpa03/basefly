@@ -1,5 +1,6 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { renderHook } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
 import useMediaQuery from "./use-media-query";
 
 describe("useMediaQuery", () => {
@@ -21,7 +22,10 @@ describe("useMediaQuery", () => {
           dispatchEvent: vi.fn(),
         };
       }
-      if (query.includes("min-width: 641px") && query.includes("max-width: 1024px")) {
+      if (
+        query.includes("min-width: 641px") &&
+        query.includes("max-width: 1024px")
+      ) {
         return {
           matches: false,
           media: query,
@@ -126,7 +130,10 @@ describe("useMediaQuery", () => {
           dispatchEvent: vi.fn(),
         };
       }
-      if (query.includes("min-width: 641px") && query.includes("max-width: 1024px")) {
+      if (
+        query.includes("min-width: 641px") &&
+        query.includes("max-width: 1024px")
+      ) {
         return {
           matches: true,
           media: query,

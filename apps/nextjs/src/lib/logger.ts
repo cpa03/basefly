@@ -33,7 +33,6 @@ const SENSITIVE_FIELD_PATTERNS = [
   "password",
   "credential",
   "api_key",
-  "api_key",
   "authorization",
   "set-cookie",
   "cookie",

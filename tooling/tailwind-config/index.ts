@@ -5,7 +5,8 @@ import tailwindcssAnimate from "tailwindcss-animate";
 import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette";
 import createPlugin from "tailwindcss/plugin";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// Tailwind plugin internals use dynamic type patterns not expressible in TS
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument */
 type AnyCssInJs = any;
 
 const addVariablesForColors = createPlugin((api) => {
@@ -17,9 +18,9 @@ const addVariablesForColors = createPlugin((api) => {
     Object.entries(allColors).map(([key, val]) => [`--${key}`, val]),
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   api.addBase({ ":root": newVars } as AnyCssInJs);
 });
+/* eslint-enable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument */
 
 export default {
   darkMode: "class",

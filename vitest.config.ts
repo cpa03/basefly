@@ -2,6 +2,10 @@ import { resolve } from "node:path";
 import { defineConfig } from "vitest/config";
 
 export default defineConfig({
+  esbuild: {
+    jsx: "automatic",
+    jsxImportSource: "react",
+  },
   test: {
     globals: true,
     environment: "happy-dom",
@@ -33,11 +37,14 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      // Specific sub-path aliases MUST come before broader ones
+      // (Vite uses prefix matching — first match wins)
       "@saasfly/auth": resolve(__dirname, "./packages/auth"),
       "@saasfly/db": resolve(__dirname, "./packages/db"),
       "@saasfly/ui/icons": resolve(__dirname, "./packages/ui/src/icons.tsx"),
+      "@saasfly/ui/card": resolve(__dirname, "./packages/ui/src/card.tsx"),
+      "@saasfly/ui/skeleton": resolve(__dirname, "./packages/ui/src/skeleton.tsx"),
       "@saasfly/ui": resolve(__dirname, "./packages/ui"),
-      "@saasfly/common": resolve(__dirname, "./packages/common"),
       "@saasfly/common/config/resilience": resolve(
         __dirname,
         "./packages/common/src/config/resilience.ts",
@@ -58,6 +65,7 @@ export default defineConfig({
         __dirname,
         "./packages/common/src/config/site.ts",
       ),
+      "@saasfly/common": resolve(__dirname, "./packages/common"),
       "@saasfly/stripe": resolve(__dirname, "./packages/stripe"),
       "@saasfly/api": resolve(__dirname, "./packages/api"),
       "~": resolve(__dirname, "./apps/nextjs/src"),

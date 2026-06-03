@@ -10,7 +10,6 @@
  */
 
 import type { NextRequest } from "next/server";
-import type { Redis } from "ioredis";
 
 import {
   IS_REDIS_CONFIGURED,
@@ -38,8 +37,8 @@ interface RateLimitResult {
   limit: number;
 }
 
-// Type for Redis client
-type RedisClient = InstanceType<typeof Redis>;
+// Type for Redis client (lazy import for edge runtime compatibility)
+type RedisClient = InstanceType<typeof import("ioredis").Redis>;
 
 /**
  * In-memory rate limiter (fallback when Redis is not available)

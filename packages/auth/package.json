@@ -18,7 +18,7 @@
     "@clerk/nextjs": "^6.39.4",
     "@saasfly/common": "workspace:*",
     "@t3-oss/env-nextjs": "0.13.10",
-    "next": "14.2.35",
+    "next": "16.2.7",
     "pino": "10.3.1",
     "pino-pretty": "^13.0.0",
     "react": "19.2.4",

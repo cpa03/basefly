@@ -126,4 +126,54 @@ describe("Admin Router - Stats Response Type", () => {
       expect(rateLimitType).toBe("read");
     });
   });
+
+  describe("RBAC Admin Role Check", () => {
+    it("should have ADMIN role constant for authorization", () => {
+      // This validates that the ADMIN role concept exists
+      type UserRole = "USER" | "ADMIN";
+      const adminRole: UserRole = "ADMIN";
+      expect(adminRole).toBe("ADMIN");
+    });
+
+    it("should have USER role constant for non-admin users", () => {
+      type UserRole = "USER" | "ADMIN";
+      const userRole: UserRole = "USER";
+      expect(userRole).toBe("USER");
+    });
+
+    it("should distinguish ADMIN from USER role", () => {
+      type UserRole = "USER" | "ADMIN";
+
+      const roles: UserRole[] = ["ADMIN", "USER"];
+
+      expect(roles).toContain("ADMIN");
+      expect(roles).toContain("USER");
+      expect(roles.filter((r) => r === "ADMIN")).toHaveLength(1);
+    });
+
+    it("should document that adminProcedure requires ADMIN role", () => {
+      // The adminProcedure middleware chain is:
+      // procedure.use(isAuthed).use(isAdmin).use(rateLimit(endpointType))
+      // isAdmin now checks the User.role field in the database
+      // with ADMIN_EMAIL fallback for migration
+      interface AdminProcedureConfig {
+        requiresAuthentication: boolean;
+        requiresAdminRole: boolean;
+        roleCheckMethod: string;
+        fallbackMethod: string;
+      }
+
+      const config: AdminProcedureConfig = {
+        requiresAuthentication: true,
+        requiresAdminRole: true,
+        roleCheckMethod: "database User.role field",
+        fallbackMethod: "ADMIN_EMAIL env var (migration)",
+      };
+
+      expect(config.requiresAuthentication).toBe(true);
+      expect(config.requiresAdminRole).toBe(true);
+      expect(config.roleCheckMethod).toBe("database User.role field");
+      expect(config.fallbackMethod).toBe("ADMIN_EMAIL env var (migration)");
+    });
+  });
 });

@@ -40,8 +40,9 @@ export type {
 } from "./prisma/types";
 
 // Enum exports from prisma/enums.ts
-export { SubscriptionPlan, Status } from "./prisma/enums";
+export { Role, SubscriptionPlan, Status } from "./prisma/enums";
 export type {
+  Role as RoleType,
   SubscriptionPlan as SubscriptionPlanType,
   Status as StatusType,
 } from "./prisma/enums";

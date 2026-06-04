@@ -11,6 +11,11 @@ datasource db {
   relationMode = "prisma"
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 enum SubscriptionPlan {
   FREE
   PRO
@@ -70,6 +75,8 @@ model User {
   email         String?            @unique
   emailVerified DateTime?
   image         String?
+  role          Role               @default(USER)
+
   accounts      Account[]
   sessions      Session[]
   customers     Customer[]

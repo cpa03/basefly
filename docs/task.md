@@ -2506,3 +2506,7 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [CONSOLIDATE] Centralized tRPC procedure calls in server components by removing direct .query() calls.
 - [STRENGTHEN] Enhanced Button component with built-in loading text support.
 - [STRENGTHEN] Fixed syntax error in packages/ui/src/animated-tooltip.tsx where a curly brace was missing for a conditional check.
+- [x] bug: `packages/ui/src/button.tsx` renders `children` twice.
+- [x] error: `packages/common/src/config/ui-strings.test.ts` missing `expectTypeOf` import.
+- [CONSOLIDATE] Replaced hardcoded status indicators in `apps/nextjs/src/app/admin/dashboard/page.tsx` with `StatusBadge` component.
+- [STRENGTHEN] Updated `StatusBadge` in `packages/ui/src/status-badge.tsx` to use `BADGE_TOKENS` from `@saasfly/common`.

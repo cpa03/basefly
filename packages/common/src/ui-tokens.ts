@@ -21,6 +21,15 @@ export const BUTTON_TOKENS = {
     duration: 600,
     /** CSS custom property name for ripple size */
     cssVar: "--ripple-size",
+    /** Ripple colors by button variant */
+    colors: {
+      default: "bg-white/30",
+      destructive: "bg-white/30",
+      outline: "bg-primary/20",
+      ghost: "bg-primary/20",
+      link: "bg-primary/20",
+      secondary: "bg-primary/20",
+    },
   },
 
   /** Button height sizing tokens (in Tailwind spacing units) */

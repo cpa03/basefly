@@ -11,6 +11,8 @@ import {
 } from "@saasfly/ui/card";
 import { Cluster, CreditCard, Dashboard, Users } from "@saasfly/ui/icons";
 
+import { StatusBadge } from "@saasfly/ui/status-badge";
+
 import { trpc } from "~/trpc/server";
 
 export const metadata = {
@@ -127,24 +129,15 @@ export default async function AdminDashboardPage() {
           <CardContent className="space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-sm">API Status</span>
-              <span className="flex items-center gap-1 text-sm text-green-600">
-                <span className="h-2 w-2 rounded-full bg-green-500" />
-                Operational
-              </span>
+              <StatusBadge status="RUNNING" size="sm" showTooltip={false} />
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm">Database</span>
-              <span className="flex items-center gap-1 text-sm text-green-600">
-                <span className="h-2 w-2 rounded-full bg-green-500" />
-                Connected
-              </span>
+              <StatusBadge status="RUNNING" size="sm" showTooltip={false} />
             </div>
             <div className="flex items-center justify-between">
               <span className="text-sm">Stripe Integration</span>
-              <span className="flex items-center gap-1 text-sm text-green-600">
-                <span className="h-2 w-2 rounded-full bg-green-500" />
-                Active
-              </span>
+              <StatusBadge status="RUNNING" size="sm" showTooltip={false} />
             </div>
           </CardContent>
         </Card>

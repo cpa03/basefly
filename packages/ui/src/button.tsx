@@ -43,23 +43,11 @@ const useButtonRipple = () => {
 
 const ButtonRipple: React.FC<{
   ripple: Ripple;
-  variant?: string;
+  variant?: keyof typeof BUTTON_TOKENS.ripple.colors;
 }> = ({ ripple, variant }) => {
-  const getRippleColor = () => {
-    switch (variant) {
-      case "default":
-      case "destructive":
-        return "bg-white/30";
-      case "outline":
-      case "ghost":
-      case "link":
-        return "bg-primary/20";
-      case "secondary":
-        return "bg-primary/20";
-      default:
-        return "bg-white/30";
-    }
-  };
+  const rippleColor =
+    BUTTON_TOKENS.ripple.colors[variant ?? "default"] ??
+    BUTTON_TOKENS.ripple.colors.default;
 
   const rippleSize = `${BUTTON_TOKENS.ripple.size}px`;
 
@@ -68,7 +56,7 @@ const ButtonRipple: React.FC<{
       className={cn(
         "pointer-events-none absolute rounded-full motion-safe:animate-ripple",
         "motion-reduce:hidden",
-        getRippleColor(),
+        rippleColor,
       )}
       style={{
         left: ripple.x,
@@ -132,7 +120,10 @@ const Button = React.memo(
 
       return (
         <Comp
-          className={cn(buttonVariants({ variant, size, className }))}
+          className={cn(
+            buttonVariants({ variant, size, className }),
+            BUTTON_TOKENS.activeScale,
+          )}
           ref={ref}
           disabled={isLoading ?? props.disabled}
           aria-busy={isLoading}
@@ -145,11 +136,11 @@ const Button = React.memo(
               aria-hidden="true"
             />
           )}
-          {isLoading && loadingText ? (
-            <span className="truncate">{loadingText}</span>
-          ) : !isLoading ? (
+          {isLoading ? (
+            loadingText && <span className="truncate">{loadingText}</span>
+          ) : (
             children
-          ) : null}
+          )}
           {enableRipple &&
             !asChild &&
             ripples.map((ripple) => (
@@ -159,7 +150,6 @@ const Button = React.memo(
                 variant={variant ?? "default"}
               />
             ))}
-          {children}
         </Comp>
       );
     },

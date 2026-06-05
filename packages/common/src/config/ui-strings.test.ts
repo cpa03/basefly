@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, expectTypeOf, it } from "vitest";
 
 import {
   DIALOG_MESSAGES,
@@ -20,6 +20,11 @@ describe("ui-strings", () => {
     it("should have login and signup strings", () => {
       expect(UI_STRINGS.login).toBe("Default Login Text");
       expect(UI_STRINGS.signup).toBe("Default Signup Text");
+    });
+
+    it("should be correctly typed", () => {
+      expectTypeOf(UI_STRINGS).toBeObject();
+      expectTypeOf(UI_STRINGS.login).toBeString();
     });
   });
 

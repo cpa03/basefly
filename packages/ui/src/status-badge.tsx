@@ -1,6 +1,11 @@
 import * as React from "react";
 
-import { FEEDBACK_TIMING, type ClusterStatus } from "@saasfly/common";
+import {
+  BADGE_TOKENS,
+  FEEDBACK_TIMING,
+  UI_ANIMATION,
+  type ClusterStatus,
+} from "@saasfly/common";
 import {
   Check,
   Clock,
@@ -89,19 +94,19 @@ const statusConfig: Record<ClusterStatus, StatusConfig> = {
 
 const sizeStyles = {
   sm: {
-    container: "px-2 py-0.5 text-xs gap-1.5",
+    container: `${BADGE_TOKENS.sizes.sm.padding} ${BADGE_TOKENS.sizes.sm.text} gap-1.5`,
     icon: "h-3 w-3",
-    dot: "h-1.5 w-1.5",
+    dot: BADGE_TOKENS.sizes.sm.dot,
   },
   default: {
-    container: "px-2.5 py-1 text-sm gap-2",
+    container: `${BADGE_TOKENS.sizes.default.padding} ${BADGE_TOKENS.sizes.default.text} gap-2`,
     icon: "h-4 w-4",
-    dot: "h-2 w-2",
+    dot: BADGE_TOKENS.sizes.default.dot,
   },
   lg: {
-    container: "px-3 py-1.5 text-base gap-2.5",
+    container: `${BADGE_TOKENS.sizes.lg.padding} ${BADGE_TOKENS.sizes.lg.text} gap-2.5`,
     icon: "h-5 w-5",
-    dot: "h-2.5 w-2.5",
+    dot: BADGE_TOKENS.sizes.lg.dot,
   },
 };
 
@@ -125,7 +130,9 @@ export function StatusBadge({
   const badge = (
     <div
       className={cn(
-        "inline-flex items-center rounded-full font-medium transition-colors",
+        "inline-flex items-center font-medium transition-colors",
+        BADGE_TOKENS.radius,
+        UI_ANIMATION.scale.subtle,
         config.bgColor,
         config.textColor,
         styles.container,

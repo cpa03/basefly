@@ -283,13 +283,19 @@ export async function withTimeout<T>(
   timeoutMs: number,
   timeoutMessage = "Operation timed out",
 ): Promise<T> {
+  let timeoutHandle: ReturnType<typeof setTimeout>;
+
   const timeoutPromise = new Promise<never>((_, reject) => {
-    setTimeout(() => {
+    timeoutHandle = setTimeout(() => {
       reject(new IntegrationError(timeoutMessage, "TIMEOUT"));
     }, timeoutMs);
   });
 
-  return Promise.race([promise, timeoutPromise]);
+  try {
+    return await Promise.race([promise, timeoutPromise]);
+  } finally {
+    clearTimeout(timeoutHandle!);
+  }
 }
 
 /**

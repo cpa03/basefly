@@ -1,6 +1,6 @@
 import type { ColumnType } from "kysely";
 
-import type { Status, SubscriptionPlan } from "./enums";
+import type { Role, Status, SubscriptionPlan } from "./enums";
 
 export type Generated<T> =
   T extends ColumnType<infer S, infer I, infer U>
@@ -65,6 +65,7 @@ export type User = {
   email: string | null;
   emailVerified: Timestamp | null;
   image: string | null;
+  role: Generated<Role>;
 };
 export type VerificationToken = {
   identifier: string;

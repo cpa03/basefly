@@ -50,6 +50,11 @@ const SEED_CONFIG = {
   ],
 };
 
+const SEED_ROLES = {
+  testUser: "USER" as const,
+  adminUser: "ADMIN" as const,
+};
+
 async function isDatabaseEmpty(): Promise<boolean> {
   const userCount = await db
     .selectFrom("User")
@@ -64,13 +69,19 @@ async function seedUsers(): Promise<void> {
 
   await db
     .insertInto("User")
-    .values(SEED_CONFIG.testUser)
+    .values({
+      ...SEED_CONFIG.testUser,
+      role: SEED_ROLES.testUser,
+    })
     .onConflict((oc) => oc.column("id").doNothing())
     .execute();
 
   await db
     .insertInto("User")
-    .values(SEED_CONFIG.adminUser)
+    .values({
+      ...SEED_CONFIG.adminUser,
+      role: SEED_ROLES.adminUser,
+    })
     .onConflict((oc) => oc.column("id").doNothing())
     .execute();
 

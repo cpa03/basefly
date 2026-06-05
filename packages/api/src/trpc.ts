@@ -4,6 +4,7 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import { ZodError } from "zod";
 
 import { isAdminEmail } from "@saasfly/common";
+import { db } from "@saasfly/db";
 
 import {
   createOwnershipVerifier,
@@ -111,7 +112,8 @@ export const protectedProcedure = procedure.use(isAuthed);
 
 /**
  * Middleware that ensures the user is authenticated AND is an admin.
- * Checks ADMIN_EMAIL environment variable for admin email list.
+ * Checks the user's role in the database first (role-based access control).
+ * Falls back to ADMIN_EMAIL environment variable for backward compatibility.
  * Throws UNAUTHORIZED if not logged in, FORBIDDEN if not admin.
  */
 const isAdmin = t.middleware(async ({ next, ctx }) => {
@@ -119,10 +121,37 @@ const isAdmin = t.middleware(async ({ next, ctx }) => {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
+  try {
+    const userRecord = await db
+      .selectFrom("User")
+      .select("role")
+      .where("id", "=", ctx.userId)
+      .executeTakeFirst();
+
+    if (userRecord?.role === "ADMIN") {
+      return next({ ctx: { userId: ctx.userId, isAdmin: true } });
+    }
+  } catch (error) {
+    logger.error(
+      { requestId: ctx.requestId, userId: ctx.userId, error },
+      "Failed to check user role from database, falling back to email-based check",
+    );
+  }
+
+  // Fallback: check ADMIN_EMAIL environment variable (migration path)
   const user = await currentUser();
   const userEmail = user?.emailAddresses?.[0]?.emailAddress;
 
   if (!isAdminEmail(userEmail)) {
+    logger.warn(
+      {
+        requestId: ctx.requestId,
+        userId: ctx.userId,
+        security: true,
+        reason: "not_admin",
+      },
+      "Admin access denied",
+    );
     throw new TRPCError({
       code: "FORBIDDEN",
       message: "Admin access required",

@@ -92,7 +92,7 @@ function generateCurlExample(
   method: string,
   operation: Operation,
 ): string {
-  const baseUrl = openApiDocument.servers?.[0]?.url || "/api/trpc";
+  const baseUrl = openApiDocument.servers?.[0]?.url ?? "/api/trpc";
   const endpoint = path.replace("/{", "/:").replace("}", "");
   const url = `${baseUrl}${endpoint}`;
 

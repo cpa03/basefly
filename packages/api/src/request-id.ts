@@ -74,8 +74,8 @@ function generateUUIDv4Fallback(): string {
   }
 
   // Set version bits (4) and variant bits (8, 9, A, or B)
-  bytes[6]! = (bytes[6]! & 0x0f) | 0x40; // Version 4
-  bytes[8]! = (bytes[8]! & 0x3f) | 0x80; // Variant 1
+  bytes[6] = (bytes[6]! & 0x0f) | 0x40; // Version 4
+  bytes[8] = (bytes[8]! & 0x3f) | 0x80; // Variant 1
 
   // Convert to hex string with dashes (ES5 compatible approach)
   const hex: string[] = [];
@@ -127,7 +127,7 @@ export function extractRequestId(headers: Headers): string | null {
  */
 export function getOrGenerateRequestId(headers: Headers): string {
   const existing = extractRequestId(headers);
-  return existing || generateRequestId();
+  return existing ?? generateRequestId();
 }
 
 /**

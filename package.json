@@ -78,6 +78,11 @@
     "node": ">=18"
   },
   "packageManager": "pnpm@10.28.2",
+  "pnpm": {
+    "overrides": {
+      "protobufjs": ">=7.5.5"
+    }
+  },
   "prettier": "@saasfly/prettier-config",
   "workspaces": [
     "apps/*",

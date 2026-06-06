@@ -43,6 +43,7 @@ async function verifyClusterOwnership(
   clusterId: number,
   userId: string,
 ): Promise<K8sClusterConfig> {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- SoftDeleteService returns dynamic Kysely types
   const cluster: K8sClusterConfig | undefined =
     await k8sClusterService.findActive(clusterId, userId);
   if (!cluster) {
@@ -67,6 +68,7 @@ export const k8sRouter = createTRPCRouter({
   getClusters: createRateLimitedProtectedProcedure("read").query(
     async (opts) => {
       const userId = requireUserId(opts.ctx);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- SoftDeleteService returns dynamic Kysely types
       return await k8sClusterService.findAllActive(userId);
     },
   ),

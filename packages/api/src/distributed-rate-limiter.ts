@@ -37,8 +37,10 @@ interface RateLimitResult {
   limit: number;
 }
 
-// Type for Redis client (lazy import for edge runtime compatibility)
-type RedisClient = InstanceType<typeof import("ioredis").Redis>;
+import type { Redis } from "ioredis";
+
+// Type for Redis client
+type RedisClient = Redis;
 
 /**
  * In-memory rate limiter (fallback when Redis is not available)

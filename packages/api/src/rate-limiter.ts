@@ -21,7 +21,7 @@ interface RateLimitResult {
 }
 
 export class RateLimiter {
-  private store: Map<string, RateLimitEntry> = new Map();
+  private store = new Map<string, RateLimitEntry>();
   private maxRequests: number;
   private windowMs: number;
   private cleanupInterval: NodeJS.Timeout | null = null;
@@ -167,6 +167,7 @@ export function getIdentifier(
   if (req) {
     const forwarded = req.headers.get("x-forwarded-for");
     const ip =
+      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing -- intentional truthy check: empty string should fall through
       forwarded?.split(",")[0] || req.headers.get("x-real-ip") || "unknown";
     return `ip:${ip}`;
   }

@@ -80,7 +80,8 @@
   "packageManager": "pnpm@10.28.2",
   "pnpm": {
     "overrides": {
-      "protobufjs": ">=7.5.5"
+      "protobufjs": ">=7.5.5",
+      "basic-ftp": ">=5.2.0"
     }
   },
   "prettier": "@saasfly/prettier-config",

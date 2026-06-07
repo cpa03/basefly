@@ -1,2 +1,5 @@
 tooling/qa/
 vitest.config.ts
+# Playwright e2e tests use a different runtime/parser config
+# that the workspace ESLint config doesn't support
+tests/e2e/

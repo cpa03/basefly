@@ -16,6 +16,8 @@ vi.mock("next/navigation", () => ({
   }),
   usePathname: () => "/",
   useSearchParams: () => new URLSearchParams(),
+  useSelectedLayoutSegment: () => null,
+  useSelectedLayoutSegments: () => [],
 }));
 
 // Mock next/link

@@ -44,6 +44,15 @@ export default defineConfig({
       "@saasfly/ui/icons": resolve(__dirname, "./packages/ui/src/icons.tsx"),
       "@saasfly/ui/card": resolve(__dirname, "./packages/ui/src/card.tsx"),
       "@saasfly/ui/skeleton": resolve(__dirname, "./packages/ui/src/skeleton.tsx"),
+      "@saasfly/ui/button": resolve(__dirname, "./packages/ui/src/button.tsx"),
+      "@saasfly/ui/dialog": resolve(__dirname, "./packages/ui/src/dialog.tsx"),
+      "@saasfly/ui/dropdown-menu": resolve(
+        __dirname,
+        "./packages/ui/src/dropdown-menu.tsx",
+      ),
+      "@saasfly/ui/tooltip": resolve(__dirname, "./packages/ui/src/tooltip.tsx"),
+      "@saasfly/ui/table": resolve(__dirname, "./packages/ui/src/table.tsx"),
+      "@saasfly/ui/avatar": resolve(__dirname, "./packages/ui/src/avatar.tsx"),
       "@saasfly/ui": resolve(__dirname, "./packages/ui"),
       "@saasfly/common/config/resilience": resolve(
         __dirname,

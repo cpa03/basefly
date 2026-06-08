@@ -58,6 +58,7 @@
     "@vitest/ui": "^4.1.8",
     "check-dependency-version-consistency": "6.0.0",
     "chrome-launcher": "^1.2.1",
+    "depcheck": "^1.4.7",
     "eslint": "8.57.0",
     "eslint-plugin-turbo": "2.9.16",
     "happy-dom": "^20.10.2",
@@ -65,13 +66,13 @@
     "lighthouse": "^13.3.0",
     "lint-staged": "^17.0.7",
     "madge": "^8.0.0",
-    "depcheck": "^1.4.7",
     "playwright": "^1.60.0",
     "prettier": "3.8.1",
     "prettier-plugin-tailwindcss": "0.7.2",
     "tailwind-config-viewer": "^2.0.4",
     "turbo": "2.9.16",
     "typescript": "5.9.3",
+    "vite": "7.3.2",
     "vitest": "^4.1.8"
   },
   "engines": {
@@ -81,7 +82,20 @@
   "pnpm": {
     "overrides": {
       "protobufjs": ">=7.5.5",
-      "basic-ftp": ">=5.2.0"
+      "basic-ftp": ">=5.2.0",
+      "cross-spawn": ">=7.0.5",
+      "koa": ">=2.16.4",
+      "undici": ">=7.24.0",
+      "kysely": ">=0.28.17",
+      "path-to-regexp": ">=8.4.0",
+      "lodash": ">=4.18.0",
+      "defu": ">=6.1.5",
+      "tmp": ">=0.2.6",
+      "fast-xml-parser": ">=5.5.6",
+      "h3": ">=1.15.6",
+      "fast-uri": ">=3.1.2",
+      "@rvf/set-get": ">=7.0.2",
+      "vite": ">=7.3.2"
     }
   },
   "prettier": "@saasfly/prettier-config",

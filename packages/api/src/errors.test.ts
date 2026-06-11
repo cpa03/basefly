@@ -158,7 +158,10 @@ describe("createApiError", () => {
 
     expect(error.cause).toBeDefined();
     // TRPCError wraps cause in UnknownCauseError, check properties
-    expect(error.cause).toMatchObject({ field: "email", reason: "already taken" });
+    expect(error.cause).toMatchObject({
+      field: "email",
+      reason: "already taken",
+    });
   });
 });
 

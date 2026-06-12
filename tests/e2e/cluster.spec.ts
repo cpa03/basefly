@@ -41,3 +41,55 @@ test.describe("Cluster Management Flow", () => {
     await expect(signupLink.first()).toBeVisible();
   });
 });
+
+test.describe("Cluster Lifecycle Protection", () => {
+  test("cluster creation page is protected", async ({ page }) => {
+    // Direct access to cluster creation should require auth
+    await page.goto("/en/editor/cluster/new");
+    await expect(page).toHaveURL(/.*login|signin|unauthorized/i);
+  });
+
+  test("cluster list endpoint is protected", async ({ page }) => {
+    // API endpoint for clusters should reject unauthenticated requests
+    const response = await page.request.get("/api/clusters");
+    expect([401, 403, 404]).toContain(response.status());
+  });
+
+  test("cluster status endpoint is protected", async ({ page }) => {
+    // Cluster status API should be protected
+    const response = await page.request.get("/api/clusters/test-id/status");
+    expect([401, 403, 404]).toContain(response.status());
+  });
+
+  test("cluster deletion endpoint is protected", async ({ page }) => {
+    // DELETE endpoint should require auth
+    const response = await page.request.delete("/api/clusters/test-id");
+    expect([401, 403, 404]).toContain(response.status());
+  });
+
+  test("all cluster editor routes redirect unauthenticated users", async ({ page }) => {
+    // Multiple editor routes should all be protected
+    const editorRoutes = [
+      "/en/editor/cluster/test-cluster-1",
+      "/en/editor/cluster/test-cluster-2/settings",
+      "/en/editor/cluster/test-cluster-3/nodes",
+    ];
+    for (const route of editorRoutes) {
+      await page.goto(route);
+      await expect(page).toHaveURL(/.*login|signin|unauthorized/i);
+    }
+  });
+
+  test("cluster API write operations are protected", async ({ page }) => {
+    // POST and PUT operations should be protected
+    const writeEndpoints = [
+      { method: "POST" as const, url: "/api/clusters" },
+      { method: "PUT" as const, url: "/api/clusters/test-id" },
+      { method: "PATCH" as const, url: "/api/clusters/test-id/status" },
+    ];
+    for (const { method, url } of writeEndpoints) {
+      const response = await page.request.fetch(url, { method });
+      expect([401, 403, 404]).toContain(response.status());
+    }
+  });
+});

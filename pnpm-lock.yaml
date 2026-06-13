@@ -237,8 +237,8 @@ importers:
         specifier: 0.2.0
         version: 0.2.0(@types/react@19.2.14)(bufferutil@4.1.0)(eslint@8.57.0)(react@19.2.4)(typescript@5.9.3)(webpack@5.105.2(esbuild@0.28.1)(lightningcss@1.32.0)(postcss@8.5.15))
       '@next/bundle-analyzer':
-        specifier: 14.2.15
-        version: 14.2.15(bufferutil@4.1.0)
+        specifier: 16.2.7
+        version: 16.2.7(bufferutil@4.1.0)
       '@next/eslint-plugin-next':
         specifier: 16.1.6
         version: 16.1.6
@@ -2242,8 +2242,8 @@ packages:
     peerDependencies:
       react: ^18.2.0
 
-  '@next/bundle-analyzer@14.2.15':
-    resolution: {integrity: sha512-W6iyrp/3G7WbIztDcNt+owYX1iv37m9f4RJs0fa/Ayw4EDdjNPX6qKQrC7gBrESHV3FuchED+8R+CNiw1i78eQ==}
+  '@next/bundle-analyzer@16.2.7':
+    resolution: {integrity: sha512-Lh52e3gpnJQ8ZwBNsp54g/Czg1oqbx7bdZ9mEqHfI0VbtNMHCpneYNzKj6C+oW1JIeyjpmRSRGnhGOmi0SdNow==}
 
   '@next/env@14.2.35':
     resolution: {integrity: sha512-DuhvCtj4t9Gwrx80dmz2F4t/zKQ4ktN8WrMwOuVzkJfBilwAwGr6v16M5eI8yCuZ63H9TTuEU09Iu2HqkzFPVQ==}
@@ -12586,7 +12586,7 @@ snapshots:
     dependencies:
       react: 19.2.4
 
-  '@next/bundle-analyzer@14.2.15(bufferutil@4.1.0)':
+  '@next/bundle-analyzer@16.2.7(bufferutil@4.1.0)':
     dependencies:
       webpack-bundle-analyzer: 4.10.1(bufferutil@4.1.0)
     transitivePeerDependencies:

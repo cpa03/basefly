@@ -38,7 +38,7 @@
     "security:check": "pnpm audit --audit-level=high && pnpm outdated",
     "qa:ci-validate": "node tooling/qa/validate-ci-workflows.js",
     "dx:quick": "pnpm typecheck && pnpm lint",
-    "dx:check": "pnpm typecheck && pnpm lint && pnpm test && pnpm security:audit",
+    "dx:check": "pnpm typecheck && pnpm lint && pnpm test && pnpm security:audit && pnpm check-deps",
     "dx:fix": "pnpm lint:fix && pnpm format:fix",
     "dx:deps": "echo '📦 Checking for outdated dependencies...' && pnpm outdated && echo '🔍 Running security audit...' && pnpm audit --audit-level=moderate",
     "dx:unused": "depcheck . --detailed=false --json",

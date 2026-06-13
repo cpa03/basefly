@@ -62,7 +62,7 @@
   "devDependencies": {
     "@clerk/types": "^4.101.20",
     "@next-devtools/core": "0.2.0",
-    "@next/bundle-analyzer": "14.2.15",
+    "@next/bundle-analyzer": "16.2.7",
     "@next/eslint-plugin-next": "16.1.6",
     "@opennextjs/cloudflare": "^1.19.11",
     "@saasfly/eslint-config": "workspace:*",

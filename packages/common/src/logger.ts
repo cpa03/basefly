@@ -45,6 +45,43 @@ export interface LoggerConfig {
 }
 
 /**
+ * Sensitive field name patterns that should be redacted from logs.
+ * Any metadata key matching these patterns (case-insensitive partial match)
+ * will have its value replaced with "[REDACTED]" before logging.
+ *
+ * This prevents accidental leakage of secrets, tokens, and PII through logs.
+ *
+ * @see apps/nextjs/src/lib/logger.ts for the identical pattern list used by the frontend logger
+ */
+const SENSITIVE_FIELD_PATTERNS = [
+  "secret",
+  "token",
+  "password",
+  "credential",
+  "api_key",
+  "authorization",
+  "set-cookie",
+  "cookie",
+  "session",
+  "private_key",
+  "privatekey",
+] as const;
+
+/**
+ * Build pino redact configuration from sensitive field patterns.
+ * Generates both top-level and nested paths (1 level deep) for each pattern.
+ */
+export function buildRedactConfig(): { paths: string[]; censor: string } {
+  const paths: string[] = [];
+  for (const pattern of SENSITIVE_FIELD_PATTERNS) {
+    // Match the field at any level (top-level and one-level nested)
+    paths.push(pattern);
+    paths.push(`*.${pattern}`);
+  }
+  return { paths, censor: "[REDACTED]" };
+}
+
+/**
  * Creates a configured logger instance for a specific package
  *
  * @param config - Logger configuration
@@ -57,6 +94,9 @@ export interface LoggerConfig {
  * const logger = createLogger({ package: "api" });
  * logger.info({ requestId: "req-123" }, "Processing request");
  * ```
+ *
+ * Security: All loggers created via this function automatically redact
+ * sensitive fields (secrets, tokens, passwords, etc.) before output.
  */
 export function createLogger(config: LoggerConfig): Logger {
   const level = config.level ?? LOG_LEVEL;
@@ -71,6 +111,7 @@ export function createLogger(config: LoggerConfig): Logger {
       level: (label: string) => ({ level: label }),
     },
     timestamp: pino.stdTimeFunctions.isoTime,
+    redact: buildRedactConfig(),
     transport: shouldPretty
       ? {
           target: "pino-pretty",

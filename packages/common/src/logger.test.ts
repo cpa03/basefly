@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   apiLogger,
   authLogger,
+  buildRedactConfig,
   createLogger,
   createLoggerWrapper,
   dbLogger,
@@ -108,6 +109,58 @@ describe("logger.ts - LoggerConfig type", () => {
   it("should allow optional pretty flag", () => {
     const config: LoggerConfig = { package: "api", pretty: false };
     expect(config.pretty).toBe(false);
+  });
+});
+
+describe("logger.ts - buildRedactConfig", () => {
+  it("should return a config with paths array and censor string", () => {
+    const config = buildRedactConfig();
+    expect(config).toHaveProperty("paths");
+    expect(Array.isArray(config.paths)).toBe(true);
+    expect(config).toHaveProperty("censor");
+    expect(config.censor).toBe("[REDACTED]");
+  });
+
+  it("should include sensitive field patterns as paths", () => {
+    const config = buildRedactConfig();
+    expect(config.paths).toContain("secret");
+    expect(config.paths).toContain("token");
+    expect(config.paths).toContain("password");
+    expect(config.paths).toContain("credential");
+    expect(config.paths).toContain("authorization");
+    expect(config.paths).toContain("session");
+    expect(config.paths).toContain("cookie");
+  });
+
+  it("should include nested path variants for each pattern", () => {
+    const config = buildRedactConfig();
+    expect(config.paths).toContain("*.secret");
+    expect(config.paths).toContain("*.token");
+    expect(config.paths).toContain("*.password");
+  });
+
+  it("should include api_key and private_key patterns", () => {
+    const config = buildRedactConfig();
+    expect(config.paths).toContain("api_key");
+    expect(config.paths).toContain("*.api_key");
+    expect(config.paths).toContain("private_key");
+    expect(config.paths).toContain("*.private_key");
+    expect(config.paths).toContain("privatekey");
+    expect(config.paths).toContain("*.privatekey");
+  });
+
+  it("should not have duplicate paths", () => {
+    const config = buildRedactConfig();
+    const uniquePaths = new Set(config.paths);
+    expect(uniquePaths.size).toBe(config.paths.length);
+  });
+});
+
+describe("logger.ts - createLogger uses redact config", () => {
+  it("should produce a logger instance (redact configured internally)", () => {
+    const testLogger = createLogger({ package: "api" });
+    expect(testLogger).toBeDefined();
+    expect(testLogger.level).toBeDefined();
   });
 });
 

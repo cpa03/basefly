@@ -136,11 +136,9 @@ const Button = React.memo(
               aria-hidden="true"
             />
           )}
-          {isLoading ? (
-            loadingText && <span className="truncate">{loadingText}</span>
-          ) : (
-            children
-          )}
+          {isLoading
+            ? loadingText && <span className="truncate">{loadingText}</span>
+            : children}
           {enableRipple &&
             !asChild &&
             ripples.map((ripple) => (

@@ -159,6 +159,29 @@ export interface BaseLogger {
 }
 
 /**
+ * Redact sensitive fields from metadata before logging.
+ * This is a case-insensitive check that catches variants like
+ * `Secret`, `API_KEY`, `StripeToken` that pino's case-sensitive
+ * redact config would miss.
+ *
+ * @param meta - Metadata object to redact in-place
+ * @returns The same object with sensitive field values replaced by "[REDACTED]"
+ */
+function redactSensitiveFields(
+  meta: Record<string, unknown>,
+): Record<string, unknown> {
+  for (const key of Object.keys(meta)) {
+    const lowerKey = key.toLowerCase();
+    if (
+      SENSITIVE_FIELD_PATTERNS.some((pattern) => lowerKey.includes(pattern))
+    ) {
+      meta[key] = "[REDACTED]";
+    }
+  }
+  return meta;
+}
+
+/**
  * Creates a type-safe logger wrapper around a pino logger
  *
  * @param pinoLogger - The pino logger instance
@@ -167,16 +190,19 @@ export interface BaseLogger {
 export function createLoggerWrapper(pinoLogger: Logger): BaseLogger {
   return {
     debug(message: string, data?: LogMetadata): void {
-      pinoLogger.debug(data ?? {}, message);
+      pinoLogger.debug(data ? redactSensitiveFields({ ...data }) : {}, message);
     },
     info(message: string, data?: LogMetadata): void {
-      pinoLogger.info(data ?? {}, message);
+      pinoLogger.info(data ? redactSensitiveFields({ ...data }) : {}, message);
     },
     warn(message: string, data?: LogMetadata): void {
-      pinoLogger.warn(data ?? {}, message);
+      pinoLogger.warn(data ? redactSensitiveFields({ ...data }) : {}, message);
     },
     error(message: string, error?: unknown, data?: LogMetadata): void {
-      pinoLogger.error({ error, ...data }, message);
+      pinoLogger.error(
+        { error, ...(data ? redactSensitiveFields({ ...data }) : {}) },
+        message,
+      );
     },
   };
 }

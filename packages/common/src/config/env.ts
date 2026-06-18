@@ -17,9 +17,8 @@
  * ```
  */
 
-import { IS_PROD } from "./log-level";
-
 import { logger } from "../logger";
+import { IS_PROD } from "./log-level";
 
 /**
  * Admin emails from environment (comma-separated)

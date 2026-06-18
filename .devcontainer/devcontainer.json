@@ -1,8 +1,9 @@
 {
   "name": "Basefly Development",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
   "features": {
-    "ghcr.io/devcontainers/features/github-cli:1": {}
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
   },
   "customizations": {
     "vscode": {
@@ -13,8 +14,12 @@
         "ms-vscode.vscode-typescript-next",
         "prisma.prisma",
         "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg",
         "usernamehw.errorlens",
-        "yoavbls.pretty-ts-errors"
+        "yoavbls.pretty-ts-errors",
+        "streetsidesoftware.code-spell-checker",
+        "vitest.explorer",
+        "github.vscode-github-actions"
       ],
       "settings": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -23,14 +28,19 @@
           "source.fixAll.eslint": "explicit"
         },
         "typescript.tsdk": "node_modules/typescript/lib",
+        "typescript.enablePromptUseWorkspaceTsdk": true,
         "tailwindCSS.experimental.classRegex": [
           ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
           ["cx\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
-        ]
+        ],
+        "[prisma]": {
+          "editor.defaultFormatter": "Prisma.prisma"
+        }
       }
     }
   },
   "postCreateCommand": "pnpm install",
+  "postStartCommand": "git pull --rebase --autostash 2>/dev/null || true",
   "portsAttributes": {
     "3000": {
       "label": "Next.js Development Server",
@@ -38,9 +48,11 @@
     },
     "5432": {
       "label": "PostgreSQL Database",
-      "onAutoForward": "ignore"
+      "onAutoForward": "notify"
     }
   },
+  "forwardPorts": [3000, 5432],
   "remoteUser": "node",
-  "updateContentCommand": "pnpm install"
+  "updateContentCommand": "pnpm install",
+  "waitFor": "postCreateCommand"
 }

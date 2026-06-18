@@ -32,7 +32,7 @@
  * @see {@link https://docs.saasfly.io Documentation}
  */
 
-// Environment configuration - centralized environment variables and utilities
+// Log level configuration - extracted to break circular dependency with logger
 export {
   LogLevel,
   DEFAULT_LOG_LEVEL,
@@ -41,9 +41,13 @@ export {
   IS_DEV,
   IS_PROD,
   IS_TEST,
+  isValidLogLevel,
+} from "./config/log-level";
+
+// Environment configuration - centralized environment variables and utilities
+export {
   ADMIN_EMAIL,
   isAdminEmail,
-  isValidLogLevel,
   REDIS_URL,
   IS_REDIS_CONFIGURED,
   REQUIRED_ENV_VARS,

@@ -6,59 +6,20 @@
  * across the codebase.
  *
  * @module @saasfly/common/config/env
+ *
+ * Log level constants and environment detection (LogLevel, LOG_LEVEL, IS_DEV, etc.)
+ * are now in {@link @saasfly/common/config/log-level} to break circular dependencies.
+ *
  * @example
  * ```ts
- * import { LOG_LEVEL, IS_DEV, NODE_ENV } from "@saasfly/common/config/env";
- *
- * // Use in logger configuration
- * const logger = pino({ level: LOG_LEVEL });
- *
- * // Check environment
- * if (IS_DEV) {
- *   // Development-only code
- * }
+ * import { NODE_ENV } from "@saasfly/common/config/env";
+ * import { LOG_LEVEL, IS_DEV } from "@saasfly/common/config/log-level";
  * ```
  */
 
-/**
- * Log levels following standard logging conventions
- */
-export enum LogLevel {
-  DEBUG = "debug",
-  INFO = "info",
-  WARN = "warn",
-  ERROR = "error",
-}
+import { IS_PROD } from "./log-level";
 
-/**
- * Default log level when LOG_LEVEL env var is not set
- */
-export const DEFAULT_LOG_LEVEL: LogLevel = LogLevel.INFO;
-
-/**
- * Current log level from environment or default
- */
-export const LOG_LEVEL: string = process.env.LOG_LEVEL ?? DEFAULT_LOG_LEVEL;
-
-/**
- * Current Node.js environment
- */
-export const NODE_ENV: string = process.env.NODE_ENV ?? "production";
-
-/**
- * Check if running in development mode
- */
-export const IS_DEV: boolean = NODE_ENV === "development";
-
-/**
- * Check if running in production mode
- */
-export const IS_PROD: boolean = NODE_ENV === "production";
-
-/**
- * Check if running in test mode
- */
-export const IS_TEST: boolean = NODE_ENV === "test";
+import { logger } from "../logger";
 
 /**
  * Admin emails from environment (comma-separated)
@@ -87,13 +48,6 @@ export function isAdminEmail(email: string | null | undefined): boolean {
   return ADMIN_EMAIL.split(",")
     .map((e) => e.trim().toLowerCase())
     .includes(email.toLowerCase());
-}
-
-/**
- * Validate that a log level is valid
- */
-export function isValidLogLevel(level: string): level is LogLevel {
-  return Object.values(LogLevel).includes(level as LogLevel);
 }
 
 /**
@@ -221,10 +175,10 @@ export function initEnvValidation(): void {
       throw new Error(`Environment validation failed:\n${message}`);
     }
 
-    // In development, log warning
-    console.warn(`[env-validation] ${message}`);
+    // In development, log warning through structured logger
+    logger.warn(`[env-validation] ${message}`);
   } else if (result.missingRecommended.length > 0) {
-    console.warn(
+    logger.warn(
       `[env-validation] Missing recommended environment variables: ${result.missingRecommended.join(", ")}`,
     );
   }

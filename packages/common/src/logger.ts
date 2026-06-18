@@ -13,7 +13,7 @@
 
 import pino, { type Logger } from "pino";
 
-import { IS_DEV, IS_TEST, LOG_LEVEL } from "./config/env";
+import { IS_DEV, IS_TEST, LOG_LEVEL } from "./config/log-level";
 
 /**
  * Supported package names for logging context

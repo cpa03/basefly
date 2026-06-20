@@ -21,11 +21,10 @@ import { transformer } from "./shared";
 
 type AuthObject = Awaited<ReturnType<typeof auth>>;
 
-export const createTRPCContext = async (opts: {
+export const createTRPCContext = (opts: {
   headers: Headers;
   auth: AuthObject | null;
-  // eslint-disable-next-line @typescript-eslint/require-await
-}) => {
+}): { userId: string | null; headers: Headers; auth: AuthObject | null } => {
   return {
     userId: opts.auth?.userId ?? null,
     ...opts,

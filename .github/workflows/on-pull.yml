@@ -60,6 +60,12 @@ jobs:
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
 
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Dependency Consistency Check
+        run: pnpm check-deps
+
       - name: Install OpenCode CLI
         run: |
           curl -fsSL https://opencode.ai/install | bash

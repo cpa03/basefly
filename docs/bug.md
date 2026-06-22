@@ -136,4 +136,4 @@ Fixed critical TypeScript error and cleaned up code quality issues:
 9. `apps/nextjs/next.config.mjs` - Added image domains
 - [ ] bug: ESLint warnings about unused eslint-disable directives in packages/ui.
 - [ ] bug: Many "Unsafe call" and "Unsafe member access" lint errors in apps/nextjs related to tRPC usage.
-- [ ] bug: Build failure in apps/nextjs (edge runtime) because ioredis is imported in distributed-rate-limiter.ts, which is used by the edge router.
+- [x] bug: Build failure in apps/nextjs (edge runtime) because ioredis is imported in distributed-rate-limiter.ts, which is used by the edge router.

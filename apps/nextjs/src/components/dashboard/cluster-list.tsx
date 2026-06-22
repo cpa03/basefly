@@ -90,7 +90,7 @@ export async function ClusterList({ lang, dict }: ClusterListProps) {
         {clusters.map((cluster) => (
           <article
             key={String(cluster.id)}
-            className="flex flex-col gap-3 rounded-md border p-4"
+            className="flex flex-col gap-3 rounded-md border p-4 transition-transform hover:scale-[1.02]"
           >
             <div className="flex items-start justify-between">
               <div className="space-y-1">

@@ -41,6 +41,7 @@ export {
   IS_DEV,
   IS_PROD,
   IS_TEST,
+  IS_EDGE,
   isValidLogLevel,
 } from "./config/log-level";
 
@@ -200,6 +201,7 @@ export {
   STRIPE_CONFIG,
   DEFAULT_RETRYABLE_ERRORS,
   RATE_LIMIT_DEFAULTS,
+  RATE_LIMIT_PREFIX,
 } from "./config/resilience";
 export type {
   CircuitBreakerConfig,

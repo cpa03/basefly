@@ -1,0 +1,1 @@
+Git commit message automation

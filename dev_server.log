@@ -1,0 +1,33 @@
+
+> basefly@ dev /app
+> turbo dev --parallel
+
+ WARNING  --parallel is deprecated and will be removed in a future major version. Instead, define task behavior in your turbo.json task definitions using `persistent` and `with`.
+• turbo 2.9.18
+
+   • Packages in scope: @saasfly/api, @saasfly/auth, @saasfly/common, @saasfly/db, @saasfly/eslint-config, @saasfly/nextjs, @saasfly/prettier-config, @saasfly/stripe, @saasfly/tailwind-config, @saasfly/typescript-config, @saasfly/ui
+   • Running dev in 11 packages
+   • Remote caching disabled
+
+@saasfly/nextjs:dev: cache bypass, force executing 655f1fb4bab1d8cb
+@saasfly/stripe:dev: cache bypass, force executing f5a267fdde640fa7
+@saasfly/stripe:dev:
+@saasfly/stripe:dev: > @saasfly/stripe@0.1.0 dev /app/packages/stripe
+@saasfly/stripe:dev: > stripe listen --forward-to localhost:3000/api/webhooks/stripe
+@saasfly/stripe:dev:
+@saasfly/nextjs:dev:
+@saasfly/nextjs:dev: > @saasfly/nextjs@0.1.0 dev /app/apps/nextjs
+@saasfly/nextjs:dev: > npx dotenv-cli -e ../../.env.local -e ../../.env.ci -- next dev
+@saasfly/nextjs:dev:
+@saasfly/stripe:dev: sh: 1: stripe: not found
+@saasfly/stripe:dev:  ELIFECYCLE  Command failed.
+@saasfly/nextjs:dev:  ELIFECYCLE  Command failed.
+ ERROR  @saasfly/stripe#dev: command (/app/packages/stripe) /home/jules/.local/share/pnpm/.tools/pnpm/10.28.2/bin/pnpm run dev exited (1)
+
+ Tasks:    0 successful, 2 total
+Cached:    0 cached, 2 total
+  Time:    873ms
+Failed:    @saasfly/stripe#dev
+
+ ERROR  run failed: command  exited (1)
+ ELIFECYCLE  Command failed with exit code 1.

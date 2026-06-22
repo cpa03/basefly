@@ -2500,9 +2500,9 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - dialog.tsx - uses fade and zoom animations
 
 ---
-- [ ] error: Vitest setup file setup.tsx had JSX syntax but was being parsed as plain TS in some contexts, renamed to setup.ts and used React.createElement.
-- [ ] error: Missing expectTypeOf import in packages/common/src/config/ui-strings.test.ts.
-- [ ] error: Duplicate logger import in packages/api/src/trpc.ts.
+- [x] error: Vitest setup file setup.tsx had JSX syntax but was being parsed as plain TS in some contexts, renamed to setup.ts and used React.createElement.
+- [x] error: Missing expectTypeOf import in packages/common/src/config/ui-strings.test.ts.
+- [x] error: Duplicate logger import in packages/api/src/trpc.ts.
 - [CONSOLIDATE] Centralized tRPC procedure calls in server components by removing direct .query() calls.
 - [STRENGTHEN] Enhanced Button component with built-in loading text support.
 - [STRENGTHEN] Fixed syntax error in packages/ui/src/animated-tooltip.tsx where a curly brace was missing for a conditional check.

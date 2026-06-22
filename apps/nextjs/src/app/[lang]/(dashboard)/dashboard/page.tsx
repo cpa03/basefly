@@ -35,7 +35,7 @@ export default async function DashboardPage({
   }
 
   // Check and create customer if needed
-  const customer = await trpc.customer.queryCustomer.query({
+  const customer = await trpc.customer.queryCustomer({
     userId: user.id,
   });
   if (!customer) {

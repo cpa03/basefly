@@ -49,6 +49,12 @@ export const IS_PROD: boolean = NODE_ENV === "production";
 export const IS_TEST: boolean = NODE_ENV === "test";
 
 /**
+ * Check if running in edge runtime
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+export const IS_EDGE: boolean = (process.env as any).NEXT_RUNTIME === "edge";
+
+/**
  * Validate that a log level is valid
  */
 export function isValidLogLevel(level: string): level is LogLevel {

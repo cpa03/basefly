@@ -119,3 +119,5 @@ export const RATE_LIMIT_DEFAULTS: Record<EndpointType, RateLimitConfig> = {
     windowMs: 60 * 1000,
   },
 };
+
+export const RATE_LIMIT_PREFIX = "ratelimit:";

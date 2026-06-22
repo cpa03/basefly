@@ -13,8 +13,10 @@ import type { NextRequest } from "next/server";
 import type { Redis } from "ioredis";
 
 import {
+  IS_EDGE,
   IS_REDIS_CONFIGURED,
   RATE_LIMIT_DEFAULTS,
+  RATE_LIMIT_PREFIX,
   REDIS_URL,
   type EndpointType,
   type RateLimitConfig,
@@ -158,12 +160,12 @@ export class DistributedRateLimiter {
   constructor(config: RateLimitConfig, redisUrl?: string) {
     this.maxRequests = config.maxRequests;
     this.windowMs = config.windowMs;
-    this.prefix = "ratelimit:";
+    this.prefix = RATE_LIMIT_PREFIX;
     this.fallback = new InMemoryRateLimiter(config);
 
-    // Initialize Redis if URL is provided
+    // Initialize Redis if URL is provided and not in edge runtime
     const url = redisUrl ?? REDIS_URL;
-    if (url) {
+    if (url && !IS_EDGE) {
       void this.initializeRedis(url);
     } else {
       logger.debug(
@@ -279,7 +281,7 @@ export class SyncRateLimiter {
   private ensureInitialized(): void {
     if (this.initialized) return;
 
-    if (IS_REDIS_CONFIGURED && REDIS_URL) {
+    if (IS_REDIS_CONFIGURED && REDIS_URL && !IS_EDGE) {
       this.distributed = new DistributedRateLimiter(
         {
           maxRequests: this.fallback.maxRequestsValue,

@@ -35,7 +35,7 @@ Deliver small, safe, measurable improvements strictly inside the platform/domain
 - Small atomic diff
 
 ## History
-YY|## History
+## History
 
 ### 2026-02-27
 
@@ -61,7 +61,7 @@ YY|## History
   - Commented fix details on issue #595
   QN|  - Fallback: Pivoted to work on issue #705 instead
 
-VB|### 2026-02-25
+### 2026-02-25
 ### 2026-02-27
 
 - **Issue #595**: GitHub Actions workflows use npm instead of pnpm
@@ -105,5 +105,5 @@ The GitHub Actions bot (github-actions[bot]) cannot modify workflow files due to
 2. Fix GitHub Actions pnpm configuration - IMPLEMENTED but BLOCKED (2026-02-27)
 3. Add better caching for GitHub Actions
 4. Optimize workflow parallelization
-ST|5. Add dependency caching improvements
-KM|6. Add Docker configuration - DONE (PR #771, 2026-02-27)
+5. Add dependency caching improvements
+6. Add Docker configuration - DONE (PR #771, 2026-02-27)

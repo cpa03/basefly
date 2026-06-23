@@ -51,11 +51,11 @@ Basefly is a Next.js-based SaaS template with:
 - **Status**: Pending
 - **Problem**: Auth module has 0% test coverage
 
-VB|### Issue 551: Add tests for k8s router
-RB|
-BW|- **Status**: Pending
-SH|- **Problem**: Core business logic needs test coverage
-ZK|
+### Issue 551: Add tests for k8s router
+
+- **Status**: Pending
+- **Problem**: Core business logic needs test coverage
+
 ### Issue 483: Add transaction handling for multi-table operations
 
 - **Status**: In Progress (PR #775)
@@ -69,11 +69,11 @@ ZK|
 - **Status**: Completed (PR #642)
 - **Problem**: File named health_check.ts exports helloRouter (greeting endpoint), not health check
 - **Solution**: Renamed to hello.ts and hello.test.ts to properly reflect purpose
-JQ|
-BW|- **Status**: Completed (PR #642)
-WY|- **Problem**: File named health_check.ts exports helloRouter (greeting endpoint), not health check
-TX|- **Solution**: Renamed to hello.ts and hello.test.ts to properly reflect purpose
-VB|
+
+- **Status**: Completed (PR #642)
+- **Problem**: File named health_check.ts exports helloRouter (greeting endpoint), not health check
+- **Solution**: Renamed to hello.ts and hello.test.ts to properly reflect purpose
+
 
 ## Existing Patterns
 
@@ -179,16 +179,16 @@ Tests are located alongside source files with `.test.ts` suffix:
 - Vercel rate limiting: "api-deployments-free-per-day" - wait 2 hours or merge without Vercel check
 - Console in seed scripts: Can use logger, but eslint-disable-no-console is also acceptable for dev scripts
 
-VN|- Vercel rate limiting: "api-deployments-free-per-day" - wait 2 hours or merge without Vercel check
-WP|- Console in seed scripts: Can use logger, but eslint-disable-no-console is also acceptable for dev scripts
-BM|
-VR|### 2026-02-25 Session (Afternoon)
-QX|
-NS|1. **Created PR #642**: Fixed issue #578 - renamed misnamed health_check router to hello
-PN| - File health_check.ts exported helloRouter (greeting endpoint), not health check
-JH| - Renamed to hello.ts and hello.test.ts to eliminate confusion
-TT| - All checks pass (typecheck, lint, test: 26 tests)
-JQ|
+- Vercel rate limiting: "api-deployments-free-per-day" - wait 2 hours or merge without Vercel check
+- Console in seed scripts: Can use logger, but eslint-disable-no-console is also acceptable for dev scripts
+
+### 2026-02-25 Session (Afternoon)
+
+1. **Created PR #642**: Fixed issue #578 - renamed misnamed health_check router to hello
+ - File health_check.ts exported helloRouter (greeting endpoint), not health check
+ - Renamed to hello.ts and hello.test.ts to eliminate confusion
+ - All checks pass (typecheck, lint, test: 26 tests)
+
 
 
 ### 2026-02-27 Session

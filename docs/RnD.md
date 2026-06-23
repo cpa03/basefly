@@ -44,7 +44,7 @@
 
 ## Active R&D Work
 
-RW|
+
 
 ### Issue #649: Remove eslint-disable comments in k8s.ts router
 
@@ -83,7 +83,7 @@ RW|
 
 ---
 
-BY|### Issue #636: ISR Caching for Dashboard Data
+### Issue #636: ISR Caching for Dashboard Data
 
 ### Issue #636: ISR Caching for Dashboard Data
 

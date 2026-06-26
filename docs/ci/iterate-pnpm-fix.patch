@@ -1,0 +1,52 @@
+diff --git a/.github/workflows/iterate.yml b/.github/workflows/iterate.yml
+index 5f43f65..2690de9 100644
+--- a/.github/workflows/iterate.yml
++++ b/.github/workflows/iterate.yml
+@@ -51,12 +51,16 @@ jobs:
+             exit 0
+           fi
+           
++      - uses: pnpm/action-setup@v6
++        with:
++          run_install: false
++
+       - uses: actions/cache@v4
+         with:
+           path: |
+             ~/.opencode
+-            ~/.npm
+-          key: opencode-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-v1
++            ~/.pnpm-store
++          key: opencode-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}-v1
+           restore-keys: |
+             opencode-${{ runner.os }}-v1
+ 
+@@ -68,8 +72,9 @@ jobs:
+       - uses: actions/setup-node@v4
+         with:
+           node-version: "20"
++          cache: 'pnpm'
+ 
+-      - run: npm ci || true
++      - run: pnpm install --frozen-lockfile || true
+ 
+       - name: Install OpenCode
+         run: |
+@@ -335,11 +340,16 @@ jobs:
+           git config --global user.name "${{ github.actor }}"
+           git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+ 
++      - uses: pnpm/action-setup@v6
++        with:
++          run_install: false
++
+       - uses: actions/setup-node@v4
+         with:
+           node-version: "20"
++          cache: 'pnpm'
+ 
+-      - run: npm ci || true
++      - run: pnpm install --frozen-lockfile || true
+ 
+       - name: Install OpenCode
+         run: |

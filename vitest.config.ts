@@ -53,6 +53,19 @@ export default defineConfig({
       "@saasfly/ui/tooltip": resolve(__dirname, "./packages/ui/src/tooltip.tsx"),
       "@saasfly/ui/table": resolve(__dirname, "./packages/ui/src/table.tsx"),
       "@saasfly/ui/avatar": resolve(__dirname, "./packages/ui/src/avatar.tsx"),
+      "@saasfly/ui/alert-dialog": resolve(
+        __dirname,
+        "./packages/ui/src/alert-dialog.tsx",
+      ),
+      "@saasfly/ui/status-badge": resolve(
+        __dirname,
+        "./packages/ui/src/status-badge.tsx",
+      ),
+      "@saasfly/ui/use-toast": resolve(
+        __dirname,
+        "./packages/ui/src/use-toast.tsx",
+      ),
+      "@saasfly/ui/toast": resolve(__dirname, "./packages/ui/src/toast.tsx"),
       "@saasfly/ui": resolve(__dirname, "./packages/ui"),
       "@saasfly/common/config/resilience": resolve(
         __dirname,
@@ -76,6 +89,10 @@ export default defineConfig({
       ),
       "@saasfly/common": resolve(__dirname, "./packages/common"),
       "@saasfly/stripe": resolve(__dirname, "./packages/stripe"),
+      "@saasfly/api/transformer": resolve(
+        __dirname,
+        "./packages/api/src/transformer.ts",
+      ),
       "@saasfly/api": resolve(__dirname, "./packages/api"),
       "~": resolve(__dirname, "./apps/nextjs/src"),
     },

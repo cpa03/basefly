@@ -12,8 +12,8 @@ vi.mock("@saasfly/ui/icons", () => ({
   Rocket: (props: React.SVGProps<SVGSVGElement>) => (
     <svg data-testid="icon-rocket" className={(props as Record<string, string>)?.className} />
   ),
-  FileText: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg data-testid="icon-file-text" className={(props as Record<string, string>)?.className} />
+  Post: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg data-testid="icon-post" className={(props as Record<string, string>)?.className} />
   ),
   Settings: (props: React.SVGProps<SVGSVGElement>) => (
     <svg data-testid="icon-settings" className={(props as Record<string, string>)?.className} />
@@ -75,8 +75,8 @@ describe("EmptyPlaceholder.Icon", () => {
     const { rerender } = render(<EmptyPlaceholder.Icon name="Activity" />);
     expect(screen.getByTestId("icon-activity")).toBeInTheDocument();
 
-    rerender(<EmptyPlaceholder.Icon name="FileText" />);
-    expect(screen.getByTestId("icon-file-text")).toBeInTheDocument();
+    rerender(<EmptyPlaceholder.Icon name="Post" />);
+    expect(screen.getByTestId("icon-post")).toBeInTheDocument();
   });
 });
 

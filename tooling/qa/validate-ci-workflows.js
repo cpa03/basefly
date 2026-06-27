@@ -11,11 +11,11 @@
 const fs = require("fs");
 const path = require("path");
 
-const VALID_ACTION_VERSIONS = {
-  "actions/checkout": "v4",
-  "actions/setup-node": "v4",
-  "actions/cache": "v4",
-  "pnpm/action-setup": "v4",
+const MINIMUM_ACTION_MAJOR_VERSIONS = {
+  "actions/checkout": 4,
+  "actions/setup-node": 4,
+  "actions/cache": 4,
+  "pnpm/action-setup": 4,
 };
 
 const WORKFLOW_DIR = ".github/workflows";
@@ -26,23 +26,20 @@ function parseWorkflowFile(filePath) {
 }
 
 function validateActionVersion(line, lineNumber, filePath, issues) {
-  for (const [action, validVersion] of Object.entries(VALID_ACTION_VERSIONS)) {
+  for (const [action, minMajor] of Object.entries(MINIMUM_ACTION_MAJOR_VERSIONS)) {
     const pattern = new RegExp(`uses:\\s*${action.replace(/\//g, "\\/")}@(.+)`);
     const match = line.match(pattern);
     if (match) {
       const version = match[1].trim();
-      if (version !== validVersion) {
-        const versionNum = parseInt(version.replace("v", ""));
-        const validVersionNum = parseInt(validVersion.replace("v", ""));
-        if (versionNum > validVersionNum) {
-          issues.push({
-            file: filePath,
-            line: lineNumber + 1,
-            type: "error",
-            message: `Invalid action version: ${action}@${version}`,
-            suggestion: `Use ${action}@${validVersion} instead`,
-          });
-        }
+      const versionNum = parseInt(version.replace("v", ""));
+      if (!isNaN(versionNum) && versionNum < minMajor) {
+        issues.push({
+          file: filePath,
+          line: lineNumber + 1,
+          type: "error",
+          message: `Action version too old: ${action}@${version}`,
+          suggestion: `Update to ${action}@v${minMajor}+`,
+        });
       }
     }
   }

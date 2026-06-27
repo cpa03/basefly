@@ -1,9 +1,9 @@
 import * as React from "react";
+import { motion } from "framer-motion";
 
 import {
   BADGE_TOKENS,
   FEEDBACK_TIMING,
-  UI_ANIMATION,
   type ClusterStatus,
 } from "@saasfly/common";
 import {
@@ -128,11 +128,12 @@ export function StatusBadge({
   const styles = sizeStyles[size];
 
   const badge = (
-    <div
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
       className={cn(
         "inline-flex items-center font-medium transition-colors",
         BADGE_TOKENS.radius,
-        UI_ANIMATION.scale.subtle,
         config.bgColor,
         config.textColor,
         styles.container,
@@ -159,7 +160,7 @@ export function StatusBadge({
         aria-hidden="true"
       />
       <span className="sr-only">{config.label}</span>
-    </div>
+    </motion.div>
   );
 
   if (!showTooltip) {

@@ -360,6 +360,7 @@ export type {
   BadgeSize,
   FocusVariant,
 } from "./ui-tokens";
+export { LOCATION_BADGE_TOKENS } from "./ui-tokens";
 export type { SubscriptionPlan } from "./subscriptions";
 export { pricingData } from "./subscriptions";
 

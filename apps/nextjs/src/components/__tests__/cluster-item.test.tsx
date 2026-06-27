@@ -126,12 +126,19 @@ vi.mock("next/link", () => ({
   ),
 }));
 
-const mockCluster = {
+const mockCluster: {
+  id: number;
+  name: string;
+  location: string;
+  plan: "PRO" | null;
+  status: "RUNNING";
+  updatedAt: Date;
+} = {
   id: 42,
   name: "production-cluster",
   location: "us-east-1",
   plan: "PRO",
-  status: "RUNNING" as const,
+  status: "RUNNING",
   updatedAt: new Date("2026-06-01T10:00:00Z"),
 };
 
@@ -202,14 +209,14 @@ describe("ClusterItem", () => {
   });
 
   it("shows fallback for missing plan", () => {
-    const clusterWithoutPlan = { ...mockCluster, plan: undefined };
+    const clusterWithoutPlan = { ...mockCluster, plan: null };
     renderWithTable(<ClusterItem cluster={clusterWithoutPlan} lang="en" />);
 
     expect(screen.getByText("-")).toBeInTheDocument();
   });
 
   it("shows fallback for missing status", () => {
-    const clusterWithoutStatus = { ...mockCluster, status: undefined };
+    const clusterWithoutStatus = { ...mockCluster, status: null };
     renderWithTable(<ClusterItem cluster={clusterWithoutStatus} lang="en" />);
 
     // Should render "-" instead of status badge

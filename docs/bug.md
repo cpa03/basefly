@@ -7,6 +7,7 @@
 - [x] bug: Inconsistent logging in `packages/api/src/router/k8s.ts` (using `console.info` instead of `logger`).
 - [x] bug: Unused `eslint-disable` directives in `packages/ui/src/text-generate-effect.tsx` and `packages/ui/src/typewriter-effect.tsx`.
 - [x] bug: Potential "Invalid Date" in `DashboardPage` and `ClusterItem` when `updatedAt` is null/undefined.
+- [x] bug: HTML validation error in `ClusterItem` tests (tr cannot be a child of div).
 
 ## Verification Summary (2026-02-17)
 

@@ -211,6 +211,14 @@ export const BADGE_TOKENS = {
 } as const;
 
 /**
+ * Location badge design tokens
+ */
+export const LOCATION_BADGE_TOKENS = {
+  container:
+    "inline-flex items-center rounded-md bg-secondary/50 px-2 py-1 text-sm text-secondary-foreground",
+} as const;
+
+/**
  * Focus management tokens
  * Consistent focus ring styles across all interactive elements
  */

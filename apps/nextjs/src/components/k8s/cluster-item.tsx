@@ -1,7 +1,11 @@
 import React from "react";
 import Link from "next/link";
 
-import { ANIMATION, FEEDBACK_TIMING } from "@saasfly/common";
+import {
+  ANIMATION,
+  FEEDBACK_TIMING,
+  LOCATION_BADGE_TOKENS,
+} from "@saasfly/common";
 import { StatusBadge } from "@saasfly/ui/status-badge";
 import { TableCell, TableRow } from "@saasfly/ui/table";
 import {
@@ -79,7 +83,9 @@ export const ClusterItem = React.memo(function ClusterItem({
       </TableCell>
       <TableCell className="text-left">
         <span
-          className={`inline-flex items-center rounded-md bg-secondary/50 px-2 py-1 text-sm text-secondary-foreground`}
+          className={
+            (LOCATION_BADGE_TOKENS as { container: string }).container
+          }
         >
           {cluster.location}
         </span>

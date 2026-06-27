@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { ANIMATION } from "@saasfly/common";
+import { HelpCircle } from "@saasfly/ui/icons";
 import { cn } from "@saasfly/ui";
 import * as Icons from "@saasfly/ui/icons";
 
@@ -41,11 +42,7 @@ EmptyPlaceholder.Icon = function EmptyPlaceHolderIcon({
   name,
   className, // ...props
 }: EmptyPlaceholderIconProps) {
-  const Icon = Icons[name];
-
-  if (!Icon) {
-    return null;
-  }
+  const Icon = Icons[name] || HelpCircle;
 
   return (
     <div

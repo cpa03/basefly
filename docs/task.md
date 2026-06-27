@@ -2506,3 +2506,4 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [CONSOLIDATE] Centralized tRPC procedure calls in server components by removing direct .query() calls.
 - [STRENGTHEN] Enhanced Button component with built-in loading text support.
 - [STRENGTHEN] Fixed syntax error in packages/ui/src/animated-tooltip.tsx where a curly brace was missing for a conditional check.
+- [STRENGTHEN] Improved `EmptyPlaceholder.Icon` with a fallback mechanism using `HelpCircle` icon when the requested icon is not found.

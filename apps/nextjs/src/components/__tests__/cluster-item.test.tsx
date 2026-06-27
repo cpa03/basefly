@@ -78,6 +78,9 @@ vi.mock("@saasfly/common", () => ({
   FEEDBACK_TIMING: {
     tooltipDelay: 0,
   },
+  LOCATION_BADGE_TOKENS: {
+    container: "mock-location-badge-container",
+  },
 }));
 
 vi.mock("@saasfly/common/config/ui", () => ({
@@ -133,8 +136,16 @@ const mockCluster = {
 };
 
 describe("ClusterItem", () => {
+  const renderWithTable = (ui: React.ReactElement) => {
+    return render(
+      <table>
+        <tbody>{ui}</tbody>
+      </table>,
+    );
+  };
+
   it("renders cluster name as a link", () => {
-    render(<ClusterItem cluster={mockCluster} lang="en" />);
+    renderWithTable(<ClusterItem cluster={mockCluster} lang="en" />);
 
     // Cluster name appears both in the link and tooltip — use getAllByText
     const nameLinks = screen.getAllByText("production-cluster");
@@ -149,19 +160,19 @@ describe("ClusterItem", () => {
   });
 
   it("renders cluster location", () => {
-    render(<ClusterItem cluster={mockCluster} lang="en" />);
+    renderWithTable(<ClusterItem cluster={mockCluster} lang="en" />);
 
     expect(screen.getByText("us-east-1")).toBeInTheDocument();
   });
 
   it("renders cluster plan", () => {
-    render(<ClusterItem cluster={mockCluster} lang="en" />);
+    renderWithTable(<ClusterItem cluster={mockCluster} lang="en" />);
 
     expect(screen.getByText("PRO")).toBeInTheDocument();
   });
 
   it("renders cluster status badge", () => {
-    render(<ClusterItem cluster={mockCluster} lang="en" />);
+    renderWithTable(<ClusterItem cluster={mockCluster} lang="en" />);
 
     const badge = screen.getByTestId("status-badge");
     expect(badge).toBeInTheDocument();
@@ -169,13 +180,13 @@ describe("ClusterItem", () => {
   });
 
   it("renders formatted updated date", () => {
-    render(<ClusterItem cluster={mockCluster} lang="en" />);
+    renderWithTable(<ClusterItem cluster={mockCluster} lang="en" />);
 
     expect(screen.getByText(/Formatted:/)).toBeInTheDocument();
   });
 
   it("renders ClusterOperations component", () => {
-    render(<ClusterItem cluster={mockCluster} lang="en" />);
+    renderWithTable(<ClusterItem cluster={mockCluster} lang="en" />);
 
     const ops = screen.getByTestId("cluster-operations");
     expect(ops).toBeInTheDocument();
@@ -184,7 +195,7 @@ describe("ClusterItem", () => {
   });
 
   it("renders tooltip with cluster info", () => {
-    render(<ClusterItem cluster={mockCluster} lang="en" />);
+    renderWithTable(<ClusterItem cluster={mockCluster} lang="en" />);
 
     expect(screen.getByTestId("tooltip-provider")).toBeInTheDocument();
     expect(screen.getByText("Click to edit cluster")).toBeInTheDocument();
@@ -192,21 +203,21 @@ describe("ClusterItem", () => {
 
   it("shows fallback for missing plan", () => {
     const clusterWithoutPlan = { ...mockCluster, plan: undefined };
-    render(<ClusterItem cluster={clusterWithoutPlan} lang="en" />);
+    renderWithTable(<ClusterItem cluster={clusterWithoutPlan} lang="en" />);
 
     expect(screen.getByText("-")).toBeInTheDocument();
   });
 
   it("shows fallback for missing status", () => {
     const clusterWithoutStatus = { ...mockCluster, status: undefined };
-    render(<ClusterItem cluster={clusterWithoutStatus} lang="en" />);
+    renderWithTable(<ClusterItem cluster={clusterWithoutStatus} lang="en" />);
 
     // Should render "-" instead of status badge
     expect(screen.queryByTestId("status-badge")).not.toBeInTheDocument();
   });
 
   it("renders time element with datetime attribute", () => {
-    render(<ClusterItem cluster={mockCluster} lang="en" />);
+    renderWithTable(<ClusterItem cluster={mockCluster} lang="en" />);
 
     const time = screen.getByText(/Formatted:/).closest("time");
     // happy-dom formats dates differently than real browsers

@@ -47,15 +47,65 @@
 | #727  | AI-Powered Code Review Automation  | P3       | Enhancement — not investigated                            |
 | #729  | Bundle size regression testing     | P2       | Testing enhancement — not investigated                    |
 | #723  | High number of client components   | P2       | Bundle size investigation                                 |
-| #705  | Add Docker configuration           | P2       | Infrastructure enhancement                                |
+| #705  | Add Docker configuration           | P2       | Already fixed (PR #771) — update needed                   |
+| #728  | Security scanning workflows to CI  | P1       | Fix blocked — GITHUB_TOKEN lacks `workflows: write`       |
 
-## Label Recommendations
+## Recent Work Done (2026-06-27 Run)
 
-All 30 issues need the following label corrections:
+### Issue #728 — Security Scanning Workflows
 
-- Category labels (bug/enhancement/test/ci/security) — ~26 have them
-- Priority labels (P0/P1/P2/P3) — ~25 are missing priority labels
-- Apply via `gh` CLI when token permissions allow
+**Attempted fix**: Created `security-audit.yml` and `codeql-analysis.yml` workflow files.
+
+**Blocked**: GITHUB_TOKEN lacks `workflows: write` permission, preventing push to `.github/workflows/`.
+
+**Deployment Guide**: See `docs/security-workflows-deploy.md` — a maintainer with `workflows: write` permission must:
+
+1. Copy `docs/workflow-security-audit.yml` to `.github/workflows/security-audit.yml`
+2. Copy `docs/workflow-codeql-analysis.yml` (reference only; actual file from workspace) to `.github/workflows/codeql-analysis.yml`
+3. Commit and push
+
+**Dependabot**: Already configured at `.github/dependabot.yml` (weekly pnpm + GitHub Actions updates)
+
+### Duplicate Detection
+
+| Duplicate | Canonical | Rationale                                             |
+| --------- | --------- | ----------------------------------------------------- |
+| #720      | #748      | Both about .nvmrc; #748 supersedes with current state |
+
+### Label Mapping (Normalized)
+
+| #   | Category    | Priority | Current Labels                                 |
+| --- | ----------- | -------- | ---------------------------------------------- |
+| 789 | refactor    | P3       | enhancement                                    |
+| 788 | test        | P2       | test                                           |
+| 787 | test        | P2       | test                                           |
+| 786 | security    | P1       | security                                       |
+| 785 | bug         | P1       | bug                                            |
+| 755 | enhancement | P3       | database-architect (no standard cat)           |
+| 754 | test        | P1       | quality-assurance (no standard cat)            |
+| 753 | enhancement | P2       | frontend-engineer (no standard cat)            |
+| 752 | enhancement | P3       | DX-engineer (no standard cat)                  |
+| 751 | enhancement | P2       | performance-engineer (no standard cat)         |
+| 749 | enhancement | P3       | Growth-Innovation-Strategist (no standard cat) |
+| 748 | bug         | P2       | DX-engineer (no standard cat)                  |
+| 744 | ci          | P2       | Growth-Innovation-Strategist (no standard cat) |
+| 731 | enhancement | P3       | enhancement                                    |
+| 729 | test        | P3       | enhancement                                    |
+| 728 | security    | P1       | security                                       |
+| 727 | enhancement | P3       | enhancement                                    |
+| 726 | ci          | P3       | ci                                             |
+| 725 | test        | P2       | test                                           |
+| 724 | test        | P1       | test                                           |
+| 723 | enhancement | P2       | enhancement                                    |
+| 722 | security    | P2       | security                                       |
+| 721 | security    | P1       | security                                       |
+| 720 | chore       | P3       | enhancement                                    |
+| 719 | enhancement | P2       | enhancement                                    |
+| 713 | test        | P2       | enhancement, test, quality-assurance (multi)   |
+| 708 | enhancement | P3       | enhancement, P3, DX-engineer ✅                |
+| 706 | enhancement | P3       | enhancement, P3, DX-engineer ✅                |
+| 705 | enhancement | P2       | enhancement, P2, platform-engineer ✅          |
+| 697 | docs        | P3       | technical-writer (no standard cat)             |
 
 ## Environment Constraints
 

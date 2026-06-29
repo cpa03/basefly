@@ -50,9 +50,10 @@ export const IS_TEST: boolean = NODE_ENV === "test";
 
 /**
  * Check if running in edge runtime
+ * Uses index access through a properly typed variable to avoid `as any`
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
-export const IS_EDGE: boolean = (process.env as any).NEXT_RUNTIME === "edge";
+const processEnv: Record<string, string | undefined> = process.env;
+export const IS_EDGE: boolean = processEnv.NEXT_RUNTIME === "edge";
 
 /**
  * Validate that a log level is valid

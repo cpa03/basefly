@@ -1,4 +1,8 @@
+import { auth as mockAuth } from "@clerk/nextjs/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+import type * as CommonTypes from "@saasfly/common";
+import { isAdminEmail as mockIsAdminEmail } from "@saasfly/common";
 
 import { getSessionUser, isClerkEnabled } from "./clerk";
 import { authOptions } from "./index";
@@ -7,9 +11,6 @@ import { logger } from "./logger";
 vi.mock("@clerk/nextjs/server", () => ({
   auth: vi.fn(),
 }));
-import { auth as mockAuth } from "@clerk/nextjs/server";
-
-import type * as CommonTypes from "@saasfly/common";
 
 vi.mock("@saasfly/common", async (importOriginal) => {
   const actual = await importOriginal<typeof CommonTypes>();
@@ -18,7 +19,6 @@ vi.mock("@saasfly/common", async (importOriginal) => {
     isAdminEmail: vi.fn().mockReturnValue(false),
   };
 });
-import { isAdminEmail as mockIsAdminEmail } from "@saasfly/common";
 
 describe("Auth Module", () => {
   describe("clerk.ts - isClerkEnabled", () => {
@@ -141,7 +141,8 @@ describe("Auth Module", () => {
 
     beforeEach(() => {
       vi.clearAllMocks();
-      process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = "pk_test_validKey1234567890";
+      process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY =
+        "pk_test_validKey1234567890";
     });
 
     it("should return null when Clerk is not enabled", async () => {
@@ -151,8 +152,14 @@ describe("Auth Module", () => {
     });
 
     it("should return user from session when auth succeeds", async () => {
-      const mockUser = { id: "user_123", email: "user@example.com", name: "Test User" };
-      vi.mocked(mockAuth).mockResolvedValue(mockAuthResult({ sessionClaims: { user: mockUser } }));
+      const mockUser = {
+        id: "user_123",
+        email: "user@example.com",
+        name: "Test User",
+      };
+      vi.mocked(mockAuth).mockResolvedValue(
+        mockAuthResult({ sessionClaims: { user: mockUser } }),
+      );
 
       const result = await getSessionUser();
       expect(result).toEqual({ ...mockUser, isAdmin: false });
@@ -160,7 +167,9 @@ describe("Auth Module", () => {
 
     it("should set isAdmin=true for admin email", async () => {
       const mockUser = { id: "user_123", email: "admin@basefly.io" };
-      vi.mocked(mockAuth).mockResolvedValue(mockAuthResult({ sessionClaims: { user: mockUser } }));
+      vi.mocked(mockAuth).mockResolvedValue(
+        mockAuthResult({ sessionClaims: { user: mockUser } }),
+      );
       vi.mocked(mockIsAdminEmail).mockReturnValue(true);
 
       const result = await getSessionUser();
@@ -169,7 +178,9 @@ describe("Auth Module", () => {
 
     it("should return user when sessionClaims have no email", async () => {
       const mockUser = { id: "user_123", name: "No Email User" };
-      vi.mocked(mockAuth).mockResolvedValue(mockAuthResult({ sessionClaims: { user: mockUser } }));
+      vi.mocked(mockAuth).mockResolvedValue(
+        mockAuthResult({ sessionClaims: { user: mockUser } }),
+      );
 
       const result = await getSessionUser();
       expect(result).toEqual(mockUser);
@@ -183,14 +194,18 @@ describe("Auth Module", () => {
     });
 
     it("should return undefined when sessionClaims is undefined", async () => {
-      vi.mocked(mockAuth).mockResolvedValue(mockAuthResult({ sessionClaims: undefined }));
+      vi.mocked(mockAuth).mockResolvedValue(
+        mockAuthResult({ sessionClaims: undefined }),
+      );
 
       const result = await getSessionUser();
       expect(result).toBeUndefined();
     });
 
     it("should return undefined when sessionClaims.user is undefined", async () => {
-      vi.mocked(mockAuth).mockResolvedValue(mockAuthResult({ sessionClaims: { user: undefined } }));
+      vi.mocked(mockAuth).mockResolvedValue(
+        mockAuthResult({ sessionClaims: { user: undefined } }),
+      );
 
       const result = await getSessionUser();
       expect(result).toBeUndefined();

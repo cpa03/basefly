@@ -15,7 +15,9 @@ export const edgeRouter = createTRPCRouter({
   hello: helloRouter,
   auth: authRouter,
   admin: lazy(() => import("./router/admin").then((m) => m.adminRouter)),
-  customer: lazy(() => import("./router/customer").then((m) => m.customerRouter)),
+  customer: lazy(() =>
+    import("./router/customer").then((m) => m.customerRouter),
+  ),
   k8s: lazy(() => import("./router/k8s").then((m) => m.k8sRouter)),
   stripe: lazy(() => import("./router/stripe").then((m) => m.stripeRouter)),
 });

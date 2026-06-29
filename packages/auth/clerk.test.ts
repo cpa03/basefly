@@ -1,8 +1,22 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { isClerkEnabled } from "./clerk";
+import { getSessionUser, isClerkEnabled } from "./clerk";
 import { authOptions } from "./index";
 import { logger } from "./logger";
+
+vi.mock("@clerk/nextjs/server", () => ({
+  auth: vi.fn(),
+}));
+import { auth as mockAuth } from "@clerk/nextjs/server";
+
+vi.mock("@saasfly/common", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@saasfly/common")>();
+  return {
+    ...actual,
+    isAdminEmail: vi.fn().mockReturnValue(false),
+  };
+});
+import { isAdminEmail as mockIsAdminEmail } from "@saasfly/common";
 
 describe("Auth Module", () => {
   describe("clerk.ts - isClerkEnabled", () => {
@@ -115,6 +129,69 @@ describe("Auth Module", () => {
     it("should have signIn page configured", () => {
       expect(authOptions.pages).toHaveProperty("signIn");
       expect(authOptions.pages.signIn).toBe("/login");
+    });
+  });
+
+  describe("clerk.ts - getSessionUser", () => {
+    function mockAuthResult(data: Record<string, unknown>) {
+      return data as unknown as Awaited<ReturnType<typeof mockAuth>>;
+    }
+
+    beforeEach(() => {
+      vi.clearAllMocks();
+      process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = "pk_test_validKey1234567890";
+    });
+
+    it("should return null when Clerk is not enabled", async () => {
+      delete process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+      const result = await getSessionUser();
+      expect(result).toBeNull();
+    });
+
+    it("should return user from session when auth succeeds", async () => {
+      const mockUser = { id: "user_123", email: "user@example.com", name: "Test User" };
+      vi.mocked(mockAuth).mockResolvedValue(mockAuthResult({ sessionClaims: { user: mockUser } }));
+
+      const result = await getSessionUser();
+      expect(result).toEqual({ ...mockUser, isAdmin: false });
+    });
+
+    it("should set isAdmin=true for admin email", async () => {
+      const mockUser = { id: "user_123", email: "admin@basefly.io" };
+      vi.mocked(mockAuth).mockResolvedValue(mockAuthResult({ sessionClaims: { user: mockUser } }));
+      vi.mocked(mockIsAdminEmail).mockReturnValue(true);
+
+      const result = await getSessionUser();
+      expect(result).toEqual({ ...mockUser, isAdmin: true });
+    });
+
+    it("should return user when sessionClaims have no email", async () => {
+      const mockUser = { id: "user_123", name: "No Email User" };
+      vi.mocked(mockAuth).mockResolvedValue(mockAuthResult({ sessionClaims: { user: mockUser } }));
+
+      const result = await getSessionUser();
+      expect(result).toEqual(mockUser);
+    });
+
+    it("should return null when auth() throws an error", async () => {
+      vi.mocked(mockAuth).mockRejectedValue(new Error("Session expired"));
+
+      const result = await getSessionUser();
+      expect(result).toBeNull();
+    });
+
+    it("should return undefined when sessionClaims is undefined", async () => {
+      vi.mocked(mockAuth).mockResolvedValue(mockAuthResult({ sessionClaims: undefined }));
+
+      const result = await getSessionUser();
+      expect(result).toBeUndefined();
+    });
+
+    it("should return undefined when sessionClaims.user is undefined", async () => {
+      vi.mocked(mockAuth).mockResolvedValue(mockAuthResult({ sessionClaims: { user: undefined } }));
+
+      const result = await getSessionUser();
+      expect(result).toBeUndefined();
     });
   });
 });

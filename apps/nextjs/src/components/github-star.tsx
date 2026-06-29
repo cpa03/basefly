@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 
 import { ICON_SIZES, TRANSITION_PRESETS } from "@saasfly/common";

@@ -9,8 +9,10 @@ vi.mock("@clerk/nextjs/server", () => ({
 }));
 import { auth as mockAuth } from "@clerk/nextjs/server";
 
+import type * as CommonTypes from "@saasfly/common";
+
 vi.mock("@saasfly/common", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("@saasfly/common")>();
+  const actual = await importOriginal<typeof CommonTypes>();
   return {
     ...actual,
     isAdminEmail: vi.fn().mockReturnValue(false),

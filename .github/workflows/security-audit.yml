@@ -1,0 +1,117 @@
+name: security-audit
+# Automated security scanning for dependency vulnerabilities and code analysis.
+# Addresses issue #728 - Missing security scanning workflows.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "pnpm-lock.yaml"
+      - "**/package.json"
+  pull_request:
+    branches: [main]
+    paths:
+      - "pnpm-lock.yaml"
+      - "**/package.json"
+  schedule:
+    - cron: "0 6 * * 1" # Every Monday at 6:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # ------------------------------------------------------------------
+  # Dependency Audit (pnpm audit)
+  # ------------------------------------------------------------------
+  dependency-audit:
+    name: Dependency Vulnerability Scan
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run pnpm audit
+        id: audit
+        run: |
+          echo "::group::pnpm audit results"
+          pnpm audit --audit-level=high 2>&1 || true
+          echo "::endgroup::"
+        continue-on-error: true
+
+      - name: Check for critical vulnerabilities
+        run: |
+          AUDIT_OUTPUT=$(pnpm audit --audit-level=critical --json 2>/dev/null || echo '{"metadata":{"vulnerabilities":{"critical":0}}}')
+          CRITICAL=$(echo "$AUDIT_OUTPUT" | grep -o '"critical":[0-9]*' | grep -o '[0-9]*' || echo "0")
+          HIGH=$(echo "$AUDIT_OUTPUT" | grep -o '"high":[0-9]*' | grep -o '[0-9]*' || echo "0")
+          echo "Critical vulnerabilities: $CRITICAL"
+          echo "High vulnerabilities: $HIGH"
+          if [ "$CRITICAL" -gt 0 ]; then
+            echo "::warning::Critical vulnerabilities found: $CRITICAL. Review pnpm audit output."
+          fi
+          if [ "$HIGH" -gt 0 ]; then
+            echo "::notice::High vulnerabilities found: $HIGH. Schedule remediation."
+          fi
+
+  # ------------------------------------------------------------------
+  # CodeQL Analysis (SAST)
+  # ------------------------------------------------------------------
+  codeql-analysis:
+    name: CodeQL Security Analysis
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+          queries: security-and-quality
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:javascript-typescript"
+
+  # ------------------------------------------------------------------
+  # Dependency Review (PR only)
+  # ------------------------------------------------------------------
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-24.04-arm
+    if: github.event_name == 'pull_request'
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: critical
+          deny-licenses: AGPL-1.0, AGPL-3.0

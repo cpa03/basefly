@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, expect, it } from "vitest";
-import { z } from "zod";
 
 import {
   enhancedInsertCustomerSchema,

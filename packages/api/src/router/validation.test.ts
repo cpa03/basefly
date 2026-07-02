@@ -1,6 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { beforeEach, describe, expect, it, vi } from "vitest";
-import { z } from "zod";
+import { describe, expect, it, vi } from "vitest";
 
 // Import mocked IntegrationError for testing
 import { IntegrationError as MockIntegrationError } from "@saasfly/stripe";
@@ -11,16 +10,14 @@ import {
   ErrorCode,
   handleIntegrationError,
 } from "../errors";
-import { authRouter, mySubscriptionSchema } from "./auth";
-import { customerRouter } from "./customer";
-import { k8sRouter } from "./k8s";
+import { mySubscriptionSchema } from "./auth";
 import {
   enhancedInsertCustomerSchema,
   enhancedK8sClusterCreateSchema,
   enhancedK8sClusterDeleteSchema,
   enhancedUpdateUserNameSchema,
 } from "./schemas";
-import { createSessionSchema, stripeRouter } from "./stripe";
+import { createSessionSchema } from "./stripe";
 
 vi.mock("@saasfly/db", () => ({
   db: {
@@ -574,7 +571,7 @@ describe("API Validation Tests", () => {
     });
 
     it("handles empty errors array", () => {
-      const errors: Array<{ message: string; path?: (string | number)[] }> = [];
+      const errors: { message: string; path?: (string | number)[] }[] = [];
       const message = createValidationErrorMessage(errors);
       expect(message).toBe("Validation error");
     });

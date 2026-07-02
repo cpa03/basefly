@@ -2507,3 +2507,5 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [STRENGTHEN] Enhanced Button component with built-in loading text support.
 - [STRENGTHEN] Fixed syntax error in packages/ui/src/animated-tooltip.tsx where a curly brace was missing for a conditional check.
 - [STRENGTHEN] Improved `EmptyPlaceholder.Icon` with a fallback mechanism using `HelpCircle` icon when the requested icon is not found.
+- [CONSOLIDATE] Modularized hardcoded revalidatePath strings in `packages/api/src/router/k8s.ts` using centralized `ROUTES` configuration.
+- [STRENGTHEN] Fixed unused ESLint disable directives and improved type consistency in `packages/api` test files.

@@ -12,7 +12,7 @@ import { revalidatePath } from "next/cache";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import { K8S_DEFAULTS } from "@saasfly/common";
+import { K8S_DEFAULTS, ROUTES } from "@saasfly/common";
 import { db, k8sClusterService, type K8sClusterConfig } from "@saasfly/db";
 
 import { createApiError, ErrorCode } from "../errors";
@@ -122,7 +122,7 @@ export const k8sRouter = createTRPCRouter({
         );
 
         // ISR: Invalidate dashboard cache after cluster creation
-        revalidatePath("/[lang]/dashboard");
+        revalidatePath(`/[lang]${ROUTES.dashboard.home}`);
         return {
           id: newCluster.id,
           clusterName: input.name,
@@ -197,7 +197,7 @@ export const k8sRouter = createTRPCRouter({
         }
 
         // ISR: Invalidate dashboard cache after cluster update
-        revalidatePath("/[lang]/dashboard");
+        revalidatePath(`/[lang]${ROUTES.dashboard.home}`);
         return {
           success: true,
         };
@@ -258,7 +258,7 @@ export const k8sRouter = createTRPCRouter({
         );
 
         // ISR: Invalidate dashboard cache after cluster deletion
-        revalidatePath("/[lang]/dashboard");
+        revalidatePath(`/[lang]${ROUTES.dashboard.home}`);
         return { success: true };
       } catch (error) {
         if (error instanceof z.ZodError) {

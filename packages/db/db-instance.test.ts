@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
 import { describe, expect, it, vi } from "vitest";
 
 // Mock @vercel/postgres-kysely before importing db-instance

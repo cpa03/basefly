@@ -45,6 +45,25 @@ const config = {
     "bun.lock",
   ],
   reportUnusedDisableDirectives: true,
+  overrides: [
+    {
+      // Test files commonly need relaxed type-safety rules
+      // because test assertions and mocks involve dynamic patterns
+      files: ["**/*.test.ts", "**/*.test.tsx", "**/*.spec.ts", "**/*.spec.tsx"],
+      rules: {
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-unsafe-call": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/no-unsafe-return": "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/unbound-method": "off",
+        "@typescript-eslint/no-empty-function": "off",
+        "@typescript-eslint/dot-notation": "off",
+        "@typescript-eslint/require-await": "off",
+      },
+    },
+  ],
 };
 
 module.exports = config;

@@ -1,3 +1,20 @@
+# =============================================================================
+# WORKFLOW: security-audit.yml
+# =============================================================================
+# This workflow provides automated security scanning for the basefly monorepo.
+# It runs:
+#   1. pnpm audit - dependency vulnerability scanning (fails on critical vulns)
+#   2. CodeQL Analysis - JavaScript/TypeScript code security scanning
+#
+# DEPLOYMENT:
+#   To deploy, copy this file to .github/workflows/security-audit.yml and push.
+#   The GITHUB_TOKEN needs 'workflows' permission to push workflow files.
+#   Without it, a maintainer with admin access must deploy manually.
+#   See: https://docs.github.com/en/actions/security-guides/automatic-token-authentication
+#
+# Related issue: #728
+# =============================================================================
+
 name: security-audit
 
 on:
@@ -15,6 +32,8 @@ on:
 permissions:
   contents: read
   issues: write
+  security-events: write
+  actions: read
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -117,3 +136,39 @@ jobs:
           path: audit-report.json
           retention-days: 30
           if-no-files-found: ignore
+
+  codeql:
+    name: CodeQL Security Analysis
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 30
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['javascript-typescript']
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          queries: security-extended,security-and-quality
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{matrix.language}}"
+
+

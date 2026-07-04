@@ -14,7 +14,9 @@
     "lint": "npx dotenv-cli -e ../../.env.local -e ../../.env.ci -- eslint . --cache --cache-location 'node_modules/.cache/.eslintcache'",
     "format": "prettier --write '**/*.{js,cjs,mjs,ts,tsx,md,json}'  --ignore-path .prettierignore",
     "start": "npx dotenv-cli -e ../../.env.local -e ../../.env.ci -- next start",
-    "with-env": "echo 'Use individual scripts with dotenv-cli prefix instead'"
+    "with-env": "echo 'Use individual scripts with dotenv-cli prefix instead'",
+    "size:check": "size-limit",
+    "size:analyze": "ANALYZE=true next build && size-limit --json > .next/size-report.json"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.39.4",
@@ -63,6 +65,8 @@
     "@clerk/types": "^4.101.20",
     "@next-devtools/core": "0.2.0",
     "@next/bundle-analyzer": "16.2.7",
+    "@size-limit/file": "^11.2.0",
+    "size-limit": "^11.2.0",
     "@next/eslint-plugin-next": "16.1.6",
     "@opennextjs/cloudflare": "^1.19.11",
     "@saasfly/eslint-config": "workspace:*",
@@ -108,5 +112,31 @@
       "@saasfly/eslint-config/react"
     ]
   },
-  "prettier": "@saasfly/prettier-config"
+  "prettier": "@saasfly/prettier-config",
+  "size-limit": [
+    {
+      "name": "Client JS (gzip)",
+      "path": ".next/static/chunks/**/*.js",
+      "limit": "450 kB",
+      "gzip": true
+    },
+    {
+      "name": "Client CSS (gzip)",
+      "path": ".next/static/chunks/**/*.css",
+      "limit": "120 kB",
+      "gzip": true
+    },
+    {
+      "name": "Framework JS (gzip)",
+      "path": [".next/static/chunks/framework-*.js", ".next/static/chunks/main-app-*.js"],
+      "limit": "300 kB",
+      "gzip": true
+    },
+    {
+      "name": "Static Media",
+      "path": ".next/static/media/**/*",
+      "limit": "200 kB",
+      "gzip": true
+    }
+  ]
 }

@@ -187,7 +187,7 @@ Running `pnpm audit --audit-level=moderate` currently finds vulnerabilities in t
 7. **IP-based Blocking** - Add automatic IP blocking for repeated rate limit violations
 8. **Security Headers Audit** - Verify all API routes include security headers
 
-## Security Controls Already in Place
+## Security Controls Currently in Place
 
 - ✅ Dependabot configured for weekly updates (`.github/dependabot.yml`)
 - ✅ Security overrides in `pnpm-workspace.yaml` (axios, qs, cross-spawn, js-yaml, lodash, minimatch, next, prismjs, tmp, ws)
@@ -204,6 +204,30 @@ Running `pnpm audit --audit-level=moderate` currently finds vulnerabilities in t
 - ✅ Clerk authentication with CSRF protection built-in
 - ✅ Webhook idempotency to prevent replay attacks in `packages/stripe/src/webhook-idempotency.ts`
 - ✅ Security audit scripts in root `package.json`: `security:audit`, `security:check`, `dx:check`
+
+## CI Security Scanning Status
+
+### Dependency Security Audit (security-audit.yml)
+
+**Status**: 🔲 Pending creation (requires `workflows` permission on GITHUB_TOKEN)
+
+A dedicated workflow (`security-audit.yml`) has been designed and validated:
+- Runs `pnpm audit --audit-level=moderate` on push to main, PRs, and weekly schedule
+- Includes outdated dependency check as informational job
+- Produces audit summary in GitHub Actions step summary
+
+**To activate**: Run `.github/scripts/setup-security-scanning.sh` with a token that has `workflows` permission, or manually copy the YAML from the script to `.github/workflows/security-audit.yml`.
+
+### CodeQL Security Analysis (codeql-analysis.yml)
+
+**Status**: 🔲 Pending creation (requires `workflows` permission on GITHUB_TOKEN)
+
+A dedicated workflow (`codeql-analysis.yml`) has been designed and validated:
+- Runs GitHub CodeQL semantic analysis for JavaScript/TypeScript
+- Triggers on push to main, PRs, and weekly schedule
+- Integrates with GitHub Security tab for vulnerability alerts
+
+**To activate**: Run `.github/scripts/setup-security-scanning.sh` with a token that has `workflows` permission, or manually copy the YAML from the script to `.github/workflows/codeql-analysis.yml`.
 
 ## Additional Security Recommendations
 
@@ -274,8 +298,8 @@ pnpm dx:check
 - [x] Protected tRPC procedures
 - [x] Stripe webhook verification
 - [x] RLS enabled on database
-- [ ] CodeQL scanning in CI (requires workflow permissions)
-- [ ] Dependency audit in CI (requires workflow permissions)
+- [ ] CodeQL scanning in CI (workflows defined in `.github/scripts/setup-security-scanning.sh`, requires `workflows` permission to activate)
+- [ ] Dependency audit in CI (workflows defined in `.github/scripts/setup-security-scanning.sh`, requires `workflows` permission to activate)
 - [ ] Rate limit headers in responses
 - [ ] Nonce-based CSP for production
 

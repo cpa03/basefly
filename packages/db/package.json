@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@saasfly/common": "workspace:*",
-    "kysely": "0.28.11",
+    "kysely": "0.29.3",
     "@vercel/postgres-kysely": "0.10.0",
     "pino": "10.3.1"
   },

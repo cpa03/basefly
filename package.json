@@ -111,7 +111,8 @@
       "@babel/core": ">=7.29.6",
       "underscore": ">=1.13.8",
       "underscore.string": ">=3.3.5",
-      "@sentry/node": "10.59.0"
+      "@sentry/node": "10.59.0",
+      "@opentelemetry/core": ">=2.8.0"
     }
   },
   "prettier": "@saasfly/prettier-config",

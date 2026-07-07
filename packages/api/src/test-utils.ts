@@ -22,6 +22,7 @@ export function createMockContext(options?: {
     userId: options?.userId ?? "test-user-id",
     requestId: options?.requestId ?? "test-request-id",
     rateLimitInfo: null,
+    role: null,
     headers: new Headers(),
     auth: {
       userId: options?.userId ?? "test-user-id",
@@ -41,6 +42,7 @@ export function createAnonymousContext(options?: {
     userId: null,
     requestId: options?.requestId ?? "test-request-id",
     rateLimitInfo: null,
+    role: null,
     headers: new Headers(),
     auth: null,
     req: undefined,

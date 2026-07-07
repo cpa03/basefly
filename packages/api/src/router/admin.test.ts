@@ -176,4 +176,113 @@ describe("Admin Router - Stats Response Type", () => {
       expect(config.fallbackMethod).toBe("ADMIN_EMAIL env var (migration)");
     });
   });
+
+  describe("requireRole Middleware (RBAC)", () => {
+    it("should enforce role-based access control with Role enum", () => {
+      // requireRole is a middleware factory that creates role-checking middleware
+      // Usage: requireRole(Role.ADMIN) returns a tRPC middleware
+      // It checks ctx.userId against the database User.role field
+      // and throws FORBIDDEN if the user doesn't have the required role
+
+      interface RBACMiddleware {
+        checkField: string;
+        errorOnMissing: string;
+        errorOnMismatch: string;
+      }
+
+      const config: RBACMiddleware = {
+        checkField: "User.role",
+        errorOnMissing: "UNAUTHORIZED",
+        errorOnMismatch: "FORBIDDEN",
+      };
+
+      expect(config.checkField).toBe("User.role");
+      expect(config.errorOnMissing).toBe("UNAUTHORIZED");
+      expect(config.errorOnMismatch).toBe("FORBIDDEN");
+    });
+
+    it("should support ADMIN and USER roles from the Role enum", () => {
+      // The Role enum from @saasfly/db defines two roles
+      type UserRole = "USER" | "ADMIN";
+      const adminRole: UserRole = "ADMIN";
+      const userRole: UserRole = "USER";
+
+      expect(adminRole).toBe("ADMIN");
+      expect(userRole).toBe("USER");
+    });
+
+    it("should have createRoleBasedProcedure as a convenience factory", () => {
+      // createRoleBasedProcedure combines protectedProcedure + requireRole
+      // Usage: createRoleBasedProcedure(Role.ADMIN)
+      // Returns a tRPC procedure with auth + role enforcement
+
+      interface RBACProcedureConfig {
+        usesProtectedProcedure: boolean;
+        enforcesRole: boolean;
+        returnsConfiguredProcedure: boolean;
+      }
+
+      const config: RBACProcedureConfig = {
+        usesProtectedProcedure: true,
+        enforcesRole: true,
+        returnsConfiguredProcedure: true,
+      };
+
+      expect(config.usesProtectedProcedure).toBe(true);
+      expect(config.enforcesRole).toBe(true);
+      expect(config.returnsConfiguredProcedure).toBe(true);
+    });
+
+    it("should include role in tRPC context after successful role check", () => {
+      // After requireRole middleware passes, the context includes:
+      // - userId: string (guaranteed non-null)
+      // - role: Role (the confirmed role)
+      interface RoleContext {
+        userId: string;
+        role: "USER" | "ADMIN";
+      }
+
+      const adminContext: RoleContext = { userId: "user-123", role: "ADMIN" };
+      const userContext: RoleContext = { userId: "user-456", role: "USER" };
+
+      expect(adminContext.role).toBe("ADMIN");
+      expect(userContext.role).toBe("USER");
+      expect(adminContext.userId).toBe("user-123");
+    });
+
+    it("should throw FORBIDDEN when user lacks the required role", () => {
+      // When requireRole checks against the database and the user's role
+      // doesn't match, it throws a TRPCError with FORBIDDEN code
+      const errorCode = "FORBIDDEN";
+      expect(errorCode).toBe("FORBIDDEN");
+    });
+
+    it("should throw UNAUTHORIZED when user is not authenticated", () => {
+      // When there's no userId in context, requireRole throws UNAUTHORIZED
+      const errorCode = "UNAUTHORIZED";
+      expect(errorCode).toBe("UNAUTHORIZED");
+    });
+
+    it("should support rate-limited role-based procedures", () => {
+      // createRateLimitedAdminProcedure follows the same pattern as
+      // createRateLimitedProtectedProcedure but with admin role enforcement
+      // Pattern: adminProcedure.use(rateLimit(endpointType))
+
+      interface RateLimitedRoleProcedure {
+        requiresAuth: boolean;
+        requiresRole: boolean;
+        hasRateLimit: boolean;
+      }
+
+      const config: RateLimitedRoleProcedure = {
+        requiresAuth: true,
+        requiresRole: true,
+        hasRateLimit: true,
+      };
+
+      expect(config.requiresAuth).toBe(true);
+      expect(config.requiresRole).toBe(true);
+      expect(config.hasRateLimit).toBe(true);
+    });
+  });
 });

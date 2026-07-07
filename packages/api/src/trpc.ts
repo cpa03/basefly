@@ -4,6 +4,7 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import { ZodError } from "zod";
 
 import { isAdminEmail } from "@saasfly/common";
+import type { Role } from "@saasfly/db";
 import { db } from "@saasfly/db";
 
 import {
@@ -52,6 +53,7 @@ export const createTRPCContext = (opts: {
     requestId,
     req: opts.req,
     rateLimitInfo: null as RateLimitInfo | null,
+    role: null as Role | null,
     ...opts,
   };
 };
@@ -167,6 +169,83 @@ const isAdmin = t.middleware(async ({ next, ctx }) => {
  * Context will have userId (string) and isAdmin (true).
  */
 export const adminProcedure = protectedProcedure.use(isAdmin);
+
+/**
+ * Role-based middleware factory.
+ * Creates a middleware that checks if the authenticated user has the specified role.
+ * The role check is performed against the database User.role field.
+ *
+ * @param requiredRole - The role required to access the protected resource
+ * @returns tRPC middleware that enforces the role check
+ * @throws {TRPCError} UNAUTHORIZED if not authenticated
+ * @throws {TRPCError} FORBIDDEN if user does not have the required role
+ *
+ * @example
+ * ```ts
+ * const requireAdmin = requireRole(Role.ADMIN);
+ * const adminProcedure = protectedProcedure.use(requireAdmin);
+ * ```
+ */
+export const requireRole = (requiredRole: Role) =>
+  t.middleware(async ({ next, ctx }) => {
+    if (!ctx.userId) {
+      logger.warn(
+        { requestId: ctx.requestId, security: true, reason: "missing_user_id" },
+        `Authentication required for role ${requiredRole}`,
+      );
+      throw new TRPCError({ code: "UNAUTHORIZED" });
+    }
+
+    try {
+      const userRecord = await db
+        .selectFrom("User")
+        .select("role")
+        .where("id", "=", ctx.userId)
+        .executeTakeFirst();
+
+      if (userRecord?.role === requiredRole) {
+        return next({ ctx: { ...ctx, userId: ctx.userId, role: requiredRole } });
+      }
+    } catch (error) {
+      logger.error(
+        { requestId: ctx.requestId, userId: ctx.userId, error },
+        `Failed to check user role from database for role ${requiredRole}`,
+      );
+    }
+
+    logger.warn(
+      {
+        requestId: ctx.requestId,
+        userId: ctx.userId,
+        requiredRole,
+        security: true,
+        reason: "insufficient_role",
+      },
+      `Access denied: ${requiredRole} role required`,
+    );
+    throw createApiError(
+      ErrorCode.FORBIDDEN,
+      `Access denied: ${requiredRole} role required`,
+    );
+  });
+
+/**
+ * Creates a role-based procedure that enforces both authentication and the specified role.
+ * Use this for endpoints that require a specific user role.
+ *
+ * @param role - The role required to access the endpoint
+ * @returns A tRPC procedure with authentication and role enforcement
+ *
+ * @example
+ * ```ts
+ * const adminProcedure = createRoleBasedProcedure(Role.ADMIN);
+ * export const adminRouter = createTRPCRouter({
+ *   getStats: adminProcedure.query(async () => { ... }),
+ * });
+ * ```
+ */
+export const createRoleBasedProcedure = (role: Role) =>
+  protectedProcedure.use(requireRole(role));
 
 /**
  * Creates a rate-limiting middleware for the specified endpoint type.

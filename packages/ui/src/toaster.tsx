@@ -30,9 +30,6 @@ export function Toaster() {
       label="Notifications"
       // Auto-dismiss duration (can be overridden per-toast)
       duration={FEEDBACK_TIMING.toastDisplay}
-      // Prevent focus from moving to toast when it appears
-      // This keeps the user's focus where it was
-      focusOnOpen={false}
     >
       {toasts.map(function ({ id, title, description, action, ...props }) {
         return (

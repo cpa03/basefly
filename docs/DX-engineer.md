@@ -53,19 +53,9 @@ DX-Engineer focuses on improving Developer Experience through automation, toolin
 
 ### Issue #579: Improve Environment Setup Error Messages (2026-02-25)
 
-- **Status**: PR Created (#643)
-- **Description**: Replace direct console.* calls with centralized pino logger for consistent logging
-- **Changes**:
-  - Modified `packages/common/src/email.ts` to use pino logger instead of console.log/warn/error
-  - Updated JSDoc comment to reflect the change
-- **Verification**:
-  - ✅ Typecheck passes
-  - ✅ Lint passes
-- **Related**: Partially addresses issue #589
+Two PRs addressed different aspects of this issue:
 
-### Issue #579: Improve Environment Setup Error Messages (2026-02-25)
-
-- **Status**: PR Created (#606)
+**PR #606 — pnpm environment verification**
 - **Description**: Enhanced environment setup to provide clear error messages when pnpm is missing
 - **Changes**:
   - Modified `env:verify` script to check for pnpm installation and version
@@ -76,6 +66,16 @@ DX-Engineer focuses on improving Developer Experience through automation, toolin
   - ✅ `pnpm env:verify` works correctly
   - ✅ Typecheck passes
   - ✅ Lint passes
+
+**PR #643 — Structured logging migration**
+- **Description**: Replace direct console.* calls with centralized pino logger for consistent logging
+- **Changes**:
+  - Modified `packages/common/src/email.ts` to use pino logger instead of console.log/warn/error
+  - Updated JSDoc comment to reflect the change
+- **Verification**:
+  - ✅ Typecheck passes
+  - ✅ Lint passes
+- **Related**: Partially addresses issue #589
 
 ### Issue #488: Add Circular Dependency Detection
 

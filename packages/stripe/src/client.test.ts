@@ -167,8 +167,9 @@ describe("createCheckoutSession", () => {
 
     if (capturedFn) {
       await capturedFn();
-      const stripeCall =
-                (vi.mocked(stripe!.checkout.sessions.create).mock.calls[0] as any)?.[1];
+      const stripeCall = (
+        vi.mocked(stripe!.checkout.sessions.create).mock.calls[0] as any
+      )?.[1];
       expect(stripeCall?.idempotencyKey).toBeDefined();
       expect(stripeCall?.idempotencyKey).toMatch(/^checkout_session_\d+_/);
     }
@@ -190,8 +191,9 @@ describe("createCheckoutSession", () => {
 
     if (capturedFn) {
       await capturedFn();
-      const stripeCall =
-                (vi.mocked(stripe!.checkout.sessions.create).mock.calls[0] as any)?.[1];
+      const stripeCall = (
+        vi.mocked(stripe!.checkout.sessions.create).mock.calls[0] as any
+      )?.[1];
       expect(stripeCall?.idempotencyKey).toBe("custom_key_123");
     }
   });
@@ -212,8 +214,8 @@ describe("createCheckoutSession", () => {
 
     if (capturedFn) {
       await capturedFn();
-            expect(stripe!.checkout.sessions.create).toHaveBeenCalled();
-            const callArgs = vi.mocked(stripe!.checkout.sessions.create).mock
+      expect(stripe!.checkout.sessions.create).toHaveBeenCalled();
+      const callArgs = vi.mocked(stripe!.checkout.sessions.create).mock
         .calls[0] as any;
       expect(callArgs?.[1]?.idempotencyKey).toBeDefined();
     }
@@ -288,7 +290,7 @@ describe("createCheckoutSession", () => {
 
     if (capturedFn) {
       await capturedFn();
-            expect(stripe!.checkout.sessions.create).toHaveBeenCalledWith(
+      expect(stripe!.checkout.sessions.create).toHaveBeenCalledWith(
         {
           ...params,
           metadata: {},
@@ -337,7 +339,7 @@ describe("retrieveSubscription", () => {
 
     if (capturedFn) {
       await capturedFn();
-            expect(stripe!.subscriptions.retrieve).toHaveBeenCalledWith("sub_abc");
+      expect(stripe!.subscriptions.retrieve).toHaveBeenCalledWith("sub_abc");
     }
   });
 

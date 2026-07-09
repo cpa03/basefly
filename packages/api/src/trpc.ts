@@ -4,8 +4,7 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import { ZodError } from "zod";
 
 import { isAdminEmail } from "@saasfly/common";
-import type { Role } from "@saasfly/db";
-import { db } from "@saasfly/db";
+import { db, type Role } from "@saasfly/db";
 
 import {
   createOwnershipVerifier,
@@ -204,7 +203,9 @@ export const requireRole = (requiredRole: Role) =>
         .executeTakeFirst();
 
       if (userRecord?.role === requiredRole) {
-        return next({ ctx: { ...ctx, userId: ctx.userId, role: requiredRole } });
+        return next({
+          ctx: { ...ctx, userId: ctx.userId, role: requiredRole },
+        });
       }
     } catch (error) {
       logger.error(

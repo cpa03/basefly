@@ -178,6 +178,18 @@ Ready-to-copy workflow files are available at:
 - `docs/ci/workflows/security-audit.yml`
 - `docs/ci/workflows/codeql-analysis.yml`
 
+### Deployment Script
+
+A deployment script is available for convenience:
+
+```bash
+bash scripts/deploy-security-workflows.sh
+```
+
+This will copy the workflow files to `.github/workflows/` and print the next steps.
+
+### Manual Deployment
+
 To deploy (requires `workflows: write` permission):
 
 ```bash

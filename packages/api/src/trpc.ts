@@ -3,7 +3,7 @@ import { currentUser, type getAuth } from "@clerk/nextjs/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { ZodError } from "zod";
 
-import { isAdminEmail } from "@saasfly/common";
+import { isAdminEmail, IS_PROD } from "@saasfly/common";
 import { db, type Role } from "@saasfly/db";
 
 import {
@@ -75,10 +75,106 @@ export const t = initTRPC.context<TRPCContext>().create({
   },
 });
 
+/**
+ * Extracts the origin (protocol + host) from a URL string.
+ * Used for CSRF Referer header validation.
+ */
+function getOriginFromUrl(url: string): string | null {
+  try {
+    const parsed = new URL(url);
+    return `${parsed.protocol}//${parsed.host}`;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * CSRF protection middleware.
+ *
+ * Validates the Origin or Referer header against the configured NEXT_PUBLIC_APP_URL
+ * to prevent CSRF attacks on state-changing operations.
+ *
+ * - **Queries (GET)**: Skipped — read-only.
+ * - **Production**: Missing/mismatched Origin/Referer → FORBIDDEN error.
+ * - **Development**: Localhost origins allowed. Missing headers logged but not rejected.
+ *
+ * Must run early before authentication so CSRF violations are caught upfront.
+ */
+const csrfProtection = t.middleware(({ next, ctx, type }) => {
+  if (type === "query") {
+    return next();
+  }
+
+  const allowedOrigin = process.env.NEXT_PUBLIC_APP_URL;
+  if (!allowedOrigin) {
+    logger.warn(
+      { requestId: ctx.requestId, security: true },
+      "CSRF protection skipped: NEXT_PUBLIC_APP_URL not configured",
+    );
+    return next();
+  }
+
+  const headers = ctx.headers;
+  const origin = headers.get("origin");
+  const referer = headers.get("referer");
+  const requestOrigin = origin ?? (referer ? getOriginFromUrl(referer) : null);
+
+  if (!requestOrigin) {
+    if (IS_PROD) {
+      logger.warn(
+        { requestId: ctx.requestId, security: true, reason: "missing_origin" },
+        "CSRF validation failed: no Origin or Referer header",
+      );
+      throw createApiError(
+        ErrorCode.CSRF_ERROR,
+        "CSRF validation failed: request origin could not be determined",
+      );
+    }
+    return next();
+  }
+
+  const normalizedRequestOrigin = requestOrigin.replace(/\/$/, "");
+  const normalizedAllowedOrigin = allowedOrigin.replace(/\/$/, "");
+
+  if (normalizedRequestOrigin !== normalizedAllowedOrigin) {
+    const isLocalhost =
+      normalizedRequestOrigin.includes("localhost") ||
+      normalizedRequestOrigin.includes("127.0.0.1") ||
+      normalizedRequestOrigin.includes("[::1]");
+
+    if (!IS_PROD && isLocalhost) {
+      logger.debug(
+        { requestId: ctx.requestId, security: true, requestOrigin: normalizedRequestOrigin },
+        "CSRF check: allowed localhost origin in development",
+      );
+      return next();
+    }
+
+    logger.warn(
+      {
+        requestId: ctx.requestId,
+        security: true,
+        reason: "origin_mismatch",
+        requestOrigin: normalizedRequestOrigin,
+        allowedOrigin: normalizedAllowedOrigin,
+        type,
+      },
+      "CSRF validation failed: Origin mismatch",
+    );
+
+    throw createApiError(
+      ErrorCode.CSRF_ERROR,
+      "CSRF validation failed: request origin does not match application origin",
+    );
+  }
+
+  return next();
+});
+
 /** Creates a new tRPC router with typed context */
 export const createTRPCRouter = t.router;
-/** Base procedure without any middleware */
-export const procedure = t.procedure;
+/** Base procedure with CSRF protection */
+export const procedure = t.procedure.use(csrfProtection);
 export const mergeRouters = t.mergeRouters;
 
 // Authorization helpers - re-export for convenience

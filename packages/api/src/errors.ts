@@ -36,6 +36,7 @@ export enum ErrorCode {
   TIMEOUT_ERROR = "TIMEOUT_ERROR",
   CIRCUIT_BREAKER_OPEN = "CIRCUIT_BREAKER_OPEN",
   TOO_MANY_REQUESTS = "TOO_MANY_REQUESTS",
+  CSRF_ERROR = "CSRF_ERROR",
 }
 
 export interface ApiErrorResponse {
@@ -68,6 +69,7 @@ function mapErrorCodeToTRPC(code: ErrorCode): TRPCError["code"] {
     case ErrorCode.UNAUTHORIZED:
       return "UNAUTHORIZED";
     case ErrorCode.FORBIDDEN:
+    case ErrorCode.CSRF_ERROR:
       return "FORBIDDEN";
     case ErrorCode.NOT_FOUND:
       return "NOT_FOUND";

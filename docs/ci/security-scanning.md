@@ -17,11 +17,11 @@ name: security-audit
 
 on:
   schedule:
-    - cron: '0 6 * * *'   # Daily at 06:00 UTC
+    - cron: "0 6 * * *" # Daily at 06:00 UTC
   pull_request:
     paths:
-      - 'pnpm-lock.yaml'
-      - '**/package.json'
+      - "pnpm-lock.yaml"
+      - "**/package.json"
   workflow_dispatch:
 
 permissions:
@@ -53,7 +53,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Install Dependencies
         run: pnpm install --frozen-lockfile
@@ -96,7 +96,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: "pnpm"
 
       - name: Check Outdated Dependencies
         run: pnpm outdated --long || true
@@ -110,7 +110,7 @@ name: codeql-analysis
 
 on:
   schedule:
-    - cron: '0 3 * * 1'   # Weekly on Monday at 03:00 UTC
+    - cron: "0 3 * * 1" # Weekly on Monday at 03:00 UTC
   push:
     branches:
       - main
@@ -158,7 +158,7 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
-          category: '/language:${{ matrix.language }}'
+          category: "/language:${{ matrix.language }}"
 ```
 
 ### 3. Integration into existing CI
@@ -167,8 +167,26 @@ Add the following step to the `ci` job in `.github/workflows/on-pull.yml`
 (after `Install Dependencies` or before `On-Pull`):
 
 ```yaml
-      - name: Security Audit
-        run: pnpm audit --audit-level=high || true
+- name: Security Audit
+  run: pnpm audit --audit-level=high || true
+```
+
+## Ready-to-Deploy Files
+
+Ready-to-copy workflow files are available at:
+
+- `docs/ci/workflows/security-audit.yml`
+- `docs/ci/workflows/codeql-analysis.yml`
+
+To deploy (requires `workflows: write` permission):
+
+```bash
+# From repository root:
+cp docs/ci/workflows/security-audit.yml .github/workflows/
+cp docs/ci/workflows/codeql-analysis.yml .github/workflows/
+git add .github/workflows/
+git commit -m "fix(security): deploy security scanning workflows"
+git push
 ```
 
 ## Verification

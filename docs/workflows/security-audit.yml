@@ -1,0 +1,96 @@
+name: security-audit
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'pnpm-lock.yaml'
+      - '**/package.json'
+  schedule:
+    - cron: '0 6 * * *'  # Daily at 06:00 UTC
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    name: Dependency Audit (pnpm audit)
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run pnpm audit
+        id: audit
+        continue-on-error: true
+        run: |
+          pnpm audit --audit-level=high 2>&1 | tee audit-report.txt
+          exit ${PIPESTATUS[0]}
+
+      - name: Upload Audit Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pnpm-audit-report
+          path: audit-report.txt
+          retention-days: 30
+
+      - name: Create Issue on Vulnerability Found
+        if: failure() && github.event_name == 'schedule'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('audit-report.txt', 'utf8');
+            const date = new Date().toISOString().split('T')[0];
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'security'
+            });
+            const existingIssue = issues.find(i =>
+              i.title.includes('Daily Dependency Audit') && i.title.includes(date)
+            );
+            if (existingIssue) {
+              console.log('Issue exists: ' + existingIssue.html_url);
+              return;
+            }
+            const body = '## Security Audit Report - ' + date + '\n\n' +
+              'pnpm audit found vulnerabilities requiring attention.\n\n' +
+              '### Audit Results\n\n```\n' + report.slice(0, 4000) + '\n```\n\n' +
+              '### Recommended Actions\n\n' +
+              '1. Review each vulnerability\n' +
+              '2. Update affected dependencies\n' +
+              '3. Run `pnpm audit --fix` where available\n' +
+              '4. Re-run audit to verify fixes\n';
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '[Security] Daily Dependency Audit - ' + date + ' - Vulnerabilities Found',
+              body: body,
+              labels: ['security']
+            });

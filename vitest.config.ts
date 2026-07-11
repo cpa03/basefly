@@ -22,6 +22,12 @@ export default defineConfig({
         "**/types/**",
         "**/index.ts",
       ],
+      thresholds: {
+        statements: 25,
+        branches: 20,
+        functions: 20,
+        lines: 25,
+      },
     },
     include: [
       "packages/**/*.test.{ts,tsx}",

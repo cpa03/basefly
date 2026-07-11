@@ -1,14 +1,21 @@
-name: codeql-analysis
+name: CodeQL Security Analysis
+# Performs semantic code analysis to find security vulnerabilities.
+# Implements Issue #728 - Missing security scanning workflows in CI.
+#
+# DEPLOYMENT INSTRUCTIONS:
+# Copy this file to .github/workflows/codeql-analysis.yml and push.
+# Requires GITHUB_TOKEN with `workflows: write` permission.
+# Alternatively, use a Personal Access Token (PAT) with `workflows` scope.
+#
+# Uses the project's CodeQL configuration at .github/codeql-config.yml.
 
 on:
-  schedule:
-    - cron: '0 3 * * 1'   # Weekly on Monday at 03:00 UTC
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
+  schedule:
+    - cron: "0 3 * * 1" # Weekly on Monday at 03:00 UTC
   workflow_dispatch:
 
 permissions:
@@ -42,6 +49,7 @@ jobs:
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
+          config-file: .github/codeql-config.yml
           queries: security-and-quality
 
       - name: Autobuild
@@ -50,4 +58,4 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
-          category: '/language:${{ matrix.language }}'
+          category: "/language:${{ matrix.language }}"

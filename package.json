@@ -1,5 +1,6 @@
 {
   "name": "basefly",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "build": "pnpm env:validate && turbo build",

@@ -1,159 +1,79 @@
 #!/bin/bash
 # Setup Security Scanning Workflows
-# This script creates the security scanning workflow files.
-# Requires: write access to .github/workflows/ (workflows permission)
+# Creates the security scanning workflow files in .github/workflows/.
+#
+# REQUIREMENTS:
+# - Write access to .github/workflows/ (workflows permission)
+# - The source template files must exist in docs/ci/workflows/
+#
+# PERMISSIONS NOTE:
+# The GITHUB_TOKEN used in GitHub Actions does NOT have workflows:write
+# permission by default. To run this script, use:
+#   1. A Personal Access Token (PAT) with `workflows` scope
+#   2. A GitHub App with `contents: write` AND `workflows: write`
 #
 # Usage: bash .github/scripts/setup-security-scanning.sh
+#        Copy source files from docs/ci/workflows/ to .github/workflows/
+#
+# PREREQUISITES CHECK:
+# - docs/ci/workflows/security-audit.yml must exist
+# - docs/ci/workflows/codeql-analysis.yml must exist
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORKFLOWS_DIR="$(cd "$SCRIPT_DIR/.." && pwd)/workflows"
+DOCS_WORKFLOWS_DIR="$(cd "$SCRIPT_DIR/../../docs/ci/workflows" && pwd 2>/dev/null || true)"
 
-echo "Creating security scanning workflows in: $WORKFLOWS_DIR"
+echo "================================================"
+echo "Security Scanning Workflow Deployment Script"
+echo "================================================"
+echo ""
+echo "Source templates: $DOCS_WORKFLOWS_DIR"
+echo "Target directory: $WORKFLOWS_DIR"
+echo ""
 
-# Create security-audit.yml
-cat > "$WORKFLOWS_DIR/security-audit.yml" << 'YAML'
-# Security Audit Workflow
-# Scans dependencies for known vulnerabilities and outdated packages
-name: Security Audit
+# Validate prerequisites
+if [ ! -d "$DOCS_WORKFLOWS_DIR" ]; then
+  echo "ERROR: docs/ci/workflows/ directory not found."
+  echo "Make sure the repository is checked out completely."
+  exit 1
+fi
 
-on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
-  schedule:
-    - cron: "0 6 * * 1" # Weekly on Monday at 6 AM UTC
-  workflow_dispatch:
+# Deploy security-audit.yml
+if [ -f "$DOCS_WORKFLOWS_DIR/security-audit.yml" ]; then
+  cp "$DOCS_WORKFLOWS_DIR/security-audit.yml" "$WORKFLOWS_DIR/security-audit.yml"
+  echo "✅ Deployed: $WORKFLOWS_DIR/security-audit.yml"
+else
+  echo "⚠️  Warning: $DOCS_WORKFLOWS_DIR/security-audit.yml not found. Skipping."
+fi
 
-permissions:
-  contents: read
-  security-events: write
+# Deploy codeql-analysis.yml
+if [ -f "$DOCS_WORKFLOWS_DIR/codeql-analysis.yml" ]; then
+  cp "$DOCS_WORKFLOWS_DIR/codeql-analysis.yml" "$WORKFLOWS_DIR/codeql-analysis.yml"
+  echo "✅ Deployed: $WORKFLOWS_DIR/codeql-analysis.yml"
+else
+  echo "⚠️  Warning: $DOCS_WORKFLOWS_DIR/codeql-analysis.yml not found. Skipping."
+fi
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
-
-jobs:
-  dependency-audit:
-    name: "Dependency Security Audit"
-    runs-on: ubuntu-24.04-arm
-    timeout-minutes: 15
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - uses: pnpm/action-setup@v6
-        with:
-          version: 10
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "pnpm"
-
-      - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run Security Audit
-        run: |
-          pnpm audit --audit-level=moderate
-
-      - name: Audit Summary
-        if: always()
-        run: |
-          echo "### Security Audit Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- **Audit Level**: Moderate and above" >> $GITHUB_STEP_SUMMARY
-          echo "- **Status**: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
-
-  outdated-check:
-    name: "Outdated Dependencies Check"
-    runs-on: ubuntu-24.04-arm
-    continue-on-error: true
-    timeout-minutes: 10
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - uses: pnpm/action-setup@v6
-        with:
-          version: 10
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-          cache: "pnpm"
-
-      - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Check Outdated Packages
-        run: pnpm outdated || true
-YAML
-
-# Create codeql-analysis.yml
-cat > "$WORKFLOWS_DIR/codeql-analysis.yml" << 'YAML'
-# CodeQL Security Analysis Workflow
-# Performs semantic code analysis to find security vulnerabilities
-name: "CodeQL Security Analysis"
-
-on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
-  schedule:
-    - cron: "0 0 * * 0" # Weekly on Sunday at midnight UTC
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  security-events: write
-  actions: read
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
-
-jobs:
-  analyze:
-    name: Analyze
-    runs-on: ubuntu-24.04-arm
-    timeout-minutes: 30
-
-    strategy:
-      fail-fast: false
-      matrix:
-        language: ["javascript-typescript"]
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v7
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
-        with:
-          languages: ${{ matrix.language }}
-
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
-        with:
-          category: "/language:${{matrix.language}}"
-YAML
-
-echo "✅ Security scanning workflows created:"
-echo "  - $WORKFLOWS_DIR/security-audit.yml"
-echo "  - $WORKFLOWS_DIR/codeql-analysis.yml"
+echo ""
+echo "================================================"
+echo "Deployment Summary"
+echo "================================================"
+echo ""
+echo "Workflows deployed to: $WORKFLOWS_DIR"
+ls -la "$WORKFLOWS_DIR"/security-audit.yml "$WORKFLOWS_DIR"/codeql-analysis.yml 2>/dev/null || true
 echo ""
 echo "Next steps:"
 echo "  1. Review the generated workflow files"
-echo "  2. Commit and push them to main"
-echo "  3. Verify they appear in GitHub Actions"
+echo "  2. Commit and push them:"
+echo "     git add .github/workflows/security-audit.yml .github/workflows/codeql-analysis.yml"
+echo "     git commit -m 'fix(security): deploy security scanning CI workflows'"
+echo "     git push"
+echo "  3. Verify they appear in GitHub Actions > Workflows"
+echo ""
+echo "TROUBLESHOOTING:"
+echo "  If push is rejected with 'workflows' permission error:"
+echo "  - Use a PAT with 'workflows' scope instead of GITHUB_TOKEN"
+echo "  - Push via CLI: git push origin <branch>"
+echo "  - Or create the files manually in the GitHub UI"

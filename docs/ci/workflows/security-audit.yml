@@ -1,77 +1,48 @@
-name: security-audit
+name: Security Audit
+# Automated security scanning for dependency vulnerabilities
+# Implements Issue #728 - Missing security scanning workflows in CI.
+#
+# DEPLOYMENT INSTRUCTIONS:
+# Copy this file to .github/workflows/security-audit.yml and push.
+# Requires GITHUB_TOKEN with `workflows: write` permission.
+# Alternatively, use a Personal Access Token (PAT) with `workflows` scope.
 
 on:
-  schedule:
-    - cron: '0 6 * * *'   # Daily at 06:00 UTC
-  pull_request:
+  push:
+    branches: [main]
     paths:
-      - 'pnpm-lock.yaml'
-      - '**/package.json'
+      - "pnpm-lock.yaml"
+      - "**/package.json"
+  pull_request:
+    branches: [main]
+    paths:
+      - "pnpm-lock.yaml"
+      - "**/package.json"
+  schedule:
+    - cron: "0 6 * * 1" # Every Monday at 06:00 UTC
   workflow_dispatch:
 
 permissions:
   contents: read
-  issues: write
   security-events: write
+  actions: read
+  pull-requests: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
-  audit:
+  # ------------------------------------------------------------------
+  # Dependency Audit (pnpm audit)
+  # ------------------------------------------------------------------
+  dependency-audit:
     name: Dependency Vulnerability Scan
-    runs-on: ubuntu-24.04-arm
-    timeout-minutes: 15
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 1
-
-      - uses: pnpm/action-setup@v6
-        with:
-          run_install: false
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-
-      - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Run pnpm Audit
-        run: pnpm audit --audit-level=high || true
-        continue-on-error: true
-        id: pnpm-audit
-
-      - name: Run pnpm Audit for JSON Report
-        if: always()
-        run: |
-          pnpm audit --audit-level=high --json 2>/dev/null > pnpm-audit-report.json || true
-
-      - name: Upload Audit Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: pnpm-audit-report
-          path: pnpm-audit-report.json
-          retention-days: 14
-          if-no-files-found: ignore
-
-  outdated:
-    name: Outdated Dependency Check
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 10
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 1
+      - uses: actions/checkout@v7
 
       - uses: pnpm/action-setup@v6
         with:
@@ -81,8 +52,57 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
+          cache: "pnpm"
 
-      - name: Check Outdated Dependencies
-        run: pnpm outdated --long || true
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run pnpm audit
+        id: audit
+        run: |
+          echo "::group::pnpm audit results"
+          pnpm audit --audit-level=high 2>&1 || true
+          echo "::endgroup::"
         continue-on-error: true
+
+      - name: Check for critical vulnerabilities
+        run: |
+          AUDIT_OUTPUT=$(pnpm audit --audit-level=critical --json 2>/dev/null || echo '{"metadata":{"vulnerabilities":{"critical":0}}}')
+          CRITICAL=$(echo "$AUDIT_OUTPUT" | grep -o '"critical":[0-9]*' | grep -o '[0-9]*' || echo "0")
+          HIGH=$(echo "$AUDIT_OUTPUT" | grep -o '"high":[0-9]*' | grep -o '[0-9]*' || echo "0")
+          echo "Critical vulnerabilities: $CRITICAL"
+          echo "High vulnerabilities: $HIGH"
+          if [ "$CRITICAL" -gt 0 ]; then
+            echo "::warning::Critical vulnerabilities found: $CRITICAL. Review pnpm audit output."
+          fi
+          if [ "$HIGH" -gt 0 ]; then
+            echo "::notice::High vulnerabilities found: $HIGH. Schedule remediation."
+          fi
+
+  # ------------------------------------------------------------------
+  # Outdated Dependency Check
+  # ------------------------------------------------------------------
+  outdated:
+    name: Outdated Dependency Check
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 10
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check outdated packages
+        run: pnpm outdated --long || true

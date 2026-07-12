@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
 import React, { Suspense } from "react";
 import { redirect } from "next/navigation";
 
@@ -35,10 +34,12 @@ export default async function DashboardPage({
   }
 
   // Check and create customer if needed
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- tRPC proxy types are dynamically resolved
   const customer = await trpc.customer.queryCustomer({
     userId: user.id,
   });
   if (!customer) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- tRPC proxy types are dynamically resolved
     await trpc.customer.insertCustomer.mutate({
       userId: user.id,
     });

@@ -14,7 +14,6 @@ export const metadata = {
   title: PAGE_METADATA.pricing,
 };
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
 async function PricingCardsWithData({
   lang,
   dict,
@@ -27,7 +26,9 @@ async function PricingCardsWithData({
 
   if (user) {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- tRPC proxy types are dynamically resolved
       const { trpc } = await import("~/trpc/server");
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- tRPC proxy types are dynamically resolved
       subscriptionPlan = await trpc.stripe.userPlans();
     } catch (error) {
       logger.error("Failed to fetch user subscription plan:", error);
@@ -38,6 +39,7 @@ async function PricingCardsWithData({
   return (
     <PricingCards
       userId={user?.id}
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- tRPC proxy types are dynamically resolved
       subscriptionPlan={subscriptionPlan}
       dict={dict}
       params={{ lang }}

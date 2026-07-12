@@ -199,11 +199,16 @@ if "hashFiles('**/package-lock.json')" in content:
 else:
     print('  - Cache key already uses pnpm-lock.yaml')
 
-# 4. Replace setup-node + npm ci with pnpm variant (Architect job)
+# 4. Update node-version from 20 to 22 across all jobs
+content = content.replace('node-version: "20"', 'node-version: "22"')
+changes += content.count('node-version: "22"')  # count occurrences after replacement
+print(f'  ✓ Updated node-version from 20 to 22 across all jobs')
+
+# 5. Replace setup-node + npm ci with pnpm variant (Architect job)
 old_arch = (
     '      - uses: actions/setup-node@v4\n'
     '        with:\n'
-    '          node-version: "20"\n'
+    '          node-version: "22"\n'
     '\n'
     '      - run: npm ci || true\n'
     '\n'
@@ -218,7 +223,7 @@ new_arch = (
     '\n'
     '      - uses: actions/setup-node@v4\n'
     '        with:\n'
-    '          node-version: "20"\n'
+    '          node-version: "22"\n'
     '          cache: \'pnpm\'\n'
     '\n'
     '      - run: pnpm install --frozen-lockfile || true\n'
@@ -234,11 +239,48 @@ if old_arch in content:
 else:
     print('  - Architect job npm ci pattern not found (may already be updated)')
 
-# 5. Replace setup-node + npm ci with pnpm variant (Fixer job)
+# 6. Replace setup-node (no npm ci) with pnpm variant (Specialists job)
+old_spec = (
+    '      - uses: actions/setup-node@v4\n'
+    '        with:\n'
+    '          node-version: "22"\n'
+    '\n'
+    '      - name: Install OpenCode\n'
+    '        run: |\n'
+    '          curl -fsSL https://opencode.ai/install | bash\n'
+    '          echo "$HOME/.opencode/bin" >> $GITHUB_PATH\n'
+    '\n'
+    '      - name: Execute Specialist Work'
+)
+new_spec = (
+    '      - uses: pnpm/action-setup@v6\n'
+    '        with:\n'
+    '          run_install: false\n'
+    '\n'
+    '      - uses: actions/setup-node@v4\n'
+    '        with:\n'
+    '          node-version: "22"\n'
+    '          cache: \'pnpm\'\n'
+    '\n'
+    '      - name: Install OpenCode\n'
+    '        run: |\n'
+    '          curl -fsSL https://opencode.ai/install | bash\n'
+    '          echo "$HOME/.opencode/bin" >> $GITHUB_PATH\n'
+    '\n'
+    '      - name: Execute Specialist Work'
+)
+if old_spec in content:
+    content = content.replace(old_spec, new_spec, 1)
+    changes += 1
+    print('  ✓ Updated Specialists job: setup-node + cache -> pnpm')
+else:
+    print('  - Specialists job pattern not found (may already be updated)')
+
+# 7. Replace setup-node + npm ci with pnpm variant (Fixer job)
 old_fixer = (
     '      - uses: actions/setup-node@v4\n'
     '        with:\n'
-    '          node-version: "20"\n'
+    '          node-version: "22"\n'
     '\n'
     '      - run: npm ci || true\n'
     '\n'
@@ -256,7 +298,7 @@ new_fixer = (
     '\n'
     '      - uses: actions/setup-node@v4\n'
     '        with:\n'
-    '          node-version: "20"\n'
+    '          node-version: "22"\n'
     '          cache: \'pnpm\'\n'
     '\n'
     '      - run: pnpm install --frozen-lockfile || true\n'
@@ -274,6 +316,43 @@ if old_fixer in content:
     print('  ✓ Updated Fixer job: setup-node + npm ci -> pnpm')
 else:
     print('  - Fixer job npm ci pattern not found (may already be updated)')
+
+# 8. Replace setup-node (no npm ci) with pnpm variant (PR-Handler job)
+old_pr = (
+    '      - uses: actions/setup-node@v4\n'
+    '        with:\n'
+    '          node-version: "22"\n'
+    '\n'
+    '      - name: Install OpenCode\n'
+    '        run: |\n'
+    '          curl -fsSL https://opencode.ai/install | bash\n'
+    '          echo "$HOME/.opencode/bin" >> $GITHUB_PATH\n'
+    '\n'
+    '      - name: Merge Qualified PRs'
+)
+new_pr = (
+    '      - uses: pnpm/action-setup@v6\n'
+    '        with:\n'
+    '          run_install: false\n'
+    '\n'
+    '      - uses: actions/setup-node@v4\n'
+    '        with:\n'
+    '          node-version: "22"\n'
+    '          cache: \'pnpm\'\n'
+    '\n'
+    '      - name: Install OpenCode\n'
+    '        run: |\n'
+    '          curl -fsSL https://opencode.ai/install | bash\n'
+    '          echo "$HOME/.opencode/bin" >> $GITHUB_PATH\n'
+    '\n'
+    '      - name: Merge Qualified PRs'
+)
+if old_pr in content:
+    content = content.replace(old_pr, new_pr, 1)
+    changes += 1
+    print('  ✓ Updated PR-Handler job: setup-node -> pnpm')
+else:
+    print('  - PR-Handler job pattern not found (may already be updated)')
 
 if changes == 0:
     print('\nNo changes needed - workflow already uses pnpm.')

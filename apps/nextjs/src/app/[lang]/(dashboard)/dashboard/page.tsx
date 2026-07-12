@@ -34,7 +34,7 @@ export default async function DashboardPage({
   }
 
   // Check and create customer if needed
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- tRPC proxy types are dynamically resolved
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access -- tRPC proxy types are dynamically resolved
   const customer = await trpc.customer.queryCustomer({
     userId: user.id,
   });

@@ -42,6 +42,77 @@ const SENSITIVE_FIELD_PATTERNS = [
 ] as const;
 
 /**
+ * Recursively sanitize a value by redacting sensitive fields at any depth.
+ * Error objects from Stripe, Clerk, and other services can contain
+ * nested objects (raw responses, headers, config) that may include
+ * API keys, tokens, or other sensitive data.
+ *
+ * @param value - Value to sanitize
+ * @param depth - Current recursion depth (prevents stack overflow)
+ * @returns Sanitized value with sensitive fields redacted
+ */
+function sanitizeValue(value: unknown, depth = 0): unknown {
+  const MAX_DEPTH = 5;
+  if (depth > MAX_DEPTH) {
+    return "[MAX_DEPTH]";
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((item) => sanitizeValue(item, depth + 1));
+  }
+
+  if (value && typeof value === "object") {
+    const sanitized: Record<string, unknown> = {};
+    for (const [key, val] of Object.entries(
+      value as Record<string, unknown>,
+    )) {
+      const lowerKey = key.toLowerCase();
+      const isSensitive = SENSITIVE_FIELD_PATTERNS.some((pattern) =>
+        lowerKey.includes(pattern),
+      );
+      if (isSensitive) {
+        sanitized[key] = "[REDACTED]";
+      } else if (key === "stack" || key === "message" || key === "name") {
+        sanitized[key] = val;
+      } else {
+        sanitized[key] = sanitizeValue(val, depth + 1);
+      }
+    }
+    return sanitized;
+  }
+
+  return value;
+}
+
+/**
+ * Safely serialize an error object for logging, stripping sensitive fields
+ * from nested properties while preserving useful debugging information
+ * like message, name, and stack trace.
+ *
+ * @param err - Error or unknown value to sanitize
+ * @returns Safe error object with sensitive fields redacted
+ */
+function safeError(err: unknown): Record<string, unknown> {
+  if (err == null) {
+    return { message: "Unknown error" };
+  }
+  if (typeof err !== "object") {
+    return { message: typeof err === "string" ? err : "Non-object error" };
+  }
+
+  const error = err as Record<string, unknown>;
+  const errorMessage =
+    typeof error.message === "string" ? error.message : "Unknown error";
+
+  return {
+    message: errorMessage,
+    name: typeof error.name === "string" ? error.name : "Error",
+    stack: typeof error.stack === "string" ? error.stack : undefined,
+    ...sanitizeValue(error, 0),
+  } as Record<string, unknown>;
+}
+
+/**
  * Redact sensitive fields from a metadata object before logging.
  * Mutates and returns the same object for performance.
  *
@@ -137,7 +208,7 @@ const logger = {
       level: "error",
       msg,
       time: getTimestamp(),
-      error: err,
+      error: err ? safeError(err) : undefined,
       ...(meta ? redactSensitiveFields({ ...meta }) : undefined),
     };
     console.error(JSON.stringify(entry));

@@ -68,15 +68,116 @@ const SENSITIVE_FIELD_PATTERNS = [
 ] as const;
 
 /**
+ * Safe error serializer for pino that strips known sensitive fields
+ * from nested error properties before serialization.
+ *
+ * Error objects from Stripe, Clerk, and other services can contain
+ * nested objects (raw responses, headers, config) that may include
+ * API keys, tokens, or other sensitive data at any depth.
+ *
+ * This serializer:
+ * 1. Extracts the standard error properties (message, name, stack)
+ * 2. Recursively sanitizes custom properties by redacting sensitive fields
+ * 3. Limits recursion depth to prevent stack overflow on circular objects
+ *
+ * @param err - The error object to serialize
+ * @returns A safe error object with sensitive fields redacted
+ */
+export function safeSerializeError(err: unknown): Record<string, unknown> {
+  if (err == null) {
+    return { message: "Unknown error" };
+  }
+  if (typeof err !== "object") {
+    return { message: typeof err === "string" ? err : "Non-object error" };
+  }
+
+  const MAX_DEPTH = 5;
+  const error = err as Record<string, unknown>;
+  const errorMessage =
+    typeof error.message === "string" ? error.message : "Unknown error";
+
+  // Always extract standard error properties
+  const result: Record<string, unknown> = {
+    message: errorMessage,
+    name: typeof error.name === "string" ? error.name : "Error",
+  };
+
+  // Include stack trace (controlled by pino config in production)
+  if (typeof error.stack === "string") {
+    result.stack = error.stack;
+  }
+
+  // Recursively sanitize custom properties
+  function sanitizeValue(value: unknown, depth: number): unknown {
+    if (depth > MAX_DEPTH) {
+      return "[MAX_DEPTH]";
+    }
+
+    if (Array.isArray(value)) {
+      return value.map((item) => sanitizeValue(item, depth + 1));
+    }
+
+    if (value && typeof value === "object") {
+      const sanitized: Record<string, unknown> = {};
+      for (const [key, val] of Object.entries(
+        value as Record<string, unknown>,
+      )) {
+        const lowerKey = key.toLowerCase();
+        const isSensitive = SENSITIVE_FIELD_PATTERNS.some((pattern) =>
+          lowerKey.includes(pattern),
+        );
+        if (isSensitive) {
+          sanitized[key] = "[REDACTED]";
+        } else if (key === "stack" || key === "message" || key === "name") {
+          // Skip - already handled above
+          continue;
+        } else {
+          sanitized[key] = sanitizeValue(val, depth + 1);
+        }
+      }
+      return sanitized;
+    }
+
+    return value;
+  }
+
+  // Sanitize all custom properties on the error
+  for (const [key, value] of Object.entries(error)) {
+    if (key === "message" || key === "name" || key === "stack") {
+      continue;
+    }
+    const lowerKey = key.toLowerCase();
+    const isSensitive = SENSITIVE_FIELD_PATTERNS.some((pattern) =>
+      lowerKey.includes(pattern),
+    );
+    if (isSensitive) {
+      result[key] = "[REDACTED]";
+    } else {
+      result[key] = sanitizeValue(value, 0);
+    }
+  }
+
+  return result;
+}
+
+/**
  * Build pino redact configuration from sensitive field patterns.
- * Generates both top-level and nested paths (1 level deep) for each pattern.
+ * Generates top-level, one-level, and deep-nested paths for each pattern.
+ *
+ * The three levels ensure:
+ * - `secret` catches top-level keys
+ * - `*.secret` catches one-level nested keys (e.g., `error.secret`)
+ * - `**.secret` catches deeply nested keys (e.g., `error.raw.headers.authorization`)
  */
 export function buildRedactConfig(): { paths: string[]; censor: string } {
   const paths: string[] = [];
   for (const pattern of SENSITIVE_FIELD_PATTERNS) {
-    // Match the field at any level (top-level and one-level nested)
+    // Match at top level
     paths.push(pattern);
+    // Match one level deep (e.g., error.secret, meta.token)
     paths.push(`*.${pattern}`);
+    // Match any depth (e.g., error.raw.headers.authorization)
+    paths.push(`**.${pattern}`);
   }
   return { paths, censor: "[REDACTED]" };
 }
@@ -109,6 +210,9 @@ export function createLogger(config: LoggerConfig): Logger {
     },
     formatters: {
       level: (label: string) => ({ level: label }),
+    },
+    serializers: {
+      error: safeSerializeError,
     },
     timestamp: pino.stdTimeFunctions.isoTime,
     redact: buildRedactConfig(),

@@ -51,9 +51,7 @@ async function processEventInternal(event: Stripe.Event) {
   }
 }
 
-async function handleCheckoutSessionCompleted(
-  session: Stripe.Checkout.Session,
-) {
+async function resolveSubscriptionCustomer(session: Stripe.Checkout.Session) {
   const subscription = await retrieveSubscription(
     session.subscription as string,
   );
@@ -68,6 +66,14 @@ async function handleCheckoutSessionCompleted(
       "MISSING_USER_ID",
     );
   }
+  return { subscription, customerId, userId };
+}
+
+async function handleCheckoutSessionCompleted(
+  session: Stripe.Checkout.Session,
+) {
+  const { subscription, customerId, userId } =
+    await resolveSubscriptionCustomer(session);
 
   // Use transaction to ensure atomicity of select + update
   await db.transaction().execute(async (trx) => {
@@ -100,20 +106,8 @@ async function handleCheckoutSessionCompleted(
 }
 
 async function handleInvoicePaymentSucceeded(session: Stripe.Checkout.Session) {
-  const subscription = await retrieveSubscription(
-    session.subscription as string,
-  );
-  const customerId =
-    typeof subscription.customer === "string"
-      ? subscription.customer
-      : subscription.customer.id;
-  const { userId } = subscription.metadata;
-  if (!userId) {
-    throw new IntegrationError(
-      "Missing user id in metadata",
-      "MISSING_USER_ID",
-    );
-  }
+  const { subscription, customerId, userId } =
+    await resolveSubscriptionCustomer(session);
 
   // Use transaction to ensure atomicity of select + update
   await db.transaction().execute(async (trx) => {

@@ -3,7 +3,7 @@ import { currentUser, type getAuth } from "@clerk/nextjs/server";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { ZodError } from "zod";
 
-import { isAdminEmail, IS_PROD } from "@saasfly/common";
+import { IS_PROD, isAdminEmail } from "@saasfly/common";
 import { db, type Role } from "@saasfly/db";
 
 import {
@@ -144,7 +144,11 @@ const csrfProtection = t.middleware(({ next, ctx, type }) => {
 
     if (!IS_PROD && isLocalhost) {
       logger.debug(
-        { requestId: ctx.requestId, security: true, requestOrigin: normalizedRequestOrigin },
+        {
+          requestId: ctx.requestId,
+          security: true,
+          requestOrigin: normalizedRequestOrigin,
+        },
         "CSRF check: allowed localhost origin in development",
       );
       return next();

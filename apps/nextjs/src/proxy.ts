@@ -182,9 +182,49 @@ function handleI18nRouting(req: NextRequest): NextResponse | null {
   return NextResponse.redirect(url);
 }
 
+const SLOW_REQUEST_THRESHOLD_MS = 500;
+
 export default async function proxy(
   req: NextRequest,
 ): Promise<Response | null> {
+  const startTime = performance.now();
+
+  const response = await handleRequest(req);
+
+  const duration = performance.now() - startTime;
+  const method = req.method;
+  const url = req.nextUrl.pathname;
+
+  if (response && "headers" in response) {
+    (response as NextResponse).headers.set(
+      "Server-Timing",
+      `total;dur=${duration.toFixed(0)}`,
+    );
+  }
+
+  if (duration > SLOW_REQUEST_THRESHOLD_MS && response) {
+    const requestId =
+      (response as NextResponse).headers.get(REQUEST_ID_HEADER) ?? "unknown";
+    const logEntry = JSON.stringify({
+      type: "slow-request",
+      method,
+      url,
+      duration: Math.round(duration),
+      thresholdMs: SLOW_REQUEST_THRESHOLD_MS,
+      requestId,
+    });
+
+    if (process.env.NODE_ENV === "production") {
+      console.warn(logEntry);
+    } else {
+      console.warn(`[PERF] ${method} ${url} — ${Math.round(duration)}ms`);
+    }
+  }
+
+  return response;
+}
+
+async function handleRequest(req: NextRequest): Promise<Response | null> {
   const i18nResponse = handleI18nRouting(req);
   if (i18nResponse) {
     return i18nResponse;

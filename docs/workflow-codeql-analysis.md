@@ -1,27 +1,28 @@
 name: "CodeQL Security Analysis"
 
 on:
-push:
-branches: ["main"]
-pull_request:
-branches: ["main"]
-schedule: - cron: "0 0 \* \* 0" # Weekly on Sunday at midnight UTC
-workflow_dispatch:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  schedule:
+    - cron: "0 0 * * 0" # Weekly on Sunday at midnight UTC
+  workflow_dispatch:
 
 permissions:
-contents: read
-security-events: write
-actions: read
+  contents: read
+  security-events: write
+  actions: read
 
 concurrency:
-group: ${{ github.workflow }}-${{ github.ref }}
-cancel-in-progress: false
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-analyze:
-name: Analyze (${{ matrix.language }})
-runs-on: ubuntu-24.04-arm
-timeout-minutes: 30
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 30
 
     strategy:
       fail-fast: false

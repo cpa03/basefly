@@ -1,28 +1,27 @@
 name: "CodeQL Security Analysis"
 
 on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
-  schedule:
-    - cron: "0 0 * * 0" # Weekly on Sunday at midnight UTC
-  workflow_dispatch:
+push:
+branches: ["main"]
+pull_request:
+branches: ["main"]
+schedule: - cron: "0 0 \* \* 0" # Weekly on Sunday at midnight UTC
+workflow_dispatch:
 
 permissions:
-  contents: read
-  security-events: write
-  actions: read
+contents: read
+security-events: write
+actions: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
+group: ${{ github.workflow }}-${{ github.ref }}
+cancel-in-progress: false
 
 jobs:
-  analyze:
-    name: Analyze (${{ matrix.language }})
-    runs-on: ubuntu-24.04-arm
-    timeout-minutes: 30
+analyze:
+name: Analyze (${{ matrix.language }})
+runs-on: ubuntu-24.04-arm
+timeout-minutes: 30
 
     strategy:
       fail-fast: false
@@ -42,6 +41,16 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.14.0"
+          cache: "pnpm"
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3

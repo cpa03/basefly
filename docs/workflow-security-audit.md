@@ -1,27 +1,26 @@
 name: Security Audit
 
 on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
-  schedule:
-    - cron: "0 6 * * 1" # Weekly on Monday at 6 AM UTC
-  workflow_dispatch:
+push:
+branches: ["main"]
+pull_request:
+branches: ["main"]
+schedule: - cron: "0 6 \* \* 1" # Weekly on Monday at 6 AM UTC
+workflow_dispatch:
 
 permissions:
-  contents: read
-  security-events: write
+contents: read
+security-events: write
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
+group: ${{ github.workflow }}-${{ github.ref }}
+cancel-in-progress: false
 
 jobs:
-  dependency-audit:
-    name: "Dependency Security Audit"
-    runs-on: ubuntu-24.04-arm
-    timeout-minutes: 15
+dependency-audit:
+name: "Dependency Security Audit"
+runs-on: ubuntu-24.04-arm
+timeout-minutes: 15
 
     steps:
       - name: Wait in Queue
@@ -44,7 +43,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22.14.0"
           cache: "pnpm"
 
       - name: Install Dependencies
@@ -70,11 +69,11 @@ jobs:
             echo '```'
           } >> $GITHUB_STEP_SUMMARY
 
-  outdated-deps:
-    name: "Outdated Dependencies Check"
-    runs-on: ubuntu-24.04-arm
-    timeout-minutes: 10
-    continue-on-error: true
+outdated-deps:
+name: "Outdated Dependencies Check"
+runs-on: ubuntu-24.04-arm
+timeout-minutes: 10
+continue-on-error: true
 
     steps:
       - name: Checkout
@@ -87,7 +86,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22.14.0"
           cache: "pnpm"
 
       - name: Install Dependencies

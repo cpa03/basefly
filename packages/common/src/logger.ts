@@ -51,9 +51,10 @@ export interface LoggerConfig {
  *
  * This prevents accidental leakage of secrets, tokens, and PII through logs.
  *
- * @see apps/nextjs/src/lib/logger.ts for the identical pattern list used by the frontend logger
+ *
+ * @module @saasfly/common/logger
  */
-const SENSITIVE_FIELD_PATTERNS = [
+export const SENSITIVE_FIELD_PATTERNS = [
   "secret",
   "token",
   "password",

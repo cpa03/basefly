@@ -22,24 +22,7 @@
  * ```
  */
 
-/**
- * Field name patterns that indicate sensitive data.
- * Any metadata key matching these patterns (case-insensitive partial match)
- * will have its value redacted to "[REDACTED]" before logging.
- */
-const SENSITIVE_FIELD_PATTERNS = [
-  "secret",
-  "token",
-  "password",
-  "credential",
-  "api_key",
-  "authorization",
-  "set-cookie",
-  "cookie",
-  "session",
-  "private_key",
-  "privatekey",
-] as const;
+import { SENSITIVE_FIELD_PATTERNS } from "@saasfly/common/logger";
 
 /**
  * Recursively sanitize a value by redacting sensitive fields at any depth.

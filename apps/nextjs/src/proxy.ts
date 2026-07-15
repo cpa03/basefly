@@ -8,6 +8,7 @@ import { getMinifiedCSPHeader, HEADERS, HTTP_STATUS } from "@saasfly/common";
 
 import { i18n } from "./config/i18n-config";
 import { middleware as clerkMiddleware, isPublicRoute } from "./utils/clerk";
+import { logger } from "~/lib/logger";
 
 /**
  * CSRF Protection: validate state-changing requests originate from the
@@ -205,19 +206,25 @@ export default async function proxy(
   if (duration > SLOW_REQUEST_THRESHOLD_MS && response) {
     const requestId =
       (response as NextResponse).headers.get(REQUEST_ID_HEADER) ?? "unknown";
-    const logEntry = JSON.stringify({
-      type: "slow-request",
-      method,
-      url,
-      duration: Math.round(duration),
-      thresholdMs: SLOW_REQUEST_THRESHOLD_MS,
-      requestId,
-    });
 
     if (process.env.NODE_ENV === "production") {
-      console.warn(logEntry);
+      logger.error("Slow request detected", undefined, {
+        type: "slow-request",
+        method,
+        url,
+        duration: Math.round(duration),
+        thresholdMs: SLOW_REQUEST_THRESHOLD_MS,
+        requestId,
+      });
     } else {
-      console.warn(`[PERF] ${method} ${url} — ${Math.round(duration)}ms`);
+      logger.warn("Slow request detected", {
+        type: "slow-request",
+        method,
+        url,
+        duration: Math.round(duration),
+        thresholdMs: SLOW_REQUEST_THRESHOLD_MS,
+        requestId,
+      });
     }
   }
 

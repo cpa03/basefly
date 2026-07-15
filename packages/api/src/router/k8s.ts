@@ -97,17 +97,16 @@ export const k8sRouter = createTRPCRouter({
           "Creating cluster",
         );
 
-        const newCluster = await db
-          .insertInto("K8sClusterConfig")
-          .values({
+        const newCluster = await k8sClusterService.create(
+          {
             name: input.name,
             location: input.location,
             network: K8S_DEFAULTS.network,
             plan: K8S_DEFAULTS.plan,
-            authUserId: userId,
-          })
-          .returning("id")
-          .executeTakeFirst();
+          },
+          userId,
+          { requestId },
+        );
 
         if (!newCluster) {
           throw createApiError(

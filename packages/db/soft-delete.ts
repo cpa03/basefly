@@ -213,6 +213,69 @@ export class SoftDeleteService<T extends keyof DB> {
   }
 
   /**
+   * Create a new record with the given values
+   *
+   * Automatically sets authUserId for ownership tracking.
+   * Returns the newly created record's ID for further operations.
+   * Follows the same type assertion pattern as other methods for dynamic table access.
+   *
+   * @param values - Column values to insert (excluding authUserId which is set automatically)
+   * @param userId - The user ID to set as authUserId
+   * @param options - Optional request ID for distributed tracing
+   * @returns The created record's ID, or undefined if creation failed
+   *
+   * @example
+   * ```typescript
+   * const result = await k8sClusterService.create(
+   *   { name: "my-cluster", location: "us-east", network: "default", plan: "free" },
+   *   userId,
+   *   { requestId: "uuid" },
+   * );
+   * // result?.id contains the new record ID
+   * ```
+   */
+  async create(
+    values: Record<string, unknown>,
+    userId: string,
+    options?: { requestId?: string },
+  ): Promise<{ id: number } | undefined> {
+    const { requestId } = options ?? {};
+    logger.info("Starting create operation", {
+      requestId,
+      table: this.tableName,
+      userId,
+    });
+
+    try {
+      const insertValues = { ...values, authUserId: userId };
+      const result = await db
+        .insertInto(this.tableName)
+        // @ts-expect-error Kysely dynamic table/column requires type assertion
+        .values(insertValues)
+        // @ts-expect-error Kysely dynamic table/column requires type assertion
+        .returning("id")
+        .executeTakeFirst();
+
+      logger.info("Create operation completed", {
+        requestId,
+        table: this.tableName,
+        recordId: result?.id,
+        userId,
+      });
+
+      // @ts-expect-error Kysely dynamic table/column requires type assertion for return type narrowing
+      return result;
+    } catch (error) {
+      logger.error("Create operation failed", error, {
+        requestId,
+        table: this.tableName,
+        userId,
+      });
+      throw error;
+    }
+  }
+
+  /**
    * Count all active (non-deleted) records for a user
    *
    * Useful for pagination, dashboard stats, and admin queries.

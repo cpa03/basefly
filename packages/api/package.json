@@ -21,7 +21,8 @@
   },
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
-    "format": "prettier --check '**/*.{ts,mjs}' ",
+    "lint": "eslint . --cache --cache-location 'node_modules/.cache/.eslintcache'",
+    "format": "prettier --check '**/*.{mjs,ts,json}' ",
     "typecheck": "tsc --noEmit",
     "generate-docs": "npx tsx src/docs-generator.ts"
   },

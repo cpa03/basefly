@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-import { getLimiter } from "@saasfly/api";
+import { getLimiter, getRateLimitHeaders } from "@saasfly/api";
 import { openApiDocument } from "@saasfly/api/openapi";
 import { HTTP_STATUS } from "@saasfly/common";
 
@@ -18,19 +18,6 @@ import { HTTP_STATUS } from "@saasfly/common";
 
 // Use read rate limit config: 100 requests per minute
 const docsLimiter = getLimiter("read");
-
-/**
- * Rate limit headers to include in responses
- */
-const getRateLimitHeaders = (result: {
-  limit: number;
-  remaining: number;
-  resetAt: number;
-}) => ({
-  "X-RateLimit-Limit": result.limit.toString(),
-  "X-RateLimit-Remaining": result.remaining.toString(),
-  "X-RateLimit-Reset": result.resetAt.toString(),
-});
 
 export function GET(req: NextRequest) {
   // Check rate limit - use IP as identifier for public endpoint

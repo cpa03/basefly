@@ -24,8 +24,8 @@ import {
 
 import { logger } from "./logger";
 
-// Re-export types and original RateLimiter
-export { RateLimiter } from "./rate-limiter";
+// Re-export types, utilities, and original RateLimiter
+export { getRateLimitHeaders, RateLimiter } from "./rate-limiter";
 export type { EndpointType, RateLimitConfig } from "@saasfly/common";
 
 interface RateLimitEntry {

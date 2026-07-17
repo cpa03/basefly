@@ -24,7 +24,7 @@ export {
   type ApiErrorResponse,
 } from "./errors";
 
-export { getLimiter, SyncRateLimiter } from "./distributed-rate-limiter";
+export { getLimiter, getRateLimitHeaders, SyncRateLimiter } from "./distributed-rate-limiter";
 
 export type { EndpointType, RateLimitConfig } from "@saasfly/common";
 

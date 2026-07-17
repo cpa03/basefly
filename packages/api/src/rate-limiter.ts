@@ -156,6 +156,35 @@ export function getLimiter(type: EndpointType): RateLimiter {
   return limiters[type];
 }
 
+export interface RateLimitHeaders {
+  "X-RateLimit-Limit": string;
+  "X-RateLimit-Remaining": string;
+  "X-RateLimit-Reset": string;
+}
+
+/**
+ * Generate standard rate limit headers from a rate limit result.
+ * Use this in API route handlers to include consistent rate limit information.
+ *
+ * @example
+ * ```typescript
+ * const result = rateLimiter.check(identifier);
+ * if (!result.success) {
+ *   return NextResponse.json(
+ *     { error: "Rate limit exceeded" },
+ *     { headers: { ...getRateLimitHeaders(result) } }
+ *   );
+ * }
+ * ```
+ */
+export function getRateLimitHeaders(result: RateLimitResult): RateLimitHeaders {
+  return {
+    "X-RateLimit-Limit": result.limit.toString(),
+    "X-RateLimit-Remaining": result.remaining.toString(),
+    "X-RateLimit-Reset": result.resetAt.toString(),
+  };
+}
+
 export function getIdentifier(
   userId: string | null,
   req?: NextRequest,

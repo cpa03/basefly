@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import {
   getLimiter,
   getOrGenerateRequestId,
+  getRateLimitHeaders,
   REQUEST_ID_HEADER,
 } from "@saasfly/api";
 import { HTTP_SECURITY_HEADERS, HTTP_STATUS } from "@saasfly/common";
@@ -33,19 +34,6 @@ export const maxDuration = 60;
 
 // Use stripe rate limit config: 10 requests per minute
 const webhookLimiter = getLimiter("stripe");
-
-/**
- * Rate limit headers to include in responses
- */
-const getRateLimitHeaders = (result: {
-  limit: number;
-  remaining: number;
-  resetAt: number;
-}) => ({
-  "X-RateLimit-Limit": result.limit.toString(),
-  "X-RateLimit-Remaining": result.remaining.toString(),
-  "X-RateLimit-Reset": result.resetAt.toString(),
-});
 
 const handler = async (req: NextRequest) => {
   const requestId = getOrGenerateRequestId(req.headers);

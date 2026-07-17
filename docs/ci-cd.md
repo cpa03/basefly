@@ -6,6 +6,30 @@ This document describes the continuous integration and deployment infrastructure
 
 Basefly uses GitHub Actions for CI/CD with a multi-agent automation system powered by OpenCode CLI. The workflows are designed to maintain code quality, automate maintenance, and enable rapid iteration.
 
+### 3. `release.yml` - Automated Releases
+
+**Trigger:**
+
+- Push to `main` with version tag (`v*`)
+- Manual dispatch with version input
+
+**Purpose:**
+Automates the release process by:
+
+- Running full validation suite (typecheck, lint, test, audit)
+- Generating changelog from conventional commits
+- Creating GitHub Release with categorized release notes
+- Supporting dry-run mode for testing
+
+**Key Features:**
+
+- Changelog auto-generated from PR labels
+- Release notes organized by category (Features, Fixes, Security, etc.)
+- Dry-run mode for testing before actual release
+- Concurrency control to prevent overlapping releases
+
+---
+
 ## Workflows
 
 ### 1. `on-pull.yml` - Pull Request Handler

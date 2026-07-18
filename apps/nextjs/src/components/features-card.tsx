@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 
 import { ANIMATION, NOTIFICATION_COLORS } from "@saasfly/common";

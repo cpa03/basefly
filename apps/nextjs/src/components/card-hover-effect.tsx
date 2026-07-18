@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 
 import { HoverEffect } from "@saasfly/ui/card-hover-effect";

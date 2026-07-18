@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 
 import { EXTERNAL_URLS, ICON_SIZES } from "@saasfly/common";

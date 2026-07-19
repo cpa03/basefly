@@ -1,8 +1,11 @@
 /**
  * Stripe Logger
  *
- * Centralized logger for the Stripe package with request context support.
- * Uses the shared logging solution from @saasfly/common/logger
+ * Re-exports the shared pino-based logger from @saasfly/common
+ * pre-configured with the "stripe" package context.
+ *
+ * Provides a consistent logging interface with automatic sensitive
+ * field redaction and request tracking support.
  */
 
 import {
@@ -11,33 +14,10 @@ import {
   type BaseLogger,
 } from "@saasfly/common";
 
-interface LoggerMetadata {
-  requestId?: string;
-  [key: string]: unknown;
-}
-
 /**
- * Stripe-specific logger with typed methods
- * Provides consistent interface with request tracking
+ * Stripe-specific logger with typed methods and auto-redaction.
+ * Uses the shared pino instance configured for the stripe package.
  */
-const stripeLoggerWrapper: BaseLogger = createLoggerWrapper(stripeLogger);
-
-const logger = {
-  debug(message: string, data?: LoggerMetadata) {
-    stripeLoggerWrapper.debug(message, data);
-  },
-
-  info(message: string, data?: LoggerMetadata) {
-    stripeLoggerWrapper.info(message, data);
-  },
-
-  warn(message: string, data?: LoggerMetadata) {
-    stripeLoggerWrapper.warn(message, data);
-  },
-
-  error(message: string, error?: unknown, data?: LoggerMetadata) {
-    stripeLoggerWrapper.error(message, error, data);
-  },
-};
+const logger: BaseLogger = createLoggerWrapper(stripeLogger);
 
 export { logger };

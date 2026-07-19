@@ -86,12 +86,13 @@ const handler = (req: NextRequest) =>
       // The error.cause may contain raw DB errors, integration details, or stack traces
       // that could leak internal system information to log consumers
       logger.error(
+        "Error in tRPC handler (edge)",
+        undefined,
         {
           code: error.code,
           path,
           message: error.message,
         },
-        "Error in tRPC handler (edge)",
       );
     },
   });

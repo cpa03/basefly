@@ -1,0 +1,50 @@
+From c9455feb3b14d101cadbf82cbdc2ec9b7281ddf9 Mon Sep 17 00:00:00 2001
+From: cpa03 <245960241+cpa03@users.noreply.github.com>
+Date: Sun, 19 Jul 2026 14:24:38 +0000
+Subject: [PATCH] fix(ci): use pnpm install instead of npm ci in iterate.yml
+
+Replace npm ci with pnpm install --frozen-lockfile for consistency
+with the project's pnpm package manager. Update cache path to
+pnpm store location and cache key to use pnpm-lock.yaml.
+
+Closes #744
+---
+ .github/workflows/iterate.yml | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/.github/workflows/iterate.yml b/.github/workflows/iterate.yml
+index 9bf22ea..2afa99c 100644
+--- a/.github/workflows/iterate.yml
++++ b/.github/workflows/iterate.yml
+@@ -55,8 +55,8 @@ jobs:
+         with:
+           path: |
+             ~/.opencode
+-            ~/.npm
+-          key: opencode-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-v1
++            ~/.local/share/pnpm/store
++          key: opencode-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}-v1
+           restore-keys: |
+             opencode-${{ runner.os }}-v1
+ 
+@@ -69,7 +69,7 @@ jobs:
+         with:
+           node-version: "20"
+ 
+-      - run: npm ci || true
++      - run: pnpm install --frozen-lockfile || true
+ 
+       - name: Install OpenCode
+         run: |
+@@ -339,7 +339,7 @@ jobs:
+         with:
+           node-version: "20"
+ 
+-      - run: npm ci || true
++      - run: pnpm install --frozen-lockfile || true
+ 
+       - name: Install OpenCode
+         run: |
+-- 
+2.54.0
+

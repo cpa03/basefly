@@ -209,25 +209,22 @@ Running `pnpm audit --audit-level=moderate` currently finds vulnerabilities in t
 
 ### Dependency Security Audit (security-audit.yml)
 
-**Status**: 🔲 Pending creation (requires `workflows` permission on GITHUB_TOKEN)
+**Status**: ✅ Deployed — `.github/workflows/security-audit.yml` is active
 
-A dedicated workflow (`security-audit.yml`) has been designed and validated:
+The workflow:
 - Runs `pnpm audit --audit-level=moderate` on push to main, PRs, and weekly schedule
 - Includes outdated dependency check as informational job
 - Produces audit summary in GitHub Actions step summary
 
-**To activate**: Run `.github/scripts/setup-security-scanning.sh` with a token that has `workflows` permission, or manually copy the YAML from the script to `.github/workflows/security-audit.yml`.
-
 ### CodeQL Security Analysis (codeql-analysis.yml)
 
-**Status**: 🔲 Pending creation (requires `workflows` permission on GITHUB_TOKEN)
+**Status**: ✅ Deployed — `.github/workflows/codeql-analysis.yml` is active
 
-A dedicated workflow (`codeql-analysis.yml`) has been designed and validated:
+The workflow:
 - Runs GitHub CodeQL semantic analysis for JavaScript/TypeScript
+- Uses `.github/codeql-config.yml` with security-and-quality queries
 - Triggers on push to main, PRs, and weekly schedule
 - Integrates with GitHub Security tab for vulnerability alerts
-
-**To activate**: Run `.github/scripts/setup-security-scanning.sh` with a token that has `workflows` permission, or manually copy the YAML from the script to `.github/workflows/codeql-analysis.yml`.
 
 ## Additional Security Recommendations
 
@@ -298,8 +295,8 @@ pnpm dx:check
 - [x] Protected tRPC procedures
 - [x] Stripe webhook verification
 - [x] RLS enabled on database
-- [ ] CodeQL scanning in CI (workflows defined in `.github/scripts/setup-security-scanning.sh`, requires `workflows` permission to activate)
-- [ ] Dependency audit in CI (workflows defined in `.github/scripts/setup-security-scanning.sh`, requires `workflows` permission to activate)
+- [x] CodeQL scanning in CI (`.github/workflows/codeql-analysis.yml`)
+- [x] Dependency audit in CI (`.github/workflows/security-audit.yml`)
 - [ ] Rate limit headers in responses
 - [ ] Nonce-based CSP for production
 

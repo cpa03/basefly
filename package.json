@@ -28,6 +28,7 @@
     "check:circular": "madge --circular --warning --extensions ts,tsx,js,jsx,mjs,cjs apps/ packages/",
     "gen": "turbo gen --config 'turbo/generators/config.ts'",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "test:watch": "vitest watch",
     "test:ui": "vitest --ui",
     "test:e2e": "playwright test",

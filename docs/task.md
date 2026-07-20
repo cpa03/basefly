@@ -2509,3 +2509,5 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [STRENGTHEN] Improved `EmptyPlaceholder.Icon` with a fallback mechanism using `HelpCircle` icon when the requested icon is not found.
 - [CONSOLIDATE] Modularized hardcoded revalidatePath strings in `packages/api/src/router/k8s.ts` using centralized `ROUTES` configuration.
 - [STRENGTHEN] Fixed unused ESLint disable directives and improved type consistency in `packages/api` test files.
+- [STRENGTHEN] Enhanced Language Switcher trigger with a delightful hover rotation/scale micro-UX transition.
+- [CONSOLIDATE] Refactored hardcoded table divider and row hover gray colors in the cluster list table to use the centralized semantic border/muted tokens.

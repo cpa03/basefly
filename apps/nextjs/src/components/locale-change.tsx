@@ -84,10 +84,10 @@ const LocaleChangeBase = ({ url, currentLocale }: LocaleChangeProps) => {
         <Button
           variant="ghost"
           size="sm"
-          className="h-8 w-8 px-0 transition-colors hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className="group h-8 w-8 px-0 transition-all hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           aria-label={`Change language. Current: ${currentLocale ? localeMap[currentLocale as keyof typeof localeMap] : "unknown"}`}
         >
-          <Languages className={ICON_SIZES.sm} aria-hidden="true" />
+          <Languages className={cn(ICON_SIZES.sm, "transition-transform duration-300 ease-in-out group-hover:rotate-12 group-hover:scale-110")} aria-hidden="true" />
           <span className="sr-only">Change language</span>
         </Button>
       </DropdownMenuTrigger>

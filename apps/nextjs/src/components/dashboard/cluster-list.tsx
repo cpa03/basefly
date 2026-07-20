@@ -48,10 +48,10 @@ export async function ClusterList({ lang, dict }: ClusterListProps) {
     <div className="space-y-4">
       <div className="hidden divide-y divide-border rounded-md border md:block">
         <div className="flex items-center justify-between p-4">
-          <Table className="divide-y divide-gray-200">
+          <Table className="divide-y divide-border">
             <TableCaption>{dict.common.dashboard.table_caption}</TableCaption>
             <TableHeader>
-              <TableRow className="hover:bg-gray-50">
+              <TableRow className="hover:bg-muted/50">
                 <TableHead scope="col" className="w-[100px]">
                   {dict.common.dashboard.col_name}
                 </TableHead>

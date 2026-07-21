@@ -1,0 +1,191 @@
+# AI-Powered Code Review Automation
+# ==============================================================
+# This workflow provides automated AI code review for pull requests.
+# It analyzes PR diffs for code quality, security, performance,
+# testability, consistency, and architecture concerns.
+#
+# To deploy: Move this file to .github/workflows/ai-code-review.yml
+# Requires: GITHUB_TOKEN with `workflows: write` permission
+#
+# See scripts/deploy-ci-fixes.sh for automated deployment.
+# ==============================================================
+
+name: ai-code-review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "PR number to review"
+        required: true
+        type: number
+
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  review:
+    name: "AI Code Review"
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 30
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+    steps:
+      - name: Wait in Queue
+        uses: softprops/turnstyle@v3
+        with:
+          poll-interval-seconds: 30
+          same-branch-only: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout Code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "20"
+          cache: "pnpm"
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install OpenCode CLI
+        run: |
+          curl -fsSL https://opencode.ai/install | bash
+          echo "$HOME/.opencode/bin" >> $GITHUB_PATH
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+
+      - name: Run AI Code Review
+        id: review
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Running AI code review for PR #${PR_NUMBER}..."
+
+          # Fetch PR details
+          PR_TITLE=$(gh pr view "${PR_NUMBER}" --json title --jq '.title' 2>/dev/null || echo "Unknown")
+          PR_BODY=$(gh pr view "${PR_NUMBER}" --json body --jq '.body' 2>/dev/null || echo "")
+          PR_DIFF=$(gh pr diff "${PR_NUMBER}" --color never 2>/dev/null || echo "")
+
+          # Skip if no diff
+          if [ -z "$PR_DIFF" ]; then
+            echo "No diff available for PR #${PR_NUMBER}"
+            exit 0
+          fi
+
+          # Truncate diff to avoid context limits
+          DIFF_TRUNC=$(echo "$PR_DIFF" | head -3000)
+
+          # Build the review prompt
+          REVIEW_PROMPT="You are an expert code reviewer for a Next.js SaaS monorepo called Basefly.
+
+Technology stack: Next.js 14 (App Router), TypeScript, tRPC, Prisma, Clerk auth, Stripe, Tailwind CSS, pnpm workspaces.
+
+Review the following PR diff and provide structured feedback.
+
+PR Title: ${PR_TITLE}
+PR Description: ${PR_BODY}
+
+Analyze for:
+1. CODE QUALITY - Correctness, type safety, error handling, edge cases
+2. SECURITY - Auth checks, input validation, data exposure, injection risks
+3. PERFORMANCE - Bundle impact, unnecessary re-renders, expensive queries
+4. TESTABILITY - Missing test coverage, hard-to-test patterns
+5. CONSISTENCY - Follows existing patterns (tRPC routers, Prisma queries, UI components)
+6. ARCHITECTURE - Separation of concerns, SRP, coupling
+
+Output format:
+## Review Summary
+(1-2 sentence overview)
+
+### Strengths
+- ...
+
+### Issues
+- **Severity: High/Medium/Low** - Description with file reference
+
+### Checklist
+- Code quality: pass/warn/fail
+- Security: pass/warn/fail
+- Performance: pass/warn/fail
+- Tests: pass/warn/fail
+- Patterns consistency: pass/warn/fail
+
+### Suggestions
+- ...
+
+Diff:
+${DIFF_TRUNC}"
+
+          # Generate review using OpenCode CLI
+          REVIEW_OUTPUT=$(opencode run "$REVIEW_PROMPT" \
+            --model opencode/kimi-k2.5-free \
+            --share false 2>&1)
+
+          # Write multi-line output to GITHUB_OUTPUT using delimiter
+          {
+            echo "REVIEW_RESULT<<REVIEW_EOF"
+            echo "$REVIEW_OUTPUT"
+            echo "REVIEW_EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Post Review Comment
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number || inputs.pr_number }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          REVIEW_RESULT=$(cat <<'REVIEW_EOF'
+          ${{ steps.review.outputs.REVIEW_RESULT }}
+          REVIEW_EOF
+          )
+
+          REVIEW_BODY="## AI Code Review
+
+          ${REVIEW_RESULT}
+
+          ---
+          *This review was automatically generated by the AI Code Review workflow using OpenCode.*
+          "
+
+          # Write body to temp file to preserve formatting
+          echo "$REVIEW_BODY" > /tmp/review-body.md
+
+          # Check if a previous review comment exists and update it, or create new
+          EXISTING_COMMENT=$(gh api "/repos/${{ github.repository }}/issues/${PR_NUMBER}/comments" \
+            --jq '.[] | select(.body | startswith("## AI Code Review")) | .id' | head -1)
+
+          if [ -n "$EXISTING_COMMENT" ]; then
+            gh api "/repos/${{ github.repository }}/issues/comments/${EXISTING_COMMENT}" \
+              --method PATCH \
+              --field body=@/tmp/review-body.md > /dev/null
+            echo "Updated existing review comment (#${EXISTING_COMMENT})"
+          else
+            gh pr comment "${PR_NUMBER}" --body-file /tmp/review-body.md
+            echo "Posted new review comment"
+          fi

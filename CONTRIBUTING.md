@@ -240,6 +240,8 @@ Before submitting your PR, ensure:
 - [ ] Branch is up-to-date with `main`
 - [ ] PR description links related issues
 
+> **AI Code Review**: After submission, an automated AI code review will run on your PR. It checks code quality, security, performance, and consistency. Address any high-severity findings before requesting human review. See [CI/CD Documentation](./docs/ci-cd.md) for workflow details.
+
 ---
 
 ## Additional Resources

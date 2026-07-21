@@ -4,7 +4,8 @@
 #
 # Deploys CI fixes that require `workflows: write` permission:
 #   1. Security scanning workflows (Issue #728)
-#   2. iterate.yml pnpm consistency fix (Issue #744)
+#   2. AI-Powered Code Review workflow (Issue #727)
+#   3. iterate.yml pnpm consistency fix (Issue #744)
 #
 # Prerequisites:
 #   - Git remote with a token that has `workflows: write` scope
@@ -47,7 +48,22 @@ else
 fi
 
 # ==============================================================
-# FIX 2: iterate.yml pnpm consistency (Issue #744)
+# FIX 2: AI-Powered Code Review workflow (Issue #727)
+# ==============================================================
+echo ""
+echo "--- Fix 2: AI-Powered Code Review Workflow (Issue #727) ---"
+
+SRC_AI_REVIEW="$REPO_ROOT/docs/ci/workflows/ai-code-review.yml"
+
+if [ -f "$SRC_AI_REVIEW" ]; then
+  cp "$SRC_AI_REVIEW" "$DST_DIR/ai-code-review.yml"
+  echo "  + Deployed ai-code-review.yml"
+else
+  echo "  ! Source not found: $SRC_AI_REVIEW"
+fi
+
+# ==============================================================
+# FIX 3: iterate.yml pnpm consistency (Issue #744)
 # ==============================================================
 echo ""
 echo "--- Fix 2: iterate.yml pnpm consistency (Issue #744) ---"
@@ -93,7 +109,7 @@ echo "  git diff --stat"
 echo ""
 echo "Commit and push (with workflows:write token):"
 echo "  git add .github/workflows/"
-echo '  git commit -m "fix(ci): deploy CI fixes for issues #728 and #744"'
+echo '  git commit -m "fix(ci): deploy CI fixes for issues #727, #728, and #744"'
 echo "  git push"
 echo ""
 echo "Verify in GitHub Actions:"

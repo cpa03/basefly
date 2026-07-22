@@ -303,5 +303,5 @@ pnpm dx:check
 ---
 
 _Document created by security-engineer agent_
-_Last updated: 2026-02-20_
-_Updated with CodeQL workflow proposal_
+_Last updated: 2026-07-22_
+_Workflow files deployed and operational_

@@ -209,22 +209,15 @@ Running `pnpm audit --audit-level=moderate` currently finds vulnerabilities in t
 
 ### Dependency Security Audit (security-audit.yml)
 
-**Status**: ✅ Deployed — `.github/workflows/security-audit.yml` is active
+**Status**: ⏳ Pending — Requires `workflows` permission to push `.github/workflows/security-audit.yml`
 
-The workflow:
-- Runs `pnpm audit --audit-level=moderate` on push to main, PRs, and weekly schedule
-- Includes outdated dependency check as informational job
-- Produces audit summary in GitHub Actions step summary
+See implementation notes below for manual deployment instructions.
 
 ### CodeQL Security Analysis (codeql-analysis.yml)
 
-**Status**: ✅ Deployed — `.github/workflows/codeql-analysis.yml` is active
+**Status**: ⏳ Pending — Requires `workflows` permission to push `.github/workflows/codeql-analysis.yml`
 
-The workflow:
-- Runs GitHub CodeQL semantic analysis for JavaScript/TypeScript
-- Uses `.github/codeql-config.yml` with security-and-quality queries
-- Triggers on push to main, PRs, and weekly schedule
-- Integrates with GitHub Security tab for vulnerability alerts
+See implementation notes below for manual deployment instructions.
 
 ## Additional Security Recommendations
 
@@ -304,4 +297,4 @@ pnpm dx:check
 
 _Document created by security-engineer agent_
 _Last updated: 2026-07-22_
-_Workflow files deployed and operational_
+_Workflow files pending deployment — requires `workflows` permission_

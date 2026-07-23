@@ -130,6 +130,8 @@ describe("logger.ts - buildRedactConfig", () => {
     expect(config.paths).toContain("authorization");
     expect(config.paths).toContain("session");
     expect(config.paths).toContain("cookie");
+    expect(config.paths).toContain("header");
+    expect(config.paths).toContain("signature");
   });
 
   it("should include nested path variants for each pattern", () => {
@@ -137,6 +139,8 @@ describe("logger.ts - buildRedactConfig", () => {
     expect(config.paths).toContain("*.secret");
     expect(config.paths).toContain("*.token");
     expect(config.paths).toContain("*.password");
+    expect(config.paths).toContain("*.header");
+    expect(config.paths).toContain("*.signature");
   });
 
   it("should include api_key and private_key patterns", () => {

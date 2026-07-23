@@ -11,6 +11,7 @@ import {
   handleEvent,
   isStripeConfigured,
 } from "@saasfly/stripe";
+import type { Stripe } from "@saasfly/stripe";
 
 import { env } from "~/env.mjs";
 import { logger } from "~/lib/logger";
@@ -144,7 +145,7 @@ const handler = async (req: NextRequest) => {
   }
 
   const client = getStripeClientOrThrow();
-  let event: any;
+  let event: Stripe.Event;
   try {
     // Security: constructEvent errors may contain the raw Stripe-Signature header
     // and other sensitive request data in the StripeError properties (headers, detail, etc.).

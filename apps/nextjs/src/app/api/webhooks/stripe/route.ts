@@ -143,13 +143,38 @@ const handler = async (req: NextRequest) => {
     );
   }
 
+  const client = getStripeClientOrThrow();
+  let event: any;
   try {
-    const client = getStripeClientOrThrow();
-    const event = client.webhooks.constructEvent(
+    // Security: constructEvent errors may contain the raw Stripe-Signature header
+    // and other sensitive request data in the StripeError properties (headers, detail, etc.).
+    // We capture the event in a separate try-catch so we NEVER pass the raw StripeError
+    // object to the logger, which could leak signature or request data.
+    event = client.webhooks.constructEvent(
       payload,
       signature,
       env.STRIPE_WEBHOOK_SECRET,
     );
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Signature verification failed";
+    logger.error("Stripe webhook signature verification failed", {
+      message,
+      requestId,
+    });
+    return NextResponse.json(
+      { error: message },
+      {
+        status: HTTP_STATUS.BAD_REQUEST,
+        headers: {
+          ...WEBHOOK_SECURITY_HEADERS,
+          [REQUEST_ID_HEADER]: requestId,
+          ...getRateLimitHeaders(rateLimitResult),
+        },
+      },
+    );
+  }
+
+  try {
     await handleEvent(event);
 
     logger.info("Handled Stripe Event", { eventType: event.type, requestId });
@@ -165,6 +190,8 @@ const handler = async (req: NextRequest) => {
       },
     );
   } catch (error) {
+    // handleEvent uses IntegrationError which wraps errors with sanitized messages.
+    // These errors originate from application logic, not raw Stripe API data.
     const message = error instanceof Error ? error.message : "Unknown error";
     logger.error("Error when handling Stripe Event", error, {
       message,
@@ -173,7 +200,7 @@ const handler = async (req: NextRequest) => {
     return NextResponse.json(
       { error: message },
       {
-        status: HTTP_STATUS.BAD_REQUEST,
+        status: HTTP_STATUS.INTERNAL_SERVER_ERROR,
         headers: {
           ...WEBHOOK_SECURITY_HEADERS,
           [REQUEST_ID_HEADER]: requestId,

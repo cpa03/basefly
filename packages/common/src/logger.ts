@@ -66,6 +66,12 @@ export const SENSITIVE_FIELD_PATTERNS = [
   "session",
   "private_key",
   "privatekey",
+  // HTTP headers may contain Stripe-Signature, Authorization, Set-Cookie, etc.
+  // StripeError objects include a `headers` property with raw request/response headers.
+  "header",
+  // Signature values (e.g. Stripe-Signature) are computed from webhook secrets
+  // and could aid brute-force attacks if leaked.
+  "signature",
 ] as const;
 
 /**

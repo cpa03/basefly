@@ -1,16 +1,30 @@
-# =============================================================================
-# WORKFLOW REFERENCE: security-audit.yml
-# =============================================================================
-# This is a REFERENCE document for the security-audit workflow.
-# The live workflow is deployed at:
-#   .github/workflows/security-audit.yml
+#!/bin/bash
+# Deploy security scanning workflow to .github/workflows/
+# Requires 'workflows' write permission on the GITHUB_TOKEN
+# Run this script from repo root with an admin token.
 #
-# It provides automated security scanning for the basefly monorepo:
+# Usage: bash scripts/deploy-security-workflow.sh
+# Then commit and push the generated file.
+#
+# Related issue: #728
+
+set -euo pipefail
+
+WORKFLOW_DIR=".github/workflows"
+WORKFLOW_FILE="${WORKFLOW_DIR}/security-audit.yml"
+
+mkdir -p "$WORKFLOW_DIR"
+
+cat > "$WORKFLOW_FILE" <<- 'WORKFLOW'
+# =============================================================================
+# WORKFLOW: security-audit.yml
+# =============================================================================
+# Automated security scanning for the basefly monorepo.
+# Runs:
 #   1. pnpm audit - dependency vulnerability scanning (fails on critical vulns)
 #   2. CodeQL Analysis - JavaScript/TypeScript code security scanning
 #
-# Deployed as part of issue #728 resolution.
-# See the deployed file at .github/workflows/security-audit.yml for the live version.
+# Related issue: #728
 # =============================================================================
 
 name: security-audit
@@ -168,5 +182,19 @@ jobs:
         uses: github/codeql-action/analyze@v3
         with:
           category: "/language:${{matrix.language}}"
+WORKFLOW
 
+chmod +x "$WORKFLOW_FILE" 2>/dev/null || true
 
+echo "Workflow file created at ${WORKFLOW_FILE}"
+echo ""
+echo "Next steps:"
+echo "  git add ${WORKFLOW_FILE}"
+echo "  git commit -m \"fix(security): deploy security scanning CI workflows (issue #728)\""
+echo "  git push"
+echo ""
+echo "Note: Your GITHUB_TOKEN needs 'workflows' write permission."
+echo "Add to your workflow permissions if using GitHub Actions:"
+echo "  permissions:"
+echo "    contents: write"
+echo "    workflows: write"

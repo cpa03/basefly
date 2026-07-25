@@ -69,12 +69,14 @@ Issues #788 and #787 (UI + DB test gaps) could theoretically combine into a "com
 **File:** `.github/workflows/iterate.yml`
 
 **Evidence of unresolved state:**
-- Line 58: Cache path `~/.npm` (should be `~/.pnpm-store`)
+- Line 58: Cache path `~/.npm` (should be `~/.local/share/pnpm/store`)
 - Line 59: Cache key uses `package-lock.json` (should be `pnpm-lock.yaml`)
-- Line 72: `npm ci || true` (should be `pnpm install --frozen-lockfile || true`)
-- Line 342: `npm ci || true` (should be `pnpm install --frozen-lockfile || true`)
+- Lines 72, 342: `npm ci || true` (should be `pnpm install --frozen-lockfile || true`)
 
-**Proposed fix:** Replace npm references with pnpm equivalents (minimal, atomic change).
+**Action taken:**
+- PR #1009 created (`fix/744-update-deploy-scripts`) with updated `scripts/ci-pnpm-migration.sh`
+- Direct .github/workflows modification blocked by GITHUB_TOKEN `workflows: write` restriction
+- Maintainers can apply via: `bash scripts/ci-pnpm-migration.sh --apply`
 
 ---
 

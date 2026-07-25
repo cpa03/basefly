@@ -2511,3 +2511,5 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [STRENGTHEN] Fixed unused ESLint disable directives and improved type consistency in `packages/api` test files.
 - [STRENGTHEN] Enhanced Language Switcher trigger with a delightful hover rotation/scale micro-UX transition.
 - [CONSOLIDATE] Refactored hardcoded table divider and row hover gray colors in the cluster list table to use the centralized semantic border/muted tokens.
+- [CONSOLIDATE] Extracted hardcoded cluster status configurations from StatusBadge component and centralized them under CLUSTER_STATUS_DETAILS inside @saasfly/common/config/k8s to eliminate duplicates.
+- [STRENGTHEN] Enhanced StatusBadge hover/lift transition to use cohesive y: -1 micro-UX for better delight and visual feedback.

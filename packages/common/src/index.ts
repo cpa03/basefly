@@ -127,6 +127,7 @@ export {
   sanitizeClusterName,
   generateClusterName,
   K8S_DEFAULTS,
+  CLUSTER_STATUS_DETAILS,
 } from "./config/k8s";
 export type {
   ClusterLocation,

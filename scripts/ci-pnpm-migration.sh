@@ -164,195 +164,126 @@ with open('.github/workflows/iterate.yml') as f:
 original = content
 changes = 0
 
-# 1. Architect job: Add pnpm/action-setup after checkout (before cache or issue check)
-# Look for: checkout + fetch-depth: 0 followed by cache or issue count step
-pattern1 = re.compile(
-    r'(- uses: actions/checkout@v4\n\s+with:\n\s+fetch-depth: 0\n)'
-    r'(\s+- name: Check Open Issue Count|\s+- uses: actions/cache@v4)'
+# ── Helper: safely replace exact strings ──
+def safe_replace(old, new, label):
+    global changes
+    count = content.count(old)
+    if count == 0:
+        print(f'  - {label}: pattern not found (may already be updated)')
+        return False
+    replaced = content.replace(old, new, 1)
+    if replaced != content:
+        changes += 1
+        print(f'  ✓ {label}')
+    return True
+
+# 1. Architect job: Add pnpm/action-setup before cache step
+#    The architect job has: checkout@v7 (with fetch-depth:0) + issue-check + cache@v6
+old_setup = (
+    '          fi\n'
+    '          \n'
+    '      - uses: actions/cache@v6\n'
+    '        with:\n'
+    '          path: |\n'
+    '            ~/.opencode\n'
+    '            ~/.npm\n'
+    '          key: opencode-${{ runner.os }}-${{ hashFiles(\'**/package-lock.json\') }}-v1\n'
 )
-if pattern1.search(content):
-    content = pattern1.sub(
-        r'\1      - uses: pnpm/action-setup@v6\n        with:\n          run_install: false\n\2',
-        content
+new_setup = (
+    '          fi\n'
+    '          \n'
+    '      - uses: pnpm/action-setup@v6\n'
+    '      - uses: actions/cache@v6\n'
+    '        with:\n'
+    '          path: |\n'
+    '            ~/.opencode\n'
+    '            ~/.local/share/pnpm/store\n'
+    '          key: opencode-${{ runner.os }}-${{ hashFiles(\'**/pnpm-lock.yaml\') }}-v1\n'
+)
+if old_setup in content:
+    content = content.replace(old_setup, new_setup, 1)
+    changes += 1
+    print('  ✓ Architect job: added pnpm/action-setup@v6, updated cache to pnpm')
+else:
+    # Try an alternative pattern (cache block without issue-count guard)
+    old_setup2 = (
+        '      - uses: actions/cache@v6\n'
+        '        with:\n'
+        '          path: |\n'
+        '            ~/.opencode\n'
+        '            ~/.npm\n'
     )
-    changes += 1
-    print('  ✓ Added pnpm/action-setup@v6 to Architect job')
-else:
-    print('  - pnpm/action-setup already present or pattern not found in Architect job')
+    if old_setup2 in content:
+        content = content.replace(old_setup2, '      - uses: pnpm/action-setup@v6\n' + old_setup2, 1)
+        changes += 1
+        print('  ✓ Architect job: added pnpm/action-setup@v6 (before cache)')
+    else:
+        print('  - Architect job cache block not found (may already be updated)')
 
-# 2. Update cache path
-if '~/.npm' in content:
-    content = content.replace('~/.npm', '~/.pnpm-store')
-    changes += 1
-    print('  ✓ Updated cache path: ~/.npm -> ~/.pnpm-store')
-else:
-    print('  - Cache path already uses ~/.pnpm-store')
+    # Also update the cache path and key if not done above
+    if '~/.npm' in content and '~/.local/share/pnpm/store' not in content:
+        content = content.replace('~/.npm', '~/.local/share/pnpm/store')
+        changes += 1
+        print('  ✓ Updated cache path: ~/.npm -> ~/.local/share/pnpm/store')
+    if "hashFiles('**/package-lock.json')" in content:
+        content = content.replace("hashFiles('**/package-lock.json')", "hashFiles('**/pnpm-lock.yaml')")
+        changes += 1
+        print('  ✓ Updated cache key: package-lock.json -> pnpm-lock.yaml')
 
-# 3. Update cache key
-if "hashFiles('**/package-lock.json')" in content:
-    content = content.replace(
-        "hashFiles('**/package-lock.json')",
-        "hashFiles('**/pnpm-lock.yaml')"
-    )
-    changes += 1
-    print('  ✓ Updated cache key: package-lock.json -> pnpm-lock.yaml')
-else:
-    print('  - Cache key already uses pnpm-lock.yaml')
-
-# 4. Update node-version from 20 to 22 across all jobs
+# 2. Update ALL node-version references (20 -> 22)
 content = content.replace('node-version: "20"', 'node-version: "22"')
-changes += content.count('node-version: "22"')  # count occurrences after replacement
-print(f'  ✓ Updated node-version from 20 to 22 across all jobs')
+print('  ✓ Updated node-version from 20 to 22 across all jobs')
 
-# 5. Replace setup-node + npm ci with pnpm variant (Architect job)
-old_arch = (
-    '      - uses: actions/setup-node@v4\n'
-    '        with:\n'
-    '          node-version: "22"\n'
+# 3. Replace npm ci -> pnpm install --frozen-lockfile in ALL jobs
+content = content.replace('npm ci || true', 'pnpm install --frozen-lockfile || true')
+print('  ✓ Replaced npm ci with pnpm install --frozen-lockfile in all jobs')
+
+# 4. Replace setup-node blocks to add cache: 'pnpm' in each job
+#    Architect job (has pnpm install directly after setup-node)
+old_setup_node = '      - uses: actions/setup-node@v7\n        with:\n          node-version: "22"\n\n      - run: pnpm install'
+new_setup_node = '      - uses: actions/setup-node@v7\n        with:\n          node-version: "22"\n          cache: \'pnpm\'\n\n      - run: pnpm install'
+if old_setup_node in content:
+    content = content.replace(old_setup_node, new_setup_node)
+    print('  ✓ Added cache: pnpm to setup-node in architect/fixer jobs')
+
+#    Other jobs (no pnpm install after setup-node)
+old_setup_node2 = '      - uses: actions/setup-node@v7\n        with:\n          node-version: "22"\n\n      - name: Install OpenCode'
+new_setup_node2 = '      - uses: actions/setup-node@v7\n        with:\n          node-version: "22"\n          cache: \'pnpm\'\n\n      - name: Install OpenCode'
+if old_setup_node2 in content:
+    content = content.replace(old_setup_node2, new_setup_node2)
+    print('  ✓ Added cache: pnpm to setup-node in specialists/PR-Handler jobs')
+
+# 5. Add pnpm/action-setup to Fixer job (before Configure Git)
+old_fixer_start = (
+    '      - uses: actions/checkout@v7\n'
     '\n'
-    '      - run: npm ci || true\n'
-    '\n'
-    '      - name: Install OpenCode\n'
+    '      - name: Configure Git\n'
     '        run: |\n'
-    '          curl -fsSL'
-)
-new_arch = (
-    '      - uses: pnpm/action-setup@v6\n'
-    '        with:\n'
-    '          run_install: false\n'
+    '          git config --global user.name "${{ github.actor }}"\n'
+    '          git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"\n'
     '\n'
-    '      - uses: actions/setup-node@v4\n'
+    '      - uses: actions/setup-node@v7\n'
     '        with:\n'
     '          node-version: "22"\n'
     '          cache: \'pnpm\'\n'
     '\n'
-    '      - run: pnpm install --frozen-lockfile || true\n'
-    '\n'
-    '      - name: Install OpenCode\n'
-    '        run: |\n'
-    '          curl -fsSL'
+    '      - run: pnpm install --frozen-lockfile || true'
 )
-if old_arch in content:
-    content = content.replace(old_arch, new_arch, 1)
-    changes += 1
-    print('  ✓ Updated Architect job: setup-node + npm ci -> pnpm')
-else:
-    print('  - Architect job npm ci pattern not found (may already be updated)')
-
-# 6. Replace setup-node (no npm ci) with pnpm variant (Specialists job)
-old_spec = (
-    '      - uses: actions/setup-node@v4\n'
-    '        with:\n'
-    '          node-version: "22"\n'
-    '\n'
-    '      - name: Install OpenCode\n'
-    '        run: |\n'
-    '          curl -fsSL https://opencode.ai/install | bash\n'
-    '          echo "$HOME/.opencode/bin" >> $GITHUB_PATH\n'
-    '\n'
-    '      - name: Execute Specialist Work'
-)
-new_spec = (
-    '      - uses: pnpm/action-setup@v6\n'
-    '        with:\n'
-    '          run_install: false\n'
-    '\n'
-    '      - uses: actions/setup-node@v4\n'
-    '        with:\n'
-    '          node-version: "22"\n'
-    '          cache: \'pnpm\'\n'
-    '\n'
-    '      - name: Install OpenCode\n'
-    '        run: |\n'
-    '          curl -fsSL https://opencode.ai/install | bash\n'
-    '          echo "$HOME/.opencode/bin" >> $GITHUB_PATH\n'
-    '\n'
-    '      - name: Execute Specialist Work'
-)
-if old_spec in content:
-    content = content.replace(old_spec, new_spec, 1)
-    changes += 1
-    print('  ✓ Updated Specialists job: setup-node + cache -> pnpm')
-else:
-    print('  - Specialists job pattern not found (may already be updated)')
-
-# 7. Replace setup-node + npm ci with pnpm variant (Fixer job)
-old_fixer = (
-    '      - uses: actions/setup-node@v4\n'
-    '        with:\n'
-    '          node-version: "22"\n'
-    '\n'
-    '      - run: npm ci || true\n'
-    '\n'
-    '      - name: Install OpenCode\n'
-    '        run: |\n'
-    '          curl -fsSL https://opencode.ai/install | bash\n'
-    '          echo "$HOME/.opencode/bin" >> $GITHUB_PATH\n'
-    '\n'
-    '      - name: Audit & Fix PRs'
-)
-new_fixer = (
-    '      - uses: pnpm/action-setup@v6\n'
-    '        with:\n'
-    '          run_install: false\n'
-    '\n'
-    '      - uses: actions/setup-node@v4\n'
-    '        with:\n'
-    '          node-version: "22"\n'
-    '          cache: \'pnpm\'\n'
-    '\n'
-    '      - run: pnpm install --frozen-lockfile || true\n'
-    '\n'
-    '      - name: Install OpenCode\n'
-    '        run: |\n'
-    '          curl -fsSL https://opencode.ai/install | bash\n'
-    '          echo "$HOME/.opencode/bin" >> $GITHUB_PATH\n'
-    '\n'
-    '      - name: Audit & Fix PRs'
-)
-if old_fixer in content:
-    content = content.replace(old_fixer, new_fixer, 1)
-    changes += 1
-    print('  ✓ Updated Fixer job: setup-node + npm ci -> pnpm')
-else:
-    print('  - Fixer job npm ci pattern not found (may already be updated)')
-
-# 8. Replace setup-node (no npm ci) with pnpm variant (PR-Handler job)
-old_pr = (
-    '      - uses: actions/setup-node@v4\n'
-    '        with:\n'
-    '          node-version: "22"\n'
-    '\n'
-    '      - name: Install OpenCode\n'
-    '        run: |\n'
-    '          curl -fsSL https://opencode.ai/install | bash\n'
-    '          echo "$HOME/.opencode/bin" >> $GITHUB_PATH\n'
-    '\n'
-    '      - name: Merge Qualified PRs'
-)
-new_pr = (
-    '      - uses: pnpm/action-setup@v6\n'
-    '        with:\n'
-    '          run_install: false\n'
-    '\n'
-    '      - uses: actions/setup-node@v4\n'
-    '        with:\n'
-    '          node-version: "22"\n'
-    '          cache: \'pnpm\'\n'
-    '\n'
-    '      - name: Install OpenCode\n'
-    '        run: |\n'
-    '          curl -fsSL https://opencode.ai/install | bash\n'
-    '          echo "$HOME/.opencode/bin" >> $GITHUB_PATH\n'
-    '\n'
-    '      - name: Merge Qualified PRs'
-)
-if old_pr in content:
-    content = content.replace(old_pr, new_pr, 1)
-    changes += 1
-    print('  ✓ Updated PR-Handler job: setup-node -> pnpm')
-else:
-    print('  - PR-Handler job pattern not found (may already be updated)')
+# Only add pnpm/action-setup if it doesn't already have it
+if 'pnpm/action-setup@v6' not in content:
+    # Add to Fixer job - insert after checkout
+    fixer_insert = (
+        '      - uses: actions/checkout@v7\n'
+        '\n'
+        '      - uses: pnpm/action-setup@v6\n'
+    )
+    old_fixer_checkout = '      - uses: actions/checkout@v7\n\n      - name: Configure Git'
+    if old_fixer_checkout in content:
+        # Only replace the LAST occurrence (Fixer job is after Specialists)
+        last_occurrence = content.rfind(old_fixer_checkout)
+        if last_occurrence >= 0:
+            content = content[:last_occurrence] + content[last_occurrence:].replace(old_fixer_checkout, '      - uses: actions/checkout@v7\n\n      - uses: pnpm/action-setup@v6\n\n      - name: Configure Git', 1)
+            print('  ✓ Added pnpm/action-setup@v6 to Fixer job')
 
 if changes == 0:
     print('\nNo changes needed - workflow already uses pnpm.')

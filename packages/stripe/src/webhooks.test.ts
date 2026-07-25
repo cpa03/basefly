@@ -45,6 +45,7 @@ describe("handleEvent", () => {
   describe("checkout.session.completed event", () => {
     it("updates customer subscription on checkout completion", async () => {
       const mockEvent = {
+        id: "evt_test_001",
         type: "checkout.session.completed",
         data: {
           object: {
@@ -115,6 +116,7 @@ describe("handleEvent", () => {
 
     it("throws error when userId is missing", async () => {
       const mockEvent = {
+        id: "evt_test_002",
         type: "checkout.session.completed",
         data: {
           object: {
@@ -138,6 +140,7 @@ describe("handleEvent", () => {
 
     it("handles customer as string correctly", async () => {
       const mockEvent = {
+        id: "evt_test_003",
         type: "checkout.session.completed",
         data: {
           object: {
@@ -184,6 +187,7 @@ describe("handleEvent", () => {
   describe("invoice.payment_succeeded event", () => {
     it("updates customer info on payment success", async () => {
       const mockEvent = {
+        id: "evt_test_004",
         type: "invoice.payment_succeeded",
         data: {
           object: {
@@ -246,6 +250,7 @@ describe("handleEvent", () => {
 
     it("throws error when userId is missing", async () => {
       const mockEvent = {
+        id: "evt_test_005",
         type: "invoice.payment_succeeded",
         data: {
           object: {
@@ -269,6 +274,7 @@ describe("handleEvent", () => {
 
     it("returns early when priceId is not found", async () => {
       const mockEvent = {
+        id: "evt_test_006",
         type: "invoice.payment_succeeded",
         data: {
           object: {
@@ -314,6 +320,7 @@ describe("handleEvent", () => {
   describe("customer.subscription.updated event", () => {
     it("logs event type", async () => {
       const mockEvent = {
+        id: "evt_test_007",
         type: "customer.subscription.updated",
         data: {
           object: {},
@@ -337,6 +344,7 @@ describe("handleEvent", () => {
   describe("unknown event type", () => {
     it("logs success message for unknown event", async () => {
       const mockEvent = {
+        id: "evt_test_008",
         type: "unknown.event",
         data: {
           object: {},

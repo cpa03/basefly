@@ -17,9 +17,39 @@ export async function handleEvent(event: Stripe.Event) {
   );
 }
 
+/**
+ * Validate that a webhook event has the required data for processing.
+ * Throws IntegrationError if validation fails.
+ */
+function validateWebhookEvent(event: Stripe.Event): asserts event is Stripe.Event & { data: { object: Record<string, unknown> } } {
+  if (!event.id || typeof event.id !== "string") {
+    throw new IntegrationError(
+      "Webhook event missing valid event ID",
+      "WEBHOOK_VALIDATION_FAILED",
+    );
+  }
+
+  if (!event.type || typeof event.type !== "string") {
+    throw new IntegrationError(
+      "Webhook event missing valid event type",
+      "WEBHOOK_VALIDATION_FAILED",
+    );
+  }
+
+  if (!event.data?.object || typeof event.data.object !== "object") {
+    throw new IntegrationError(
+      "Webhook event missing valid data object",
+      "WEBHOOK_VALIDATION_FAILED",
+    );
+  }
+}
+
 async function processEventInternal(event: Stripe.Event) {
   try {
+    validateWebhookEvent(event);
+
     const session = event.data.object as Stripe.Checkout.Session;
+
     if (event.type === "checkout.session.completed") {
       await handleCheckoutSessionCompleted(session);
     } else if (event.type === "invoice.payment_succeeded") {
@@ -27,6 +57,7 @@ async function processEventInternal(event: Stripe.Event) {
     } else if (event.type === "customer.subscription.updated") {
       logger.info(`Unhandled event type: ${event.type}`);
     }
+
     logger.info("Stripe Webhook Processed", { eventType: event.type });
   } catch (error) {
     logger.error("Stripe Webhook Failed", error);

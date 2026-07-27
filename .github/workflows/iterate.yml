@@ -51,12 +51,16 @@ jobs:
             exit 0
           fi
           
+      - uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
       - uses: actions/cache@v6
         with:
           path: |
             ~/.opencode
-            ~/.npm
-          key: opencode-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-v1
+            ~/.local/share/pnpm/store
+          key: opencode-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}-v1
           restore-keys: |
             opencode-${{ runner.os }}-v1
 
@@ -69,7 +73,7 @@ jobs:
         with:
           node-version: "20"
 
-      - run: npm ci || true
+      - run: pnpm install --frozen-lockfile || true
 
       - name: Install OpenCode
         run: |
@@ -335,11 +339,15 @@ jobs:
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
 
+      - uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
       - uses: actions/setup-node@v7
         with:
           node-version: "20"
 
-      - run: npm ci || true
+      - run: pnpm install --frozen-lockfile || true
 
       - name: Install OpenCode
         run: |

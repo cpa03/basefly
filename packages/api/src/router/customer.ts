@@ -130,7 +130,7 @@ export const customerRouter = createTRPCRouter({
       logger.info({ userId, requestId }, "Creating customer");
 
       try {
-        const result = await db
+        await db
           .insertInto("Customer")
           .values({
             authUserId: userId,
@@ -140,7 +140,7 @@ export const customerRouter = createTRPCRouter({
 
         logger.info({ userId, requestId }, "Customer created successfully");
 
-        return result;
+        return { success: true as const };
       } catch (error) {
         if (isUniqueViolation(error, "Customer_authUserId_unique")) {
           logger.info({ userId, requestId }, "Customer already exists");

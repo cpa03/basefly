@@ -30,7 +30,46 @@ Handles incoming pull requests by:
 - 30-minute timeout for long-running operations
 - Automatic conflict resolution for trivial cases
 
-### 2. `iterate.yml` - Parallel Agent Execution
+### 2. `security-audit.yml` - Dependency Security Scanning
+
+**Trigger:**
+
+- Weekly schedule (Monday 06:00 UTC)
+- Push to `main` branch
+- PRs affecting `pnpm-lock.yaml`, `package.json`, or the workflow itself
+- Manual dispatch
+
+**Purpose:**
+Automated dependency vulnerability scanning to catch security issues early.
+
+**Key Features:**
+
+- `pnpm audit` for vulnerability detection (high/critical severity)
+- Dependency version consistency check via `pnpm check-deps`
+- Outdated dependency reporting via `pnpm outdated`
+- Automatic issue creation when vulnerabilities are found
+- Artifact upload for audit report retention (30 days)
+
+### 3. `codeql-analysis.yml` - SAST Security Analysis
+
+**Trigger:**
+
+- Weekly schedule (Monday 06:00 UTC)
+- Push to `main` branch
+- Pull requests targeting `main`
+- Manual dispatch
+
+**Purpose:**
+Static Application Security Testing (SAST) using GitHub's CodeQL engine to detect security vulnerabilities in the codebase.
+
+**Key Features:**
+
+- Analyzes JavaScript/TypeScript and GitHub Actions code
+- Uses `security-extended` and `security-and-quality` query suites
+- Results appear as code scanning alerts on GitHub
+- Non-blocking for PRs (advisory only)
+
+### 4. `iterate.yml` - Parallel Agent Execution
 
 **Trigger:**
 
@@ -172,12 +211,15 @@ All PRs must pass:
 2. **Lint**: `pnpm lint` with zero warnings
 3. **Type Check**: `pnpm typecheck`
 4. **Tests**: `pnpm test` with Vitest
+5. **Dependency Audit**: `pnpm audit` (via `security-audit.yml`)
+6. **CodeQL Analysis**: SAST scan (via `codeql-analysis.yml`)
 
 ### Failure Policy
 
 - Build/lint errors: **Blocking** - PR cannot merge
 - Test failures: **Blocking** - PR cannot merge
 - Warnings: **Blocking** - Treated as errors
+- High/critical vulnerabilities: **Advisory** - Creates issue, non-blocking for PRs
 
 ## Branch Strategy
 

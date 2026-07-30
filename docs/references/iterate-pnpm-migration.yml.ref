@@ -1,0 +1,195 @@
+# iterate.yml — pnpm migration reference
+# This file shows the required changes to migrate iterate.yml from npm to pnpm.
+# Reference: Issues #670, #584, #595
+# Requires: GitHub App token with `workflows` permission to deploy
+#
+# === CHANGES REQUIRED ===
+#
+# 1. Architect job (around line 54):
+#    BEFORE:                    AFTER:
+#      - uses: actions/cache@v6      - uses: pnpm/action-setup@v6
+#        with:                         with:
+#          path: |                       run_install: false
+#            ~/.opencode
+#            ~/.npm                    - uses: actions/setup-node@v7
+#          key: opencode-${{              with:
+#            runner.os }}-${{               node-version: "20"
+#            hashFiles('**/package-         cache: 'pnpm'
+#            lock.json') }}-v1
+#                                    - uses: actions/cache@v6
+#      - name: Configure Git           with:
+#                                        path: |
+#      - uses: actions/setup-node@v7       ~/.opencode
+#        with:                             ~/.local/share/pnpm/store
+#          node-version: "20"            key: opencode-${{ runner.os }}-${{
+#                                          hashFiles('**/pnpm-lock.yaml') }}-v1
+#      - run: npm ci || true
+#                                      - name: Configure Git
+#                                      - run: pnpm install --frozen-lockfile || true
+#
+# 2. Integrator job (around line 342):
+#    BEFORE:                    AFTER:
+#      - uses: pnpm/action-setup@v6
+#      - uses: actions/setup-node@v7       with:
+#        with:                               run_install: false
+#          node-version: "20"
+#                                        - uses: actions/setup-node@v7
+#      - run: npm ci || true               with:
+#                                            node-version: "20"
+#                                            cache: 'pnpm'
+#                                          - run: pnpm install --frozen-lockfile || true
+
+name: parallel
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 */4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+  actions: write
+  id-token: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+
+  # ================================================================
+  # STAGE 1 — ARCHITECT (THE BRAIN)
+  # ================================================================
+  architect:
+    name: "Architect: Strategy & Triage"
+    runs-on: ubuntu-24.04-arm
+
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Check Open Issue Count
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          COUNT=$(gh issue list --state open --json number --jq length)
+          echo "Open issues: $COUNT"
+          if [ "$COUNT" -gt 10 ]; then
+            echo "Skipping Architect stage."
+            exit 0
+          fi
+
+      # --- PNPM SETUP (migrated from npm) ---
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "20"
+          cache: 'pnpm'
+
+      - uses: actions/cache@v6
+        with:
+          path: |
+            ~/.opencode
+            ~/.local/share/pnpm/store
+          key: opencode-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}-v1
+          restore-keys: |
+            opencode-${{ runner.os }}-v1
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+
+      # --- PNPM INSTALL (was npm ci) ---
+      - run: pnpm install --frozen-lockfile || true
+
+      - name: Install OpenCode
+        run: |
+          curl -fsSL https://opencode.ai/install | bash
+          echo "$HOME/.opencode/bin" >> $GITHUB_PATH
+
+      - name: Architect Intelligence Cycle
+        timeout-minutes: 30
+        run: |
+            opencode run /ulw-loop "
+            IF issue_count > 10 THEN enter MANAGER MODE. IF issue_count < 10 THEN enter CREATOR MODE.
+
+            // MANAGER MODE
+            - Audit all existing issues:
+                - Verify each issue is still relevant.
+                - Ensure labels match the correct layer and priority.
+                - Remove duplicate issues or merge overlapping scopes.
+
+            // CREATOR MODE
+            You are a Fully Autonomous System Orchestrator.
+            ...
+
+  # ================================================================
+  # STAGE 4 — INTEGRATOR (THE FIXER)
+  # ================================================================
+  integrator:
+    name: "Integrator: Final QA & Merge"
+    needs: [architect, frontend-engineer, backend-engineer, ai-agent-engineer,
+            DX-engineer, security-engineer, quality-assurance,
+            performance-engineer, database-architect, devops-engineer,
+            ui-ux-engineer, technical-writer, reliability-engineer,
+            integration-engineer, vercel, user-story-engineer,
+            modularity-engineer, hardcoded-eliminator, cloudflare]
+    if: always()
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - uses: actions/checkout@v7
+
+      # --- PNPM SETUP (migrated from npm) ---
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "20"
+          cache: 'pnpm'
+
+      # --- PNPM INSTALL (was npm ci) ---
+      - run: pnpm install --frozen-lockfile || true
+
+      - name: Install OpenCode
+        run: |
+          curl -fsSL https://opencode.ai/install | bash
+          echo "$HOME/.opencode/bin" >> $GITHUB_PATH
+
+      - name: Audit & Fix PRs
+        timeout-minutes: 60
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IFLOW_API_KEY: ${{ secrets.IFLOW_API_KEY }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          opencode run /ulw-loop "
+          ...

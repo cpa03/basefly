@@ -211,8 +211,9 @@ All PRs must pass:
 2. **Lint**: `pnpm lint` with zero warnings
 3. **Type Check**: `pnpm typecheck`
 4. **Tests**: `pnpm test` with Vitest
-5. **Dependency Audit**: `pnpm audit` (via `security-audit.yml`)
-6. **CodeQL Analysis**: SAST scan (via `codeql-analysis.yml`)
+5. **Dependency Consistency**: `pnpm check-deps` — ensures dependency versions are consistent across all packages in the monorepo ([#726](https://github.com/cpa03/basefly/issues/726))
+6. **Dependency Audit**: `pnpm audit` (via `security-audit.yml`)
+7. **CodeQL Analysis**: SAST scan (via `codeql-analysis.yml`)
 
 ### Failure Policy
 

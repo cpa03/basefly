@@ -17,6 +17,7 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
+  role          Role      @default(USER)
   accounts      Account[]
   sessions      Session[]
   customers     Customer[]
@@ -28,6 +29,7 @@ model User {
 - **Storage**: PostgreSQL with UUID primary key
 - **Index**: Unique constraint on `email`
 - **Relations**: One-to-many with Customer and K8sClusterConfig
+- **Role**: `role` column (enum `USER` | `ADMIN`, default `USER`) enables role-based access control (see [RBAC section](#role-based-access-control-rbac) below)
 
 #### Account (OAuth Integration)
 
@@ -129,6 +131,57 @@ model K8sClusterConfig {
 - `RUNNING`: Active and operational
 - `STOPPED`: Paused state
 - `DELETED`: Soft-deleted
+
+### Role (User Access)
+
+- `USER`: Default role for authenticated users
+- `ADMIN`: Elevated role with access to admin-only endpoints
+
+## Role-Based Access Control (RBAC)
+
+Basefly uses a database-backed role column on the `User` model for authorization.
+This replaces the legacy email-allowlist approach (`ADMIN_EMAIL` environment variable),
+which remains only as a temporary migration path.
+
+### How It Works
+
+1. **Data model**: The `User.role` column stores the role (`USER` | `ADMIN`, default `USER`).
+2. **tRPC middleware**: `requireRole(role)` in `packages/api/src/trpc.ts` is a middleware factory
+   that queries the `User.role` column and enforces access:
+   - Throws `UNAUTHORIZED` if the caller is not authenticated.
+   - Throws `FORBIDDEN` if the caller's role does not match the required role.
+3. **Procedure factories**:
+   - `createRoleBasedProcedure(role)` — protected procedure + role check.
+   - `adminProcedure` — protected procedure that checks `ADMIN` role via the database,
+     falling back to the `ADMIN_EMAIL` allowlist for migration.
+4. **Context propagation**: After a successful role check, `ctx.role` is populated with the
+   confirmed role for downstream typed access.
+5. **Audit logging**: Every granted admin/role access emits a structured audit log entry
+   (`audit: true`, `security: true`, `action: "admin_access_granted"` / `"role_access_granted"`)
+   with `userId`, `requestId`, and `role` for traceability.
+
+### Usage Example
+
+```typescript
+import { createRoleBasedProcedure, requireRole } from "@saasfly/api";
+import { Role } from "@saasfly/db";
+
+// Factory approach
+const adminProcedure = createRoleBasedProcedure(Role.ADMIN);
+
+// Manual middleware composition
+const requireAdmin = requireRole(Role.ADMIN);
+const adminProcedure = protectedProcedure.use(requireAdmin);
+```
+
+### Role Management
+
+- Roles are stored in the `User.role` column and managed via the database (e.g., Prisma update).
+- The `Role` enum is exported from `@saasfly/db` (`packages/db/prisma/enums.ts`).
+- **Migration path**: Existing deployments using `ADMIN_EMAIL` continue to work via the
+  fallback in `isAdmin`. New role assignments should be made by updating `User.role` to `ADMIN`.
+- **Security note**: The `ADMIN_EMAIL` fallback is deprecated and should be removed once all
+  admin users have a `role = ADMIN` database record.
 
 ## Data Access Layer
 

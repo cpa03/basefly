@@ -4,6 +4,24 @@
 
 ### High Priority Tasks
 
+#### Task: Modularize Switch Component and Centralize SWITCH_TOKENS
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: error
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/ui/src/switch.tsx`
+
+**Description**:
+Switch component in packages/ui/src/switch.tsx uses hardcoded Tailwind classes and lacks logical accessibility fallbacks for `aria-label`. Centralize design tokens into `@saasfly/common` and refactor the component.
+
+**Success Criteria**:
+- [x] Centralize Switch tokens as `SWITCH_TOKENS` in `packages/common/src/ui-tokens.ts` and export.
+- [x] Use `SWITCH_TOKENS` inside `packages/ui/src/switch.tsx`.
+- [x] Implement logical fallback for `aria-label`.
+- [x] Implement tactile scale micro-interactions (hover:scale-[1.03], active:scale-[0.97]) on track and thumb.
+- [x] Add unit tests for accessibility, classes, and transitions.
+
+---
+
 #### Task: Critical Path Testing - Database Services ✅
 - **Status**: ✅ Completed
 - **Priority**: High
@@ -2513,3 +2531,5 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [CONSOLIDATE] Refactored hardcoded table divider and row hover gray colors in the cluster list table to use the centralized semantic border/muted tokens.
 - [CONSOLIDATE] Extracted hardcoded cluster status configurations from StatusBadge component and centralized them under CLUSTER_STATUS_DETAILS inside @saasfly/common/config/k8s to eliminate duplicates.
 - [STRENGTHEN] Enhanced StatusBadge hover/lift transition to use cohesive y: -1 micro-UX for better delight and visual feedback.
+- [CONSOLIDATE] Centralized switch-specific design tokens and transitions under SWITCH_TOKENS inside @saasfly/common/src/ui-tokens.ts.
+- [STRENGTHEN] Refactored Switch component to use centralized design tokens, logical aria-label fallback for improved accessibility, and smooth spring scale tactile feedback transitions.

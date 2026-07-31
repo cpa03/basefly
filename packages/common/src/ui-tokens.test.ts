@@ -8,6 +8,7 @@ import {
   FOCUS_TOKENS,
   INPUT_TOKENS,
   UI_ANIMATION,
+  SWITCH_TOKENS,
   type BadgeSize,
   type ButtonHeight,
   type ButtonPadding,
@@ -220,6 +221,34 @@ describe("ui-tokens.ts - FOCUS_TOKENS", () => {
 
   it("should have destructive focus style", () => {
     expect(FOCUS_TOKENS.destructive).toContain("focus-visible:ring-red-500");
+  });
+});
+
+describe("ui-tokens.ts - SWITCH_TOKENS", () => {
+  it("should have track configurations", () => {
+    expect(SWITCH_TOKENS.track.base).toContain("peer");
+    expect(SWITCH_TOKENS.track.size).toBe("h-[24px] w-[44px]");
+    expect(SWITCH_TOKENS.track.states.checked).toBe("data-[state=checked]:bg-primary");
+    expect(SWITCH_TOKENS.track.states.unchecked).toBe("data-[state=unchecked]:bg-input");
+    expect(SWITCH_TOKENS.track.disabled).toContain("disabled:");
+    expect(SWITCH_TOKENS.track.focusRing).toContain("focus-visible:");
+    expect(SWITCH_TOKENS.track.hoverScale).toBe("hover:scale-[1.03]");
+    expect(SWITCH_TOKENS.track.activeScale).toBe("active:scale-[0.97]");
+  });
+
+  it("should have thumb configurations", () => {
+    expect(SWITCH_TOKENS.thumb.base).toContain("pointer-events-none");
+    expect(SWITCH_TOKENS.thumb.size).toBe("h-5 w-5");
+    expect(SWITCH_TOKENS.thumb.states.checked).toContain("translate-x-5");
+    expect(SWITCH_TOKENS.thumb.states.unchecked).toContain("translate-x-0");
+  });
+
+  it("should have default fallback aria-label", () => {
+    expect(SWITCH_TOKENS.defaultAriaLabel).toBe("Toggle switch");
+  });
+
+  it("should have transition and timing", () => {
+    expect(SWITCH_TOKENS.transition).toBe("duration-200 ease-out");
   });
 });
 

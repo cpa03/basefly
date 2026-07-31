@@ -219,6 +219,39 @@ export const LOCATION_BADGE_TOKENS = {
 } as const;
 
 /**
+ * Switch design tokens
+ * Centralized layout, styling, and animations for Switch component
+ */
+export const SWITCH_TOKENS = {
+  /** Track (container) styling */
+  track: {
+    base: "peer inline-flex shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-all",
+    size: "h-[24px] w-[44px]",
+    states: {
+      checked: "data-[state=checked]:bg-primary",
+      unchecked: "data-[state=unchecked]:bg-input",
+    },
+    disabled: "disabled:cursor-not-allowed disabled:opacity-50",
+    focusRing: "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+    hoverScale: "hover:scale-[1.03]",
+    activeScale: "active:scale-[0.97]",
+  },
+  /** Thumb (circle slider) styling */
+  thumb: {
+    base: "pointer-events-none block rounded-full bg-background shadow-lg ring-0 transition-all",
+    size: "h-5 w-5",
+    states: {
+      checked: "data-[state=checked]:translate-x-5 data-[state=checked]:scale-110",
+      unchecked: "data-[state=unchecked]:translate-x-0 data-[state=unchecked]:scale-100",
+    },
+  },
+  /** Default fallback aria-label */
+  defaultAriaLabel: "Toggle switch",
+  /** Transition duration and easing */
+  transition: "duration-200 ease-out",
+} as const;
+
+/**
  * Focus management tokens
  * Consistent focus ring styles across all interactive elements
  */

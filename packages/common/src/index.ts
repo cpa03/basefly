@@ -352,6 +352,7 @@ export {
   BADGE_TOKENS,
   FOCUS_TOKENS,
   UI_ANIMATION,
+  SWITCH_TOKENS,
 } from "./ui-tokens";
 export type {
   ButtonHeight,

@@ -1,28 +1,47 @@
+From f3981bea5007f8a0ca164676db0b2fda85917fb4 Mon Sep 17 00:00:00 2001
+From: cpa03 <245960241+cpa03@users.noreply.github.com>
+Date: Fri, 31 Jul 2026 20:53:22 +0000
+Subject: [PATCH] fix(ci): restore pnpm migration in iterate.yml
+
+The npm-to-pnpm migration (previously applied in cd9eb30) was lost
+when a stale branch was merged over it. This restores pnpm usage in
+both the architect and fixer jobs:
+
+- Replace npm ci with pnpm/action-setup@v6 + pnpm install --frozen-lockfile
+- Update cache path from ~/.npm to ~/.local/share/pnpm/store
+- Update cache key from package-lock.json to pnpm-lock.yaml
+- Enable setup-node pnpm cache
+
+Resolves the pnpm consistency regression reported in #744, #670
+(also related: #305, #584, #595)
+---
+ .github/workflows/iterate.yml | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
 diff --git a/.github/workflows/iterate.yml b/.github/workflows/iterate.yml
-index 5f43f65..2690de9 100644
+index 1dbebf9..82dd288 100644
 --- a/.github/workflows/iterate.yml
 +++ b/.github/workflows/iterate.yml
-@@ -51,12 +51,16 @@ jobs:
-             exit 0
-           fi
-           
-+      - uses: pnpm/action-setup@v6
-+        with:
-+          run_install: false
-+
-       - uses: actions/cache@v4
+@@ -55,8 +55,8 @@ jobs:
          with:
            path: |
              ~/.opencode
 -            ~/.npm
 -          key: opencode-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-v1
-+            ~/.pnpm-store
++            ~/.local/share/pnpm/store
 +          key: opencode-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}-v1
            restore-keys: |
              opencode-${{ runner.os }}-v1
  
-@@ -68,8 +72,9 @@ jobs:
-       - uses: actions/setup-node@v4
+@@ -65,11 +65,16 @@ jobs:
+           git config --global user.name "${{ github.actor }}"
+           git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+ 
++      - uses: pnpm/action-setup@v6
++        with:
++          run_install: false
++
+       - uses: actions/setup-node@v7
          with:
            node-version: "20"
 +          cache: 'pnpm'
@@ -40,7 +59,7 @@ index 5f43f65..2690de9 100644
 +        with:
 +          run_install: false
 +
-       - uses: actions/setup-node@v4
+       - uses: actions/setup-node@v7
          with:
            node-version: "20"
 +          cache: 'pnpm'
@@ -50,3 +69,6 @@ index 5f43f65..2690de9 100644
  
        - name: Install OpenCode
          run: |
+-- 
+2.54.0
+

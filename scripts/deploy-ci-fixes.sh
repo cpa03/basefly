@@ -66,34 +66,23 @@ fi
 # FIX 3: iterate.yml pnpm consistency (Issue #744)
 # ==============================================================
 echo ""
-echo "--- Fix 2: iterate.yml pnpm consistency (Issue #744) ---"
+echo "--- Fix 3: iterate.yml pnpm consistency (Issue #744) ---"
 
 ITERATE_YML="$REPO_ROOT/.github/workflows/iterate.yml"
+PATCH_FILE="$REPO_ROOT/docs/ci/iterate-pnpm-fix.patch"
 
 if [ -f "$ITERATE_YML" ]; then
-  # These changes are applied inline via sed patterns.
-  # Verify with: git diff .github/workflows/iterate.yml
-
-  # 1. Add pnpm/action-setup after checkout in architect job
-  sed -i '/^      - uses: actions\/cache@v6/i\      - uses: pnpm\/action-setup@v6\n        with:\n          run_install: false\n' "$ITERATE_YML"
-
-  # 2. Update cache path from ~/.npm to ~/.pnpm-store in architect job
-  sed -i 's|~/.npm|~/.pnpm-store|g' "$ITERATE_YML"
-
-  # 3. Update cache key from package-lock.json to pnpm-lock.yaml
-  sed -i 's|package-lock.json|pnpm-lock.yaml|g' "$ITERATE_YML"
-
-  # 4. Update node-version from "20" to "22" throughout
-  sed -i 's/node-version: "20"/node-version: "22"/g' "$ITERATE_YML"
-
-  # 5. Replace npm ci with pnpm install
-  sed -i 's|npm ci || true|pnpm install --frozen-lockfile || true|g' "$ITERATE_YML"
-
-  # 6. Add pnpm/action-setup in specialists, fixer, and PR-handler jobs
-  # These are harder with sed - recommend manual review after
-
-  echo "  + Applied pnpm consistency changes to iterate.yml"
-  echo "  ! REVIEW REQUIRED: Verify all jobs have pnpm/action-setup and cache: 'pnpm'"
+  if [ -f "$PATCH_FILE" ]; then
+    if (cd "$REPO_ROOT" && git apply --check "$PATCH_FILE" 2>/dev/null); then
+      (cd "$REPO_ROOT" && git apply "$PATCH_FILE")
+      echo "  + Applied iterate-pnpm-fix.patch to iterate.yml"
+    else
+      echo "  ! Patch does not apply cleanly (iterate.yml may have drifted)."
+      echo "  ! Manual fix required - see docs/ci/iterate-pnpm-fix.md"
+    fi
+  else
+    echo "  ! Patch not found: $PATCH_FILE"
+  fi
 else
   echo "  ! File not found: $ITERATE_YML"
 fi

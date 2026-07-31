@@ -230,6 +230,18 @@ const isAdmin = t.middleware(async ({ next, ctx }) => {
       .executeTakeFirst();
 
     if (userRecord?.role === "ADMIN") {
+      logger.info(
+        {
+          requestId: ctx.requestId,
+          userId: ctx.userId,
+          role: "ADMIN",
+          security: true,
+          audit: true,
+          action: "admin_access_granted",
+          method: "database_role",
+        },
+        "Admin access granted via database role",
+      );
       return next({ ctx: { userId: ctx.userId, isAdmin: true } });
     }
   } catch (error) {
@@ -258,6 +270,19 @@ const isAdmin = t.middleware(async ({ next, ctx }) => {
       message: "Admin access required",
     });
   }
+
+  logger.info(
+    {
+      requestId: ctx.requestId,
+      userId: ctx.userId,
+      role: "ADMIN",
+      security: true,
+      audit: true,
+      action: "admin_access_granted",
+      method: "email_migration",
+    },
+    "Admin access granted via ADMIN_EMAIL migration path",
+  );
 
   return next({ ctx: { userId: ctx.userId, isAdmin: true } });
 });
@@ -303,6 +328,17 @@ export const requireRole = (requiredRole: Role) =>
         .executeTakeFirst();
 
       if (userRecord?.role === requiredRole) {
+        logger.info(
+          {
+            requestId: ctx.requestId,
+            userId: ctx.userId,
+            role: requiredRole,
+            security: true,
+            audit: true,
+            action: "role_access_granted",
+          },
+          `Role access granted: ${requiredRole}`,
+        );
         return next({
           ctx: { ...ctx, userId: ctx.userId, role: requiredRole },
         });

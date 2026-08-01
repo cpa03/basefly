@@ -130,7 +130,9 @@
       "maxritter-claude-codepro-backend-models-standards",
       "obra-superpowers-systematic-debugging",
       "modu-ai-moai-adk-moai-tool-opencode",
-      "muratcankoylan-agent-skills-for-context-engineering-memory-systems"
+      "muratcankoylan-agent-skills-for-context-engineering-memory-systems",
+      "debugging",
+      "commit-message"
     ]
   },
 

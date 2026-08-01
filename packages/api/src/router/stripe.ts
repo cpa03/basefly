@@ -9,9 +9,7 @@
  * @see {@link https://docs.saasfly.io/api/stripe | Stripe API Documentation}
  */
 
-import { z } from "zod";
-
-import { PLAN_VALIDATION, pricingData, TIME_MS } from "@saasfly/common";
+import { pricingData, TIME_MS } from "@saasfly/common";
 import { db, type Customer } from "@saasfly/db";
 import {
   createBillingSession,
@@ -23,6 +21,7 @@ import {
 import { env } from "../env.mjs";
 import { handleIntegrationError } from "../errors";
 import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
+import { enhancedStripeCreateSessionSchema } from "./schemas";
 
 export interface SubscriptionPlan {
   title: string;
@@ -49,16 +48,6 @@ export type UserSubscriptionPlan = SubscriptionPlan &
     interval: "month" | "year" | null;
     isCanceled?: boolean;
   };
-// Enhanced schema with comprehensive validation using centralized constants
-export const createSessionSchema = z
-  .object({
-    planId: z
-      .string()
-      .min(PLAN_VALIDATION.id.minLength, "Plan ID cannot be empty")
-      .regex(/^price_/, "Plan ID must start with 'price_'"),
-  })
-  .strict();
-
 export const stripeRouter = createTRPCRouter({
   /**
    * Creates a Stripe checkout or billing portal session.
@@ -72,7 +61,7 @@ export const stripeRouter = createTRPCRouter({
    * @throws {TRPCError} INTEGRATION_ERROR if Stripe API fails
    */
   createSession: createRateLimitedProtectedProcedure("stripe")
-    .input(createSessionSchema)
+    .input(enhancedStripeCreateSessionSchema)
     .mutation(async (opts) => {
       const userId = opts.ctx.userId;
       const planId = opts.input.planId;

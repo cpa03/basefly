@@ -98,25 +98,26 @@ jobs:
             const fs = require('fs');
             const report = fs.readFileSync('pnpm-audit-report.txt', 'utf8');
             const title = '[Security] pnpm audit detected high/critical vulnerabilities';
-            const body = `## Security Vulnerability Report
-
-**Date**: ${new Date().toISOString()}
-**Trigger**: ${context.eventName}
-
-### Audit Results
-
-\`\`\`
-${report.slice(0, 4000)}
-\`\`\`
-
-### Action Required
-- Review the vulnerabilities above
-- Update affected dependencies
-- Run \`pnpm audit --fix\` where possible
-
-### Workflow Run
-${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}
-`;
+            const body = [
+              '## Security Vulnerability Report',
+              '',
+              `**Date**: ${new Date().toISOString()}`,
+              `**Trigger**: ${context.eventName}`,
+              '',
+              '### Audit Results',
+              '',
+              '```',
+              report.slice(0, 4000),
+              '```',
+              '',
+              '### Action Required',
+              '- Review the vulnerabilities above',
+              '- Update affected dependencies',
+              '- Run `pnpm audit --fix` where possible',
+              '',
+              '### Workflow Run',
+              `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+            ].join('\n');
             // Check if an open issue already exists for this
             const { data: issues } = await github.rest.issues.listForRepo({
               owner: context.repo.owner,

@@ -69,6 +69,47 @@ Static Application Security Testing (SAST) using GitHub's CodeQL engine to detec
 - Results appear as code scanning alerts on GitHub
 - Non-blocking for PRs (advisory only)
 
+### Deployment Status (Issue #728)
+
+> **⚠️ Blocked on token permission**: The security scanning workflows above are
+> designed, documented, and verified locally, but **not yet deployed** to
+> `.github/workflows/`. GitHub blocks GitHub App tokens without the
+> `workflows` permission from creating or updating workflow files
+> (verified: push rejected + REST API `403 Resource not accessible`).
+> This is tracked in [Issue #728](https://github.com/cpa03/basefly/issues/728).
+
+**Ready-to-deploy templates** (canonical sources, verified in CI-equivalent runs):
+
+- `docs/ci/workflows/security-audit.yml` — pnpm audit (high/critical) + outdated deps
+- `docs/ci/workflows/codeql-analysis.yml` — CodeQL SAST (javascript-typescript)
+- `docs/references/security-audit.yml.ref` — extended variant with automatic issue creation
+- `docs/references/codeql-analysis.yml.ref` — extended variant with matrix (js/ts + actions)
+- `.github/codeql-config.yml` — CodeQL configuration referenced by the workflow
+
+**Deployment runbook** (requires a token/PAT with `workflows` scope):
+
+```bash
+# 1. Copy the canonical templates into active workflows
+cp docs/ci/workflows/security-audit.yml  .github/workflows/security-audit.yml
+cp docs/ci/workflows/codeql-analysis.yml .github/workflows/codeql-analysis.yml
+
+# 2. (Optional) align actions/setup-node to @v7 to match repo convention:
+sed -i 's|actions/setup-node@v4|actions/setup-node@v7|g' .github/workflows/security-audit.yml
+
+# 3. Commit and push with a token that has 'workflows' permission
+git add .github/workflows/security-audit.yml .github/workflows/codeql-analysis.yml
+git commit -m "fix(security): deploy security scanning workflows (closes #728)"
+git push
+
+# Alternative: bash scripts/deploy-security-workflows.sh (same copy logic)
+```
+
+**Verification performed (2026-07-31)**: YAML validity confirmed; typecheck 8/8,
+lint 9/9 (zero warnings), tests 71 files / 1454 passing, production build passes
+with Node 22 (per `.nvmrc`). The branch `fix/issue-728-deploy-security-workflows`
+carries the fully verified deployment for immediate push once a token with
+`workflows` permission is available.
+
 ### 4. `iterate.yml` - Parallel Agent Execution
 
 **Trigger:**

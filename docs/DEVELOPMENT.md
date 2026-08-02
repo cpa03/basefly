@@ -149,6 +149,16 @@ This project uses many environment variables for integrations. See `.env.example
 | -------- | ----------- |
 | `ADMIN_EMAIL` | Comma-separated email addresses that get admin access |
 
+### Distributed Rate Limiting (Redis)
+
+| Variable | Description |
+| -------- | ----------- |
+| `REDIS_URL` | Redis connection string for distributed rate limiting (optional) |
+
+- **Optional**: `REDIS_URL` enables Redis-backed distributed rate limiting for consistent limits across all instances.
+- **Fallback**: When unset or when Redis is unreachable, the app gracefully falls back to the in-memory limiter (with warning logs) — development and single-instance deployments work without Redis.
+- See [Redis Setup & Distributed Rate Limiting](./redis-setup.md) for setup options (Upstash, Redis Cloud, Docker) and verification steps.
+
 ### Quick Setup Tips
 
 1. **Minimum required for local dev**: `NEXT_PUBLIC_APP_URL`, `POSTGRES_URL`, `CLERK_SECRET_KEY`, `CLERK_PUBLISHABLE_KEY`

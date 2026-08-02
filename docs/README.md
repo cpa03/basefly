@@ -12,6 +12,7 @@ Welcome to the Basefly documentation. This folder contains comprehensive guides,
 | [Data Blueprint](./blueprint.md)       | Database architecture, data models, and integration patterns                    |
 | [Feature Specifications](./feature.md) | Feature requirements, acceptance criteria, and status tracking                  |
 | [CI/CD Guide](./ci-cd.md)              | Continuous integration and deployment workflows                                 |
+| [Redis Setup](./redis-setup.md)        | Redis configuration for distributed rate limiting                              |
 | [Roadmap](./roadmap.md)                | Project roadmap and planned features                                            |
 | [Development Guide](./DEVELOPMENT.md)  | Local development setup and guidelines                                          |
 | [Test Coverage](./test-coverage.md)    | Testing strategy and coverage requirements                                      |

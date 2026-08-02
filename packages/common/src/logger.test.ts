@@ -1,3 +1,4 @@
+import type { Logger as PinoLogger } from "pino";
 import { describe, expect, it, vi } from "vitest";
 
 import {
@@ -353,7 +354,7 @@ describe("logger.ts - Sensitive data redaction (issue #632)", () => {
       error: vi.fn(),
       warn: vi.fn(),
       debug: vi.fn(),
-    } as unknown as import("pino").Logger;
+    } as unknown as PinoLogger;
     const wrapped = createLoggerWrapper(mockPino);
 
     wrapped.info("updating user", {
@@ -375,7 +376,7 @@ describe("logger.ts - Sensitive data redaction (issue #632)", () => {
       error: vi.fn(),
       warn: vi.fn(),
       debug: vi.fn(),
-    } as unknown as import("pino").Logger;
+    } as unknown as PinoLogger;
     const wrapped = createLoggerWrapper(mockPino);
 
     const error = new Error("stripe webhook failed");

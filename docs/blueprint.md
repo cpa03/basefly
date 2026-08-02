@@ -683,11 +683,13 @@ export async function handleEvent(event: Stripe.Event) {
 
 ### Rate Limiting
 
-**Location**: `packages/api/src/rate-limiter.ts`, `packages/api/src/trpc.ts`
+**Location**: `packages/api/src/distributed-rate-limiter.ts`, `packages/api/src/rate-limiter.ts`, `packages/api/src/trpc.ts`
 
 **Purpose**: Protect API endpoints from abuse, DDoS attacks, and resource exhaustion
 
-**Algorithm**: Token Bucket
+**Algorithm**: Sliding window (Redis sorted sets) with in-memory token-bucket fallback
+
+**Storage**: Redis-backed when `REDIS_URL` is configured (`packages/api/src/distributed-rate-limiter.ts`); automatically falls back to in-memory when Redis is unavailable or unset. See [Redis Setup & Distributed Rate Limiting](./redis-setup.md) for configuration and deployment guidance.
 
 **Rate Limits**:
 
@@ -741,9 +743,9 @@ export async function handleEvent(event: Stripe.Event) {
    - Prevents memory leaks
 
 4. **Redis-Ready**
-   - In-memory implementation for development
-   - Can be swapped for Redis for distributed systems
-   - Interface remains the same
+   - Distributed implementation (`DistributedRateLimiter`) uses Redis sliding window for multi-instance consistency
+   - In-memory implementation for development and graceful fallback when Redis is unavailable
+   - Interface remains the same (`checkAsync` for Redis-capable paths)
 
 **Usage Example**:
 

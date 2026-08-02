@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import {
   apiLogger,
@@ -8,6 +8,7 @@ import {
   createLoggerWrapper,
   dbLogger,
   logger,
+  safeSerializeError,
   stripeLogger,
   type BaseLogger,
   type LoggerConfig,
@@ -277,5 +278,116 @@ describe("logger.ts - Type exports", () => {
     expect(typeof loggerInterface.info).toBe("function");
     expect(typeof loggerInterface.warn).toBe("function");
     expect(typeof loggerInterface.error).toBe("function");
+  });
+});
+
+describe("logger.ts - Sensitive data redaction (issue #632)", () => {
+  it("should redact top-level sensitive keys via safeSerializeError", () => {
+    const error = {
+      message: "Something failed",
+      apiKey: "sk_live_123456",
+      token: "tok_abcdef",
+      secret: "super-secret-value",
+      harmless: "visible-field",
+    };
+
+    const serialized = safeSerializeError(error);
+
+    expect(serialized.apiKey).toBe("[REDACTED]");
+    expect(serialized.token).toBe("[REDACTED]");
+    expect(serialized.secret).toBe("[REDACTED]");
+    expect(serialized.harmless).toBe("visible-field");
+  });
+
+  it("should redact deeply nested sensitive keys (StripeError-style)", () => {
+    const error = {
+      message: "Signature verification failed",
+      name: "StripeSignatureVerificationError",
+      headers: {
+        "stripe-signature": "t=123456,v1=abcdef1234567890abcdef1234567890",
+        authorization: "Bearer sk_live_987654",
+      },
+      raw: {
+        config: {
+          apiKey: "sk_live_nested_secret",
+        },
+      },
+    };
+
+    const serialized = safeSerializeError(error);
+
+    expect(serialized.headers).toBe("[REDACTED]");
+    const raw = serialized.raw as Record<string, Record<string, unknown>>;
+    expect(raw.config?.apiKey).toBe("[REDACTED]");
+  });
+
+  it("should not leak raw StripeError headers through the error serializer", () => {
+    const stripeError = {
+      message: "Unable to verify signature",
+      name: "StripeSignatureVerificationError",
+      headers: {
+        "stripe-signature": "t=1000,v1=raw-signature-value",
+      },
+    };
+
+    const serialized = safeSerializeError(stripeError);
+
+    const json = JSON.stringify(serialized);
+    expect(json).not.toContain("raw-signature-value");
+    expect(json).toContain("[REDACTED]");
+  });
+
+  it("should keep sanitized message strings intact", () => {
+    const serialized = safeSerializeError(
+      new Error("Webhook processing failed: invalid payload"),
+    );
+
+    expect(serialized.message).toBe(
+      "Webhook processing failed: invalid payload",
+    );
+  });
+
+  it("should redact sensitive metadata before emission", () => {
+    const mockPino = {
+      info: vi.fn(),
+      error: vi.fn(),
+      warn: vi.fn(),
+      debug: vi.fn(),
+    } as unknown as import("pino").Logger;
+    const wrapped = createLoggerWrapper(mockPino);
+
+    wrapped.info("updating user", {
+      requestId: "req-1",
+      API_KEY: "sk_live_leak_test",
+      Authorization: "Bearer super-secret-token",
+    });
+
+    const emitted = (mockPino.info as ReturnType<typeof vi.fn>).mock
+      .calls[0]?.[0] as Record<string, unknown>;
+    expect(emitted.API_KEY).toBe("[REDACTED]");
+    expect(emitted.Authorization).toBe("[REDACTED]");
+    expect(emitted.requestId).toBe("req-1");
+  });
+
+  it("should redact nested secrets in error metadata before emission", () => {
+    const mockPino = {
+      info: vi.fn(),
+      error: vi.fn(),
+      warn: vi.fn(),
+      debug: vi.fn(),
+    } as unknown as import("pino").Logger;
+    const wrapped = createLoggerWrapper(mockPino);
+
+    const error = new Error("stripe webhook failed");
+    wrapped.error("webhook failed", error, {
+      requestId: "req-2",
+      stripeSecret: "whsec_supersecret",
+    });
+
+    const emitted = (mockPino.error as ReturnType<typeof vi.fn>).mock
+      .calls[0]?.[0] as Record<string, unknown>;
+    expect(emitted.stripeSecret).toBe("[REDACTED]");
+    expect(emitted.error).toBe(error);
+    expect(emitted.requestId).toBe("req-2");
   });
 });

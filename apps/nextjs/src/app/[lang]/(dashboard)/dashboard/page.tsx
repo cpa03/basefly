@@ -12,8 +12,10 @@ import type { Locale } from "~/config/i18n-config";
 import { getDictionary } from "~/lib/get-dictionary";
 import { trpc } from "~/trpc/server";
 
+// Per-user data (clusters scoped to the authenticated user): always server-rendered.
+// ISR intentionally not used - `force-dynamic` forces revalidate=0 (Next.js segment
+// precedence), and caching user-scoped data would leak it across users.
 export const dynamic = "force-dynamic";
-export const revalidate = 60; // ISR: revalidate every 60 seconds
 
 export const metadata = {
   title: "Dashboard",

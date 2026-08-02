@@ -28,17 +28,18 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^6.39.4",
+    "@opentelemetry/api": "1.9.1",
     "@saasfly/common": "workspace:*",
     "@saasfly/db": "workspace:*",
     "@saasfly/stripe": "workspace:*",
-    "@trpc/server": "11.10.0",
     "@t3-oss/env-nextjs": "0.13.10",
+    "@trpc/server": "11.10.0",
+    "dinero.js": "2.0.0-alpha.16",
     "ioredis": "^5.6.0",
     "next": "16.2.11",
     "superjson": "2.2.6",
-    "dinero.js": "2.0.0-alpha.16",
-    "zod": "4.3.6",
-    "trpc-openapi": "^1.2.0"
+    "trpc-openapi": "^1.2.0",
+    "zod": "4.3.6"
   },
   "devDependencies": {
     "@saasfly/eslint-config": "workspace:*",

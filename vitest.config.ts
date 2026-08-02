@@ -49,14 +49,20 @@ export default defineConfig({
       "@saasfly/db": resolve(__dirname, "./packages/db"),
       "@saasfly/ui/icons": resolve(__dirname, "./packages/ui/src/icons.tsx"),
       "@saasfly/ui/card": resolve(__dirname, "./packages/ui/src/card.tsx"),
-      "@saasfly/ui/skeleton": resolve(__dirname, "./packages/ui/src/skeleton.tsx"),
+      "@saasfly/ui/skeleton": resolve(
+        __dirname,
+        "./packages/ui/src/skeleton.tsx",
+      ),
       "@saasfly/ui/button": resolve(__dirname, "./packages/ui/src/button.tsx"),
       "@saasfly/ui/dialog": resolve(__dirname, "./packages/ui/src/dialog.tsx"),
       "@saasfly/ui/dropdown-menu": resolve(
         __dirname,
         "./packages/ui/src/dropdown-menu.tsx",
       ),
-      "@saasfly/ui/tooltip": resolve(__dirname, "./packages/ui/src/tooltip.tsx"),
+      "@saasfly/ui/tooltip": resolve(
+        __dirname,
+        "./packages/ui/src/tooltip.tsx",
+      ),
       "@saasfly/ui/table": resolve(__dirname, "./packages/ui/src/table.tsx"),
       "@saasfly/ui/avatar": resolve(__dirname, "./packages/ui/src/avatar.tsx"),
       "@saasfly/ui/alert-dialog": resolve(
@@ -96,6 +102,10 @@ export default defineConfig({
       "@saasfly/common/logger": resolve(
         __dirname,
         "./packages/common/src/logger.ts",
+      ),
+      "@saasfly/common/observability": resolve(
+        __dirname,
+        "./packages/common/src/observability/index.ts",
       ),
       "@saasfly/common": resolve(__dirname, "./packages/common"),
       "@saasfly/stripe": resolve(__dirname, "./packages/stripe"),

@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { currentUser, type getAuth } from "@clerk/nextjs/server";
+import { SpanStatusCode, trace } from "@opentelemetry/api";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { ZodError } from "zod";
 
@@ -177,8 +178,41 @@ const csrfProtection = t.middleware(({ next, ctx, type }) => {
 
 /** Creates a new tRPC router with typed context */
 export const createTRPCRouter = t.router;
-/** Base procedure with CSRF protection */
-export const procedure = t.procedure.use(csrfProtection);
+
+const tracer = trace.getTracer("basefly-api");
+
+/**
+ * OpenTelemetry tracing middleware.
+ *
+ * Wraps every procedure invocation in a span named after the called path.
+ * Safe when the SDK is not initialized: @opentelemetry/api falls back to a
+ * no-op tracer, so this adds no overhead outside instrumented deployments.
+ */
+const tracing = t.middleware(async ({ next, ctx, type, path }) => {
+  return tracer.startActiveSpan(`trpc ${type} ${path}`, async (span) => {
+    span.setAttribute("rpc.system", "trpc");
+    span.setAttribute("rpc.method", type);
+    span.setAttribute("rpc.service", "basefly");
+    span.setAttribute("request.id", ctx.requestId);
+    if (ctx.userId) {
+      span.setAttribute("user.id", ctx.userId);
+    }
+    try {
+      const result = await next();
+      span.setStatus({ code: SpanStatusCode.OK });
+      return result;
+    } catch (error) {
+      span.recordException(error as Error);
+      span.setStatus({ code: SpanStatusCode.ERROR });
+      throw error;
+    } finally {
+      span.end();
+    }
+  });
+});
+
+/** Base procedure with CSRF protection and OpenTelemetry tracing */
+export const procedure = t.procedure.use(tracing).use(csrfProtection);
 export const mergeRouters = t.mergeRouters;
 
 // Authorization helpers - re-export for convenience

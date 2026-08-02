@@ -75,14 +75,14 @@ function renderScalarHtml(baseUrl: string): string {
 </html>`;
 }
 
-export function GET(req: NextRequest) {
+export async function GET(req: NextRequest) {
   // Check rate limit - use IP as identifier for public endpoint
   const forwarded = req.headers.get("x-forwarded-for");
   const ip =
     forwarded?.split(",")[0] ?? req.headers.get("x-real-ip") ?? "unknown";
   const identifier = `docs:${ip}`;
 
-  const rateLimitResult = docsLimiter.check(identifier);
+  const rateLimitResult = await docsLimiter.checkAsync(identifier);
 
   if (!rateLimitResult.success) {
     return NextResponse.json(

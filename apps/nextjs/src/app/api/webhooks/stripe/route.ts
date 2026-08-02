@@ -54,7 +54,7 @@ const handler = async (req: NextRequest) => {
   // Rate limiting check - use a non-secret identifier
   const identifier = "stripe-webhook";
 
-  const rateLimitResult = webhookLimiter.check(identifier);
+  const rateLimitResult = await webhookLimiter.checkAsync(identifier);
 
   if (!rateLimitResult.success) {
     logger.warn(

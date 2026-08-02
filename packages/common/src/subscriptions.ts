@@ -3,7 +3,6 @@ import {
   PRICING_TIERS,
   RESOURCE_LIMITS,
 } from "./config/pricing";
-import { env } from "./env.mjs";
 
 export interface SubscriptionPlan {
   title: string;

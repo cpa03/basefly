@@ -205,6 +205,7 @@ export default async function IndexPage({
                 src={ASSETS.clerkLogo}
                 width="48"
                 height="48"
+                sizes="48px"
                 alt="clerk"
               />
             </Link>
@@ -213,6 +214,7 @@ export default async function IndexPage({
                 src={EXTERNAL_URLS.twillot.logo}
                 width="48"
                 height="48"
+                sizes="48px"
                 alt="twillot"
               />
             </Link>
@@ -221,6 +223,7 @@ export default async function IndexPage({
                 src={EXTERNAL_URLS.setupyourpay.logo}
                 width="48"
                 height="48"
+                sizes="48px"
                 alt="setupyourpay"
               />
             </Link>

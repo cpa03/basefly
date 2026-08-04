@@ -73,6 +73,7 @@ const ReviewCard = React.memo(function ReviewCard({
           className="rounded-full"
           width="32"
           height="32"
+          sizes="32px"
           alt={`${name}'s avatar`}
           src={img}
         />

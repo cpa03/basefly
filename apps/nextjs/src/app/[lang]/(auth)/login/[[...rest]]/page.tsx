@@ -58,6 +58,7 @@ export default async function LoginPage({
             className="mx-auto"
             width="64"
             height="64"
+            sizes="64px"
             alt="Saasfly Logo"
           />
           <h1 className="text-2xl font-semibold tracking-tight">

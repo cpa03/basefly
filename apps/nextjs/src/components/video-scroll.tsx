@@ -35,6 +35,7 @@ export function VideoScroll({
             alt="Basefly dashboard preview showing Kubernetes cluster management interface"
             height={720}
             width={1400}
+            sizes="(max-width: 768px) 100vw, 75vw"
             className="mx-auto h-full rounded-2xl object-cover object-left-top"
             draggable={false}
           />

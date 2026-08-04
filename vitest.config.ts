@@ -59,6 +59,11 @@ export default defineConfig({
         __dirname,
         "./packages/ui/src/dropdown-menu.tsx",
       ),
+      "@saasfly/ui/form": resolve(__dirname, "./packages/ui/src/form.tsx"),
+      "@saasfly/ui/input": resolve(__dirname, "./packages/ui/src/input.tsx"),
+      "@saasfly/ui/label": resolve(__dirname, "./packages/ui/src/label.tsx"),
+      "@saasfly/ui/select": resolve(__dirname, "./packages/ui/src/select.tsx"),
+      "@saasfly/ui/tabs": resolve(__dirname, "./packages/ui/src/tabs.tsx"),
       "@saasfly/ui/tooltip": resolve(
         __dirname,
         "./packages/ui/src/tooltip.tsx",

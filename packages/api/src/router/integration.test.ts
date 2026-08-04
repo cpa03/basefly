@@ -262,4 +262,128 @@ describe("API Router Integration (middleware chain)", () => {
       await expect(caller.secret()).resolves.toBe("secret");
     });
   });
+
+  describe("concurrent operations", () => {
+    const CONCURRENT_USER = "integration-concurrent-user";
+    const CONCURRENT_IDENTIFIER = `user:${CONCURRENT_USER}`;
+    const CONCURRENT_LIMIT = 10;
+    const CONCURRENT_ORIGIN = "https://app.example.com";
+
+    beforeAll(() => {
+      process.env.NEXT_PUBLIC_APP_URL = CONCURRENT_ORIGIN;
+    });
+
+    afterAll(() => {
+      delete process.env.NEXT_PUBLIC_APP_URL;
+    });
+
+    beforeEach(async () => {
+      await getLimiter("stripe").resetAsync(CONCURRENT_IDENTIFIER);
+    });
+
+    afterEach(async () => {
+      await getLimiter("stripe").resetAsync(CONCURRENT_IDENTIFIER);
+    });
+
+    it("allows exactly the endpoint limit under a concurrent burst", async () => {
+      const router = createTRPCRouter({
+        stats: createRateLimitedProcedure("stripe").query(() => "ok"),
+      });
+      const caller = router.createCaller(
+        createTestContext({ userId: CONCURRENT_USER }),
+      );
+
+      const burst = await Promise.allSettled(
+        Array.from({ length: CONCURRENT_LIMIT }, () => caller.stats()),
+      );
+      for (const result of burst) {
+        expect(result.status).toBe("fulfilled");
+      }
+
+      await expect(caller.stats()).rejects.toMatchObject({
+        code: "TOO_MANY_REQUESTS",
+      });
+    });
+
+    it("decrements remaining tokens exactly once per concurrent call", async () => {
+      const router = createTRPCRouter({
+        stats: createRateLimitedProcedure("stripe").query(({ ctx }) => ({
+          ok: true,
+          remaining: ctx.rateLimitInfo?.remaining ?? -1,
+        })),
+      });
+      const caller = router.createCaller(
+        createTestContext({ userId: CONCURRENT_USER }),
+      );
+
+      const results = await Promise.all(
+        Array.from({ length: CONCURRENT_LIMIT - 1 }, () => caller.stats()),
+      );
+
+      const remainings = results.map((r) => r.remaining).sort((a, b) => a - b);
+      expect(remainings).toEqual(
+        Array.from({ length: CONCURRENT_LIMIT - 1 }, (_, i) => i + 1),
+      );
+    });
+
+    it("handles concurrent authenticated calls without interference", async () => {
+      const router = createTRPCRouter({
+        secret: protectedProcedure.query(() => "secret"),
+      });
+      const caller = router.createCaller(createTestContext());
+
+      const results = await Promise.all(
+        Array.from({ length: 20 }, () => caller.secret()),
+      );
+
+      for (const result of results) {
+        expect(result).toBe("secret");
+      }
+    });
+
+    it("rejects every concurrent unauthenticated call", async () => {
+      const router = createTRPCRouter({
+        secret: protectedProcedure.query(() => "secret"),
+      });
+      const caller = router.createCaller(
+        createTestContext({ userId: null, auth: null }),
+      );
+
+      const results = await Promise.allSettled(
+        Array.from({ length: 10 }, () => caller.secret()),
+      );
+
+      for (const result of results) {
+        expect(result.status).toBe("rejected");
+        expect((result as PromiseRejectedResult).reason).toMatchObject({
+          code: "UNAUTHORIZED",
+        });
+      }
+    });
+
+    it("rejects every concurrent cross-origin mutation via CSRF", async () => {
+      const router = createTRPCRouter({
+        mutate: procedure.mutation(() => "ok"),
+      });
+      const caller = router.createCaller(
+        createTestContext({
+          headers: new Headers({
+            origin: "https://evil.example.com",
+            "x-request-id": "req-123",
+          }),
+        }),
+      );
+
+      const results = await Promise.allSettled(
+        Array.from({ length: 10 }, () => caller.mutate()),
+      );
+
+      for (const result of results) {
+        expect(result.status).toBe("rejected");
+        expect((result as PromiseRejectedResult).reason).toMatchObject({
+          code: "FORBIDDEN",
+        });
+      }
+    });
+  });
 });

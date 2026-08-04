@@ -1,4 +1,5 @@
 import React, { Suspense } from "react";
+import dynamic from "next/dynamic";
 import { redirect } from "next/navigation";
 
 import { authOptions, getCurrentUser } from "@saasfly/auth";
@@ -6,11 +7,26 @@ import { authOptions, getCurrentUser } from "@saasfly/auth";
 import { ClusterList } from "~/components/dashboard/cluster-list";
 import { ClusterListSkeleton } from "~/components/dashboard/cluster-list-skeleton";
 import { DashboardHeader } from "~/components/header";
-import { K8sCreateButton } from "~/components/k8s/cluster-create-button";
 import { DashboardShell } from "~/components/shell";
 import type { Locale } from "~/config/i18n-config";
 import { getDictionary } from "~/lib/get-dictionary";
 import { trpc } from "~/trpc/server";
+
+// Lazy-load the interactive cluster creation button (toast + tRPC client) so
+// it is split out of the initial dashboard chunk.
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- tRPC proxy types are dynamically resolved
+const K8sCreateButton = dynamic(
+  () =>
+    import("~/components/k8s/cluster-create-button").then((mod) => ({
+      default: mod.K8sCreateButton,
+    })),
+  {
+    ssr: true,
+    loading: () => (
+      <div className="h-9 w-28 animate-pulse rounded-md bg-muted" />
+    ),
+  },
+);
 
 // Per-user data (clusters scoped to the authenticated user): always server-rendered.
 // ISR intentionally not used - `force-dynamic` forces revalidate=0 (Next.js segment

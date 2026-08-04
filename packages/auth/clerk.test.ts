@@ -5,7 +5,7 @@ import type * as CommonTypes from "@saasfly/common";
 import { isAdminEmail as mockIsAdminEmail } from "@saasfly/common";
 
 import { getSessionUser, isClerkEnabled } from "./clerk";
-import { authOptions } from "./index";
+import { authOptions, getCurrentUser } from "./index";
 import { logger } from "./logger";
 
 vi.mock("@clerk/nextjs/server", () => ({
@@ -21,6 +21,10 @@ vi.mock("@saasfly/common", async (importOriginal) => {
 });
 
 describe("Auth Module", () => {
+  function mockAuthResult(data: Record<string, unknown>) {
+    return data as unknown as Awaited<ReturnType<typeof mockAuth>>;
+  }
+
   describe("clerk.ts - isClerkEnabled", () => {
     const originalEnv = process.env;
 
@@ -135,10 +139,6 @@ describe("Auth Module", () => {
   });
 
   describe("clerk.ts - getSessionUser", () => {
-    function mockAuthResult(data: Record<string, unknown>) {
-      return data as unknown as Awaited<ReturnType<typeof mockAuth>>;
-    }
-
     beforeEach(() => {
       vi.clearAllMocks();
       process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY =
@@ -209,6 +209,43 @@ describe("Auth Module", () => {
 
       const result = await getSessionUser();
       expect(result).toBeUndefined();
+    });
+  });
+
+  describe("index.ts - getCurrentUser", () => {
+    beforeEach(() => {
+      vi.clearAllMocks();
+      vi.mocked(mockIsAdminEmail).mockReturnValue(false);
+      process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY =
+        "pk_test_validKey1234567890";
+    });
+
+    it("should return the current user from the session", async () => {
+      const mockUser = {
+        id: "user_123",
+        email: "user@example.com",
+        name: "Test User",
+      };
+      vi.mocked(mockAuth).mockResolvedValue(
+        mockAuthResult({ sessionClaims: { user: mockUser } }),
+      );
+
+      const result = await getCurrentUser();
+      expect(result).toEqual({ ...mockUser, isAdmin: false });
+    });
+
+    it("should return null when Clerk is not enabled", async () => {
+      delete process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
+      const result = await getCurrentUser();
+      expect(result).toBeNull();
+    });
+
+    it("should return null when auth() throws an error", async () => {
+      vi.mocked(mockAuth).mockRejectedValue(new Error("Session expired"));
+
+      const result = await getCurrentUser();
+      expect(result).toBeNull();
     });
   });
 });

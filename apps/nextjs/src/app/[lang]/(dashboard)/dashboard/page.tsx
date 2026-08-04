@@ -1,5 +1,7 @@
 import React, { Suspense } from "react";
-import dynamic from "next/dynamic";
+// Import aliased: the segment config below exports `const dynamic`, which would
+// collide with next/dynamic's `dynamic` binding under Turbopack.
+import nextDynamic from "next/dynamic";
 import { redirect } from "next/navigation";
 
 import { authOptions, getCurrentUser } from "@saasfly/auth";
@@ -14,8 +16,8 @@ import { trpc } from "~/trpc/server";
 
 // Lazy-load the interactive cluster creation button (toast + tRPC client) so
 // it is split out of the initial dashboard chunk.
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- tRPC proxy types are dynamically resolved
-const K8sCreateButton = dynamic(
+ 
+const K8sCreateButton = nextDynamic(
   () =>
     import("~/components/k8s/cluster-create-button").then((mod) => ({
       default: mod.K8sCreateButton,

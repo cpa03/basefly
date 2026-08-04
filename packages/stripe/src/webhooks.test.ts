@@ -362,4 +362,103 @@ describe("handleEvent", () => {
       loggerSpy.mockRestore();
     });
   });
+
+  describe("transaction atomicity", () => {
+    function buildCheckoutEvent(): any {
+      return {
+        id: "evt_test_010",
+        type: "checkout.session.completed",
+        data: {
+          object: {
+            subscription: "sub_123",
+          },
+        },
+      };
+    }
+
+    function buildSubscription(): any {
+      return {
+        id: "sub_123",
+        customer: "cus_123",
+        metadata: {
+          userId: "user_123",
+        },
+        items: {
+          data: [
+            {
+              price: {
+                id: "price_123",
+              },
+            },
+          ],
+        },
+      };
+    }
+
+    beforeEach(() => {
+      vi.mocked(stripe!.subscriptions.retrieve).mockResolvedValue(
+        buildSubscription(),
+      );
+    });
+
+    it("wraps the customer update in a database transaction", async () => {
+      const mockCustomer = { id: "customer_id", authUserId: "user_123" };
+      const mockWhere = vi.fn().mockReturnThis();
+      const mockExecuteTakeFirst = vi.fn().mockResolvedValue(mockCustomer);
+
+      (vi.mocked(db.selectFrom) as any).mockReturnValue({
+        selectAll: vi.fn().mockReturnThis(),
+        where: mockWhere,
+        executeTakeFirst: mockExecuteTakeFirst,
+      } as any);
+
+      vi.mocked(db.updateTable).mockReturnValue({
+        where: vi.fn().mockReturnThis(),
+        set: vi.fn().mockReturnThis(),
+        execute: vi.fn().mockResolvedValue(undefined),
+      } as any);
+
+      await handleEvent(buildCheckoutEvent());
+
+      expect(db.transaction).toHaveBeenCalled();
+    });
+
+    it("propagates an error raised inside the transaction (rollback)", async () => {
+      const mockCustomer = { id: "customer_id", authUserId: "user_123" };
+
+      (vi.mocked(db.selectFrom) as any).mockReturnValue({
+        selectAll: vi.fn().mockReturnThis(),
+        where: vi.fn().mockReturnThis(),
+        executeTakeFirst: vi.fn().mockResolvedValue(mockCustomer),
+      } as any);
+
+      vi.mocked(db.updateTable).mockReturnValue({
+        where: vi.fn().mockReturnThis(),
+        set: vi.fn().mockReturnThis(),
+        execute: vi.fn().mockRejectedValue(new Error("update failed")),
+      } as any);
+
+      await expect(handleEvent(buildCheckoutEvent())).rejects.toThrow(
+        "update failed",
+      );
+    });
+
+    it("skips the customer update entirely when no customer is found", async () => {
+      (vi.mocked(db.selectFrom) as any).mockReturnValue({
+        selectAll: vi.fn().mockReturnThis(),
+        where: vi.fn().mockReturnThis(),
+        executeTakeFirst: vi.fn().mockResolvedValue(null),
+      } as any);
+
+      vi.mocked(db.updateTable).mockReturnValue({
+        where: vi.fn().mockReturnThis(),
+        set: vi.fn().mockReturnThis(),
+        execute: vi.fn().mockResolvedValue(undefined),
+      } as any);
+
+      await handleEvent(buildCheckoutEvent());
+
+      expect(db.updateTable).not.toHaveBeenCalledWith("Customer");
+    });
+  });
 });

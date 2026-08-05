@@ -45,7 +45,7 @@ export const AnimatedList = React.memo(
           {itemsToShow.map((item) => (
             <AnimatedListItem
               key={(item as ReactElement).key}
-              shouldReduceMotion={shouldReduceMotion}
+              shouldReduceMotion={shouldReduceMotion ?? false}
             >
               {item}
             </AnimatedListItem>
@@ -77,7 +77,11 @@ export function AnimatedListItem({
         initial: { scale: 0, opacity: 0 },
         animate: { scale: 1, opacity: 1, originY: 0 },
         exit: { scale: 0, opacity: 0 },
-        transition: { type: "spring", stiffness: 350, damping: 40 },
+        transition: {
+          type: "spring" as const,
+          stiffness: 350,
+          damping: 40,
+        },
       };
 
   return (

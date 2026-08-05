@@ -41,6 +41,7 @@ import {
   XCircle,
   type LucideProps,
 } from "lucide-react";
+import type { JSX } from "react";
 
 export type Icon = (props: LucideProps) => JSX.Element;
 

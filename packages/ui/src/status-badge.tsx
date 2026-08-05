@@ -50,7 +50,30 @@ const sizeStyles = {
   },
 };
 
-interface StatusBadgeProps extends React.HTMLAttributes<HTMLDivElement> {
+interface StatusBadgeProps
+  extends Omit<
+    React.ComponentProps<"div">,
+    | "onAnimationStart"
+    | "onAnimationEnd"
+    | "onAnimationIteration"
+    | "onDrag"
+    | "onDragStart"
+    | "onDragEnd"
+    | "onDragEnter"
+    | "onDragOver"
+    | "onDragLeave"
+    | "onDragExit"
+    | "onDragTransitionEnd"
+    | "onPan"
+    | "onPanStart"
+    | "onPanEnd"
+    | "onPanSessionStart"
+    | "onTap"
+    | "onTapStart"
+    | "onTapCancel"
+    | "onHoverStart"
+    | "onHoverEnd"
+  > {
   status: ClusterStatus;
   size?: "sm" | "default" | "lg";
   showTooltip?: boolean;

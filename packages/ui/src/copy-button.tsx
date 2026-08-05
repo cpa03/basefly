@@ -15,7 +15,7 @@ import { cn } from "./utils/cn";
 
 interface CopyButtonProps extends Omit<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
-  "onCopy"
+  "onCopy" | "onError"
 > {
   /**
    * The text to copy to clipboard

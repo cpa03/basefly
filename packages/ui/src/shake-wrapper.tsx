@@ -7,7 +7,30 @@ import { ANIMATION } from "@saasfly/common";
 
 import { cn } from "./utils/cn";
 
-interface ShakeWrapperProps extends React.HTMLAttributes<HTMLDivElement> {
+interface ShakeWrapperProps
+  extends Omit<
+    React.ComponentProps<"div">,
+    | "onAnimationStart"
+    | "onAnimationEnd"
+    | "onAnimationIteration"
+    | "onDrag"
+    | "onDragStart"
+    | "onDragEnd"
+    | "onDragEnter"
+    | "onDragOver"
+    | "onDragLeave"
+    | "onDragExit"
+    | "onDragTransitionEnd"
+    | "onPan"
+    | "onPanStart"
+    | "onPanEnd"
+    | "onPanSessionStart"
+    | "onTap"
+    | "onTapStart"
+    | "onTapCancel"
+    | "onHoverStart"
+    | "onHoverEnd"
+  > {
   /** Whether to trigger the shake animation */
   shake?: boolean;
   /** Callback when shake animation completes */
@@ -61,7 +84,7 @@ const ShakeWrapper = React.forwardRef<HTMLDivElement, ShakeWrapperProps>(
         animate={
           isShaking
             ? {
-                x: ANIMATION.shake.keyframes.x,
+                x: [...ANIMATION.shake.keyframes.x],
               }
             : { x: 0 }
         }

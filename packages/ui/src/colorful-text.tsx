@@ -20,7 +20,9 @@ export function ColourfulText({ text }: { text: string }) {
   const colors = COLORS;
   const shouldReduceMotion = useReducedMotion();
 
-  const [currentColors, setCurrentColors] = React.useState(colors);
+  const [currentColors, setCurrentColors] = React.useState<string[]>(
+    [...colors],
+  );
   const [count, setCount] = React.useState(0);
 
   React.useEffect(() => {

@@ -12,7 +12,8 @@
   "scripts": {
     "clean": "git clean -xdf .turbo node_modules",
     "format": "prettier --check '**/*.{ts,tsx}' ",
-    "lint": "eslint . --cache --cache-location 'node_modules/.cache/.eslintcache'"
+    "lint": "eslint . --cache --cache-location 'node_modules/.cache/.eslintcache'",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@radix-ui/react-accessible-icon": "next",
@@ -88,6 +89,7 @@
     "typescript": "5.9.3"
   },
   "peerDependencies": {
+    "next": ">=14.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

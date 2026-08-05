@@ -63,6 +63,7 @@ package-lock.json
 # opencode
 .opencode/node_modules
 .opencode/bun.lock
+.opencode/supplements/*/
 
 # sisyphus (local state files)
 .sisyphus/

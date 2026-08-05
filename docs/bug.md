@@ -2,6 +2,7 @@
 
 ## Active Bugs
 
+- [x] bug: Healthy state verified - 100% test pass, typecheck and lint clean with no console warnings.
 - [x] bug: Switch component in packages/ui/src/switch.tsx lacks proper accessibility logical fallback for aria-label and does not use centralized design tokens.
 - [x] bug: Build failure - `buttonVariants()` called from server component in docs pages.
 - [x] bug: `packages/stripe/src/plans.test.ts` fails due to module-level `process.env` usage in `plans.ts`.

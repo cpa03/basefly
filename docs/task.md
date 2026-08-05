@@ -4,6 +4,31 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Modularize Input Component Styles
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/ui/src/input.tsx`, `packages/common/src/ui-tokens.ts`
+
+**Description**:
+Modularize input component styles by referencing centralized `INPUT_TOKENS` from `@saasfly/common` instead of hardcoded class lists.
+
+**Success Criteria**:
+- [x] Integrate `INPUT_TOKENS` into `packages/ui/src/input.tsx`.
+- [x] Replace hardcoded Tailwind styles with centralized tokens.
+
+#### Task: [STRENGTHEN] Enhance Input Clear Button with tactile micro-interactions
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `packages/ui/src/input.tsx`
+
+**Description**:
+Strengthen the UX design by adding spring scale micro-interactions (`hover:scale-110 active:scale-95`) to the input clear button.
+
+**Success Criteria**:
+- [x] Clear button possesses delightful interactive scale micro-animations.
+
 #### Task: Modularize Switch Component and Centralize SWITCH_TOKENS
 - **Status**: ✅ Completed
 - **Priority**: High

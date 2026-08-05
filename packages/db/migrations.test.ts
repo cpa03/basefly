@@ -185,3 +185,27 @@ describe("Migration SQL content invariants", () => {
     }
   });
 });
+
+describe("Migration history documentation sync", () => {
+  it("the README migration history table should list every migration directory", () => {
+    const readmePath = path.join(
+      __dirname,
+      "prisma",
+      "README.md",
+    );
+    const readme = fs.readFileSync(readmePath, "utf8");
+
+    const tableSection = /## Current Migration History[\s\S]*/.exec(readme);
+    expect(
+      tableSection,
+      "README.md should contain a '## Current Migration History' section",
+    ).not.toBeNull();
+
+    for (const dir of migrationDirectories) {
+      expect(
+        tableSection?.[0],
+        `README migration history table should list "${dir}"`,
+      ).toContain(dir);
+    }
+  });
+});

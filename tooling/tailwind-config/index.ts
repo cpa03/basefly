@@ -5,6 +5,8 @@ import tailwindcssAnimate from "tailwindcss-animate";
 import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette";
 import createPlugin from "tailwindcss/plugin";
 
+import "./types";
+
 // Tailwind plugin internals use dynamic type patterns not expressible in TS
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument */
 type AnyCssInJs = any;

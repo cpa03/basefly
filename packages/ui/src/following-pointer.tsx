@@ -2,9 +2,24 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { AnimatePresence, motion, useMotionValue } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  type MotionValue,
+} from "framer-motion";
 
 import { cn } from "./utils/cn";
+
+const POINTER_COLORS = [
+  "var(--sky-500)",
+  "var(--neutral-500)",
+  "var(--teal-500)",
+  "var(--green-500)",
+  "var(--blue-500)",
+  "var(--red-500)",
+  "var(--yellow-500)",
+] as const;
 
 export const FollowerPointerCard = ({
   children,
@@ -70,15 +85,10 @@ export const FollowPointer = ({
   y: MotionValue<number>;
   title?: string | React.ReactNode;
 }) => {
-  const colors = [
-    "var(--sky-500)",
-    "var(--neutral-500)",
-    "var(--teal-500)",
-    "var(--green-500)",
-    "var(--blue-500)",
-    "var(--red-500)",
-    "var(--yellow-500)",
-  ];
+  const [pointerColor] = React.useState(() =>
+    POINTER_COLORS[Math.floor(Math.random() * POINTER_COLORS.length)] ??
+    POINTER_COLORS[0],
+  );
   return (
     <motion.div
       className="absolute z-50 h-4 w-4 rounded-full"
@@ -114,7 +124,7 @@ export const FollowPointer = ({
       </svg>
       <motion.div
         style={{
-          backgroundColor: colors[Math.floor(Math.random() * colors.length)],
+          backgroundColor: pointerColor,
         }}
         initial={{
           scale: 0.5,
@@ -132,7 +142,7 @@ export const FollowPointer = ({
           "min-w-max whitespace-nowrap rounded-full bg-neutral-200 px-2 py-2 text-xs text-white"
         }
       >
-        {title || `William Shakespeare`}
+        {title ?? "William Shakespeare"}
       </motion.div>
     </motion.div>
   );

@@ -1,227 +1,163 @@
-import { describe, expect, it } from "vitest";
-import { z } from "zod";
+/**
+ * Hello Router Business Logic Tests
+ *
+ * Exercises the actual helloRouter.hello procedure through a real tRPC
+ * caller (refs #581).
+ *
+ * This replaces the previous test file which re-implemented escapeHtml and
+ * the input schema locally and never imported the router (0% coverage).
+ *
+ * Covers:
+ * - HTML sanitization (XSS prevention) of user input
+ * - Input validation (trim / min / max length)
+ * - Authentication enforcement (unauthenticated => UNAUTHORIZED)
+ */
+
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { API_VALIDATION } from "@saasfly/common";
 
-// Re-implement escapeHtml for testing (same logic as in hello.ts)
-function escapeHtml(unsafe: string): string {
-  return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+import { getLimiter } from "../distributed-rate-limiter";
+import type { TRPCContext } from "../trpc";
+
+// Hoisted mock state (referenced by the vi.mock factories below).
+const mockDb = vi.hoisted(() => ({ selectFrom: vi.fn() }));
+
+// Mock Clerk server helpers to avoid server-only module side effects.
+vi.mock("@clerk/nextjs/server", () => ({
+  currentUser: vi.fn(),
+  getAuth: vi.fn(),
+}));
+
+// Mock the database before importing the router. The hello router itself does
+// not use the database, but trpc.ts (imported transitively) does, and the real
+// db instance requires a POSTGRES_URL connection string.
+vi.mock("@saasfly/db", () => ({
+  db: mockDb,
+  SubscriptionPlan: { FREE: "FREE", PRO: "PRO", BUSINESS: "BUSINESS" },
+}));
+
+const mockLogger = vi.hoisted(() => ({
+  debug: vi.fn(),
+  info: vi.fn(),
+  warn: vi.fn(),
+  error: vi.fn(),
+}));
+
+// Mock the logger to keep test output clean.
+vi.mock("../logger", () => ({ logger: mockLogger }));
+
+// Import AFTER mocks are registered.
+import { helloRouter } from "./hello";
+
+const TEST_USER_ID = "hello-user-123";
+
+/** Builds a full authenticated TRPCContext for the hello router. */
+function createHelloContext(
+  overrides: Partial<TRPCContext> = {},
+): TRPCContext {
+  return {
+    userId: TEST_USER_ID,
+    requestId: "req-hello-123",
+    rateLimitInfo: null,
+    role: null,
+    headers: new Headers(),
+    auth: {
+      userId: TEST_USER_ID,
+      sessionId: "sess-hello-123",
+    } as unknown as TRPCContext["auth"],
+    req: undefined,
+    ...overrides,
+  };
 }
 
-// Schema matching the hello router input
-const helloInputSchema = z.object({
-  text: z
-    .string()
-    .trim()
-    .min(API_VALIDATION.text.minLength, "Text cannot be empty")
-    .max(
-      API_VALIDATION.text.maxLength,
-      `Text cannot exceed ${API_VALIDATION.text.maxLength} characters`,
-    ),
-});
+describe("helloRouter - Business Logic", () => {
+  const RATE_LIMIT_IDENTIFIER = `user:${TEST_USER_ID}`;
 
-describe("Hello Router - Security Tests", () => {
-  describe("escapeHtml - XSS Prevention", () => {
-    it("escapes HTML tags", () => {
-      const malicious = "<script>alert('xss')</script>";
-      const escaped = escapeHtml(malicious);
-      expect(escaped).toBe(
-        "&lt;script&gt;alert(&#039;xss&#039;)&lt;/script&gt;",
-      );
-      expect(escaped).not.toContain("<script>");
-    });
-
-    it("escapes ampersands", () => {
-      const input = "Tom & Jerry";
-      const escaped = escapeHtml(input);
-      expect(escaped).toBe("Tom &amp; Jerry");
-    });
-
-    it("escapes double quotes", () => {
-      const input = 'He said "Hello"';
-      const escaped = escapeHtml(input);
-      expect(escaped).toBe("He said &quot;Hello&quot;");
-    });
-
-    it("escapes single quotes", () => {
-      const input = "It's a test";
-      const escaped = escapeHtml(input);
-      expect(escaped).toBe("It&#039;s a test");
-    });
-
-    it("escapes all special characters together", () => {
-      const input = `<div class="test" onclick='alert("XSS")'>Test & Demo</div>`;
-      const escaped = escapeHtml(input);
-      expect(escaped).toBe(
-        "&lt;div class=&quot;test&quot; onclick=&#039;alert(&quot;XSS&quot;)&#039;&gt;Test &amp; Demo&lt;/div&gt;",
-      );
-    });
-
-    it("does not modify safe strings", () => {
-      const safe = "Hello World 123";
-      const escaped = escapeHtml(safe);
-      expect(escaped).toBe("Hello World 123");
-    });
-
-    it("handles empty string", () => {
-      const escaped = escapeHtml("");
-      expect(escaped).toBe("");
-    });
-
-    it("handles unicode characters", () => {
-      const input = "Hello 世界 🌍";
-      const escaped = escapeHtml(input);
-      expect(escaped).toBe("Hello 世界 🌍");
-    });
-
-    it("handles newlines and tabs", () => {
-      const input = "Line1\nLine2\tTabbed";
-      const escaped = escapeHtml(input);
-      expect(escaped).toBe("Line1\nLine2\tTabbed");
-    });
-
-    it("handles already escaped content", () => {
-      const input = "&amp;&lt;&gt;";
-      const escaped = escapeHtml(input);
-      // Should escape the & again
-      expect(escaped).toBe("&amp;amp;&amp;lt;&amp;gt;");
-    });
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
 
-  describe("Input Validation", () => {
-    it("accepts valid text input", () => {
-      const result = helloInputSchema.safeParse({ text: "World" });
-      expect(result.success).toBe(true);
+  afterEach(async () => {
+    // Reset the rate limit bucket to avoid cross-test interference.
+    await getLimiter("read").resetAsync(RATE_LIMIT_IDENTIFIER);
+  });
+
+  describe("hello", () => {
+    it("returns a greeting with the provided text", async () => {
+      const caller = helloRouter.createCaller(createHelloContext());
+      const result = await caller.hello({ text: "World" });
+
+      expect(result).toEqual({ greeting: "hello World" });
     });
 
-    it("accepts text at max length", () => {
-      const maxText = "a".repeat(API_VALIDATION.text.maxLength);
-      const result = helloInputSchema.safeParse({ text: maxText });
-      expect(result.success).toBe(true);
+    it("trims surrounding whitespace from input", async () => {
+      const caller = helloRouter.createCaller(createHelloContext());
+      const result = await caller.hello({ text: "  World  " });
+
+      expect(result).toEqual({ greeting: "hello World" });
     });
 
-    it("accepts text with spaces", () => {
-      const result = helloInputSchema.safeParse({ text: "Hello World" });
-      expect(result.success).toBe(true);
-    });
-
-    it("accepts text with unicode characters", () => {
-      const result = helloInputSchema.safeParse({ text: "你好世界" });
-      expect(result.success).toBe(true);
-    });
-
-    it("accepts text with special characters", () => {
-      const result = helloInputSchema.safeParse({
-        text: "Test!@#$%^&*()_+-=[]{}|;:,./?",
+    it("escapes HTML special characters to prevent XSS", async () => {
+      const caller = helloRouter.createCaller(createHelloContext());
+      const result = await caller.hello({
+        text: `<script>alert("x")</script>`,
       });
-      expect(result.success).toBe(true);
-    });
 
-    it("rejects text exceeding max length", () => {
-      const tooLong = "a".repeat(API_VALIDATION.text.maxLength + 1);
-      const result = helloInputSchema.safeParse({ text: tooLong });
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(
-          result.error.issues.some(
-            (i) =>
-              i.message.includes("cannot exceed") ||
-              i.message.includes("Too big") ||
-              i.message.includes("at most"),
-          ),
-        ).toBe(true);
-      }
-    });
-
-    it("rejects empty text after trim", () => {
-      const result = helloInputSchema.safeParse({ text: "" });
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(
-          result.error.issues.some(
-            (i) =>
-              i.message.includes("Text cannot be empty") ||
-              i.message.includes("Too small"),
-          ),
-        ).toBe(true);
-      }
-    });
-
-    it("rejects whitespace-only text after trim", () => {
-      const result = helloInputSchema.safeParse({ text: "   " });
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(
-          result.error.issues.some(
-            (i) =>
-              i.message.includes("Text cannot be empty") ||
-              i.message.includes("Too small"),
-          ),
-        ).toBe(true);
-      }
-    });
-
-    it("rejects non-string text", () => {
-      const result = helloInputSchema.safeParse({ text: 123 });
-      expect(result.success).toBe(false);
-    });
-
-    it("rejects null text", () => {
-      const result = helloInputSchema.safeParse({ text: null });
-      expect(result.success).toBe(false);
-    });
-
-    it("rejects missing text field", () => {
-      const result = helloInputSchema.safeParse({});
-      expect(result.success).toBe(false);
-    });
-
-    it("rejects empty object", () => {
-      const result = helloInputSchema.safeParse({});
-      expect(result.success).toBe(false);
-      if (!result.success) {
-        expect(result.error.issues).toHaveLength(1);
-        expect(result.error.issues[0]?.path).toContain("text");
-      }
-    });
-  });
-
-  describe("Integration - Sanitized Output", () => {
-    it("produces safe greeting from malicious input", () => {
-      const maliciousInput = '<script>alert("xss")</script>';
-      const sanitized = escapeHtml(maliciousInput.trim());
-      const greeting = `hello ${sanitized}`;
-      expect(greeting).toBe(
-        "hello &lt;script&gt;alert(&quot;xss&quot;)&lt;/script&gt;",
+      expect(result.greeting).toBe(
+        "hello &lt;script&gt;alert(&quot;x&quot;)&lt;/script&gt;",
       );
-      expect(greeting).not.toContain("<script>");
+      expect(result.greeting).not.toContain("<script>");
     });
 
-    it("produces correct greeting for normal input", () => {
-      const input = "World";
-      const sanitized = escapeHtml(input.trim());
-      const greeting = `hello ${sanitized}`;
-      expect(greeting).toBe("hello World");
+    it("escapes ampersands to prevent entity injection", async () => {
+      const caller = helloRouter.createCaller(createHelloContext());
+      const result = await caller.hello({ text: "Tom & Jerry" });
+
+      expect(result.greeting).toBe("hello Tom &amp; Jerry");
     });
 
-    it("handles input with leading/trailing whitespace", () => {
-      const input = "  Test  ";
-      const sanitized = escapeHtml(input.trim());
-      const greeting = `hello ${sanitized}`;
-      expect(greeting).toBe("hello Test");
+    it("rejects empty text with a validation error", async () => {
+      const caller = helloRouter.createCaller(createHelloContext());
+
+      await expect(caller.hello({ text: "" })).rejects.toThrow(
+        /Text cannot be empty/,
+      );
     });
 
-    it("handles HTML entities in input", () => {
-      const input = "Tom &amp; Jerry";
-      const sanitized = escapeHtml(input.trim());
-      const greeting = `hello ${sanitized}`;
-      // The & in &amp; should be escaped
-      expect(greeting).toBe("hello Tom &amp;amp; Jerry");
+    it("rejects whitespace-only text after trimming", async () => {
+      const caller = helloRouter.createCaller(createHelloContext());
+
+      await expect(caller.hello({ text: "   " })).rejects.toThrow(
+        /Text cannot be empty/,
+      );
+    });
+
+    it("accepts text at the maximum length", async () => {
+      const caller = helloRouter.createCaller(createHelloContext());
+      const result = await caller.hello({
+        text: "a".repeat(API_VALIDATION.text.maxLength),
+      });
+
+      expect(result.greeting.startsWith("hello ")).toBe(true);
+    });
+
+    it("rejects text exceeding the maximum length", async () => {
+      const caller = helloRouter.createCaller(createHelloContext());
+
+      await expect(
+        caller.hello({ text: "a".repeat(API_VALIDATION.text.maxLength + 1) }),
+      ).rejects.toThrow(/cannot exceed/);
+    });
+
+    it("rejects unauthenticated access with UNAUTHORIZED", async () => {
+      const caller = helloRouter.createCaller(
+        createHelloContext({ userId: null, auth: null }),
+      );
+
+      await expect(caller.hello({ text: "World" })).rejects.toMatchObject({
+        code: "UNAUTHORIZED",
+      });
     });
   });
 });

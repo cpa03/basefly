@@ -136,12 +136,20 @@ After any rollback:
 
 ## Automation
 
-The release workflow (`.github/workflows/release.yml`) provides:
+The release tooling currently in the repository is:
 
-- **Automated versioning** from conventional commits
-- **Changelog generation** from commit history
-- **GitHub Release creation** with auto-generated notes
-- **Dry run mode** to preview releases without publishing
+- **`scripts/release-tag.mjs`** (invoked via `pnpm release:tag`) — a release
+  verification gate that checks for a clean working tree, a `v<version>`
+  annotated tag that does not yet exist, a matching `## [<version>]` entry in
+  `CHANGELOG.md`, and passes the full `pnpm dx:check` suite before creating the
+  tag. It supports `--dry-run` to preview releases without creating anything.
+- **`docs/release-process.md`** — the formal release procedure (versioning,
+  pre-release checklist, release steps, hotfix flow, and rollback linkage).
+
+There is **no** `.github/workflows/release.yml` in the repository: version
+bumping, changelog maintenance, and GitHub Release creation are **manual**
+steps performed by the maintainer following `docs/release-process.md`. Do not
+assume an automated release pipeline exists.
 
 For rollback automation, consider:
 

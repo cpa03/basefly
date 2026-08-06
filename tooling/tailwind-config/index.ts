@@ -1,11 +1,15 @@
+// Ambient declaration for the untyped tailwindcss internal import below.
+// Keep as a reference, not a runtime import: `import "./types"` (added in
+// #1112) broke the build because jiti cannot resolve .d.ts files.
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference -- import style cannot be used (breaks runtime)
+/// <reference path="./types.d.ts" />
+
 import type { Config } from "tailwindcss";
 import tailwindcssAnimate from "tailwindcss-animate";
 // import colors from "tailwindcss/colors";
 // Tailwind internal utility - no type definitions available
 import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette";
 import createPlugin from "tailwindcss/plugin";
-
-import "./types";
 
 // Tailwind plugin internals use dynamic type patterns not expressible in TS
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument */

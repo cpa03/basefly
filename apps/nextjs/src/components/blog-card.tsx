@@ -77,6 +77,7 @@ const TitleComponent = React.memo(function TitleComponent({
         src={avatar}
         height={20}
         width={20}
+        sizes="20px"
         alt={`${title}'s avatar`}
         className="rounded-full border-2 border-white"
       />

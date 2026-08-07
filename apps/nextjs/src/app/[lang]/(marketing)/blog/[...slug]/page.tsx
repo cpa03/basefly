@@ -138,6 +138,7 @@ export default function PostPage({ params }: PostPageProps) {
                     alt={author.title}
                     width={42}
                     height={42}
+                    sizes="42px"
                     className="rounded-full bg-white"
                   />
                   <div className="flex-1 text-left leading-tight">

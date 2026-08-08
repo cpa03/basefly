@@ -81,7 +81,7 @@ export const customerRouter = createTRPCRouter({
 
         logger.info({ userId, requestId }, "User name updated successfully");
 
-        return { success: true, reason: "" };
+        return { success: true as const };
       } catch (error) {
         logger.error(
           {

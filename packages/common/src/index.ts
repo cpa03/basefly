@@ -323,6 +323,10 @@ export {
 } from "./config/cache";
 export type { CacheDurationKey, CacheControlKey } from "./config/cache";
 
+// Application-layer cache - Redis-backed with in-memory fallback
+export { CacheService, cacheService, CACHE_PREFIX, CACHE_KEYS } from "./cache";
+export type { CacheMetrics } from "./cache";
+
 // Validation configuration - centralized validation constraints
 export {
   VALIDATION,

@@ -9,7 +9,13 @@
  * @see {@link https://docs.saasfly.io/api/stripe | Stripe API Documentation}
  */
 
-import { pricingData, TIME_MS } from "@saasfly/common";
+import {
+  CACHE_DURATION,
+  CACHE_KEYS,
+  cacheService,
+  pricingData,
+  TIME_MS,
+} from "@saasfly/common";
 import { db, type Customer } from "@saasfly/db";
 import {
   createBillingSession,
@@ -19,7 +25,11 @@ import {
 } from "@saasfly/stripe";
 
 import { env } from "../env.mjs";
-import { handleIntegrationError } from "../errors";
+import {
+  createApiError,
+  ErrorCode,
+  handleIntegrationError,
+} from "../errors";
 import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 import { enhancedStripeCreateSessionSchema } from "./schemas";
 
@@ -130,6 +140,19 @@ export const stripeRouter = createTRPCRouter({
    */
   userPlans: createRateLimitedProtectedProcedure("read").query(async (opts) => {
     const userId = opts.ctx.userId;
+    if (!userId) {
+      throw createApiError(
+        ErrorCode.UNAUTHORIZED,
+        "User is not authenticated",
+      );
+    }
+    const cacheKey = CACHE_KEYS.subscription(userId);
+
+    const cached = await cacheService.get<UserSubscriptionPlan>(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
     const requestId = opts.ctx.requestId;
     const custom = await db
       .selectFrom("Customer")
@@ -181,7 +204,7 @@ export const stripeRouter = createTRPCRouter({
       }
     }
 
-    return {
+    const result = {
       ...plan,
       ...custom,
       stripeCurrentPeriodEnd: custom.stripeCurrentPeriodEnd?.getTime() ?? 0,
@@ -189,5 +212,7 @@ export const stripeRouter = createTRPCRouter({
       interval,
       isCanceled,
     };
+    await cacheService.set(cacheKey, result, CACHE_DURATION.FIVE_MINUTES);
+    return result;
   }),
 });

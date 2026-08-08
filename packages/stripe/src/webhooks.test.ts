@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { cacheService } from "@saasfly/common";
 import { db } from "@saasfly/db";
 
 import { stripe } from ".";
@@ -318,7 +319,31 @@ describe("handleEvent", () => {
   });
 
   describe("customer.subscription.updated event", () => {
-    it("logs event type", async () => {
+    it("invalidates subscription cache when userId is present", async () => {
+      const mockEvent = {
+        id: "evt_test_007",
+        type: "customer.subscription.updated",
+        data: {
+          object: {
+            metadata: {
+              userId: "user_123",
+            },
+          },
+        },
+      } as any;
+
+      const invalidateSpy = vi
+        .spyOn(cacheService, "invalidateKey")
+        .mockResolvedValue(undefined);
+
+      await handleEvent(mockEvent);
+
+      expect(invalidateSpy).toHaveBeenCalledWith("subscription:user_123");
+
+      invalidateSpy.mockRestore();
+    });
+
+    it("skips invalidation and warns when userId is missing", async () => {
       const mockEvent = {
         id: "evt_test_007",
         type: "customer.subscription.updated",
@@ -327,16 +352,19 @@ describe("handleEvent", () => {
         },
       } as any;
 
-      const loggerSpy = vi.spyOn(logger, "info").mockImplementation(() => {});
+      const invalidateSpy = vi
+        .spyOn(cacheService, "invalidateKey")
+        .mockResolvedValue(undefined);
+      const loggerSpy = vi.spyOn(logger, "warn").mockImplementation(() => {});
 
       await handleEvent(mockEvent);
 
+      expect(invalidateSpy).not.toHaveBeenCalled();
       expect(loggerSpy).toHaveBeenCalledWith(
-        expect.stringContaining(
-          "Unhandled event type: customer.subscription.updated",
-        ),
+        expect.stringContaining("skipping cache invalidation"),
       );
 
+      invalidateSpy.mockRestore();
       loggerSpy.mockRestore();
     });
   });

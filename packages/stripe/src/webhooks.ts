@@ -1,5 +1,6 @@
 import type Stripe from "stripe";
 
+import { CACHE_KEYS, cacheService } from "@saasfly/common";
 import { db, SubscriptionPlan } from "@saasfly/db";
 
 import { retrieveSubscription } from "./client";
@@ -55,7 +56,7 @@ async function processEventInternal(event: Stripe.Event) {
     } else if (event.type === "invoice.payment_succeeded") {
       await handleInvoicePaymentSucceeded(session);
     } else if (event.type === "customer.subscription.updated") {
-      logger.info(`Unhandled event type: ${event.type}`);
+      await handleSubscriptionUpdated(event.data.object);
     }
 
     logger.info("Stripe Webhook Processed", { eventType: event.type });
@@ -134,6 +135,8 @@ async function handleCheckoutSessionCompleted(
         .execute();
     }
   });
+
+  await cacheService.invalidateKey(CACHE_KEYS.subscription(userId));
 }
 
 async function handleInvoicePaymentSucceeded(session: Stripe.Checkout.Session) {
@@ -172,4 +175,17 @@ async function handleInvoicePaymentSucceeded(session: Stripe.Checkout.Session) {
         .execute();
     }
   });
+
+  await cacheService.invalidateKey(CACHE_KEYS.subscription(userId));
+}
+
+async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
+  const userId = subscription.metadata?.userId;
+  if (!userId) {
+    logger.warn(
+      "Missing user id in metadata for customer.subscription.updated, skipping cache invalidation",
+    );
+    return;
+  }
+  await cacheService.invalidateKey(CACHE_KEYS.subscription(userId));
 }

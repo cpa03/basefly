@@ -1,32 +1,43 @@
+import * as React from "react";
+import { CALLOUT_TOKENS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 
-interface CalloutProps {
+export interface CalloutProps extends React.HTMLAttributes<HTMLDivElement> {
   icon?: string;
   children?: React.ReactNode;
   type?: "default" | "warning" | "danger" | "info";
 }
 
 // ✅💡⚠️🚫🚨
-export function Callout({
-  children,
-  icon,
-  type = "default",
-  ...props
-}: CalloutProps) {
-  return (
-    <div
-      className={cn("mt-6 flex items-start rounded-md border px-4 py-3", {
-        "border-blue-200 bg-blue-100 text-blue-800 dark:border-blue-200/40 dark:bg-blue-900/40 dark:text-blue-200":
-          type === "info",
-        "border-red-200 bg-red-100 text-red-900 dark:border-red-200/30 dark:bg-red-900/40 dark:text-red-200":
-          type === "danger",
-        "border-orange-200 bg-orange-100 text-orange-800 dark:border-orange-400/30 dark:bg-orange-400/20 dark:text-orange-300":
-          type === "warning",
-      })}
-      {...props}
-    >
-      {icon && <span className="mr-3 text-xl">{icon}</span>}
-      <div>{children}</div>
-    </div>
-  );
-}
+export const Callout = React.memo(
+  React.forwardRef<HTMLDivElement, CalloutProps>(
+    ({ className, children, icon, type = "default", ...props }, ref) => {
+      // Determine proper semantic role for accessibility
+      const role = type === "danger" || type === "warning" ? "alert" : "status";
+
+      return (
+        <div
+          ref={ref}
+          role={role}
+          className={cn(
+            CALLOUT_TOKENS.base,
+            CALLOUT_TOKENS.animations.hoverScale,
+            CALLOUT_TOKENS.animations.activeScale,
+            CALLOUT_TOKENS.variants[type],
+            className,
+          )}
+          {...props}
+        >
+          {icon && (
+            <span className="mr-3 text-xl" aria-hidden="true">
+              {icon}
+            </span>
+          )}
+          <div>{children}</div>
+        </div>
+      );
+    },
+  ),
+);
+
+Callout.displayName = "Callout";

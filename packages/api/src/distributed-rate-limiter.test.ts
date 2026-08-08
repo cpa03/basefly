@@ -202,11 +202,69 @@ describe("DistributedRateLimiter (Redis-based)", () => {
     // Wait for initialization
     await new Promise((resolve) => setTimeout(resolve, 10));
 
+    // Mock the pipeline to return count below the limit (2 prior requests)
+    const mockPipeline = {
+      zremrangebyscore: vi.fn().mockReturnThis(),
+      zcard: vi.fn().mockReturnThis(),
+      zadd: vi.fn().mockReturnThis(),
+      expire: vi.fn().mockReturnThis(),
+      exec: vi.fn().mockResolvedValue([
+        [null, 0],
+        [null, 2], // Count < limit
+        [null, 1],
+        [null, 1],
+      ]),
+    };
+
+    limiter["redis"] = {
+      pipeline: vi.fn().mockReturnValue(mockPipeline),
+      zrem: vi.fn().mockResolvedValue(1),
+      quit: vi.fn().mockResolvedValue("OK"),
+    } as any;
+
     const result = await limiter.check("user1");
 
     expect(result.success).toBe(true);
-    expect(result.remaining).toBe(0); // 5 - 5 = 0 based on mock
+    expect(result.remaining).toBe(2); // 5 - 2 - 1 = 2
     expect(result.limit).toBe(5);
+  });
+
+  it("should reject request when at the limit (no off-by-one)", async () => {
+    limiter = new DistributedRateLimiter(
+      {
+        maxRequests: 5,
+        windowMs: 1000,
+      },
+      "redis://localhost:6379",
+    );
+
+    // Wait for initialization
+    await new Promise((resolve) => setTimeout(resolve, 10));
+
+    // Mock the pipeline to return count = limit (5 prior requests)
+    const mockPipeline = {
+      zremrangebyscore: vi.fn().mockReturnThis(),
+      zcard: vi.fn().mockReturnThis(),
+      zadd: vi.fn().mockReturnThis(),
+      expire: vi.fn().mockReturnThis(),
+      exec: vi.fn().mockResolvedValue([
+        [null, 0],
+        [null, 5], // Count == limit
+        [null, 1],
+        [null, 1],
+      ]),
+    };
+
+    limiter["redis"] = {
+      pipeline: vi.fn().mockReturnValue(mockPipeline),
+      zrem: vi.fn().mockResolvedValue(1),
+      quit: vi.fn().mockResolvedValue("OK"),
+    } as any;
+
+    const result = await limiter.check("user1");
+
+    expect(result.success).toBe(false);
+    expect(result.remaining).toBe(0);
   });
 
   it("should reject request when over limit", async () => {

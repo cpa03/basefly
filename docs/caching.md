@@ -7,13 +7,17 @@ failures).
 
 ## Overview
 
-The cache service lives in `@saasfly/common/cache` and is exported from the
-main `@saasfly/common` entry point:
+The cache service lives in `@saasfly/common/cache`:
 
 - `CacheService` - the cache implementation (get/set/getOrSet/invalidate)
 - `cacheService` - shared singleton instance for application-wide use
 - `CACHE_KEYS` - well-known cache keys shared across packages
 - `CACHE_PREFIX` - default key prefix (`cache:`)
+
+> **Server-only**: the cache module is NOT re-exported from the main
+> `@saasfly/common` entry point. `ioredis` depends on Node.js built-ins
+> (`net`/`dns`), which break client bundle builds. Always import from the
+> `@saasfly/common/cache` subpath, and only from server-side code.
 
 ## Configuration
 
@@ -29,7 +33,8 @@ to an in-memory store so the application works without Redis.
 Read a value from the cache, or compute and store it on a miss:
 
 ```ts
-import { CACHE_DURATION, CACHE_KEYS, cacheService } from "@saasfly/common";
+import { CACHE_DURATION } from "@saasfly/common";
+import { CACHE_KEYS, cacheService } from "@saasfly/common/cache";
 
 const plan = await cacheService.getOrSet(CACHE_KEYS.subscription(userId), CACHE_DURATION.FIVE_MINUTES, () => fetchSubscriptionStatus(userId));
 ```

@@ -323,9 +323,10 @@ export {
 } from "./config/cache";
 export type { CacheDurationKey, CacheControlKey } from "./config/cache";
 
-// Application-layer cache - Redis-backed with in-memory fallback
-export { CacheService, cacheService, CACHE_PREFIX, CACHE_KEYS } from "./cache";
-export type { CacheMetrics } from "./cache";
+// Application-layer cache - Redis-backed with in-memory fallback.
+// Intentionally NOT re-exported here: `ioredis` pulls Node `net`/`dns` builtins
+// into client bundles when this barrel is imported by client components.
+// Server-only consumers must use the `@saasfly/common/cache` subpath instead.
 
 // Validation configuration - centralized validation constraints
 export {

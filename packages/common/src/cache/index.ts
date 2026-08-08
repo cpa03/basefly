@@ -16,8 +16,8 @@
 
 import type { Redis } from "ioredis";
 
-import { IS_EDGE } from "../config/log-level";
 import { IS_REDIS_CONFIGURED, REDIS_URL } from "../config/env";
+import { IS_EDGE } from "../config/log-level";
 import { logger } from "../logger";
 
 /**

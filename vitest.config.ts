@@ -137,6 +137,10 @@ export default defineConfig({
         __dirname,
         "./packages/common/src/config/site.ts",
       ),
+      "@saasfly/common/cache": resolve(
+        __dirname,
+        "./packages/common/src/cache/index.ts",
+      ),
       "@saasfly/common/logger": resolve(
         __dirname,
         "./packages/common/src/logger.ts",

@@ -1,6 +1,6 @@
 import type Stripe from "stripe";
 
-import { CACHE_KEYS, cacheService } from "@saasfly/common";
+import { CACHE_KEYS, cacheService } from "@saasfly/common/cache";
 import { db, SubscriptionPlan } from "@saasfly/db";
 
 import { retrieveSubscription } from "./client";
@@ -22,7 +22,11 @@ export async function handleEvent(event: Stripe.Event) {
  * Validate that a webhook event has the required data for processing.
  * Throws IntegrationError if validation fails.
  */
-function validateWebhookEvent(event: Stripe.Event): asserts event is Stripe.Event & { data: { object: Record<string, unknown> } } {
+function validateWebhookEvent(
+  event: Stripe.Event,
+): asserts event is Stripe.Event & {
+  data: { object: Record<string, unknown> };
+} {
   if (!event.id || typeof event.id !== "string") {
     throw new IntegrationError(
       "Webhook event missing valid event ID",

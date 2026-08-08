@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { cacheService } from "@saasfly/common";
+import { cacheService } from "@saasfly/common/cache";
 import { db } from "@saasfly/db";
 
 import { stripe } from ".";

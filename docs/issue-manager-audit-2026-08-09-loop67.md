@@ -108,3 +108,44 @@ Scanned all remaining `"use client"` files in `apps/nextjs/src` (39 files) for h
 - **Status**: Repair delivered and merged (PR #1181). Issue Manager steps 1–3 remain blocked on API permissions.
 - **Waiting for human review**: `command-palette.tsx` dead-code decision (see Flagged above).
 - **Blocked (token upgrade needed)**: Steps 1–3, pnpm-in-CI cluster, CI Node-version bump, #650, #729.
+
+## Continuation Addendum (14:xx–15:xx UTC)
+
+Second continuation of loop 67; re-verified the blocker map and shipped two pushable deliverables.
+
+### 1. pnpm consistency patch artifact completed (`9d2305e`)
+
+`docs/patches/fix-pnpm-consistency-iterate-744.patch` was stale (partial npm-ci→pnpm patch from `c9455feb`, already applied on main). Replaced with the **complete verified fix** from branch `fix/issue-305-pnpm-iterate-yml` (commit `e534238`, matching `docs/ci/iterate-pnpm-fix.md` target state):
+
+- `pnpm/action-setup@v6` (run_install: false) in both architect + fixer jobs
+- `actions/setup-node@v7` + `cache: 'pnpm'`
+- `pnpm install --frozen-lockfile` replacing `npm ci || true`
+- store cache path/key → `~/.pnpm-store`, `pnpm-lock.yaml`
+
+Validated `git apply --check` clean on current main. Both patch artifacts now consistent. Applying to `.github/workflows/iterate.yml` remains blocked (no `workflows: write`).
+
+### 2. #634 [DX] TypeScript strictness — RESOLVED (full audit)
+
+All 11 tsconfigs audited this continuation:
+
+| Check                                        | Result                                                                                                   |
+| -------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| `tooling/typescript-config/base.json` strict | ✅ `"strict": true` + `noUncheckedIndexedAccess: true`                                                   |
+| All packages extend base                     | ✅ root, apps/nextjs, packages/{api,auth,common,db,stripe,ui}, tooling/{eslint,prettier,tailwind}-config |
+| Any `strict: false` override                 | ✅ none — all inherit                                                                                    |
+
+### 3. Capability re-confirmation
+
+- PR create/close works (test PR #1183 created + closed) → `pull-requests: write` confirmed.
+- Workflow enable of disabled `parallel` (id 231322818) → 403, still blocked.
+- Issue label/comment mutations → 403 (unchanged).
+
+### Action Log (continuation)
+
+| Timestamp (UTC) | Action                      | Target                                                | Result                                  |
+| --------------- | --------------------------- | ----------------------------------------------------- | --------------------------------------- |
+| 14:4x           | Permission re-probe         | `gh issue edit --add-label` (63 issues)               | 403 — all blocked                       |
+| 14:5x           | PR capability test          | test PR #1183                                         | created + closed                        |
+| 15:0x           | Patch artifact regeneration | `docs/patches/fix-pnpm-consistency-iterate-744.patch` | complete fix, `git apply --check` clean |
+| 15:0x           | Commit + push               | `9d2305e`                                             | main updated                            |
+| 15:1x           | #634 strictness audit       | all 11 tsconfigs                                      | resolved in code                        |

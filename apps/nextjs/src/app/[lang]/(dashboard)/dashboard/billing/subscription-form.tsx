@@ -1,9 +1,7 @@
-"use client";
-
 import Link from "next/link";
 
 import { cn } from "@saasfly/ui";
-import { buttonVariants } from "@saasfly/ui/button";
+import { buttonVariants } from "@saasfly/ui/button-variants";
 
 export function SubscriptionForm(props: {
   hasSubscription: boolean;

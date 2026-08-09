@@ -1,19 +1,14 @@
-From c9455feb3b14d101cadbf82cbdc2ec9b7281ddf9 Mon Sep 17 00:00:00 2001
+From e5342387c75dc58c181a892c2dbd192328182068 Mon Sep 17 00:00:00 2001
 From: cpa03 <245960241+cpa03@users.noreply.github.com>
-Date: Sun, 19 Jul 2026 14:24:38 +0000
-Subject: [PATCH] fix(ci): use pnpm install instead of npm ci in iterate.yml
+Date: Sun, 9 Aug 2026 14:34:48 +0000
+Subject: [PATCH] fix(ci): use pnpm consistently in iterate.yml - Issue #305
 
-Replace npm ci with pnpm install --frozen-lockfile for consistency
-with the project's pnpm package manager. Update cache path to
-pnpm store location and cache key to use pnpm-lock.yaml.
-
-Closes #744
 ---
- .github/workflows/iterate.yml | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ .github/workflows/iterate.yml | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
 diff --git a/.github/workflows/iterate.yml b/.github/workflows/iterate.yml
-index 9bf22ea..2afa99c 100644
+index 1dbebf9..76def64 100644
 --- a/.github/workflows/iterate.yml
 +++ b/.github/workflows/iterate.yml
 @@ -55,8 +55,8 @@ jobs:
@@ -22,23 +17,41 @@ index 9bf22ea..2afa99c 100644
              ~/.opencode
 -            ~/.npm
 -          key: opencode-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-v1
-+            ~/.local/share/pnpm/store
++            ~/.pnpm-store
 +          key: opencode-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}-v1
            restore-keys: |
              opencode-${{ runner.os }}-v1
  
-@@ -69,7 +69,7 @@ jobs:
+@@ -65,11 +65,16 @@ jobs:
+           git config --global user.name "${{ github.actor }}"
+           git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+ 
++      - uses: pnpm/action-setup@v6
++        with:
++          run_install: false
++
+       - uses: actions/setup-node@v7
          with:
            node-version: "20"
++          cache: 'pnpm'
  
 -      - run: npm ci || true
 +      - run: pnpm install --frozen-lockfile || true
  
        - name: Install OpenCode
          run: |
-@@ -339,7 +339,7 @@ jobs:
+@@ -335,11 +340,16 @@ jobs:
+           git config --global user.name "${{ github.actor }}"
+           git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+ 
++      - uses: pnpm/action-setup@v6
++        with:
++          run_install: false
++
+       - uses: actions/setup-node@v7
          with:
            node-version: "20"
++          cache: 'pnpm'
  
 -      - run: npm ci || true
 +      - run: pnpm install --frozen-lockfile || true

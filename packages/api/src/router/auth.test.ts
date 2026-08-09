@@ -1,8 +1,41 @@
-import { describe, expect, it } from "vitest";
-import { z } from "zod";
+import { describe, expect, it, vi } from "vitest";
 
-// Schema from auth.ts - empty object schema for mySubscription query
-export const mySubscriptionSchema = z.object({}).strict().optional();
+// Hoisted mock state (referenced by the vi.mock factories below).
+const mockDb = vi.hoisted(() => ({ selectFrom: vi.fn() }));
+
+// Mock Clerk server helpers to avoid server-only module side effects.
+vi.mock("@clerk/nextjs/server", () => ({
+  currentUser: vi.fn(),
+  getAuth: vi.fn(),
+}));
+
+// Mock the database before importing the router. auth.ts (and trpc.ts
+// transitively) import @saasfly/db, whose real instance requires a
+// POSTGRES_URL connection string.
+vi.mock("@saasfly/db", () => ({
+  db: mockDb,
+  SubscriptionPlan: { FREE: "FREE", PRO: "PRO", BUSINESS: "BUSINESS" },
+}));
+
+const mockLogger = vi.hoisted(() => ({
+  debug: vi.fn(),
+  info: vi.fn(),
+  warn: vi.fn(),
+  error: vi.fn(),
+}));
+
+// Mock the logger to keep test output clean.
+vi.mock("../logger", () => ({ logger: mockLogger }));
+
+// Mock next/cache (noStore) to avoid server-only side effects.
+vi.mock("next/cache", () => ({
+  unstable_noStore: vi.fn(),
+}));
+
+// Import AFTER mocks are registered. mySubscriptionSchema is imported from
+// the router so these tests exercise the actual schema used by
+// authRouter.mySubscription instead of a re-declared copy (refs #609).
+import { mySubscriptionSchema } from "./auth";
 
 describe("Auth Router - Input Validation", () => {
   describe("mySubscriptionSchema - Empty Object Validation", () => {

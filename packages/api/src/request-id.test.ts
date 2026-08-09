@@ -2,7 +2,7 @@
  * Tests for Request ID Utility
  */
 
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   createRequestContext,
@@ -50,6 +50,62 @@ describe("generateRequestId", () => {
     expect(parts[3]).toHaveLength(4);
     expect(parts[3]).toMatch(/^[89ab]/i); // Variant 1
     expect(parts[4]).toHaveLength(12);
+  });
+});
+
+describe("generateRequestId fallback (no crypto.randomUUID)", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("should use crypto.getRandomValues fallback when randomUUID is unavailable", () => {
+    vi.stubGlobal("crypto", {
+      getRandomValues: (array: Uint8Array) => {
+        for (let i = 0; i < array.length; i++) {
+          array[i] = (i * 37) % 256;
+        }
+        return array;
+      },
+    });
+
+    const requestId = generateRequestId();
+
+    expect(requestId).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+    );
+    expect(requestId).toHaveLength(36);
+  });
+
+  it("should use Math.random fallback when crypto is undefined", () => {
+    vi.stubGlobal("crypto", undefined);
+
+    const requestId = generateRequestId();
+
+    expect(requestId).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+    );
+    expect(requestId).toHaveLength(36);
+  });
+
+  it("should generate unique IDs in fallback mode", () => {
+    vi.stubGlobal("crypto", undefined);
+
+    const id1 = generateRequestId();
+    const id2 = generateRequestId();
+
+    expect(id1).not.toBe(id2);
+  });
+
+  it("should set correct version and variant bits in fallback mode", () => {
+    vi.stubGlobal("crypto", undefined);
+
+    const requestId = generateRequestId();
+    const parts = requestId.split("-");
+
+    // Version 4
+    expect(parts[2]).toMatch(/^4/);
+    // Variant 1 (8, 9, A, or B)
+    expect(parts[3]).toMatch(/^[89ab]/i);
   });
 });
 

@@ -1,11 +1,13 @@
-import type { NextRequest } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { getAuth } from "@clerk/nextjs/server";
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 
 import { createTRPCContext } from "@saasfly/api";
 import { edgeRouter } from "@saasfly/api/edge";
 import { isClerkEnabled } from "@saasfly/auth";
+import { HTTP_STATUS } from "@saasfly/common";
 
+import { validateCSRF } from "~/lib/csrf";
 import { logger } from "~/lib/logger";
 
 /**
@@ -46,8 +48,22 @@ const RATE_LIMIT_HEADERS = {
  */
 const CACHEABLE_ROUTES = ["hello.hello"];
 
-const handler = (req: NextRequest) =>
-  fetchRequestHandler({
+const handler = (req: NextRequest) => {
+  // CSRF guard: proxy.ts middleware skips /api/* routes, so cross-origin
+  // state-changing requests must be rejected here before any logic runs.
+  if (!validateCSRF(req)) {
+    logger.warn("CSRF validation failed - cross-origin request rejected", {
+      method: req.method,
+      path: req.nextUrl.pathname,
+      origin: req.headers.get("origin") ?? undefined,
+    });
+    return NextResponse.json(
+      { error: "CSRF validation failed" },
+      { status: HTTP_STATUS.FORBIDDEN },
+    );
+  }
+
+  return fetchRequestHandler({
     endpoint: "/api/trpc/edge",
     router: edgeRouter,
     req: req,
@@ -85,16 +101,13 @@ const handler = (req: NextRequest) =>
       // Security: Log only error code, message, and path — NOT the full error object
       // The error.cause may contain raw DB errors, integration details, or stack traces
       // that could leak internal system information to log consumers
-      logger.error(
-        "Error in tRPC handler (edge)",
-        undefined,
-        {
-          code: error.code,
-          path,
-          message: error.message,
-        },
-      );
+      logger.error("Error in tRPC handler (edge)", undefined, {
+        code: error.code,
+        path,
+        message: error.message,
+      });
     },
   });
+};
 
 export { handler as GET, handler as POST };

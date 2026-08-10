@@ -10,6 +10,7 @@
 - [x] bug: Unused `eslint-disable` directives in `packages/ui/src/text-generate-effect.tsx` and `packages/ui/src/typewriter-effect.tsx`.
 - [x] bug: Potential "Invalid Date" in `DashboardPage` and `ClusterItem` when `updatedAt` is null/undefined.
 - [x] bug: HTML validation error in `ClusterItem` tests (tr cannot be a child of div).
+- [x] bug: Dependency version consistency check-deps failure on ioredis (5.6.1 vs ^5.6.0).
 
 ## Verification Summary (2026-02-17)
 
@@ -33,6 +34,14 @@
 - **Additional router tests**: 175+ tests ✓
 
 ## Fixed Bugs
+
+### [x] Dependency version consistency check-deps failure on ioredis
+
+**Date**: 2026-08-10
+**File**: `packages/api/package.json`
+**Issue**: `pnpm check-deps` failed due to mismatching versions of `ioredis` across packages in the monorepo workspace. `@saasfly/common` specified `5.6.1`, while `@saasfly/api` specified `^5.6.0`.
+**Solution**: Aligned the version of `ioredis` in `packages/api/package.json` to exactly `5.6.1`.
+**Impact**: `pnpm check-deps` now passes cleanly with 0 dependency mismatches.
 
 ### [x] Build failure: buttonVariants called from server component
 

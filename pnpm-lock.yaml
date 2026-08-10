@@ -401,8 +401,8 @@ importers:
         specifier: 2.0.0-alpha.16
         version: 2.0.0-alpha.16
       ioredis:
-        specifier: ^5.6.0
-        version: 5.9.3
+        specifier: 5.6.1
+        version: 5.6.1
       next:
         specifier: 16.2.11
         version: 16.2.11(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(@types/node@26.1.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -7236,10 +7236,6 @@ packages:
 
   ioredis@5.6.1:
     resolution: {integrity: sha512-UxC0Yv1Y4WRJiGQxQkP0hfdL0/5/6YvdfOOClRgJ0qppSarkhneSa6UvkMkms0AkdGimSH3Ikqm+6mkMmX7vGA==}
-    engines: {node: '>=12.22.0'}
-
-  ioredis@5.9.3:
-    resolution: {integrity: sha512-VI5tMCdeoxZWU5vjHWsiE/Su76JGhBvWF1MJnV9ZtGltHk9BmD48oDq8Tj8haZ85aceXZMxLNDQZRVo5QKNgXA==}
     engines: {node: '>=12.22.0'}
 
   ip-address@10.4.0:
@@ -18298,20 +18294,6 @@ snapshots:
       tslib: 2.8.1
 
   ioredis@5.6.1:
-    dependencies:
-      '@ioredis/commands': 1.5.0
-      cluster-key-slot: 1.1.2
-      debug: 4.4.3
-      denque: 2.1.0
-      lodash.defaults: 4.2.0
-      lodash.isarguments: 3.1.0
-      redis-errors: 1.2.0
-      redis-parser: 3.0.0
-      standard-as-callback: 2.1.0
-    transitivePeerDependencies:
-      - supports-color
-
-  ioredis@5.9.3:
     dependencies:
       '@ioredis/commands': 1.5.0
       cluster-key-slot: 1.1.2

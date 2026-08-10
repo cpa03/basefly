@@ -324,6 +324,33 @@ export const CALLOUT_TOKENS = {
   },
 } as const;
 
+/**
+ * Accordion design tokens
+ * Centralized sizing, styling, and animations for Accordion component
+ */
+export const ACCORDION_TOKENS = {
+  /** Item border styling */
+  itemBorder: "border-b",
+  /** Trigger layout and alignment */
+  trigger: {
+    base: "flex flex-1 items-center justify-between py-4 text-left font-medium transition-all hover:underline max-sm:text-sm",
+    hoverScale: "hover:scale-[1.015]",
+    activeScale: "active:scale-[0.985]",
+    focusRing: "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  },
+  /** Content wrapper styling */
+  content: {
+    base: "overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down",
+    padding: "pb-4 pt-0",
+  },
+  /** Chevron down layout and animations */
+  chevron: {
+    size: "h-4 w-4 shrink-0",
+    transition: "transition-transform duration-200",
+    openRotation: "[&[data-state=open]>svg]:rotate-180",
+  },
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

@@ -253,8 +253,9 @@ All PRs must pass:
 3. **Type Check**: `pnpm typecheck`
 4. **Tests**: `pnpm test` with Vitest
 5. **Dependency Consistency**: `pnpm check-deps` — ensures dependency versions are consistent across all packages in the monorepo ([#726](https://github.com/cpa03/basefly/issues/726))
-6. **Dependency Audit**: `pnpm audit` (via `security-audit.yml`)
-7. **CodeQL Analysis**: SAST scan (via `codeql-analysis.yml`)
+6. **Circular Dependencies**: `pnpm check:circular` — fails CI on any circular import detected by Madge ([#488](https://github.com/cpa03/basefly/issues/488))
+7. **Dependency Audit**: `pnpm audit` (via `security-audit.yml`)
+8. **CodeQL Analysis**: SAST scan (via `codeql-analysis.yml`)
 
 ### Failure Policy
 
@@ -262,6 +263,30 @@ All PRs must pass:
 - Test failures: **Blocking** - PR cannot merge
 - Warnings: **Blocking** - Treated as errors
 - High/critical vulnerabilities: **Advisory** - Creates issue, non-blocking for PRs
+
+## Dependency Guidelines
+
+### Circular Dependency Detection
+
+Circular imports silently degrade the monorepo: they break tree-shaking, bloat bundles,
+and produce hard-to-debug runtime errors. The project enforces acyclic imports with
+[Madge](https://github.com/pahen/madge) ([#488](https://github.com/cpa03/basefly/issues/488)):
+
+- **Command**: `pnpm check:circular` — runs `madge --circular --warning --extensions ts,tsx,js,jsx,mjs,cjs apps/ packages/`
+- **Config**: `.madgerc` — detective options and exclusion regexes (e.g. `node_modules`, `dist`, `.next`)
+- **CI integration**: wired into the `ci:check` and `dx:check` script chains, so circular
+  dependencies fail the verification pipeline automatically
+- **Policy**: any new circular dependency is a blocking quality-gate failure
+
+### Authoring Rules
+
+1. Keep import graphs **acyclic** at the package boundary — never import a package from a
+   module it depends on (e.g. `packages/common` must not import from `packages/api`).
+2. When a cycle is unavoidable, extract the shared type/utility into the lowest common
+   dependency package (usually `packages/common`) instead of creating a cross-import.
+3. Run `pnpm check:circular` locally before opening a PR; the check takes ~3s.
+4. Type-only cycles are also flagged — prefer `import type` and skip-type-imports detective
+   settings (configured in `.madgerc`) to avoid false positives.
 
 ## Branch Strategy
 

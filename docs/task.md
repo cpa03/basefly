@@ -262,6 +262,7 @@ Add comprehensive tests for rate limiter to ensure API endpoint protection is pr
 ## Bugs and Errors
 
 ### Errors
+- [x] error: Dependency version consistency check-deps failure on ioredis (5.6.1 vs ^5.6.0)
 - [x] error: `plans.test.ts` failure: expected 'FREE' to be 'PRO'
 - [x] error: Build fails due to missing environment variables (STRIPE_API_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL) - *Fixed by creating .env.local file*
 - [x] error: `DashboardPage` may return undefined if `trpc.k8s.getClusters.query()` returns undefined, causing React runtime error.
@@ -2558,3 +2559,6 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [STRENGTHEN] Enhanced StatusBadge hover/lift transition to use cohesive y: -1 micro-UX for better delight and visual feedback.
 - [CONSOLIDATE] Centralized switch-specific design tokens and transitions under SWITCH_TOKENS inside @saasfly/common/src/ui-tokens.ts.
 - [STRENGTHEN] Refactored Switch component to use centralized design tokens, logical aria-label fallback for improved accessibility, and smooth spring scale tactile feedback transitions.
+- [x] error: Unresolved linting errors in CMZ self-heal scan - *Fixed by removing unused ACCORDION_TOKENS import in accordion.test.tsx*
+- [CONSOLIDATE] Centralized Accordion component styles and behaviors under ACCORDION_TOKENS design tokens inside packages/common/src/ui-tokens.ts.
+- [STRENGTHEN] Enhanced AccordionTrigger inside packages/ui/src/accordion.tsx with a pleasant, tactile hover scale and active scale spring micro-interaction.

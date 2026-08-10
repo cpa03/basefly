@@ -359,6 +359,7 @@ export {
   UI_ANIMATION,
   SWITCH_TOKENS,
   CALLOUT_TOKENS,
+  ACCORDION_TOKENS,
 } from "./ui-tokens";
 export type {
   ButtonHeight,

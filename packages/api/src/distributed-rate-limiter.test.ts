@@ -8,6 +8,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
   DistributedRateLimiter,
+  getIdentifier,
   getLimiter,
   InMemoryRateLimiter,
   rateLimitConfigs,
@@ -16,9 +17,11 @@ import {
 import { logger } from "./logger";
 
 // Create a reusable mock Redis instance factory
+let mockPing: (() => Promise<string>) | null = null;
+
 function createMockRedis() {
   return {
-    ping: vi.fn().mockResolvedValue("PONG"),
+    ping: mockPing ?? vi.fn().mockResolvedValue("PONG"),
     pipeline: vi.fn().mockReturnValue({
       zremrangebyscore: vi.fn().mockReturnThis(),
       zcard: vi.fn().mockReturnThis(),
@@ -58,6 +61,9 @@ vi.mock("./logger", () => ({
     error: vi.fn(),
   },
 }));
+
+const waitForRedisInit = () =>
+  new Promise((resolve) => setTimeout(resolve, 10));
 
 describe("InMemoryRateLimiter (Fallback)", () => {
   let limiter: InMemoryRateLimiter;
@@ -159,6 +165,20 @@ describe("InMemoryRateLimiter (Fallback)", () => {
     // Should still work - expired entries are cleaned up lazily
     const result = limiter.check("user1");
     expect(result.success).toBe(true);
+  });
+
+  it("should delete stale entries via the cleanup interval", () => {
+    limiter = new InMemoryRateLimiter({
+      maxRequests: 2,
+      windowMs: 100,
+    });
+
+    limiter.check("user1");
+
+    // Advance past windowMs * 2 so the cleanup interval removes the entry
+    vi.advanceTimersByTime(350);
+
+    expect(limiter["store"].size).toBe(0);
   });
 });
 
@@ -357,6 +377,232 @@ describe("DistributedRateLimiter (Redis-based)", () => {
 
     expect(quitSpy).toHaveBeenCalled();
   });
+
+  it("should warn and use in-memory fallback when Redis init fails (ping rejects)", async () => {
+    const errorLoggerSpy = vi
+      .spyOn(logger, "warn")
+      .mockImplementation(() => {});
+
+    // Force the ioredis mock's ping to reject
+    mockPing = () => Promise.reject(new Error("ECONNREFUSED"));
+
+    limiter = new DistributedRateLimiter(
+      {
+        maxRequests: 5,
+        windowMs: 1000,
+      },
+      "redis://localhost:6379",
+    );
+
+    await waitForRedisInit();
+
+    expect(errorLoggerSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        error: "ECONNREFUSED",
+      }),
+      "Failed to initialize Redis, using in-memory fallback",
+    );
+    expect(limiter["redis"]).toBeNull();
+
+    const result = await limiter.check("user1");
+    expect(result.success).toBe(true);
+    expect(result.remaining).toBe(4);
+
+    errorLoggerSpy.mockRestore();
+    mockPing = null;
+  });
+
+  it("should use generic message when Redis init fails with a non-Error value", async () => {
+    const errorLoggerSpy = vi
+      .spyOn(logger, "warn")
+      .mockImplementation(() => {});
+
+    // Intentionally reject with a non-Error value to exercise the defensive
+    // "Unknown error" branch in initializeRedis's catch handler.
+    // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors -- test fixture for the non-Error rejection path
+    mockPing = () => Promise.reject("connection refused");
+
+    limiter = new DistributedRateLimiter(
+      {
+        maxRequests: 5,
+        windowMs: 1000,
+      },
+      "redis://localhost:6379",
+    );
+
+    await waitForRedisInit();
+
+    expect(errorLoggerSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        error: "Unknown error",
+      }),
+      "Failed to initialize Redis, using in-memory fallback",
+    );
+
+    errorLoggerSpy.mockRestore();
+    mockPing = null;
+  });
+
+  it("should log error and fall back to in-memory when Redis pipeline exec fails at runtime", async () => {
+    const errorLoggerSpy = vi
+      .spyOn(logger, "error")
+      .mockImplementation(() => {});
+
+    limiter = new DistributedRateLimiter(
+      {
+        maxRequests: 5,
+        windowMs: 1000,
+      },
+      "redis://localhost:6379",
+    );
+
+    // Wait for initialization
+    await new Promise((resolve) => setTimeout(resolve, 10));
+
+    // Mock pipeline exec to reject, simulating a Redis runtime failure
+    limiter["redis"] = {
+      pipeline: vi.fn().mockReturnValue({
+        zremrangebyscore: vi.fn().mockReturnThis(),
+        zcard: vi.fn().mockReturnThis(),
+        zadd: vi.fn().mockReturnThis(),
+        expire: vi.fn().mockReturnThis(),
+        exec: vi.fn().mockRejectedValue(new Error("Connection lost")),
+      }),
+      zrem: vi.fn().mockResolvedValue(1),
+      quit: vi.fn().mockResolvedValue("OK"),
+    } as any;
+
+    const result = await limiter.check("user1");
+
+    expect(errorLoggerSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        error: "Connection lost",
+        identifier: "user1",
+      }),
+      "Redis error, falling back to in-memory",
+    );
+    expect(result.success).toBe(true);
+    expect(result.remaining).toBe(4);
+
+    errorLoggerSpy.mockRestore();
+  });
+
+  it("should treat missing pipeline result as zero count and allow the request", async () => {
+    limiter = new DistributedRateLimiter(
+      {
+        maxRequests: 5,
+        windowMs: 1000,
+      },
+      "redis://localhost:6379",
+    );
+
+    // Wait for initialization
+    await new Promise((resolve) => setTimeout(resolve, 10));
+
+    // exec resolves with a result that lacks the zcard entry
+    limiter["redis"] = {
+      pipeline: vi.fn().mockReturnValue({
+        zremrangebyscore: vi.fn().mockReturnThis(),
+        zcard: vi.fn().mockReturnThis(),
+        zadd: vi.fn().mockReturnThis(),
+        expire: vi.fn().mockReturnThis(),
+        exec: vi.fn().mockResolvedValue([[null, 0], null, null, null]),
+      }),
+      zrem: vi.fn().mockResolvedValue(1),
+      quit: vi.fn().mockResolvedValue("OK"),
+    } as any;
+
+    const result = await limiter.check("user1");
+
+    expect(result.success).toBe(true);
+    expect(result.remaining).toBe(4);
+  });
+
+  it("should handle non-Error thrown values from Redis with a generic message", async () => {
+    const errorLoggerSpy = vi
+      .spyOn(logger, "error")
+      .mockImplementation(() => {});
+
+    limiter = new DistributedRateLimiter(
+      {
+        maxRequests: 5,
+        windowMs: 1000,
+      },
+      "redis://localhost:6379",
+    );
+
+    // Wait for initialization
+    await new Promise((resolve) => setTimeout(resolve, 10));
+
+    limiter["redis"] = {
+      pipeline: vi.fn().mockReturnValue({
+        zremrangebyscore: vi.fn().mockReturnThis(),
+        zcard: vi.fn().mockReturnThis(),
+        zadd: vi.fn().mockReturnThis(),
+        expire: vi.fn().mockReturnThis(),
+        exec: vi.fn().mockRejectedValue("raw string error"),
+      }),
+      zrem: vi.fn().mockResolvedValue(1),
+      quit: vi.fn().mockResolvedValue("OK"),
+    } as any;
+
+    const result = await limiter.check("user1");
+
+    expect(errorLoggerSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        error: "Unknown error",
+        identifier: "user1",
+      }),
+      "Redis error, falling back to in-memory",
+    );
+    expect(result.success).toBe(true);
+
+    errorLoggerSpy.mockRestore();
+  });
+  it("should fall back to in-memory reset when Redis is not initialized", async () => {
+    limiter = new DistributedRateLimiter({
+      maxRequests: 2,
+      windowMs: 1000,
+    });
+
+    // No Redis URL provided -> redis stays null
+    await limiter.check("user1");
+    await limiter.check("user1");
+    expect((await limiter.check("user1")).success).toBe(false);
+
+    await limiter.reset("user1");
+
+    const result = await limiter.check("user1");
+    expect(result.success).toBe(true);
+    expect(result.remaining).toBe(1);
+  });
+
+  it("should fall back to in-memory reset when Redis del fails", async () => {
+    limiter = new DistributedRateLimiter(
+      {
+        maxRequests: 2,
+        windowMs: 1000,
+      },
+      "redis://localhost:6379",
+    );
+
+    // Wait for initialization
+    await new Promise((resolve) => setTimeout(resolve, 10));
+
+    await limiter.check("user1");
+    await limiter.check("user1");
+
+    // Mock del to reject, simulating a Redis runtime failure
+    limiter["redis"] = {
+      del: vi.fn().mockRejectedValue(new Error("Connection lost")),
+      quit: vi.fn().mockResolvedValue("OK"),
+    } as any;
+
+    await expect(limiter.reset("user1")).resolves.toBeUndefined();
+
+    const result = await limiter.check("user1");
+    expect(result.success).toBe(true);
+  });
 });
 
 describe("SyncRateLimiter (Backward-compatible wrapper)", () => {
@@ -415,6 +661,23 @@ describe("SyncRateLimiter (Backward-compatible wrapper)", () => {
     });
 
     expect(() => limiter.destroy()).not.toThrow();
+  });
+
+  it("resetAsync should use only the fallback when Redis is not configured", async () => {
+    limiter = new SyncRateLimiter({
+      maxRequests: 2,
+      windowMs: 1000,
+    });
+
+    await limiter.checkAsync("user1");
+    await limiter.checkAsync("user1");
+    expect((await limiter.checkAsync("user1")).success).toBe(false);
+
+    await limiter.resetAsync("user1");
+
+    const result = await limiter.checkAsync("user1");
+    expect(result.success).toBe(true);
+    expect(result.remaining).toBe(1);
   });
 });
 
@@ -568,5 +831,46 @@ describe("Logging", () => {
 
     const callArgs = loggerWarnSpy.mock.calls[0];
     expect(callArgs?.[0]).toHaveProperty("resetAt");
+  });
+});
+
+describe("getIdentifier()", () => {
+  it("should return user-based identifier when userId is provided", () => {
+    expect(getIdentifier("user_123")).toBe("user:user_123");
+  });
+
+  it("should return first IP from x-forwarded-for header", () => {
+    const req = {
+      headers: {
+        get: (name: string) =>
+          name === "x-forwarded-for" ? "203.0.113.1, 198.51.100.2" : null,
+      },
+    } as any;
+
+    expect(getIdentifier(null, req)).toBe("ip:203.0.113.1");
+  });
+
+  it("should fall back to x-real-ip when x-forwarded-for is absent", () => {
+    const req = {
+      headers: {
+        get: (name: string) => (name === "x-real-ip" ? "203.0.113.9" : null),
+      },
+    } as any;
+
+    expect(getIdentifier(null, req)).toBe("ip:203.0.113.9");
+  });
+
+  it("should fall back to ip:unknown when request has no identifying headers", () => {
+    const req = {
+      headers: {
+        get: () => null,
+      },
+    } as any;
+
+    expect(getIdentifier(null, req)).toBe("ip:unknown");
+  });
+
+  it("should return unknown when no identifier can be derived", () => {
+    expect(getIdentifier(null, undefined)).toBe("unknown");
   });
 });

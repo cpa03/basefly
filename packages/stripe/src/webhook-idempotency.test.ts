@@ -290,6 +290,22 @@ describe("Webhook Idempotency", () => {
       expect(result).toBe(3);
     });
 
+    it("should return 0 when numDeletedRows is undefined (driver fallback)", async () => {
+      const mockDelete = vi.fn().mockResolvedValue({});
+      (vi.mocked(db.deleteFrom) as any).mockReturnValue({
+        where: vi.fn().mockReturnValue({
+          where: vi.fn().mockReturnValue({
+            executeTakeFirst: mockDelete,
+          } as any),
+        } as any),
+      } as any);
+
+      const result = await cleanupOldWebhookEvents(90);
+
+      expect(result).toBe(0);
+      expect(mockDelete).toHaveBeenCalled();
+    });
+
     it("should return 0 on database error", async () => {
       (vi.mocked(db.deleteFrom) as any).mockReturnValue({
         where: vi.fn().mockReturnValue({

@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 
 import { getCurrentUser } from "@saasfly/auth";
-import { isAdminEmail } from "@saasfly/common";
 import {
   Card,
   CardContent,
@@ -13,6 +12,7 @@ import { Cluster, CreditCard, Dashboard, Users } from "@saasfly/ui/icons";
 
 import { StatusBadge } from "@saasfly/ui/status-badge";
 
+import { isAdminUser } from "~/lib/admin-access";
 import { trpc } from "~/trpc/server";
 
 export const metadata = {
@@ -40,7 +40,7 @@ export default async function AdminDashboardPage() {
     redirect("/login");
   }
 
-  if (!isAdminEmail(user.email)) {
+  if (!(await isAdminUser(user))) {
     redirect("/dashboard");
   }
 

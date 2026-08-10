@@ -159,6 +159,12 @@ which remains only as a temporary migration path.
 5. **Audit logging**: Every granted admin/role access emits a structured audit log entry
    (`audit: true`, `security: true`, `action: "admin_access_granted"` / `"role_access_granted"`)
    with `userId`, `requestId`, and `role` for traceability.
+6. **Page-level guards**: Admin pages (`apps/nextjs/src/app/admin/layout.tsx`,
+   `apps/nextjs/src/app/admin/dashboard/page.tsx`) use `isAdminUser()` from
+   `apps/nextjs/src/lib/admin-access.ts`, which mirrors the server-side resolution order:
+   database `User.role` first, `ADMIN_EMAIL` allowlist as fallback. A user with
+   `role = ADMIN` in the database is granted admin UI access even if not listed in
+   `ADMIN_EMAIL`.
 
 ### Usage Example
 

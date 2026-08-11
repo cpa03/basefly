@@ -104,7 +104,7 @@ See more documentation at <https://docs.saasfly.io>
 
 Before you start, make sure you have the following installed:
 
-HW|1. [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/) - For containerized deployment
+1. [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/) - For containerized deployment
 
 - Alternative to local Node.js/PostgreSQL setup
 

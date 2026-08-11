@@ -351,6 +351,46 @@ export const ACCORDION_TOKENS = {
   },
 } as const;
 
+/**
+ * Select design tokens
+ * Centralized sizing, styling, and transitions for Select component
+ */
+export const SELECT_TOKENS = {
+  trigger: {
+    base: "group flex w-full items-center justify-between rounded-md border border-input bg-transparent text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+    size: "h-10 px-3 py-2",
+    focusRing: "focus:ring-2 focus:ring-ring focus:ring-offset-2",
+    hoverScale: "hover:scale-[1.01]",
+    activeScale: "active:scale-[0.99]",
+    transition: "transition-all duration-200 ease-out",
+  },
+  chevron: {
+    size: "h-4 w-4 shrink-0",
+    opacity: "opacity-50",
+    transition: "transition-transform duration-200 ease-out",
+    openRotation: "group-data-[state=open]:rotate-180",
+  },
+  content: {
+    base: "relative z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover text-popover-foreground shadow-md animate-in fade-in-80",
+    popperTranslate: "translate-y-1",
+  },
+  viewport: {
+    base: "relative p-1",
+    popperSize: "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]",
+  },
+  label: {
+    base: "py-1.5 pl-8 pr-2 text-sm font-semibold",
+  },
+  item: {
+    base: "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+    indicatorWrapper: "absolute left-2 flex h-3.5 w-3.5 items-center justify-center",
+    indicatorSize: "h-4 w-4",
+  },
+  separator: {
+    base: "-mx-1 my-1 h-px bg-muted",
+  },
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

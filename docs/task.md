@@ -4,6 +4,50 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Centralized Select component styling and tokens under SELECT_TOKENS
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/select.tsx`
+
+**Description**:
+Centralized Select component styling and tokens under `SELECT_TOKENS` inside `packages/common/src/ui-tokens.ts` and updated the component to reference them, eliminating hardcoded styles.
+
+**Success Criteria**:
+- [x] Defined `SELECT_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `SELECT_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/select.tsx` to reference `SELECT_TOKENS` across all sub-components.
+
+#### Task: [STRENGTHEN] Enhanced SelectTrigger component with a tactile, spring scale micro-interaction
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `packages/ui/src/select.tsx`
+
+**Description**:
+Enhanced `SelectTrigger` component with a tactile, spring scale micro-interaction (`hover:scale-[1.01] active:scale-[0.99]`) and smooth transitions to improve physical feedback and usability.
+
+**Success Criteria**:
+- [x] Implemented tactile scale transitions inside `SelectTrigger`.
+- [x] Added unit tests inside `packages/ui/src/select.test.tsx` to verify transitions, states, and token classes.
+
+---
+
+#### Task: [x] Full Workspace Validation Scan
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Validation
+- **Files**: Workspace Root
+
+**Description**:
+Verify that the workspace is 100% clean and healthy across typecheck, linting, dependencies, and test suite.
+
+**Success Criteria**:
+- [x] Run `pnpm run typecheck` - 100% passing
+- [x] Run `pnpm run lint` - 0 errors, 0 warnings
+- [x] Run `pnpm check-deps` - 0 issues
+- [x] Run `pnpm test` - 1703 tests passing
+
 #### Task: [CONSOLIDATE] Modularize Input Component Styles
 - **Status**: ✅ Completed
 - **Priority**: High

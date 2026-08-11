@@ -360,6 +360,7 @@ export {
   SWITCH_TOKENS,
   CALLOUT_TOKENS,
   ACCORDION_TOKENS,
+  SELECT_TOKENS,
 } from "./ui-tokens";
 export type {
   ButtonHeight,

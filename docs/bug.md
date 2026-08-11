@@ -2,6 +2,7 @@
 
 ## Active Bugs
 
+- [x] bug: Thorough loop verification on 2026-08-10 - 1703 tests passing, zero typescript or lint warnings.
 - [x] bug: Healthy state verified - 100% test pass, typecheck and lint clean with no console warnings.
 - [x] bug: Switch component in packages/ui/src/switch.tsx lacks proper accessibility logical fallback for aria-label and does not use centralized design tokens.
 - [x] bug: Build failure - `buttonVariants()` called from server component in docs pages.

@@ -88,6 +88,7 @@ export const RECOMMENDED_ENV_VARS = [
   "RESEND_API_KEY",
   "ADMIN_EMAIL",
   "REDIS_URL",
+  "SENTRY_DSN",
 ] as const;
 
 /**

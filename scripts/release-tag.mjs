@@ -25,6 +25,10 @@ import { execFileSync } from "node:child_process";
 import { readFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+const { logPlain, logInfo, logSuccess, logWarning, logError } = require("../tooling/qa/cli-output.js");
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const args = process.argv.slice(2);
@@ -32,7 +36,7 @@ const dryRun = args.includes("--dry-run");
 const skipVerify = args.includes("--skip-verify");
 
 function fail(message) {
-  console.error(`\n❌ release-tag: ${message}`);
+  logError(`\nrelease-tag: ${message}`);
   process.exit(1);
 }
 
@@ -40,8 +44,8 @@ function git(argsList) {
   return execFileSync("git", argsList, { encoding: "utf8" }).trim();
 }
 
-console.log("🔖 Release tag script");
-console.log("═════════════════════\n");
+logPlain("🔖 Release tag script");
+logPlain("═════════════════════\n");
 
 // 1. Version from package.json
 const pkg = JSON.parse(readFileSync(resolve(rootDir, "package.json"), "utf8"));
@@ -50,7 +54,7 @@ if (!version || !/^\d+\.\d+\.\d+$/.test(version)) {
   fail(`invalid version "${version}" in package.json (expected semver X.Y.Z)`);
 }
 const tagName = `v${version}`;
-console.log(`Target tag: ${tagName}`);
+logPlain(`Target tag: ${tagName}`);
 
 // 2. Working tree must be clean for tracked files
 let dirty;
@@ -62,14 +66,14 @@ try {
 if (dirty) {
   fail(`working tree has uncommitted changes to tracked files:\n${dirty}`);
 }
-console.log("✅ Working tree clean (tracked files)");
+logSuccess("Working tree clean (tracked files)");
 
 // 3. Tag must not already exist
 const existingTag = git(["tag", "-l", tagName]);
 if (existingTag) {
   fail(`tag ${tagName} already exists — refusing to overwrite`);
 }
-console.log(`✅ Tag ${tagName} does not exist yet`);
+logSuccess(`Tag ${tagName} does not exist yet`);
 
 // 4. CHANGELOG entry must exist for this version
 const changelogPath = resolve(rootDir, "CHANGELOG.md");
@@ -84,25 +88,25 @@ if (!entryPattern.test(changelog)) {
     `CHANGELOG.md has no "## [${version}]" entry — add one (Keep a Changelog) before releasing`,
   );
 }
-console.log(`✅ CHANGELOG.md contains a [${version}] entry`);
+logSuccess(`CHANGELOG.md contains a [${version}] entry`);
 
 // 5. Verification gate
 if (dryRun) {
-  console.log(
-    "\nℹ️  --dry-run: structural checks passed. In real mode the gate " +
+  logInfo(
+    "\n--dry-run: structural checks passed. In real mode the gate " +
       "`pnpm dx:check` (typecheck + lint + test + security:audit + check-deps) " +
       "runs before the tag is created.",
   );
-  console.log(`✅ DRY RUN complete — would create annotated tag: ${tagName}\n`);
+  logSuccess(`DRY RUN complete — would create annotated tag: ${tagName}\n`);
   process.exit(0);
 }
 
 if (skipVerify) {
-  console.log(
-    "\n⚠️  --skip-verify: SKIPPING the verification gate — use ONLY for emergency hotfixes.",
+  logWarning(
+    "\n--skip-verify: SKIPPING the verification gate — use ONLY for emergency hotfixes.",
   );
 } else {
-  console.log("\n🔍 Running verification gate: pnpm dx:check ...");
+  logInfo("\nRunning verification gate: pnpm dx:check ...");
   try {
     execFileSync("pnpm", ["dx:check"], { stdio: "inherit" });
   } catch {
@@ -111,7 +115,7 @@ if (skipVerify) {
         "Use --skip-verify only for emergency hotfixes with human sign-off.",
     );
   }
-  console.log("✅ Verification gate passed");
+  logSuccess("Verification gate passed");
 }
 
 // 6. Create the annotated tag
@@ -122,7 +126,7 @@ try {
 } catch {
   fail("failed to create tag (see git error above)");
 }
-console.log(`\n✅ Created annotated tag ${tagName}`);
-console.log("Next steps (manual, per docs/release-process.md):");
-console.log(`  git push origin ${tagName}`);
-console.log("  git push origin main\n");
+logSuccess(`\nCreated annotated tag ${tagName}`);
+logPlain("Next steps (manual, per docs/release-process.md):");
+logPlain(`  git push origin ${tagName}`);
+logPlain("  git push origin main\n");

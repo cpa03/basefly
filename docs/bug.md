@@ -2,6 +2,7 @@
 
 ## Active Bugs
 
+- [x] bug: Repo-wide Vercel deployment failures (30+ consecutive incl. production) — root cause Node 20 vs 22 (Next.js 16.2.11 `webidl.util.markAsUncloneable`); fixed locally by Node 22.14.0, logged in loop 83 audit report.
 - [x] bug: Thorough loop verification on 2026-08-10 - 1703 tests passing, zero typescript or lint warnings.
 - [x] bug: Healthy state verified - 100% test pass, typecheck and lint clean with no console warnings.
 - [x] bug: Switch component in packages/ui/src/switch.tsx lacks proper accessibility logical fallback for aria-label and does not use centralized design tokens.
@@ -147,6 +148,7 @@ Fixed critical TypeScript error and cleaned up code quality issues:
 7. `apps/nextjs/src/components/comments.tsx` - Replaced img with Image
 8. `apps/nextjs/src/components/wobble.tsx` - Replaced img with Image
 9. `apps/nextjs/next.config.mjs` - Added image domains
+
 - [x] bug: ESLint warnings about unused eslint-disable directives in packages/ui.
 - [x] bug: Many "Unsafe call" and "Unsafe member access" lint errors in apps/nextjs related to tRPC usage.
 - [x] bug: Build failure in apps/nextjs (edge runtime) because ioredis is imported in distributed-rate-limiter.ts, which is used by the edge router.

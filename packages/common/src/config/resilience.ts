@@ -105,7 +105,68 @@ export interface RateLimitConfig {
 
 export type EndpointType = "read" | "write" | "stripe";
 
-export const RATE_LIMIT_DEFAULTS: Record<EndpointType, RateLimitConfig> = {
+/**
+ * Environment variable names for per-endpoint rate limit overrides.
+ * Each endpoint can be tuned independently without code changes.
+ */
+export const RATE_LIMIT_ENV_VARS: Record<
+  EndpointType,
+  { maxRequests: string; windowMs: string }
+> = {
+  read: {
+    maxRequests: "RATE_LIMIT_READ_MAX_REQUESTS",
+    windowMs: "RATE_LIMIT_READ_WINDOW_MS",
+  },
+  write: {
+    maxRequests: "RATE_LIMIT_WRITE_MAX_REQUESTS",
+    windowMs: "RATE_LIMIT_WRITE_WINDOW_MS",
+  },
+  stripe: {
+    maxRequests: "RATE_LIMIT_STRIPE_MAX_REQUESTS",
+    windowMs: "RATE_LIMIT_STRIPE_WINDOW_MS",
+  },
+};
+
+/**
+ * Parses a positive integer from an environment variable.
+ * Falls back to the default when the variable is unset, empty, or invalid.
+ */
+export function parsePositiveIntEnv(
+  value: string | undefined,
+  fallback: number,
+): number {
+  if (value === undefined || value.trim() === "") {
+    return fallback;
+  }
+  if (!/^\d+$/.test(value.trim())) {
+    return fallback;
+  }
+  const parsed = Number.parseInt(value, 10);
+  if (parsed <= 0) {
+    return fallback;
+  }
+  return parsed;
+}
+
+/**
+ * Builds the rate limit config for an endpoint, applying environment
+ * variable overrides on top of the hardcoded defaults.
+ */
+function resolveRateLimitConfig(
+  endpoint: EndpointType,
+  defaults: RateLimitConfig,
+): RateLimitConfig {
+  const env = RATE_LIMIT_ENV_VARS[endpoint];
+  return {
+    maxRequests: parsePositiveIntEnv(
+      process.env[env.maxRequests],
+      defaults.maxRequests,
+    ),
+    windowMs: parsePositiveIntEnv(process.env[env.windowMs], defaults.windowMs),
+  };
+}
+
+const RATE_LIMIT_HARDCODED_DEFAULTS: Record<EndpointType, RateLimitConfig> = {
   read: {
     maxRequests: 100,
     windowMs: 60 * 1000,
@@ -118,6 +179,22 @@ export const RATE_LIMIT_DEFAULTS: Record<EndpointType, RateLimitConfig> = {
     maxRequests: 10,
     windowMs: 60 * 1000,
   },
+};
+
+/**
+ * Effective per-endpoint rate limit configuration.
+ * Hardcoded defaults can be overridden via environment variables:
+ * - RATE_LIMIT_READ_MAX_REQUESTS / RATE_LIMIT_READ_WINDOW_MS
+ * - RATE_LIMIT_WRITE_MAX_REQUESTS / RATE_LIMIT_WRITE_WINDOW_MS
+ * - RATE_LIMIT_STRIPE_MAX_REQUESTS / RATE_LIMIT_STRIPE_WINDOW_MS
+ */
+export const RATE_LIMIT_DEFAULTS: Record<EndpointType, RateLimitConfig> = {
+  read: resolveRateLimitConfig("read", RATE_LIMIT_HARDCODED_DEFAULTS.read),
+  write: resolveRateLimitConfig("write", RATE_LIMIT_HARDCODED_DEFAULTS.write),
+  stripe: resolveRateLimitConfig(
+    "stripe",
+    RATE_LIMIT_HARDCODED_DEFAULTS.stripe,
+  ),
 };
 
 export const RATE_LIMIT_PREFIX = "ratelimit:";

@@ -127,6 +127,27 @@ Rate limits are configured in `packages/common/src/config/resilience.ts` (`RATE_
 
 Redis keys are namespaced with the `ratelimit:` prefix (`RATE_LIMIT_PREFIX`) and expire automatically after the configured window.
 
+### 5.1 Per-endpoint overrides via environment variables
+
+Each endpoint's limit and window can be overridden at deployment time via environment variables, without code changes. Invalid or empty values fall back to the hardcoded defaults.
+
+| Env var                          | Default | Description                         |
+| -------------------------------- | ------- | ----------------------------------- |
+| `RATE_LIMIT_READ_MAX_REQUESTS`   | `100`   | Max read requests per window        |
+| `RATE_LIMIT_READ_WINDOW_MS`      | `60000` | Read window length (milliseconds)   |
+| `RATE_LIMIT_WRITE_MAX_REQUESTS`  | `20`    | Max write requests per window       |
+| `RATE_LIMIT_WRITE_WINDOW_MS`     | `60000` | Write window length (milliseconds)  |
+| `RATE_LIMIT_STRIPE_MAX_REQUESTS` | `10`    | Max Stripe requests per window      |
+| `RATE_LIMIT_STRIPE_WINDOW_MS`    | `60000` | Stripe window length (milliseconds) |
+
+Example (`.env.local`):
+
+```bash
+# Allow 50 read requests per 30 seconds
+RATE_LIMIT_READ_MAX_REQUESTS="50"
+RATE_LIMIT_READ_WINDOW_MS="30000"
+```
+
 ## 6. Verification
 
 ### 6.1 Check Redis connectivity

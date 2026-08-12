@@ -1,9 +1,11 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   CIRCUIT_BREAKER_CONFIG,
   DEFAULT_RETRYABLE_ERRORS,
+  parsePositiveIntEnv,
   RATE_LIMIT_DEFAULTS,
+  RATE_LIMIT_ENV_VARS,
   RETRY_CONFIG,
   STRIPE_CONFIG,
   TIMEOUT_CONFIG,
@@ -176,6 +178,110 @@ describe("Resilience Configuration", () => {
       expect(RATE_LIMIT_DEFAULTS.write.windowMs).toBe(
         RATE_LIMIT_DEFAULTS.stripe.windowMs,
       );
+    });
+  });
+
+  describe("RATE_LIMIT_ENV_VARS", () => {
+    it("should define env var names for every endpoint", () => {
+      expect(RATE_LIMIT_ENV_VARS.read.maxRequests).toBe(
+        "RATE_LIMIT_READ_MAX_REQUESTS",
+      );
+      expect(RATE_LIMIT_ENV_VARS.read.windowMs).toBe(
+        "RATE_LIMIT_READ_WINDOW_MS",
+      );
+      expect(RATE_LIMIT_ENV_VARS.write.maxRequests).toBe(
+        "RATE_LIMIT_WRITE_MAX_REQUESTS",
+      );
+      expect(RATE_LIMIT_ENV_VARS.write.windowMs).toBe(
+        "RATE_LIMIT_WRITE_WINDOW_MS",
+      );
+      expect(RATE_LIMIT_ENV_VARS.stripe.maxRequests).toBe(
+        "RATE_LIMIT_STRIPE_MAX_REQUESTS",
+      );
+      expect(RATE_LIMIT_ENV_VARS.stripe.windowMs).toBe(
+        "RATE_LIMIT_STRIPE_WINDOW_MS",
+      );
+    });
+  });
+
+  describe("parsePositiveIntEnv", () => {
+    afterEach(() => {
+      vi.unstubAllEnvs();
+    });
+
+    it("should return fallback when env var is undefined", () => {
+      expect(parsePositiveIntEnv(undefined, 42)).toBe(42);
+    });
+
+    it("should return fallback when env var is empty", () => {
+      expect(parsePositiveIntEnv("", 42)).toBe(42);
+      expect(parsePositiveIntEnv("   ", 42)).toBe(42);
+    });
+
+    it("should parse a valid positive integer", () => {
+      expect(parsePositiveIntEnv("10", 42)).toBe(10);
+    });
+
+    it("should return fallback for zero and negative values", () => {
+      expect(parsePositiveIntEnv("0", 42)).toBe(42);
+      expect(parsePositiveIntEnv("-5", 42)).toBe(42);
+    });
+
+    it("should return fallback for non-numeric values", () => {
+      expect(parsePositiveIntEnv("abc", 42)).toBe(42);
+      expect(parsePositiveIntEnv("1.5", 42)).toBe(42);
+    });
+  });
+
+  describe("RATE_LIMIT_DEFAULTS with env overrides", () => {
+    afterEach(() => {
+      vi.unstubAllEnvs();
+      vi.resetModules();
+    });
+
+    async function loadWithEnv(env: Record<string, string>) {
+      for (const [key, value] of Object.entries(env)) {
+        vi.stubEnv(key, value);
+      }
+      vi.resetModules();
+      return import("./resilience");
+    }
+
+    it("should override read maxRequests via env", async () => {
+      const mod = await loadWithEnv({
+        RATE_LIMIT_READ_MAX_REQUESTS: "250",
+      });
+      expect(mod.RATE_LIMIT_DEFAULTS.read.maxRequests).toBe(250);
+    });
+
+    it("should override read windowMs via env", async () => {
+      const mod = await loadWithEnv({
+        RATE_LIMIT_READ_WINDOW_MS: "30000",
+      });
+      expect(mod.RATE_LIMIT_DEFAULTS.read.windowMs).toBe(30000);
+    });
+
+    it("should override write and stripe limits independently", async () => {
+      const mod = await loadWithEnv({
+        RATE_LIMIT_WRITE_MAX_REQUESTS: "5",
+        RATE_LIMIT_STRIPE_MAX_REQUESTS: "3",
+      });
+      expect(mod.RATE_LIMIT_DEFAULTS.write.maxRequests).toBe(5);
+      expect(mod.RATE_LIMIT_DEFAULTS.stripe.maxRequests).toBe(3);
+    });
+
+    it("should fall back to defaults when env value is invalid", async () => {
+      const mod = await loadWithEnv({
+        RATE_LIMIT_READ_MAX_REQUESTS: "not-a-number",
+      });
+      expect(mod.RATE_LIMIT_DEFAULTS.read.maxRequests).toBe(100);
+    });
+
+    it("should keep defaults when no env vars are set", async () => {
+      vi.resetModules();
+      const mod = await import("./resilience");
+      expect(mod.RATE_LIMIT_DEFAULTS.read.maxRequests).toBe(100);
+      expect(mod.RATE_LIMIT_DEFAULTS.read.windowMs).toBe(60000);
     });
   });
 

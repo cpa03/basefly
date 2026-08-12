@@ -391,6 +391,32 @@ export const SELECT_TOKENS = {
   },
 } as const;
 
+/**
+ * Checkbox design tokens
+ * Centralized styles, transitions, and scales for the Checkbox component
+ */
+export const CHECKBOX_TOKENS = {
+  root: {
+    base: "peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+    states: {
+      checked: "data-[state=checked]:scale-110 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:animate-in data-[state=checked]:zoom-in-50",
+      unchecked: "data-[state=unchecked]:scale-100",
+    },
+    hoverScale: "hover:scale-[1.05]",
+    activeScale: "active:scale-[0.95]",
+  },
+  indicator: {
+    base: "flex items-center justify-center text-current transition-transform duration-200 ease-out",
+    states: {
+      checked: "data-[state=checked]:scale-100",
+      unchecked: "data-[state=unchecked]:scale-0",
+    },
+  },
+  iconSize: "h-4 w-4",
+  defaultAriaLabel: "Toggle checkbox",
+  transition: "duration-200 ease-out",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

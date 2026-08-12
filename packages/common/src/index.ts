@@ -361,6 +361,7 @@ export {
   CALLOUT_TOKENS,
   ACCORDION_TOKENS,
   SELECT_TOKENS,
+  CHECKBOX_TOKENS,
 } from "./ui-tokens";
 export type {
   ButtonHeight,

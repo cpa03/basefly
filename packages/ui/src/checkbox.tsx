@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
+import { CHECKBOX_TOKENS } from "@saasfly/common";
 import { Check } from "lucide-react";
 
 import { cn } from "./utils/cn";
@@ -10,24 +11,36 @@ const Checkbox = React.memo(
   React.forwardRef<
     React.ElementRef<typeof CheckboxPrimitive.Root>,
     React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
-  >(({ className, ...props }, ref) => (
-    <CheckboxPrimitive.Root
-      ref={ref}
-      className={cn(
-        "peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:scale-110 data-[state=unchecked]:scale-100 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:animate-in data-[state=checked]:zoom-in-50",
-        className,
-      )}
-      {...props}
-    >
-      <CheckboxPrimitive.Indicator
+  >(({ className, "aria-label": ariaLabel, ...props }, ref) => {
+    const finalAriaLabel = ariaLabel ?? (props["aria-labelledby"] ? undefined : CHECKBOX_TOKENS.defaultAriaLabel);
+
+    return (
+      <CheckboxPrimitive.Root
+        ref={ref}
+        aria-label={finalAriaLabel}
         className={cn(
-          "flex items-center justify-center text-current transition-transform duration-200 ease-out data-[state=checked]:scale-100 data-[state=unchecked]:scale-0",
+          CHECKBOX_TOKENS.root.base,
+          CHECKBOX_TOKENS.root.states.checked,
+          CHECKBOX_TOKENS.root.states.unchecked,
+          CHECKBOX_TOKENS.root.hoverScale,
+          CHECKBOX_TOKENS.root.activeScale,
+          CHECKBOX_TOKENS.transition,
+          className,
         )}
+        {...props}
       >
-        <Check className="h-4 w-4" />
-      </CheckboxPrimitive.Indicator>
-    </CheckboxPrimitive.Root>
-  )),
+        <CheckboxPrimitive.Indicator
+          className={cn(
+            CHECKBOX_TOKENS.indicator.base,
+            CHECKBOX_TOKENS.indicator.states.checked,
+            CHECKBOX_TOKENS.indicator.states.unchecked,
+          )}
+        >
+          <Check className={CHECKBOX_TOKENS.iconSize} />
+        </CheckboxPrimitive.Indicator>
+      </CheckboxPrimitive.Root>
+    );
+  }),
 );
 Checkbox.displayName = CheckboxPrimitive.Root.displayName;
 

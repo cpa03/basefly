@@ -402,9 +402,23 @@ Based on router files:
 
 ### Current Patterns
 
-- Individual operations in webhooks
-- No observed multi-step transactions
-- Stripe webhook handlers perform sequential updates
+Multi-step operations use Kysely's `db.transaction()` API to guarantee atomicity
+and automatic rollback on failure:
+
+- **Stripe webhook handlers** (`packages/stripe/src/webhooks.ts`): `handleCheckoutSessionCompleted`
+  and `handleInvoicePaymentSucceeded` wrap the customer select + update in a single
+  transaction so a partial update can never be persisted.
+- **User deletion** (`packages/db/user-deletion.ts`): `deleteUser` and `softDeleteUser`
+  run the cascade (soft-delete clusters → delete customer → delete user) inside one
+  transaction; any failure rolls back the entire operation.
+- **RLS-aware operations** (`packages/db/rls-middleware.ts`): the `rlsTransaction`
+  helper sets the `app.current_user_id` session variable and executes the callback
+  within a single transaction.
+- **Seeding** (`packages/db/seed.ts`): `seed()` and `clearSeedData()` wrap their
+  multi-table writes in transactions.
+
+Rollback behavior is verified by tests (`packages/stripe/src/webhooks.test.ts` —
+"transaction atomicity" suite, including the rollback-on-error case).
 
 ### User Deletion Strategy
 

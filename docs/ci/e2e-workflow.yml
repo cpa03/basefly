@@ -22,7 +22,7 @@ concurrency:
 jobs:
   e2e:
     name: Playwright E2E Tests
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
     # Only run when the secrets required to boot the application are configured.
     # On forks or repositories without E2E credentials the job is skipped
     # instead of failing, keeping CI green for unrelated changes.

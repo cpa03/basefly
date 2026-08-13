@@ -417,6 +417,30 @@ export const CHECKBOX_TOKENS = {
   transition: "duration-200 ease-out",
 } as const;
 
+/**
+ * Textarea design tokens
+ * Centralized layout, styling, and transitions for Textarea component
+ */
+export const TEXTAREA_TOKENS = {
+  /** Minimum height in pixels */
+  minHeight: "min-h-[80px]",
+  /** Base textarea style */
+  base: "flex w-full rounded-md border border-input bg-transparent text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+  /** Padding */
+  padding: "px-3 py-2",
+  /** Hover and focus transition and timing with subtle tactile spring interaction */
+  transition: "transition-all duration-200 ease-in-out hover:border-muted-foreground/50",
+  /** Active scale spring micro-interaction */
+  activeScale: "active:scale-[0.995]",
+  /** Error state styling */
+  error: {
+    border: "border-destructive",
+    focusRing: "focus-visible:ring-destructive",
+  },
+  /** Default fallback aria-label */
+  defaultAriaLabel: "Text area input",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

@@ -8,6 +8,8 @@ Deploy these workflows to `.github/workflows/` to close issue #728.
 > with the `workflows` scope). The default `GITHUB_TOKEN` from Actions does **not**
 > have this permission.
 
+**Verification note (2026-08-13):** Prepared an apply-ready patch for `security-audit.yml` (see `docs/ci/security-audit.patch`), adapted to current repo conventions (`actions/checkout@v7`, `pnpm/action-setup@v6`, `actions/setup-node@v7`, Node 20, `ubuntu-24.04-arm`). Validated with `python3 -c "import yaml; yaml.safe_load(...)"` and confirmed `pnpm audit --audit-level=high` surfaces the current baseline (1 high `extract-zip` via puppeteer — no patched version; 1 moderate `@opentelemetry/core` via contentlayer2, patched `>=2.8.0`). A push of the workflow to `.github/workflows/security-audit.yml` was **rejected by GitHub** because the automation token (`github-actions[bot]`) lacks `workflows: write` permission — see "Manual Deployment" below. Issue #728 remains open until a privileged token applies the patch.
+
 ## Required Files
 
 ### 1. `.github/workflows/security-audit.yml`

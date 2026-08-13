@@ -23,6 +23,15 @@ describe("AnimatedGradientText Component", () => {
     expect(gradientLayer).toHaveClass("animate-gradient");
   });
 
+  it("should mark the decorative gradient overlay as aria-hidden", () => {
+    const { container } = render(
+      <AnimatedGradientText>Content</AnimatedGradientText>,
+    );
+
+    const gradientLayer = container.querySelector(".bg-gradient-to-r");
+    expect(gradientLayer).toHaveAttribute("aria-hidden", "true");
+  });
+
   it("should apply the default layout classes to the root element", () => {
     const { container } = render(
       <AnimatedGradientText>Content</AnimatedGradientText>,

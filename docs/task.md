@@ -4,6 +4,20 @@
 
 ### High Priority Tasks
 
+#### Task: [REMOVE] Cleaned up obsolete duplicate wrappers inside Next.js components
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Removal
+- **Files**: `apps/nextjs/src/components/billing-form.tsx`, `apps/nextjs/src/components/infiniteMovingCards.tsx`, `apps/nextjs/src/components/textGenerateEffect.tsx`, `apps/nextjs/src/components/typewriterEffectSmooth.tsx`, `apps/nextjs/src/components/wobble.tsx`
+
+**Description**:
+Cleaned up 5 obsolete duplicate component wrappers inside `apps/nextjs/src/components/` that were completely unused and contained incorrect backend routes, ensuring a cleaner codebase and avoiding redundancy.
+
+**Success Criteria**:
+- [x] Deleted obsolete billing-form.tsx, infiniteMovingCards.tsx, textGenerateEffect.tsx, typewriterEffectSmooth.tsx, and wobble.tsx.
+- [x] Verified files are removed and codebase typechecks cleanly.
+
 #### Task: [HANDLE] Issue Manager Loop 83 - merged PR #1209 and verified repo health
 
 - **Status**: ✅ Completed

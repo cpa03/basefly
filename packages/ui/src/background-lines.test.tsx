@@ -67,4 +67,16 @@ describe("BackgroundLines Component", () => {
     expect(svg).toBeInTheDocument();
     expect(child).toBeInTheDocument();
   });
+
+  it("should mark the decorative SVG as aria-hidden and non-focusable", () => {
+    const { container } = render(
+      <BackgroundLines>
+        <span>Content</span>
+      </BackgroundLines>,
+    );
+
+    const svg = container.querySelector("svg");
+    expect(svg).toHaveAttribute("aria-hidden", "true");
+    expect(svg).toHaveAttribute("focusable", "false");
+  });
 });

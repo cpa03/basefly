@@ -110,4 +110,21 @@ describe("Marquee Component", () => {
     expect(outer).toHaveAttribute("data-testid", "marquee-root");
     expect(outer).toHaveAttribute("aria-label", "Test marquee");
   });
+
+  it("should keep the first copy accessible and hide duplicate copies from assistive tech", () => {
+    const { container } = render(
+      <Marquee repeat={3}>
+        <span>Item</span>
+      </Marquee>,
+    );
+
+    const groups = container.querySelectorAll(
+      "div.flex.shrink-0.justify-around",
+    );
+    expect(groups.length).toBe(3);
+    expect(groups[0]).not.toHaveAttribute("aria-hidden");
+    for (let i = 1; i < groups.length; i++) {
+      expect(groups[i]).toHaveAttribute("aria-hidden", "true");
+    }
+  });
 });

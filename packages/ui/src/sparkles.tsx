@@ -452,6 +452,7 @@ export const SparklesCore = (props: ParticlesProps) => {
     <motion.div
       animate={controls}
       initial={initialState}
+      aria-hidden="true"
       className={cn("opacity-0", className)}
     >
       {init && (

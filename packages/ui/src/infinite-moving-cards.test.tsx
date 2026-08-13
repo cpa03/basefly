@@ -30,26 +30,50 @@ describe("InfiniteMovingCards Component", () => {
     expect(listItems.length).toBe(4);
   });
 
+  it("should mark duplicated items as aria-hidden", () => {
+    const { container } = render(<InfiniteMovingCards items={items} />);
+
+    const listItems = container.querySelectorAll("li");
+    expect(listItems.length).toBe(4);
+    expect(listItems[0]).not.toHaveAttribute("aria-hidden");
+    expect(listItems[1]).not.toHaveAttribute("aria-hidden");
+    for (let i = 2; i < listItems.length; i++) {
+      expect(listItems[i]).toHaveAttribute("aria-hidden", "true");
+    }
+  });
+
   it("should set animation direction to forwards for left direction", () => {
-    const { container } = render(<InfiniteMovingCards items={items} direction="left" />);
+    const { container } = render(
+      <InfiniteMovingCards items={items} direction="left" />,
+    );
 
     const scroller = container.querySelector(".scroller");
     expect(scroller).toBeInTheDocument();
-    expect(scroller?.getAttribute("style")).toContain("--animation-direction: forwards");
+    expect(scroller?.getAttribute("style")).toContain(
+      "--animation-direction: forwards",
+    );
   });
 
   it("should set animation direction to reverse for right direction", () => {
-    const { container } = render(<InfiniteMovingCards items={items} direction="right" />);
+    const { container } = render(
+      <InfiniteMovingCards items={items} direction="right" />,
+    );
 
     const scroller = container.querySelector(".scroller");
-    expect(scroller?.getAttribute("style")).toContain("--animation-direction: reverse");
+    expect(scroller?.getAttribute("style")).toContain(
+      "--animation-direction: reverse",
+    );
   });
 
   it("should set the animation duration based on speed", () => {
-    const { container } = render(<InfiniteMovingCards items={items} speed="slow" />);
+    const { container } = render(
+      <InfiniteMovingCards items={items} speed="slow" />,
+    );
 
     const scroller = container.querySelector(".scroller");
-    expect(scroller?.getAttribute("style")).toContain("--animation-duration: 80s");
+    expect(scroller?.getAttribute("style")).toContain(
+      "--animation-duration: 80s",
+    );
   });
 
   it("should apply the animate-scroll class once started", () => {
@@ -60,7 +84,9 @@ describe("InfiniteMovingCards Component", () => {
   });
 
   it("should merge custom className into the scroller container", () => {
-    const { container } = render(<InfiniteMovingCards items={items} className="custom-scroller" />);
+    const { container } = render(
+      <InfiniteMovingCards items={items} className="custom-scroller" />,
+    );
 
     const scroller = container.querySelector(".scroller");
     expect(scroller).toHaveClass("custom-scroller");

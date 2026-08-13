@@ -24,6 +24,13 @@ describe("SparklesCore Component", () => {
     expect(containerDiv).toBeInTheDocument();
   });
 
+  it("should mark the decorative container as aria-hidden", () => {
+    const { container } = render(<SparklesCore />);
+
+    const containerDiv = container.firstElementChild as HTMLElement;
+    expect(containerDiv).toHaveAttribute("aria-hidden", "true");
+  });
+
   it("should merge custom className into the container", () => {
     const { container } = render(<SparklesCore className="custom-sparkles" />);
 

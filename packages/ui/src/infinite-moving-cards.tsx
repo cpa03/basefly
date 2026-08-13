@@ -33,6 +33,9 @@ export const InfiniteMovingCards = ({
 
       scrollerContent.forEach((item) => {
         const duplicatedItem = item.cloneNode(true);
+        if (duplicatedItem instanceof HTMLElement) {
+          duplicatedItem.setAttribute("aria-hidden", "true");
+        }
         if (scrollerRef.current) {
           scrollerRef.current.appendChild(duplicatedItem);
         }

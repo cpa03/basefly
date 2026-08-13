@@ -6,6 +6,8 @@ The `.github/workflows/iterate.yml` file uses `npm ci || true` instead of `pnpm 
 
 **Regression note (2026-07-31):** The npm-to-pnpm migration previously merged as commit `cd9eb30` (2026-07-27, "fix(ci): migrate iterate.yml from npm to pnpm for consistency", resolving #744 and #670) was **silently reverted by a subsequent stale merge** — the branch merged afterward carried a pre-migration copy of `iterate.yml` and overwrote the migrated version. As of `main` (2026-07-31) the workflow is back to `npm ci`. The canonical patch is regenerated from commit `f3981be` in `docs/ci/iterate-pnpm-fix.patch` and applies cleanly to current `main`.
 
+**Verification note (2026-08-13):** Re-verified that `docs/ci/iterate-pnpm-fix.patch` still applies cleanly to `main` (HEAD `aa98046`). A fix branch (`fix/pnpm-consistency-iterate-305`) was prepared with the identical changes (14 insertions, 4 deletions, byte-identical to the patch result) and verified with `python3 -c "import yaml; yaml.safe_load(...)"`. Push of the workflow change remains blocked because the automation token (`github-actions[bot]`) lacks `workflows: write` permission — see "Applying the Fix" below. Issue #305 remains open until a privileged token applies the patch.
+
 ## Root Cause
 
 Git's default merge resolution can silently restore an older copy of a file when merging a long-lived branch that predates a change on `main`. The file's `git log` history hides the migration commit because its content effect was negated by the later merge.

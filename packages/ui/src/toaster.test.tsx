@@ -2,11 +2,11 @@ import React from "react";
 import { act, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-type ToasterModule = typeof import("./toaster");
-type UseToastModule = typeof import("./use-toast");
+import type { Toaster as ToasterType } from "./toaster";
+import type { toast as toastType } from "./use-toast";
 
-let Toaster: ToasterModule["Toaster"];
-let toast: UseToastModule["toast"];
+let Toaster: typeof ToasterType;
+let toast: typeof toastType;
 
 beforeEach(async () => {
   // use-toast holds module-level toast state; reset modules so each test

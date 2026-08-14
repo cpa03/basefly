@@ -23,6 +23,7 @@ export const Callout = React.memo(
             CALLOUT_TOKENS.base,
             CALLOUT_TOKENS.animations.hoverScale,
             CALLOUT_TOKENS.animations.activeScale,
+            CALLOUT_TOKENS.animations.hoverShadow,
             CALLOUT_TOKENS.variants[type],
             className,
           )}

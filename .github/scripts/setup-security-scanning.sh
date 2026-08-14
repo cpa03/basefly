@@ -40,7 +40,7 @@ if [ ! -d "$DOCS_WORKFLOWS_DIR" ]; then
   exit 1
 fi
 
-# Deploy security-audit.yml
+# Deploy security-audit.yml (consolidated: pnpm audit + CodeQL + dependency review)
 if [ -f "$DOCS_WORKFLOWS_DIR/security-audit.yml" ]; then
   cp "$DOCS_WORKFLOWS_DIR/security-audit.yml" "$WORKFLOWS_DIR/security-audit.yml"
   echo "✅ Deployed: $WORKFLOWS_DIR/security-audit.yml"
@@ -48,7 +48,7 @@ else
   echo "⚠️  Warning: $DOCS_WORKFLOWS_DIR/security-audit.yml not found. Skipping."
 fi
 
-# Deploy codeql-analysis.yml
+# Deploy codeql-analysis.yml (OPTIONAL - security-audit.yml already runs CodeQL)
 if [ -f "$DOCS_WORKFLOWS_DIR/codeql-analysis.yml" ]; then
   cp "$DOCS_WORKFLOWS_DIR/codeql-analysis.yml" "$WORKFLOWS_DIR/codeql-analysis.yml"
   echo "✅ Deployed: $WORKFLOWS_DIR/codeql-analysis.yml"

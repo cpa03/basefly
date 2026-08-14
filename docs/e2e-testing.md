@@ -91,7 +91,7 @@ The Playwright config:
 
 ## CI Integration
 
-The `e2e.yml` workflow runs the suite in CI. The workflow definition is stored at `docs/ci/e2e-workflow.yml` and must be copied to `.github/workflows/e2e.yml` by a maintainer with `workflows` write permission (a GitHub App token without that permission cannot push workflow files). See the `docs/ci/security-audit.patch` precedent for the same pattern.
+The `e2e` workflow runs the suite in CI. The canonical workflow definition is stored at `docs/ci/e2e-workflow.yml` and must be copied to `.github/workflows/e2e.yml` by a maintainer with `workflows` write permission (a GitHub App token without that permission cannot push workflow files — see Issue #501). See the `docs/ci/security-audit.patch` precedent for the same pattern. Until that copy is made, the workflow is not live in this repository.
 
 The workflow:
 

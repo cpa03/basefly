@@ -151,6 +151,58 @@ Orchestrates multiple specialist agents in parallel for continuous improvement.
 - `hardcoded-eliminator` - Configuration extraction
 - `cloudflare` - CDN and edge functions
 
+### 2.5. `quick-check.yml` - Fast-Path CI (Issue #502)
+
+**Trigger:**
+
+- `pull_request` targeting `main` (fast-path jobs)
+- Weekly schedule (Monday 06:00 UTC) — full audit
+- Manual dispatch (`workflow_dispatch`) — full audit
+
+**Purpose:**
+Provides fast feedback (< 5 minutes) for routine PRs (typo fixes, small refactors)
+without paying the cost of the AI-heavy orchestration workflows. Splits the
+quality gates into parallel jobs:
+
+| Job          | Command                 | Timeout |
+| ------------ | ----------------------- | ------- |
+| `typecheck`  | `pnpm typecheck`        | 10 min  |
+| `lint`       | `pnpm lint`             | 10 min  |
+| `test`       | `pnpm test`             | 10 min  |
+| `build`      | `pnpm build` (CI mode)  | 15 min  |
+| `full-audit` | `pnpm dx:check` + CI validation | 30 min (schedule/dispatch only) |
+
+**Key Features:**
+
+- Parallel jobs for typecheck/lint/test/build so routine PRs get all gates in one pass
+- `concurrency` group with `cancel-in-progress: true` to skip stale runs on force-push
+- `full-audit` job runs only on schedule or manual dispatch (skipped on PRs)
+- CI mode (`CI=true`) allows placeholder env values via `tooling/qa/env-validate.js`
+
+> **⚠️ Deployment status**: This workflow is designed, documented, and validated,
+> but **not yet deployed** to `.github/workflows/`. GitHub blocks GitHub App tokens
+> without the `workflows` permission from creating or updating workflow files
+> (same restriction as Issue #728). The ready-to-deploy canonical template lives at
+> `docs/ci/workflows/quick-check.yml`. See the deployment runbook below.
+
+**Deployment runbook** (requires a token/PAT with `workflows` scope):
+
+```bash
+# 1. Copy the canonical template into active workflows
+cp docs/ci/workflows/quick-check.yml .github/workflows/quick-check.yml
+
+# 2. Commit and push with a token that has 'workflows' permission
+git add .github/workflows/quick-check.yml
+git commit -m "ci: add fast-path quick-check workflow (closes #502)"
+git push
+```
+
+**Verification performed (2026-08-14)**: YAML structure validated against the
+existing `security-audit.yml` template; passes the CI workflow validator
+(`tooling/qa/validate-ci-workflows.js`): uses `pnpm install --frozen-lockfile`,
+`cache: "pnpm"`, and action versions at or above minimums (checkout@v7,
+setup-node@v7, pnpm/action-setup@v6).
+
 ### 3. `paratterate.yml` - Parallel Iteration
 
 **Trigger:**

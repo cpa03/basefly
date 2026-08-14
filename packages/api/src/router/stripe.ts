@@ -21,6 +21,7 @@ import {
 
 import { env } from "../env.mjs";
 import { createApiError, ErrorCode, handleIntegrationError } from "../errors";
+import type { FailureResult, MutationResult, QueryResult } from "../response";
 import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 import { enhancedStripeCreateSessionSchema } from "./schemas";
 
@@ -93,7 +94,10 @@ export const stripeRouter = createTRPCRouter({
             returnUrl,
             { requestId },
           );
-          return { success: true as const, url: session.url };
+          return {
+            success: true as const,
+            url: session.url,
+          } satisfies MutationResult<{ url: string }>;
         }
 
         const session = await createCheckoutSession(
@@ -111,8 +115,12 @@ export const stripeRouter = createTRPCRouter({
           { requestId },
         );
 
-        if (!session.url) return { success: false as const };
-        return { success: true as const, url: session.url };
+        if (!session.url)
+          return { success: false as const } satisfies FailureResult;
+        return {
+          success: true as const,
+          url: session.url,
+        } satisfies MutationResult<{ url: string }>;
       } catch (error) {
         if (error instanceof IntegrationError) {
           throw handleIntegrationError(error);
@@ -201,6 +209,6 @@ export const stripeRouter = createTRPCRouter({
       isCanceled,
     };
     await cacheService.set(cacheKey, result, CACHE_DURATION.FIVE_MINUTES);
-    return result;
+    return result satisfies QueryResult<typeof result>;
   }),
 });

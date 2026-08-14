@@ -314,6 +314,7 @@ export const CALLOUT_TOKENS = {
   animations: {
     hoverScale: "hover:scale-[1.015]",
     activeScale: "active:scale-[0.995]",
+    hoverShadow: "hover:shadow-md transition-shadow duration-200",
   },
   /** Specific variants configuration */
   variants: {

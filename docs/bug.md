@@ -2,6 +2,8 @@
 
 ## Active Bugs
 
+- [x] bug: ESLint type import warning in packages/ui/src/toaster.test.tsx
+- [x] bug: HTML validation hydration warning/error in packages/ui/src/magic-link-email.test.tsx
 - [x] bug: Repo-wide Vercel deployment failures (30+ consecutive incl. production) — root cause Node 20 vs 22 (Next.js 16.2.11 `webidl.util.markAsUncloneable`); fixed locally by Node 22.14.0, logged in loop 83 audit report.
 - [x] bug: Thorough loop verification on 2026-08-10 - 1703 tests passing, zero typescript or lint warnings.
 - [x] bug: Healthy state verified - 100% test pass, typecheck and lint clean with no console warnings.

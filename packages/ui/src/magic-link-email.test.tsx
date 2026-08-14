@@ -22,9 +22,9 @@ vi.mock("@react-email/components", () => {
   Button.displayName = "Button";
 
   return {
-    Html: createElement("html", "Html"),
-    Head: createElement("head", "Head"),
-    Body: createElement("body", "Body"),
+    Html: createElement("div", "Html"),
+    Head: createElement("div", "Head"),
+    Body: createElement("div", "Body"),
     Container: createElement("div", "Container"),
     Section: createElement("div", "Section"),
     Text: createElement("p", "Text"),

@@ -4,6 +4,35 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Centralized Callout hover shadow styling and classes under CALLOUT_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/ui/src/callout.tsx`
+
+**Description**:
+Centralized Callout component hover shadow and transition classes under `CALLOUT_TOKENS.animations.hoverShadow` in `packages/common/src/ui-tokens.ts`, eliminating hardcoded styles.
+
+**Success Criteria**:
+- [x] Defined `hoverShadow` inside `CALLOUT_TOKENS.animations`.
+- [x] Refactored `packages/ui/src/callout.tsx` to reference `CALLOUT_TOKENS.animations.hoverShadow`.
+
+#### Task: [STRENGTHEN] Enhanced Callout with interactive lift transition and resolved test warnings
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Strengthening
+- **Files**: `packages/ui/src/callout.tsx`, `packages/ui/src/magic-link-email.test.tsx`, `packages/ui/src/toaster.test.tsx`
+
+**Description**:
+Enhanced the physical feedback of the Callout component with hover shadow transition. Resolved type-import warnings in `toaster.test.tsx` and nested html hydration errors in `magic-link-email.test.tsx` mock definitions.
+
+**Success Criteria**:
+- [x] Implemented tactile shadow-hover transition inside `Callout`.
+- [x] Resolved consistent type-import warnings in `toaster.test.tsx`.
+- [x] Resolved HTML nesting validation hydration warnings in `magic-link-email.test.tsx`.
+
 #### Task: [REMOVE] Cleaned up obsolete duplicate wrappers inside Next.js components
 
 - **Status**: ✅ Completed
@@ -368,6 +397,8 @@ Add comprehensive tests for rate limiter to ensure API endpoint protection is pr
 
 ### Errors
 
+- [x] error: ESLint warning about consistent type imports in packages/ui/src/toaster.test.tsx
+- [x] error: HTML div inside html hydration warning in packages/ui/src/magic-link-email.test.tsx
 - [x] error: Dependency version consistency check-deps failure on ioredis (5.6.1 vs ^5.6.0)
 - [x] error: `plans.test.ts` failure: expected 'FREE' to be 'PRO'
 - [x] error: Build fails due to missing environment variables (STRIPE_API_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL) - _Fixed by creating .env.local file_

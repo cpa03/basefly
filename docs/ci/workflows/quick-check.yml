@@ -1,0 +1,160 @@
+name: quick-check
+# Fast-path CI workflow for routine PRs.
+# Addresses issue #502 - CI pipelines are AI-heavy and slow for trivial changes.
+#
+# Provides:
+#   1. Quick checks (typecheck, lint, unit tests, build) on every PR - target < 5 min
+#   2. Full audit (dx:check: typecheck + lint + test + security audit + deps + circular)
+#      on a weekly schedule or via manual workflow_dispatch
+#
+# NOTE: This is the ready-to-deploy canonical template. It lives in docs/ci/workflows/
+# because this repository's automation token lacks the `workflows` permission to create
+# or update files under .github/workflows/ (GitHub App restriction, tracked in #728).
+# See the deployment runbook in docs/ci-cd.md (Issue #502 section).
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1" # Full audit every Monday at 6:00 UTC
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quick-check-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ------------------------------------------------------------------
+  # Fast-path: parallel quick checks on every PR
+  # ------------------------------------------------------------------
+  typecheck:
+    name: Typecheck
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run unit tests
+        run: pnpm test
+
+  build:
+    name: Build
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 15
+    env:
+      # Allow placeholder values in CI (tooling/qa/env-validate.js CI mode)
+      CI: "true"
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+
+  # ------------------------------------------------------------------
+  # Full audit: comprehensive checks on schedule / manual trigger
+  # ------------------------------------------------------------------
+  full-audit:
+    name: Full Audit
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 30
+    # Skip on regular PRs - the fast-path jobs above are sufficient.
+    # Run on schedule (weekly) or manual dispatch.
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    env:
+      CI: "true"
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Full DX checks (typecheck + lint + test + security audit + deps + circular)
+        run: pnpm dx:check
+
+      - name: CI workflow validation
+        run: pnpm qa:ci-validate

@@ -26,6 +26,14 @@ export {
 
 export { getLimiter, SyncRateLimiter } from "./distributed-rate-limiter";
 
+export type {
+  FailureResult,
+  MutationResult,
+  QueryResult,
+  SuccessAck,
+  SuccessWith,
+} from "./response";
+
 export type { EndpointType, RateLimitConfig } from "@saasfly/common";
 
 /**

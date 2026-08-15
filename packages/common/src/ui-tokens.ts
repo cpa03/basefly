@@ -442,6 +442,36 @@ export const TEXTAREA_TOKENS = {
   defaultAriaLabel: "Text area input",
 } as const;
 
+/**
+ * DataTableEmpty design tokens
+ * Centralized layout, styling, micro-UX transitions, and accessibility for DataTableEmpty component
+ */
+export const DATA_TABLE_EMPTY_TOKENS = {
+  /** Root cell container styling */
+  cell: "p-0",
+  /** Container layout and sizing */
+  container: {
+    base: "group flex min-h-[280px] flex-col items-center justify-center border-0 bg-transparent px-8 py-12 transition-all duration-300 ease-out",
+    hoverScale: "hover:scale-[1.005]",
+    activeScale: "active:scale-[0.995]",
+  },
+  /** Icon wrapper styling and hover micro-interaction */
+  iconWrapper: {
+    base: "flex h-16 w-16 items-center justify-center rounded-full bg-muted transition-all duration-300 ease-out group-hover:scale-110 group-hover:bg-muted/80 motion-safe:transition-transform motion-safe:duration-300",
+    iconSize: "h-8 w-8 text-muted-foreground transition-colors duration-300 group-hover:text-primary",
+  },
+  /** Content wrapper */
+  contentWrapper: "mx-auto flex max-w-[400px] flex-col items-center text-center motion-safe:transition-all motion-safe:duration-300 motion-safe:delay-75",
+  /** Title typography */
+  title: "text-lg font-semibold text-foreground motion-safe:transition-colors motion-safe:duration-200 group-hover:text-foreground/90",
+  /** Description typography */
+  description: "mt-2 text-sm text-muted-foreground leading-relaxed motion-safe:transition-colors motion-safe:duration-200",
+  /** Action container */
+  action: "mt-6 motion-safe:transition-all motion-safe:duration-300 motion-safe:translate-y-0 motion-safe:opacity-100 motion-safe:delay-100",
+  /** Accessibility fallback */
+  defaultAriaLabel: "Empty state: No results found",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

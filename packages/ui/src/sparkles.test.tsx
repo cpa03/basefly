@@ -7,8 +7,10 @@ import { SparklesCore } from "./sparkles";
 // Mock tsparticles to avoid WebGL/canvas engine initialization in happy-dom
 vi.mock("@tsparticles/react", () => ({
   __esModule: true,
-  default: (props: Record<string, unknown>) =>
-    React.createElement("div", { "data-testid": "tsparticles", ...props }),
+  default: (props: Record<string, unknown>) => {
+    const { particlesLoaded: _particlesLoaded, options: _options, ...rest } = props;
+    return React.createElement("div", { "data-testid": "tsparticles", ...rest });
+  },
   initParticlesEngine: vi.fn(() => Promise.resolve()),
 }));
 
@@ -17,31 +19,35 @@ vi.mock("@tsparticles/slim", () => ({
 }));
 
 describe("SparklesCore Component", () => {
-  it("should render the container div", () => {
+  it("should render the container div", async () => {
     const { container } = render(<SparklesCore />);
 
     const containerDiv = container.firstElementChild as HTMLElement;
     expect(containerDiv).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByTestId("tsparticles")).toBeInTheDocument());
   });
 
-  it("should mark the decorative container as aria-hidden", () => {
+  it("should mark the decorative container as aria-hidden", async () => {
     const { container } = render(<SparklesCore />);
 
     const containerDiv = container.firstElementChild as HTMLElement;
     expect(containerDiv).toHaveAttribute("aria-hidden", "true");
+    await waitFor(() => expect(screen.getByTestId("tsparticles")).toBeInTheDocument());
   });
 
-  it("should merge custom className into the container", () => {
+  it("should merge custom className into the container", async () => {
     const { container } = render(<SparklesCore className="custom-sparkles" />);
 
     const containerDiv = container.firstElementChild as HTMLElement;
     expect(containerDiv).toHaveClass("custom-sparkles");
+    await waitFor(() => expect(screen.getByTestId("tsparticles")).toBeInTheDocument());
   });
 
-  it("should not render particles before the engine initializes", () => {
+  it("should not render particles before the engine initializes", async () => {
     render(<SparklesCore />);
 
     expect(screen.queryByTestId("tsparticles")).not.toBeInTheDocument();
+    await waitFor(() => expect(screen.getByTestId("tsparticles")).toBeInTheDocument());
   });
 
   it("should render particles after the engine initializes", async () => {

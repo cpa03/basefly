@@ -16,7 +16,7 @@ describe("Textarea Component", () => {
   });
 
   it("should forward value and placeholder", () => {
-    render(<Textarea value="hello textarea" placeholder="Enter text here" />);
+    render(<Textarea value="hello textarea" placeholder="Enter text here" readOnly />);
     const textarea = screen.getByRole("textbox");
     expect(textarea).toHaveValue("hello textarea");
     expect(textarea).toHaveAttribute("placeholder", "Enter text here");

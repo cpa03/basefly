@@ -2956,3 +2956,7 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [STRENGTHEN] Enhanced AccordionTrigger inside packages/ui/src/accordion.tsx with a pleasant, tactile hover scale and active scale spring micro-interaction.
 - [CONSOLIDATE] Centralized Checkbox component styles under CHECKBOX_TOKENS design tokens inside packages/common/src/ui-tokens.ts.
 - [STRENGTHEN] Enhanced Checkbox with a tactile hover/active scale spring micro-interaction and custom unit tests inside packages/ui/src/checkbox.test.tsx.
+- [x] error: HTML validation warning in data-table-empty.test.tsx (td cannot be child of div)
+- [x] error: Unrecognized DOM prop particlesLoaded warning in sparkles.test.tsx
+- [CONSOLIDATE] Centralized DataTableEmpty component styling under DATA_TABLE_EMPTY_TOKENS
+- [STRENGTHEN] Enhanced DataTableEmpty with tactile spring scale micro-interaction and accessibility fallback

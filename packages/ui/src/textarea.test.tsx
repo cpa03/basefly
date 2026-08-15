@@ -11,12 +11,22 @@ describe("Textarea Component", () => {
   });
 
   it("should apply custom className", () => {
-    const { container } = render(<Textarea className="custom-textarea-class" />);
-    expect(container.querySelector("textarea")).toHaveClass("custom-textarea-class");
+    const { container } = render(
+      <Textarea className="custom-textarea-class" />,
+    );
+    expect(container.querySelector("textarea")).toHaveClass(
+      "custom-textarea-class",
+    );
   });
 
   it("should forward value and placeholder", () => {
-    render(<Textarea value="hello textarea" placeholder="Enter text here" />);
+    render(
+      <Textarea
+        value="hello textarea"
+        placeholder="Enter text here"
+        readOnly
+      />,
+    );
     const textarea = screen.getByRole("textbox");
     expect(textarea).toHaveValue("hello textarea");
     expect(textarea).toHaveAttribute("placeholder", "Enter text here");
@@ -34,18 +44,26 @@ describe("Textarea Component", () => {
 
   it("should fallback to default aria-label for accessibility", () => {
     render(<Textarea />);
-    expect(screen.getByRole("textbox")).toHaveAttribute("aria-label", "Text area input");
+    expect(screen.getByRole("textbox")).toHaveAttribute(
+      "aria-label",
+      "Text area input",
+    );
   });
 
   it("should respect explicit aria-label", () => {
     render(<Textarea aria-label="My custom label" />);
-    expect(screen.getByRole("textbox")).toHaveAttribute("aria-label", "My custom label");
+    expect(screen.getByRole("textbox")).toHaveAttribute(
+      "aria-label",
+      "My custom label",
+    );
   });
 
   it("should forward onChange handler", () => {
     const onChange = vi.fn();
     render(<Textarea onChange={onChange} />);
-    fireEvent.change(screen.getByRole("textbox"), { target: { value: "new text" } });
+    fireEvent.change(screen.getByRole("textbox"), {
+      target: { value: "new text" },
+    });
     expect(onChange).toHaveBeenCalled();
   });
 

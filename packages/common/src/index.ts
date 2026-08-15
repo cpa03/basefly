@@ -363,6 +363,7 @@ export {
   SELECT_TOKENS,
   CHECKBOX_TOKENS,
   TEXTAREA_TOKENS,
+  DATA_TABLE_EMPTY_TOKENS,
 } from "./ui-tokens";
 export type {
   ButtonHeight,

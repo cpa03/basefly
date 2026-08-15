@@ -15,6 +15,7 @@
 Centralized Callout component hover shadow and transition classes under `CALLOUT_TOKENS.animations.hoverShadow` in `packages/common/src/ui-tokens.ts`, eliminating hardcoded styles.
 
 **Success Criteria**:
+
 - [x] Defined `hoverShadow` inside `CALLOUT_TOKENS.animations`.
 - [x] Refactored `packages/ui/src/callout.tsx` to reference `CALLOUT_TOKENS.animations.hoverShadow`.
 
@@ -29,6 +30,7 @@ Centralized Callout component hover shadow and transition classes under `CALLOUT
 Enhanced the physical feedback of the Callout component with hover shadow transition. Resolved type-import warnings in `toaster.test.tsx` and nested html hydration errors in `magic-link-email.test.tsx` mock definitions.
 
 **Success Criteria**:
+
 - [x] Implemented tactile shadow-hover transition inside `Callout`.
 - [x] Resolved consistent type-import warnings in `toaster.test.tsx`.
 - [x] Resolved HTML nesting validation hydration warnings in `magic-link-email.test.tsx`.
@@ -44,6 +46,7 @@ Enhanced the physical feedback of the Callout component with hover shadow transi
 Cleaned up 5 obsolete duplicate component wrappers inside `apps/nextjs/src/components/` that were completely unused and contained incorrect backend routes, ensuring a cleaner codebase and avoiding redundancy.
 
 **Success Criteria**:
+
 - [x] Deleted obsolete billing-form.tsx, infiniteMovingCards.tsx, textGenerateEffect.tsx, typewriterEffectSmooth.tsx, and wobble.tsx.
 - [x] Verified files are removed and codebase typechecks cleanly.
 
@@ -401,7 +404,7 @@ Add comprehensive tests for rate limiter to ensure API endpoint protection is pr
 - [x] error: HTML div inside html hydration warning in packages/ui/src/magic-link-email.test.tsx
 - [x] error: Dependency version consistency check-deps failure on ioredis (5.6.1 vs ^5.6.0)
 - [x] error: `plans.test.ts` failure: expected 'FREE' to be 'PRO'
-- [x] error: Build fails due to missing environment variables (STRIPE_API_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL) - _Fixed by creating .env.local file_
+- [x] error: Build fails due to missing environment variables (STRIPE*API_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL) - \_Fixed by creating .env.local file*
 - [x] error: `DashboardPage` may return undefined if `trpc.k8s.getClusters.query()` returns undefined, causing React runtime error.
 - [x] error: TypeScript import errors in test files (incorrect `../index` paths)
 - [x] error: Unused `@ts-expect-error` directive in webhooks.test.ts
@@ -409,7 +412,7 @@ Add comprehensive tests for rate limiter to ensure API endpoint protection is pr
 - [x] error: Missing `key` prop in dashboard cluster iterator
 - [x] error: Unused `dict` parameter in billing page components
 - [x] error: Unnecessary type assertion in stripe webhook route
-- [x] error: Missing environment variables causing lint to fail: STRIPE_API_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL - _Fixed by creating .env.local file_
+- [x] error: Missing environment variables causing lint to fail: STRIPE*API_KEY, STRIPE_WEBHOOK_SECRET, NEXT_PUBLIC_APP_URL - \_Fixed by creating .env.local file*
 - [x] error: TypeScript type errors in packages/stripe/src/client.test.ts (11 errors with idempotencyKey and undefined checks) - _Fixed - all tests pass_
 - [x] error: Test timeouts in packages/stripe/src/integration.test.ts (7 tests timeout after 5000ms) - _Fixed - all tests pass (394ms)_
 - [x] error: IntegrationError test throwing instead of being caught properly - _Fixed - all tests pass_
@@ -2956,3 +2959,7 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [STRENGTHEN] Enhanced AccordionTrigger inside packages/ui/src/accordion.tsx with a pleasant, tactile hover scale and active scale spring micro-interaction.
 - [CONSOLIDATE] Centralized Checkbox component styles under CHECKBOX_TOKENS design tokens inside packages/common/src/ui-tokens.ts.
 - [STRENGTHEN] Enhanced Checkbox with a tactile hover/active scale spring micro-interaction and custom unit tests inside packages/ui/src/checkbox.test.tsx.
+- [x] error: HTML validation warning in data-table-empty.test.tsx (td cannot be child of div)
+- [x] error: Unrecognized DOM prop particlesLoaded warning in sparkles.test.tsx
+- [CONSOLIDATE] Centralized DataTableEmpty component styling under DATA_TABLE_EMPTY_TOKENS
+- [STRENGTHEN] Enhanced DataTableEmpty with tactile spring scale micro-interaction and accessibility fallback

@@ -1,8 +1,18 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render as rtlRender, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
 import { DataTableEmpty } from "./data-table-empty";
+
+function render(ui: React.ReactElement) {
+  return rtlRender(
+    <table>
+      <tbody>
+        <tr>{ui}</tr>
+      </tbody>
+    </table>,
+  );
+}
 
 describe("DataTableEmpty Component", () => {
   it("should render with the default title and status role", () => {
@@ -10,7 +20,10 @@ describe("DataTableEmpty Component", () => {
 
     const status = screen.getByRole("status");
     expect(status).toBeInTheDocument();
-    expect(status).toHaveAttribute("aria-label", "Empty state: No results found");
+    expect(status).toHaveAttribute(
+      "aria-label",
+      "Empty state: No results found",
+    );
     expect(status).toHaveAttribute("aria-live", "polite");
     expect(screen.getByText("No results found")).toBeInTheDocument();
   });
@@ -42,9 +55,7 @@ describe("DataTableEmpty Component", () => {
 
   it("should render a custom action element", () => {
     render(
-      <DataTableEmpty
-        action={<button type="button">Create Cluster</button>}
-      />,
+      <DataTableEmpty action={<button type="button">Create Cluster</button>} />,
     );
 
     expect(
@@ -54,9 +65,7 @@ describe("DataTableEmpty Component", () => {
 
   it("should render a custom icon instead of the default search icon", () => {
     render(
-      <DataTableEmpty
-        icon={<span data-testid="custom-icon">Custom</span>}
-      />,
+      <DataTableEmpty icon={<span data-testid="custom-icon">Custom</span>} />,
     );
 
     expect(screen.getByTestId("custom-icon")).toBeInTheDocument();
@@ -76,5 +85,23 @@ describe("DataTableEmpty Component", () => {
     const cell = container.querySelector("td");
     expect(cell).toHaveClass("custom-cell");
     expect(cell).toHaveClass("p-0");
+  });
+
+  it("should fallback to default aria-label when title is empty or whitespace", () => {
+    render(<DataTableEmpty title="   " />);
+
+    const status = screen.getByRole("status");
+    expect(status).toHaveAttribute(
+      "aria-label",
+      "Empty state: No results found",
+    );
+  });
+
+  it("should include micro-UX spring scale classes on the container", () => {
+    render(<DataTableEmpty title="No clusters" />);
+
+    const status = screen.getByRole("status");
+    expect(status).toHaveClass("hover:scale-[1.005]");
+    expect(status).toHaveClass("active:scale-[0.995]");
   });
 });

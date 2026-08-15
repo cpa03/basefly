@@ -20,7 +20,10 @@ describe("DataTableEmpty Component", () => {
 
     const status = screen.getByRole("status");
     expect(status).toBeInTheDocument();
-    expect(status).toHaveAttribute("aria-label", "Empty state: No results found");
+    expect(status).toHaveAttribute(
+      "aria-label",
+      "Empty state: No results found",
+    );
     expect(status).toHaveAttribute("aria-live", "polite");
     expect(screen.getByText("No results found")).toBeInTheDocument();
   });
@@ -52,9 +55,7 @@ describe("DataTableEmpty Component", () => {
 
   it("should render a custom action element", () => {
     render(
-      <DataTableEmpty
-        action={<button type="button">Create Cluster</button>}
-      />,
+      <DataTableEmpty action={<button type="button">Create Cluster</button>} />,
     );
 
     expect(
@@ -64,9 +65,7 @@ describe("DataTableEmpty Component", () => {
 
   it("should render a custom icon instead of the default search icon", () => {
     render(
-      <DataTableEmpty
-        icon={<span data-testid="custom-icon">Custom</span>}
-      />,
+      <DataTableEmpty icon={<span data-testid="custom-icon">Custom</span>} />,
     );
 
     expect(screen.getByTestId("custom-icon")).toBeInTheDocument();
@@ -92,7 +91,10 @@ describe("DataTableEmpty Component", () => {
     render(<DataTableEmpty title="   " />);
 
     const status = screen.getByRole("status");
-    expect(status).toHaveAttribute("aria-label", "Empty state: No results found");
+    expect(status).toHaveAttribute(
+      "aria-label",
+      "Empty state: No results found",
+    );
   });
 
   it("should include micro-UX spring scale classes on the container", () => {

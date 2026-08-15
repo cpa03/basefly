@@ -232,7 +232,8 @@ export const SWITCH_TOKENS = {
       unchecked: "data-[state=unchecked]:bg-input",
     },
     disabled: "disabled:cursor-not-allowed disabled:opacity-50",
-    focusRing: "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+    focusRing:
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
     hoverScale: "hover:scale-[1.03]",
     activeScale: "active:scale-[0.97]",
   },
@@ -241,8 +242,10 @@ export const SWITCH_TOKENS = {
     base: "pointer-events-none block rounded-full bg-background shadow-lg ring-0 transition-all",
     size: "h-5 w-5",
     states: {
-      checked: "data-[state=checked]:translate-x-5 data-[state=checked]:scale-110",
-      unchecked: "data-[state=unchecked]:translate-x-0 data-[state=unchecked]:scale-100",
+      checked:
+        "data-[state=checked]:translate-x-5 data-[state=checked]:scale-110",
+      unchecked:
+        "data-[state=unchecked]:translate-x-0 data-[state=unchecked]:scale-100",
     },
   },
   /** Default fallback aria-label */
@@ -319,8 +322,10 @@ export const CALLOUT_TOKENS = {
   /** Specific variants configuration */
   variants: {
     info: "border-blue-200 bg-blue-100 text-blue-800 dark:border-blue-200/40 dark:bg-blue-900/40 dark:text-blue-200",
-    danger: "border-red-200 bg-red-100 text-red-900 dark:border-red-200/30 dark:bg-red-900/40 dark:text-red-200",
-    warning: "border-orange-200 bg-orange-100 text-orange-800 dark:border-orange-400/30 dark:bg-orange-400/20 dark:text-orange-300",
+    danger:
+      "border-red-200 bg-red-100 text-red-900 dark:border-red-200/30 dark:bg-red-900/40 dark:text-red-200",
+    warning:
+      "border-orange-200 bg-orange-100 text-orange-800 dark:border-orange-400/30 dark:bg-orange-400/20 dark:text-orange-300",
     default: "",
   },
 } as const;
@@ -337,7 +342,8 @@ export const ACCORDION_TOKENS = {
     base: "flex flex-1 items-center justify-between py-4 text-left font-medium transition-all hover:underline max-sm:text-sm",
     hoverScale: "hover:scale-[1.015]",
     activeScale: "active:scale-[0.985]",
-    focusRing: "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+    focusRing:
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
   },
   /** Content wrapper styling */
   content: {
@@ -377,14 +383,16 @@ export const SELECT_TOKENS = {
   },
   viewport: {
     base: "relative p-1",
-    popperSize: "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]",
+    popperSize:
+      "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]",
   },
   label: {
     base: "py-1.5 pl-8 pr-2 text-sm font-semibold",
   },
   item: {
     base: "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-    indicatorWrapper: "absolute left-2 flex h-3.5 w-3.5 items-center justify-center",
+    indicatorWrapper:
+      "absolute left-2 flex h-3.5 w-3.5 items-center justify-center",
     indicatorSize: "h-4 w-4",
   },
   separator: {
@@ -400,7 +408,8 @@ export const CHECKBOX_TOKENS = {
   root: {
     base: "peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
     states: {
-      checked: "data-[state=checked]:scale-110 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:animate-in data-[state=checked]:zoom-in-50",
+      checked:
+        "data-[state=checked]:scale-110 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground data-[state=checked]:animate-in data-[state=checked]:zoom-in-50",
       unchecked: "data-[state=unchecked]:scale-100",
     },
     hoverScale: "hover:scale-[1.05]",
@@ -430,7 +439,8 @@ export const TEXTAREA_TOKENS = {
   /** Padding */
   padding: "px-3 py-2",
   /** Hover and focus transition and timing with subtle tactile spring interaction */
-  transition: "transition-all duration-200 ease-in-out hover:border-muted-foreground/50",
+  transition:
+    "transition-all duration-200 ease-in-out hover:border-muted-foreground/50",
   /** Active scale spring micro-interaction */
   activeScale: "active:scale-[0.995]",
   /** Error state styling */
@@ -458,16 +468,21 @@ export const DATA_TABLE_EMPTY_TOKENS = {
   /** Icon wrapper styling and hover micro-interaction */
   iconWrapper: {
     base: "flex h-16 w-16 items-center justify-center rounded-full bg-muted transition-all duration-300 ease-out group-hover:scale-110 group-hover:bg-muted/80 motion-safe:transition-transform motion-safe:duration-300",
-    iconSize: "h-8 w-8 text-muted-foreground transition-colors duration-300 group-hover:text-primary",
+    iconSize:
+      "h-8 w-8 text-muted-foreground transition-colors duration-300 group-hover:text-primary",
   },
   /** Content wrapper */
-  contentWrapper: "mx-auto flex max-w-[400px] flex-col items-center text-center motion-safe:transition-all motion-safe:duration-300 motion-safe:delay-75",
+  contentWrapper:
+    "mx-auto flex max-w-[400px] flex-col items-center text-center motion-safe:transition-all motion-safe:duration-300 motion-safe:delay-75",
   /** Title typography */
-  title: "text-lg font-semibold text-foreground motion-safe:transition-colors motion-safe:duration-200 group-hover:text-foreground/90",
+  title:
+    "text-lg font-semibold text-foreground motion-safe:transition-colors motion-safe:duration-200 group-hover:text-foreground/90",
   /** Description typography */
-  description: "mt-2 text-sm text-muted-foreground leading-relaxed motion-safe:transition-colors motion-safe:duration-200",
+  description:
+    "mt-2 text-sm text-muted-foreground leading-relaxed motion-safe:transition-colors motion-safe:duration-200",
   /** Action container */
-  action: "mt-6 motion-safe:transition-all motion-safe:duration-300 motion-safe:translate-y-0 motion-safe:opacity-100 motion-safe:delay-100",
+  action:
+    "mt-6 motion-safe:transition-all motion-safe:duration-300 motion-safe:translate-y-0 motion-safe:opacity-100 motion-safe:delay-100",
   /** Accessibility fallback */
   defaultAriaLabel: "Empty state: No results found",
 } as const;

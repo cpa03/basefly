@@ -129,9 +129,7 @@ const DataTableEmpty = React.forwardRef<
           {/* Content container */}
           <div className={cn(DATA_TABLE_EMPTY_TOKENS.contentWrapper)}>
             {/* Title */}
-            <h3 className={cn(DATA_TABLE_EMPTY_TOKENS.title)}>
-              {title}
-            </h3>
+            <h3 className={cn(DATA_TABLE_EMPTY_TOKENS.title)}>{title}</h3>
 
             {/* Description */}
             {description && (
@@ -142,9 +140,7 @@ const DataTableEmpty = React.forwardRef<
 
             {/* Action */}
             {action && (
-              <div className={cn(DATA_TABLE_EMPTY_TOKENS.action)}>
-                {action}
-              </div>
+              <div className={cn(DATA_TABLE_EMPTY_TOKENS.action)}>{action}</div>
             )}
           </div>
         </div>

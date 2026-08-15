@@ -1,4 +1,6 @@
+import { isClerkEnabled } from "@saasfly/auth";
 import { db } from "@saasfly/db";
+import { stripe } from "@saasfly/stripe";
 
 /**
  * Health check service for verifying external dependencies.
@@ -30,8 +32,7 @@ export interface HealthCheckResult {
 async function checkDatabase(): Promise<DependencyStatus> {
   const start = Date.now();
   try {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    await db.execute("SELECT 1");
+    await db.selectFrom("K8sClusterConfig").select("id").limit(1).execute();
     return {
       status: "healthy",
       latencyMs: Date.now() - start,
@@ -63,7 +64,6 @@ async function checkStripe(): Promise<DependencyStatus> {
   try {
     // Use Stripe API key validation - make a lightweight call
     // Stripe.balance.retrieve() is a simple call that validates the API key
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     await stripe.balance.retrieve();
     return {
       status: "healthy",
@@ -90,13 +90,12 @@ async function checkStripe(): Promise<DependencyStatus> {
 function checkClerk(): Promise<DependencyStatus> {
   const start = Date.now();
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call -- isClerkEnabled() type not fully resolved by ESLint
   if (!isClerkEnabled()) {
-    return {
+    return Promise.resolve({
       status: "degraded",
       latencyMs: Date.now() - start,
       error: "Clerk is not configured",
-    };
+    });
   }
 
   try {
@@ -104,20 +103,20 @@ function checkClerk(): Promise<DependencyStatus> {
     // the publishable key format which we already do in isClerkEnabled
     // For actual connectivity, we'd need to make an API call
     // Since Clerk is client-side SDK, we verify basic config is present
-    return {
+    return Promise.resolve({
       status: "healthy",
       latencyMs: Date.now() - start,
       details: {
         configured: true,
         note: "Clerk uses client-side SDK - basic config verified",
       },
-    };
+    });
   } catch (error) {
-    return {
+    return Promise.resolve({
       status: "unhealthy",
       latencyMs: Date.now() - start,
       error: error instanceof Error ? error.message : "Clerk check failed",
-    };
+    });
   }
 }
 

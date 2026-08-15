@@ -36,9 +36,7 @@ export const createTRPCContext = (opts: {
  * handling a tRPC call from a React Server Component.
  */
 const createContext = cache(async () => {
-  const cookieStore = cookies();
-  // Convert cookie store to string properly
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call -- cookies().getAll() type is not fully resolved
+  const cookieStore = await cookies();
   const allCookies = cookieStore.getAll() as { name: string; value: string }[];
   const cookieHeader = Array.from(allCookies)
     .map((cookie) => `${cookie.name}=${cookie.value}`)
@@ -63,7 +61,6 @@ const createContext = cache(async () => {
   });
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- tRPC proxy types are dynamically resolved
 export const trpc = createTRPCProxyClient<AppRouter>({
   transformer,
   links: [

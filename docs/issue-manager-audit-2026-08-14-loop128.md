@@ -44,7 +44,7 @@ ISSUE MANAGER MODE executed (read-only — issue write remains BLOCKED):
   `npm ci || true` at lines 72/342). **Live push probe executed this loop**: created branch
   `fix/pnpm-ci-iterate-loop128`, applied `docs/ci/iterate-pnpm-fix.patch` cleanly, committed,
   pushed → **rejected**: `refusing to allow a GitHub App to create or update workflow
-  .github/workflows/iterate.yml without 'workflows' permission`. Local branch deleted; no
+.github/workflows/iterate.yml without 'workflows' permission`. Local branch deleted; no
   remote ref created. Blocked at the workflow-file level, consistent with loops 120–127.
 - **P2/P3 spot-checks** (this loop): #748, #785, #789, #755 — all verified resolved in code
   (evidence below).
@@ -56,27 +56,27 @@ ISSUE MANAGER MODE executed (read-only — issue write remains BLOCKED):
 
 All 10 P0/P1 issues verified **resolved in code** on `main` @ `12ce4f1`:
 
-| Issue | Title | Evidence (verified this loop) |
-|---|---|---|
+| Issue     | Title                                                         | Evidence (verified this loop)                                                                                                                                                                                                                                                                                                                                                                |
+| --------- | ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | #496 (P0) | Replace in-memory rate limiter with distributed store (Redis) | `packages/api/src/distributed-rate-limiter.ts` (Redis sliding-window via ioredis + in-memory fallback); wired into `packages/api/src/trpc.ts:431-435` via `getLimiter().checkAsync()`; env-configurable via `REDIS_URL`, `RATE_LIMIT_*` in `.env.example:124-133`; docs in `docs/redis-setup.md`; unit tests in `distributed-rate-limiter.test.ts` + `distributed-rate-limiter-sync.test.ts` |
-| #498 (P1) | Replace email-based admin RBAC with role-based access control | `packages/api/src/trpc.ts:250-312` (DB role check first, email fallback); `packages/api/src/authorization.test.ts` |
-| #515 (P1) | Add CSRF protection | `apps/nextjs/src/lib/csrf.ts`; wired in `apps/nextjs/src/app/api/trpc/edge/[trpc]/route.ts` |
-| #500 (P1) | Add Clerk authentication flow tests | `packages/auth/clerk.test.ts` (30 tests) |
-| #549 (P1) | Add tests for packages/auth module (0% coverage) | `packages/auth/clerk.test.ts` + `packages/auth/env.test.ts` (36 tests) |
-| #550 (P1) | Include apps/nextjs in test coverage | `vitest.config.ts:16` includes `apps/nextjs/src/**/*.{ts,tsx}` |
-| #551 (P1) | Add tests for k8s router | `packages/api/src/router/k8s-router.test.ts` |
-| #501 (P1) | Implement Playwright E2E tests | `playwright.config.ts`; `test:e2e` scripts in root `package.json:35-37` |
-| #581 (P1) | Consolidate testing infrastructure | Unified `vitest.config.ts` + turbo test pipeline |
-| #480 (P1) | Replace in-memory rate limiter with Redis | Same as #496 (`distributed-rate-limiter.ts` supersedes `rate-limiter.ts`) |
+| #498 (P1) | Replace email-based admin RBAC with role-based access control | `packages/api/src/trpc.ts:250-312` (DB role check first, email fallback); `packages/api/src/authorization.test.ts`                                                                                                                                                                                                                                                                           |
+| #515 (P1) | Add CSRF protection                                           | `apps/nextjs/src/lib/csrf.ts`; wired in `apps/nextjs/src/app/api/trpc/edge/[trpc]/route.ts`                                                                                                                                                                                                                                                                                                  |
+| #500 (P1) | Add Clerk authentication flow tests                           | `packages/auth/clerk.test.ts` (30 tests)                                                                                                                                                                                                                                                                                                                                                     |
+| #549 (P1) | Add tests for packages/auth module (0% coverage)              | `packages/auth/clerk.test.ts` + `packages/auth/env.test.ts` (36 tests)                                                                                                                                                                                                                                                                                                                       |
+| #550 (P1) | Include apps/nextjs in test coverage                          | `vitest.config.ts:16` includes `apps/nextjs/src/**/*.{ts,tsx}`                                                                                                                                                                                                                                                                                                                               |
+| #551 (P1) | Add tests for k8s router                                      | `packages/api/src/router/k8s-router.test.ts`                                                                                                                                                                                                                                                                                                                                                 |
+| #501 (P1) | Implement Playwright E2E tests                                | `playwright.config.ts`; `test:e2e` scripts in root `package.json:35-37`                                                                                                                                                                                                                                                                                                                      |
+| #581 (P1) | Consolidate testing infrastructure                            | Unified `vitest.config.ts` + turbo test pipeline                                                                                                                                                                                                                                                                                                                                             |
+| #480 (P1) | Replace in-memory rate limiter with Redis                     | Same as #496 (`distributed-rate-limiter.ts` supersedes `rate-limiter.ts`)                                                                                                                                                                                                                                                                                                                    |
 
 ## P2/P3 Spot-Checks (Fresh Evidence — Loop 128)
 
-| Issue | Title | Evidence (verified this loop) |
-|---|---|---|
-| #748 | `.nvmrc` contains invalid value `'20'` | `.nvmrc` now contains a valid Node version (e.g. `22.x`); prior loop fix confirmed |
-| #785 | Duplicate `next` dependency in packages/stripe | `packages/stripe/package.json` de-duplicated |
-| #789 | Add peerDependencies for React in packages/ui | `packages/ui/package.json` declares React peerDependencies |
-| #755 | Composite index for customer subscription queries | Index added in Prisma migrations |
+| Issue | Title                                             | Evidence (verified this loop)                                                      |
+| ----- | ------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| #748  | `.nvmrc` contains invalid value `'20'`            | `.nvmrc` now contains a valid Node version (e.g. `22.x`); prior loop fix confirmed |
+| #785  | Duplicate `next` dependency in packages/stripe    | `packages/stripe/package.json` de-duplicated                                       |
+| #789  | Add peerDependencies for React in packages/ui     | `packages/ui/package.json` declares React peerDependencies                         |
+| #755  | Composite index for customer subscription queries | Index added in Prisma migrations                                                   |
 
 ---
 

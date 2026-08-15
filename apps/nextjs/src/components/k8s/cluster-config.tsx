@@ -84,7 +84,7 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     setIsSaving(true);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call -- tRPC proxy types are dynamically resolved
+
     const response = (await trpc.k8s.updateCluster.mutate({
       id: cluster.id,
       name: data.name,

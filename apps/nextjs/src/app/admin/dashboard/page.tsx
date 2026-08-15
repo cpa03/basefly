@@ -26,12 +26,10 @@ interface AdminDashboardStats {
   recentActivity: number;
 }
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call -- tRPC proxy types are dynamically resolved */
 async function fetchAdminStats(): Promise<AdminDashboardStats> {
   const result = await trpc.admin.getStats();
   return result as AdminDashboardStats;
 }
-/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
 
 export default async function AdminDashboardPage() {
   const user = await getCurrentUser();

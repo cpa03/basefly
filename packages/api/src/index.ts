@@ -6,6 +6,8 @@ export { createTRPCContext } from "./trpc";
 
 export { t, type TRPCContext, type RateLimitInfo } from "./trpc";
 
+export type { AppRouter } from "./root";
+
 export {
   generateRequestId,
   extractRequestId,

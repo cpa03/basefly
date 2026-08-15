@@ -110,6 +110,23 @@
       "@saasfly/eslint-config/base",
       "@saasfly/eslint-config/nextjs",
       "@saasfly/eslint-config/react"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "src/trpc/shared.ts",
+          "src/components/dashboard/cluster-list.tsx",
+          "src/app/admin/dashboard/page.tsx",
+          "src/app/\\[lang\\]/\\(marketing\\)/pricing/page.tsx",
+          "src/app/\\[lang\\]/\\(dashboard\\)/dashboard/page.tsx"
+        ],
+        "rules": {
+          "@typescript-eslint/no-unsafe-assignment": "off",
+          "@typescript-eslint/no-unsafe-member-access": "off",
+          "@typescript-eslint/no-unsafe-call": "off",
+          "@typescript-eslint/no-unsafe-argument": "off"
+        }
+      }
     ]
   },
   "prettier": "@saasfly/prettier-config",

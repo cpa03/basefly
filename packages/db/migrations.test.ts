@@ -159,6 +159,17 @@ describe("Migration SQL content invariants", () => {
     expect(sql).toMatch(/CREATE POLICY/);
   });
 
+  it("row-level security migration should allow self-service deletion via DELETE policies", () => {
+    const sql = readMigrationSql("20260131_add_row_level_security");
+    expect(sql).toMatch(
+      /CREATE POLICY "customers_delete_own"\s+ON "Customer"\s+FOR DELETE/,
+    );
+    expect(sql).toMatch(
+      /CREATE POLICY "users_delete_own"\s+ON "User"\s+FOR DELETE/,
+    );
+    expect(sql).toMatch(/current_setting\('app\.current_user_id'/);
+  });
+
   it("check-constraints migration should enforce data integrity rules", () => {
     const sql = readMigrationSql("20260131_add_check_constraints");
     expect(sql).toContain("ADD CONSTRAINT");

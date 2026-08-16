@@ -22,6 +22,7 @@
 
 import { db } from "./db-instance";
 import { logger } from "./logger";
+import { rlsTransaction } from "./rls-middleware";
 
 /**
  * Service for managing user deletion with controlled cascading
@@ -65,7 +66,7 @@ export class UserDeletionService {
     logger.info("Starting user deletion", { requestId, userId });
 
     try {
-      await db.transaction().execute(async (trx) => {
+      await rlsTransaction(db, userId, async (trx) => {
         // Step 1: Soft delete all K8s clusters (preserves audit trail)
         // Using soft delete ensures we can track cluster history
         logger.info("Soft deleting user clusters", { requestId, userId });
@@ -121,7 +122,7 @@ export class UserDeletionService {
     logger.info("Starting soft user deletion", { requestId, userId });
 
     try {
-      await db.transaction().execute(async (trx) => {
+      await rlsTransaction(db, userId, async (trx) => {
         // Step 1: Soft delete all K8s clusters
         logger.info("Soft deleting user clusters", { requestId, userId });
         await trx
@@ -175,11 +176,13 @@ export class UserDeletionService {
     logger.info("Fetching user summary", { requestId, userId });
 
     try {
-      const user = await db
-        .selectFrom("User")
-        .select(["id", "name", "email", "image"])
-        .where("id", "=", userId)
-        .executeTakeFirst();
+      const user = await rlsTransaction(db, userId, (trx) =>
+        trx
+          .selectFrom("User")
+          .select(["id", "name", "email", "image"])
+          .where("id", "=", userId)
+          .executeTakeFirst(),
+      );
 
       if (!user) {
         logger.info("User not found for summary", { requestId, userId });
@@ -187,17 +190,21 @@ export class UserDeletionService {
       }
 
       const [customer, clusters] = await Promise.all([
-        db
-          .selectFrom("Customer")
-          .selectAll()
-          .where("authUserId", "=", userId)
-          .executeTakeFirst(),
-        db
-          .selectFrom("K8sClusterConfig")
-          .selectAll()
-          .where("authUserId", "=", userId)
-          .where("deletedAt", "is", null)
-          .execute(),
+        rlsTransaction(db, userId, (trx) =>
+          trx
+            .selectFrom("Customer")
+            .selectAll()
+            .where("authUserId", "=", userId)
+            .executeTakeFirst(),
+        ),
+        rlsTransaction(db, userId, (trx) =>
+          trx
+            .selectFrom("K8sClusterConfig")
+            .selectAll()
+            .where("authUserId", "=", userId)
+            .where("deletedAt", "is", null)
+            .execute(),
+        ),
       ]);
 
       logger.info("User summary retrieved", {

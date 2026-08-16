@@ -12,11 +12,20 @@ vi.mock("./db-instance", () => ({
   },
 }));
 
+vi.mock("./rls-middleware", () => ({
+  rlsTransaction: (
+    db: { transaction: () => { execute: (cb: unknown) => unknown } },
+    _userId: string,
+    callback: (trx: unknown) => Promise<unknown>,
+  ) => db.transaction().execute(callback),
+}));
+
 describe("UserDeletionService", () => {
   let service: UserDeletionService;
   let mockTrx: {
     updateTable: ReturnType<typeof vi.fn>;
     deleteFrom: ReturnType<typeof vi.fn>;
+    selectFrom: ReturnType<typeof vi.fn>;
   };
   let mockUpdateWhere: ReturnType<typeof vi.fn>;
   let mockUpdateSet: ReturnType<typeof vi.fn>;
@@ -43,29 +52,6 @@ describe("UserDeletionService", () => {
     mockSelectExecute = vi.fn().mockResolvedValue([]);
     mockSelectExecuteTakeFirst = vi.fn().mockResolvedValue(null);
 
-    mockTrx = {
-      updateTable: vi.fn().mockReturnValue({
-        where: mockUpdateWhere,
-        set: mockUpdateSet,
-        execute: mockUpdateExecute,
-      }),
-      deleteFrom: vi.fn().mockReturnValue({
-        where: mockDeleteWhere,
-        execute: mockDeleteExecute,
-      }),
-    };
-
-    // Mock db.transaction().execute(callback) pattern
-    vi.mocked(db.transaction).mockReturnValue({
-      execute: vi
-        .fn()
-        .mockImplementation(
-          (callback: (trx: typeof mockTrx) => Promise<unknown>) => {
-            return callback(mockTrx);
-          },
-        ),
-    } as unknown as ReturnType<typeof db.transaction>);
-
     // Create a chainable mock object for select queries
     const createSelectChain = () => ({
       selectAll: mockSelectAll,
@@ -78,6 +64,30 @@ describe("UserDeletionService", () => {
       executeTakeFirst: mockSelectExecuteTakeFirst,
     });
     const selectChain = createSelectChain();
+
+    mockTrx = {
+      updateTable: vi.fn().mockReturnValue({
+        where: mockUpdateWhere,
+        set: mockUpdateSet,
+        execute: mockUpdateExecute,
+      }),
+      deleteFrom: vi.fn().mockReturnValue({
+        where: mockDeleteWhere,
+        execute: mockDeleteExecute,
+      }),
+      selectFrom: vi.fn().mockReturnValue(selectChain),
+    };
+
+    // Mock db.transaction().execute(callback) pattern
+    vi.mocked(db.transaction).mockReturnValue({
+      execute: vi
+        .fn()
+        .mockImplementation(
+          (callback: (trx: typeof mockTrx) => Promise<unknown>) => {
+            return callback(mockTrx);
+          },
+        ),
+    } as unknown as ReturnType<typeof db.transaction>);
 
     vi.mocked(db.selectFrom).mockReturnValue(
       selectChain as unknown as ReturnType<typeof db.selectFrom>,

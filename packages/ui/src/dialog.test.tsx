@@ -54,7 +54,7 @@ describe("Dialog Component", () => {
     expect(content).toHaveTextContent("Dialog title");
   });
 
-  it("should render a close button with aria-label Close", () => {
+  it("should render a close button with default aria-label Close and tactile scale transitions", () => {
     render(
       <Dialog open>
         <DialogContent>
@@ -62,7 +62,23 @@ describe("Dialog Component", () => {
         </DialogContent>
       </Dialog>,
     );
-    expect(screen.getByLabelText("Close")).toBeInTheDocument();
+    const closeBtn = screen.getByLabelText("Close");
+    expect(closeBtn).toBeInTheDocument();
+    expect(closeBtn).toHaveClass("hover:scale-110");
+    expect(closeBtn).toHaveClass("active:scale-95");
+  });
+
+  it("should allow providing aria-label on dialog content without affecting close button", () => {
+    render(
+      <Dialog open>
+        <DialogContent aria-label="Custom Dialog Container">
+          <DialogTitle>Dialog title</DialogTitle>
+        </DialogContent>
+      </Dialog>,
+    );
+    const dialog = screen.getByRole("dialog");
+    expect(dialog).toHaveAttribute("aria-label", "Custom Dialog Container");
+    expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
   });
 
   it("should apply base content classes", () => {

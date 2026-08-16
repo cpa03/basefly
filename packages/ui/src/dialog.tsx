@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { DIALOG_TOKENS } from "@saasfly/common";
 import { X } from "lucide-react";
 
 import { cn } from "./utils/cn";
@@ -28,10 +29,7 @@ const DialogOverlay = React.memo(
   >(({ className, ...props }, ref) => (
     <DialogPrimitive.Overlay
       ref={ref}
-      className={cn(
-        "fixed inset-0 z-50 bg-background/60 backdrop-blur-sm transition-all duration-100 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in",
-        className,
-      )}
+      className={cn(DIALOG_TOKENS.overlay.base, className)}
       {...props}
     />
   )),
@@ -48,20 +46,20 @@ const DialogContent = React.memo(
       <DialogPrimitive.Content
         ref={ref}
         aria-modal="true"
-        className={cn(
-          "fixed bottom-0 z-50 grid w-full gap-4 rounded-b-lg border bg-background p-6 shadow-lg animate-in md:bottom-auto",
-          "data-[state=open]:fade-in-90 data-[state=open]:slide-in-from-bottom-10 md:max-w-lg md:rounded-lg md:zoom-in-90 data-[state=open]:md:slide-in-from-bottom-0",
-          className,
-        )}
+        className={cn(DIALOG_TOKENS.content.base, className)}
         {...props}
       >
         {children}
         <DialogPrimitive.Close
-          aria-label="Close"
-          className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+          aria-label={DIALOG_TOKENS.defaultAriaLabel}
+          className={cn(
+            DIALOG_TOKENS.closeButton.base,
+            DIALOG_TOKENS.closeButton.hoverScale,
+            DIALOG_TOKENS.closeButton.activeScale,
+          )}
         >
-          <X className="h-4 w-4" />
-          <span className="sr-only">Close</span>
+          <X className={DIALOG_TOKENS.closeButton.size} />
+          <span className="sr-only">{DIALOG_TOKENS.defaultAriaLabel}</span>
         </DialogPrimitive.Close>
       </DialogPrimitive.Content>
     </DialogPortal>
@@ -71,20 +69,14 @@ DialogContent.displayName = DialogPrimitive.Content.displayName;
 
 const DialogHeader = React.memo(
   ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-    <div className={cn("flex flex-col space-y-1.5", className)} {...props} />
+    <div className={cn(DIALOG_TOKENS.header.base, className)} {...props} />
   ),
 );
 DialogHeader.displayName = "DialogHeader";
 
 const DialogFooter = React.memo(
   ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-    <div
-      className={cn(
-        "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
-        className,
-      )}
-      {...props}
-    />
+    <div className={cn(DIALOG_TOKENS.footer.base, className)} {...props} />
   ),
 );
 DialogFooter.displayName = "DialogFooter";
@@ -96,10 +88,7 @@ const DialogTitle = React.memo(
   >(({ className, ...props }, ref) => (
     <DialogPrimitive.Title
       ref={ref}
-      className={cn(
-        "text-lg font-semibold leading-none tracking-tight",
-        className,
-      )}
+      className={cn(DIALOG_TOKENS.title.base, className)}
       {...props}
     />
   )),
@@ -113,7 +102,7 @@ const DialogDescription = React.memo(
   >(({ className, ...props }, ref) => (
     <DialogPrimitive.Description
       ref={ref}
-      className={cn("text-sm text-muted-foreground", className)}
+      className={cn(DIALOG_TOKENS.description.base, className)}
       {...props}
     />
   )),

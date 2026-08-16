@@ -19,7 +19,7 @@ interface Dictionary {
   [key: string]: unknown;
 }
 
-function extractLocaleFromPathname(pathname: string): Locale {
+export function extractLocaleFromPathname(pathname: string): Locale {
   const segments = pathname.split("/").filter(Boolean);
   const firstSegment = segments[0];
 

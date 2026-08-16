@@ -11,7 +11,7 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { z } from "zod";
 
-import { db } from "@saasfly/db";
+import { db, rlsTransaction } from "@saasfly/db";
 
 import { createApiError, ErrorCode } from "../errors";
 import { logger } from "../logger";
@@ -47,11 +47,13 @@ export const authRouter = createTRPCRouter({
       const requestId = opts.ctx.requestId;
 
       try {
-        const customer = await db
-          .selectFrom("Customer")
-          .select(["plan", "stripeCurrentPeriodEnd"])
-          .where("authUserId", "=", userId)
-          .executeTakeFirst();
+        const customer = await rlsTransaction(db, userId, (trx) =>
+          trx
+            .selectFrom("Customer")
+            .select(["plan", "stripeCurrentPeriodEnd"])
+            .where("authUserId", "=", userId)
+            .executeTakeFirst(),
+        );
 
         if (!customer) return null;
         return {

@@ -1,18 +1,20 @@
 import { notFound, redirect } from "next/navigation";
 
 import { authOptions, getCurrentUser, type User } from "@saasfly/auth";
-import { db } from "@saasfly/db";
+import { db, rlsTransaction } from "@saasfly/db";
 
 import { ClusterConfig } from "~/components/k8s/cluster-config";
 import type { Cluster } from "~/types/k8s";
 
 async function getClusterForUser(clusterId: Cluster["id"], userId: User["id"]) {
-  return await db
-    .selectFrom("K8sClusterConfig")
-    .selectAll()
-    .where("id", "=", Number(clusterId))
-    .where("authUserId", "=", userId)
-    .executeTakeFirst();
+  return await rlsTransaction(db, userId, (trx) =>
+    trx
+      .selectFrom("K8sClusterConfig")
+      .selectAll()
+      .where("id", "=", Number(clusterId))
+      .where("authUserId", "=", userId)
+      .executeTakeFirst(),
+  );
 }
 
 interface EditorClusterProps {

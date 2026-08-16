@@ -5,7 +5,7 @@ import { initTRPC, TRPCError } from "@trpc/server";
 import { ZodError } from "zod";
 
 import { IS_PROD, isAdminEmail } from "@saasfly/common";
-import { db, type Role } from "@saasfly/db";
+import { db, rlsTransaction, type Role } from "@saasfly/db";
 
 import {
   createOwnershipVerifier,
@@ -257,11 +257,13 @@ const isAdmin = t.middleware(async ({ next, ctx }) => {
   }
 
   try {
-    const userRecord = await db
-      .selectFrom("User")
-      .select("role")
-      .where("id", "=", ctx.userId)
-      .executeTakeFirst();
+    const userRecord = await rlsTransaction(db, ctx.userId, (trx) =>
+      trx
+        .selectFrom("User")
+        .select("role")
+        .where("id", "=", ctx.userId)
+        .executeTakeFirst(),
+    );
 
     if (userRecord?.role === "ADMIN") {
       logger.info(
@@ -355,11 +357,13 @@ export const requireRole = (requiredRole: Role) =>
     }
 
     try {
-      const userRecord = await db
-        .selectFrom("User")
-        .select("role")
-        .where("id", "=", ctx.userId)
-        .executeTakeFirst();
+      const userRecord = await rlsTransaction(db, ctx.userId, (trx) =>
+        trx
+          .selectFrom("User")
+          .select("role")
+          .where("id", "=", ctx.userId)
+          .executeTakeFirst(),
+      );
 
       if (userRecord?.role === requiredRole) {
         logger.info(

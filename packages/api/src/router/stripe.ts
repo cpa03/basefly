@@ -11,7 +11,7 @@
 
 import { CACHE_DURATION, pricingData, TIME_MS } from "@saasfly/common";
 import { CACHE_KEYS, cacheService } from "@saasfly/common/cache";
-import { db, type Customer } from "@saasfly/db";
+import { db, rlsTransaction, type Customer } from "@saasfly/db";
 import {
   createBillingSession,
   createCheckoutSession,
@@ -66,22 +66,30 @@ export const stripeRouter = createTRPCRouter({
     .input(enhancedStripeCreateSessionSchema)
     .mutation(async (opts) => {
       const userId = opts.ctx.userId;
+      if (!userId) {
+        throw createApiError(ErrorCode.UNAUTHORIZED, "User is not authenticated");
+      }
       const planId = opts.input.planId;
       const requestId = opts.ctx.requestId;
 
       // Performance optimization: Fetch customer and user email in parallel
-      // instead of sequential queries to reduce latency
+      // instead of sequential queries to reduce latency.
+      // RLS-aware: each read runs in its own transaction with app.current_user_id set.
       const [customer, user] = await Promise.all([
-        db
-          .selectFrom("Customer")
-          .select(["id", "plan", "stripeCustomerId"])
-          .where("authUserId", "=", userId)
-          .executeTakeFirst(),
-        db
-          .selectFrom("User")
-          .select(["email"])
-          .where("id", "=", userId)
-          .executeTakeFirst(),
+        rlsTransaction(db, userId, (trx) =>
+          trx
+            .selectFrom("Customer")
+            .select(["id", "plan", "stripeCustomerId"])
+            .where("authUserId", "=", userId)
+            .executeTakeFirst(),
+        ),
+        rlsTransaction(db, userId, (trx) =>
+          trx
+            .selectFrom("User")
+            .select(["email"])
+            .where("id", "=", userId)
+            .executeTakeFirst(),
+        ),
       ]);
 
       const returnUrl = env.NEXT_PUBLIC_APP_URL + "/dashboard";
@@ -150,16 +158,18 @@ export const stripeRouter = createTRPCRouter({
     }
 
     const requestId = opts.ctx.requestId;
-    const custom = await db
-      .selectFrom("Customer")
-      .select([
-        "stripeSubscriptionId",
-        "stripeCurrentPeriodEnd",
-        "stripeCustomerId",
-        "stripePriceId",
-      ])
-      .where("authUserId", "=", userId)
-      .executeTakeFirst();
+    const custom = await rlsTransaction(db, userId, (trx) =>
+      trx
+        .selectFrom("Customer")
+        .select([
+          "stripeSubscriptionId",
+          "stripeCurrentPeriodEnd",
+          "stripeCustomerId",
+          "stripePriceId",
+        ])
+        .where("authUserId", "=", userId)
+        .executeTakeFirst(),
+    );
     if (!custom) {
       return;
     }

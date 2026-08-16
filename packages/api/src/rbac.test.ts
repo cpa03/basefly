@@ -39,6 +39,11 @@ vi.mock("@saasfly/db", () => ({
     USER: "USER",
     ADMIN: "ADMIN",
   },
+  rlsTransaction: (
+    _db: unknown,
+    _userId: string,
+    callback: (trx: unknown) => Promise<unknown>,
+  ) => callback(_db),
 }));
 
 // Mock Clerk server helpers to avoid server-only module side effects.

@@ -35,6 +35,11 @@ vi.mock("@saasfly/db", () => ({
     findActive: vi.fn(),
     softDelete: vi.fn(),
   },
+  rlsTransaction: (
+    _db: unknown,
+    _userId: string,
+    callback: (trx: unknown) => Promise<unknown>,
+  ) => callback(_db),
 }));
 
 vi.mock("@saasfly/stripe", () => ({

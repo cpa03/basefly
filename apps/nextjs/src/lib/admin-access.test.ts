@@ -35,6 +35,11 @@ vi.mock("@saasfly/db", () => ({
       }),
     }),
   },
+  rlsTransaction: (
+    _db: unknown,
+    _userId: string,
+    callback: (trx: unknown) => Promise<unknown>,
+  ) => callback(_db),
 }));
 
 // Mock the application logger to assert audit-logging behavior.

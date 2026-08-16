@@ -56,6 +56,11 @@ vi.mock("@clerk/nextjs/server", () => ({
 vi.mock("@saasfly/db", () => ({
   db: mockDb,
   SubscriptionPlan: { FREE: "FREE", PRO: "PRO", BUSINESS: "BUSINESS" },
+  rlsTransaction: (
+    _db: unknown,
+    _userId: string,
+    callback: (trx: unknown) => Promise<unknown>,
+  ) => callback(_db),
 }));
 
 // Mock the logger to keep test output clean and assert audit logging.

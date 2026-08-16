@@ -1,7 +1,7 @@
 import type Stripe from "stripe";
 
 import { CACHE_KEYS, cacheService } from "@saasfly/common/cache";
-import { db, SubscriptionPlan } from "@saasfly/db";
+import { db, rlsTransaction, SubscriptionPlan } from "@saasfly/db";
 
 import { retrieveSubscription } from "./client";
 import { IntegrationError } from "./integration";
@@ -111,8 +111,8 @@ async function handleCheckoutSessionCompleted(
   const { subscription, customerId, userId } =
     await resolveSubscriptionCustomer(session);
 
-  // Use transaction to ensure atomicity of select + update
-  await db.transaction().execute(async (trx) => {
+  // RLS-aware transaction: sets app.current_user_id so Customer RLS policies apply
+  await rlsTransaction(db, userId, async (trx) => {
     const customer = await trx
       .selectFrom("Customer")
       .selectAll()
@@ -147,8 +147,8 @@ async function handleInvoicePaymentSucceeded(session: Stripe.Checkout.Session) {
   const { subscription, customerId, userId } =
     await resolveSubscriptionCustomer(session);
 
-  // Use transaction to ensure atomicity of select + update
-  await db.transaction().execute(async (trx) => {
+  // RLS-aware transaction: sets app.current_user_id so Customer RLS policies apply
+  await rlsTransaction(db, userId, async (trx) => {
     const customer = await trx
       .selectFrom("Customer")
       .selectAll()

@@ -59,6 +59,15 @@ FOR UPDATE
 USING ("authUserId" = current_setting('app.current_user_id', true)::text)
 WITH CHECK ("authUserId" = current_setting('app.current_user_id', true)::text);
 
+-- Policy 4: Allow users to delete their own customer data
+-- Required by the user deletion service (self-service account deletion).
+-- The USING clause restricts deletion to rows owned by the current session
+-- user, so cross-tenant deletion remains blocked by RLS.
+CREATE POLICY "customers_delete_own"
+ON "Customer"
+FOR DELETE
+USING ("authUserId" = current_setting('app.current_user_id', true)::text);
+
 -- Step 5: Enable RLS on User table (limited - for self-service operations)
 ALTER TABLE "User" ENABLE ROW LEVEL SECURITY;
 
@@ -74,6 +83,15 @@ ON "User"
 FOR UPDATE
 USING ("id" = current_setting('app.current_user_id', true)::text)
 WITH CHECK ("id" = current_setting('app.current_user_id', true)::text);
+
+-- Step 8: Create RLS policy for User table (delete own record)
+-- Required by the user deletion service (self-service account deletion).
+-- The USING clause restricts deletion to the current session user, so
+-- cross-tenant deletion remains blocked by RLS.
+CREATE POLICY "users_delete_own"
+ON "User"
+FOR DELETE
+USING ("id" = current_setting('app.current_user_id', true)::text);
 
 -- Notes:
 -- 1. RLS policies enforce tenant isolation at database level
@@ -95,7 +113,11 @@ WITH CHECK ("id" = current_setting('app.current_user_id', true)::text);
 --
 -- Migration Requirements:
 -- - Application must set session variable before each transaction
--- - User deletion service needs elevated privileges (RLS bypass)
+-- - User deletion service uses self-service DELETE policies (customers_delete_own,
+--   users_delete_own) scoped to the current session user; no RLS bypass needed
+--   for self-service deletion. Admin cross-tenant operations (e.g. admin
+--   getStats aggregates) still require an elevated role (BYPASSRLS) or explicit
+--   admin-role policies.
 --
 -- Rollback Strategy:
 -- ALTER TABLE "TableName" DISABLE ROW LEVEL SECURITY;

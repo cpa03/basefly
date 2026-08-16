@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { cacheService } from "@saasfly/common/cache";
-import { db } from "@saasfly/db";
+import { db, rlsTransaction } from "@saasfly/db";
 
 import { stripe } from ".";
 import { logger } from "./logger";
@@ -15,14 +15,16 @@ vi.mock("@saasfly/db", () => ({
       values: vi.fn().mockReturnThis(),
       execute: vi.fn().mockResolvedValue(undefined),
     }),
-    transaction: vi.fn().mockReturnValue({
-      execute: vi
-        .fn()
-        .mockImplementation(async (cb: (trx: typeof db) => Promise<void>) => {
-          await cb(db);
-        }),
-    }),
   },
+  rlsTransaction: vi.fn().mockImplementation(
+    async (
+      _db: unknown,
+      _userId: string,
+      cb: (trx: typeof db) => Promise<void>,
+    ) => {
+      await cb(db);
+    },
+  ),
   SubscriptionPlan: {
     FREE: "FREE",
     PRO: "PRO",
@@ -429,7 +431,7 @@ describe("handleEvent", () => {
       );
     });
 
-    it("wraps the customer update in a database transaction", async () => {
+    it("wraps the customer update in an RLS-aware transaction", async () => {
       const mockCustomer = { id: "customer_id", authUserId: "user_123" };
       const mockWhere = vi.fn().mockReturnThis();
       const mockExecuteTakeFirst = vi.fn().mockResolvedValue(mockCustomer);
@@ -448,7 +450,11 @@ describe("handleEvent", () => {
 
       await handleEvent(buildCheckoutEvent());
 
-      expect(db.transaction).toHaveBeenCalled();
+      expect(rlsTransaction).toHaveBeenCalledWith(
+        db,
+        "user_123",
+        expect.any(Function),
+      );
     });
 
     it("propagates an error raised inside the transaction (rollback)", async () => {

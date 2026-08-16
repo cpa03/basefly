@@ -13,7 +13,7 @@
  * role-based access control.
  */
 
-import { db } from "@saasfly/db";
+import { db, rlsTransaction } from "@saasfly/db";
 import { isAdminEmail } from "@saasfly/common";
 
 import { logger } from "~/lib/logger";
@@ -41,11 +41,13 @@ export async function isAdminUser(
   }
 
   try {
-    const userRecord = await db
-      .selectFrom("User")
-      .select("role")
-      .where("id", "=", user.id)
-      .executeTakeFirst();
+    const userRecord = await rlsTransaction(db, user.id, (trx) =>
+      trx
+        .selectFrom("User")
+        .select("role")
+        .where("id", "=", user.id)
+        .executeTakeFirst(),
+    );
 
     if (userRecord?.role === "ADMIN") {
       logger.info(

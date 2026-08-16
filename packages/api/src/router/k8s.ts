@@ -13,7 +13,12 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { K8S_DEFAULTS, ROUTES } from "@saasfly/common";
-import { db, k8sClusterService, type K8sClusterConfig } from "@saasfly/db";
+import {
+  db,
+  k8sClusterService,
+  rlsTransaction,
+  type K8sClusterConfig,
+} from "@saasfly/db";
 
 import { createApiError, ErrorCode } from "../errors";
 import { logger } from "../logger";
@@ -187,11 +192,13 @@ export const k8sRouter = createTRPCRouter({
           if (newName) updateData.name = newName;
           if (newLocation) updateData.location = newLocation;
 
-          await db
-            .updateTable("K8sClusterConfig")
-            .where("id", "=", id)
-            .set(updateData)
-            .execute();
+          await rlsTransaction(db, userId, async (trx) => {
+            await trx
+              .updateTable("K8sClusterConfig")
+              .where("id", "=", id)
+              .set(updateData)
+              .execute();
+          });
 
           logger.info(
             { userId, requestId, clusterId: id },

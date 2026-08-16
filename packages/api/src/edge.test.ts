@@ -57,6 +57,11 @@ vi.mock("@saasfly/db", () => ({
   db: mockDb,
   SubscriptionPlan: { FREE: "FREE", PRO: "PRO", BUSINESS: "BUSINESS" },
   Role: { USER: "USER", ADMIN: "ADMIN" },
+  rlsTransaction: (
+    _db: unknown,
+    _userId: string,
+    callback: (trx: unknown) => Promise<unknown>,
+  ) => callback(_db),
 }));
 
 // Mock the logger to keep test output clean.

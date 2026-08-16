@@ -75,6 +75,11 @@ vi.mock("@saasfly/db", () => ({
     PRO: "PRO",
     BUSINESS: "BUSINESS",
   },
+  rlsTransaction: (
+    _db: unknown,
+    _userId: string,
+    callback: (trx: unknown) => Promise<unknown>,
+  ) => callback(_db),
 }));
 
 vi.mock("@saasfly/common/cache", () => ({

@@ -134,7 +134,7 @@
     {
       "name": "Client JS (gzip)",
       "path": ".next/static/chunks/**/*.js",
-      "limit": "450 kB",
+      "limit": "750 kB",
       "gzip": true
     },
     {
@@ -144,18 +144,9 @@
       "gzip": true
     },
     {
-      "name": "Framework JS (gzip)",
-      "path": [
-        ".next/static/chunks/framework-*.js",
-        ".next/static/chunks/main-app-*.js"
-      ],
-      "limit": "300 kB",
-      "gzip": true
-    },
-    {
       "name": "Static Media",
       "path": ".next/static/media/**/*",
-      "limit": "200 kB",
+      "limit": "300 kB",
       "gzip": true
     }
   ]

@@ -2963,3 +2963,5 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [x] error: Unrecognized DOM prop particlesLoaded warning in sparkles.test.tsx
 - [CONSOLIDATE] Centralized DataTableEmpty component styling under DATA_TABLE_EMPTY_TOKENS
 - [STRENGTHEN] Enhanced DataTableEmpty with tactile spring scale micro-interaction and accessibility fallback
+- [CONSOLIDATE] Centralized Dialog component styling and overlay/content/close tokens under DIALOG_TOKENS inside @saasfly/common/src/ui-tokens.ts
+- [STRENGTHEN] Enhanced Dialog close button with tactile spring scale micro-interactions (hover:scale-110 active:scale-95) and logical aria-label fallback for improved accessibility

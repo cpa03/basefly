@@ -153,12 +153,14 @@ export const CARD_TOKENS = {
 export const DIALOG_TOKENS = {
   /** Overlay backdrop styling */
   overlay: {
+    base: "fixed inset-0 z-50 bg-background/60 backdrop-blur-sm transition-all duration-100 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in",
     background: "bg-background/80",
     blur: "backdrop-blur-sm",
   },
 
   /** Content container */
   content: {
+    base: "fixed bottom-0 z-50 grid w-full gap-4 rounded-b-lg border bg-background p-6 shadow-lg animate-in md:bottom-auto data-[state=open]:fade-in-90 data-[state=open]:slide-in-from-bottom-10 md:max-w-lg md:rounded-lg md:zoom-in-90 data-[state=open]:md:slide-in-from-bottom-0",
     background: "bg-background",
     border: "border",
     shadow: "shadow-lg",
@@ -170,11 +172,27 @@ export const DIALOG_TOKENS = {
 
   /** Close button */
   closeButton: {
+    base: "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-all duration-200 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground",
+    hoverScale: "hover:scale-110",
+    activeScale: "active:scale-95",
     position: "absolute right-4 top-4",
     size: "h-4 w-4",
     opacity: "opacity-70 hover:opacity-100",
     transition: `${ANIMATION.duration.fast} ${ANIMATION.easing.default}`,
   },
+  header: {
+    base: "flex flex-col space-y-1.5",
+  },
+  footer: {
+    base: "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+  },
+  title: {
+    base: "text-lg font-semibold leading-none tracking-tight",
+  },
+  description: {
+    base: "text-sm text-muted-foreground",
+  },
+  defaultAriaLabel: "Close",
 } as const;
 
 /**

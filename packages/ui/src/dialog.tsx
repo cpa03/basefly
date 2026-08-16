@@ -2,8 +2,9 @@
 
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { DIALOG_TOKENS } from "@saasfly/common";
 import { X } from "lucide-react";
+
+import { DIALOG_TOKENS } from "@saasfly/common";
 
 import { cn } from "./utils/cn";
 

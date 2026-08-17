@@ -52,7 +52,13 @@ vi.mock("@saasfly/ui/dropdown-menu", () => ({
       data-testid="dropdown-item"
       className={className}
       onClick={onSelect}
-      onKeyDown={onSelect ? (e: React.KeyboardEvent) => { if (e.key === "Enter" || e.key === " ") onSelect(); } : undefined}
+      onKeyDown={
+        onSelect
+          ? (e: React.KeyboardEvent) => {
+              if (e.key === "Enter" || e.key === " ") onSelect();
+            }
+          : undefined
+      }
       aria-disabled={disabled}
       data-disabled={disabled}
       role="menuitem"
@@ -120,19 +126,34 @@ vi.mock("@saasfly/ui/alert-dialog", () => ({
 // Mock @saasfly/ui/icons
 vi.mock("@saasfly/ui/icons", () => ({
   Ellipsis: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg data-testid="icon-ellipsis" className={(props as Record<string, string>)?.className} />
+    <svg
+      data-testid="icon-ellipsis"
+      className={(props as Record<string, string>)?.className}
+    />
   ),
   Copy: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg data-testid="icon-copy" className={(props as Record<string, string>)?.className} />
+    <svg
+      data-testid="icon-copy"
+      className={(props as Record<string, string>)?.className}
+    />
   ),
   CopyDone: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg data-testid="icon-copy-done" className={(props as Record<string, string>)?.className} />
+    <svg
+      data-testid="icon-copy-done"
+      className={(props as Record<string, string>)?.className}
+    />
   ),
   Spinner: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg data-testid="icon-spinner" className={(props as Record<string, string>)?.className} />
+    <svg
+      data-testid="icon-spinner"
+      className={(props as Record<string, string>)?.className}
+    />
   ),
   Trash: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg data-testid="icon-trash" className={(props as Record<string, string>)?.className} />
+    <svg
+      data-testid="icon-trash"
+      className={(props as Record<string, string>)?.className}
+    />
   ),
 }));
 
@@ -220,11 +241,7 @@ describe("ClusterOperations", () => {
 
   it("renders the dropdown trigger button", () => {
     render(
-      <ClusterOperations
-        cluster={mockCluster}
-        lang="en"
-        dict={defaultDict}
-      />,
+      <ClusterOperations cluster={mockCluster} lang="en" dict={defaultDict} />,
     );
 
     const trigger = screen.getByTestId("dropdown-trigger");
@@ -234,11 +251,7 @@ describe("ClusterOperations", () => {
 
   it("renders the Ellipsis icon", () => {
     render(
-      <ClusterOperations
-        cluster={mockCluster}
-        lang="en"
-        dict={defaultDict}
-      />,
+      <ClusterOperations cluster={mockCluster} lang="en" dict={defaultDict} />,
     );
 
     expect(screen.getByTestId("icon-ellipsis")).toBeInTheDocument();
@@ -246,11 +259,7 @@ describe("ClusterOperations", () => {
 
   it("renders dropdown menu with actions", () => {
     render(
-      <ClusterOperations
-        cluster={mockCluster}
-        lang="en"
-        dict={defaultDict}
-      />,
+      <ClusterOperations cluster={mockCluster} lang="en" dict={defaultDict} />,
     );
 
     const items = screen.getAllByTestId("dropdown-item");
@@ -259,11 +268,7 @@ describe("ClusterOperations", () => {
 
   it("renders Edit link with correct href", () => {
     render(
-      <ClusterOperations
-        cluster={mockCluster}
-        lang="en"
-        dict={defaultDict}
-      />,
+      <ClusterOperations cluster={mockCluster} lang="en" dict={defaultDict} />,
     );
 
     const editLink = screen.getByText("Edit");
@@ -276,11 +281,7 @@ describe("ClusterOperations", () => {
 
   it("renders Copy ID option", () => {
     render(
-      <ClusterOperations
-        cluster={mockCluster}
-        lang="en"
-        dict={defaultDict}
-      />,
+      <ClusterOperations cluster={mockCluster} lang="en" dict={defaultDict} />,
     );
 
     expect(screen.getByText("Copy ID")).toBeInTheDocument();
@@ -288,11 +289,7 @@ describe("ClusterOperations", () => {
 
   it("renders Delete option", () => {
     render(
-      <ClusterOperations
-        cluster={mockCluster}
-        lang="en"
-        dict={defaultDict}
-      />,
+      <ClusterOperations cluster={mockCluster} lang="en" dict={defaultDict} />,
     );
 
     expect(screen.getByText("Delete")).toBeInTheDocument();
@@ -300,11 +297,7 @@ describe("ClusterOperations", () => {
 
   it("renders delete dialog only when triggered", () => {
     render(
-      <ClusterOperations
-        cluster={mockCluster}
-        lang="en"
-        dict={defaultDict}
-      />,
+      <ClusterOperations cluster={mockCluster} lang="en" dict={defaultDict} />,
     );
 
     // AlertDialog should not be visible initially (open is false)
@@ -313,11 +306,7 @@ describe("ClusterOperations", () => {
 
   it("renders separators between menu items", () => {
     render(
-      <ClusterOperations
-        cluster={mockCluster}
-        lang="en"
-        dict={defaultDict}
-      />,
+      <ClusterOperations cluster={mockCluster} lang="en" dict={defaultDict} />,
     );
 
     const separators = screen.getAllByTestId("dropdown-separator");
@@ -325,13 +314,7 @@ describe("ClusterOperations", () => {
   });
 
   it("uses fallback text when dict is incomplete", () => {
-    render(
-      <ClusterOperations
-        cluster={mockCluster}
-        lang="en"
-        dict={{}}
-      />,
-    );
+    render(<ClusterOperations cluster={mockCluster} lang="en" dict={{}} />);
 
     expect(screen.getByText("Edit")).toBeInTheDocument();
     expect(screen.getByText("Copy ID")).toBeInTheDocument();

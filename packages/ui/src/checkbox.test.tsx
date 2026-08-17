@@ -1,6 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+
 import { CHECKBOX_TOKENS } from "@saasfly/common";
 
 import { Checkbox } from "./checkbox";
@@ -15,7 +16,10 @@ describe("Checkbox Component", () => {
   it("should fallback to default aria-label if none is provided", () => {
     const { container } = render(<Checkbox />);
     const button = container.querySelector("button");
-    expect(button).toHaveAttribute("aria-label", CHECKBOX_TOKENS.defaultAriaLabel);
+    expect(button).toHaveAttribute(
+      "aria-label",
+      CHECKBOX_TOKENS.defaultAriaLabel,
+    );
   });
 
   it("should use explicitly provided aria-label", () => {

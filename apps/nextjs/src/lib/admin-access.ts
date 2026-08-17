@@ -13,8 +13,8 @@
  * role-based access control.
  */
 
-import { db, rlsTransaction } from "@saasfly/db";
 import { isAdminEmail } from "@saasfly/common";
+import { db, rlsTransaction } from "@saasfly/db";
 
 import { logger } from "~/lib/logger";
 

@@ -26,9 +26,12 @@ import {
   vi,
 } from "vitest";
 
+import type * as CommonTypes from "@saasfly/common";
+
 import { getLimiter } from "../distributed-rate-limiter";
 import type { TRPCContext } from "../trpc";
-import type * as CommonTypes from "@saasfly/common";
+// Import AFTER mocks are registered.
+import { stripeRouter } from "./stripe";
 
 // Mock Clerk server helpers to avoid server-only module side effects.
 vi.mock("@clerk/nextjs/server", () => ({
@@ -136,9 +139,6 @@ vi.mock("../env.mjs", () => ({
   },
 }));
 
-// Import AFTER mocks are registered.
-import { stripeRouter } from "./stripe";
-
 const OWNER_USER_ID = "550e8400-e29b-41d4-a716-446655440000";
 
 /** Builds a full authenticated TRPCContext for the stripe router. */
@@ -227,7 +227,9 @@ describe("stripeRouter - Business Logic", () => {
       });
 
       const caller = createCaller(createStripeContext());
-      const result = await caller.createSession({ planId: "price_pro_monthly" });
+      const result = await caller.createSession({
+        planId: "price_pro_monthly",
+      });
 
       expect(mockStripe.createBillingSession).toHaveBeenCalledWith(
         "cus_123",
@@ -247,7 +249,9 @@ describe("stripeRouter - Business Logic", () => {
       });
 
       const caller = createCaller(createStripeContext());
-      const result = await caller.createSession({ planId: "price_pro_monthly" });
+      const result = await caller.createSession({
+        planId: "price_pro_monthly",
+      });
 
       expect(mockStripe.createCheckoutSession).toHaveBeenCalled();
       expect(result).toEqual({
@@ -261,7 +265,9 @@ describe("stripeRouter - Business Logic", () => {
       mockStripe.createCheckoutSession.mockResolvedValue({ url: null });
 
       const caller = createCaller(createStripeContext());
-      const result = await caller.createSession({ planId: "price_pro_monthly" });
+      const result = await caller.createSession({
+        planId: "price_pro_monthly",
+      });
 
       expect(result).toEqual({ success: false });
     });

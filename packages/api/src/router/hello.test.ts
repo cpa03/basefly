@@ -19,6 +19,8 @@ import { API_VALIDATION } from "@saasfly/common";
 
 import { getLimiter } from "../distributed-rate-limiter";
 import type { TRPCContext } from "../trpc";
+// Import AFTER mocks are registered.
+import { helloRouter } from "./hello";
 
 // Hoisted mock state (referenced by the vi.mock factories below).
 const mockDb = vi.hoisted(() => ({ selectFrom: vi.fn() }));
@@ -52,15 +54,10 @@ const mockLogger = vi.hoisted(() => ({
 // Mock the logger to keep test output clean.
 vi.mock("../logger", () => ({ logger: mockLogger }));
 
-// Import AFTER mocks are registered.
-import { helloRouter } from "./hello";
-
 const TEST_USER_ID = "hello-user-123";
 
 /** Builds a full authenticated TRPCContext for the hello router. */
-function createHelloContext(
-  overrides: Partial<TRPCContext> = {},
-): TRPCContext {
+function createHelloContext(overrides: Partial<TRPCContext> = {}): TRPCContext {
   return {
     userId: TEST_USER_ID,
     requestId: "req-hello-123",

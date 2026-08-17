@@ -82,7 +82,9 @@ describe("DropdownMenu Component", () => {
         </DropdownMenuContent>
       </DropdownMenu>,
     );
-    expect(screen.getByRole("menuitem", { name: "Profile" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("menuitem", { name: "Profile" }),
+    ).toBeInTheDocument();
   });
 
   it("should render a label and separator", () => {
@@ -120,7 +122,9 @@ describe("DropdownMenu Component", () => {
       <DropdownMenu open>
         <DropdownMenuTrigger>Open menu</DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuCheckboxItem checked>Show status</DropdownMenuCheckboxItem>
+          <DropdownMenuCheckboxItem checked>
+            Show status
+          </DropdownMenuCheckboxItem>
         </DropdownMenuContent>
       </DropdownMenu>,
     );

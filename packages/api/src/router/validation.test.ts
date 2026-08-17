@@ -287,7 +287,8 @@ describe("API Validation Tests", () => {
 
       it("rejects extra fields", () => {
         const dataWithExtra = { planId: "price_123", extra: "field" };
-        const result = enhancedStripeCreateSessionSchema.safeParse(dataWithExtra);
+        const result =
+          enhancedStripeCreateSessionSchema.safeParse(dataWithExtra);
         expect(result.success).toBe(false);
       });
     });

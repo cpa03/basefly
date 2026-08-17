@@ -7,10 +7,7 @@ const config = {
   ],
   rules: {
     "react/prop-types": "off",
-    "react/no-unknown-property": [
-      "error",
-      { ignore: ["cmdk-input-wrapper"] },
-    ],
+    "react/no-unknown-property": ["error", { ignore: ["cmdk-input-wrapper"] }],
   },
   globals: {
     React: "writable",

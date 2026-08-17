@@ -23,7 +23,9 @@ describe("Label Component", () => {
   });
 
   it("should apply custom className", () => {
-    const { container } = render(<Label className="custom-test-class">X</Label>);
+    const { container } = render(
+      <Label className="custom-test-class">X</Label>,
+    );
     expect(container.firstChild).toHaveClass("custom-test-class");
   });
 

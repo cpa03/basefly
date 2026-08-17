@@ -2,8 +2,13 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
+import { MagicLinkEmail } from "./magic-link-email";
+
 vi.mock("@react-email/components", () => {
-  const createElement = (Tag: keyof React.JSX.IntrinsicElements, name: string) => {
+  const createElement = (
+    Tag: keyof React.JSX.IntrinsicElements,
+    name: string,
+  ) => {
     const Component = ({
       children,
       ...props
@@ -36,8 +41,6 @@ vi.mock("@react-email/components", () => {
       React.createElement(React.Fragment, null, children),
   };
 });
-
-import { MagicLinkEmail } from "./magic-link-email";
 
 describe("MagicLinkEmail Component", () => {
   it("should render the preview text for login mail type", () => {

@@ -12,9 +12,8 @@
  * Reference: Issue #500 - [P1][Testing] Add Clerk authentication flow tests
  */
 
-import { beforeEach, describe, expect, it, vi } from "vitest";
-
 import { NextResponse, type NextRequest } from "next/server";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
   getLocale,
@@ -26,8 +25,8 @@ import {
 
 // --- Mocks ------------------------------------------------------------------
 
-const { matchLocaleMock, negotiatorLanguagesMock, negotiatorMock } =
-  vi.hoisted(() => {
+const { matchLocaleMock, negotiatorLanguagesMock, negotiatorMock } = vi.hoisted(
+  () => {
     const negotiatorLanguagesMock = vi.fn().mockReturnValue([]);
     // Negotiator is constructed with `new` in the module under test, so the
     // mock must be a class. Instances expose `languages()` backed by the
@@ -40,14 +39,14 @@ const { matchLocaleMock, negotiatorLanguagesMock, negotiatorMock } =
       negotiatorLanguagesMock,
       matchLocaleMock: vi.fn().mockReturnValue("zh"),
     };
-  });
+  },
+);
 
 vi.mock("@clerk/nextjs/server", () => ({
   clerkMiddleware: vi.fn((handler: unknown) => handler),
   createRouteMatcher: vi.fn(
-    (patterns: RegExp[]) =>
-      (req: { nextUrl: { pathname: string } }) =>
-        patterns.some((pattern) => pattern.test(req.nextUrl.pathname)),
+    (patterns: RegExp[]) => (req: { nextUrl: { pathname: string } }) =>
+      patterns.some((pattern) => pattern.test(req.nextUrl.pathname)),
   ),
 }));
 

@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { TEXTAREA_TOKENS } from "@saasfly/common";
 
 import { cn } from "./utils/cn";
@@ -11,7 +12,11 @@ export type TextareaProps =
 const Textarea = React.memo(
   React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     ({ className, error, "aria-label": ariaLabel, ...props }, ref) => {
-      const finalAriaLabel = ariaLabel ?? (props["aria-labelledby"] ? undefined : TEXTAREA_TOKENS.defaultAriaLabel);
+      const finalAriaLabel =
+        ariaLabel ??
+        (props["aria-labelledby"]
+          ? undefined
+          : TEXTAREA_TOKENS.defaultAriaLabel);
 
       return (
         <textarea
@@ -21,7 +26,8 @@ const Textarea = React.memo(
             TEXTAREA_TOKENS.padding,
             TEXTAREA_TOKENS.transition,
             TEXTAREA_TOKENS.activeScale,
-            error && `${TEXTAREA_TOKENS.error.border} ${TEXTAREA_TOKENS.error.focusRing}`,
+            error &&
+              `${TEXTAREA_TOKENS.error.border} ${TEXTAREA_TOKENS.error.focusRing}`,
             className,
           )}
           ref={ref}

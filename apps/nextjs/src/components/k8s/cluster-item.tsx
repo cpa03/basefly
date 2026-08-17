@@ -83,9 +83,7 @@ export const ClusterItem = React.memo(function ClusterItem({
       </TableCell>
       <TableCell className="text-left">
         <span
-          className={
-            (LOCATION_BADGE_TOKENS as { container: string }).container
-          }
+          className={(LOCATION_BADGE_TOKENS as { container: string }).container}
         >
           {cluster.location}
         </span>

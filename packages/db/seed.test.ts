@@ -1,5 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { clearSeedData, seed, SEED_CONFIG } from "./seed";
+
 /**
  * Database Seed Script Tests
  *
@@ -11,67 +13,71 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
  * @module seed.test
  */
 
-const { mockDb, mockLogger, trx, createSelectChain, createInsertChain, createDeleteChain } =
-  vi.hoisted(() => {
-    const createSelectChain = (takeFirstResult: unknown) => {
-      const chain: any = {
-        select: vi.fn(() => chain),
-        where: vi.fn(() => chain),
-        executeTakeFirst: vi.fn(async () => takeFirstResult),
-        execute: vi.fn(async () => []),
-      };
-      return chain;
+const {
+  mockDb,
+  mockLogger,
+  trx,
+  createSelectChain,
+  createInsertChain,
+  createDeleteChain,
+} = vi.hoisted(() => {
+  const createSelectChain = (takeFirstResult: unknown) => {
+    const chain: any = {
+      select: vi.fn(() => chain),
+      where: vi.fn(() => chain),
+      executeTakeFirst: vi.fn(async () => takeFirstResult),
+      execute: vi.fn(async () => []),
     };
+    return chain;
+  };
 
-    const createInsertChain = () => {
-      const chain: any = {
-        values: vi.fn(() => chain),
-        onConflict: vi.fn(() => chain),
-        returning: vi.fn(() => chain),
-        execute: vi.fn(async () => undefined),
-      };
-      return chain;
+  const createInsertChain = () => {
+    const chain: any = {
+      values: vi.fn(() => chain),
+      onConflict: vi.fn(() => chain),
+      returning: vi.fn(() => chain),
+      execute: vi.fn(async () => undefined),
     };
+    return chain;
+  };
 
-    const createDeleteChain = () => {
-      const chain: any = {
-        where: vi.fn(() => chain),
-        execute: vi.fn(async () => undefined),
-      };
-      return chain;
+  const createDeleteChain = () => {
+    const chain: any = {
+      where: vi.fn(() => chain),
+      execute: vi.fn(async () => undefined),
     };
+    return chain;
+  };
 
-    const trx = {
-      deleteFrom: vi.fn(() => createDeleteChain()),
-    };
+  const trx = {
+    deleteFrom: vi.fn(() => createDeleteChain()),
+  };
 
-    const db = {
-      selectFrom: vi.fn(() => createSelectChain({ count: "0" })),
-      insertInto: vi.fn(() => createInsertChain()),
-      deleteFrom: vi.fn(() => createDeleteChain()),
-      transaction: vi.fn(() => ({
-        execute: vi.fn(async (cb: (t: typeof trx) => unknown) => cb(trx)),
-      })),
-    };
+  const db = {
+    selectFrom: vi.fn(() => createSelectChain({ count: "0" })),
+    insertInto: vi.fn(() => createInsertChain()),
+    deleteFrom: vi.fn(() => createDeleteChain()),
+    transaction: vi.fn(() => ({
+      execute: vi.fn(async (cb: (t: typeof trx) => unknown) => cb(trx)),
+    })),
+  };
 
-    return {
-      mockDb: db,
-      mockLogger: {
-        info: vi.fn(),
-        warn: vi.fn(),
-        error: vi.fn(),
-      },
-      trx,
-      createSelectChain,
-      createInsertChain,
-      createDeleteChain,
-    };
-  });
+  return {
+    mockDb: db,
+    mockLogger: {
+      info: vi.fn(),
+      warn: vi.fn(),
+      error: vi.fn(),
+    },
+    trx,
+    createSelectChain,
+    createInsertChain,
+    createDeleteChain,
+  };
+});
 
 vi.mock("./db-instance", () => ({ db: mockDb }));
 vi.mock("./logger", () => ({ logger: mockLogger }));
-
-import { clearSeedData, seed, SEED_CONFIG } from "./seed";
 
 describe("seed script", () => {
   beforeEach(() => {
@@ -143,9 +149,11 @@ describe("seed script", () => {
     it("logs the error and exits when seeding fails", async () => {
       const exitSpy = vi
         .spyOn(process, "exit")
-        .mockImplementation((() => undefined) as unknown as (
-          code?: string | number | null,
-        ) => never);
+        .mockImplementation(
+          (() => undefined) as unknown as (
+            code?: string | number | null,
+          ) => never,
+        );
 
       mockDb.transaction.mockImplementation(() => ({
         execute: vi.fn(async () => {
@@ -169,9 +177,11 @@ describe("seed script", () => {
     it("exits when NODE_ENV is production", async () => {
       const exitSpy = vi
         .spyOn(process, "exit")
-        .mockImplementation((() => undefined) as unknown as (
-          code?: string | number | null,
-        ) => never);
+        .mockImplementation(
+          (() => undefined) as unknown as (
+            code?: string | number | null,
+          ) => never,
+        );
 
       vi.stubEnv("NODE_ENV", "production");
       vi.resetModules();
@@ -190,9 +200,11 @@ describe("seed script", () => {
     it("clearSeedData throws in production", async () => {
       const exitSpy = vi
         .spyOn(process, "exit")
-        .mockImplementation((() => undefined) as unknown as (
-          code?: string | number | null,
-        ) => never);
+        .mockImplementation(
+          (() => undefined) as unknown as (
+            code?: string | number | null,
+          ) => never,
+        );
 
       vi.stubEnv("NODE_ENV", "production");
       vi.resetModules();

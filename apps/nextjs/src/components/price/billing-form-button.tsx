@@ -25,7 +25,6 @@ export function BillingFormButton({
   const [isPending, startTransition] = useTransition();
 
   async function createSession(planId: string) {
-
     const res = (await trpc.stripe.createSession.mutate({
       planId: planId,
     })) as { url?: string };

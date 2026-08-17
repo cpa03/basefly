@@ -1,5 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
 
+// Import AFTER mocks are registered. mySubscriptionSchema is imported from
+// the router so these tests exercise the actual schema used by
+// authRouter.mySubscription instead of a re-declared copy (refs #609).
+import { mySubscriptionSchema } from "./auth";
+
 // Hoisted mock state (referenced by the vi.mock factories below).
 const mockDb = vi.hoisted(() => ({ selectFrom: vi.fn() }));
 
@@ -36,11 +41,6 @@ vi.mock("../logger", () => ({ logger: mockLogger }));
 vi.mock("next/cache", () => ({
   unstable_noStore: vi.fn(),
 }));
-
-// Import AFTER mocks are registered. mySubscriptionSchema is imported from
-// the router so these tests exercise the actual schema used by
-// authRouter.mySubscription instead of a re-declared copy (refs #609).
-import { mySubscriptionSchema } from "./auth";
 
 describe("Auth Router - Input Validation", () => {
   describe("mySubscriptionSchema - Empty Object Validation", () => {

@@ -1,10 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
+import { logger } from "../logger";
 import {
-  RECOMMENDED_ENV_VARS,
-  REQUIRED_ENV_VARS,
   getEnvValidationMessage,
   initEnvValidation,
+  RECOMMENDED_ENV_VARS,
+  REQUIRED_ENV_VARS,
   validateEnvVars,
 } from "./env";
 
@@ -17,8 +18,6 @@ vi.mock("../logger", () => ({
     trace: vi.fn(),
   },
 }));
-
-import { logger } from "../logger";
 
 const mockedWarn = vi.mocked(logger.warn);
 

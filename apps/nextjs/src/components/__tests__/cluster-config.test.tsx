@@ -22,6 +22,7 @@ vi.mock("@saasfly/common", () => ({
   },
   FORM_DESCRIPTIONS: {
     createCluster: "Deploy your new k8s cluster in one-click.",
+    editCluster: "Update your existing k8s cluster configuration.",
   },
   FORM_LABELS: {
     name: "Name",
@@ -214,12 +215,12 @@ describe("ClusterConfig", () => {
     vi.clearAllMocks();
   });
 
-  it("renders the create cluster card title and description", () => {
+  it("renders the edit cluster card title and description", () => {
     render(<ClusterConfig cluster={mockCluster} params={{ lang: "en" }} />);
 
-    expect(screen.getByText("Create cluster")).toBeInTheDocument();
+    expect(screen.getByText("Edit cluster")).toBeInTheDocument();
     expect(
-      screen.getByText("Deploy your new k8s cluster in one-click."),
+      screen.getByText("Update your existing k8s cluster configuration."),
     ).toBeInTheDocument();
   });
 

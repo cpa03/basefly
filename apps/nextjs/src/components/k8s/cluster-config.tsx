@@ -112,8 +112,8 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Card>
           <CardHeader>
-            <CardTitle>Create cluster</CardTitle>
-            <CardDescription>{FORM_DESCRIPTIONS.createCluster}</CardDescription>
+            <CardTitle>Edit cluster</CardTitle>
+            <CardDescription>{FORM_DESCRIPTIONS.editCluster}</CardDescription>
           </CardHeader>
           <CardContent className="w-2/3 space-y-6">
             <div className="grid w-full items-center gap-4">

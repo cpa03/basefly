@@ -126,6 +126,7 @@ describe("ui-strings", () => {
     it("should have form descriptions", () => {
       expect(FORM_DESCRIPTIONS.enterName).toContain("full name");
       expect(FORM_DESCRIPTIONS.createCluster).toContain("k8s cluster");
+      expect(FORM_DESCRIPTIONS.editCluster).toContain("k8s cluster");
     });
   });
 

@@ -95,6 +95,7 @@ export const FORM_DESCRIPTIONS = {
     "Please enter your full name or a display name you are comfortable with.",
   currentPlan: "You are currently on the",
   createCluster: "Deploy your new k8s cluster in one-click.",
+  editCluster: "Update your existing k8s cluster configuration.",
 } as const;
 
 export const DIALOG_MESSAGES = {

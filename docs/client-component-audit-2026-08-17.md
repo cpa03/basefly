@@ -12,9 +12,9 @@
 
 | Category                          | Count | Verdict          |
 | --------------------------------- | ----- | ---------------- |
-| Next.js error boundaries (`error.tsx`) | 6     | Required         |
+| Next.js error boundaries (`error.tsx`) | 5     | Required         |
 | `global-error.tsx` / `not-found.tsx`   | 2     | Required         |
-| Interactive components (hooks/events)  | 26    | Required         |
+| Interactive components (hooks/events)  | 27    | Required         |
 | Hooks (`use-*.ts(x)`)                  | 5     | Required         |
 | **Total**                              | **39** | **0 convertible** |
 
@@ -27,7 +27,7 @@ components) is **already implemented** for the heaviest component
 
 ## Criterion #1 — Audit all client components for unnecessary client-side rendering
 
-### A. Next.js error boundaries (8 files) — Required
+### A. Next.js error boundaries (7 files) — Required
 
 Next.js requires `error.tsx` / `global-error.tsx` boundary components to be
 client components (they render fallback UI on the client after a render error).
@@ -42,7 +42,7 @@ client components (they render fallback UI on the client after a render error).
 | `app/global-error.tsx`                                   | Global error boundary (must be client) |
 | `app/not-found.tsx`                                      | Uses `useRouter` for home navigation |
 
-### B. Interactive components (26 files) — Required
+### B. Interactive components (27 files) — Required
 
 Every remaining component uses at least one client-only API (React hooks,
 event handlers, or client context). Grep evidence per file:

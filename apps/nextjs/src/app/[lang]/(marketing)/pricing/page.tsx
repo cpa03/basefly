@@ -26,7 +26,6 @@ async function PricingCardsWithData({
 
   if (user) {
     try {
-
       const { trpc } = await import("~/trpc/server");
       subscriptionPlan = await trpc.stripe.userPlans();
     } catch (error) {

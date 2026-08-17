@@ -15,6 +15,8 @@
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { isAdminUser } from "./admin-access";
+
 const { mockExecuteTakeFirst, mockLogger } = vi.hoisted(() => ({
   mockExecuteTakeFirst: vi.fn(),
   mockLogger: {
@@ -57,8 +59,6 @@ vi.mock("@saasfly/common", () => ({
   },
 }));
 
-import { isAdminUser } from "./admin-access";
-
 const ADMIN_EMAIL = "admin@basefly.dev";
 
 describe("isAdminUser", () => {
@@ -76,13 +76,16 @@ describe("isAdminUser", () => {
   it("grants access when the database role is ADMIN", async () => {
     mockExecuteTakeFirst.mockResolvedValue({ role: "ADMIN" });
 
-    await expect(isAdminUser({ id: "user-1", email: "other@basefly.dev" })).resolves.toBe(
-      true,
-    );
+    await expect(
+      isAdminUser({ id: "user-1", email: "other@basefly.dev" }),
+    ).resolves.toBe(true);
     expect(mockExecuteTakeFirst).toHaveBeenCalledTimes(1);
     // Audit logging fired for role-based grant.
     expect(mockLogger.info).toHaveBeenCalledWith(
-      expect.objectContaining({ audit: true, action: "admin_page_access_granted" }),
+      expect.objectContaining({
+        audit: true,
+        action: "admin_page_access_granted",
+      }),
       expect.any(String),
     );
   });
@@ -90,35 +93,41 @@ describe("isAdminUser", () => {
   it("denies access when the database role is USER and email is not in allowlist", async () => {
     mockExecuteTakeFirst.mockResolvedValue({ role: "USER" });
 
-    await expect(isAdminUser({ id: "user-2", email: "user@basefly.dev" })).resolves.toBe(
-      false,
-    );
+    await expect(
+      isAdminUser({ id: "user-2", email: "user@basefly.dev" }),
+    ).resolves.toBe(false);
   });
 
   it("falls back to the ADMIN_EMAIL allowlist when the database role is USER but email is allowlisted", async () => {
     mockExecuteTakeFirst.mockResolvedValue({ role: "USER" });
 
-    await expect(isAdminUser({ id: "user-3", email: ADMIN_EMAIL })).resolves.toBe(true);
+    await expect(
+      isAdminUser({ id: "user-3", email: ADMIN_EMAIL }),
+    ).resolves.toBe(true);
   });
 
   it("falls back to the email allowlist when no database record exists", async () => {
     mockExecuteTakeFirst.mockResolvedValue(undefined);
 
-    await expect(isAdminUser({ id: "user-4", email: ADMIN_EMAIL })).resolves.toBe(true);
+    await expect(
+      isAdminUser({ id: "user-4", email: ADMIN_EMAIL }),
+    ).resolves.toBe(true);
   });
 
   it("denies access when no database record exists and email is not allowlisted", async () => {
     mockExecuteTakeFirst.mockResolvedValue(undefined);
 
-    await expect(isAdminUser({ id: "user-5", email: "user@basefly.dev" })).resolves.toBe(
-      false,
-    );
+    await expect(
+      isAdminUser({ id: "user-5", email: "user@basefly.dev" }),
+    ).resolves.toBe(false);
   });
 
   it("falls back to the email allowlist when the database lookup fails", async () => {
     mockExecuteTakeFirst.mockRejectedValue(new Error("db down"));
 
-    await expect(isAdminUser({ id: "user-6", email: ADMIN_EMAIL })).resolves.toBe(true);
+    await expect(
+      isAdminUser({ id: "user-6", email: ADMIN_EMAIL }),
+    ).resolves.toBe(true);
     expect(mockLogger.error).toHaveBeenCalled();
   });
 
@@ -128,14 +137,16 @@ describe("isAdminUser", () => {
   });
 
   it("returns true for a null user id with an allowlisted email", async () => {
-    await expect(isAdminUser({ id: null, email: ADMIN_EMAIL })).resolves.toBe(true);
+    await expect(isAdminUser({ id: null, email: ADMIN_EMAIL })).resolves.toBe(
+      true,
+    );
     expect(mockExecuteTakeFirst).not.toHaveBeenCalled();
   });
 
   it("returns false when the user has no id and email is not allowlisted", async () => {
-    await expect(isAdminUser({ id: null, email: "user@basefly.dev" })).resolves.toBe(
-      false,
-    );
+    await expect(
+      isAdminUser({ id: null, email: "user@basefly.dev" }),
+    ).resolves.toBe(false);
     expect(mockExecuteTakeFirst).not.toHaveBeenCalled();
   });
 });

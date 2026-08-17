@@ -27,8 +27,14 @@ export const AnimatedTooltip = ({
   const shouldReduceMotion = useReducedMotion();
   const springConfig = { stiffness: 100, damping: 5 };
   const x = useMotionValue(0);
-  const rotateSpring = useSpring(useTransform(x, [-100, 100], [-45, 45]), springConfig);
-  const translateSpring = useSpring(useTransform(x, [-100, 100], [-50, 50]), springConfig);
+  const rotateSpring = useSpring(
+    useTransform(x, [-100, 100], [-45, 45]),
+    springConfig,
+  );
+  const translateSpring = useSpring(
+    useTransform(x, [-100, 100], [-50, 50]),
+    springConfig,
+  );
 
   // rotate the tooltip - only apply spring animations if user prefers motion
   const rotate = shouldReduceMotion ? undefined : rotateSpring;

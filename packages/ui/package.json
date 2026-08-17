@@ -11,7 +11,7 @@
   },
   "scripts": {
     "clean": "git clean -xdf .turbo node_modules",
-    "format": "prettier --check '**/*.{ts,tsx}' ",
+    "format": "prettier --check '**/*.{js,cjs,mjs,ts,tsx,json}'",
     "lint": "eslint . --cache --cache-location 'node_modules/.cache/.eslintcache'",
     "typecheck": "tsc --noEmit"
   },

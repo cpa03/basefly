@@ -1,7 +1,7 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
-import { createLoggerWrapper } from "@saasfly/common";
-
 import type { Logger as PinoLogger } from "pino";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { createLoggerWrapper } from "@saasfly/common";
 
 interface MockPinoLogger {
   debug: ReturnType<typeof vi.fn>;

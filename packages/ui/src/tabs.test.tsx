@@ -77,7 +77,9 @@ describe("Tabs Component", () => {
         <TabsContent value="a">A content</TabsContent>
       </Tabs>,
     );
-    const trigger = container.querySelector('[role="tab"][data-state="active"]');
+    const trigger = container.querySelector(
+      '[role="tab"][data-state="active"]',
+    );
     expect(trigger).toHaveClass("data-[state=active]:bg-background");
     expect(trigger).toHaveClass("data-[state=active]:text-foreground");
   });

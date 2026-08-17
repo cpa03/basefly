@@ -1,6 +1,6 @@
 import React from "react";
-import Link from "next/link";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 
 import { StatusBadge } from "@saasfly/ui/status-badge";
 import {

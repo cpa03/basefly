@@ -2,8 +2,9 @@
 
 import * as React from "react";
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
-import { CHECKBOX_TOKENS } from "@saasfly/common";
 import { Check } from "lucide-react";
+
+import { CHECKBOX_TOKENS } from "@saasfly/common";
 
 import { cn } from "./utils/cn";
 
@@ -12,7 +13,9 @@ const Checkbox = React.memo(
     React.ElementRef<typeof CheckboxPrimitive.Root>,
     React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
   >(({ className, "aria-label": ariaLabel, ...props }, ref) => {
-    const finalAriaLabel = ariaLabel ?? (props["aria-labelledby"] ? undefined : CHECKBOX_TOKENS.defaultAriaLabel);
+    const finalAriaLabel =
+      ariaLabel ??
+      (props["aria-labelledby"] ? undefined : CHECKBOX_TOKENS.defaultAriaLabel);
 
     return (
       <CheckboxPrimitive.Root

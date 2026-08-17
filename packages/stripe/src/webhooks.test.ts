@@ -16,15 +16,17 @@ vi.mock("@saasfly/db", () => ({
       execute: vi.fn().mockResolvedValue(undefined),
     }),
   },
-  rlsTransaction: vi.fn().mockImplementation(
-    async (
-      _db: unknown,
-      _userId: string,
-      cb: (trx: typeof db) => Promise<void>,
-    ) => {
-      await cb(db);
-    },
-  ),
+  rlsTransaction: vi
+    .fn()
+    .mockImplementation(
+      async (
+        _db: unknown,
+        _userId: string,
+        cb: (trx: typeof db) => Promise<void>,
+      ) => {
+        await cb(db);
+      },
+    ),
   SubscriptionPlan: {
     FREE: "FREE",
     PRO: "PRO",

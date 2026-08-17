@@ -85,9 +85,10 @@ export const FollowPointer = ({
   y: MotionValue<number>;
   title?: string | React.ReactNode;
 }) => {
-  const [pointerColor] = React.useState(() =>
-    POINTER_COLORS[Math.floor(Math.random() * POINTER_COLORS.length)] ??
-    POINTER_COLORS[0],
+  const [pointerColor] = React.useState(
+    () =>
+      POINTER_COLORS[Math.floor(Math.random() * POINTER_COLORS.length)] ??
+      POINTER_COLORS[0],
   );
   return (
     <motion.div

@@ -1,4 +1,3 @@
- 
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -31,12 +30,14 @@ vi.mock("vaul", () => ({
     }: {
       children: React.ReactNode;
       open?: boolean;
-    }) => <div data-testid="drawer-root" data-open={open}>{children}</div>,
-    Overlay: ({
-      className,
-    }: {
-      className?: string;
-    }) => <div data-testid="drawer-overlay" className={className} />,
+    }) => (
+      <div data-testid="drawer-root" data-open={open}>
+        {children}
+      </div>
+    ),
+    Overlay: ({ className }: { className?: string }) => (
+      <div data-testid="drawer-overlay" className={className} />
+    ),
     Portal: ({ children }: { children: React.ReactNode }) => (
       <div data-testid="drawer-portal">{children}</div>
     ),
@@ -63,7 +64,11 @@ vi.mock("@saasfly/ui/dialog", () => ({
   }: {
     children: React.ReactNode;
     open?: boolean;
-  }) => <div data-testid="dialog-root" data-open={open}>{children}</div>,
+  }) => (
+    <div data-testid="dialog-root" data-open={open}>
+      {children}
+    </div>
+  ),
   DialogContent: ({
     children,
     className,
@@ -286,7 +291,10 @@ describe("Modal", () => {
       );
 
       // Dialog should render with open=true
-      expect(screen.getByTestId("dialog-root")).toHaveAttribute("data-open", "true");
+      expect(screen.getByTestId("dialog-root")).toHaveAttribute(
+        "data-open",
+        "true",
+      );
     });
   });
 });

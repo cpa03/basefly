@@ -26,6 +26,8 @@ import {
 
 import { getLimiter } from "../distributed-rate-limiter";
 import type { TRPCContext } from "../trpc";
+// Import AFTER mocks are registered.
+import { k8sRouter } from "./k8s";
 
 // Mock Clerk server helpers to avoid server-only module side effects.
 vi.mock("@clerk/nextjs/server", () => ({
@@ -80,9 +82,6 @@ vi.mock("next/cache", () => ({
   revalidatePath: mockRevalidatePath,
 }));
 
-// Import AFTER mocks are registered.
-import { k8sRouter } from "./k8s";
-
 // Constants matching production config (packages/common).
 const K8S_DEFAULTS = {
   network: "Default",
@@ -97,9 +96,7 @@ const OWNER_USER_ID = "owner-user-123";
 const OTHER_USER_ID = "other-user-456";
 
 /** Builds a full authenticated TRPCContext for the k8s router. */
-function createK8sContext(
-  overrides: Partial<TRPCContext> = {},
-): TRPCContext {
+function createK8sContext(overrides: Partial<TRPCContext> = {}): TRPCContext {
   return {
     userId: OWNER_USER_ID,
     requestId: "req-k8s-123",
@@ -194,9 +191,7 @@ describe("k8sRouter - Business Logic", () => {
       const caller = createCaller(createK8sContext());
       const result = await caller.getClusters();
 
-      expect(mockK8sService.findAllActive).toHaveBeenCalledWith(
-        OWNER_USER_ID,
-      );
+      expect(mockK8sService.findAllActive).toHaveBeenCalledWith(OWNER_USER_ID);
       expect(result).toHaveLength(2);
       expect(result[0]?.name).toBe("prod-cluster");
     });

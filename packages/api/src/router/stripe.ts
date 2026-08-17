@@ -67,7 +67,10 @@ export const stripeRouter = createTRPCRouter({
     .mutation(async (opts) => {
       const userId = opts.ctx.userId;
       if (!userId) {
-        throw createApiError(ErrorCode.UNAUTHORIZED, "User is not authenticated");
+        throw createApiError(
+          ErrorCode.UNAUTHORIZED,
+          "User is not authenticated",
+        );
       }
       const planId = opts.input.planId;
       const requestId = opts.ctx.requestId;

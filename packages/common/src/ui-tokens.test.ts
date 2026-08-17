@@ -7,8 +7,8 @@ import {
   DIALOG_TOKENS,
   FOCUS_TOKENS,
   INPUT_TOKENS,
-  UI_ANIMATION,
   SWITCH_TOKENS,
+  UI_ANIMATION,
   type BadgeSize,
   type ButtonHeight,
   type ButtonPadding,
@@ -228,8 +228,12 @@ describe("ui-tokens.ts - SWITCH_TOKENS", () => {
   it("should have track configurations", () => {
     expect(SWITCH_TOKENS.track.base).toContain("peer");
     expect(SWITCH_TOKENS.track.size).toBe("h-[24px] w-[44px]");
-    expect(SWITCH_TOKENS.track.states.checked).toBe("data-[state=checked]:bg-primary");
-    expect(SWITCH_TOKENS.track.states.unchecked).toBe("data-[state=unchecked]:bg-input");
+    expect(SWITCH_TOKENS.track.states.checked).toBe(
+      "data-[state=checked]:bg-primary",
+    );
+    expect(SWITCH_TOKENS.track.states.unchecked).toBe(
+      "data-[state=unchecked]:bg-input",
+    );
     expect(SWITCH_TOKENS.track.disabled).toContain("disabled:");
     expect(SWITCH_TOKENS.track.focusRing).toContain("focus-visible:");
     expect(SWITCH_TOKENS.track.hoverScale).toBe("hover:scale-[1.03]");

@@ -58,7 +58,6 @@ export default async function DashboardPage({
     userId: user.id,
   });
   if (!customer) {
-
     await trpc.customer.insertCustomer.mutate({
       userId: user.id,
     });

@@ -1,6 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+
 import { SWITCH_TOKENS } from "@saasfly/common";
 
 import { Switch } from "./switch";
@@ -15,7 +16,10 @@ describe("Switch Component", () => {
   it("should fallback to default aria-label if none is provided", () => {
     const { container } = render(<Switch />);
     const button = container.querySelector("button");
-    expect(button).toHaveAttribute("aria-label", SWITCH_TOKENS.defaultAriaLabel);
+    expect(button).toHaveAttribute(
+      "aria-label",
+      SWITCH_TOKENS.defaultAriaLabel,
+    );
   });
 
   it("should use explicitly provided aria-label", () => {

@@ -6,9 +6,9 @@ import {
 } from "@saasfly/api/request-id";
 import { getMinifiedCSPHeader, HEADERS, HTTP_STATUS } from "@saasfly/common";
 
+import { logger } from "~/lib/logger";
 import { i18n } from "./config/i18n-config";
 import { middleware as clerkMiddleware, isPublicRoute } from "./utils/clerk";
-import { logger } from "~/lib/logger";
 
 /**
  * CSRF Protection: validate state-changing requests originate from the

@@ -39,10 +39,9 @@ vi.mock("../main-nav", () => ({
 vi.mock("../user-account-nav", () => ({
   UserAccountNav: vi
     .fn()
-    .mockImplementation(
-      ({ user }: { user: { name: string } }) =>
-        <div data-testid="user-account-nav" data-user={user.name} />,
-    ),
+    .mockImplementation(({ user }: { user: { name: string } }) => (
+      <div data-testid="user-account-nav" data-user={user.name} />
+    )),
 }));
 
 vi.mock("../github-star", () => ({
@@ -50,11 +49,9 @@ vi.mock("../github-star", () => ({
 }));
 
 vi.mock("../locale-change", () => ({
-  LocaleChange: ({
-    currentLocale,
-  }: {
-    currentLocale: string;
-  }) => <div data-testid="locale-change" data-locale={currentLocale} />,
+  LocaleChange: ({ currentLocale }: { currentLocale: string }) => (
+    <div data-testid="locale-change" data-locale={currentLocale} />
+  ),
 }));
 
 // Mock @saasfly/ui/button
@@ -70,11 +67,7 @@ vi.mock("@saasfly/ui/button", () => ({
     size?: string;
     onClick?: () => void;
   }) => (
-    <button
-      data-variant={variant}
-      data-size={size}
-      onClick={onClick}
-    >
+    <button data-variant={variant} data-size={size} onClick={onClick}>
       {children}
     </button>
   ),

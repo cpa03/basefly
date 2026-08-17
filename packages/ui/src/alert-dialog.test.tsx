@@ -41,7 +41,9 @@ describe("AlertDialog Component", () => {
       </AlertDialog>,
     );
     expect(screen.getByText("Confirm deletion")).toBeInTheDocument();
-    expect(screen.getByText("This action cannot be undone.")).toBeInTheDocument();
+    expect(
+      screen.getByText("This action cannot be undone."),
+    ).toBeInTheDocument();
   });
 
   it("should render the content with alertdialog role and aria-modal", () => {

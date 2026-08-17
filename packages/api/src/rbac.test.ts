@@ -13,6 +13,15 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Role } from "@saasfly/db";
 
+// Import AFTER mocks are registered.
+import {
+  createRoleBasedProcedure,
+  createTRPCContext,
+  createTRPCRouter,
+  requireRole,
+  type TRPCContext,
+} from "./trpc";
+
 // Mock the database before importing trpc.ts (which imports @saasfly/db at
 // module scope and would otherwise attempt real DB initialization).
 const { mockExecuteTakeFirst, mockLogger } = vi.hoisted(() => ({
@@ -56,15 +65,6 @@ vi.mock("@clerk/nextjs/server", () => ({
 vi.mock("./logger", () => ({
   logger: mockLogger,
 }));
-
-// Import AFTER mocks are registered.
-import {
-  createRoleBasedProcedure,
-  createTRPCContext,
-  createTRPCRouter,
-  requireRole,
-  type TRPCContext,
-} from "./trpc";
 
 function createTestContext(overrides: Partial<TRPCContext> = {}): TRPCContext {
   return {
@@ -246,7 +246,8 @@ describe("adminProcedure audit logging", () => {
     ][];
     expect(
       infoCalls.some(
-        ([meta]) => meta.action === "role_access_granted" && meta.audit === true,
+        ([meta]) =>
+          meta.action === "role_access_granted" && meta.audit === true,
       ),
     ).toBe(true);
   });

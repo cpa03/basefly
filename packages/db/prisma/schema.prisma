@@ -72,17 +72,17 @@ model Session {
 }
 
 model User {
-  id            String             @id @default(dbgenerated("gen_random_uuid()"))
+  id            String    @id @default(dbgenerated("gen_random_uuid()"))
   name          String?
-  email         String?            @unique
+  email         String?   @unique
   emailVerified DateTime?
   image         String?
-  role          Role               @default(USER)
+  role          Role      @default(USER)
 
-  accounts      Account[]
-  sessions      Session[]
-  customers     Customer[]
-  k8sClusters   K8sClusterConfig[]
+  accounts    Account[]
+  sessions    Session[]
+  customers   Customer[]
+  k8sClusters K8sClusterConfig[]
 }
 
 model VerificationToken {

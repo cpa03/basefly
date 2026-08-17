@@ -15,7 +15,9 @@ describe("Button Component", () => {
 
   it("should render as a button element by default", () => {
     render(<Button>Click me</Button>);
-    expect(screen.getByRole("button", { name: "Click me" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Click me" }),
+    ).toBeInTheDocument();
   });
 
   it("should render children content", () => {
@@ -31,7 +33,9 @@ describe("Button Component", () => {
   });
 
   it("should apply custom className", () => {
-    const { container } = render(<Button className="custom-test-class">X</Button>);
+    const { container } = render(
+      <Button className="custom-test-class">X</Button>,
+    );
     expect(container.querySelector("button")).toHaveClass("custom-test-class");
   });
 
@@ -64,9 +68,7 @@ describe("Button Component", () => {
   });
 
   it("should render children when isLoading is false", () => {
-    render(
-      <Button loadingText="Please wait...">Visible</Button>,
-    );
+    render(<Button loadingText="Please wait...">Visible</Button>);
     expect(screen.getByText("Visible")).toBeInTheDocument();
     expect(screen.queryByText("Please wait...")).not.toBeInTheDocument();
   });
@@ -93,33 +95,45 @@ describe("Button Component", () => {
     const { container } = render(<Button>Ripple</Button>);
     const button = container.querySelector("button");
     fireEvent.click(button!);
-    expect(container.querySelector('[class*="animate-ripple"]')).toBeInTheDocument();
+    expect(
+      container.querySelector('[class*="animate-ripple"]'),
+    ).toBeInTheDocument();
   });
 
   it("should not create a ripple when enableRipple is false", () => {
-    const { container } = render(<Button enableRipple={false}>No Ripple</Button>);
+    const { container } = render(
+      <Button enableRipple={false}>No Ripple</Button>,
+    );
     const button = container.querySelector("button");
     fireEvent.click(button!);
-    expect(container.querySelector('[class*="animate-ripple"]')).not.toBeInTheDocument();
+    expect(
+      container.querySelector('[class*="animate-ripple"]'),
+    ).not.toBeInTheDocument();
   });
 
   it("should not create a ripple when isLoading is true", () => {
     const { container } = render(<Button isLoading>Loading</Button>);
     const button = container.querySelector("button");
     fireEvent.click(button!);
-    expect(container.querySelector('[class*="animate-ripple"]')).not.toBeInTheDocument();
+    expect(
+      container.querySelector('[class*="animate-ripple"]'),
+    ).not.toBeInTheDocument();
   });
 
   it("should remove ripple after the ripple duration elapses", () => {
     const { container } = render(<Button>Ripple</Button>);
     const button = container.querySelector("button");
     fireEvent.click(button!);
-    expect(container.querySelector('[class*="animate-ripple"]')).toBeInTheDocument();
+    expect(
+      container.querySelector('[class*="animate-ripple"]'),
+    ).toBeInTheDocument();
 
     act(() => {
       vi.advanceTimersByTime(1000);
     });
-    expect(container.querySelector('[class*="animate-ripple"]')).not.toBeInTheDocument();
+    expect(
+      container.querySelector('[class*="animate-ripple"]'),
+    ).not.toBeInTheDocument();
   });
 
   it("should forward ref to the underlying button", () => {

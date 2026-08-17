@@ -78,7 +78,9 @@ describe("Sheet Component", () => {
     render(
       <Sheet open>
         <SheetTrigger>Open sheet</SheetTrigger>
-        <SheetContent className="custom-sheet-class">Sheet content</SheetContent>
+        <SheetContent className="custom-sheet-class">
+          Sheet content
+        </SheetContent>
       </Sheet>,
     );
     expect(screen.getByRole("dialog")).toHaveClass("custom-sheet-class");

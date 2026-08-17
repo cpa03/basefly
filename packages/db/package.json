@@ -23,7 +23,7 @@
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint . --cache --cache-location 'node_modules/.cache/.eslintcache'",
-    "format": "prisma format && prettier --check '**/*.{ts,json}' ",
+    "format": "prisma format && prettier --check '**/*.{js,cjs,mjs,ts,tsx,json}'",
     "db:generate": "prisma generate",
     "db:push": "bun with-env prisma db push --skip-generate",
     "db:migrate:dev": "bun with-env prisma migrate dev",

@@ -28,9 +28,7 @@ describe("SkipLink", () => {
   });
 
   it("applies custom className", () => {
-    render(
-      <SkipLink className="custom-class" />,
-    );
+    render(<SkipLink className="custom-class" />);
 
     const link = screen.getByText("Skip to main content");
     expect(link.className).toContain("custom-class");

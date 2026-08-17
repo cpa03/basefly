@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { getLimiter } from "@saasfly/api";
 import { openApiDocument } from "@saasfly/api/openapi";
-import { HTTP_STATUS, HTTP_SECURITY_HEADERS } from "@saasfly/common";
+import { HTTP_SECURITY_HEADERS, HTTP_STATUS } from "@saasfly/common";
 
 /**
  * OpenAPI specification endpoint.

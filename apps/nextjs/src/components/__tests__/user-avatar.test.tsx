@@ -6,7 +6,13 @@ import { UserAvatar } from "../user-avatar";
 
 // Mock @saasfly/ui/avatar
 vi.mock("@saasfly/ui/avatar", () => ({
-  Avatar: ({ children, ...props }: { children: React.ReactNode; className?: string }) =>
+  Avatar: ({
+    children,
+    ...props
+  }: {
+    children: React.ReactNode;
+    className?: string;
+  }) =>
     React.createElement("div", { "data-testid": "avatar", ...props }, children),
   AvatarImage: ({ alt, src }: { alt?: string; src?: string }) =>
     React.createElement("img", { "data-testid": "avatar-image", alt, src }),
@@ -17,7 +23,10 @@ vi.mock("@saasfly/ui/avatar", () => ({
 // Mock @saasfly/ui/icons
 vi.mock("@saasfly/ui/icons", () => ({
   User: (props: { className?: string }) =>
-    React.createElement("svg", { "data-testid": "user-icon", className: props.className }),
+    React.createElement("svg", {
+      "data-testid": "user-icon",
+      className: props.className,
+    }),
 }));
 
 describe("UserAvatar", () => {

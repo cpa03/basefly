@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 
 import {
   BADGE_TOKENS,
-  FEEDBACK_TIMING,
   CLUSTER_STATUS_DETAILS,
+  FEEDBACK_TIMING,
   type ClusterStatus,
 } from "@saasfly/common";
 import {
@@ -50,30 +50,29 @@ const sizeStyles = {
   },
 };
 
-interface StatusBadgeProps
-  extends Omit<
-    React.ComponentProps<"div">,
-    | "onAnimationStart"
-    | "onAnimationEnd"
-    | "onAnimationIteration"
-    | "onDrag"
-    | "onDragStart"
-    | "onDragEnd"
-    | "onDragEnter"
-    | "onDragOver"
-    | "onDragLeave"
-    | "onDragExit"
-    | "onDragTransitionEnd"
-    | "onPan"
-    | "onPanStart"
-    | "onPanEnd"
-    | "onPanSessionStart"
-    | "onTap"
-    | "onTapStart"
-    | "onTapCancel"
-    | "onHoverStart"
-    | "onHoverEnd"
-  > {
+interface StatusBadgeProps extends Omit<
+  React.ComponentProps<"div">,
+  | "onAnimationStart"
+  | "onAnimationEnd"
+  | "onAnimationIteration"
+  | "onDrag"
+  | "onDragStart"
+  | "onDragEnd"
+  | "onDragEnter"
+  | "onDragOver"
+  | "onDragLeave"
+  | "onDragExit"
+  | "onDragTransitionEnd"
+  | "onPan"
+  | "onPanStart"
+  | "onPanEnd"
+  | "onPanSessionStart"
+  | "onTap"
+  | "onTapStart"
+  | "onTapCancel"
+  | "onHoverStart"
+  | "onHoverEnd"
+> {
   status: ClusterStatus;
   size?: "sm" | "default" | "lg";
   showTooltip?: boolean;
@@ -95,7 +94,7 @@ export function StatusBadge({
       whileHover={{ y: -1, scale: 1.03 }}
       whileTap={{ scale: 0.98 }}
       className={cn(
-        "inline-flex items-center font-medium transition-colors cursor-pointer",
+        "inline-flex cursor-pointer items-center font-medium transition-colors",
         BADGE_TOKENS.radius,
         config.bgColor,
         config.textColor,

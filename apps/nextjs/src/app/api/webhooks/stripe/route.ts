@@ -10,8 +10,8 @@ import {
   getStripeClientOrThrow,
   handleEvent,
   isStripeConfigured,
+  type Stripe,
 } from "@saasfly/stripe";
-import type { Stripe } from "@saasfly/stripe";
 
 import { env } from "~/env.mjs";
 import { logger } from "~/lib/logger";
@@ -157,7 +157,8 @@ const handler = async (req: NextRequest) => {
       env.STRIPE_WEBHOOK_SECRET,
     );
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Signature verification failed";
+    const message =
+      error instanceof Error ? error.message : "Signature verification failed";
     logger.error("Stripe webhook signature verification failed", {
       message,
       requestId,

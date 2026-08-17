@@ -7,16 +7,28 @@ import { EmptyPlaceholder } from "../empty-placeholder";
 // Mock @saasfly/ui/icons which re-exports from lucide-react.
 vi.mock("@saasfly/ui/icons", () => ({
   Activity: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg data-testid="icon-activity" className={(props as Record<string, string>)?.className} />
+    <svg
+      data-testid="icon-activity"
+      className={(props as Record<string, string>)?.className}
+    />
   ),
   Rocket: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg data-testid="icon-rocket" className={(props as Record<string, string>)?.className} />
+    <svg
+      data-testid="icon-rocket"
+      className={(props as Record<string, string>)?.className}
+    />
   ),
   Post: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg data-testid="icon-post" className={(props as Record<string, string>)?.className} />
+    <svg
+      data-testid="icon-post"
+      className={(props as Record<string, string>)?.className}
+    />
   ),
   Settings: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg data-testid="icon-settings" className={(props as Record<string, string>)?.className} />
+    <svg
+      data-testid="icon-settings"
+      className={(props as Record<string, string>)?.className}
+    />
   ),
 }));
 

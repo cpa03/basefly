@@ -36,7 +36,9 @@ describe("Alert Component", () => {
   });
 
   it("should apply custom className", () => {
-    const { container } = render(<Alert className="custom-test-class">X</Alert>);
+    const { container } = render(
+      <Alert className="custom-test-class">X</Alert>,
+    );
     expect(container.firstChild).toHaveClass("custom-test-class");
   });
 

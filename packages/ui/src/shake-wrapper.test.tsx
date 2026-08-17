@@ -20,7 +20,9 @@ describe("ShakeWrapper Component", () => {
       </ShakeWrapper>,
     );
 
-    expect(screen.getByRole("textbox", { name: "test-input" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: "test-input" }),
+    ).toBeInTheDocument();
   });
 
   it("should render a motion div by default", () => {

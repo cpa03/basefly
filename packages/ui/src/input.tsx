@@ -4,6 +4,7 @@ import * as React from "react";
 import { X } from "lucide-react";
 
 import { INPUT_TOKENS } from "@saasfly/common";
+
 import { cn } from "./utils/cn";
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
@@ -71,7 +72,7 @@ const Input = React.memo(
           <input
             type={type}
             className={cn(
-              "flex w-full rounded-md bg-transparent file:border-0 file:bg-transparent file:text-sm file:font-medium ring-offset-background",
+              "flex w-full rounded-md bg-transparent ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium",
               INPUT_TOKENS.heights.default,
               INPUT_TOKENS.border.default,
               INPUT_TOKENS.padding,

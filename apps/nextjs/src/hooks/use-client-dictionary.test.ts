@@ -3,20 +3,22 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 // Hoisted mock data - vi.mock factories are hoisted above module imports,
 // so referenced variables MUST be created with vi.hoisted.
-const { enDictionary, zhDictionary, koDictionary, jaDictionary } = vi.hoisted(() => ({
-  enDictionary: {
-    common: { errors: { title: "Something went wrong!" } },
-  },
-  zhDictionary: {
-    common: { errors: { title: "出了点问题" } },
-  },
-  koDictionary: {
-    common: { errors: { title: "문제가 발생했습니다" } },
-  },
-  jaDictionary: {
-    common: { errors: { title: "エラーが発生しました" } },
-  },
-}));
+const { enDictionary, zhDictionary, koDictionary, jaDictionary } = vi.hoisted(
+  () => ({
+    enDictionary: {
+      common: { errors: { title: "Something went wrong!" } },
+    },
+    zhDictionary: {
+      common: { errors: { title: "出了点问题" } },
+    },
+    koDictionary: {
+      common: { errors: { title: "문제가 발생했습니다" } },
+    },
+    jaDictionary: {
+      common: { errors: { title: "エラーが発生しました" } },
+    },
+  }),
+);
 
 vi.mock("~/config/dictionaries/en.json", () => ({ default: enDictionary }));
 vi.mock("~/config/dictionaries/zh.json", () => ({ default: zhDictionary }));

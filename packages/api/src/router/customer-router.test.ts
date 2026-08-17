@@ -26,6 +26,8 @@ import {
 
 import { getLimiter } from "../distributed-rate-limiter";
 import type { TRPCContext } from "../trpc";
+// Import AFTER mocks are registered.
+import { customerRouter } from "./customer";
 
 // Mock Clerk server helpers to avoid server-only module side effects.
 vi.mock("@clerk/nextjs/server", () => ({
@@ -71,9 +73,6 @@ vi.mock("../logger", () => ({
 vi.mock("next/cache", () => ({
   unstable_noStore: vi.fn(),
 }));
-
-// Import AFTER mocks are registered.
-import { customerRouter } from "./customer";
 
 const OWNER_USER_ID = "550e8400-e29b-41d4-a716-446655440000";
 const OTHER_USER_ID = "550e8400-e29b-41d4-a716-446655440001";

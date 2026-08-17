@@ -27,6 +27,8 @@ import {
 
 import { getLimiter } from "../distributed-rate-limiter";
 import type { TRPCContext } from "../trpc";
+// Import AFTER mocks are registered.
+import { adminRouter } from "./admin";
 
 // Hoisted mock state (referenced by the vi.mock factories below).
 const mockCurrentUser = vi.hoisted(() => vi.fn());
@@ -66,15 +68,10 @@ vi.mock("@saasfly/db", () => ({
 // Mock the logger to keep test output clean and assert audit logging.
 vi.mock("../logger", () => ({ logger: mockLogger }));
 
-// Import AFTER mocks are registered.
-import { adminRouter } from "./admin";
-
 const ADMIN_USER_ID = "admin-user-123";
 
 /** Builds a full authenticated TRPCContext for the admin router. */
-function createAdminContext(
-  overrides: Partial<TRPCContext> = {},
-): TRPCContext {
+function createAdminContext(overrides: Partial<TRPCContext> = {}): TRPCContext {
   return {
     userId: ADMIN_USER_ID,
     requestId: "req-admin-123",

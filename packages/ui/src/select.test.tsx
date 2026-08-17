@@ -2,11 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-} from "./select";
+import { Select, SelectTrigger, SelectValue } from "./select";
 
 describe("Select Component Tokens and Transitions", () => {
   it("should render SelectTrigger with design tokens and micro-interactions", () => {

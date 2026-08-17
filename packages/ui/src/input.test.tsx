@@ -34,7 +34,10 @@ describe("Input Component", () => {
 
   it("should not mark input as invalid by default", () => {
     render(<Input />);
-    expect(screen.getByRole("textbox")).not.toHaveAttribute("aria-invalid", "true");
+    expect(screen.getByRole("textbox")).not.toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
   });
 
   it("should forward onChange handler", () => {
@@ -68,7 +71,11 @@ describe("Input Component", () => {
     function ControlledInput() {
       const [value, setValue] = React.useState("content");
       return (
-        <Input clearable value={value} onChange={(e) => setValue(e.target.value)} />
+        <Input
+          clearable
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
       );
     }
     render(<ControlledInput />);

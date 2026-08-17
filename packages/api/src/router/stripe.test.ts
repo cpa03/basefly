@@ -41,7 +41,9 @@ describe("Stripe Router - Input Validation", () => {
 
     it("accepts plan ID at max length", () => {
       const maxId = "price_" + "a".repeat(PLAN_VALIDATION.id.maxLength - 6);
-      const result = enhancedStripeCreateSessionSchema.safeParse({ planId: maxId });
+      const result = enhancedStripeCreateSessionSchema.safeParse({
+        planId: maxId,
+      });
       expect(result.success).toBe(true);
     });
 
@@ -60,7 +62,9 @@ describe("Stripe Router - Input Validation", () => {
     });
 
     it("rejects plan ID without price_ prefix", () => {
-      const result = enhancedStripeCreateSessionSchema.safeParse({ planId: "monthly_basic" });
+      const result = enhancedStripeCreateSessionSchema.safeParse({
+        planId: "monthly_basic",
+      });
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(
@@ -72,7 +76,9 @@ describe("Stripe Router - Input Validation", () => {
     });
 
     it("rejects empty plan ID", () => {
-      const result = enhancedStripeCreateSessionSchema.safeParse({ planId: "" });
+      const result = enhancedStripeCreateSessionSchema.safeParse({
+        planId: "",
+      });
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(
@@ -89,18 +95,24 @@ describe("Stripe Router - Input Validation", () => {
       // Note: The actual schema in stripe.ts doesn't have .max() validation
       // So this test verifies that currently there is NO max length validation
       const tooLong = "price_" + "a".repeat(100);
-      const result = enhancedStripeCreateSessionSchema.safeParse({ planId: tooLong });
+      const result = enhancedStripeCreateSessionSchema.safeParse({
+        planId: tooLong,
+      });
       // Schema currently accepts any length - this documents current behavior
       expect(result.success).toBe(true);
     });
 
     it("rejects non-string plan ID", () => {
-      const result = enhancedStripeCreateSessionSchema.safeParse({ planId: 12345 });
+      const result = enhancedStripeCreateSessionSchema.safeParse({
+        planId: 12345,
+      });
       expect(result.success).toBe(false);
     });
 
     it("rejects null plan ID", () => {
-      const result = enhancedStripeCreateSessionSchema.safeParse({ planId: null });
+      const result = enhancedStripeCreateSessionSchema.safeParse({
+        planId: null,
+      });
       expect(result.success).toBe(false);
     });
 
@@ -125,14 +137,18 @@ describe("Stripe Router - Input Validation", () => {
     });
 
     it("rejects plan ID with only whitespace", () => {
-      const result = enhancedStripeCreateSessionSchema.safeParse({ planId: "   " });
+      const result = enhancedStripeCreateSessionSchema.safeParse({
+        planId: "   ",
+      });
       expect(result.success).toBe(false);
     });
 
     it("handles plan ID with leading/trailing spaces (trim behavior)", () => {
       // Note: The actual schema in stripe.ts doesn't use .trim()
       // So leading/trailing spaces will fail the regex check (no spaces allowed)
-      const result = enhancedStripeCreateSessionSchema.safeParse({ planId: "  price_123  " });
+      const result = enhancedStripeCreateSessionSchema.safeParse({
+        planId: "  price_123  ",
+      });
       // Without trim(), spaces cause regex to fail
       expect(result.success).toBe(false);
     });

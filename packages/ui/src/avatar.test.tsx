@@ -34,7 +34,9 @@ describe("Avatar Component", () => {
   });
 
   it("should apply custom className", () => {
-    const { container } = render(<Avatar className="custom-test-class">X</Avatar>);
+    const { container } = render(
+      <Avatar className="custom-test-class">X</Avatar>,
+    );
     expect(container.firstChild).toHaveClass("custom-test-class");
   });
 

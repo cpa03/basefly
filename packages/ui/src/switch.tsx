@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import * as SwitchPrimitives from "@radix-ui/react-switch";
-import { SWITCH_TOKENS } from "@saasfly/common";
 
+import { SWITCH_TOKENS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 
 const Switch = React.memo(
@@ -12,7 +12,9 @@ const Switch = React.memo(
     React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>
   >(({ className, ...props }, ref) => {
     const hasA11yLabel = props["aria-label"] ?? props["aria-labelledby"];
-    const ariaLabel = hasA11yLabel ? props["aria-label"] : SWITCH_TOKENS.defaultAriaLabel;
+    const ariaLabel = hasA11yLabel
+      ? props["aria-label"]
+      : SWITCH_TOKENS.defaultAriaLabel;
 
     return (
       <SwitchPrimitives.Root

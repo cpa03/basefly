@@ -38,7 +38,6 @@ export function K8sCreateButton({
   async function onClick() {
     setIsLoading(true);
     try {
-
       const res = await trpc.k8s.createCluster.mutate({
         name: DEFAULT_CLUSTER_CONFIG.name,
         location: DEFAULT_CLUSTER_CONFIG.location,

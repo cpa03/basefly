@@ -2965,3 +2965,5 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [STRENGTHEN] Enhanced DataTableEmpty with tactile spring scale micro-interaction and accessibility fallback
 - [CONSOLIDATE] Centralized Dialog component styling and overlay/content/close tokens under DIALOG_TOKENS inside @saasfly/common/src/ui-tokens.ts
 - [STRENGTHEN] Enhanced Dialog close button with tactile spring scale micro-interactions (hover:scale-110 active:scale-95) and logical aria-label fallback for improved accessibility
+- [CONSOLIDATE] Centralized Popover component styles and trigger tokens under POPOVER_TOKENS inside @saasfly/common/src/ui-tokens.ts
+- [STRENGTHEN] Enhanced PopoverTrigger with tactile spring scale micro-interactions (hover:scale-[1.01] active:scale-[0.99]) and logical aria-label fallback for improved accessibility

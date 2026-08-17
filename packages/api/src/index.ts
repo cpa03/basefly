@@ -6,6 +6,8 @@ export { createTRPCContext } from "./trpc";
 
 export { t, type TRPCContext, type RateLimitInfo } from "./trpc";
 
+export type { AppRouter } from "./root";
+
 export {
   generateRequestId,
   extractRequestId,
@@ -25,6 +27,14 @@ export {
 } from "./errors";
 
 export { getLimiter, SyncRateLimiter } from "./distributed-rate-limiter";
+
+export type {
+  FailureResult,
+  MutationResult,
+  QueryResult,
+  SuccessAck,
+  SuccessWith,
+} from "./response";
 
 export type { EndpointType, RateLimitConfig } from "@saasfly/common";
 

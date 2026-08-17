@@ -1,0 +1,140 @@
+# Security audit workflow
+# Runs dependency vulnerability scans and consistency checks
+# https://docs.github.com/en/code-security
+
+name: security-audit
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'  # Every Monday at 06:00 UTC
+  push:
+    branches:
+      - main
+  pull_request:
+    paths:
+      - 'pnpm-lock.yaml'
+      - '**/package.json'
+      - '.github/workflows/security-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    name: Dependency Security Audit
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+
+      - uses: pnpm/action-setup@v6
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run pnpm audit
+        id: audit
+        continue-on-error: true
+        run: |
+          echo "Running pnpm audit for vulnerability scan..."
+          pnpm audit --audit-level=high 2>&1 | tee pnpm-audit-report.txt
+          # Capture exit code: 0 = no vulns, non-zero = vulns found
+          if [ ${PIPESTATUS[0]} -ne 0 ]; then
+            echo "VULNERABILITIES_FOUND=true" >> $GITHUB_ENV
+            echo "Vulnerabilities detected. See report above."
+          else
+            echo "VULNERABILITIES_FOUND=false" >> $GITHUB_ENV
+            echo "No high/critical vulnerabilities found."
+          fi
+
+      - name: Run dependency consistency check
+        id: check-deps
+        continue-on-error: true
+        run: |
+          echo "Running dependency version consistency check..."
+          pnpm check-deps 2>&1 | tee check-deps-report.txt
+
+      - name: Check for outdated dependencies
+        id: outdated
+        continue-on-error: true
+        run: |
+          echo "Checking for outdated dependencies..."
+          pnpm outdated --long 2>&1 | tee outdated-report.txt
+
+      - name: Upload audit reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-audit-reports
+          path: |
+            pnpm-audit-report.txt
+            check-deps-report.txt
+            outdated-report.txt
+          retention-days: 30
+
+      - name: Create issue on vulnerability detection
+        if: env.VULNERABILITIES_FOUND == 'true' && github.event_name != 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('pnpm-audit-report.txt', 'utf8');
+            const title = '[Security] pnpm audit detected high/critical vulnerabilities';
+            const body = [
+              '## Security Vulnerability Report',
+              '',
+              `**Date**: ${new Date().toISOString()}`,
+              `**Trigger**: ${context.eventName}`,
+              '',
+              '### Audit Results',
+              '',
+              '```',
+              report.slice(0, 4000),
+              '```',
+              '',
+              '### Action Required',
+              '- Review the vulnerabilities above',
+              '- Update affected dependencies',
+              '- Run `pnpm audit --fix` where possible',
+              '',
+              '### Workflow Run',
+              `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+            ].join('\n');
+            // Check if an open issue already exists for this
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: ['security', 'dependencies'],
+            });
+            const existing = issues.find(i => i.title.includes('pnpm audit'));
+            if (existing) {
+              console.log(`Issue already exists: #${existing.number}`);
+            } else {
+              const { data: issue } = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['security', 'dependencies', 'P1'],
+              });
+              console.log(`Created issue: #${issue.number}`);
+            }

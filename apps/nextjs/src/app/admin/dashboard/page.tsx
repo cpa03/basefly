@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 
 import { getCurrentUser } from "@saasfly/auth";
-import { isAdminEmail } from "@saasfly/common";
 import {
   Card,
   CardContent,
@@ -10,9 +9,9 @@ import {
   CardTitle,
 } from "@saasfly/ui/card";
 import { Cluster, CreditCard, Dashboard, Users } from "@saasfly/ui/icons";
-
 import { StatusBadge } from "@saasfly/ui/status-badge";
 
+import { isAdminUser } from "~/lib/admin-access";
 import { trpc } from "~/trpc/server";
 
 export const metadata = {
@@ -26,12 +25,10 @@ interface AdminDashboardStats {
   recentActivity: number;
 }
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call -- tRPC proxy types are dynamically resolved */
 async function fetchAdminStats(): Promise<AdminDashboardStats> {
   const result = await trpc.admin.getStats();
   return result as AdminDashboardStats;
 }
-/* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
 
 export default async function AdminDashboardPage() {
   const user = await getCurrentUser();
@@ -40,7 +37,7 @@ export default async function AdminDashboardPage() {
     redirect("/login");
   }
 
-  if (!isAdminEmail(user.email)) {
+  if (!(await isAdminUser(user))) {
     redirect("/dashboard");
   }
 

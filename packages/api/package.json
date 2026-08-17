@@ -2,6 +2,7 @@
   "name": "@saasfly/api",
   "version": "0.1.0",
   "private": true,
+  "sideEffects": false,
   "exports": {
     ".": "./src/index.ts",
     "./env": "./src/env.mjs",
@@ -22,23 +23,24 @@
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint . --cache --cache-location 'node_modules/.cache/.eslintcache'",
-    "format": "prettier --check '**/*.{mjs,ts,json}' ",
+    "format": "prettier --check '**/*.{js,cjs,mjs,ts,tsx,json}'",
     "typecheck": "tsc --noEmit",
     "generate-docs": "npx tsx src/docs-generator.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.39.4",
+    "@opentelemetry/api": "1.9.1",
     "@saasfly/common": "workspace:*",
     "@saasfly/db": "workspace:*",
     "@saasfly/stripe": "workspace:*",
-    "@trpc/server": "11.10.0",
     "@t3-oss/env-nextjs": "0.13.10",
-    "ioredis": "^5.6.0",
+    "@trpc/server": "11.10.0",
+    "dinero.js": "2.0.0-alpha.16",
+    "ioredis": "5.6.1",
     "next": "16.2.11",
     "superjson": "2.2.6",
-    "dinero.js": "2.0.0-alpha.16",
-    "zod": "4.3.6",
-    "trpc-openapi": "^1.2.0"
+    "trpc-openapi": "^1.2.0",
+    "zod": "4.3.6"
   },
   "devDependencies": {
     "@saasfly/eslint-config": "workspace:*",

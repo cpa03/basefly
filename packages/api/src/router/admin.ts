@@ -1,5 +1,6 @@
 import { db } from "@saasfly/db";
 
+import type { QueryResult } from "../response";
 import { createRateLimitedAdminProcedure, createTRPCRouter } from "../trpc";
 
 /**
@@ -39,6 +40,11 @@ export const adminRouter = createTRPCRouter({
       totalClusters: Number(totalClusters?.count ?? 0),
       activeSubscriptions: Number(activeSubscriptions?.count ?? 0),
       recentActivity: 0,
-    };
+    } satisfies QueryResult<{
+      totalUsers: number;
+      totalClusters: number;
+      activeSubscriptions: number;
+      recentActivity: number;
+    }>;
   }),
 });

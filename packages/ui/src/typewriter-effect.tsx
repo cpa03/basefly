@@ -94,7 +94,6 @@ export const TypewriterEffectImpl = ({
   );
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 const TypedDynamicComponent = dynamic(
   () => Promise.resolve(TypewriterEffectImpl),
   {

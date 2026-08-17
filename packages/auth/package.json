@@ -2,6 +2,7 @@
   "name": "@saasfly/auth",
   "version": "0.1.0",
   "private": true,
+  "sideEffects": false,
   "exports": {
     ".": "./index.ts",
     "./env.mjs": "./env.mjs"
@@ -11,7 +12,7 @@
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint . --cache --cache-location 'node_modules/.cache/.eslintcache'",
-    "format": "prettier --check '**/*.{mjs,ts,json}' ",
+    "format": "prettier --check '**/*.{js,cjs,mjs,ts,tsx,json}'",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

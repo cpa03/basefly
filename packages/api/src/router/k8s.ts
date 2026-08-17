@@ -13,10 +13,16 @@ import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
 import { K8S_DEFAULTS, ROUTES } from "@saasfly/common";
-import { db, k8sClusterService, type K8sClusterConfig } from "@saasfly/db";
+import {
+  db,
+  k8sClusterService,
+  rlsTransaction,
+  type K8sClusterConfig,
+} from "@saasfly/db";
 
 import { createApiError, ErrorCode } from "../errors";
 import { logger } from "../logger";
+import type { MutationResult, QueryResult } from "../response";
 import {
   createRateLimitedProtectedProcedure,
   createTRPCRouter,
@@ -43,7 +49,6 @@ async function verifyClusterOwnership(
   clusterId: number,
   userId: string,
 ): Promise<K8sClusterConfig> {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- SoftDeleteService returns dynamic Kysely types
   const cluster: K8sClusterConfig | undefined =
     await k8sClusterService.findActive(clusterId, userId);
   if (!cluster) {
@@ -68,8 +73,8 @@ export const k8sRouter = createTRPCRouter({
   getClusters: createRateLimitedProtectedProcedure("read").query(
     async (opts) => {
       const userId = requireUserId(opts.ctx);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return -- SoftDeleteService returns dynamic Kysely types
-      return await k8sClusterService.findAllActive(userId);
+      const clusters = await k8sClusterService.findAllActive(userId);
+      return clusters satisfies QueryResult<K8sClusterConfig[]>;
     },
   ),
   /**
@@ -127,7 +132,11 @@ export const k8sRouter = createTRPCRouter({
           clusterName: input.name,
           location: input.location,
           success: true,
-        };
+        } satisfies MutationResult<{
+          id: number;
+          clusterName: string;
+          location: string;
+        }>;
       } catch (error) {
         if (error instanceof z.ZodError) {
           throw createApiError(
@@ -183,11 +192,13 @@ export const k8sRouter = createTRPCRouter({
           if (newName) updateData.name = newName;
           if (newLocation) updateData.location = newLocation;
 
-          await db
-            .updateTable("K8sClusterConfig")
-            .where("id", "=", id)
-            .set(updateData)
-            .execute();
+          await rlsTransaction(db, userId, async (trx) => {
+            await trx
+              .updateTable("K8sClusterConfig")
+              .where("id", "=", id)
+              .set(updateData)
+              .execute();
+          });
 
           logger.info(
             { userId, requestId, clusterId: id },
@@ -199,7 +210,7 @@ export const k8sRouter = createTRPCRouter({
         revalidatePath(`/[lang]${ROUTES.dashboard.home}`);
         return {
           success: true,
-        };
+        } satisfies MutationResult;
       } catch (error) {
         if (error instanceof z.ZodError) {
           throw createApiError(
@@ -258,7 +269,7 @@ export const k8sRouter = createTRPCRouter({
 
         // ISR: Invalidate dashboard cache after cluster deletion
         revalidatePath(`/[lang]${ROUTES.dashboard.home}`);
-        return { success: true };
+        return { success: true } satisfies MutationResult;
       } catch (error) {
         if (error instanceof z.ZodError) {
           throw createApiError(

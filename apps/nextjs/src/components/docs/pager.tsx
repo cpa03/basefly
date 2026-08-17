@@ -1,10 +1,8 @@
-"use client";
-
 import Link from "next/link";
-import { Doc } from "contentlayer/generated";
+import type { Doc } from "contentlayer/generated";
 
 import { cn } from "@saasfly/ui";
-import { buttonVariants } from "@saasfly/ui/button";
+import { buttonVariants } from "@saasfly/ui/button-variants";
 import { ChevronLeft, ChevronRight } from "@saasfly/ui/icons";
 
 import { getDocsConfig } from "~/config/ui/docs";

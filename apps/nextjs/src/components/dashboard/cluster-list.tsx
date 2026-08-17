@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-argument */
 import React from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 
 import { StatusBadge } from "@saasfly/ui/status-badge";
@@ -15,11 +15,23 @@ import {
 import { EmptyPlaceholder } from "~/components/empty-placeholder";
 import { K8sCreateButton } from "~/components/k8s/cluster-create-button";
 import { ClusterItem } from "~/components/k8s/cluster-item";
-import { ClusterOperations } from "~/components/k8s/cluster-operation";
 import type { Locale } from "~/config/i18n-config";
 import type { BusinessDictionary } from "~/lib/get-dictionary";
 import { formatDate } from "~/lib/utils";
 import { trpc } from "~/trpc/server";
+
+// Lazy-load the interactive cluster operations (Radix dialog stack) so it is
+// split out of the cluster list chunk and only fetched when opened.
+const ClusterOperations = dynamic(
+  () =>
+    import("~/components/k8s/cluster-operation").then((mod) => ({
+      default: mod.ClusterOperations,
+    })),
+  {
+    ssr: true,
+    loading: () => null,
+  },
+);
 
 interface ClusterListProps {
   lang: Locale;

@@ -1,11 +1,6 @@
-name: Security Audit
-# Automated security scanning for dependency vulnerabilities
-# Implements Issue #728 - Missing security scanning workflows in CI.
-#
-# DEPLOYMENT INSTRUCTIONS:
-# Copy this file to .github/workflows/security-audit.yml and push.
-# Requires GITHUB_TOKEN with `workflows: write` permission.
-# Alternatively, use a Personal Access Token (PAT) with `workflows` scope.
+name: security-audit
+# Automated security scanning for dependency vulnerabilities and code analysis.
+# Addresses issue #728 - Missing security scanning workflows.
 
 on:
   push:
@@ -19,14 +14,13 @@ on:
       - "pnpm-lock.yaml"
       - "**/package.json"
   schedule:
-    - cron: "0 6 * * 1" # Every Monday at 06:00 UTC
+    - cron: "0 6 * * 1" # Every Monday at 6:00 UTC
   workflow_dispatch:
 
 permissions:
   contents: read
   security-events: write
   actions: read
-  pull-requests: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -49,9 +43,9 @@ jobs:
           run_install: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 22
           cache: "pnpm"
 
       - name: Install dependencies
@@ -80,29 +74,44 @@ jobs:
           fi
 
   # ------------------------------------------------------------------
-  # Outdated Dependency Check
+  # CodeQL Analysis (SAST)
   # ------------------------------------------------------------------
-  outdated:
-    name: Outdated Dependency Check
+  codeql-analysis:
+    name: CodeQL Security Analysis
     runs-on: ubuntu-24.04-arm
-    timeout-minutes: 10
-    continue-on-error: true
+    timeout-minutes: 30
 
     steps:
       - uses: actions/checkout@v7
 
-      - uses: pnpm/action-setup@v6
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
         with:
-          run_install: false
+          languages: javascript-typescript
+          queries: security-and-quality
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
         with:
-          node-version: 20
-          cache: "pnpm"
+          category: "/language:javascript-typescript"
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+  # ------------------------------------------------------------------
+  # Dependency Review (PR only)
+  # ------------------------------------------------------------------
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-24.04-arm
+    if: github.event_name == 'pull_request'
+    timeout-minutes: 10
 
-      - name: Check outdated packages
-        run: pnpm outdated --long || true
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: critical
+          deny-licenses: AGPL-1.0, AGPL-3.0

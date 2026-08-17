@@ -11,6 +11,8 @@
 const fs = require("fs");
 const path = require("path");
 
+const { logPlain, logInfo, logError, logSuccess, logWarning } = require("./cli-output");
+
 const MINIMUM_ACTION_MAJOR_VERSIONS = {
   "actions/checkout": 4,
   "actions/setup-node": 4,
@@ -113,7 +115,7 @@ function validateWorkflows() {
   const workflowPath = path.join(process.cwd(), WORKFLOW_DIR);
 
   if (!fs.existsSync(workflowPath)) {
-    console.log(`No workflow directory found at ${workflowPath}`);
+    logInfo(`No workflow directory found at ${workflowPath}`);
     return issues;
   }
 
@@ -136,22 +138,22 @@ function validateWorkflows() {
 }
 
 function main() {
-  console.log("CI Workflow Validator\n");
-  console.log(
+  logPlain("CI Workflow Validator\n");
+  logPlain(
     "Validating GitHub Actions workflows against recommended pnpm pattern...\n",
   );
 
   const issues = validateWorkflows();
 
   if (issues.length === 0) {
-    console.log("All workflow files are valid!\n");
+    logSuccess("All workflow files are valid!\n");
     return;
   }
 
   const errors = issues.filter((i) => i.type === "error");
   const warnings = issues.filter((i) => i.type === "warning");
 
-  console.log(
+  logPlain(
     `Found ${errors.length} error(s) and ${warnings.length} warning(s):\n`,
   );
 
@@ -163,27 +165,23 @@ function main() {
   }, {});
 
   for (const [file, fileIssues] of Object.entries(byFile)) {
-    console.log(`${file}`);
+    logPlain(`${file}`);
     for (const issue of fileIssues) {
       const icon = issue.type === "error" ? "ERROR" : "WARN";
       const lineInfo = issue.line ? `:${issue.line}` : "";
-      console.log(`  [${icon}] Line${lineInfo}: ${issue.message}`);
+      logPlain(`  [${icon}] Line${lineInfo}: ${issue.message}`);
       if (issue.suggestion) {
-        console.log(`       Suggestion: ${issue.suggestion}`);
+        logPlain(`       Suggestion: ${issue.suggestion}`);
       }
     }
-    console.log("");
+    logPlain("");
   }
 
   if (errors.length > 0) {
-    console.log(
-      "\nValidation failed with errors. Please fix the issues above.",
-    );
+    logError("\nValidation failed with errors. Please fix the issues above.");
     process.exit(1);
   } else {
-    console.log(
-      "\nValidation passed with warnings. Consider addressing the warnings above.",
-    );
+    logWarning("\nValidation passed with warnings. Consider addressing the warnings above.");
   }
 }
 

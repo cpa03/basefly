@@ -11,7 +11,7 @@
 import { unstable_noStore as noStore } from "next/cache";
 import { z } from "zod";
 
-import { db } from "@saasfly/db";
+import { db, rlsTransaction } from "@saasfly/db";
 
 import { createApiError, ErrorCode } from "../errors";
 import { logger } from "../logger";
@@ -21,6 +21,16 @@ import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 export const mySubscriptionSchema = z.object({}).strict().optional();
 
 export const authRouter = createTRPCRouter({
+  /**
+   * Retrieves the authenticated user's current subscription plan.
+   *
+   * Returns the plan and the current billing period end date, or `null`
+   * when no customer record exists for the user yet.
+   *
+   * @returns Subscription plan info ({ plan, endsAt }) or null
+   * @throws {TRPCError} UNAUTHORIZED if not authenticated
+   * @throws {TRPCError} INTERNAL_SERVER_ERROR if the query fails
+   */
   mySubscription: createRateLimitedProtectedProcedure("read")
     .input(mySubscriptionSchema)
     .query(async (opts) => {
@@ -37,11 +47,13 @@ export const authRouter = createTRPCRouter({
       const requestId = opts.ctx.requestId;
 
       try {
-        const customer = await db
-          .selectFrom("Customer")
-          .select(["plan", "stripeCurrentPeriodEnd"])
-          .where("authUserId", "=", userId)
-          .executeTakeFirst();
+        const customer = await rlsTransaction(db, userId, (trx) =>
+          trx
+            .selectFrom("Customer")
+            .select(["plan", "stripeCurrentPeriodEnd"])
+            .where("authUserId", "=", userId)
+            .executeTakeFirst(),
+        );
 
         if (!customer) return null;
         return {

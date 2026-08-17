@@ -6,6 +6,17 @@ import {
   USER_VALIDATION,
 } from "@saasfly/common";
 
+/**
+ * Shared field schemas — single source of truth for validation rules that
+ * are reused across multiple schemas (issue #609).
+ */
+export const userIdSchema = z.string().uuid("Invalid user ID format");
+
+export const clusterIdSchema = z
+  .number()
+  .int("ID must be an integer")
+  .positive("ID must be positive");
+
 export const enhancedK8sClusterCreateSchema = z
   .object({
     id: z.number().optional(),
@@ -34,13 +45,13 @@ export const enhancedK8sClusterCreateSchema = z
 
 export const enhancedK8sClusterDeleteSchema = z
   .object({
-    id: z.number().int("ID must be an integer").positive("ID must be positive"),
+    id: clusterIdSchema,
   })
   .strict();
 
 export const enhancedK8sClusterUpdateSchema = z
   .object({
-    id: z.number().int("ID must be an integer").positive("ID must be positive"),
+    id: clusterIdSchema,
     name: z
       .string()
       .trim()
@@ -89,18 +100,18 @@ export const enhancedUpdateUserNameSchema = z
         USER_VALIDATION.displayName.maxLength,
         `Name cannot exceed ${USER_VALIDATION.displayName.maxLength} characters`,
       ),
-    userId: z.string().uuid("Invalid user ID format"),
+    userId: userIdSchema,
   })
   .strict();
 
 export const enhancedInsertCustomerSchema = z
   .object({
-    userId: z.string().uuid("Invalid user ID format"),
+    userId: userIdSchema,
   })
   .strict();
 
 export const enhancedQueryCustomerSchema = z
   .object({
-    userId: z.string().uuid("Invalid user ID format"),
+    userId: userIdSchema,
   })
   .strict();

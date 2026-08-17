@@ -11,6 +11,14 @@ vi.mock("./db-instance", () => ({
   },
 }));
 
+vi.mock("./rls-middleware", () => ({
+  rlsTransaction: (
+    _db: unknown,
+    _userId: string,
+    callback: (trx: unknown) => Promise<unknown>,
+  ) => callback(_db),
+}));
+
 vi.mock("../prisma/types", () => ({
   DB: {},
 }));

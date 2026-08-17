@@ -60,6 +60,7 @@ export const SENSITIVE_FIELD_PATTERNS = [
   "password",
   "credential",
   "api_key",
+  "apikey",
   "authorization",
   "set-cookie",
   "cookie",

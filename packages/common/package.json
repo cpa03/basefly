@@ -2,12 +2,14 @@
   "name": "@saasfly/common",
   "version": "0.1.0",
   "private": true,
+  "sideEffects": false,
   "exports": {
     ".": "./src/index.ts",
     "./logger": "./src/logger.ts",
     "./resend": "./src/email.ts",
     "./subscriptions": "./src/subscriptions.ts",
     "./env": "./src/env.mjs",
+    "./observability": "./src/observability/index.ts",
     "./config/ui": "./src/config/ui.ts",
     "./config/resilience": "./src/config/resilience.ts",
     "./config/k8s": "./src/config/k8s.ts",
@@ -26,6 +28,7 @@
     "./config/scroll": "./src/config/scroll.ts",
     "./config/csp": "./src/config/csp.ts",
     "./config/env": "./src/config/env.ts",
+    "./cache": "./src/cache/index.ts",
     "./animation": "./src/animation.ts",
     "./icon-sizes": "./src/icon-sizes.ts",
     "./ui-tokens": "./src/ui-tokens.ts"
@@ -40,12 +43,18 @@
   "scripts": {
     "clean": "rm -rf .turbo node_modules",
     "lint": "eslint . --cache --cache-location 'node_modules/.cache/.eslintcache'",
-    "format": "prettier --check '**/*.{mjs,ts,json}' ",
+    "format": "prettier --check '**/*.{js,cjs,mjs,ts,tsx,json}'",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@opentelemetry/api": "1.9.1",
+    "@opentelemetry/exporter-trace-otlp-http": "0.221.0",
+    "@opentelemetry/resources": "2.1.0",
+    "@opentelemetry/sdk-node": "0.221.0",
+    "@opentelemetry/semantic-conventions": "1.32.0",
     "@react-email/components": "1.0.8",
     "@t3-oss/env-nextjs": "0.13.10",
+    "ioredis": "5.6.1",
     "pino": "10.3.1",
     "pino-pretty": "^13.0.0",
     "resend": "6.9.2",

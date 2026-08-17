@@ -391,7 +391,7 @@ Tests verify WHAT happens, not HOW it's implemented.
 
 - **Unit tests**: Majority (database services, utilities)
 - **Integration tests**: Moderate (integration layer, client wrapper)
-- **E2E tests**: Minimal (not yet implemented)
+- **E2E tests**: Moderate (11 spec files covering auth, pricing, cluster, admin, billing, and error-handling flows)
 
 ### ✅ Isolation
 
@@ -458,6 +458,11 @@ Critical paths and edge cases covered comprehensively.
 | `tests/e2e/home.spec.ts`      | Home page tests                     |
 | `tests/e2e/cluster.spec.ts`   | Cluster management flow tests       |
 | `tests/e2e/admin.spec.ts`     | Admin dashboard access tests        |
+| `tests/e2e/billing.spec.ts`   | Billing and subscription flow tests |
+| `tests/e2e/subscription-workflows.spec.ts` | Subscription upgrade/downgrade flows |
+| `tests/e2e/authorization-bypass.spec.ts`   | Authorization and IDOR prevention   |
+| `tests/e2e/critical-flows.spec.ts`         | Critical user flow protection       |
+| `tests/e2e/webhook-error-handling.spec.ts` | Stripe webhook error handling       |
 
 ### Critical Flows Covered
 
@@ -467,6 +472,11 @@ Critical paths and edge cases covered comprehensively.
 4. **Home Page Flow** - Home page loads, navigation works
 5. **Cluster Management Flow** - Dashboard access, cluster create page, cluster details protection
 6. **Admin Flow** - Admin dashboard access control
+7. **Billing & Subscription Flow** - Billing page protection, plan tiers, yearly/monthly options
+8. **Subscription Workflows** - Upgrade/downgrade CTAs, billing period toggle, plan accessibility
+9. **Authorization Bypass Prevention** - Admin route/API protection, IDOR prevention, API hardening
+10. **Critical User Flow Protection** - Redirects for unauthenticated users, multi-language routes
+11. **Webhook Error Handling** - Stripe webhook rejects missing/invalid signatures, structured errors
 
 ### Running E2E Tests Locally
 
@@ -489,9 +499,13 @@ pnpm test:e2e:ui
 
 ### CI Integration
 
-E2E tests are automatically run in GitHub Actions. See `.github/workflows/e2e.yml` for configuration.
+The E2E suite runs in GitHub Actions via the `e2e` workflow. The canonical workflow
+definition is stored at `docs/ci/e2e-workflow.yml` and must be copied to
+`.github/workflows/e2e.yml` by a maintainer with `workflows` write permission (the
+automation token used in this repository lacks that scope, so the workflow file is
+tracked as a template — see Issue #501). Until activated, the workflow is not live.
 
-To run E2E tests manually in CI:
+To run E2E tests manually in CI (after activation):
 
 ```bash
 # Trigger E2E workflow

@@ -23,6 +23,7 @@ import {
 } from "@saasfly/common";
 
 import { logger } from "./logger";
+import { generateRequestId } from "./request-id";
 
 // Re-export types and original RateLimiter
 export { RateLimiter } from "./rate-limiter";
@@ -207,15 +208,19 @@ export class DistributedRateLimiter {
       const pipeline = this.redis.pipeline();
       pipeline.zremrangebyscore(fullKey, 0, windowStart);
       pipeline.zcard(fullKey);
-      const requestId = `${now}-${Math.random()}`;
+      // UUID member prevents same-ms collisions (Math.random() could
+      // undercount concurrent requests and weaken the rate limit).
+      const requestId = generateRequestId();
       pipeline.zadd(fullKey, now, requestId);
       pipeline.expire(fullKey, Math.ceil(this.windowMs / 1000));
 
       const results = await pipeline.exec();
       const count = (results?.[1]?.[1] as number) ?? 0;
 
-      const allowed = count <= this.maxRequests;
-      const remaining = Math.max(0, this.maxRequests - count);
+      // count reflects the window BEFORE this request is added, so allow
+      // only when count < maxRequests; `<=` would allow maxRequests + 1.
+      const allowed = count < this.maxRequests;
+      const remaining = Math.max(0, this.maxRequests - count - 1);
 
       if (!allowed) {
         await this.redis.zrem(fullKey, requestId);
@@ -351,7 +356,8 @@ export function getIdentifier(
   if (req) {
     const forwarded = req.headers.get("x-forwarded-for");
     const ip =
-      forwarded?.split(",")[0] ?? req.headers.get("x-real-ip") ?? "unknown";
+      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing -- intentional truthy check: empty string should fall through
+      forwarded?.split(",")[0] || req.headers.get("x-real-ip") || "unknown";
     return `ip:${ip}`;
   }
 

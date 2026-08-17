@@ -323,6 +323,11 @@ export {
 } from "./config/cache";
 export type { CacheDurationKey, CacheControlKey } from "./config/cache";
 
+// Application-layer cache - Redis-backed with in-memory fallback.
+// Intentionally NOT re-exported here: `ioredis` pulls Node `net`/`dns` builtins
+// into client bundles when this barrel is imported by client components.
+// Server-only consumers must use the `@saasfly/common/cache` subpath instead.
+
 // Validation configuration - centralized validation constraints
 export {
   VALIDATION,
@@ -352,6 +357,14 @@ export {
   BADGE_TOKENS,
   FOCUS_TOKENS,
   UI_ANIMATION,
+  SWITCH_TOKENS,
+  CALLOUT_TOKENS,
+  ACCORDION_TOKENS,
+  SELECT_TOKENS,
+  CHECKBOX_TOKENS,
+  TEXTAREA_TOKENS,
+  DATA_TABLE_EMPTY_TOKENS,
+  POPOVER_TOKENS,
 } from "./ui-tokens";
 export type {
   ButtonHeight,

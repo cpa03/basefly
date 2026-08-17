@@ -6,13 +6,7 @@ import { ClusterItem } from "../k8s/cluster-item";
 
 // Mock @saasfly/ui/status-badge
 vi.mock("@saasfly/ui/status-badge", () => ({
-  StatusBadge: ({
-    status,
-    size,
-  }: {
-    status: string;
-    size?: string;
-  }) => (
+  StatusBadge: ({ status, size }: { status: string; size?: string }) => (
     <span data-testid="status-badge" data-status={status} data-size={size}>
       {status}
     </span>
@@ -39,19 +33,15 @@ vi.mock("@saasfly/ui/table", () => ({
 
 // Mock @saasfly/ui/tooltip
 vi.mock("@saasfly/ui/tooltip", () => ({
-  TooltipProvider: ({
-    children,
-  }: {
-    children: React.ReactNode;
-  }) => <div data-testid="tooltip-provider">{children}</div>,
+  TooltipProvider: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="tooltip-provider">{children}</div>
+  ),
   Tooltip: ({ children }: { children: React.ReactNode }) => (
     <div data-testid="tooltip">{children}</div>
   ),
-  TooltipTrigger: ({
-    children,
-  }: {
-    children: React.ReactNode;
-  }) => <div data-testid="tooltip-trigger">{children}</div>,
+  TooltipTrigger: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="tooltip-trigger">{children}</div>
+  ),
   TooltipContent: ({
     children,
     className,
@@ -98,7 +88,11 @@ vi.mock("~/components/k8s/cluster-operation", () => ({
     cluster: { id: number; name: string };
     lang: string;
   }) => (
-    <div data-testid="cluster-operations" data-cluster-id={cluster.id} data-lang={lang}>
+    <div
+      data-testid="cluster-operations"
+      data-cluster-id={cluster.id}
+      data-lang={lang}
+    >
       Cluster Operations
     </div>
   ),

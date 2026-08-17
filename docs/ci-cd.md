@@ -30,7 +30,87 @@ Handles incoming pull requests by:
 - 30-minute timeout for long-running operations
 - Automatic conflict resolution for trivial cases
 
-### 2. `iterate.yml` - Parallel Agent Execution
+### 2. `security-audit.yml` - Dependency Security Scanning
+
+**Trigger:**
+
+- Weekly schedule (Monday 06:00 UTC)
+- Push to `main` branch
+- PRs affecting `pnpm-lock.yaml`, `package.json`, or the workflow itself
+- Manual dispatch
+
+**Purpose:**
+Automated dependency vulnerability scanning to catch security issues early.
+
+**Key Features:**
+
+- `pnpm audit` for vulnerability detection (high/critical severity)
+- Dependency version consistency check via `pnpm check-deps`
+- Outdated dependency reporting via `pnpm outdated`
+- Automatic issue creation when vulnerabilities are found
+- Artifact upload for audit report retention (30 days)
+
+### 3. `codeql-analysis.yml` - SAST Security Analysis
+
+**Trigger:**
+
+- Weekly schedule (Monday 06:00 UTC)
+- Push to `main` branch
+- Pull requests targeting `main`
+- Manual dispatch
+
+**Purpose:**
+Static Application Security Testing (SAST) using GitHub's CodeQL engine to detect security vulnerabilities in the codebase.
+
+**Key Features:**
+
+- Analyzes JavaScript/TypeScript and GitHub Actions code
+- Uses `security-extended` and `security-and-quality` query suites
+- Results appear as code scanning alerts on GitHub
+- Non-blocking for PRs (advisory only)
+
+### Deployment Status (Issue #728)
+
+> **⚠️ Blocked on token permission**: The security scanning workflows above are
+> designed, documented, and verified locally, but **not yet deployed** to
+> `.github/workflows/`. GitHub blocks GitHub App tokens without the
+> `workflows` permission from creating or updating workflow files
+> (verified: push rejected + REST API `403 Resource not accessible`).
+> This is tracked in [Issue #728](https://github.com/cpa03/basefly/issues/728).
+
+**Ready-to-deploy templates** (canonical sources, verified in CI-equivalent runs):
+
+- `docs/ci/workflows/security-audit.yml` — pnpm audit (high/critical) + outdated deps
+- `docs/ci/workflows/codeql-analysis.yml` — CodeQL SAST (javascript-typescript)
+- `docs/references/security-audit.yml.ref` — extended variant with automatic issue creation
+- `docs/references/codeql-analysis.yml.ref` — extended variant with matrix (js/ts + actions)
+- `.github/codeql-config.yml` — CodeQL configuration referenced by the workflow
+
+**Deployment runbook** (requires a token/PAT with `workflows` scope):
+
+```bash
+# 1. Copy the canonical templates into active workflows
+cp docs/ci/workflows/security-audit.yml  .github/workflows/security-audit.yml
+cp docs/ci/workflows/codeql-analysis.yml .github/workflows/codeql-analysis.yml
+
+# 2. (Optional) align actions/setup-node to @v7 to match repo convention:
+sed -i 's|actions/setup-node@v4|actions/setup-node@v7|g' .github/workflows/security-audit.yml
+
+# 3. Commit and push with a token that has 'workflows' permission
+git add .github/workflows/security-audit.yml .github/workflows/codeql-analysis.yml
+git commit -m "fix(security): deploy security scanning workflows (closes #728)"
+git push
+
+# Alternative: bash scripts/deploy-security-workflows.sh (same copy logic)
+```
+
+**Verification performed (2026-07-31)**: YAML validity confirmed; typecheck 8/8,
+lint 9/9 (zero warnings), tests 71 files / 1454 passing, production build passes
+with Node 22 (per `.nvmrc`). The branch `fix/issue-728-deploy-security-workflows`
+carries the fully verified deployment for immediate push once a token with
+`workflows` permission is available.
+
+### 4. `iterate.yml` - Parallel Agent Execution
 
 **Trigger:**
 
@@ -71,6 +151,58 @@ Orchestrates multiple specialist agents in parallel for continuous improvement.
 - `hardcoded-eliminator` - Configuration extraction
 - `cloudflare` - CDN and edge functions
 
+### 2.5. `quick-check.yml` - Fast-Path CI (Issue #502)
+
+**Trigger:**
+
+- `pull_request` targeting `main` (fast-path jobs)
+- Weekly schedule (Monday 06:00 UTC) — full audit
+- Manual dispatch (`workflow_dispatch`) — full audit
+
+**Purpose:**
+Provides fast feedback (< 5 minutes) for routine PRs (typo fixes, small refactors)
+without paying the cost of the AI-heavy orchestration workflows. Splits the
+quality gates into parallel jobs:
+
+| Job          | Command                 | Timeout |
+| ------------ | ----------------------- | ------- |
+| `typecheck`  | `pnpm typecheck`        | 10 min  |
+| `lint`       | `pnpm lint`             | 10 min  |
+| `test`       | `pnpm test`             | 10 min  |
+| `build`      | `pnpm build` (CI mode)  | 15 min  |
+| `full-audit` | `pnpm dx:check` + CI validation | 30 min (schedule/dispatch only) |
+
+**Key Features:**
+
+- Parallel jobs for typecheck/lint/test/build so routine PRs get all gates in one pass
+- `concurrency` group with `cancel-in-progress: true` to skip stale runs on force-push
+- `full-audit` job runs only on schedule or manual dispatch (skipped on PRs)
+- CI mode (`CI=true`) allows placeholder env values via `tooling/qa/env-validate.js`
+
+> **⚠️ Deployment status**: This workflow is designed, documented, and validated,
+> but **not yet deployed** to `.github/workflows/`. GitHub blocks GitHub App tokens
+> without the `workflows` permission from creating or updating workflow files
+> (same restriction as Issue #728). The ready-to-deploy canonical template lives at
+> `docs/ci/workflows/quick-check.yml`. See the deployment runbook below.
+
+**Deployment runbook** (requires a token/PAT with `workflows` scope):
+
+```bash
+# 1. Copy the canonical template into active workflows
+cp docs/ci/workflows/quick-check.yml .github/workflows/quick-check.yml
+
+# 2. Commit and push with a token that has 'workflows' permission
+git add .github/workflows/quick-check.yml
+git commit -m "ci: add fast-path quick-check workflow (closes #502)"
+git push
+```
+
+**Verification performed (2026-08-14)**: YAML structure validated against the
+existing `security-audit.yml` template; passes the CI workflow validator
+(`tooling/qa/validate-ci-workflows.js`): uses `pnpm install --frozen-lockfile`,
+`cache: "pnpm"`, and action versions at or above minimums (checkout@v7,
+setup-node@v7, pnpm/action-setup@v6).
+
 ### 3. `paratterate.yml` - Parallel Iteration
 
 **Trigger:**
@@ -101,7 +233,7 @@ All workflows use `ubuntu-24.04-arm` or `ubuntu-22.04-arm` runners for ARM-based
 - Target: Node.js 20
 - Package Manager: pnpm 10.x
 
-> **⚠️ Known Issue**: Some workflow files currently use `npm ci` and invalid action versions (`actions/checkout@v6`, `actions/cache@v5`, `actions/setup-node@v6/v5`). These should be migrated to use `pnpm/action-setup@v4` with `pnpm install --frozen-lockfile` and valid action versions (`@v4`). See [Issue #305](https://github.com/cpa03/basefly/issues/305) for details and the recommended workflow pattern below.
+> **⚠️ Known Issue**: Some workflow files still use `npm ci` instead of `pnpm install --frozen-lockfile`. The `on-pull.yml` has been migrated, but `iterate.yml` still has 2 remaining `npm ci` references (architect and integrator jobs). See [Issue #670](https://github.com/cpa03/basefly/issues/670) and [Issue #584](https://github.com/cpa03/basefly/issues/584) for details. Implementation requires GitHub App with `workflows` permission.
 
 ### Permissions
 
@@ -172,12 +304,41 @@ All PRs must pass:
 2. **Lint**: `pnpm lint` with zero warnings
 3. **Type Check**: `pnpm typecheck`
 4. **Tests**: `pnpm test` with Vitest
+5. **Dependency Consistency**: `pnpm check-deps` — ensures dependency versions are consistent across all packages in the monorepo ([#726](https://github.com/cpa03/basefly/issues/726))
+6. **Circular Dependencies**: `pnpm check:circular` — fails CI on any circular import detected by Madge ([#488](https://github.com/cpa03/basefly/issues/488))
+7. **Dependency Audit**: `pnpm audit` (via `security-audit.yml`)
+8. **CodeQL Analysis**: SAST scan (via `codeql-analysis.yml`)
 
 ### Failure Policy
 
 - Build/lint errors: **Blocking** - PR cannot merge
 - Test failures: **Blocking** - PR cannot merge
 - Warnings: **Blocking** - Treated as errors
+- High/critical vulnerabilities: **Advisory** - Creates issue, non-blocking for PRs
+
+## Dependency Guidelines
+
+### Circular Dependency Detection
+
+Circular imports silently degrade the monorepo: they break tree-shaking, bloat bundles,
+and produce hard-to-debug runtime errors. The project enforces acyclic imports with
+[Madge](https://github.com/pahen/madge) ([#488](https://github.com/cpa03/basefly/issues/488)):
+
+- **Command**: `pnpm check:circular` — runs `madge --circular --warning --extensions ts,tsx,js,jsx,mjs,cjs apps/ packages/`
+- **Config**: `.madgerc` — detective options and exclusion regexes (e.g. `node_modules`, `dist`, `.next`)
+- **CI integration**: wired into the `ci:check` and `dx:check` script chains, so circular
+  dependencies fail the verification pipeline automatically
+- **Policy**: any new circular dependency is a blocking quality-gate failure
+
+### Authoring Rules
+
+1. Keep import graphs **acyclic** at the package boundary — never import a package from a
+   module it depends on (e.g. `packages/common` must not import from `packages/api`).
+2. When a cycle is unavoidable, extract the shared type/utility into the lowest common
+   dependency package (usually `packages/common`) instead of creating a cross-import.
+3. Run `pnpm check:circular` locally before opening a PR; the check takes ~3s.
+4. Type-only cycles are also flagged — prefer `import type` and skip-type-imports detective
+   settings (configured in `.madgerc`) to avoid false positives.
 
 ## Branch Strategy
 

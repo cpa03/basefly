@@ -8,6 +8,11 @@ node_modules
 # testing
 coverage
 
+# playwright e2e artifacts
+playwright-report/
+test-results/
+blob-report/
+
 # next.js
 .next/
 out/
@@ -63,6 +68,7 @@ package-lock.json
 # opencode
 .opencode/node_modules
 .opencode/bun.lock
+.opencode/supplements/*/
 
 # sisyphus (local state files)
 .sisyphus/

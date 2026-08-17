@@ -15,9 +15,9 @@ import {
   enhancedInsertCustomerSchema,
   enhancedK8sClusterCreateSchema,
   enhancedK8sClusterDeleteSchema,
+  enhancedStripeCreateSessionSchema,
   enhancedUpdateUserNameSchema,
 } from "./schemas";
-import { createSessionSchema } from "./stripe";
 
 vi.mock("@saasfly/db", () => ({
   db: {
@@ -35,6 +35,11 @@ vi.mock("@saasfly/db", () => ({
     findActive: vi.fn(),
     softDelete: vi.fn(),
   },
+  rlsTransaction: (
+    _db: unknown,
+    _userId: string,
+    callback: (trx: unknown) => Promise<unknown>,
+  ) => callback(_db),
 }));
 
 vi.mock("@saasfly/stripe", () => ({
@@ -244,16 +249,16 @@ describe("API Validation Tests", () => {
   });
 
   describe("stripeRouter - Schema Validation", () => {
-    describe("createSessionSchema", () => {
+    describe("enhancedStripeCreateSessionSchema", () => {
       it("accepts valid plan id", () => {
         const validData = { planId: "price_123abc" };
-        const result = createSessionSchema.safeParse(validData);
+        const result = enhancedStripeCreateSessionSchema.safeParse(validData);
         expect(result.success).toBe(true);
       });
 
       it("rejects missing planId", () => {
         const invalidData = {};
-        const result = createSessionSchema.safeParse(invalidData);
+        const result = enhancedStripeCreateSessionSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(
@@ -264,25 +269,26 @@ describe("API Validation Tests", () => {
 
       it("rejects null planId", () => {
         const invalidData = { planId: null };
-        const result = createSessionSchema.safeParse(invalidData);
+        const result = enhancedStripeCreateSessionSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
       });
 
       it("rejects number planId", () => {
         const invalidData = { planId: 123 };
-        const result = createSessionSchema.safeParse(invalidData);
+        const result = enhancedStripeCreateSessionSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
       });
 
       it("rejects empty string planId", () => {
         const invalidData = { planId: "" };
-        const result = createSessionSchema.safeParse(invalidData);
+        const result = enhancedStripeCreateSessionSchema.safeParse(invalidData);
         expect(result.success).toBe(false);
       });
 
       it("rejects extra fields", () => {
         const dataWithExtra = { planId: "price_123", extra: "field" };
-        const result = createSessionSchema.safeParse(dataWithExtra);
+        const result =
+          enhancedStripeCreateSessionSchema.safeParse(dataWithExtra);
         expect(result.success).toBe(false);
       });
     });

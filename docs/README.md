@@ -4,17 +4,19 @@ Welcome to the Basefly documentation. This folder contains comprehensive guides,
 
 ## Quick Links
 
-| Document                               | Description                                                                     |
-| -------------------------------------- | ------------------------------------------------------------------------------- |
-| [Onboarding Guide](./ONBOARDING.md)    | Documentation contributor onboarding with style guide and contribution process  |
+| Document                            | Description                                                                    |
+| ----------------------------------- | ------------------------------------------------------------------------------ |
+| [Onboarding Guide](./ONBOARDING.md) | Documentation contributor onboarding with style guide and contribution process |
 
-| [API Specification](./api-spec.md)     | Complete tRPC API documentation with endpoints, error codes, and usage examples |
-| [Data Blueprint](./blueprint.md)       | Database architecture, data models, and integration patterns                    |
-| [Feature Specifications](./feature.md) | Feature requirements, acceptance criteria, and status tracking                  |
-| [CI/CD Guide](./ci-cd.md)              | Continuous integration and deployment workflows                                 |
-| [Roadmap](./roadmap.md)                | Project roadmap and planned features                                            |
-| [Development Guide](./DEVELOPMENT.md)  | Local development setup and guidelines                                          |
-| [Test Coverage](./test-coverage.md)    | Testing strategy and coverage requirements                                      |
+| [API Specification](./api-spec.md) | Complete tRPC API documentation with endpoints, error codes, and usage examples |
+| [Data Blueprint](./blueprint.md) | Database architecture, data models, and integration patterns |
+| [Feature Specifications](./feature.md) | Feature requirements, acceptance criteria, and status tracking |
+| [CI/CD Guide](./ci-cd.md) | Continuous integration and deployment workflows |
+| [Redis Setup](./redis-setup.md) | Redis configuration for distributed rate limiting |
+| [Application Caching](./caching.md) | Redis application-layer caching patterns and usage |
+| [Roadmap](./roadmap.md) | Project roadmap and planned features |
+| [Development Guide](./DEVELOPMENT.md) | Local development setup and guidelines |
+| [Test Coverage](./test-coverage.md) | Testing strategy and coverage requirements |
 
 ## Architecture & Design
 

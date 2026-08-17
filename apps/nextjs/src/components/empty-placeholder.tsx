@@ -1,8 +1,8 @@
 import * as React from "react";
 
 import { ANIMATION } from "@saasfly/common";
-import { Help as HelpCircle } from "@saasfly/ui/icons";
 import { cn } from "@saasfly/ui";
+import { Help as HelpCircle } from "@saasfly/ui/icons";
 import * as Icons from "@saasfly/ui/icons";
 
 // Note: This component uses dynamic icon access by name, which requires namespace import

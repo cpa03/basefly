@@ -9,10 +9,9 @@
  * @see {@link https://docs.saasfly.io/api/stripe | Stripe API Documentation}
  */
 
-import { z } from "zod";
-
-import { PLAN_VALIDATION, pricingData, TIME_MS } from "@saasfly/common";
-import { db, type Customer } from "@saasfly/db";
+import { CACHE_DURATION, pricingData, TIME_MS } from "@saasfly/common";
+import { CACHE_KEYS, cacheService } from "@saasfly/common/cache";
+import { db, rlsTransaction, type Customer } from "@saasfly/db";
 import {
   createBillingSession,
   createCheckoutSession,
@@ -21,8 +20,10 @@ import {
 } from "@saasfly/stripe";
 
 import { env } from "../env.mjs";
-import { handleIntegrationError } from "../errors";
+import { createApiError, ErrorCode, handleIntegrationError } from "../errors";
+import type { FailureResult, MutationResult, QueryResult } from "../response";
 import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
+import { enhancedStripeCreateSessionSchema } from "./schemas";
 
 export interface SubscriptionPlan {
   title: string;
@@ -49,16 +50,6 @@ export type UserSubscriptionPlan = SubscriptionPlan &
     interval: "month" | "year" | null;
     isCanceled?: boolean;
   };
-// Enhanced schema with comprehensive validation using centralized constants
-export const createSessionSchema = z
-  .object({
-    planId: z
-      .string()
-      .min(PLAN_VALIDATION.id.minLength, "Plan ID cannot be empty")
-      .regex(/^price_/, "Plan ID must start with 'price_'"),
-  })
-  .strict();
-
 export const stripeRouter = createTRPCRouter({
   /**
    * Creates a Stripe checkout or billing portal session.
@@ -72,25 +63,36 @@ export const stripeRouter = createTRPCRouter({
    * @throws {TRPCError} INTEGRATION_ERROR if Stripe API fails
    */
   createSession: createRateLimitedProtectedProcedure("stripe")
-    .input(createSessionSchema)
+    .input(enhancedStripeCreateSessionSchema)
     .mutation(async (opts) => {
       const userId = opts.ctx.userId;
+      if (!userId) {
+        throw createApiError(
+          ErrorCode.UNAUTHORIZED,
+          "User is not authenticated",
+        );
+      }
       const planId = opts.input.planId;
       const requestId = opts.ctx.requestId;
 
       // Performance optimization: Fetch customer and user email in parallel
-      // instead of sequential queries to reduce latency
+      // instead of sequential queries to reduce latency.
+      // RLS-aware: each read runs in its own transaction with app.current_user_id set.
       const [customer, user] = await Promise.all([
-        db
-          .selectFrom("Customer")
-          .select(["id", "plan", "stripeCustomerId"])
-          .where("authUserId", "=", userId)
-          .executeTakeFirst(),
-        db
-          .selectFrom("User")
-          .select(["email"])
-          .where("id", "=", userId)
-          .executeTakeFirst(),
+        rlsTransaction(db, userId, (trx) =>
+          trx
+            .selectFrom("Customer")
+            .select(["id", "plan", "stripeCustomerId"])
+            .where("authUserId", "=", userId)
+            .executeTakeFirst(),
+        ),
+        rlsTransaction(db, userId, (trx) =>
+          trx
+            .selectFrom("User")
+            .select(["email"])
+            .where("id", "=", userId)
+            .executeTakeFirst(),
+        ),
       ]);
 
       const returnUrl = env.NEXT_PUBLIC_APP_URL + "/dashboard";
@@ -103,7 +105,10 @@ export const stripeRouter = createTRPCRouter({
             returnUrl,
             { requestId },
           );
-          return { success: true as const, url: session.url };
+          return {
+            success: true as const,
+            url: session.url,
+          } satisfies MutationResult<{ url: string }>;
         }
 
         const session = await createCheckoutSession(
@@ -121,8 +126,12 @@ export const stripeRouter = createTRPCRouter({
           { requestId },
         );
 
-        if (!session.url) return { success: false as const };
-        return { success: true as const, url: session.url };
+        if (!session.url)
+          return { success: false as const } satisfies FailureResult;
+        return {
+          success: true as const,
+          url: session.url,
+        } satisfies MutationResult<{ url: string }>;
       } catch (error) {
         if (error instanceof IntegrationError) {
           throw handleIntegrationError(error);
@@ -141,17 +150,29 @@ export const stripeRouter = createTRPCRouter({
    */
   userPlans: createRateLimitedProtectedProcedure("read").query(async (opts) => {
     const userId = opts.ctx.userId;
+    if (!userId) {
+      throw createApiError(ErrorCode.UNAUTHORIZED, "User is not authenticated");
+    }
+    const cacheKey = CACHE_KEYS.subscription(userId);
+
+    const cached = await cacheService.get<UserSubscriptionPlan>(cacheKey);
+    if (cached) {
+      return cached;
+    }
+
     const requestId = opts.ctx.requestId;
-    const custom = await db
-      .selectFrom("Customer")
-      .select([
-        "stripeSubscriptionId",
-        "stripeCurrentPeriodEnd",
-        "stripeCustomerId",
-        "stripePriceId",
-      ])
-      .where("authUserId", "=", userId)
-      .executeTakeFirst();
+    const custom = await rlsTransaction(db, userId, (trx) =>
+      trx
+        .selectFrom("Customer")
+        .select([
+          "stripeSubscriptionId",
+          "stripeCurrentPeriodEnd",
+          "stripeCustomerId",
+          "stripePriceId",
+        ])
+        .where("authUserId", "=", userId)
+        .executeTakeFirst(),
+    );
     if (!custom) {
       return;
     }
@@ -192,7 +213,7 @@ export const stripeRouter = createTRPCRouter({
       }
     }
 
-    return {
+    const result = {
       ...plan,
       ...custom,
       stripeCurrentPeriodEnd: custom.stripeCurrentPeriodEnd?.getTime() ?? 0,
@@ -200,5 +221,7 @@ export const stripeRouter = createTRPCRouter({
       interval,
       isCanceled,
     };
+    await cacheService.set(cacheKey, result, CACHE_DURATION.FIVE_MINUTES);
+    return result satisfies QueryResult<typeof result>;
   }),
 });

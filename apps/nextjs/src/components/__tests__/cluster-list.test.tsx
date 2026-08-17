@@ -2,8 +2,8 @@ import React from "react";
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import { ClusterList } from "../dashboard/cluster-list";
 import type { Cluster } from "~/types/k8s";
+import { ClusterList } from "../dashboard/cluster-list";
 
 // Mock tRPC server module
 const mockGetClusters = vi.fn();
@@ -65,7 +65,11 @@ vi.mock("../k8s/cluster-item", () => ({
     cluster: { id: number; name: string };
     lang: string;
   }) => (
-    <tr data-testid="cluster-item" data-cluster-id={cluster.id} data-lang={lang}>
+    <tr
+      data-testid="cluster-item"
+      data-cluster-id={cluster.id}
+      data-lang={lang}
+    >
       <td>{cluster.name}</td>
     </tr>
   ),
@@ -130,13 +134,7 @@ vi.mock("@saasfly/ui/table", () => ({
 
 // Mock @saasfly/ui/status-badge (for mobile card view)
 vi.mock("@saasfly/ui/status-badge", () => ({
-  StatusBadge: ({
-    status,
-    size,
-  }: {
-    status: string;
-    size?: string;
-  }) => (
+  StatusBadge: ({ status, size }: { status: string; size?: string }) => (
     <span data-testid="status-badge" data-status={status} data-size={size}>
       {status}
     </span>
@@ -181,7 +179,8 @@ const createMockDict = () => ({
   },
   k8s: {
     no_cluster_title: "No clusters created",
-    no_cluster_content: "You haven't created any clusters yet. Get started by creating your first cluster.",
+    no_cluster_content:
+      "You haven't created any clusters yet. Get started by creating your first cluster.",
     new_cluster: "New Cluster",
   },
 });
@@ -211,9 +210,7 @@ describe("ClusterList", () => {
       );
       expect(
         screen.getByTestId("empty-placeholder-description"),
-      ).toHaveTextContent(
-        "You haven't created any clusters yet.",
-      );
+      ).toHaveTextContent("You haven't created any clusters yet.");
     });
 
     it("renders K8sCreateButton in empty state", async () => {
@@ -291,7 +288,10 @@ describe("ClusterList", () => {
     it("renders ClusterItem for each cluster", async () => {
       mockGetClusters.mockResolvedValue(mockClusters);
 
-      const Component = await ClusterList({ lang: "en", dict: createMockDict() });
+      const Component = await ClusterList({
+        lang: "en",
+        dict: createMockDict(),
+      });
       render(Component);
 
       const items = screen.getAllByTestId("cluster-item");
@@ -303,7 +303,10 @@ describe("ClusterList", () => {
     it("passes lang to each ClusterItem", async () => {
       mockGetClusters.mockResolvedValue(mockClusters);
 
-      const Component = await ClusterList({ lang: "de", dict: createMockDict() });
+      const Component = await ClusterList({
+        lang: "de",
+        dict: createMockDict(),
+      });
       render(Component);
 
       const items = screen.getAllByTestId("cluster-item");
@@ -315,7 +318,10 @@ describe("ClusterList", () => {
     it("renders mobile card view for each cluster", async () => {
       mockGetClusters.mockResolvedValue(mockClusters);
 
-      const Component = await ClusterList({ lang: "en", dict: createMockDict() });
+      const Component = await ClusterList({
+        lang: "en",
+        dict: createMockDict(),
+      });
       render(Component);
 
       const articles = document.querySelectorAll("article");
@@ -331,7 +337,10 @@ describe("ClusterList", () => {
     it("renders cluster names as links in mobile view", async () => {
       mockGetClusters.mockResolvedValue(mockClusters);
 
-      const Component = await ClusterList({ lang: "en", dict: createMockDict() });
+      const Component = await ClusterList({
+        lang: "en",
+        dict: createMockDict(),
+      });
       render(Component);
 
       const links = document.querySelectorAll("article a");
@@ -343,7 +352,10 @@ describe("ClusterList", () => {
     it("renders StatusBadge for each cluster in mobile view", async () => {
       mockGetClusters.mockResolvedValue(mockClusters);
 
-      const Component = await ClusterList({ lang: "en", dict: createMockDict() });
+      const Component = await ClusterList({
+        lang: "en",
+        dict: createMockDict(),
+      });
       render(Component);
 
       const badges = screen.getAllByTestId("status-badge");
@@ -355,7 +367,10 @@ describe("ClusterList", () => {
     it("renders ClusterOperations for each cluster in mobile view", async () => {
       mockGetClusters.mockResolvedValue(mockClusters);
 
-      const Component = await ClusterList({ lang: "en", dict: createMockDict() });
+      const Component = await ClusterList({
+        lang: "en",
+        dict: createMockDict(),
+      });
       render(Component);
 
       const ops = screen.getAllByTestId("cluster-operations");
@@ -370,7 +385,10 @@ describe("ClusterList", () => {
       ];
       mockGetClusters.mockResolvedValue(clustersWithNullStatus);
 
-      const Component = await ClusterList({ lang: "en", dict: createMockDict() });
+      const Component = await ClusterList({
+        lang: "en",
+        dict: createMockDict(),
+      });
       render(Component);
 
       expect(screen.queryByTestId("status-badge")).not.toBeInTheDocument();
@@ -380,7 +398,10 @@ describe("ClusterList", () => {
     it("handles undefined clusters gracefully", async () => {
       mockGetClusters.mockResolvedValue(undefined);
 
-      const Component = await ClusterList({ lang: "en", dict: createMockDict() });
+      const Component = await ClusterList({
+        lang: "en",
+        dict: createMockDict(),
+      });
       render(Component);
 
       expect(screen.getByTestId("empty-placeholder")).toBeInTheDocument();
@@ -389,7 +410,9 @@ describe("ClusterList", () => {
 
   describe("error handling", () => {
     it("renders empty state when tRPC call rejects", async () => {
-      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+      const consoleErrorSpy = vi
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
       mockGetClusters.mockRejectedValue(new Error("tRPC error"));
 
       await expect(

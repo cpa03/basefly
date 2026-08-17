@@ -1,7 +1,11 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import type { Container, SingleOrMultiple } from "@tsparticles/engine";
+import type {
+  Container,
+  ISourceOptions,
+  SingleOrMultiple,
+} from "@tsparticles/engine";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import { motion, useAnimation, useReducedMotion } from "framer-motion";
@@ -34,7 +38,7 @@ export const SparklesCore = (props: ParticlesProps) => {
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
-    initParticlesEngine(async (engine) => {
+    void initParticlesEngine(async (engine) => {
       await loadSlim(engine);
     }).then(() => {
       setInit(true);
@@ -43,7 +47,7 @@ export const SparklesCore = (props: ParticlesProps) => {
   const controls = useAnimation();
 
   // Memoize options object to prevent recreation on every render
-  const particlesOptions = useMemo(
+  const particlesOptions = useMemo<ISourceOptions>(
     () => ({
       background: {
         color: {
@@ -448,6 +452,7 @@ export const SparklesCore = (props: ParticlesProps) => {
     <motion.div
       animate={controls}
       initial={initialState}
+      aria-hidden="true"
       className={cn("opacity-0", className)}
     >
       {init && (

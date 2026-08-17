@@ -12,7 +12,7 @@
     "clean": "git clean -xdf .next .turbo node_modules",
     "dev": "npx dotenv-cli -e ../../.env.local -e ../../.env.ci -- next dev",
     "lint": "npx dotenv-cli -e ../../.env.local -e ../../.env.ci -- eslint . --cache --cache-location 'node_modules/.cache/.eslintcache'",
-    "format": "prettier --write '**/*.{js,cjs,mjs,ts,tsx,md,json}'  --ignore-path .prettierignore",
+    "format": "prettier --check '**/*.{js,cjs,mjs,ts,tsx,md,json}' --ignore-path .prettierignore",
     "start": "npx dotenv-cli -e ../../.env.local -e ../../.env.ci -- next start",
     "with-env": "echo 'Use individual scripts with dotenv-cli prefix instead'",
     "size:check": "size-limit",
@@ -30,6 +30,7 @@
     "@saasfly/db": "workspace:*",
     "@saasfly/stripe": "workspace:*",
     "@saasfly/ui": "workspace:*",
+    "@sentry/node": "10.59.0",
     "@t3-oss/env-nextjs": "0.13.10",
     "@tanstack/react-query": "5.90.21",
     "@tanstack/react-query-devtools": "5.91.3",
@@ -93,7 +94,6 @@
     "mdast-util-toc": "7.0.0",
     "next-contentlayer2": "0.4.6",
     "prettier": "3.8.1",
-    "puppeteer": "^24.37.2",
     "rehype": "13.0.1",
     "rehype-autolink-headings": "7.1.0",
     "rehype-pretty-code": "0.12.3",
@@ -110,6 +110,23 @@
       "@saasfly/eslint-config/base",
       "@saasfly/eslint-config/nextjs",
       "@saasfly/eslint-config/react"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "src/trpc/shared.ts",
+          "src/components/dashboard/cluster-list.tsx",
+          "src/app/admin/dashboard/page.tsx",
+          "src/app/\\[lang\\]/\\(marketing\\)/pricing/page.tsx",
+          "src/app/\\[lang\\]/\\(dashboard\\)/dashboard/page.tsx"
+        ],
+        "rules": {
+          "@typescript-eslint/no-unsafe-assignment": "off",
+          "@typescript-eslint/no-unsafe-member-access": "off",
+          "@typescript-eslint/no-unsafe-call": "off",
+          "@typescript-eslint/no-unsafe-argument": "off"
+        }
+      }
     ]
   },
   "prettier": "@saasfly/prettier-config",

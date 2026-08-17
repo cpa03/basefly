@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { TEXTAREA_TOKENS } from "@saasfly/common";
+
 import { cn } from "./utils/cn";
 
 export type TextareaProps =
@@ -7,21 +9,35 @@ export type TextareaProps =
     error?: boolean;
   };
 
-const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, error, ...props }, ref) => {
-    return (
-      <textarea
-        className={cn(
-          "flex min-h-[80px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-          error && "border-destructive focus-visible:ring-destructive",
-          className,
-        )}
-        ref={ref}
-        aria-invalid={error ?? props["aria-invalid"]}
-        {...props}
-      />
-    );
-  },
+const Textarea = React.memo(
+  React.forwardRef<HTMLTextAreaElement, TextareaProps>(
+    ({ className, error, "aria-label": ariaLabel, ...props }, ref) => {
+      const finalAriaLabel =
+        ariaLabel ??
+        (props["aria-labelledby"]
+          ? undefined
+          : TEXTAREA_TOKENS.defaultAriaLabel);
+
+      return (
+        <textarea
+          className={cn(
+            TEXTAREA_TOKENS.base,
+            TEXTAREA_TOKENS.minHeight,
+            TEXTAREA_TOKENS.padding,
+            TEXTAREA_TOKENS.transition,
+            TEXTAREA_TOKENS.activeScale,
+            error &&
+              `${TEXTAREA_TOKENS.error.border} ${TEXTAREA_TOKENS.error.focusRing}`,
+            className,
+          )}
+          ref={ref}
+          aria-label={finalAriaLabel}
+          aria-invalid={error ?? props["aria-invalid"]}
+          {...props}
+        />
+      );
+    },
+  ),
 );
 Textarea.displayName = "Textarea";
 

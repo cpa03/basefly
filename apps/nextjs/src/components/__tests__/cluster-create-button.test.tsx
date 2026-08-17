@@ -36,7 +36,10 @@ vi.mock("@saasfly/ui/button", () => ({
 // Mock @saasfly/ui/icons
 vi.mock("@saasfly/ui/icons", () => ({
   Add: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg data-testid="icon-add" className={(props as Record<string, string>)?.className} />
+    <svg
+      data-testid="icon-add"
+      className={(props as Record<string, string>)?.className}
+    />
   ),
 }));
 
@@ -111,20 +114,13 @@ describe("K8sCreateButton", () => {
   });
 
   it("renders with fallback text when dict is incomplete", () => {
-    render(
-      <K8sCreateButton
-        dict={{ k8s: {} }}
-        lang="en"
-      />,
-    );
+    render(<K8sCreateButton dict={{ k8s: {} }} lang="en" />);
 
     expect(screen.getByText("New Cluster")).toBeInTheDocument();
   });
 
   it("passes variant to the button", () => {
-    render(
-      <K8sCreateButton dict={defaultDict} lang="en" variant="outline" />,
-    );
+    render(<K8sCreateButton dict={defaultDict} lang="en" variant="outline" />);
 
     expect(screen.getByTestId("cluster-create-button")).toHaveAttribute(
       "data-variant",

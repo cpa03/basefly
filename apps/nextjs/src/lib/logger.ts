@@ -34,8 +34,11 @@ import {
  */
 const pinoLogger = createLogger({
   package: "api",
-  level: process.env.LOG_LEVEL ?? (process.env.NODE_ENV === "production" ? "error" : "debug"),
-  pretty: process.env.NODE_ENV !== "production" && process.env.NODE_ENV !== "test",
+  level:
+    process.env.LOG_LEVEL ??
+    (process.env.NODE_ENV === "production" ? "error" : "debug"),
+  pretty:
+    process.env.NODE_ENV !== "production" && process.env.NODE_ENV !== "test",
 });
 
 /**

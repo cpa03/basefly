@@ -1,11 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
-
-import { Button } from "@saasfly/ui/button";
-
-import { logger } from "~/lib/logger";
-
 /**
  * Global Error Boundary
  *
@@ -13,8 +7,10 @@ import { logger } from "~/lib/logger";
  * It replaces the entire root layout when an error occurs, so it must
  * define its own <html> and <body> tags.
  *
- * This is a reliability improvement that ensures users always see a
- * friendly error page instead of a blank screen or raw error message.
+ * IMPORTANT: This component uses inline styles (not Tailwind classes)
+ * because the root layout that loads global CSS and component libraries
+ * may be broken when this boundary is triggered. Inline styles ensure
+ * the error UI renders reliably in any failure scenario.
  *
  * @see https://nextjs.org/docs/app/building-your-application/routing/error-handling#handling-errors-in-root-layouts
  */
@@ -25,46 +21,107 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  useEffect(() => {
-    logger.error("Global uncaught error", error, {
-      digest: error.digest,
-      message: error.message,
-      name: error.name,
-      stack: error.stack,
-    });
-  }, [error]);
-
   return (
     <html lang="en">
-      <body className="min-h-screen bg-background antialiased">
-        <div className="flex min-h-screen flex-col items-center justify-center space-y-6 p-8">
-          <div className="space-y-3 text-center">
-            <h1 className="text-4xl font-bold tracking-tight">
-              Something went wrong
-            </h1>
-            <p className="max-w-md text-muted-foreground">
-              An unexpected error occurred. Our team has been notified and is
-              working to fix the issue.
+      <body style={bodyStyles}>
+        <div style={containerStyles}>
+          <div style={contentStyles}>
+            <h1 style={headingStyles}>Something went wrong</h1>
+            <p style={descriptionStyles}>
+              An unexpected error occurred. Please try again or contact support
+              if the problem persists.
             </p>
             {error.digest && (
-              <p className="font-mono text-xs text-muted-foreground/60">
-                Error ID: {error.digest}
-              </p>
+              <p style={errorIdStyles}>Error ID: {error.digest}</p>
             )}
           </div>
-          <div className="flex gap-3">
-            <Button onClick={reset} variant="default">
+          <div style={actionsStyles}>
+            <button onClick={reset} style={primaryButtonStyles}>
               Try again
-            </Button>
-            <Button
+            </button>
+            <button
               onClick={() => (window.location.href = "/")}
-              variant="outline"
+              style={secondaryButtonStyles}
             >
               Go to homepage
-            </Button>
+            </button>
           </div>
         </div>
       </body>
     </html>
   );
 }
+
+// Inline styles — root layout CSS may be unavailable when this renders
+const bodyStyles: React.CSSProperties = {
+  margin: 0,
+  minHeight: "100vh",
+  fontFamily:
+    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+  backgroundColor: "#fafafa",
+  color: "#111",
+};
+
+const containerStyles: React.CSSProperties = {
+  display: "flex",
+  minHeight: "100vh",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: "2rem",
+};
+
+const contentStyles: React.CSSProperties = {
+  textAlign: "center",
+  marginBottom: "1.5rem",
+};
+
+const headingStyles: React.CSSProperties = {
+  fontSize: "2rem",
+  fontWeight: 700,
+  letterSpacing: "-0.025em",
+  lineHeight: 1.2,
+  margin: "0 0 0.75rem",
+};
+
+const descriptionStyles: React.CSSProperties = {
+  fontSize: "1rem",
+  lineHeight: 1.6,
+  color: "#666",
+  maxWidth: "28rem",
+  margin: "0",
+};
+
+const errorIdStyles: React.CSSProperties = {
+  fontFamily: "monospace",
+  fontSize: "0.75rem",
+  color: "#999",
+  marginTop: "1rem",
+};
+
+const actionsStyles: React.CSSProperties = {
+  display: "flex",
+  gap: "0.75rem",
+};
+
+const primaryButtonStyles: React.CSSProperties = {
+  padding: "0.625rem 1.25rem",
+  backgroundColor: "#111",
+  color: "#fff",
+  border: "none",
+  borderRadius: "0.375rem",
+  cursor: "pointer",
+  fontWeight: 500,
+  fontSize: "0.875rem",
+};
+
+const secondaryButtonStyles: React.CSSProperties = {
+  padding: "0.625rem 1.25rem",
+  backgroundColor: "transparent",
+  color: "#111",
+  border: "1px solid #d1d5db",
+  borderRadius: "0.375rem",
+  cursor: "pointer",
+  fontWeight: 500,
+  fontSize: "0.875rem",
+};

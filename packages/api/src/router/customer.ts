@@ -10,10 +10,11 @@
 
 import { unstable_noStore as noStore } from "next/cache";
 
-import { db, SubscriptionPlan } from "@saasfly/db";
+import { db, rlsTransaction, SubscriptionPlan } from "@saasfly/db";
 
 import { createApiError, ErrorCode } from "../errors";
 import { logger } from "../logger";
+import type { MutationResult, QueryResult } from "../response";
 import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 import {
   enhancedInsertCustomerSchema,
@@ -71,17 +72,19 @@ export const customerRouter = createTRPCRouter({
       }
 
       try {
-        await db
-          .updateTable("User")
-          .set({
-            name: input.name,
-          })
-          .where("id", "=", userId)
-          .execute();
+        await rlsTransaction(db, ctxUserId, async (trx) => {
+          await trx
+            .updateTable("User")
+            .set({
+              name: input.name,
+            })
+            .where("id", "=", userId)
+            .execute();
+        });
 
         logger.info({ userId, requestId }, "User name updated successfully");
 
-        return { success: true, reason: "" };
+        return { success: true as const } satisfies MutationResult;
       } catch (error) {
         logger.error(
           {
@@ -130,17 +133,19 @@ export const customerRouter = createTRPCRouter({
       logger.info({ userId, requestId }, "Creating customer");
 
       try {
-        await db
-          .insertInto("Customer")
-          .values({
-            authUserId: userId,
-            plan: SubscriptionPlan.FREE,
-          })
-          .executeTakeFirst();
+        await rlsTransaction(db, ctxUserId, async (trx) => {
+          await trx
+            .insertInto("Customer")
+            .values({
+              authUserId: userId,
+              plan: SubscriptionPlan.FREE,
+            })
+            .executeTakeFirst();
+        });
 
         logger.info({ userId, requestId }, "Customer created successfully");
 
-        return { success: true as const };
+        return { success: true as const } satisfies MutationResult;
       } catch (error) {
         if (isUniqueViolation(error, "Customer_authUserId_unique")) {
           logger.info({ userId, requestId }, "Customer already exists");
@@ -197,10 +202,13 @@ export const customerRouter = createTRPCRouter({
       logger.debug({ userId, requestId }, "Querying customer");
 
       try {
-        return await db
-          .selectFrom("Customer")
-          .where("authUserId", "=", userId)
-          .executeTakeFirst();
+        const customer = await rlsTransaction(db, ctxUserId, (trx) =>
+          trx
+            .selectFrom("Customer")
+            .where("authUserId", "=", userId)
+            .executeTakeFirst(),
+        );
+        return customer satisfies QueryResult<typeof customer>;
       } catch (error) {
         logger.error(
           {

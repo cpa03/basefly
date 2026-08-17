@@ -2,6 +2,7 @@
   "name": "@saasfly/stripe",
   "private": true,
   "version": "0.1.0",
+  "sideEffects": false,
   "exports": {
     ".": "./src/index.ts",
     "./plans": "./src/plans.ts",
@@ -22,7 +23,7 @@
     "clean": "rm -rf .turbo node_modules",
     "dev": "stripe listen --forward-to localhost:3000/api/webhooks/stripe",
     "lint": "eslint . --cache --cache-location 'node_modules/.cache/.eslintcache'",
-    "format": "prettier --check '**/*.{mjs,ts,json}' ",
+    "format": "prettier --check '**/*.{js,cjs,mjs,ts,tsx,json}'",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

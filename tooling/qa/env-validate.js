@@ -15,36 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 
-// ANSI colors for console output
-const colors = {
-  reset: '\x1b[0m',
-  red: '\x1b[31m',
-  green: '\x1b[32m',
-  yellow: '\x1b[33m',
-  blue: '\x1b[34m',
-  cyan: '\x1b[36m',
-  bold: '\x1b[1m',
-};
-
-function log(msg, color = 'reset') {
-  console.log(`${colors[color]}${msg}${colors.reset}`);
-}
-
-function logError(msg) {
-  console.error(`${colors.red}❌ ${msg}${colors.reset}`);
-}
-
-function logSuccess(msg) {
-  console.log(`${colors.green}✅ ${msg}${colors.reset}`);
-}
-
-function logWarning(msg) {
-  console.warn(`${colors.yellow}⚠️  ${msg}${colors.reset}`);
-}
-
-function logInfo(msg) {
-  console.log(`${colors.blue}ℹ️  ${msg}${colors.reset}`);
-}
+const { bold, cyan, log, logPlain, logInfo, logSuccess, logWarning, logError } = require('./cli-output');
 
 // Parse .env file to extract variable definitions
 function parseEnvFile(filePath) {
@@ -151,7 +122,7 @@ const OPTIONAL_BUT_RECOMMENDED = [
 ];
 
 async function validate() {
-  log(`${colors.bold}Environment Variable Validation${colors.reset}\n`);
+  log(`${bold('Environment Variable Validation')}\n`);
   
   const rootDir = process.cwd();
   const envExamplePath = path.join(rootDir, '.env.example');
@@ -170,7 +141,7 @@ async function validate() {
     logInfo('Running in CI mode - placeholder values allowed\n');
   }
   
-  logInfo(`Reading ${colors.cyan}.env.example${colors.reset}...`);
+  logInfo(`Reading ${cyan('.env.example')}...`);
   const envExample = parseEnvFile(envExamplePath);
   logSuccess(`Found ${envExample.length} environment variables defined\n`);
   
@@ -187,7 +158,7 @@ async function validate() {
   }
   
   if (envSource) {
-    logInfo(`Loaded environment from ${colors.cyan}${envSource}${colors.reset}...`);
+    logInfo(`Loaded environment from ${cyan(envSource)}...`);
     logSuccess(`Found ${Object.keys(envData).length} variables\n`);
   } else {
     logWarning('.env.local not found');
@@ -201,7 +172,7 @@ async function validate() {
   let hasWarnings = false;
   
   // Validate required server variables
-  log(`${colors.bold}Required Server Variables:${colors.reset}`);
+  log(bold('Required Server Variables:'));
   for (const varName of REQUIRED_SERVER_VARS) {
     const value = processEnv[varName];
     if (!value || isPlaceholder(value, isCI)) {
@@ -211,10 +182,10 @@ async function validate() {
       logSuccess(`${varName} ✓`);
     }
   }
-  console.log();
+  logPlain();
   
   // Validate required client variables
-  log(`${colors.bold}Required Client Variables:${colors.reset}`);
+  log(bold('Required Client Variables:'));
   for (const varName of REQUIRED_CLIENT_VARS) {
     const value = processEnv[varName];
     if (!value || isPlaceholder(value, isCI)) {
@@ -224,10 +195,10 @@ async function validate() {
       logSuccess(`${varName} ✓`);
     }
   }
-  console.log();
+  logPlain();
   
   // Check optional but recommended
-  log(`${colors.bold}Optional but Recommended:${colors.reset}`);
+  log(bold('Optional but Recommended:'));
   for (const varName of OPTIONAL_BUT_RECOMMENDED) {
     const value = processEnv[varName];
     if (!value || isPlaceholder(value, isCI)) {
@@ -237,10 +208,10 @@ async function validate() {
       logSuccess(`${varName} ✓`);
     }
   }
-  console.log();
+  logPlain();
   
   // Summary
-  log(`${colors.bold}Summary:${colors.reset}`);
+  log(bold('Summary:'));
   if (hasErrors) {
     logError('Environment validation FAILED');
     logInfo('Please fix the errors above and try again');
@@ -252,7 +223,7 @@ async function validate() {
     logSuccess('Environment validation PASSED');
   }
   
-  console.log();
+  logPlain();
   logInfo('Tip: Run `pnpm dx:setup` to verify your development environment is ready');
 }
 

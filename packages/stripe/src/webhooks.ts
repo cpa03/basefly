@@ -1,6 +1,7 @@
 import type Stripe from "stripe";
 
-import { db, SubscriptionPlan } from "@saasfly/db";
+import { CACHE_KEYS, cacheService } from "@saasfly/common/cache";
+import { db, rlsTransaction, SubscriptionPlan } from "@saasfly/db";
 
 import { retrieveSubscription } from "./client";
 import { IntegrationError } from "./integration";
@@ -21,7 +22,11 @@ export async function handleEvent(event: Stripe.Event) {
  * Validate that a webhook event has the required data for processing.
  * Throws IntegrationError if validation fails.
  */
-function validateWebhookEvent(event: Stripe.Event): asserts event is Stripe.Event & { data: { object: Record<string, unknown> } } {
+function validateWebhookEvent(
+  event: Stripe.Event,
+): asserts event is Stripe.Event & {
+  data: { object: Record<string, unknown> };
+} {
   if (!event.id || typeof event.id !== "string") {
     throw new IntegrationError(
       "Webhook event missing valid event ID",
@@ -55,7 +60,7 @@ async function processEventInternal(event: Stripe.Event) {
     } else if (event.type === "invoice.payment_succeeded") {
       await handleInvoicePaymentSucceeded(session);
     } else if (event.type === "customer.subscription.updated") {
-      logger.info(`Unhandled event type: ${event.type}`);
+      await handleSubscriptionUpdated(event.data.object);
     }
 
     logger.info("Stripe Webhook Processed", { eventType: event.type });
@@ -106,8 +111,8 @@ async function handleCheckoutSessionCompleted(
   const { subscription, customerId, userId } =
     await resolveSubscriptionCustomer(session);
 
-  // Use transaction to ensure atomicity of select + update
-  await db.transaction().execute(async (trx) => {
+  // RLS-aware transaction: sets app.current_user_id so Customer RLS policies apply
+  await rlsTransaction(db, userId, async (trx) => {
     const customer = await trx
       .selectFrom("Customer")
       .selectAll()
@@ -134,14 +139,16 @@ async function handleCheckoutSessionCompleted(
         .execute();
     }
   });
+
+  await cacheService.invalidateKey(CACHE_KEYS.subscription(userId));
 }
 
 async function handleInvoicePaymentSucceeded(session: Stripe.Checkout.Session) {
   const { subscription, customerId, userId } =
     await resolveSubscriptionCustomer(session);
 
-  // Use transaction to ensure atomicity of select + update
-  await db.transaction().execute(async (trx) => {
+  // RLS-aware transaction: sets app.current_user_id so Customer RLS policies apply
+  await rlsTransaction(db, userId, async (trx) => {
     const customer = await trx
       .selectFrom("Customer")
       .selectAll()
@@ -172,4 +179,17 @@ async function handleInvoicePaymentSucceeded(session: Stripe.Checkout.Session) {
         .execute();
     }
   });
+
+  await cacheService.invalidateKey(CACHE_KEYS.subscription(userId));
+}
+
+async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
+  const userId = subscription.metadata?.userId;
+  if (!userId) {
+    logger.warn(
+      "Missing user id in metadata for customer.subscription.updated, skipping cache invalidation",
+    );
+    return;
+  }
+  await cacheService.invalidateKey(CACHE_KEYS.subscription(userId));
 }

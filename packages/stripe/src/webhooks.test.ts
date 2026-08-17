@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { db } from "@saasfly/db";
+import { cacheService } from "@saasfly/common/cache";
+import { db, rlsTransaction } from "@saasfly/db";
 
 import { stripe } from ".";
 import { logger } from "./logger";
@@ -14,14 +15,18 @@ vi.mock("@saasfly/db", () => ({
       values: vi.fn().mockReturnThis(),
       execute: vi.fn().mockResolvedValue(undefined),
     }),
-    transaction: vi.fn().mockReturnValue({
-      execute: vi
-        .fn()
-        .mockImplementation(async (cb: (trx: typeof db) => Promise<void>) => {
-          await cb(db);
-        }),
-    }),
   },
+  rlsTransaction: vi
+    .fn()
+    .mockImplementation(
+      async (
+        _db: unknown,
+        _userId: string,
+        cb: (trx: typeof db) => Promise<void>,
+      ) => {
+        await cb(db);
+      },
+    ),
   SubscriptionPlan: {
     FREE: "FREE",
     PRO: "PRO",
@@ -318,7 +323,31 @@ describe("handleEvent", () => {
   });
 
   describe("customer.subscription.updated event", () => {
-    it("logs event type", async () => {
+    it("invalidates subscription cache when userId is present", async () => {
+      const mockEvent = {
+        id: "evt_test_007",
+        type: "customer.subscription.updated",
+        data: {
+          object: {
+            metadata: {
+              userId: "user_123",
+            },
+          },
+        },
+      } as any;
+
+      const invalidateSpy = vi
+        .spyOn(cacheService, "invalidateKey")
+        .mockResolvedValue(undefined);
+
+      await handleEvent(mockEvent);
+
+      expect(invalidateSpy).toHaveBeenCalledWith("subscription:user_123");
+
+      invalidateSpy.mockRestore();
+    });
+
+    it("skips invalidation and warns when userId is missing", async () => {
       const mockEvent = {
         id: "evt_test_007",
         type: "customer.subscription.updated",
@@ -327,16 +356,19 @@ describe("handleEvent", () => {
         },
       } as any;
 
-      const loggerSpy = vi.spyOn(logger, "info").mockImplementation(() => {});
+      const invalidateSpy = vi
+        .spyOn(cacheService, "invalidateKey")
+        .mockResolvedValue(undefined);
+      const loggerSpy = vi.spyOn(logger, "warn").mockImplementation(() => {});
 
       await handleEvent(mockEvent);
 
+      expect(invalidateSpy).not.toHaveBeenCalled();
       expect(loggerSpy).toHaveBeenCalledWith(
-        expect.stringContaining(
-          "Unhandled event type: customer.subscription.updated",
-        ),
+        expect.stringContaining("skipping cache invalidation"),
       );
 
+      invalidateSpy.mockRestore();
       loggerSpy.mockRestore();
     });
   });
@@ -360,6 +392,109 @@ describe("handleEvent", () => {
       });
 
       loggerSpy.mockRestore();
+    });
+  });
+
+  describe("transaction atomicity", () => {
+    function buildCheckoutEvent(): any {
+      return {
+        id: "evt_test_010",
+        type: "checkout.session.completed",
+        data: {
+          object: {
+            subscription: "sub_123",
+          },
+        },
+      };
+    }
+
+    function buildSubscription(): any {
+      return {
+        id: "sub_123",
+        customer: "cus_123",
+        metadata: {
+          userId: "user_123",
+        },
+        items: {
+          data: [
+            {
+              price: {
+                id: "price_123",
+              },
+            },
+          ],
+        },
+      };
+    }
+
+    beforeEach(() => {
+      vi.mocked(stripe!.subscriptions.retrieve).mockResolvedValue(
+        buildSubscription(),
+      );
+    });
+
+    it("wraps the customer update in an RLS-aware transaction", async () => {
+      const mockCustomer = { id: "customer_id", authUserId: "user_123" };
+      const mockWhere = vi.fn().mockReturnThis();
+      const mockExecuteTakeFirst = vi.fn().mockResolvedValue(mockCustomer);
+
+      (vi.mocked(db.selectFrom) as any).mockReturnValue({
+        selectAll: vi.fn().mockReturnThis(),
+        where: mockWhere,
+        executeTakeFirst: mockExecuteTakeFirst,
+      } as any);
+
+      vi.mocked(db.updateTable).mockReturnValue({
+        where: vi.fn().mockReturnThis(),
+        set: vi.fn().mockReturnThis(),
+        execute: vi.fn().mockResolvedValue(undefined),
+      } as any);
+
+      await handleEvent(buildCheckoutEvent());
+
+      expect(rlsTransaction).toHaveBeenCalledWith(
+        db,
+        "user_123",
+        expect.any(Function),
+      );
+    });
+
+    it("propagates an error raised inside the transaction (rollback)", async () => {
+      const mockCustomer = { id: "customer_id", authUserId: "user_123" };
+
+      (vi.mocked(db.selectFrom) as any).mockReturnValue({
+        selectAll: vi.fn().mockReturnThis(),
+        where: vi.fn().mockReturnThis(),
+        executeTakeFirst: vi.fn().mockResolvedValue(mockCustomer),
+      } as any);
+
+      vi.mocked(db.updateTable).mockReturnValue({
+        where: vi.fn().mockReturnThis(),
+        set: vi.fn().mockReturnThis(),
+        execute: vi.fn().mockRejectedValue(new Error("update failed")),
+      } as any);
+
+      await expect(handleEvent(buildCheckoutEvent())).rejects.toThrow(
+        "update failed",
+      );
+    });
+
+    it("skips the customer update entirely when no customer is found", async () => {
+      (vi.mocked(db.selectFrom) as any).mockReturnValue({
+        selectAll: vi.fn().mockReturnThis(),
+        where: vi.fn().mockReturnThis(),
+        executeTakeFirst: vi.fn().mockResolvedValue(null),
+      } as any);
+
+      vi.mocked(db.updateTable).mockReturnValue({
+        where: vi.fn().mockReturnThis(),
+        set: vi.fn().mockReturnThis(),
+        execute: vi.fn().mockResolvedValue(undefined),
+      } as any);
+
+      await handleEvent(buildCheckoutEvent());
+
+      expect(db.updateTable).not.toHaveBeenCalledWith("Customer");
     });
   });
 });

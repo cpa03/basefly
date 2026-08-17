@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -8,14 +9,21 @@ import {
 } from "@tanstack/react-table";
 
 import { DataTableEmpty } from "./data-table-empty";
-import { Table, TableBody, TableHead, TableHeader, TableRow } from "./table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "./table";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export function DataTable<TData, TValue>({
+export const DataTable = React.memo(function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -69,4 +77,4 @@ export function DataTable<TData, TValue>({
       </Table>
     </div>
   );
-}
+});

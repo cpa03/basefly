@@ -4,7 +4,7 @@ import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { Loader2 } from "lucide-react";
 
-import { BUTTON_TOKENS } from "@saasfly/common";
+import { BUTTON_TOKENS, UI_ANIMATION } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 
 import { buttonVariants, type ButtonVariantProps } from "./button-variants";
@@ -123,6 +123,7 @@ const Button = React.memo(
           className={cn(
             buttonVariants({ variant, size, className }),
             BUTTON_TOKENS.activeScale,
+            variant !== "link" && UI_ANIMATION.scale.subtle,
           )}
           ref={ref}
           disabled={isLoading ?? props.disabled}

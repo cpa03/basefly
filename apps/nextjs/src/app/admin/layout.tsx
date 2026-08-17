@@ -1,9 +1,10 @@
 import { redirect } from "next/navigation";
 
 import { getCurrentUser } from "@saasfly/auth";
-import { isAdminEmail, Z_INDEX } from "@saasfly/common";
+import { Z_INDEX } from "@saasfly/common";
 
 import { SkipLink } from "~/components/skip-link";
+import { isAdminUser } from "~/lib/admin-access";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -16,7 +17,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
     redirect("/login");
   }
 
-  if (!isAdminEmail(user.email)) {
+  if (!(await isAdminUser(user))) {
     redirect("/dashboard");
   }
 

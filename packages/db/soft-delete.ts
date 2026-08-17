@@ -19,6 +19,7 @@ import type { ExpressionBuilder } from "kysely";
 import { db } from "./db-instance";
 import { logger } from "./logger";
 import type { DB } from "./prisma/types";
+import { rlsTransaction } from "./rls-middleware";
 
 /**
  * Interface for entities that support soft delete
@@ -86,13 +87,15 @@ export class SoftDeleteService<T extends keyof DB> {
     });
 
     try {
-      await db
-        .updateTable(this.tableName)
-        // @ts-expect-error Kysely dynamic table/column requires type assertion
-        .set(createSoftDeleteData())
-        .where("id", "=", id)
-        .where("authUserId", "=", userId)
-        .execute();
+      await rlsTransaction(db, userId, async (trx) => {
+        await trx
+          .updateTable(this.tableName)
+          // @ts-expect-error Kysely dynamic table/column requires type assertion
+          .set(createSoftDeleteData())
+          .where("id", "=", id)
+          .where("authUserId", "=", userId)
+          .execute();
+      });
 
       logger.info("Soft delete completed", {
         requestId,
@@ -132,13 +135,15 @@ export class SoftDeleteService<T extends keyof DB> {
     });
 
     try {
-      await db
-        .updateTable(this.tableName)
-        // @ts-expect-error Kysely dynamic table/column requires type assertion
-        .set(createRestoreData())
-        .where("id", "=", id)
-        .where("authUserId", "=", userId)
-        .execute();
+      await rlsTransaction(db, userId, async (trx) => {
+        await trx
+          .updateTable(this.tableName)
+          // @ts-expect-error Kysely dynamic table/column requires type assertion
+          .set(createRestoreData())
+          .where("id", "=", id)
+          .where("authUserId", "=", userId)
+          .execute();
+      });
 
       logger.info("Restore completed", {
         requestId,
@@ -163,16 +168,16 @@ export class SoftDeleteService<T extends keyof DB> {
    * @param userId - The user ID for ownership validation
    * @returns The record if found and belongs to the user, undefined otherwise
    */
-  findActive(id: number, userId: string) {
-    return (
-      db
+  findActive(id: number, userId: string): Promise<DB[T] | undefined> {
+    return rlsTransaction(db, userId, (trx) =>
+      trx
         .selectFrom(this.tableName)
         .selectAll()
         // @ts-expect-error Kysely dynamic table/column requires type assertion
         .where("id", "=", id)
         .where("authUserId", "=", userId)
         .where("deletedAt", "is", null)
-        .executeTakeFirst()
+        .executeTakeFirst(),
     );
   }
 
@@ -182,15 +187,15 @@ export class SoftDeleteService<T extends keyof DB> {
    * @param userId - The user ID to find records for
    * @returns Array of active records belonging to the user
    */
-  findAllActive(userId: string) {
-    return (
-      db
+  findAllActive(userId: string): Promise<DB[T][]> {
+    return rlsTransaction(db, userId, (trx) =>
+      trx
         .selectFrom(this.tableName)
         .selectAll()
         // @ts-expect-error Kysely dynamic table/column requires type assertion
         .where("authUserId", "=", userId)
         .where("deletedAt", "is", null)
-        .execute()
+        .execute(),
     );
   }
 
@@ -200,15 +205,15 @@ export class SoftDeleteService<T extends keyof DB> {
    * @param userId - The user ID to find deleted records for
    * @returns Array of deleted records belonging to the user
    */
-  findDeleted(userId: string) {
-    return (
-      db
+  findDeleted(userId: string): Promise<DB[T][]> {
+    return rlsTransaction(db, userId, (trx) =>
+      trx
         .selectFrom(this.tableName)
         .selectAll()
         // @ts-expect-error Kysely dynamic table/column requires type assertion
         .where("authUserId", "=", userId)
         .where("deletedAt", "is not", null)
-        .execute()
+        .execute(),
     );
   }
 
@@ -248,13 +253,15 @@ export class SoftDeleteService<T extends keyof DB> {
 
     try {
       const insertValues = { ...values, authUserId: userId };
-      const result = await db
-        .insertInto(this.tableName)
-        // @ts-expect-error Kysely dynamic table/column requires type assertion
-        .values(insertValues)
-        // @ts-expect-error Kysely dynamic table/column requires type assertion
-        .returning("id")
-        .executeTakeFirst();
+      const result = await rlsTransaction(db, userId, (trx) =>
+        trx
+          .insertInto(this.tableName)
+          // @ts-expect-error Kysely dynamic table/column requires type assertion
+          .values(insertValues)
+          // @ts-expect-error Kysely dynamic table/column requires type assertion
+          .returning("id")
+          .executeTakeFirst(),
+      );
 
       logger.info("Create operation completed", {
         requestId,
@@ -290,9 +297,9 @@ export class SoftDeleteService<T extends keyof DB> {
    * console.log(`User has ${activeCount} active clusters`);
    * ```
    */
-  countActive(userId: string) {
-    return (
-      db
+  countActive(userId: string): Promise<number> {
+    return rlsTransaction(db, userId, (trx) =>
+      trx
         .selectFrom(this.tableName)
         // @ts-expect-error Kysely dynamic table/column requires type assertion
         .where("authUserId", "=", userId)
@@ -300,7 +307,7 @@ export class SoftDeleteService<T extends keyof DB> {
         // @ts-expect-error Kysely dynamic table/column requires type assertion
         .select((eb: ExpressionBuilder<DB, T>) => eb.fn.count("id").as("count"))
         .executeTakeFirst()
-        .then((result: CountResult | undefined) => Number(result?.count ?? 0))
+        .then((result: CountResult | undefined) => Number(result?.count ?? 0)),
     );
   }
 
@@ -319,9 +326,9 @@ export class SoftDeleteService<T extends keyof DB> {
    * console.log(`User has ${deletedCount} deleted clusters`);
    * ```
    */
-  countDeleted(userId: string) {
-    return (
-      db
+  countDeleted(userId: string): Promise<number> {
+    return rlsTransaction(db, userId, (trx) =>
+      trx
         .selectFrom(this.tableName)
         // @ts-expect-error Kysely dynamic table/column requires type assertion
         .where("authUserId", "=", userId)
@@ -329,7 +336,7 @@ export class SoftDeleteService<T extends keyof DB> {
         // @ts-expect-error Kysely dynamic table/column requires type assertion
         .select((eb: ExpressionBuilder<DB, T>) => eb.fn.count("id").as("count"))
         .executeTakeFirst()
-        .then((result: CountResult | undefined) => Number(result?.count ?? 0))
+        .then((result: CountResult | undefined) => Number(result?.count ?? 0)),
     );
   }
 }

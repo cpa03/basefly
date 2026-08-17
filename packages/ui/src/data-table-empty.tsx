@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { ANIMATION } from "@saasfly/common";
+import { ANIMATION, DATA_TABLE_EMPTY_TOKENS } from "@saasfly/common";
 
 import { Search } from "./icons";
 import { cn } from "./utils/cn";
@@ -80,20 +80,9 @@ const DataTableEmpty = React.forwardRef<
   ) => {
     const defaultIcon = React.useMemo(
       () => (
-        <div
-          className={cn(
-            "flex h-16 w-16 items-center justify-center rounded-full bg-muted",
-            "transition-all duration-300 ease-out",
-            "group-hover:scale-110 group-hover:bg-muted/80",
-            "motion-safe:transition-transform motion-safe:duration-300",
-          )}
-        >
+        <div className={cn(DATA_TABLE_EMPTY_TOKENS.iconWrapper.base)}>
           <Search
-            className={cn(
-              "h-8 w-8 text-muted-foreground",
-              "transition-colors duration-300",
-              "group-hover:text-primary",
-            )}
+            className={cn(DATA_TABLE_EMPTY_TOKENS.iconWrapper.iconSize)}
             aria-hidden="true"
           />
         </div>
@@ -101,34 +90,29 @@ const DataTableEmpty = React.forwardRef<
       [],
     );
 
+    const computedAriaLabel =
+      title.trim().length > 0
+        ? `Empty state: ${title}`
+        : DATA_TABLE_EMPTY_TOKENS.defaultAriaLabel;
+
     return (
       <td
         ref={ref as React.Ref<HTMLTableCellElement>}
         colSpan={colSpan}
-        className={cn("p-0", className)}
+        className={cn(DATA_TABLE_EMPTY_TOKENS.cell, className)}
         {...props}
       >
         <div
           className={cn(
-            // Layout
-            "flex min-h-[280px] flex-col items-center justify-center",
-            // Spacing
-            "px-8 py-12",
-            // Visual styling
-            "border-0", // Remove border since we're in a table cell
-            "bg-transparent",
-            // Animation - fade in with scale
-            "animate-in fade-in-50 zoom-in-95",
-            "motion-safe:animate-in motion-safe:fade-in-50 motion-safe:zoom-in-95",
-            "motion-reduce:animate-none",
-            // Timing
+            DATA_TABLE_EMPTY_TOKENS.container.base,
+            DATA_TABLE_EMPTY_TOKENS.container.hoverScale,
+            DATA_TABLE_EMPTY_TOKENS.container.activeScale,
+            "animate-in fade-in-50 zoom-in-95 motion-reduce:animate-none",
             ANIMATION.duration.medium,
             ANIMATION.easing.default,
-            // Group for hover effects
-            "group",
           )}
           role="status"
-          aria-label={`Empty state: ${title}`}
+          aria-label={computedAriaLabel}
           aria-live="polite"
         >
           {/* Icon */}
@@ -143,49 +127,20 @@ const DataTableEmpty = React.forwardRef<
           </div>
 
           {/* Content container */}
-          <div
-            className={cn(
-              "mx-auto flex max-w-[400px] flex-col items-center text-center",
-              "motion-safe:transition-all motion-safe:duration-300",
-              "motion-safe:delay-75",
-            )}
-          >
+          <div className={cn(DATA_TABLE_EMPTY_TOKENS.contentWrapper)}>
             {/* Title */}
-            <h3
-              className={cn(
-                "text-lg font-semibold text-foreground",
-                "motion-safe:transition-colors motion-safe:duration-200",
-                "group-hover:text-foreground/90",
-              )}
-            >
-              {title}
-            </h3>
+            <h3 className={cn(DATA_TABLE_EMPTY_TOKENS.title)}>{title}</h3>
 
             {/* Description */}
             {description && (
-              <p
-                className={cn(
-                  "mt-2 text-sm text-muted-foreground",
-                  "leading-relaxed",
-                  "motion-safe:transition-colors motion-safe:duration-200",
-                )}
-              >
+              <p className={cn(DATA_TABLE_EMPTY_TOKENS.description)}>
                 {description}
               </p>
             )}
 
             {/* Action */}
             {action && (
-              <div
-                className={cn(
-                  "mt-6",
-                  "motion-safe:transition-all motion-safe:duration-300",
-                  "motion-safe:translate-y-0 motion-safe:opacity-100",
-                  "motion-safe:delay-100",
-                )}
-              >
-                {action}
-              </div>
+              <div className={cn(DATA_TABLE_EMPTY_TOKENS.action)}>{action}</div>
             )}
           </div>
         </div>

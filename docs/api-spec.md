@@ -85,9 +85,9 @@ Rate limiting is enforced for all API endpoints to protect against abuse and ens
 
 ### Rate Limit Algorithm
 
-**Algorithm**: Token Bucket
+**Algorithm**: Sliding window (Redis sorted sets) with in-memory fallback
 
-**Storage**: In-memory (production should use Redis for distributed systems)
+**Storage**: Redis-backed (`packages/api/src/distributed-rate-limiter.ts`) when `REDIS_URL` is configured; automatically falls back to in-memory token bucket when Redis is unavailable or unset (development). See [Redis Setup & Distributed Rate Limiting](./redis-setup.md).
 
 ### Rate Limits
 

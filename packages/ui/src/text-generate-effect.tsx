@@ -59,7 +59,6 @@ const TextGenerateEffectImpl = ({
   );
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 const TypedDynamicComponent = dynamic(
   () => Promise.resolve(TextGenerateEffectImpl),
   {

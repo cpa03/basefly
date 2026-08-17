@@ -1,5 +1,11 @@
 import React from "react";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { ClusterConfig } from "../k8s/cluster-config";
@@ -253,9 +259,10 @@ describe("ClusterConfig", () => {
   it("renders the Marketplace tabs", () => {
     render(<ClusterConfig cluster={mockCluster} params={{ lang: "en" }} />);
 
-    expect(screen.getByText("Architecture")).toBeInTheDocument();
-    expect(screen.getByText("CI/CD")).toBeInTheDocument();
-    expect(screen.getByText("Monitoring")).toBeInTheDocument();
+    const tabsList = screen.getByTestId("tabs-list");
+    expect(within(tabsList).getByText("Architecture")).toBeInTheDocument();
+    expect(within(tabsList).getByText("Password")).toBeInTheDocument();
+    expect(within(tabsList).getByText("Monitoring")).toBeInTheDocument();
   });
 
   it("renders the submit button with the submit label", () => {

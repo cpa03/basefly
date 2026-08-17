@@ -185,11 +185,11 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
           <CardContent className="w-3/4 space-y-6">
             <div className="grid w-full items-center gap-4">
               <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name">MarketPlace</Label>
+                <Label>MarketPlace</Label>
                 <Tabs defaultValue="Architecture">
                   <TabsList className="grid w-full grid-cols-3">
                     <TabsTrigger value="Architecture">Architecture</TabsTrigger>
-                    <TabsTrigger value="password">CI/CD</TabsTrigger>
+                    <TabsTrigger value="password">Password</TabsTrigger>
                     <TabsTrigger value="Monitoring">Monitoring</TabsTrigger>
                   </TabsList>
                   <TabsContent
@@ -211,8 +211,12 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
                       </CardHeader>
                       <CardContent>
                         <div>
-                          <Label htmlFor="version">Version</Label>
-                          <Input id="version" defaultValue="v2.4.0" readOnly />
+                          <Label htmlFor="version-k8s-dashboard">Version</Label>
+                          <Input
+                            id="version-k8s-dashboard"
+                            defaultValue="v2.4.0"
+                            readOnly
+                          />
                         </div>
                       </CardContent>
                     </Card>
@@ -230,8 +234,12 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
                       </CardHeader>
                       <CardContent>
                         <div>
-                          <Label htmlFor="version">Version</Label>
-                          <Input id="version" defaultValue="v2.4.0" readOnly />
+                          <Label htmlFor="version-istio-gateway">Version</Label>
+                          <Input
+                            id="version-istio-gateway"
+                            defaultValue="v2.4.0"
+                            readOnly
+                          />
                         </div>
                       </CardContent>
                     </Card>
@@ -267,8 +275,12 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
                       </CardHeader>
                       <CardContent>
                         <div>
-                          <Label htmlFor="version">Version</Label>
-                          <Input id="version" defaultValue="v2.4.0" readOnly />
+                          <Label htmlFor="version-cert-manager">Version</Label>
+                          <Input
+                            id="version-cert-manager"
+                            defaultValue="v2.4.0"
+                            readOnly
+                          />
                         </div>
                       </CardContent>
                     </Card>
@@ -289,8 +301,12 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
                       </CardHeader>
                       <CardContent>
                         <div>
-                          <Label htmlFor="version">Version</Label>
-                          <Input id="version" defaultValue="v2.4.0" readOnly />
+                          <Label htmlFor="version-vault">Version</Label>
+                          <Input
+                            id="version-vault"
+                            defaultValue="v2.4.0"
+                            readOnly
+                          />
                         </div>
                       </CardContent>
                     </Card>
@@ -308,8 +324,12 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
                       </CardHeader>
                       <CardContent>
                         <div>
-                          <Label htmlFor="version">Version</Label>
-                          <Input id="version" defaultValue="v2.4.0" readOnly />
+                          <Label htmlFor="version-minio">Version</Label>
+                          <Input
+                            id="version-minio"
+                            defaultValue="v2.4.0"
+                            readOnly
+                          />
                         </div>
                       </CardContent>
                     </Card>
@@ -322,7 +342,7 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
                       <CardHeader>
                         <CardTitle>Password</CardTitle>
                         <CardDescription>
-                          Change your password here. After saving, you`&apos;`ll
+                          Change your password here. After saving, you&apos;ll
                           be logged out.
                         </CardDescription>
                       </CardHeader>

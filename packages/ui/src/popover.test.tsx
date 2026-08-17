@@ -77,4 +77,27 @@ describe("Popover Component", () => {
     expect(screen.getByText("First child")).toBeInTheDocument();
     expect(screen.getByText("Action button")).toBeInTheDocument();
   });
+
+  it("should apply trigger hover and active micro-interaction scale classes", () => {
+    render(
+      <Popover>
+        <PopoverTrigger>Open popover</PopoverTrigger>
+        <PopoverContent>Popover content</PopoverContent>
+      </Popover>,
+    );
+    const trigger = screen.getByText("Open popover");
+    expect(trigger).toHaveClass("hover:scale-[1.01]");
+    expect(trigger).toHaveClass("active:scale-[0.99]");
+  });
+
+  it("should apply default aria-label fallback to PopoverContent", () => {
+    render(
+      <Popover open>
+        <PopoverTrigger>Open popover</PopoverTrigger>
+        <PopoverContent>Popover content</PopoverContent>
+      </Popover>,
+    );
+    const dialog = screen.getByRole("dialog");
+    expect(dialog).toHaveAttribute("aria-label", "Popover content");
+  });
 });

@@ -505,6 +505,22 @@ export const DATA_TABLE_EMPTY_TOKENS = {
   defaultAriaLabel: "Empty state: No results found",
 } as const;
 
+/**
+ * Popover design tokens
+ * Centralized layout, styling, transitions, and accessibility for Popover component
+ */
+export const POPOVER_TOKENS = {
+  trigger: {
+    base: "inline-flex items-center justify-center transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+    hoverScale: "hover:scale-[1.01]",
+    activeScale: "active:scale-[0.99]",
+  },
+  content: {
+    base: "z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none animate-in data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 transition-all duration-200 ease-out",
+  },
+  defaultAriaLabel: "Popover content",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

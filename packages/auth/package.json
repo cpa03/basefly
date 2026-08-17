@@ -2,6 +2,7 @@
   "name": "@saasfly/auth",
   "version": "0.1.0",
   "private": true,
+  "sideEffects": false,
   "exports": {
     ".": "./index.ts",
     "./env.mjs": "./env.mjs"

@@ -357,7 +357,7 @@ export function ClusterConfig({ cluster, params: { lang } }: ClusterProps) {
                         </div>
                       </CardContent>
                       <CardFooter>
-                        <Button>Save password</Button>
+                        <Button type="button">Save password</Button>
                       </CardFooter>
                     </Card>
                   </TabsContent>

@@ -309,4 +309,13 @@ describe("ClusterConfig", () => {
       });
     });
   });
+
+  it("renders the Save password button as type=button so it does not submit the cluster form", () => {
+    render(<ClusterConfig cluster={mockCluster} params={{ lang: "en" }} />);
+
+    const savePasswordButton = screen.getByRole("button", {
+      name: "Save password",
+    });
+    expect(savePasswordButton).toHaveAttribute("type", "button");
+  });
 });

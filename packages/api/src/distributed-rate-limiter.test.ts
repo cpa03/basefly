@@ -860,6 +860,31 @@ describe("getIdentifier()", () => {
     expect(getIdentifier(null, req)).toBe("ip:203.0.113.9");
   });
 
+  it("should fall through to x-real-ip when x-forwarded-for is empty", () => {
+    const req = {
+      headers: {
+        get: (name: string) =>
+          name === "x-forwarded-for"
+            ? ""
+            : name === "x-real-ip"
+              ? "203.0.113.9"
+              : null,
+      },
+    } as any;
+
+    expect(getIdentifier(null, req)).toBe("ip:203.0.113.9");
+  });
+
+  it("should fall back to ip:unknown when x-forwarded-for is empty and no x-real-ip", () => {
+    const req = {
+      headers: {
+        get: (name: string) => (name === "x-forwarded-for" ? "" : null),
+      },
+    } as any;
+
+    expect(getIdentifier(null, req)).toBe("ip:unknown");
+  });
+
   it("should fall back to ip:unknown when request has no identifying headers", () => {
     const req = {
       headers: {

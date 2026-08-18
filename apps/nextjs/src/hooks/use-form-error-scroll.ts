@@ -73,7 +73,7 @@ export function useFormErrorScroll(
             () => {
               errorElement.focus({ preventScroll: true });
             },
-            prefersReducedMotion ? 0 : parseInt(ANIMATION.duration.normal),
+            prefersReducedMotion ? 0 : ANIMATION.ms.normal,
           );
         }
       }, delay);

@@ -365,6 +365,7 @@ export {
   TEXTAREA_TOKENS,
   DATA_TABLE_EMPTY_TOKENS,
   POPOVER_TOKENS,
+  TABS_TOKENS,
 } from "./ui-tokens";
 export type {
   ButtonHeight,

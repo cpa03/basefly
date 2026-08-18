@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
+
 import { TABS_TOKENS } from "@saasfly/common";
 
 import { cn } from "./utils/cn";

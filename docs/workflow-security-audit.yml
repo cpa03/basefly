@@ -1,16 +1,12 @@
 # =============================================================================
-# WORKFLOW REFERENCE: security-audit.yml
-# =============================================================================
-# This is a REFERENCE document for the security-audit workflow.
-# The live workflow is deployed at:
-#   .github/workflows/security-audit.yml
+# security-audit.yml
 #
-# It provides automated security scanning for the basefly monorepo:
+# Automated security scanning for the basefly monorepo:
 #   1. pnpm audit - dependency vulnerability scanning (fails on critical vulns)
 #   2. CodeQL Analysis - JavaScript/TypeScript code security scanning
 #
 # Deployed as part of issue #728 resolution.
-# See the deployed file at .github/workflows/security-audit.yml for the live version.
+# Deploy with: bash scripts/deploy-security-workflows.sh
 # =============================================================================
 
 name: security-audit

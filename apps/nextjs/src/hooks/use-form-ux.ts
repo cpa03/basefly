@@ -185,6 +185,9 @@ export function useInputValidation(
   const [isValid, setIsValid] = React.useState(true);
   const [isTouched, setIsTouched] = React.useState(false);
   const debounceRef = React.useRef<NodeJS.Timeout | null>(null);
+  // onChange only validates when validateOnChange is enabled, so the latest
+  // value must be kept here for onBlur validation to work.
+  const valueRef = React.useRef<string>("");
 
   const runValidation = React.useCallback(
     (value: string) => {
@@ -196,6 +199,7 @@ export function useInputValidation(
 
   const onChange = React.useCallback(
     (value: string) => {
+      valueRef.current = value;
       if (debounceRef.current) {
         clearTimeout(debounceRef.current);
       }
@@ -212,13 +216,19 @@ export function useInputValidation(
   const onBlur = React.useCallback(() => {
     setIsTouched(true);
     if (validateOnBlur) {
-      // Validation happens via onChange capturing the last value
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+      debounceRef.current = setTimeout(() => {
+        setIsValid(runValidation(valueRef.current));
+      }, debounceMs);
     }
-  }, [validateOnBlur]);
+  }, [validateOnBlur, debounceMs, runValidation]);
 
   const reset = React.useCallback(() => {
     setIsValid(true);
     setIsTouched(false);
+    valueRef.current = "";
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
     }

@@ -521,6 +521,24 @@ export const POPOVER_TOKENS = {
   defaultAriaLabel: "Popover content",
 } as const;
 
+/**
+ * Tabs design tokens
+ * Centralized layout, styling, micro-UX transitions, and accessibility for Tabs component
+ */
+export const TABS_TOKENS = {
+  list: {
+    base: "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground",
+  },
+  trigger: {
+    base: "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm",
+    hoverScale: "hover:scale-[1.01]",
+    activeScale: "active:scale-[0.99]",
+  },
+  content: {
+    base: "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  },
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

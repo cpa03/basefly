@@ -138,4 +138,18 @@ describe("Tabs Component", () => {
     const disabledTab = screen.getByRole("tab", { name: "B" });
     expect(disabledTab).toBeDisabled();
   });
+
+  it("should apply tactile spring micro-interaction transition scale classes to trigger", () => {
+    render(
+      <Tabs defaultValue="a">
+        <TabsList>
+          <TabsTrigger value="a">A</TabsTrigger>
+        </TabsList>
+        <TabsContent value="a">A content</TabsContent>
+      </Tabs>,
+    );
+    const trigger = screen.getByRole("tab", { name: "A" });
+    expect(trigger).toHaveClass("hover:scale-[1.01]");
+    expect(trigger).toHaveClass("active:scale-[0.99]");
+  });
 });

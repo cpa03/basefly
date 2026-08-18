@@ -209,22 +209,40 @@ Running `pnpm audit --audit-level=moderate` currently finds vulnerabilities in t
 
 ### Dependency Security Audit (security-audit.yml)
 
-**Status**: ✅ Deployed — `.github/workflows/security-audit.yml` is active
+**Status**: ⏳ Template ready — **NOT deployed**. Deployment blocked: the GitHub App token used in CI lacks `workflows: write` permission (required for any change to `.github/workflows/`).
 
-The workflow:
-- Runs `pnpm audit --audit-level=moderate` on push to main, PRs, and weekly schedule
-- Includes outdated dependency check as informational job
-- Produces audit summary in GitHub Actions step summary
+What exists:
 
-### CodeQL Security Analysis (codeql-analysis.yml)
+- Workflow template: `docs/workflow-security-audit.yml` (pnpm audit + CodeQL jobs)
+- Deploy script: `scripts/deploy-security-workflows.sh` (deploys the template to `.github/workflows/security-audit.yml`)
+- CodeQL config: `.github/codeql-config.yml`
 
-**Status**: ✅ Deployed — `.github/workflows/codeql-analysis.yml` is active
+The workflow template:
 
-The workflow:
+- Runs `pnpm audit` on push to main, PRs touching lockfile/package.json, and weekly schedule (Mon 06:00 UTC)
+- Fails on critical vulnerabilities, warns on high
+- Produces an audit report artifact
+
+### CodeQL Security Analysis
+
+**Status**: ⏳ Included in the `security-audit.yml` template (codeql job) — **NOT deployed** for the same permission reason above.
+
+The template's CodeQL job:
+
 - Runs GitHub CodeQL semantic analysis for JavaScript/TypeScript
-- Uses `.github/codeql-config.yml` with security-and-quality queries
-- Triggers on push to main, PRs, and weekly schedule
+- Uses `security-extended` and `security-and-quality` queries
 - Integrates with GitHub Security tab for vulnerability alerts
+
+### How to Deploy
+
+A maintainer with a token that has `workflows: write` scope must run:
+
+```bash
+bash scripts/deploy-security-workflows.sh
+git add .github/workflows/security-audit.yml
+git commit -m "fix(security): deploy security scanning workflow"
+git push
+```
 
 ## Additional Security Recommendations
 
@@ -295,8 +313,8 @@ pnpm dx:check
 - [x] Protected tRPC procedures
 - [x] Stripe webhook verification
 - [x] RLS enabled on database
-- [x] CodeQL scanning in CI (`.github/workflows/codeql-analysis.yml`)
-- [x] Dependency audit in CI (`.github/workflows/security-audit.yml`)
+- [ ] CodeQL scanning in CI (template ready, deployment blocked by `workflows: write`)
+- [ ] Dependency audit in CI (template ready, deployment blocked by `workflows: write`)
 - [ ] Rate limit headers in responses
 - [ ] Nonce-based CSP for production
 
@@ -305,3 +323,4 @@ pnpm dx:check
 _Document created by security-engineer agent_
 _Last updated: 2026-02-20_
 _Updated with CodeQL workflow proposal_
+_Status corrected 2026-08-18: workflows are NOT deployed (blocked by missing `workflows: write` permission); template + deploy script prepared_

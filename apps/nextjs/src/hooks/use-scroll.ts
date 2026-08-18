@@ -1,25 +1,22 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 
 export default function useScroll(threshold: number) {
-  const [scrolled, setScrolled] = useState(false);
-
-  const onScroll = useCallback(() => {
-    // Guard against SSR - window may not exist during server rendering
+  const subscribe = useCallback((callback: () => void) => {
     if (typeof window === "undefined") {
-      return;
+      return () => undefined;
     }
-    setScrolled(window.pageYOffset > threshold);
+
+    window.addEventListener("scroll", callback, { passive: true });
+    return () => window.removeEventListener("scroll", callback);
+  }, []);
+
+  const getSnapshot = useCallback(() => {
+    if (typeof window === "undefined") {
+      return false;
+    }
+
+    return window.scrollY > threshold;
   }, [threshold]);
 
-  useEffect(() => {
-    // Guard against SSR - window may not exist during server rendering
-    if (typeof window === "undefined") {
-      return;
-    }
-
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [onScroll]);
-
-  return scrolled;
+  return useSyncExternalStore(subscribe, getSnapshot);
 }

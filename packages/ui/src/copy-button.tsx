@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Check, Copy } from "lucide-react";
 
-import { ANIMATION, FEEDBACK_TIMING, ICON_SIZES } from "@saasfly/common";
+import { ANIMATION, COPY_BUTTON_TOKENS, FEEDBACK_TIMING } from "@saasfly/common";
 
 import {
   Tooltip,
@@ -105,8 +105,8 @@ const CopyButton = React.forwardRef<HTMLButtonElement, CopyButtonProps>(
       onCopy,
       onError,
       showTooltip = true,
-      tooltipText = "Copy to clipboard",
-      tooltipSuccessText = "Copied!",
+      tooltipText = COPY_BUTTON_TOKENS.defaultTooltipText,
+      tooltipSuccessText = COPY_BUTTON_TOKENS.defaultSuccessText,
       size = "default",
       variant = "default",
       showSuccessState = true,
@@ -180,42 +180,10 @@ const CopyButton = React.forwardRef<HTMLButtonElement, CopyButtonProps>(
       [handleCopy, onKeyDown],
     );
 
-    const sizeStyles = {
-      sm: {
-        button: "h-7 w-7",
-        icon: ICON_SIZES.xs,
-      },
-      default: {
-        button: "h-9 w-9",
-        icon: ICON_SIZES.sm,
-      },
-      lg: {
-        button: "h-11 w-11",
-        icon: ICON_SIZES.md,
-      },
-    };
+    const sizeStyles = COPY_BUTTON_TOKENS.sizes;
+    const variantStyles = COPY_BUTTON_TOKENS.variants;
 
-    const variantStyles = {
-      default: cn(
-        "bg-background border border-input",
-        "hover:bg-muted hover:text-foreground",
-        "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-      ),
-      ghost: cn(
-        "bg-transparent",
-        "hover:bg-muted hover:text-foreground",
-        "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-      ),
-      outline: cn(
-        "bg-transparent border border-input",
-        "hover:bg-muted hover:text-foreground",
-        "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-      ),
-    };
-
-    const successStyles = hasCopied
-      ? "bg-green-50 text-green-600 border-green-200 hover:bg-green-100 hover:text-green-700 dark:bg-green-950/30 dark:text-green-400 dark:border-green-800"
-      : "";
+    const successStyles = hasCopied ? COPY_BUTTON_TOKENS.success : "";
 
     const currentTooltipText = hasCopied ? tooltipSuccessText : tooltipText;
     const currentAriaLabel = hasCopied
@@ -241,16 +209,15 @@ const CopyButton = React.forwardRef<HTMLButtonElement, CopyButtonProps>(
         onMouseLeave={() => setIsPressed(false)}
         disabled={Boolean(disabled) || !value}
         className={cn(
-          "relative inline-flex items-center justify-center rounded-md",
-          "transition-colors",
-          "focus-visible:outline-none",
-          "disabled:cursor-not-allowed disabled:opacity-50",
+          COPY_BUTTON_TOKENS.base,
           sizeStyles[size].button,
           variantStyles[variant],
           showSuccessState && successStyles,
           !prefersReducedMotion &&
-            (isPressed ? "scale-90" : "hover:scale-105 active:scale-95"),
-          ANIMATION.transition.fast,
+            (isPressed
+              ? COPY_BUTTON_TOKENS.animations.pressScale
+              : `${COPY_BUTTON_TOKENS.animations.hoverScale} ${COPY_BUTTON_TOKENS.animations.activeScale}`),
+          COPY_BUTTON_TOKENS.transition,
           className,
         )}
         aria-label={ariaLabel ?? currentAriaLabel}

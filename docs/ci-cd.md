@@ -230,10 +230,10 @@ All workflows use `ubuntu-24.04-arm` or `ubuntu-22.04-arm` runners for ARM-based
 
 ### Node.js Version
 
-- Target: Node.js 20
+- Target: Node.js 22.14.0 (per `.nvmrc`; `engines.node >= 22`)
 - Package Manager: pnpm 10.x
 
-> **⚠️ Known Issue**: Some workflow files still use `npm ci` instead of `pnpm install --frozen-lockfile`. The `on-pull.yml` has been migrated, but `iterate.yml` still has 2 remaining `npm ci` references (architect and integrator jobs). See [Issue #670](https://github.com/cpa03/basefly/issues/670) and [Issue #584](https://github.com/cpa03/basefly/issues/584) for details. Implementation requires GitHub App with `workflows` permission.
+> **⚠️ Known Issue**: Some workflow files still use `npm ci` instead of `pnpm install --frozen-lockfile`, and several pin `node-version: 20` instead of 22. The `on-pull.yml` and `security-audit.yml` have been migrated, but `iterate.yml` still has 2 remaining `npm ci` references (architect and integrator jobs) and 4 `node-version: "20"` pins. See [Issue #305](https://github.com/cpa03/basefly/issues/305) (canonical; duplicates #584, #595, #670, #744) for details. Implementation requires GitHub App with `workflows` permission.
 
 ### Permissions
 

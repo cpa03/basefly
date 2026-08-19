@@ -16,10 +16,6 @@
     "lint": "eslint . --cache --cache-location 'node_modules/.cache/.eslintcache'",
     "typecheck": "tsc --noEmit"
   },
-  "peerDependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
-  },
   "dependencies": {
     "@radix-ui/react-accessible-icon": "next",
     "@radix-ui/react-accordion": "next",

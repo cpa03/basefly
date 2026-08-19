@@ -18,5 +18,7 @@ export default function useScroll(threshold: number) {
     return window.scrollY > threshold;
   }, [threshold]);
 
-  return useSyncExternalStore(subscribe, getSnapshot);
+  const getServerSnapshot = useCallback(() => false, []);
+
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }

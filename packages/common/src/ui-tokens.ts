@@ -539,6 +539,48 @@ export const TABS_TOKENS = {
   },
 } as const;
 
+/**
+ * CopyButton design tokens
+ * Centralized layout, styling, micro-UX transitions, and accessibility for CopyButton component
+ */
+export const COPY_BUTTON_TOKENS = {
+  /** Root base layout */
+  base: "relative inline-flex items-center justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+  /** Tactile spring scale micro-interactions */
+  animations: {
+    hoverScale: "hover:scale-[1.03]",
+    activeScale: "active:scale-[0.97]",
+    pressScale: "scale-90",
+  },
+  /** Size variants */
+  sizes: {
+    sm: {
+      button: "h-7 w-7",
+      icon: "h-3.5 w-3.5",
+    },
+    default: {
+      button: "h-9 w-9",
+      icon: "h-4 w-4",
+    },
+    lg: {
+      button: "h-11 w-11",
+      icon: "h-5 w-5",
+    },
+  },
+  /** Variant styles */
+  variants: {
+    default: "bg-background border border-input hover:bg-muted hover:text-foreground",
+    ghost: "bg-transparent hover:bg-muted hover:text-foreground",
+    outline: "bg-transparent border border-input hover:bg-muted hover:text-foreground",
+  },
+  /** Success feedback styling */
+  success: "bg-green-50 text-green-600 border-green-200 hover:bg-green-100 hover:text-green-700 dark:bg-green-950/30 dark:text-green-400 dark:border-green-800",
+  /** Default fallback aria labels and tooltips */
+  defaultTooltipText: "Copy to clipboard",
+  defaultSuccessText: "Copied!",
+  transition: "transition-all duration-200 ease-out",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

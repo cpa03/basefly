@@ -91,4 +91,11 @@ describe("CopyButton Component", () => {
     const button = screen.getByRole("button");
     expect(button).toHaveAttribute("title", "Copy to clipboard");
   });
+
+  it("should apply COPY_BUTTON_TOKENS scale classes and attributes", () => {
+    render(<CopyButton value="secret-value" />);
+    const button = screen.getByRole("button");
+    expect(button).toHaveClass("hover:scale-[1.03]");
+    expect(button).toHaveClass("active:scale-[0.97]");
+  });
 });

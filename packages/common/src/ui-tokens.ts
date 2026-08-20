@@ -581,6 +581,36 @@ export const COPY_BUTTON_TOKENS = {
   transition: "transition-all duration-200 ease-out",
 } as const;
 
+/**
+ * Table design tokens
+ * Centralized layout, styling, micro-UX transitions, and accessibility for Table component
+ */
+export const TABLE_TOKENS = {
+  /** Table wrapper element */
+  wrapper: "w-full overflow-auto",
+  /** Root table element */
+  table: "w-full caption-bottom text-sm",
+  /** Header section styling */
+  header: "[&_tr]:border-b",
+  /** Body section styling */
+  body: "[&_tr:last-child]:border-0",
+  /** Footer section styling */
+  footer: "bg-primary font-medium text-primary-foreground",
+  /** Row styling and micro-interactions */
+  row: {
+    base: "border-b transition-all duration-200 hover:bg-muted/50 data-[state=selected]:bg-muted",
+    disabled: "pointer-events-none text-muted-foreground opacity-80",
+    hoverScale: "hover:scale-[1.002]",
+    activeScale: "active:scale-[0.998]",
+  },
+  /** Header cell styling */
+  head: "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
+  /** Body cell styling */
+  cell: "p-4 align-middle [&:has([role=checkbox])]:pr-0",
+  /** Caption styling */
+  caption: "mt-4 text-sm text-muted-foreground",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

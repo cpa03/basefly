@@ -83,6 +83,37 @@ Centralized Select component styling and tokens under `SELECT_TOKENS` inside `pa
 - [x] Exported `SELECT_TOKENS` from `@saasfly/common`.
 - [x] Refactored `packages/ui/src/select.tsx` to reference `SELECT_TOKENS` across all sub-components.
 
+#### Task: [CONSOLIDATE] Centralized Table component styling and tokens under TABLE_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/table.tsx`
+
+**Description**:
+Centralized Table component styling and tokens under `TABLE_TOKENS` inside `packages/common/src/ui-tokens.ts` and updated the component to reference them, eliminating hardcoded styles.
+
+**Success Criteria**:
+
+- [x] Defined `TABLE_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `TABLE_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/table.tsx` to reference `TABLE_TOKENS` across all table subcomponents.
+
+#### Task: [STRENGTHEN] Enhanced TableRow component with tactile spring scale micro-interactions
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `packages/ui/src/table.tsx`, `packages/ui/src/table.test.tsx`
+
+**Description**:
+Enhanced `TableRow` component with a tactile, spring scale micro-interaction (`hover:scale-[1.002] active:scale-[0.998]`) and smooth transitions to improve physical feedback when interacting with table rows.
+
+**Success Criteria**:
+
+- [x] Implemented tactile scale transitions inside `TableRow`.
+- [x] Added unit test assertions inside `packages/ui/src/table.test.tsx` to verify transitions, states, and token classes.
+
 #### Task: [STRENGTHEN] Enhanced SelectTrigger component with a tactile, spring scale micro-interaction
 
 - **Status**: ✅ Completed

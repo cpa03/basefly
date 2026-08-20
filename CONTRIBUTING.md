@@ -70,6 +70,36 @@ packages/ui/       # Shared UI components
 tooling/           # Shared configs (ESLint, Prettier, TS)
 ```
 
+### Export Patterns & Barrel Exports
+
+Every workspace package exposes a public API through a barrel export (`index.ts`):
+
+| Package           | Barrel                         |
+| ----------------- | ------------------------------ |
+| `@saasfly/api`    | `packages/api/src/index.ts`    |
+| `@saasfly/auth`   | `packages/auth/index.ts`       |
+| `@saasfly/common` | `packages/common/src/index.ts` |
+| `@saasfly/db`     | `packages/db/index.ts`         |
+| `@saasfly/stripe` | `packages/stripe/src/index.ts` |
+| `@saasfly/ui`     | `packages/ui/src/index.ts`     |
+
+Rules for imports:
+
+1. **Import through the package name or declared subpath exports** — e.g.
+   `import { appRouter } from "@saasfly/api"` or
+   `import { cacheService } from "@saasfly/common/cache"`. Never reach into a
+   package's internal files.
+2. **No internal relative path imports** across packages — avoid
+   `../../../../packages/...` style imports. Each package is a boundary.
+3. **When adding a new public symbol**, re-export it from the package barrel so
+   consumers get a consistent, discoverable API surface.
+4. **Keep heavy, side-effectful modules out of the main barrel** — tree-shaking
+   (`"sideEffects": false`) makes barrel re-exports free, but import-time side
+   effects (e.g. t3-env `createEnv` in `env.mjs` files) stay in subpath exports.
+
+See [docs/export-boundaries.md](./docs/export-boundaries.md) for the full
+dependency graph and boundary policy.
+
 ### Useful Links
 
 - [README.md](./README.md) - Getting started guide

@@ -239,6 +239,47 @@ pnpm db:push --force-reset
 
 - **Missing peer dependencies**: Always run `pnpm install` after pulling changes - don't use `npm install` or `yarn`.
 
+## Dependency Management
+
+Basefly is a pnpm monorepo. Dependencies are kept consistent across packages with automated checks in CI.
+
+### Consistency (enforced in CI)
+
+The `check-deps` script (`check-dependency-version-consistency .`) verifies that the same dependency is pinned to the **same version** in every package that declares it.
+
+```bash
+pnpm check-deps
+```
+
+It runs automatically in the **pre-commit hook** (`.husky/pre-commit`), so commits with conflicting dependency versions are rejected before they are created. The same gate is also part of the `dx:check` and `ci:check` script bundles.
+
+If this check fails, align the version in the offending `package.json` with the rest of the monorepo, then run `pnpm install` to update the lockfile.
+
+> **Note**: Adding `check-deps` as a hard step in the `on-pull.yml` CI workflow is tracked in issue [#726](https://github.com/cpa03/basefly/issues/726) (dependency consistency in CI).
+
+### Outdated packages (informational)
+
+The `pnpm outdated` check runs in CI as an informational step and does **not** block merges. Use it to spot drift:
+
+```bash
+pnpm outdated
+```
+
+Dependency upgrades should be delivered as dedicated, atomic PRs (see `docs/ci-cd.md`), keeping upgrades reviewable and rollback-safe.
+
+### Local verification
+
+Run the full dependency gate locally before pushing:
+
+```bash
+pnpm check-deps && pnpm outdated
+```
+
+### Troubleshooting
+
+- **Version mismatch after editing `package.json`**: Run `pnpm install` to regenerate `pnpm-lock.yaml`, then re-run `pnpm check-deps`.
+- **Duplicate entries in the lockfile**: Run `pnpm dedupe` to consolidate redundant versions.
+
 ### TypeScript & Linting
 
 - **Type errors blocking build**: Run `pnpm dx:fix` first - many issues can be auto-fixed.

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { TABLE_TOKENS } from "@saasfly/common";
 
 import { cn } from "./utils/cn";
 
@@ -6,10 +7,10 @@ const Table = React.forwardRef<
   HTMLTableElement,
   React.HTMLAttributes<HTMLTableElement>
 >(({ className, ...props }, ref) => (
-  <div className="w-full overflow-auto">
+  <div className={TABLE_TOKENS.wrapper}>
     <table
       ref={ref}
-      className={cn("w-full caption-bottom text-sm", className)}
+      className={cn(TABLE_TOKENS.table, className)}
       {...props}
     />
   </div>
@@ -20,7 +21,7 @@ const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <thead ref={ref} className={cn("[&_tr]:border-b", className)} {...props} />
+  <thead ref={ref} className={cn(TABLE_TOKENS.header, className)} {...props} />
 ));
 TableHeader.displayName = "TableHeader";
 
@@ -30,7 +31,7 @@ const TableBody = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <tbody
     ref={ref}
-    className={cn("[&_tr:last-child]:border-0", className)}
+    className={cn(TABLE_TOKENS.body, className)}
     {...props}
   />
 ));
@@ -42,7 +43,7 @@ const TableFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <tfoot
     ref={ref}
-    className={cn("bg-primary font-medium text-primary-foreground", className)}
+    className={cn(TABLE_TOKENS.footer, className)}
     {...props}
   />
 ));
@@ -55,8 +56,10 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
-      disabled && "pointer-events-none text-muted-foreground opacity-80",
+      TABLE_TOKENS.row.base,
+      TABLE_TOKENS.row.hoverScale,
+      TABLE_TOKENS.row.activeScale,
+      disabled && TABLE_TOKENS.row.disabled,
       className,
     )}
     {...props}
@@ -70,10 +73,7 @@ const TableHead = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <th
     ref={ref}
-    className={cn(
-      "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",
-      className,
-    )}
+    className={cn(TABLE_TOKENS.head, className)}
     {...props}
   />
 ));
@@ -85,7 +85,7 @@ const TableCell = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <td
     ref={ref}
-    className={cn("p-4 align-middle [&:has([role=checkbox])]:pr-0", className)}
+    className={cn(TABLE_TOKENS.cell, className)}
     {...props}
   />
 ));
@@ -97,7 +97,7 @@ const TableCaption = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <caption
     ref={ref}
-    className={cn("mt-4 text-sm text-muted-foreground", className)}
+    className={cn(TABLE_TOKENS.caption, className)}
     {...props}
   />
 ));

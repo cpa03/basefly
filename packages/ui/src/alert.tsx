@@ -1,16 +1,17 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 
+import { ALERT_TOKENS } from "@saasfly/common";
+
 import { cn } from "./utils/cn";
 
 const alertVariants = cva(
-  "relative w-full rounded-lg border p-4 [&>svg]:absolute [&>svg]:text-foreground [&>svg]:left-4 [&>svg]:top-4 [&>svg+div]:translate-y-[-3px] [&:has(svg)]:pl-11",
+  cn(ALERT_TOKENS.base, ALERT_TOKENS.animations.hoverShadow),
   {
     variants: {
       variant: {
-        default: "bg-background text-foreground",
-        destructive:
-          "text-destructive border-destructive/50 dark:border-destructive [&>svg]:text-destructive text-destructive",
+        default: ALERT_TOKENS.variants.default,
+        destructive: ALERT_TOKENS.variants.destructive,
       },
     },
     defaultVariants: {
@@ -23,10 +24,10 @@ const Alert = React.memo(
   React.forwardRef<
     HTMLDivElement,
     React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>
-  >(({ className, variant, ...props }, ref) => (
+  >(({ className, variant, role = ALERT_TOKENS.defaultAriaRole, ...props }, ref) => (
     <div
       ref={ref}
-      role="alert"
+      role={role}
       className={cn(alertVariants({ variant }), className)}
       {...props}
     />
@@ -41,7 +42,7 @@ const AlertTitle = React.memo(
   >(({ className, ...props }, ref) => (
     <h5
       ref={ref}
-      className={cn("mb-1 font-medium leading-none tracking-tight", className)}
+      className={cn(ALERT_TOKENS.title, className)}
       {...props}
     >
       {props.children}
@@ -57,7 +58,7 @@ const AlertDescription = React.memo(
   >(({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("text-sm [&_p]:leading-relaxed", className)}
+      className={cn(ALERT_TOKENS.description, className)}
       {...props}
     />
   )),

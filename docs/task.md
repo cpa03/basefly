@@ -4,6 +4,37 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Centralized Alert component styling and tokens under ALERT_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/alert.tsx`
+
+**Description**:
+Centralized Alert component styling and tokens under `ALERT_TOKENS` inside `packages/common/src/ui-tokens.ts` and updated the component to reference them, eliminating hardcoded styles.
+
+**Success Criteria**:
+
+- [x] Defined `ALERT_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `ALERT_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/alert.tsx` to reference `ALERT_TOKENS` across all sub-components.
+
+#### Task: [STRENGTHEN] Enhanced Alert component with tactile hover shadow and micro-interaction
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `packages/ui/src/alert.tsx`, `packages/ui/src/alert.test.tsx`
+
+**Description**:
+Enhanced `Alert` component with tactile hover shadow (`hover:shadow-md hover:scale-[1.002]`) and default role fallback for improved user feedback and accessibility.
+
+**Success Criteria**:
+
+- [x] Implemented tactile hover micro-interactions inside `Alert`.
+- [x] Added unit tests inside `packages/ui/src/alert.test.tsx` to verify transitions, states, and token classes.
+
 #### Task: [CONSOLIDATE] Centralized Callout hover shadow styling and classes under CALLOUT_TOKENS
 
 - **Status**: ✅ Completed

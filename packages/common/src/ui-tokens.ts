@@ -611,6 +611,28 @@ export const TABLE_TOKENS = {
   caption: "mt-4 text-sm text-muted-foreground",
 } as const;
 
+/**
+ * Alert design tokens
+ * Centralized layout, styling, micro-UX transitions, and accessibility for Alert component
+ */
+export const ALERT_TOKENS = {
+  /** Root base layout */
+  base: "relative w-full rounded-lg border p-4 transition-all duration-200 [&>svg]:absolute [&>svg]:text-foreground [&>svg]:left-4 [&>svg]:top-4 [&>svg+div]:translate-y-[-3px] [&:has(svg)]:pl-11",
+  /** Tactile hover shadow & micro-interaction */
+  animations: {
+    hoverShadow: "hover:shadow-md hover:scale-[1.002] transition-all duration-200 ease-out",
+  },
+  /** Alert variants */
+  variants: {
+    default: "bg-background text-foreground",
+    destructive:
+      "text-destructive border-destructive/50 dark:border-destructive [&>svg]:text-destructive",
+  },
+  title: "mb-1 font-medium leading-none tracking-tight",
+  description: "text-sm [&_p]:leading-relaxed",
+  defaultAriaRole: "alert",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

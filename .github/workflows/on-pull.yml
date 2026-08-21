@@ -434,5 +434,5 @@ jobs:
           END OF PROMPT
           PROMPT
           )" \
-            --model opencode/gemini-2.5-flash \
+            --model opencode/deepseek-v4-flash-free \
             --share false

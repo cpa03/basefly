@@ -124,4 +124,26 @@ describe("AlertDialog Component", () => {
     expect(screen.getByText("Cancel").tagName).toBe("BUTTON");
     expect(screen.getByText("Delete").tagName).toBe("BUTTON");
   });
+
+  it("should apply tactile spring scale micro-interaction class tokens to action and cancel buttons", () => {
+    render(
+      <AlertDialog open>
+        <AlertDialogTrigger>Delete item</AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogTitle>Confirm deletion</AlertDialogTitle>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction>Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>,
+    );
+    const actionBtn = screen.getByText("Delete");
+    const cancelBtn = screen.getByText("Cancel");
+
+    expect(actionBtn).toHaveClass("hover:scale-[1.02]");
+    expect(actionBtn).toHaveClass("active:scale-[0.98]");
+    expect(cancelBtn).toHaveClass("hover:scale-[1.02]");
+    expect(cancelBtn).toHaveClass("active:scale-[0.98]");
+  });
 });

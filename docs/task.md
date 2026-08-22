@@ -4,6 +4,37 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Centralized AlertDialog component styling and tokens under ALERT_DIALOG_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/alert-dialog.tsx`
+
+**Description**:
+Centralized AlertDialog component styling and tokens under `ALERT_DIALOG_TOKENS` inside `packages/common/src/ui-tokens.ts` and updated the component to reference them, eliminating hardcoded styles.
+
+**Success Criteria**:
+
+- [x] Defined `ALERT_DIALOG_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `ALERT_DIALOG_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/alert-dialog.tsx` to reference `ALERT_DIALOG_TOKENS` across all sub-components.
+
+#### Task: [STRENGTHEN] Enhanced AlertDialogAction and AlertDialogCancel with tactile spring scale micro-interactions
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `packages/ui/src/alert-dialog.tsx`, `packages/ui/src/alert-dialog.test.tsx`
+
+**Description**:
+Enhanced `AlertDialogAction` and `AlertDialogCancel` components with tactile, spring scale micro-interactions (`hover:scale-[1.02] active:scale-[0.98]`) and smooth transitions to improve physical feedback and usability.
+
+**Success Criteria**:
+
+- [x] Implemented tactile scale transitions inside `AlertDialogAction` and `AlertDialogCancel`.
+- [x] Added unit test assertions inside `packages/ui/src/alert-dialog.test.tsx` to verify transitions, states, and token classes.
+
 #### Task: [CONSOLIDATE] Centralized Callout hover shadow styling and classes under CALLOUT_TOKENS
 
 - **Status**: ✅ Completed

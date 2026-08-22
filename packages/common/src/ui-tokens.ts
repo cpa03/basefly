@@ -611,6 +611,35 @@ export const TABLE_TOKENS = {
   caption: "mt-4 text-sm text-muted-foreground",
 } as const;
 
+/**
+ * AlertDialog design tokens
+ * Centralized layout, styling, micro-UX transitions, and accessibility for AlertDialog component
+ */
+export const ALERT_DIALOG_TOKENS = {
+  overlay: {
+    base: "fixed inset-0 z-50 bg-background/80 backdrop-blur-sm transition-opacity animate-in fade-in",
+  },
+  portalContainer:
+    "fixed inset-0 z-50 flex items-end justify-center sm:items-center",
+  content: {
+    base: "fixed z-50 grid w-full max-w-lg scale-100 gap-4 border bg-background p-6 opacity-100 shadow-lg animate-in fade-in-90 slide-in-from-bottom-10 sm:rounded-lg sm:zoom-in-90 sm:slide-in-from-bottom-0 md:w-full",
+  },
+  header: "flex flex-col space-y-2 text-center sm:text-left",
+  footer: "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+  title: "text-lg font-semibold",
+  description: "text-sm text-muted-foreground",
+  action: {
+    base: "transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+    hoverScale: "hover:scale-[1.02]",
+    activeScale: "active:scale-[0.98]",
+  },
+  cancel: {
+    base: "mt-2 sm:mt-0 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+    hoverScale: "hover:scale-[1.02]",
+    activeScale: "active:scale-[0.98]",
+  },
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

@@ -94,7 +94,10 @@ describe("Sheet Component", () => {
       </Sheet>,
     );
     expect(screen.getByText("Sheet content")).toBeInTheDocument();
-    fireEvent.click(screen.getByLabelText("Close"));
+    const closeBtn = screen.getByLabelText("Close");
+    expect(closeBtn).toHaveClass("hover:scale-110");
+    expect(closeBtn).toHaveClass("active:scale-95");
+    fireEvent.click(closeBtn);
     expect(screen.queryByText("Sheet content")).not.toBeInTheDocument();
   });
 

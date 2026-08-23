@@ -611,6 +611,46 @@ export const TABLE_TOKENS = {
   caption: "mt-4 text-sm text-muted-foreground",
 } as const;
 
+/**
+ * Sheet design tokens
+ * Centralized sizing, styling, transitions, and accessibility for Sheet component
+ */
+export const SHEET_TOKENS = {
+  portal: {
+    positions: {
+      top: "items-start",
+      bottom: "items-end",
+      left: "justify-start",
+      right: "justify-end",
+    },
+  },
+  overlay: {
+    base: "fixed inset-0 z-50 bg-background/80 backdrop-blur-sm transition-all duration-100 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in",
+  },
+  variants: {
+    position: {
+      top: "animate-in slide-in-from-top w-full duration-300",
+      bottom: "animate-in slide-in-from-bottom w-full duration-300",
+      left: "animate-in slide-in-from-left h-full duration-300",
+      right: "animate-in slide-in-from-right h-full duration-300",
+    },
+  },
+  content: {
+    base: "fixed z-50 scale-100 gap-4 bg-background p-6 opacity-100 shadow-lg border",
+  },
+  closeButton: {
+    base: "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-all duration-200 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary",
+    hoverScale: "hover:scale-110",
+    activeScale: "active:scale-95",
+    iconSize: "h-4 w-4",
+  },
+  header: "flex flex-col space-y-2 text-center sm:text-left",
+  footer: "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+  title: "text-lg font-semibold text-foreground",
+  description: "text-sm text-muted-foreground",
+  defaultAriaLabel: "Close",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

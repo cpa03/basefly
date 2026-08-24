@@ -45,11 +45,26 @@ describe("Button Component", () => {
     expect(button).not.toHaveAttribute("type");
   });
 
-  it("should be disabled when isLoading is true", () => {
+  it("should be disabled when isLoading is true and set aria-disabled", () => {
     const { container } = render(<Button isLoading>Loading</Button>);
     const button = container.querySelector("button");
     expect(button).toBeDisabled();
     expect(button).toHaveAttribute("aria-busy", "true");
+    expect(button).toHaveAttribute("aria-disabled", "true");
+  });
+
+  it("should set aria-disabled when disabled prop is true", () => {
+    const { container } = render(<Button disabled>Disabled</Button>);
+    const button = container.querySelector("button");
+    expect(button).toBeDisabled();
+    expect(button).toHaveAttribute("aria-disabled", "true");
+  });
+
+  it("should include subtle scale animation class for non-link variants", () => {
+    const { container } = render(<Button variant="default">Button</Button>);
+    const button = container.querySelector("button");
+    expect(button).toHaveClass("hover:scale-[1.02]");
+    expect(button).toHaveClass("active:scale-[0.97]");
   });
 
   it("should show a spinner when isLoading is true", () => {

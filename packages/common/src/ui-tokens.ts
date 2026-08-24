@@ -631,8 +631,6 @@ export const ALERT_TOKENS = {
   description: "text-sm [&_p]:leading-relaxed",
   /** Default fallback role */
   defaultRole: "alert",
-  /** Default fallback aria-label */
-  defaultAriaLabel: "Alert message",
 } as const;
 
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;

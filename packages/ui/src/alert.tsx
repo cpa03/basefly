@@ -22,7 +22,7 @@ const Alert = React.memo(
     <div
       ref={ref}
       role={role ?? ALERT_TOKENS.defaultRole}
-      aria-label={ariaLabel ?? ALERT_TOKENS.defaultAriaLabel}
+      aria-label={ariaLabel}
       className={cn(alertVariants({ variant }), className)}
       {...props}
     />

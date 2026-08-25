@@ -1,4 +1,5 @@
 import React from "react";
+import { ALERT_DIALOG_TOKENS } from "@saasfly/common";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
@@ -88,7 +89,7 @@ describe("AlertDialog Component", () => {
     expect(screen.getByRole("alertdialog")).toHaveClass("custom-alert-class");
   });
 
-  it("should render header, footer, action, and cancel", () => {
+  it("should render header, footer, action, and cancel with spring scale micro-interactions", () => {
     render(
       <AlertDialog open>
         <AlertDialogTrigger>Delete item</AlertDialogTrigger>
@@ -104,8 +105,17 @@ describe("AlertDialog Component", () => {
         </AlertDialogContent>
       </AlertDialog>,
     );
-    expect(screen.getByText("Cancel")).toBeInTheDocument();
-    expect(screen.getByText("Delete")).toBeInTheDocument();
+    const cancelBtn = screen.getByText("Cancel");
+    const actionBtn = screen.getByText("Delete");
+
+    expect(cancelBtn).toBeInTheDocument();
+    expect(actionBtn).toBeInTheDocument();
+
+    expect(cancelBtn).toHaveClass(ALERT_DIALOG_TOKENS.cancel.hoverScale);
+    expect(cancelBtn).toHaveClass(ALERT_DIALOG_TOKENS.cancel.activeScale);
+
+    expect(actionBtn).toHaveClass(ALERT_DIALOG_TOKENS.action.hoverScale);
+    expect(actionBtn).toHaveClass(ALERT_DIALOG_TOKENS.action.activeScale);
   });
 
   it("should render action and cancel as buttons", () => {

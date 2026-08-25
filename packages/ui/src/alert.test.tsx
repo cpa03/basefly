@@ -1,4 +1,5 @@
 import React from "react";
+import { ALERT_TOKENS } from "@saasfly/common";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
@@ -10,17 +11,22 @@ describe("Alert Component", () => {
     expect(screen.getByText("Alert body")).toBeInTheDocument();
   });
 
-  it("should render with role alert", () => {
-    render(<Alert>Warning</Alert>);
+  it("should render with role status by default or role alert for destructive variant", () => {
+    const { rerender } = render(<Alert>Warning</Alert>);
+    expect(screen.getByRole("status")).toBeInTheDocument();
+
+    rerender(<Alert variant="destructive">Danger</Alert>);
     expect(screen.getByRole("alert")).toBeInTheDocument();
   });
 
-  it("should apply base alert classes", () => {
+  it("should apply base alert classes and micro-interactions", () => {
     const { container } = render(<Alert>Base</Alert>);
     const alert = container.firstChild as HTMLElement;
     expect(alert).toHaveClass("rounded-lg");
     expect(alert).toHaveClass("border");
     expect(alert).toHaveClass("p-4");
+    expect(alert).toHaveClass(ALERT_TOKENS.animations.hoverScale);
+    expect(alert).toHaveClass(ALERT_TOKENS.animations.hoverShadow);
   });
 
   it("should apply default variant classes", () => {

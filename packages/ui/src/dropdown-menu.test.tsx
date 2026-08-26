@@ -73,7 +73,7 @@ describe("DropdownMenu Component", () => {
     expect(screen.getByRole("menu")).toHaveClass("custom-menu-class");
   });
 
-  it("should render menu items with role menuitem", () => {
+  it("should render menu items with role menuitem and tactile scale classes", () => {
     render(
       <DropdownMenu open>
         <DropdownMenuTrigger>Open menu</DropdownMenuTrigger>
@@ -82,9 +82,33 @@ describe("DropdownMenu Component", () => {
         </DropdownMenuContent>
       </DropdownMenu>,
     );
-    expect(
-      screen.getByRole("menuitem", { name: "Profile" }),
-    ).toBeInTheDocument();
+    const menuItem = screen.getByRole("menuitem", { name: "Profile" });
+    expect(menuItem).toBeInTheDocument();
+    expect(menuItem).toHaveClass("hover:scale-[1.01]");
+    expect(menuItem).toHaveClass("active:scale-[0.99]");
+  });
+
+  it("should apply tactile scale classes to checkbox and radio items", () => {
+    render(
+      <DropdownMenu open>
+        <DropdownMenuTrigger>Open menu</DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuCheckboxItem checked>
+            Show status
+          </DropdownMenuCheckboxItem>
+          <DropdownMenuRadioGroup value="free">
+            <DropdownMenuRadioItem value="free">Free</DropdownMenuRadioItem>
+          </DropdownMenuRadioGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>,
+    );
+    const checkboxItem = screen.getByRole("menuitemcheckbox", { name: "Show status" });
+    const radioItem = screen.getByRole("menuitemradio", { name: "Free" });
+
+    expect(checkboxItem).toHaveClass("hover:scale-[1.01]");
+    expect(checkboxItem).toHaveClass("active:scale-[0.99]");
+    expect(radioItem).toHaveClass("hover:scale-[1.01]");
+    expect(radioItem).toHaveClass("active:scale-[0.99]");
   });
 
   it("should render a label and separator", () => {

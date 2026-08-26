@@ -3,7 +3,6 @@
 import * as React from "react";
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import { Check, ChevronRight, Circle } from "lucide-react";
-import { DROPDOWN_MENU_TOKENS } from "@saasfly/common";
 
 import { cn } from "./utils/cn";
 
@@ -28,16 +27,14 @@ const DropdownMenuSubTrigger = React.forwardRef<
   <DropdownMenuPrimitive.SubTrigger
     ref={ref}
     className={cn(
-      DROPDOWN_MENU_TOKENS.subTrigger.base,
-      DROPDOWN_MENU_TOKENS.subTrigger.hoverScale,
-      DROPDOWN_MENU_TOKENS.subTrigger.activeScale,
-      inset && DROPDOWN_MENU_TOKENS.subTrigger.insetPadding,
+      "flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent data-[state=open]:bg-accent",
+      inset && "pl-8",
       className,
     )}
     {...props}
   >
     {children}
-    <ChevronRight className={DROPDOWN_MENU_TOKENS.subTrigger.chevronSize} />
+    <ChevronRight className="ml-auto h-4 w-4" />
   </DropdownMenuPrimitive.SubTrigger>
 ));
 DropdownMenuSubTrigger.displayName =
@@ -50,7 +47,7 @@ const DropdownMenuSubContent = React.forwardRef<
   <DropdownMenuPrimitive.SubContent
     ref={ref}
     className={cn(
-      DROPDOWN_MENU_TOKENS.subContent.base,
+      "text-on-popover z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 shadow-md animate-in data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1 data-[side=top]:slide-in-from-bottom-1",
       className,
     )}
     {...props}
@@ -69,7 +66,7 @@ const DropdownMenuContent = React.memo(
         ref={ref}
         sideOffset={sideOffset}
         className={cn(
-          DROPDOWN_MENU_TOKENS.content.base,
+          "z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md animate-in data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
           className,
         )}
         {...props}
@@ -89,10 +86,8 @@ const DropdownMenuItem = React.memo(
     <DropdownMenuPrimitive.Item
       ref={ref}
       className={cn(
-        DROPDOWN_MENU_TOKENS.item.base,
-        DROPDOWN_MENU_TOKENS.item.hoverScale,
-        DROPDOWN_MENU_TOKENS.item.activeScale,
-        inset && DROPDOWN_MENU_TOKENS.item.insetPadding,
+        "relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        inset && "pl-8",
         className,
       )}
       {...props}
@@ -109,17 +104,15 @@ const DropdownMenuCheckboxItem = React.memo(
     <DropdownMenuPrimitive.CheckboxItem
       ref={ref}
       className={cn(
-        DROPDOWN_MENU_TOKENS.checkboxItem.base,
-        DROPDOWN_MENU_TOKENS.checkboxItem.hoverScale,
-        DROPDOWN_MENU_TOKENS.checkboxItem.activeScale,
+        "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         className,
       )}
       checked={checked}
       {...props}
     >
-      <span className={DROPDOWN_MENU_TOKENS.checkboxItem.indicatorContainer}>
+      <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
         <DropdownMenuPrimitive.ItemIndicator>
-          <Check className={DROPDOWN_MENU_TOKENS.checkboxItem.iconSize} />
+          <Check className="h-4 w-4" />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -137,16 +130,14 @@ const DropdownMenuRadioItem = React.memo(
     <DropdownMenuPrimitive.RadioItem
       ref={ref}
       className={cn(
-        DROPDOWN_MENU_TOKENS.radioItem.base,
-        DROPDOWN_MENU_TOKENS.radioItem.hoverScale,
-        DROPDOWN_MENU_TOKENS.radioItem.activeScale,
+        "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         className,
       )}
       {...props}
     >
-      <span className={DROPDOWN_MENU_TOKENS.radioItem.indicatorContainer}>
+      <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
         <DropdownMenuPrimitive.ItemIndicator>
-          <Circle className={DROPDOWN_MENU_TOKENS.radioItem.iconSize} />
+          <Circle className="h-2 w-2 fill-current" />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -165,8 +156,8 @@ const DropdownMenuLabel = React.memo(
     <DropdownMenuPrimitive.Label
       ref={ref}
       className={cn(
-        DROPDOWN_MENU_TOKENS.label.base,
-        inset && DROPDOWN_MENU_TOKENS.label.insetPadding,
+        "px-2 py-1.5 text-sm font-semibold",
+        inset && "pl-8",
         className,
       )}
       {...props}
@@ -182,7 +173,7 @@ const DropdownMenuSeparator = React.memo(
   >(({ className, ...props }, ref) => (
     <DropdownMenuPrimitive.Separator
       ref={ref}
-      className={cn(DROPDOWN_MENU_TOKENS.separator.base, className)}
+      className={cn("-mx-1 my-1 h-px bg-muted", className)}
       {...props}
     />
   )),
@@ -195,7 +186,7 @@ const DropdownMenuShortcut = ({
 }: React.HTMLAttributes<HTMLSpanElement>) => {
   return (
     <span
-      className={cn(DROPDOWN_MENU_TOKENS.shortcut.base, className)}
+      className={cn("ml-auto text-xs tracking-widest opacity-60", className)}
       {...props}
     />
   );

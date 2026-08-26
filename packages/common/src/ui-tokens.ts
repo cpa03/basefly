@@ -611,56 +611,6 @@ export const TABLE_TOKENS = {
   caption: "mt-4 text-sm text-muted-foreground",
 } as const;
 
-/**
- * DropdownMenu design tokens
- * Centralized layout, styling, transitions, and micro-UX spring scale interactions for DropdownMenu component
- */
-export const DROPDOWN_MENU_TOKENS = {
-  subTrigger: {
-    base: "flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none focus:bg-accent data-[state=open]:bg-accent transition-all duration-150 ease-out",
-    hoverScale: "hover:scale-[1.01]",
-    activeScale: "active:scale-[0.99]",
-    insetPadding: "pl-8",
-    chevronSize: "ml-auto h-4 w-4",
-  },
-  subContent: {
-    base: "text-on-popover z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 shadow-md animate-in data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1 data-[side=top]:slide-in-from-bottom-1 transition-all duration-200 ease-out",
-  },
-  content: {
-    base: "z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md animate-in data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 transition-all duration-200 ease-out",
-  },
-  item: {
-    base: "relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-all duration-150 ease-out focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-    hoverScale: "hover:scale-[1.01]",
-    activeScale: "active:scale-[0.99]",
-    insetPadding: "pl-8",
-  },
-  checkboxItem: {
-    base: "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-all duration-150 ease-out focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-    hoverScale: "hover:scale-[1.01]",
-    activeScale: "active:scale-[0.99]",
-    indicatorContainer: "absolute left-2 flex h-3.5 w-3.5 items-center justify-center",
-    iconSize: "h-4 w-4",
-  },
-  radioItem: {
-    base: "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-all duration-150 ease-out focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-    hoverScale: "hover:scale-[1.01]",
-    activeScale: "active:scale-[0.99]",
-    indicatorContainer: "absolute left-2 flex h-3.5 w-3.5 items-center justify-center",
-    iconSize: "h-2 w-2 fill-current",
-  },
-  label: {
-    base: "px-2 py-1.5 text-sm font-semibold",
-    insetPadding: "pl-8",
-  },
-  separator: {
-    base: "-mx-1 my-1 h-px bg-muted",
-  },
-  shortcut: {
-    base: "ml-auto text-xs tracking-widest opacity-60",
-  },
-} as const;
-
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

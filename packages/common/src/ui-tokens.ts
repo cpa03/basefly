@@ -121,9 +121,41 @@ export const INPUT_TOKENS = {
 
 /**
  * Card design tokens
- * Centralized sizing and styling for card components
+ * Centralized sizing, styling, sub-component classes, and micro-UX transitions for card components
  */
 export const CARD_TOKENS = {
+  /** Root card container styling */
+  base: "rounded-lg border bg-card text-card-foreground shadow-sm",
+
+  /** Interactive state styling and spring micro-interactions */
+  interactive: {
+    cursor: "cursor-pointer",
+    transition: "transition-all duration-200 ease-out",
+    hoverTranslate: "motion-safe:hover:-translate-y-0.5",
+    hoverScale: "hover:scale-[1.005]",
+    activeScale: "active:scale-[0.995]",
+    hoverShadow: "motion-safe:hover:shadow-md",
+    focusRing:
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  },
+
+  /** Sub-component styling tokens */
+  header: {
+    base: "flex flex-col space-y-1.5 p-6",
+  },
+  title: {
+    base: "text-lg font-semibold leading-none tracking-tight",
+  },
+  description: {
+    base: "text-sm text-muted-foreground",
+  },
+  content: {
+    base: "p-6 pt-0",
+  },
+  footer: {
+    base: "flex items-center p-6 pt-0",
+  },
+
   /** Border radius */
   radius: "rounded-xl",
 

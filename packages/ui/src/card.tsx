@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { CARD_TOKENS } from "@saasfly/common";
+
 import { cn } from "./utils/cn";
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -17,13 +19,15 @@ const Card = React.memo(
       <div
         ref={ref}
         className={cn(
-          "rounded-lg border bg-card text-card-foreground shadow-sm",
+          CARD_TOKENS.base,
           interactive && [
-            "cursor-pointer",
-            "transition-all duration-200 ease-out",
-            "motion-safe:hover:-translate-y-0.5",
-            "motion-safe:hover:shadow-md",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+            CARD_TOKENS.interactive.cursor,
+            CARD_TOKENS.interactive.transition,
+            CARD_TOKENS.interactive.hoverTranslate,
+            CARD_TOKENS.interactive.hoverScale,
+            CARD_TOKENS.interactive.activeScale,
+            CARD_TOKENS.interactive.hoverShadow,
+            CARD_TOKENS.interactive.focusRing,
           ],
           className,
         )}
@@ -39,7 +43,7 @@ const CardHeader = React.memo(
     ({ className, ...props }, ref) => (
       <div
         ref={ref}
-        className={cn("flex flex-col space-y-1.5 p-6", className)}
+        className={cn(CARD_TOKENS.header.base, className)}
         {...props}
       />
     ),
@@ -54,10 +58,7 @@ const CardTitle = React.memo(
   >(({ className, ...props }, ref) => (
     <h3
       ref={ref}
-      className={cn(
-        "text-lg font-semibold leading-none tracking-tight",
-        className,
-      )}
+      className={cn(CARD_TOKENS.title.base, className)}
       {...props}
     >
       {props.children}
@@ -73,7 +74,7 @@ const CardDescription = React.memo(
   >(({ className, ...props }, ref) => (
     <p
       ref={ref}
-      className={cn("text-sm text-muted-foreground", className)}
+      className={cn(CARD_TOKENS.description.base, className)}
       {...props}
     />
   )),
@@ -83,7 +84,7 @@ CardDescription.displayName = "CardDescription";
 const CardContent = React.memo(
   React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
     ({ className, ...props }, ref) => (
-      <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
+      <div ref={ref} className={cn(CARD_TOKENS.content.base, className)} {...props} />
     ),
   ),
 );
@@ -94,7 +95,7 @@ const CardFooter = React.memo(
     ({ className, ...props }, ref) => (
       <div
         ref={ref}
-        className={cn("flex items-center p-6 pt-0", className)}
+        className={cn(CARD_TOKENS.footer.base, className)}
         {...props}
       />
     ),

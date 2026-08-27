@@ -43,6 +43,8 @@ describe("Card Component", () => {
     const card = container.firstChild as HTMLElement;
     expect(card).toHaveClass("cursor-pointer");
     expect(card).toHaveClass("transition-all");
+    expect(card).toHaveClass("hover:scale-[1.005]");
+    expect(card).toHaveClass("active:scale-[0.995]");
   });
 
   it("should render with a stable display name", () => {

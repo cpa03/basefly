@@ -3002,3 +3002,5 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [STRENGTHEN] Enhanced TabsTrigger with tactile spring scale micro-interactions (hover:scale-[1.01] active:scale-[0.99]) and smooth transitions
 - [CONSOLIDATE] Centralized CopyButton styling and tokens under COPY_BUTTON_TOKENS inside @saasfly/common/src/ui-tokens.ts
 - [STRENGTHEN] Enhanced CopyButton with tactile spring scale micro-interactions (hover:scale-[1.03] active:scale-[0.97]) and updated unit tests
+- [CONSOLIDATE] Centralized Card component styling, sub-component classes, and interactive tokens under CARD_TOKENS inside @saasfly/common/src/ui-tokens.ts.
+- [STRENGTHEN] Enhanced interactive Card component with tactile spring scale micro-interactions (hover:scale-[1.005] active:scale-[0.995]) and comprehensive unit tests inside packages/ui/src/card.test.tsx.

@@ -611,6 +611,23 @@ export const TABLE_TOKENS = {
   caption: "mt-4 text-sm text-muted-foreground",
 } as const;
 
+/**
+ * Skeleton design tokens
+ * Centralized layout, styling, and animations for Skeleton placeholder component
+ */
+export const SKELETON_TOKENS = {
+  /** Base container layout and styling */
+  base: "relative overflow-hidden rounded-md bg-muted",
+  /** Shimmer animation configuration */
+  shimmer: {
+    base: "motion-safe:animate-shimmer motion-reduce:animate-none",
+    overlay: "after:absolute after:inset-0 after:bg-gradient-to-r after:from-transparent after:via-muted-foreground/10 after:to-transparent after:translate-x-[-100%] motion-safe:motion-reduce:after:animate-shimmer-sweep",
+  },
+  /** Default fallback role and aria-label for accessibility */
+  role: "status",
+  defaultAriaLabel: "Loading...",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

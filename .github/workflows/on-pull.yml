@@ -434,5 +434,5 @@ jobs:
           END OF PROMPT
           PROMPT
           )" \
-            --model opencode/deepseek-v4-flash-free \
+            --model opencode/kimi-k2.5-free \
             --share false

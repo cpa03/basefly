@@ -73,7 +73,7 @@ jobs:
 
       - name: Install OpenCode
         run: |
-          curl -fsSL https://opencode.ai/install | bash
+          curl -fsSL https://opencode.ai/install | bash -s -- -v 1.18.21
           echo "$HOME/.opencode/bin" >> $GITHUB_PATH
 
       - name: Architect Intelligence Cycle
@@ -267,7 +267,7 @@ jobs:
 
       - name: Install OpenCode
         run: |
-          curl -fsSL https://opencode.ai/install | bash
+          curl -fsSL https://opencode.ai/install | bash -s -- -v 1.18.21
           echo "$HOME/.opencode/bin" >> $GITHUB_PATH
 
       - name: Execute Specialist Work
@@ -343,7 +343,7 @@ jobs:
 
       - name: Install OpenCode
         run: |
-          curl -fsSL https://opencode.ai/install | bash
+          curl -fsSL https://opencode.ai/install | bash -s -- -v 1.18.21
           echo "$HOME/.opencode/bin" >> $GITHUB_PATH
 
       - name: Audit & Fix PRs
@@ -396,7 +396,7 @@ jobs:
 
       - name: Install OpenCode
         run: |
-          curl -fsSL https://opencode.ai/install | bash
+          curl -fsSL https://opencode.ai/install | bash -s -- -v 1.18.21
           echo "$HOME/.opencode/bin" >> $GITHUB_PATH
 
       - name: Merge Qualified PRs

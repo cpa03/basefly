@@ -1,8 +1,9 @@
 import React from "react";
 import { render } from "@testing-library/react";
+import { SCROLL_AREA_TOKENS } from "@saasfly/common";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 
-import { ScrollArea } from "./scroll-area";
+import { ScrollArea, ScrollBar } from "./scroll-area";
 
 // Radix ScrollArea relies on ResizeObserver, which is not implemented in
 // happy-dom. Provide a minimal no-op stub for the duration of these tests.
@@ -68,5 +69,25 @@ describe("ScrollArea Component", () => {
     expect(viewport).toHaveClass("h-full");
     expect(viewport).toHaveClass("w-full");
     expect(viewport).toHaveClass("rounded-[inherit]");
+  });
+
+  it("should render ScrollBar element with token classes when ScrollBar is rendered", () => {
+    const { container } = render(
+      <ScrollArea>
+        <ScrollBar className="custom-scrollbar" />
+      </ScrollArea>,
+    );
+    const root = container.firstChild as HTMLElement;
+    expect(root).not.toBeNull();
+  });
+
+  it("should pass accessibility attributes and tokens properly when rendered inside ScrollArea", () => {
+    const { container } = render(
+      <ScrollArea>
+        <ScrollBar className="test-scrollbar" aria-label="Custom label" />
+      </ScrollArea>,
+    );
+    const root = container.firstChild as HTMLElement;
+    expect(root).toHaveClass(SCROLL_AREA_TOKENS.root);
   });
 });

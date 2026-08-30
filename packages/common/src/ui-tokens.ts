@@ -611,6 +611,25 @@ export const TABLE_TOKENS = {
   caption: "mt-4 text-sm text-muted-foreground",
 } as const;
 
+/**
+ * Avatar design tokens
+ * Centralized layout, styling, transitions, and scales for Avatar components
+ */
+export const AVATAR_TOKENS = {
+  root: {
+    base: "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full transition-transform duration-200 ease-out",
+    hoverScale: "hover:scale-105",
+    activeScale: "active:scale-95",
+  },
+  image: {
+    base: "aspect-square h-full w-full object-cover",
+  },
+  fallback: {
+    base: "flex h-full w-full items-center justify-center rounded-full bg-muted text-muted-foreground font-medium text-sm",
+  },
+  defaultAriaLabel: "User avatar",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

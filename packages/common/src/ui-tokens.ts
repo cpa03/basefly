@@ -612,6 +612,31 @@ export const TABLE_TOKENS = {
 } as const;
 
 /**
+ * ScrollArea design tokens
+ * Centralized layout, styling, micro-UX transitions, and accessibility for ScrollArea component
+ */
+export const SCROLL_AREA_TOKENS = {
+  /** Root container styling */
+  root: "relative overflow-hidden",
+  /** Viewport container styling */
+  viewport: "h-full w-full rounded-[inherit]",
+  /** Scrollbar styling */
+  scrollbar: {
+    base: "flex touch-none select-none transition-colors",
+    vertical: "h-full w-2.5 border-l border-l-transparent p-[1px]",
+    horizontal: "h-2.5 border-t border-t-transparent p-[1px]",
+  },
+  /** Thumb (scrollbar slider) styling and tactile micro-interactions */
+  thumb: {
+    base: "relative flex-1 rounded-full bg-border transition-all duration-200 ease-out",
+    hoverScale: "hover:scale-105 hover:bg-muted-foreground/50",
+    activeScale: "active:scale-95 active:bg-muted-foreground/70",
+  },
+  /** Default fallback aria label for scrollbars */
+  defaultAriaLabel: "Scroll bar",
+} as const;
+
+/**
  * Avatar design tokens
  * Centralized layout, styling, transitions, and scales for Avatar components
  */

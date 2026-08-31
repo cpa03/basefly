@@ -26,11 +26,19 @@ describe("Avatar Component", () => {
     expect(screen.getByText("Child")).toBeInTheDocument();
   });
 
-  it("should apply base avatar classes", () => {
+  it("should apply base avatar classes, aria-label fallback, and micro-interaction scale classes", () => {
     const { container } = render(<Avatar>Base</Avatar>);
     expect(container.firstChild).toHaveClass("rounded-full");
     expect(container.firstChild).toHaveClass("h-10");
     expect(container.firstChild).toHaveClass("w-10");
+    expect(container.firstChild).toHaveClass("hover:scale-105");
+    expect(container.firstChild).toHaveClass("active:scale-95");
+    expect(container.firstChild).toHaveAttribute("aria-label", "User avatar");
+  });
+
+  it("should use custom aria-label when provided", () => {
+    const { container } = render(<Avatar aria-label="Profile picture">Base</Avatar>);
+    expect(container.firstChild).toHaveAttribute("aria-label", "Profile picture");
   });
 
   it("should apply custom className", () => {

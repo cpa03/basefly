@@ -1,3 +1,5 @@
+import { SKELETON_TOKENS } from "@saasfly/common";
+
 import { cn } from "./utils/cn";
 
 interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -14,7 +16,7 @@ interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
  * Features:
  * - Smooth shimmer animation that sweeps across the placeholder
  * - Respects user's motion preferences via motion-safe and motion-reduce
- * - Accessible with proper aria attributes
+ * - Accessible with proper aria attributes and SKELETON_TOKENS integration
  * - Customizable via className
  *
  * @example
@@ -35,23 +37,26 @@ interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
  * </div>
  * ```
  */
-function Skeleton({ className, shimmer = true, ...props }: SkeletonProps) {
+function Skeleton({
+  className,
+  shimmer = true,
+  role = SKELETON_TOKENS.role,
+  "aria-label": ariaLabel = SKELETON_TOKENS.defaultAriaLabel,
+  ...props
+}: SkeletonProps) {
   return (
     <div
+      role={role}
       className={cn(
-        "relative overflow-hidden rounded-md bg-muted",
+        SKELETON_TOKENS.base,
         shimmer && [
-          // Base shimmer animation - disabled for reduced motion users
-          "motion-safe:animate-shimmer motion-reduce:animate-none",
-          // Gradient overlay that creates the shine effect
-          "after:absolute after:inset-0",
-          "after:bg-gradient-to-r after:from-transparent after:via-muted-foreground/10 after:to-transparent",
-          "after:translate-x-[-100%] motion-safe:motion-reduce:after:animate-shimmer-sweep",
+          SKELETON_TOKENS.shimmer.base,
+          SKELETON_TOKENS.shimmer.overlay,
         ],
         className,
       )}
       aria-busy="true"
-      aria-label="Loading..."
+      aria-label={ariaLabel}
       {...props}
     />
   );

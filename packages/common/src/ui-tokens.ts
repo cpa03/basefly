@@ -612,6 +612,23 @@ export const TABLE_TOKENS = {
 } as const;
 
 /**
+ * Skeleton design tokens
+ * Centralized layout, styling, and animations for Skeleton placeholder component
+ */
+export const SKELETON_TOKENS = {
+  /** Base container layout and styling */
+  base: "relative overflow-hidden rounded-md bg-muted",
+  /** Shimmer animation configuration */
+  shimmer: {
+    base: "motion-safe:animate-shimmer motion-reduce:animate-none",
+    overlay: "after:absolute after:inset-0 after:bg-gradient-to-r after:from-transparent after:via-muted-foreground/10 after:to-transparent after:translate-x-[-100%] motion-safe:motion-reduce:after:animate-shimmer-sweep",
+  },
+  /** Default fallback role and aria-label for accessibility */
+  role: "status",
+  defaultAriaLabel: "Loading...",
+} as const;
+
+/**
  * ScrollArea design tokens
  * Centralized layout, styling, micro-UX transitions, and accessibility for ScrollArea component
  */

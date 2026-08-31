@@ -15,11 +15,12 @@ describe("Label Component", () => {
     expect(screen.getByText("Email")).toHaveAttribute("for", "email");
   });
 
-  it("should apply base label classes", () => {
+  it("should apply base label classes and transition micro-UX", () => {
     const { container } = render(<Label>Base</Label>);
     expect(container.firstChild).toHaveClass("text-sm");
     expect(container.firstChild).toHaveClass("font-medium");
     expect(container.firstChild).toHaveClass("leading-none");
+    expect(container.firstChild).toHaveClass("transition-colors");
   });
 
   it("should apply custom className", () => {

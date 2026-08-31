@@ -643,6 +643,76 @@ export const TABLE_TOKENS = {
   caption: "mt-4 text-sm text-muted-foreground",
 } as const;
 
+/**
+ * Skeleton design tokens
+ * Centralized layout, styling, and animations for Skeleton placeholder component
+ */
+export const SKELETON_TOKENS = {
+  /** Base container layout and styling */
+  base: "relative overflow-hidden rounded-md bg-muted",
+  /** Shimmer animation configuration */
+  shimmer: {
+    base: "motion-safe:animate-shimmer motion-reduce:animate-none",
+    overlay: "after:absolute after:inset-0 after:bg-gradient-to-r after:from-transparent after:via-muted-foreground/10 after:to-transparent after:translate-x-[-100%] motion-safe:motion-reduce:after:animate-shimmer-sweep",
+  },
+  /** Default fallback role and aria-label for accessibility */
+  role: "status",
+  defaultAriaLabel: "Loading...",
+} as const;
+
+/**
+ * ScrollArea design tokens
+ * Centralized layout, styling, micro-UX transitions, and accessibility for ScrollArea component
+ */
+export const SCROLL_AREA_TOKENS = {
+  /** Root container styling */
+  root: "relative overflow-hidden",
+  /** Viewport container styling */
+  viewport: "h-full w-full rounded-[inherit]",
+  /** Scrollbar styling */
+  scrollbar: {
+    base: "flex touch-none select-none transition-colors",
+    vertical: "h-full w-2.5 border-l border-l-transparent p-[1px]",
+    horizontal: "h-2.5 border-t border-t-transparent p-[1px]",
+  },
+  /** Thumb (scrollbar slider) styling and tactile micro-interactions */
+  thumb: {
+    base: "relative flex-1 rounded-full bg-border transition-all duration-200 ease-out",
+    hoverScale: "hover:scale-105 hover:bg-muted-foreground/50",
+    activeScale: "active:scale-95 active:bg-muted-foreground/70",
+  },
+  /** Default fallback aria label for scrollbars */
+  defaultAriaLabel: "Scroll bar",
+} as const;
+
+/**
+ * Avatar design tokens
+ * Centralized layout, styling, transitions, and scales for Avatar components
+ */
+export const AVATAR_TOKENS = {
+  root: {
+    base: "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full transition-transform duration-200 ease-out",
+    hoverScale: "hover:scale-105",
+    activeScale: "active:scale-95",
+  },
+  image: {
+    base: "aspect-square h-full w-full object-cover",
+  },
+  fallback: {
+    base: "flex h-full w-full items-center justify-center rounded-full bg-muted text-muted-foreground font-medium text-sm",
+  },
+  defaultAriaLabel: "User avatar",
+} as const;
+
+/**
+ * Label design tokens
+ * Centralized layout, styling, transitions, and peer disabled states for Label component
+ */
+export const LABEL_TOKENS = {
+  /** Base typography and peer-disabled state styling with smooth transition */
+  base: "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 transition-colors duration-150 ease-in-out",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

@@ -636,6 +636,34 @@ export const SCROLL_AREA_TOKENS = {
   defaultAriaLabel: "Scroll bar",
 } as const;
 
+/**
+ * Avatar design tokens
+ * Centralized layout, styling, transitions, and scales for Avatar components
+ */
+export const AVATAR_TOKENS = {
+  root: {
+    base: "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full transition-transform duration-200 ease-out",
+    hoverScale: "hover:scale-105",
+    activeScale: "active:scale-95",
+  },
+  image: {
+    base: "aspect-square h-full w-full object-cover",
+  },
+  fallback: {
+    base: "flex h-full w-full items-center justify-center rounded-full bg-muted text-muted-foreground font-medium text-sm",
+  },
+  defaultAriaLabel: "User avatar",
+} as const;
+
+/**
+ * Label design tokens
+ * Centralized layout, styling, transitions, and peer disabled states for Label component
+ */
+export const LABEL_TOKENS = {
+  /** Base typography and peer-disabled state styling with smooth transition */
+  base: "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 transition-colors duration-150 ease-in-out",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

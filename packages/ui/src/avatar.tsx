@@ -3,17 +3,22 @@
 import * as React from "react";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 
+import { AVATAR_TOKENS } from "@saasfly/common";
+
 import { cn } from "./utils/cn";
 
 const Avatar = React.memo(
   React.forwardRef<
     React.ElementRef<typeof AvatarPrimitive.Root>,
     React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>
-  >(({ className, ...props }, ref) => (
+  >(({ className, "aria-label": ariaLabel, ...props }, ref) => (
     <AvatarPrimitive.Root
       ref={ref}
+      aria-label={ariaLabel ?? AVATAR_TOKENS.defaultAriaLabel}
       className={cn(
-        "relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full",
+        AVATAR_TOKENS.root.base,
+        AVATAR_TOKENS.root.hoverScale,
+        AVATAR_TOKENS.root.activeScale,
         className,
       )}
       {...props}
@@ -29,7 +34,7 @@ const AvatarImage = React.memo(
   >(({ className, ...props }, ref) => (
     <AvatarPrimitive.Image
       ref={ref}
-      className={cn("aspect-square h-full w-full", className)}
+      className={cn(AVATAR_TOKENS.image.base, className)}
       {...props}
     />
   )),
@@ -43,10 +48,7 @@ const AvatarFallback = React.memo(
   >(({ className, ...props }, ref) => (
     <AvatarPrimitive.Fallback
       ref={ref}
-      className={cn(
-        "flex h-full w-full items-center justify-center rounded-full bg-muted",
-        className,
-      )}
+      className={cn(AVATAR_TOKENS.fallback.base, className)}
       {...props}
     />
   )),

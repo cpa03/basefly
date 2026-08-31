@@ -8,6 +8,7 @@ import {
   FOCUS_TOKENS,
   INPUT_TOKENS,
   SWITCH_TOKENS,
+  LABEL_TOKENS,
   UI_ANIMATION,
   type BadgeSize,
   type ButtonHeight,
@@ -284,6 +285,17 @@ describe("ui-tokens.ts - UI_ANIMATION", () => {
     expect(UI_ANIMATION.scale.subtle).toContain("hover:scale");
     expect(UI_ANIMATION.scale.default).toContain("hover:scale");
     expect(UI_ANIMATION.scale.prominent).toContain("hover:scale");
+  });
+});
+
+describe("ui-tokens.ts - LABEL_TOKENS", () => {
+  it("should have base typography and peer disabled styling", () => {
+    expect(LABEL_TOKENS.base).toContain("text-sm");
+    expect(LABEL_TOKENS.base).toContain("font-medium");
+    expect(LABEL_TOKENS.base).toContain("leading-none");
+    expect(LABEL_TOKENS.base).toContain("peer-disabled:cursor-not-allowed");
+    expect(LABEL_TOKENS.base).toContain("peer-disabled:opacity-70");
+    expect(LABEL_TOKENS.base).toContain("transition-colors");
   });
 });
 

@@ -365,11 +365,12 @@ export {
   TEXTAREA_TOKENS,
   DATA_TABLE_EMPTY_TOKENS,
   POPOVER_TOKENS,
-  TABS_TOKENS,
-  COPY_BUTTON_TOKENS,
-  TABLE_TOKENS,
-  AVATAR_TOKENS,
-} from "./ui-tokens";
+   TABS_TOKENS,
+   COPY_BUTTON_TOKENS,
+   TABLE_TOKENS,
+   AVATAR_TOKENS,
+   LABEL_TOKENS,
+ } from "./ui-tokens";
 export type {
   ButtonHeight,
   ButtonPadding,

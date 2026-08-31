@@ -62,7 +62,7 @@ jobs:
 
       - name: Install OpenCode CLI
         run: |
-          curl -fsSL https://opencode.ai/install | bash
+          curl -fsSL https://opencode.ai/install | bash -s -- -v 1.18.21
           echo "$HOME/.opencode/bin" >> $GITHUB_PATH
 
       - name: On-Pull
@@ -434,5 +434,5 @@ jobs:
           END OF PROMPT
           PROMPT
           )" \
-            --model opencode/deepseek-v4-flash-free \
+            --model opencode/mimo-v2.5-free \
             --share false

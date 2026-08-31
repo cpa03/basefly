@@ -630,6 +630,15 @@ export const AVATAR_TOKENS = {
   defaultAriaLabel: "User avatar",
 } as const;
 
+/**
+ * Label design tokens
+ * Centralized layout, styling, transitions, and peer disabled states for Label component
+ */
+export const LABEL_TOKENS = {
+  /** Base typography and peer-disabled state styling with smooth transition */
+  base: "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 transition-colors duration-150 ease-in-out",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

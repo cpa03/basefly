@@ -368,6 +368,7 @@ export {
   TABS_TOKENS,
   COPY_BUTTON_TOKENS,
   TABLE_TOKENS,
+  LABEL_TOKENS,
 } from "./ui-tokens";
 export type {
   ButtonHeight,

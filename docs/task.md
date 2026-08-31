@@ -114,6 +114,38 @@ Enhanced `TableRow` component with a tactile, spring scale micro-interaction (`h
 - [x] Implemented tactile scale transitions inside `TableRow`.
 - [x] Added unit test assertions inside `packages/ui/src/table.test.tsx` to verify transitions, states, and token classes.
 
+#### Task: [CONSOLIDATE] Centralized Avatar component styling under AVATAR_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/avatar.tsx`
+
+**Description**:
+Centralized Avatar component styling, fallback background/typography, and micro-interaction scale classes under `AVATAR_TOKENS` in `@saasfly/common`, eliminating hardcoded styles.
+
+**Success Criteria**:
+
+- [x] Defined `AVATAR_TOKENS` in `packages/common/src/ui-tokens.ts`.
+- [x] Exported `AVATAR_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/avatar.tsx` to reference `AVATAR_TOKENS` across `Avatar`, `AvatarImage`, and `AvatarFallback`.
+
+#### Task: [STRENGTHEN] Enhanced Avatar component with tactile spring scale micro-interactions and accessible fallbacks
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `packages/ui/src/avatar.tsx`, `packages/ui/src/avatar.test.tsx`
+
+**Description**:
+Enhanced `Avatar` root component with tactile spring scale micro-interactions (`hover:scale-105 active:scale-95`) and implemented logical fallback for `aria-label`.
+
+**Success Criteria**:
+
+- [x] Implemented tactile scale micro-interactions inside `Avatar`.
+- [x] Implemented logical `aria-label` fallback for screen readers.
+- [x] Added unit test assertions inside `packages/ui/src/avatar.test.tsx`.
+
 #### Task: [STRENGTHEN] Enhanced SelectTrigger component with a tactile, spring scale micro-interaction
 
 - **Status**: ✅ Completed
@@ -3002,5 +3034,5 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [STRENGTHEN] Enhanced TabsTrigger with tactile spring scale micro-interactions (hover:scale-[1.01] active:scale-[0.99]) and smooth transitions
 - [CONSOLIDATE] Centralized CopyButton styling and tokens under COPY_BUTTON_TOKENS inside @saasfly/common/src/ui-tokens.ts
 - [STRENGTHEN] Enhanced CopyButton with tactile spring scale micro-interactions (hover:scale-[1.03] active:scale-[0.97]) and updated unit tests
-- [CONSOLIDATE] Centralized Skeleton component styling and tokens under SKELETON_TOKENS inside @saasfly/common/src/ui-tokens.ts
-- [STRENGTHEN] Enhanced Skeleton with status accessibility role, fallback aria-label, and updated unit tests
+- [CONSOLIDATE] Centralized Label component styling and peer-disabled tokens under LABEL_TOKENS inside @saasfly/common/src/ui-tokens.ts
+- [STRENGTHEN] Enhanced Label component with smooth color transition micro-UX and comprehensive unit tests

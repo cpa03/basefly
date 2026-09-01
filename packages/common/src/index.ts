@@ -372,6 +372,7 @@ export {
    AVATAR_TOKENS,
    LABEL_TOKENS,
    SKELETON_TOKENS,
+   CARD_3D_TOKENS,
  } from "./ui-tokens";
 export type {
   ButtonHeight,

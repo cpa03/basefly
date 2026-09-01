@@ -713,6 +713,28 @@ export const LABEL_TOKENS = {
   base: "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 transition-colors duration-150 ease-in-out",
 } as const;
 
+/**
+ * 3D Card design tokens
+ * Centralized perspective, container layouts, item transitions, and tactile spring scale micro-interactions
+ */
+export const CARD_3D_TOKENS = {
+  perspective: "1000px",
+  container: {
+    base: "flex items-center justify-center py-20",
+    inner: "relative flex items-center justify-center transition-all duration-200 ease-linear",
+    transformStyle: "preserve-3d",
+    hoverScale: "hover:scale-[1.01]",
+    activeScale: "active:scale-[0.99]",
+  },
+  body: {
+    base: "h-96 w-96 [transform-style:preserve-3d] [&>*]:[transform-style:preserve-3d]",
+  },
+  item: {
+    base: "w-fit transition duration-200 ease-linear",
+  },
+  defaultAriaLabel: "Interactive 3D Card",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

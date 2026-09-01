@@ -3036,3 +3036,5 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [STRENGTHEN] Enhanced CopyButton with tactile spring scale micro-interactions (hover:scale-[1.03] active:scale-[0.97]) and updated unit tests
 - [CONSOLIDATE] Centralized Label component styling and peer-disabled tokens under LABEL_TOKENS inside @saasfly/common/src/ui-tokens.ts
 - [STRENGTHEN] Enhanced Label component with smooth color transition micro-UX and comprehensive unit tests
+- [CONSOLIDATE] Centralized 3D Card component styling and perspective tokens under CARD_3D_TOKENS inside @saasfly/common/src/ui-tokens.ts
+- [STRENGTHEN] Enhanced 3D Card container with tactile spring scale micro-interactions (hover:scale-[1.01] active:scale-[0.99]) and logical aria-label fallback for improved accessibility

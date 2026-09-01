@@ -8,6 +8,7 @@ import React, {
   useState,
 } from "react";
 
+import { CARD_3D_TOKENS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 
 const MouseEnterContext = createContext<
@@ -18,10 +19,12 @@ export const CardContainer = ({
   children,
   className,
   containerClassName,
+  "aria-label": ariaLabel,
 }: {
   children?: React.ReactNode;
   className?: string;
   containerClassName?: string;
+  "aria-label"?: string;
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMouseEntered, setIsMouseEntered] = useState(false);
@@ -48,12 +51,11 @@ export const CardContainer = ({
   return (
     <MouseEnterContext.Provider value={[isMouseEntered, setIsMouseEntered]}>
       <div
-        className={cn(
-          "flex items-center justify-center py-20",
-          containerClassName,
-        )}
+        role="region"
+        aria-label={ariaLabel ?? CARD_3D_TOKENS.defaultAriaLabel}
+        className={cn(CARD_3D_TOKENS.container.base, containerClassName)}
         style={{
-          perspective: "1000px",
+          perspective: CARD_3D_TOKENS.perspective,
         }}
       >
         <div
@@ -62,7 +64,9 @@ export const CardContainer = ({
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
           className={cn(
-            "relative flex items-center justify-center transition-all duration-200 ease-linear",
+            CARD_3D_TOKENS.container.inner,
+            CARD_3D_TOKENS.container.hoverScale,
+            CARD_3D_TOKENS.container.activeScale,
             className,
           )}
           style={{
@@ -84,12 +88,7 @@ export const CardBody = ({
   className?: string;
 }) => {
   return (
-    <div
-      className={cn(
-        "h-96 w-96 [transform-style:preserve-3d] [&>*]:[transform-style:preserve-3d]",
-        className,
-      )}
-    >
+    <div className={cn(CARD_3D_TOKENS.body.base, className)}>
       {children}
     </div>
   );
@@ -140,7 +139,7 @@ export const CardItem = ({
   return (
     <Tag
       ref={ref}
-      className={cn("w-fit transition duration-200 ease-linear", className)}
+      className={cn(CARD_3D_TOKENS.item.base, className)}
       {...rest}
     >
       {children}

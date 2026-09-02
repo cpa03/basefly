@@ -4,6 +4,37 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Centralized DropdownMenu styling and tokens under DROPDOWN_MENU_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/dropdown-menu.tsx`
+
+**Description**:
+Centralized DropdownMenu component styling and tokens under `DROPDOWN_MENU_TOKENS` inside `packages/common/src/ui-tokens.ts` and updated `@saasfly/ui` component to reference them, eliminating hardcoded styles.
+
+**Success Criteria**:
+
+- [x] Defined `DROPDOWN_MENU_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `DROPDOWN_MENU_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/dropdown-menu.tsx` to reference `DROPDOWN_MENU_TOKENS` across all subcomponents.
+
+#### Task: [STRENGTHEN] Enhanced DropdownMenu items with tactile spring scale micro-interactions
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `packages/ui/src/dropdown-menu.tsx`, `packages/ui/src/dropdown-menu.test.tsx`
+
+**Description**:
+Enhanced `DropdownMenuItem`, `DropdownMenuSubTrigger`, `DropdownMenuCheckboxItem`, and `DropdownMenuRadioItem` components with tactile, spring scale micro-interactions (`hover:scale-[1.01] active:scale-[0.99]`) and smooth transitions to improve physical feedback when interacting with menu items.
+
+**Success Criteria**:
+
+- [x] Implemented tactile scale transitions inside DropdownMenu items.
+- [x] Added unit tests inside `packages/ui/src/dropdown-menu.test.tsx` to verify transitions, states, and token classes.
+
 #### Task: [CONSOLIDATE] Centralized Callout hover shadow styling and classes under CALLOUT_TOKENS
 
 - **Status**: ✅ Completed

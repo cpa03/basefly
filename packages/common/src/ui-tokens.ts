@@ -735,6 +735,49 @@ export const CARD_3D_TOKENS = {
   defaultAriaLabel: "Interactive 3D Card",
 } as const;
 
+/**
+ * DropdownMenu design tokens
+ * Centralized layout, styling, transitions, micro-interactions, and accessibility for DropdownMenu sub-components
+ */
+export const DROPDOWN_MENU_TOKENS = {
+  subTrigger: {
+    base: "flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-all duration-200 ease-out focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent",
+    hoverScale: "hover:scale-[1.01]",
+    activeScale: "active:scale-[0.99]",
+  },
+  subContent: {
+    base: "z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md animate-in data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1 data-[side=top]:slide-in-from-bottom-1 transition-all duration-200 ease-out",
+  },
+  content: {
+    base: "z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md animate-in data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 transition-all duration-200 ease-out",
+  },
+  item: {
+    base: "relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-all duration-200 ease-out focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+    hoverScale: "hover:scale-[1.01]",
+    activeScale: "active:scale-[0.99]",
+  },
+  checkboxItem: {
+    base: "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-all duration-200 ease-out focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+    hoverScale: "hover:scale-[1.01]",
+    activeScale: "active:scale-[0.99]",
+  },
+  radioItem: {
+    base: "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none transition-all duration-200 ease-out focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+    hoverScale: "hover:scale-[1.01]",
+    activeScale: "active:scale-[0.99]",
+  },
+  label: {
+    base: "px-2 py-1.5 text-sm font-semibold text-foreground",
+  },
+  separator: {
+    base: "-mx-1 my-1 h-px bg-muted",
+  },
+  shortcut: {
+    base: "ml-auto text-xs tracking-widest opacity-60 text-muted-foreground",
+  },
+  defaultAriaLabel: "Dropdown menu",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

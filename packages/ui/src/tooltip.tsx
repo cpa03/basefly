@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
+import { TOOLTIP_TOKENS } from "@saasfly/common";
 
 import { cn } from "./index";
 
@@ -9,7 +10,23 @@ const TooltipProvider = TooltipPrimitive.Provider;
 
 const Tooltip = TooltipPrimitive.Root;
 
-const TooltipTrigger = TooltipPrimitive.Trigger;
+const TooltipTrigger = React.forwardRef<
+  React.ElementRef<typeof TooltipPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Trigger>
+>(({ className, ...props }, ref) => (
+  <TooltipPrimitive.Trigger
+    ref={ref}
+    aria-label={props["aria-label"] ?? TOOLTIP_TOKENS.defaultAriaLabel}
+    className={cn(
+      TOOLTIP_TOKENS.trigger.base,
+      TOOLTIP_TOKENS.trigger.hoverScale,
+      TOOLTIP_TOKENS.trigger.activeScale,
+      className,
+    )}
+    {...props}
+  />
+));
+TooltipTrigger.displayName = TooltipPrimitive.Trigger.displayName;
 
 const TooltipContent = React.forwardRef<
   React.ElementRef<typeof TooltipPrimitive.Content>,
@@ -18,17 +35,7 @@ const TooltipContent = React.forwardRef<
   <TooltipPrimitive.Content
     ref={ref}
     sideOffset={sideOffset}
-    className={cn(
-      "z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md",
-      "motion-safe:animate-in motion-safe:fade-in-0 motion-safe:zoom-in-95",
-      "motion-safe:data-[state=closed]:animate-out motion-safe:data-[state=closed]:fade-out-0 motion-safe:data-[state=closed]:zoom-out-95",
-      "motion-safe:data-[side=bottom]:slide-in-from-top-2",
-      "motion-safe:data-[side=left]:slide-in-from-right-2",
-      "motion-safe:data-[side=right]:slide-in-from-left-2",
-      "motion-safe:data-[side=top]:slide-in-from-bottom-2",
-      "motion-reduce:data-[state=open]:fade-in",
-      className,
-    )}
+    className={cn(TOOLTIP_TOKENS.content.base, className)}
     {...props}
   />
 ));

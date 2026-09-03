@@ -4,6 +4,38 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Centralized Tooltip component styling and tokens under TOOLTIP_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/tooltip.tsx`
+
+**Description**:
+Centralized Tooltip component styling and tokens under `TOOLTIP_TOKENS` inside `packages/common/src/ui-tokens.ts` and updated `@saasfly/ui` component to reference them, eliminating hardcoded styles.
+
+**Success Criteria**:
+
+- [x] Defined `TOOLTIP_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `TOOLTIP_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/tooltip.tsx` to reference `TOOLTIP_TOKENS` across all subcomponents.
+
+#### Task: [STRENGTHEN] Enhanced TooltipTrigger with tactile spring scale micro-interactions and accessibility fallbacks
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `packages/ui/src/tooltip.tsx`, `packages/ui/src/tooltip.test.tsx`
+
+**Description**:
+Enhanced `TooltipTrigger` component with tactile spring scale micro-interactions (`hover:scale-[1.02] active:scale-[0.98]`) and logical `aria-label` fallback for screen reader accessibility.
+
+**Success Criteria**:
+
+- [x] Implemented tactile scale transitions inside TooltipTrigger.
+- [x] Implemented fallback `aria-label` attribute on TooltipTrigger.
+- [x] Added unit tests inside `packages/ui/src/tooltip.test.tsx` to verify transitions, states, and token classes.
+
 #### Task: [CONSOLIDATE] Centralized DropdownMenu styling and tokens under DROPDOWN_MENU_TOKENS
 
 - **Status**: ✅ Completed

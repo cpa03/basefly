@@ -374,6 +374,7 @@ export {
    SKELETON_TOKENS,
    CARD_3D_TOKENS,
   DROPDOWN_MENU_TOKENS,
+  TOOLTIP_TOKENS,
  } from "./ui-tokens";
 export type {
   ButtonHeight,

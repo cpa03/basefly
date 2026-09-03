@@ -48,6 +48,35 @@ describe("Tooltip Component", () => {
     expect(screen.getByText("Tooltip text")).toBeInTheDocument();
   });
 
+  it("should apply trigger base classes, micro-UX transitions, and fallback aria-label", () => {
+    render(
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger>Hover me</TooltipTrigger>
+          <TooltipContent>Tooltip text</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>,
+    );
+    const trigger = screen.getByRole("button", { name: "Tooltip trigger" });
+    expect(trigger).toHaveClass("inline-flex");
+    expect(trigger).toHaveClass("hover:scale-[1.02]");
+    expect(trigger).toHaveClass("active:scale-[0.98]");
+    expect(trigger).toHaveAttribute("aria-label", "Tooltip trigger");
+  });
+
+  it("should preserve custom aria-label on trigger", () => {
+    render(
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger aria-label="Custom trigger label">Hover me</TooltipTrigger>
+          <TooltipContent>Tooltip text</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>,
+    );
+    const trigger = screen.getByRole("button", { name: "Custom trigger label" });
+    expect(trigger).toHaveAttribute("aria-label", "Custom trigger label");
+  });
+
   it("should apply base content classes", () => {
     render(
       <TooltipProvider>

@@ -778,6 +778,22 @@ export const DROPDOWN_MENU_TOKENS = {
   defaultAriaLabel: "Dropdown menu",
 } as const;
 
+/**
+ * Tooltip design tokens
+ * Centralized layout, styling, transitions, and micro-interactions for Tooltip component
+ */
+export const TOOLTIP_TOKENS = {
+  trigger: {
+    base: "inline-flex items-center justify-center transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+    hoverScale: "hover:scale-[1.02]",
+    activeScale: "active:scale-[0.98]",
+  },
+  content: {
+    base: "z-50 overflow-hidden rounded-md border bg-popover px-3 py-1.5 text-sm text-popover-foreground shadow-md motion-safe:animate-in motion-safe:fade-in-0 motion-safe:zoom-in-95 motion-safe:data-[state=closed]:animate-out motion-safe:data-[state=closed]:fade-out-0 motion-safe:data-[state=closed]:zoom-out-95 motion-safe:data-[side=bottom]:slide-in-from-top-2 motion-safe:data-[side=left]:slide-in-from-right-2 motion-safe:data-[side=right]:slide-in-from-left-2 motion-safe:data-[side=top]:slide-in-from-bottom-2 motion-reduce:data-[state=open]:fade-in",
+  },
+  defaultAriaLabel: "Tooltip trigger",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

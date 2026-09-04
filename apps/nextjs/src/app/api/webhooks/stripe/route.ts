@@ -157,14 +157,17 @@ const handler = async (req: NextRequest) => {
       env.STRIPE_WEBHOOK_SECRET,
     );
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Signature verification failed";
+    // Security: Do NOT log the raw error message from Stripe's constructEvent.
+    // StripeSignatureVerificationError messages can contain partial signature
+    // information that could aid brute-force attacks on the webhook secret.
+    // The error object is logged separately and safeSerializeError will redact
+    // sensitive fields (headers, signatures, etc.) automatically.
     logger.error("Stripe webhook signature verification failed", {
-      message,
+      error,
       requestId,
     });
     return NextResponse.json(
-      { error: message },
+      { error: "Signature verification failed" },
       {
         status: HTTP_STATUS.BAD_REQUEST,
         headers: {

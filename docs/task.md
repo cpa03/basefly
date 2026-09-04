@@ -193,6 +193,38 @@ Centralized Avatar component styling, fallback background/typography, and micro-
 - [x] Exported `AVATAR_TOKENS` from `@saasfly/common`.
 - [x] Refactored `packages/ui/src/avatar.tsx` to reference `AVATAR_TOKENS` across `Avatar`, `AvatarImage`, and `AvatarFallback`.
 
+#### Task: [CONSOLIDATE] Centralized HoverEffect Card styling and tokens under HOVER_EFFECT_CARD_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/card-hover-effect.tsx`
+
+**Description**:
+Centralized HoverEffect card component styling and tokens under `HOVER_EFFECT_CARD_TOKENS` inside `packages/common/src/ui-tokens.ts` and updated the `@saasfly/ui` component to reference them, eliminating hardcoded styles.
+
+**Success Criteria**:
+
+- [x] Defined `HOVER_EFFECT_CARD_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `HOVER_EFFECT_CARD_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/card-hover-effect.tsx` to reference `HOVER_EFFECT_CARD_TOKENS`.
+
+#### Task: [STRENGTHEN] Enhanced HoverEffect cards with tactile spring scale micro-interactions and accessibility fallbacks
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `packages/ui/src/card-hover-effect.tsx`, `packages/ui/src/card-hover-effect.test.tsx`
+
+**Description**:
+Enhanced `HoverEffect` component card links with tactile spring scale micro-interactions (`hover:scale-[1.01] active:scale-[0.99]`), focus-visible ring outlines, and logical `aria-label` fallback for screen reader accessibility.
+
+**Success Criteria**:
+
+- [x] Implemented tactile scale transitions on HoverEffect card links.
+- [x] Implemented logical `aria-label` fallback attribute on HoverEffect card links.
+- [x] Added unit tests inside `packages/ui/src/card-hover-effect.test.tsx` to verify transitions, states, and token classes.
+
 #### Task: [STRENGTHEN] Enhanced Avatar component with tactile spring scale micro-interactions and accessible fallbacks
 
 - **Status**: ✅ Completed

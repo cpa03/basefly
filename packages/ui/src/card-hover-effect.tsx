@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
+import { HOVER_EFFECT_CARD_TOKENS } from "@saasfly/common";
 
 import { cn } from "./utils/cn";
 
@@ -22,7 +23,7 @@ export const HoverEffect = ({
   return (
     <div
       className={cn(
-        "grid grid-cols-1 py-10 md:grid-cols-2 lg:grid-cols-3",
+        HOVER_EFFECT_CARD_TOKENS.grid,
         className,
       )}
     >
@@ -30,14 +31,19 @@ export const HoverEffect = ({
         <Link
           href={item?.link}
           key={item?.link}
-          className="group relative block h-full w-full rounded-lg p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          aria-label={item.title || HOVER_EFFECT_CARD_TOKENS.defaultAriaLabel}
+          className={cn(
+            HOVER_EFFECT_CARD_TOKENS.link.base,
+            HOVER_EFFECT_CARD_TOKENS.link.hoverScale,
+            HOVER_EFFECT_CARD_TOKENS.link.activeScale,
+          )}
           onMouseEnter={() => setHoveredIndex(idx)}
           onMouseLeave={() => setHoveredIndex(null)}
         >
           <AnimatePresence>
             {hoveredIndex === idx && (
               <motion.span
-                className="absolute inset-0 block h-full w-full rounded-3xl bg-neutral-200 dark:bg-slate-800/[0.8]"
+                className={HOVER_EFFECT_CARD_TOKENS.hoverBackground}
                 layoutId="hoverBackground"
                 initial={{ opacity: 0 }}
                 animate={{
@@ -71,12 +77,12 @@ export const Card = ({
   return (
     <div
       className={cn(
-        "relative z-20 h-full w-full overflow-hidden rounded-2xl border border-transparent bg-black p-4 group-hover:border-slate-700 dark:border-white/[0.2]",
+        HOVER_EFFECT_CARD_TOKENS.card.base,
         className,
       )}
     >
-      <div className="relative z-50">
-        <div className="p-4">{children}</div>
+      <div className={HOVER_EFFECT_CARD_TOKENS.card.contentWrapper}>
+        <div className={HOVER_EFFECT_CARD_TOKENS.card.innerPadding}>{children}</div>
       </div>
     </div>
   );
@@ -89,7 +95,7 @@ export const CardTitle = ({
   children: React.ReactNode;
 }) => {
   return (
-    <h4 className={cn("mt-4 font-bold tracking-wide text-zinc-100", className)}>
+    <h4 className={cn(HOVER_EFFECT_CARD_TOKENS.title, className)}>
       {children}
     </h4>
   );
@@ -104,7 +110,7 @@ export const CardDescription = ({
   return (
     <p
       className={cn(
-        "mt-8 text-sm leading-relaxed tracking-wide text-zinc-400",
+        HOVER_EFFECT_CARD_TOKENS.description,
         className,
       )}
     >

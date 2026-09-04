@@ -794,6 +794,28 @@ export const TOOLTIP_TOKENS = {
   defaultAriaLabel: "Tooltip trigger",
 } as const;
 
+/**
+ * HoverEffect Card design tokens
+ * Centralized layout, styling, transitions, micro-interactions, and accessibility for HoverEffect cards
+ */
+export const HOVER_EFFECT_CARD_TOKENS = {
+  grid: "grid grid-cols-1 py-10 md:grid-cols-2 lg:grid-cols-3",
+  link: {
+    base: "group relative block h-full w-full rounded-lg p-2 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+    hoverScale: "hover:scale-[1.01]",
+    activeScale: "active:scale-[0.99]",
+  },
+  hoverBackground: "absolute inset-0 block h-full w-full rounded-3xl bg-neutral-200 dark:bg-slate-800/[0.8]",
+  card: {
+    base: "relative z-20 h-full w-full overflow-hidden rounded-2xl border border-transparent bg-black p-4 group-hover:border-slate-700 dark:border-white/[0.2] transition-colors duration-200",
+    contentWrapper: "relative z-50",
+    innerPadding: "p-4",
+  },
+  title: "mt-4 font-bold tracking-wide text-zinc-100 text-lg",
+  description: "mt-8 text-sm leading-relaxed tracking-wide text-zinc-400",
+  defaultAriaLabel: "Card link",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

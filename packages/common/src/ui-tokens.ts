@@ -816,6 +816,30 @@ export const HOVER_EFFECT_CARD_TOKENS = {
   defaultAriaLabel: "Card link",
 } as const;
 
+/**
+ * WobbleCard design tokens
+ * Centralized layout, styling, micro-interactions, and accessibility for WobbleCard component
+ */
+export const WOBBLE_CARD_TOKENS = {
+  container: {
+    base: "relative mx-auto w-full overflow-hidden rounded-2xl bg-indigo-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 transition-all duration-200",
+    hoverScale: "hover:scale-[1.005]",
+    activeScale: "active:scale-[0.995]",
+  },
+  innerContainer: {
+    base: "relative h-full overflow-hidden [background-image:radial-gradient(88%_100%_at_top,rgba(255,255,255,0.5),rgba(255,255,255,0))] sm:mx-0 sm:rounded-2xl",
+    boxShadow:
+      "0 10px 32px rgba(34, 42, 53, 0.12), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.05), 0 4px 6px rgba(34, 42, 53, 0.08), 0 24px 108px rgba(47, 48, 55, 0.10)",
+  },
+  contentWrapper: "h-full px-4 py-20 sm:px-10",
+  noise: {
+    base: "absolute inset-0 h-full w-full scale-[1.2] transform opacity-10 [mask-image:radial-gradient(#fff,transparent,75%)]",
+    bgImage: "url(/images/noise.svg)",
+    bgSize: "30%",
+  },
+  defaultAriaLabel: "Wobble card section",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

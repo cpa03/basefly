@@ -3133,3 +3133,5 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [STRENGTHEN] Enhanced Label component with smooth color transition micro-UX and comprehensive unit tests
 - [CONSOLIDATE] Centralized 3D Card component styling and perspective tokens under CARD_3D_TOKENS inside @saasfly/common/src/ui-tokens.ts
 - [STRENGTHEN] Enhanced 3D Card container with tactile spring scale micro-interactions (hover:scale-[1.01] active:scale-[0.99]) and logical aria-label fallback for improved accessibility
+- [CONSOLIDATE] Centralized WobbleCard design tokens under WOBBLE_CARD_TOKENS inside @saasfly/common/src/ui-tokens.ts
+- [STRENGTHEN] Enhanced WobbleCard component with tactile spring micro-interactions (hover:scale-[1.005] active:scale-[0.995]), focus-visible ring accessibility, and logical aria-label fallback with role="region"

@@ -70,4 +70,14 @@ describe("WobbleCard Component", () => {
     fireEvent.mouseLeave(section!);
     expect(section?.style.transform).toContain("translate3d(0px, 0px, 0)");
   });
+
+  it("should render role='region' and default or custom aria-label", () => {
+    render(<WobbleCard>Content</WobbleCard>);
+    const region = screen.getByRole("region", { name: "Wobble card section" });
+    expect(region).toBeInTheDocument();
+
+    render(<WobbleCard aria-label="Custom Section Label">Custom Content</WobbleCard>);
+    const customRegion = screen.getByRole("region", { name: "Custom Section Label" });
+    expect(customRegion).toBeInTheDocument();
+  });
 });

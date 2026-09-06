@@ -840,6 +840,43 @@ export const WOBBLE_CARD_TOKENS = {
   defaultAriaLabel: "Wobble card section",
 } as const;
 
+/**
+ * AlertDialog design tokens
+ * Centralized layout, styling, transitions, and tactile spring scale micro-interactions for AlertDialog components
+ */
+export const ALERT_DIALOG_TOKENS = {
+  portal: "fixed inset-0 z-50 flex items-end justify-center sm:items-center",
+  overlay: {
+    base: "fixed inset-0 z-50 bg-background/80 backdrop-blur-sm transition-opacity animate-in fade-in",
+  },
+  content: {
+    base: "fixed z-50 grid w-full max-w-lg scale-100 gap-4 border bg-background p-6 opacity-100 shadow-lg animate-in fade-in-90 slide-in-from-bottom-10 sm:rounded-lg sm:zoom-in-90 sm:slide-in-from-bottom-0 md:w-full",
+  },
+  header: {
+    base: "flex flex-col space-y-2 text-center sm:text-left",
+  },
+  footer: {
+    base: "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+  },
+  title: {
+    base: "text-lg font-semibold",
+  },
+  description: {
+    base: "text-sm text-muted-foreground",
+  },
+  action: {
+    base: "transition-transform duration-200 ease-out",
+    hoverScale: "hover:scale-[1.02]",
+    activeScale: "active:scale-[0.98]",
+  },
+  cancel: {
+    base: "mt-2 sm:mt-0 transition-transform duration-200 ease-out",
+    hoverScale: "hover:scale-[1.02]",
+    activeScale: "active:scale-[0.98]",
+  },
+  defaultAriaLabel: "Alert dialog",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

@@ -108,7 +108,7 @@ describe("AlertDialog Component", () => {
     expect(screen.getByText("Delete")).toBeInTheDocument();
   });
 
-  it("should render action and cancel as buttons", () => {
+  it("should render action and cancel as buttons with tactile spring scale micro-interactions", () => {
     render(
       <AlertDialog open>
         <AlertDialogTrigger>Delete item</AlertDialogTrigger>
@@ -121,7 +121,30 @@ describe("AlertDialog Component", () => {
         </AlertDialogContent>
       </AlertDialog>,
     );
-    expect(screen.getByText("Cancel").tagName).toBe("BUTTON");
-    expect(screen.getByText("Delete").tagName).toBe("BUTTON");
+    const cancelButton = screen.getByText("Cancel");
+    const actionButton = screen.getByText("Delete");
+
+    expect(cancelButton.tagName).toBe("BUTTON");
+    expect(cancelButton).toHaveClass("hover:scale-[1.02]");
+    expect(cancelButton).toHaveClass("active:scale-[0.98]");
+
+    expect(actionButton.tagName).toBe("BUTTON");
+    expect(actionButton).toHaveClass("hover:scale-[1.02]");
+    expect(actionButton).toHaveClass("active:scale-[0.98]");
+  });
+
+  it("should fallback to default aria-label if not explicitly provided", () => {
+    render(
+      <AlertDialog open>
+        <AlertDialogTrigger>Delete item</AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogTitle>Confirm deletion</AlertDialogTitle>
+        </AlertDialogContent>
+      </AlertDialog>,
+    );
+    expect(screen.getByRole("alertdialog")).toHaveAttribute(
+      "aria-label",
+      "Alert dialog",
+    );
   });
 });

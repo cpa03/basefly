@@ -377,6 +377,7 @@ export {
   TOOLTIP_TOKENS,
   HOVER_EFFECT_CARD_TOKENS,
   WOBBLE_CARD_TOKENS,
+  ALERT_DIALOG_TOKENS,
  } from "./ui-tokens";
 export type {
   ButtonHeight,

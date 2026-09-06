@@ -601,12 +601,15 @@ export const COPY_BUTTON_TOKENS = {
   },
   /** Variant styles */
   variants: {
-    default: "bg-background border border-input hover:bg-muted hover:text-foreground",
+    default:
+      "bg-background border border-input hover:bg-muted hover:text-foreground",
     ghost: "bg-transparent hover:bg-muted hover:text-foreground",
-    outline: "bg-transparent border border-input hover:bg-muted hover:text-foreground",
+    outline:
+      "bg-transparent border border-input hover:bg-muted hover:text-foreground",
   },
   /** Success feedback styling */
-  success: "bg-green-50 text-green-600 border-green-200 hover:bg-green-100 hover:text-green-700 dark:bg-green-950/30 dark:text-green-400 dark:border-green-800",
+  success:
+    "bg-green-50 text-green-600 border-green-200 hover:bg-green-100 hover:text-green-700 dark:bg-green-950/30 dark:text-green-400 dark:border-green-800",
   /** Default fallback aria labels and tooltips */
   defaultTooltipText: "Copy to clipboard",
   defaultSuccessText: "Copied!",
@@ -653,7 +656,8 @@ export const SKELETON_TOKENS = {
   /** Shimmer animation configuration */
   shimmer: {
     base: "motion-safe:animate-shimmer motion-reduce:animate-none",
-    overlay: "after:absolute after:inset-0 after:bg-gradient-to-r after:from-transparent after:via-muted-foreground/10 after:to-transparent after:translate-x-[-100%] motion-safe:motion-reduce:after:animate-shimmer-sweep",
+    overlay:
+      "after:absolute after:inset-0 after:bg-gradient-to-r after:from-transparent after:via-muted-foreground/10 after:to-transparent after:translate-x-[-100%] motion-safe:motion-reduce:after:animate-shimmer-sweep",
   },
   /** Default fallback role and aria-label for accessibility */
   role: "status",
@@ -721,7 +725,8 @@ export const CARD_3D_TOKENS = {
   perspective: "1000px",
   container: {
     base: "flex items-center justify-center py-20",
-    inner: "relative flex items-center justify-center transition-all duration-200 ease-linear",
+    inner:
+      "relative flex items-center justify-center transition-all duration-200 ease-linear",
     transformStyle: "preserve-3d",
     hoverScale: "hover:scale-[1.01]",
     activeScale: "active:scale-[0.99]",
@@ -805,7 +810,8 @@ export const HOVER_EFFECT_CARD_TOKENS = {
     hoverScale: "hover:scale-[1.01]",
     activeScale: "active:scale-[0.99]",
   },
-  hoverBackground: "absolute inset-0 block h-full w-full rounded-3xl bg-neutral-200 dark:bg-slate-800/[0.8]",
+  hoverBackground:
+    "absolute inset-0 block h-full w-full rounded-3xl bg-neutral-200 dark:bg-slate-800/[0.8]",
   card: {
     base: "relative z-20 h-full w-full overflow-hidden rounded-2xl border border-transparent bg-black p-4 group-hover:border-slate-700 dark:border-white/[0.2] transition-colors duration-200",
     contentWrapper: "relative z-50",
@@ -838,6 +844,43 @@ export const WOBBLE_CARD_TOKENS = {
     bgSize: "30%",
   },
   defaultAriaLabel: "Wobble card section",
+} as const;
+
+/**
+ * AlertDialog design tokens
+ * Centralized layout, styling, transitions, and tactile spring scale micro-interactions for AlertDialog components
+ */
+export const ALERT_DIALOG_TOKENS = {
+  portal: "fixed inset-0 z-50 flex items-end justify-center sm:items-center",
+  overlay: {
+    base: "fixed inset-0 z-50 bg-background/80 backdrop-blur-sm transition-opacity animate-in fade-in",
+  },
+  content: {
+    base: "fixed z-50 grid w-full max-w-lg scale-100 gap-4 border bg-background p-6 opacity-100 shadow-lg animate-in fade-in-90 slide-in-from-bottom-10 sm:rounded-lg sm:zoom-in-90 sm:slide-in-from-bottom-0 md:w-full",
+  },
+  header: {
+    base: "flex flex-col space-y-2 text-center sm:text-left",
+  },
+  footer: {
+    base: "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+  },
+  title: {
+    base: "text-lg font-semibold",
+  },
+  description: {
+    base: "text-sm text-muted-foreground",
+  },
+  action: {
+    base: "transition-transform duration-200 ease-out",
+    hoverScale: "hover:scale-[1.02]",
+    activeScale: "active:scale-[0.98]",
+  },
+  cancel: {
+    base: "mt-2 sm:mt-0 transition-transform duration-200 ease-out",
+    hoverScale: "hover:scale-[1.02]",
+    activeScale: "active:scale-[0.98]",
+  },
+  defaultAriaLabel: "Alert dialog",
 } as const;
 
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;

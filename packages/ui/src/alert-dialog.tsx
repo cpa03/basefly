@@ -55,10 +55,7 @@ const AlertDialogHeader = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(ALERT_DIALOG_TOKENS.header.base, className)}
-    {...props}
-  />
+  <div className={cn(ALERT_DIALOG_TOKENS.header.base, className)} {...props} />
 );
 AlertDialogHeader.displayName = "AlertDialogHeader";
 
@@ -66,10 +63,7 @@ const AlertDialogFooter = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(ALERT_DIALOG_TOKENS.footer.base, className)}
-    {...props}
-  />
+  <div className={cn(ALERT_DIALOG_TOKENS.footer.base, className)} {...props} />
 );
 AlertDialogFooter.displayName = "AlertDialogFooter";
 

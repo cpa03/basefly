@@ -4,6 +4,38 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Centralized Sheet component styling and tokens under SHEET_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/sheet.tsx`
+
+**Description**:
+Centralized Sheet component styling and tokens under `SHEET_TOKENS` inside `packages/common/src/ui-tokens.ts` and updated `@saasfly/ui` component to reference them, eliminating hardcoded styles.
+
+**Success Criteria**:
+
+- [x] Defined `SHEET_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `SHEET_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/sheet.tsx` to reference `SHEET_TOKENS` across all subcomponents.
+
+#### Task: [STRENGTHEN] Enhanced Sheet close button with tactile spring scale micro-interactions and accessible aria-label
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `packages/ui/src/sheet.tsx`, `packages/ui/src/sheet.test.tsx`
+
+**Description**:
+Enhanced `Sheet` close button with tactile spring scale micro-interactions (`hover:scale-110 active:scale-95`) and logical fallback `aria-label` for screen reader accessibility.
+
+**Success Criteria**:
+
+- [x] Implemented tactile scale transitions inside Sheet close button.
+- [x] Implemented logical fallback `aria-label` attribute on Sheet close button.
+- [x] Added unit tests inside `packages/ui/src/sheet.test.tsx` to verify transitions, states, and token classes.
+
 #### Task: [CONSOLIDATE] Centralized Tooltip component styling and tokens under TOOLTIP_TOKENS
 
 - **Status**: ✅ Completed

@@ -86,7 +86,7 @@ describe("Sheet Component", () => {
     expect(screen.getByRole("dialog")).toHaveClass("custom-sheet-class");
   });
 
-  it("should render a close button with aria-label Close and close on click", () => {
+  it("should render a close button with aria-label Close, spring scale micro-interactions, and close on click", () => {
     render(
       <Sheet defaultOpen>
         <SheetTrigger>Open sheet</SheetTrigger>
@@ -94,7 +94,10 @@ describe("Sheet Component", () => {
       </Sheet>,
     );
     expect(screen.getByText("Sheet content")).toBeInTheDocument();
-    fireEvent.click(screen.getByLabelText("Close"));
+    const closeBtn = screen.getByLabelText("Close");
+    expect(closeBtn).toHaveClass("hover:scale-110");
+    expect(closeBtn).toHaveClass("active:scale-95");
+    fireEvent.click(closeBtn);
     expect(screen.queryByText("Sheet content")).not.toBeInTheDocument();
   });
 

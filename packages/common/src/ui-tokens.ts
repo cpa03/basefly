@@ -883,6 +883,37 @@ export const ALERT_DIALOG_TOKENS = {
   defaultAriaLabel: "Alert dialog",
 } as const;
 
+/**
+ * Sheet design tokens
+ * Centralized layout, styling, transitions, and tactile spring scale micro-interactions for Sheet/Drawer components
+ */
+export const SHEET_TOKENS = {
+  overlay: {
+    base: "fixed inset-0 z-50 bg-background/80 backdrop-blur-sm transition-all duration-100 data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in",
+  },
+  content: {
+    base: "fixed z-50 scale-100 gap-4 bg-background p-6 opacity-100 shadow-lg border",
+  },
+  closeButton: {
+    base: "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-all duration-200 hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary",
+    hoverScale: "hover:scale-110",
+    activeScale: "active:scale-95",
+  },
+  header: {
+    base: "flex flex-col space-y-2 text-center sm:text-left",
+  },
+  footer: {
+    base: "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
+  },
+  title: {
+    base: "text-lg font-semibold text-foreground",
+  },
+  description: {
+    base: "text-sm text-muted-foreground",
+  },
+  defaultAriaLabel: "Close",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

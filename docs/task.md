@@ -3169,3 +3169,5 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [STRENGTHEN] Enhanced WobbleCard component with tactile spring micro-interactions (hover:scale-[1.005] active:scale-[0.995]), focus-visible ring accessibility, and logical aria-label fallback with role="region"
 - [CONSOLIDATE] Centralized AlertDialog design tokens under ALERT_DIALOG_TOKENS inside @saasfly/common/src/ui-tokens.ts
 - [STRENGTHEN] Enhanced AlertDialogAction and AlertDialogCancel buttons with tactile spring micro-interactions (hover:scale-[1.02] active:scale-[0.98]) and logical aria-label fallbacks
+- [CONSOLIDATE] Centralized Calendar component styling and tokens under CALENDAR_TOKENS inside @saasfly/common/src/ui-tokens.ts
+- [STRENGTHEN] Enhanced Calendar navigation and day buttons with tactile spring micro-interactions (hover:scale-[1.05] active:scale-[0.95]) and accessible aria-label fallbacks

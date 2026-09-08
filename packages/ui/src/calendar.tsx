@@ -3,6 +3,8 @@
 import * as React from "react";
 import { DayPicker } from "react-day-picker";
 
+import { CALENDAR_TOKENS } from "@saasfly/common";
+
 import { buttonVariants } from "./button";
 import { cn } from "./utils/cn";
 
@@ -13,48 +15,55 @@ function Calendar({
   className,
   classNames,
   showOutsideDays = true,
+  "aria-label": ariaLabel = CALENDAR_TOKENS.defaultAriaLabel,
   ...props
 }: CalendarProps) {
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
-      className={cn("p-3", className)}
+      aria-label={ariaLabel}
+      className={cn(CALENDAR_TOKENS.base, className)}
       classNames={{
-        months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
-        month: "space-y-4",
-        caption: "flex justify-center pt-1 relative items-center",
-        caption_label: "text-sm font-medium",
-        nav: "space-x-1 flex items-center",
+        months: CALENDAR_TOKENS.classNames.months,
+        month: CALENDAR_TOKENS.classNames.month,
+        caption: CALENDAR_TOKENS.classNames.caption,
+        caption_label: CALENDAR_TOKENS.classNames.caption_label,
+        nav: CALENDAR_TOKENS.classNames.nav,
         nav_button: cn(
           buttonVariants({ variant: "outline" }),
-          "h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100",
+          CALENDAR_TOKENS.classNames.nav_button,
         ),
-        nav_button_previous: "absolute left-1",
-        nav_button_next: "absolute right-1",
-        table: "w-full border-collapse space-y-1",
-        head_row: "flex",
-        head_cell:
-          "text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]",
-        row: "flex w-full mt-2",
-        cell: "text-center text-sm p-0 relative [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+        nav_button_previous: CALENDAR_TOKENS.classNames.nav_button_previous,
+        nav_button_next: CALENDAR_TOKENS.classNames.nav_button_next,
+        button_previous: cn(
+          buttonVariants({ variant: "outline" }),
+          CALENDAR_TOKENS.classNames.button_previous,
+        ),
+        button_next: cn(
+          buttonVariants({ variant: "outline" }),
+          CALENDAR_TOKENS.classNames.button_next,
+        ),
+        table: CALENDAR_TOKENS.classNames.table,
+        head_row: CALENDAR_TOKENS.classNames.head_row,
+        head_cell: CALENDAR_TOKENS.classNames.head_cell,
+        row: CALENDAR_TOKENS.classNames.row,
+        cell: CALENDAR_TOKENS.classNames.cell,
         day: cn(
           buttonVariants({ variant: "ghost" }),
-          "h-9 w-9 p-0 font-normal aria-selected:opacity-100",
+          CALENDAR_TOKENS.classNames.day,
         ),
-        day_selected:
-          "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground",
-        day_today: "bg-accent text-accent-foreground",
-        day_outside: "text-muted-foreground opacity-50",
-        day_disabled: "text-muted-foreground opacity-50",
-        day_range_middle:
-          "aria-selected:bg-accent aria-selected:text-accent-foreground",
-        day_hidden: "invisible",
+        day_selected: CALENDAR_TOKENS.classNames.day_selected,
+        day_today: CALENDAR_TOKENS.classNames.day_today,
+        day_outside: CALENDAR_TOKENS.classNames.day_outside,
+        day_disabled: CALENDAR_TOKENS.classNames.day_disabled,
+        day_range_middle: CALENDAR_TOKENS.classNames.day_range_middle,
+        day_hidden: CALENDAR_TOKENS.classNames.day_hidden,
         ...classNames,
       }}
       components={{
-        Chevron: ({ ...props }) => (
+        Chevron: ({ className, ...props }) => (
           <svg
-            className="h-4 w-4"
+            className={cn(CALENDAR_TOKENS.chevron.size, className)}
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"

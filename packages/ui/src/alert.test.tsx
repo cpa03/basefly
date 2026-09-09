@@ -15,12 +15,19 @@ describe("Alert Component", () => {
     expect(screen.getByRole("alert")).toBeInTheDocument();
   });
 
-  it("should apply base alert classes", () => {
+  it("should apply base alert classes, hover transitions, and shadow tokens", () => {
     const { container } = render(<Alert>Base</Alert>);
     const alert = container.firstChild as HTMLElement;
     expect(alert).toHaveClass("rounded-lg");
     expect(alert).toHaveClass("border");
     expect(alert).toHaveClass("p-4");
+    expect(alert).toHaveClass("hover:scale-[1.002]");
+    expect(alert).toHaveClass("hover:shadow-md");
+  });
+
+  it("should allow custom role override", () => {
+    render(<Alert role="status">Status message</Alert>);
+    expect(screen.getByRole("status")).toBeInTheDocument();
   });
 
   it("should apply default variant classes", () => {

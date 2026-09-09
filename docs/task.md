@@ -4,6 +4,38 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Centralized Alert styling and tokens under ALERT_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/alert.tsx`
+
+**Description**:
+Centralized Alert component styling, layout, typography, variants, and micro-interaction scale/shadow effects under `ALERT_TOKENS` in `@saasfly/common` and updated the UI component to reference them, eliminating hardcoded styles.
+
+**Success Criteria**:
+
+- [x] Defined `ALERT_TOKENS` in `packages/common/src/ui-tokens.ts`.
+- [x] Exported `ALERT_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/alert.tsx` to reference `ALERT_TOKENS` across Alert, AlertTitle, and AlertDescription.
+
+#### Task: [STRENGTHEN] Enhanced Alert component with tactile spring scale micro-interactions and accessibility fallbacks
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `packages/ui/src/alert.tsx`, `packages/ui/src/alert.test.tsx`
+
+**Description**:
+Enhanced `Alert` component with tactile spring scale micro-interactions (`hover:scale-[1.002] hover:shadow-md`) and logical fallback `role="alert"` attribute for accessibility.
+
+**Success Criteria**:
+
+- [x] Implemented tactile scale & shadow hover transitions inside Alert component.
+- [x] Enforced default `role="alert"` with support for explicit role override.
+- [x] Added unit tests inside `packages/ui/src/alert.test.tsx` to verify token classes, micro-interactions, and accessibility.
+
 #### Task: [CONSOLIDATE] Centralized Sheet component styling and tokens under SHEET_TOKENS
 
 - **Status**: ✅ Completed

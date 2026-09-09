@@ -847,6 +847,24 @@ export const WOBBLE_CARD_TOKENS = {
 } as const;
 
 /**
+ * Alert design tokens
+ * Centralized layout, styling, transitions, variants, and micro-interactions for Alert components
+ */
+export const ALERT_TOKENS = {
+  base: "relative w-full rounded-lg border p-4 transition-all duration-200 ease-out [&>svg]:absolute [&>svg]:text-foreground [&>svg]:left-4 [&>svg]:top-4 [&>svg+div]:translate-y-[-3px] [&:has(svg)]:pl-11",
+  variants: {
+    default: "bg-background text-foreground",
+    destructive:
+      "text-destructive border-destructive/50 dark:border-destructive [&>svg]:text-destructive",
+  },
+  hoverScale: "hover:scale-[1.002]",
+  hoverShadow: "hover:shadow-md",
+  title: "mb-1 font-medium leading-none tracking-tight",
+  description: "text-sm [&_p]:leading-relaxed",
+  defaultRole: "alert",
+} as const;
+
+/**
  * AlertDialog design tokens
  * Centralized layout, styling, transitions, and tactile spring scale micro-interactions for AlertDialog components
  */

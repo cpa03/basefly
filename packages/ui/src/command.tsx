@@ -5,6 +5,8 @@ import type { DialogProps } from "@radix-ui/react-dialog";
 import { Command as CommandPrimitive } from "cmdk";
 import { Search } from "lucide-react";
 
+import { COMMAND_TOKENS } from "@saasfly/common";
+
 import { Dialog, DialogContent } from "./dialog";
 import { cn } from "./utils/cn";
 
@@ -14,10 +16,7 @@ const Command = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive
     ref={ref}
-    className={cn(
-      "flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",
-      className,
-    )}
+    className={cn(COMMAND_TOKENS.command.base, className)}
     {...props}
   />
 ));
@@ -28,7 +27,7 @@ type CommandDialogProps = DialogProps;
 const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
   return (
     <Dialog {...props}>
-      <DialogContent className="overflow-hidden p-0 shadow-2xl">
+      <DialogContent className={COMMAND_TOKENS.dialogContent}>
         <Command className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
           {children}
         </Command>
@@ -40,15 +39,13 @@ const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
 const CommandInput = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
->(({ className, ...props }, ref) => (
-  <div className="flex items-center border-b px-3" cmdk-input-wrapper="">
-    <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+>(({ className, "aria-label": ariaLabel, ...props }, ref) => (
+  <div className={COMMAND_TOKENS.inputWrapper} cmdk-input-wrapper="">
+    <Search className={COMMAND_TOKENS.inputIcon} />
     <CommandPrimitive.Input
       ref={ref}
-      className={cn(
-        "placeholder:text-foreground-muted flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-50",
-        className,
-      )}
+      aria-label={ariaLabel ?? COMMAND_TOKENS.input.defaultAriaLabel}
+      className={cn(COMMAND_TOKENS.input.base, className)}
       {...props}
     />
   </div>
@@ -62,7 +59,7 @@ const CommandList = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive.List
     ref={ref}
-    className={cn("max-h-[300px] overflow-y-auto overflow-x-hidden", className)}
+    className={cn(COMMAND_TOKENS.list.base, className)}
     {...props}
   />
 ));
@@ -75,8 +72,8 @@ const CommandEmpty = React.forwardRef<
 >((props, ref) => (
   <CommandPrimitive.Empty
     ref={ref}
-    role="status"
-    className="py-6 text-center text-sm"
+    role={COMMAND_TOKENS.empty.role}
+    className={COMMAND_TOKENS.empty.base}
     {...props}
   />
 ));
@@ -89,10 +86,7 @@ const CommandGroup = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive.Group
     ref={ref}
-    className={cn(
-      "overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground",
-      className,
-    )}
+    className={cn(COMMAND_TOKENS.group.base, className)}
     {...props}
   />
 ));
@@ -105,7 +99,7 @@ const CommandSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive.Separator
     ref={ref}
-    className={cn("-mx-1 h-px bg-border", className)}
+    className={cn(COMMAND_TOKENS.separator.base, className)}
     {...props}
   />
 ));
@@ -118,7 +112,9 @@ const CommandItem = React.forwardRef<
   <CommandPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-accent aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      COMMAND_TOKENS.item.base,
+      COMMAND_TOKENS.item.hoverScale,
+      COMMAND_TOKENS.item.activeScale,
       className,
     )}
     {...props}
@@ -133,10 +129,7 @@ const CommandShortcut = ({
 }: React.HTMLAttributes<HTMLSpanElement>) => {
   return (
     <span
-      className={cn(
-        "ml-auto text-xs tracking-widest text-muted-foreground",
-        className,
-      )}
+      className={cn(COMMAND_TOKENS.shortcut.base, className)}
       {...props}
     />
   );

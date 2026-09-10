@@ -932,6 +932,44 @@ export const SHEET_TOKENS = {
   defaultAriaLabel: "Close",
 } as const;
 
+/**
+ * Command design tokens
+ * Centralized layout, styling, transitions, micro-interactions, and accessibility for Command component
+ */
+export const COMMAND_TOKENS = {
+  command: {
+    base: "flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",
+  },
+  dialogContent: "overflow-hidden p-0 shadow-2xl",
+  inputWrapper: "flex items-center border-b px-3",
+  inputIcon: "mr-2 h-4 w-4 shrink-0 opacity-50",
+  input: {
+    base: "placeholder:text-foreground-muted flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none disabled:cursor-not-allowed disabled:opacity-50",
+    defaultAriaLabel: "Type a command or search...",
+  },
+  list: {
+    base: "max-h-[300px] overflow-y-auto overflow-x-hidden",
+  },
+  empty: {
+    base: "py-6 text-center text-sm",
+    role: "status",
+  },
+  group: {
+    base: "overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground",
+  },
+  separator: {
+    base: "-mx-1 h-px bg-border",
+  },
+  item: {
+    base: "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none aria-selected:bg-accent aria-selected:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 transition-all duration-200 ease-out",
+    hoverScale: "hover:scale-[1.01]",
+    activeScale: "active:scale-[0.99]",
+  },
+  shortcut: {
+    base: "ml-auto text-xs tracking-widest text-muted-foreground",
+  },
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

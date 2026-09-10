@@ -4,6 +4,38 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Centralized Command styling and tokens under COMMAND_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/command.tsx`
+
+**Description**:
+Centralized Command component layout, input, list, empty state, group, item, and shortcut design tokens under `COMMAND_TOKENS` inside `packages/common/src/ui-tokens.ts` and updated `@saasfly/ui` component to reference them, eliminating hardcoded styles.
+
+**Success Criteria**:
+
+- [x] Defined `COMMAND_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `COMMAND_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/command.tsx` to reference `COMMAND_TOKENS` across all subcomponents.
+
+#### Task: [STRENGTHEN] Enhanced Command items with tactile spring scale micro-interactions and accessible aria-label
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `packages/ui/src/command.tsx`, `packages/ui/src/command.test.tsx`
+
+**Description**:
+Enhanced `CommandItem` with tactile spring scale micro-interactions (`hover:scale-[1.01] active:scale-[0.99]`) and implemented logical fallback `aria-label` attribute on `CommandInput` for screen reader accessibility.
+
+**Success Criteria**:
+
+- [x] Implemented tactile scale transitions on CommandItem.
+- [x] Implemented fallback `aria-label` on CommandInput.
+- [x] Verified unit tests inside `packages/ui/src/command.test.tsx` to verify transitions, token classes, and accessibility.
+
 #### Task: [CONSOLIDATE] Centralized Alert styling and tokens under ALERT_TOKENS
 
 - **Status**: ✅ Completed

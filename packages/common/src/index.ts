@@ -380,6 +380,7 @@ export {
   ALERT_TOKENS,
   ALERT_DIALOG_TOKENS,
   SHEET_TOKENS,
+  COMMAND_TOKENS,
  } from "./ui-tokens";
 export type {
   ButtonHeight,

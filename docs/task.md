@@ -3209,8 +3209,8 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [CONSOLIDATE] Centralized switch-specific design tokens and transitions under SWITCH_TOKENS inside @saasfly/common/src/ui-tokens.ts.
 - [STRENGTHEN] Refactored Switch component to use centralized design tokens, logical aria-label fallback for improved accessibility, and smooth spring scale tactile feedback transitions.
 - [x] error: Unresolved linting errors in CMZ self-heal scan - _Fixed by removing unused ACCORDION_TOKENS import in accordion.test.tsx_
-- [CONSOLIDATE] Centralized Accordion component styles and behaviors under ACCORDION_TOKENS design tokens inside packages/common/src/ui-tokens.ts.
-- [STRENGTHEN] Enhanced AccordionTrigger inside packages/ui/src/accordion.tsx with a pleasant, tactile hover scale and active scale spring micro-interaction.
+- [CONSOLIDATE] Centralized Accordion component styles and defaultAriaLabel fallback under ACCORDION_TOKENS design tokens inside packages/common/src/ui-tokens.ts.
+- [STRENGTHEN] Enhanced AccordionTrigger inside packages/ui/src/accordion.tsx with a pleasant, tactile hover scale and active scale spring micro-interaction alongside logical fallback aria-label accessibility.
 - [CONSOLIDATE] Centralized Checkbox component styles under CHECKBOX_TOKENS design tokens inside packages/common/src/ui-tokens.ts.
 - [STRENGTHEN] Enhanced Checkbox with a tactile hover/active scale spring micro-interaction and custom unit tests inside packages/ui/src/checkbox.test.tsx.
 - [x] error: HTML validation warning in data-table-empty.test.tsx (td cannot be child of div)

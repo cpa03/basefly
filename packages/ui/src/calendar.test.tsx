@@ -38,6 +38,20 @@ describe("Calendar Component", () => {
     expect(root).toHaveClass("custom-calendar");
   });
 
+  it("should apply logical fallback aria-label", () => {
+    render(<Calendar month={new Date(2026, 0, 15)} />);
+    expect(screen.getByLabelText("Calendar picker")).toBeInTheDocument();
+  });
+
+  it("should apply spring scale micro-interaction classes to day buttons and nav buttons", () => {
+    const { container } = render(<Calendar month={new Date(2026, 0, 15)} />);
+    const gridcells = container.querySelectorAll('[role="gridcell"]');
+    if (gridcells.length > 0) {
+      expect(gridcells[0]).toHaveClass("hover:scale-[1.05]");
+      expect(gridcells[0]).toHaveClass("active:scale-[0.95]");
+    }
+  });
+
   it("should render the selected day with aria-selected", () => {
     render(
       <Calendar

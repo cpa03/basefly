@@ -50,6 +50,14 @@ describe("Button Component", () => {
     const button = container.querySelector("button");
     expect(button).toBeDisabled();
     expect(button).toHaveAttribute("aria-busy", "true");
+    expect(button).toHaveAttribute("aria-disabled", "true");
+  });
+
+  it("should set aria-disabled when disabled prop is true", () => {
+    const { container } = render(<Button disabled>Disabled</Button>);
+    const button = container.querySelector("button");
+    expect(button).toBeDisabled();
+    expect(button).toHaveAttribute("aria-disabled", "true");
   });
 
   it("should show a spinner when isLoading is true", () => {

@@ -337,6 +337,21 @@ Enhanced `Avatar` root component with tactile spring scale micro-interactions (`
 - [x] Implemented logical `aria-label` fallback for screen readers.
 - [x] Added unit test assertions inside `packages/ui/src/avatar.test.tsx`.
 
+#### Task: [STRENGTHEN] Enhanced Button component with explicit aria-disabled attribute for accessibility
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement / Accessibility
+- **Files**: `packages/ui/src/button.tsx`, `packages/ui/src/button.test.tsx`
+
+**Description**:
+Enhanced `Button` component in `@saasfly/ui` to explicitly convey `aria-disabled="true"` when either `isLoading` or `disabled` props are set, ensuring consistent screen reader accessibility announcements.
+
+**Success Criteria**:
+
+- [x] Implemented `aria-disabled` logic in `Button` component.
+- [x] Added unit test assertions inside `packages/ui/src/button.test.tsx` to verify `aria-disabled` states.
+
 #### Task: [STRENGTHEN] Enhanced SelectTrigger component with a tactile, spring scale micro-interaction
 
 - **Status**: ✅ Completed

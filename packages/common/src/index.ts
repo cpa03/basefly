@@ -382,6 +382,7 @@ export {
   ALERT_DIALOG_TOKENS,
   SHEET_TOKENS,
   COMMAND_TOKENS,
+  ANIMATED_GRADIENT_TEXT_TOKENS,
  } from "./ui-tokens";
 export type {
   ButtonHeight,

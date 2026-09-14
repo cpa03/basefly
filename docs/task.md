@@ -148,6 +148,38 @@ Centralized DropdownMenu component styling and tokens under `DROPDOWN_MENU_TOKEN
 - [x] Exported `DROPDOWN_MENU_TOKENS` from `@saasfly/common`.
 - [x] Refactored `packages/ui/src/dropdown-menu.tsx` to reference `DROPDOWN_MENU_TOKENS` across all subcomponents.
 
+#### Task: [CONSOLIDATE] Centralized AnimatedGradientText design tokens under ANIMATED_GRADIENT_TEXT_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/animated-gradient-text.tsx`
+
+**Description**:
+Centralized AnimatedGradientText component design tokens under `ANIMATED_GRADIENT_TEXT_TOKENS` inside `@saasfly/common` and updated `@saasfly/ui` component to reference them, eliminating hardcoded styles.
+
+**Success Criteria**:
+
+- [x] Defined `ANIMATED_GRADIENT_TEXT_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `ANIMATED_GRADIENT_TEXT_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/animated-gradient-text.tsx` to reference `ANIMATED_GRADIENT_TEXT_TOKENS`.
+
+#### Task: [STRENGTHEN] Enhanced AnimatedGradientText with tactile spring scale micro-interactions and accessible fallbacks
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `packages/ui/src/animated-gradient-text.tsx`, `packages/ui/src/animated-gradient-text.test.tsx`
+
+**Description**:
+Enhanced `AnimatedGradientText` component with tactile spring scale micro-interactions (`hover:scale-[1.01] active:scale-[0.99]`) and implemented logical fallback `aria-label` attribute for screen reader accessibility.
+
+**Success Criteria**:
+
+- [x] Implemented tactile scale micro-interactions inside AnimatedGradientText.
+- [x] Implemented logical `aria-label` fallback for screen reader accessibility.
+- [x] Verified unit tests inside `packages/ui/src/animated-gradient-text.test.tsx`.
+
 #### Task: [STRENGTHEN] Enhanced DropdownMenu items with tactile spring scale micro-interactions
 
 - **Status**: ✅ Completed

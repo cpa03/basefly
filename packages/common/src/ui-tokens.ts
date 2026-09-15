@@ -1010,6 +1010,27 @@ export const CALENDAR_TOKENS = {
   defaultAriaLabel: "Calendar picker",
 } as const;
 
+/**
+ * Meteors design tokens
+ * Centralized layout, styling, transitions, and accessibility properties for Meteors component
+ */
+export const METEORS_TOKENS = {
+  /** Default meteor count if number prop is not provided */
+  defaultCount: 20,
+  /** Base span particle styling */
+  particle: {
+    base: "absolute left-1/2 top-1/2 h-0.5 w-0.5 rotate-[215deg] animate-meteor-effect rounded-[9999px] bg-slate-500 shadow-[0_0_0_1px_#ffffff10]",
+    motionReduce: "motion-reduce:animate-none",
+  },
+  /** Meteor trail gradient pseudo-element styling */
+  trail: {
+    base: "before:absolute before:top-1/2 before:h-[1px] before:w-[50px] before:-translate-y-[50%] before:transform before:bg-gradient-to-r before:from-[#64748b] before:to-transparent before:content-['']",
+  },
+  /** Accessibility properties */
+  ariaHidden: "true" as const,
+  defaultRole: "presentation" as const,
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

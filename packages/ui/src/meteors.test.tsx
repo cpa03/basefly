@@ -62,7 +62,7 @@ describe("Meteors Component", () => {
     expect(meteor).toHaveClass("custom-meteor");
   });
 
-  it("should mark every meteor as aria-hidden (purely decorative)", () => {
+  it("should mark every meteor with proper accessibility attributes and token classes", () => {
     const { container } = render(<Meteors number={4} />);
 
     const meteors = container.querySelectorAll(
@@ -71,6 +71,7 @@ describe("Meteors Component", () => {
     expect(meteors.length).toBe(4);
     meteors.forEach((meteor) => {
       expect(meteor).toHaveAttribute("aria-hidden", "true");
+      expect(meteor).toHaveAttribute("role", "presentation");
     });
   });
 });

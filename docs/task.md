@@ -4,6 +4,38 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Centralized Marquee styling and tokens under MARQUEE_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/marquee.tsx`
+
+**Description**:
+Centralized Marquee component layout, tracks, animation classes, reduced motion handling, and default aria attributes under `MARQUEE_TOKENS` inside `packages/common/src/ui-tokens.ts` and updated `@saasfly/ui` component to reference them, eliminating hardcoded styles.
+
+**Success Criteria**:
+
+- [x] Defined `MARQUEE_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `MARQUEE_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/marquee.tsx` to reference `MARQUEE_TOKENS`.
+
+#### Task: [STRENGTHEN] Enhanced Marquee component with tactile spring scale micro-interactions and accessible aria-label
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `packages/ui/src/marquee.tsx`, `packages/ui/src/marquee.test.tsx`
+
+**Description**:
+Enhanced `Marquee` component with tactile spring scale micro-interactions (`hover:scale-[1.002]`) and logical fallback `role="region"` and `aria-label` attributes for screen reader accessibility.
+
+**Success Criteria**:
+
+- [x] Implemented tactile scale transitions on Marquee root.
+- [x] Implemented fallback `role="region"` and `aria-label` on Marquee root.
+- [x] Added unit tests inside `packages/ui/src/marquee.test.tsx` to verify transitions, token classes, and accessibility attributes.
+
 #### Task: [CONSOLIDATE] Centralized Command styling and tokens under COMMAND_TOKENS
 
 - **Status**: ✅ Completed

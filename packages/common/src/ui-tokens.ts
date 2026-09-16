@@ -1031,6 +1031,32 @@ export const METEORS_TOKENS = {
   defaultRole: "presentation" as const,
 } as const;
 
+/**
+ * Marquee design tokens
+ * Centralized layout, styling, transitions, and accessibility properties for Marquee component
+ */
+export const MARQUEE_TOKENS = {
+  /** Root container styling */
+  root: {
+    base: "group flex overflow-hidden p-2 [--duration:40s] [--gap:1rem] [gap:var(--gap)] transition-all duration-200 ease-out",
+    hoverScale: "hover:scale-[1.002]",
+    vertical: "flex-col",
+    horizontal: "flex-row",
+  },
+  /** Inner marquee track container styling */
+  track: {
+    base: "flex shrink-0 justify-around [gap:var(--gap)]",
+    horizontal: "animate-marquee flex-row motion-reduce:animate-none",
+    vertical: "animate-marquee-vertical flex-col motion-reduce:animate-none",
+    pauseOnHover:
+      "group-hover:[animation-play-state:paused] motion-reduce:group-hover:[animation-play-state:running]",
+    reverse: "[animation-direction:reverse]",
+  },
+  defaultAriaLabel: "Scrolling marquee content",
+  defaultRole: "region" as const,
+  defaultRepeat: 4,
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

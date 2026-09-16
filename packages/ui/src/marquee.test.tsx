@@ -99,15 +99,29 @@ describe("Marquee Component", () => {
     expect(outer).toHaveClass("overflow-hidden");
   });
 
-  it("should forward HTML attributes to the root element", () => {
+  it("should enforce default role and aria-label fallbacks along with hover scale micro-interactions", () => {
     const { container } = render(
-      <Marquee data-testid="marquee-root" aria-label="Test marquee">
+      <Marquee>
+        <span>Item</span>
+      </Marquee>,
+    );
+
+    const outer = container.firstElementChild;
+    expect(outer).toHaveAttribute("role", "region");
+    expect(outer).toHaveAttribute("aria-label", "Scrolling marquee content");
+    expect(outer).toHaveClass("hover:scale-[1.002]");
+  });
+
+  it("should forward HTML attributes and allow overriding default aria-label and role", () => {
+    const { container } = render(
+      <Marquee data-testid="marquee-root" role="complementary" aria-label="Test marquee">
         <span>Item</span>
       </Marquee>,
     );
 
     const outer = container.firstElementChild;
     expect(outer).toHaveAttribute("data-testid", "marquee-root");
+    expect(outer).toHaveAttribute("role", "complementary");
     expect(outer).toHaveAttribute("aria-label", "Test marquee");
   });
 

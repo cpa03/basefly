@@ -383,6 +383,7 @@ export {
   SHEET_TOKENS,
   COMMAND_TOKENS,
   METEORS_TOKENS,
+  MARQUEE_TOKENS,
  } from "./ui-tokens";
 export type {
   ButtonHeight,

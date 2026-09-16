@@ -1,3 +1,4 @@
+import { MARQUEE_TOKENS } from "@saasfly/common";
 import { cn } from "./utils/cn";
 
 interface MarqueeProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -15,7 +16,9 @@ export default function Marquee({
   pauseOnHover = false,
   children,
   vertical = false,
-  repeat = 4,
+  repeat = MARQUEE_TOKENS.defaultRepeat,
+  role = MARQUEE_TOKENS.defaultRole,
+  "aria-label": ariaLabel = MARQUEE_TOKENS.defaultAriaLabel,
   ...props
 }: MarqueeProps) {
   // Use CSS to detect reduced motion preference
@@ -24,12 +27,15 @@ export default function Marquee({
 
   return (
     <div
+      role={role}
+      aria-label={ariaLabel}
       {...props}
       className={cn(
-        "group flex overflow-hidden p-2 [--duration:40s] [--gap:1rem] [gap:var(--gap)]",
+        MARQUEE_TOKENS.root.base,
+        MARQUEE_TOKENS.root.hoverScale,
         {
-          "flex-row": !vertical,
-          "flex-col": vertical,
+          [MARQUEE_TOKENS.root.horizontal]: !vertical,
+          [MARQUEE_TOKENS.root.vertical]: vertical,
         },
         className,
       )}
@@ -40,13 +46,11 @@ export default function Marquee({
           <div
             key={i}
             aria-hidden={i > 0 ? "true" : undefined}
-            className={cn("flex shrink-0 justify-around [gap:var(--gap)]", {
-              "animate-marquee flex-row motion-reduce:animate-none": !vertical,
-              "animate-marquee-vertical flex-col motion-reduce:animate-none":
-                vertical,
-              "group-hover:[animation-play-state:paused] motion-reduce:group-hover:[animation-play-state:running]":
-                pauseOnHover,
-              "[animation-direction:reverse]": reverse,
+            className={cn(MARQUEE_TOKENS.track.base, {
+              [MARQUEE_TOKENS.track.horizontal]: !vertical,
+              [MARQUEE_TOKENS.track.vertical]: vertical,
+              [MARQUEE_TOKENS.track.pauseOnHover]: pauseOnHover,
+              [MARQUEE_TOKENS.track.reverse]: reverse,
             })}
           >
             {children}

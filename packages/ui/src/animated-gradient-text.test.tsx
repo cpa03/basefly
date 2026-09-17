@@ -32,8 +32,8 @@ describe("AnimatedGradientText Component", () => {
     expect(gradientLayer).toHaveAttribute("aria-hidden", "true");
   });
 
-  it("should apply the default layout classes to the root element", () => {
-    const { container } = render(
+  it("should apply the default layout classes, spring scale micro-interactions, and role/aria-label fallbacks to the root element", () => {
+    const { container, getByRole } = render(
       <AnimatedGradientText>Content</AnimatedGradientText>,
     );
 
@@ -42,6 +42,19 @@ describe("AnimatedGradientText Component", () => {
     expect(root).toHaveClass("relative");
     expect(root).toHaveClass("flex");
     expect(root).toHaveClass("items-center");
+    expect(root).toHaveClass("hover:scale-[1.01]");
+    expect(root).toHaveClass("active:scale-[0.99]");
+    expect(getByRole("group", { name: "Animated gradient text" })).toBeInTheDocument();
+  });
+
+  it("should support custom role and aria-label props", () => {
+    const { getByRole } = render(
+      <AnimatedGradientText role="region" aria-label="Custom Banner">
+        Custom Content
+      </AnimatedGradientText>,
+    );
+
+    expect(getByRole("region", { name: "Custom Banner" })).toBeInTheDocument();
   });
 
   it("should merge a custom className with the default classes", () => {

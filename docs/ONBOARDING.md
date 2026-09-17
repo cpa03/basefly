@@ -132,9 +132,9 @@ const clusters = await client.k8s.getClusters.query();
 
 When updating API documentation:
 
+### Syncing
 
-
-### Syncing1. Check `packages/api/src/router/` for router implementations
+1. Check `packages/api/src/router/` for router implementations
 2. Verify types match `packages/api/src/router/schemas.ts`
 3. Cross-reference with `docs/blueprint.md` for data models
 

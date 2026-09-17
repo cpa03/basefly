@@ -1057,6 +1057,24 @@ export const MARQUEE_TOKENS = {
   defaultRepeat: 4,
 } as const;
 
+/**
+ * AnimatedGradientText design tokens
+ * Centralized layout, styling, transitions, micro-interactions, and accessibility for AnimatedGradientText component
+ */
+export const ANIMATED_GRADIENT_TEXT_TOKENS = {
+  container: {
+    base: "group relative flex max-w-fit flex-row items-center justify-center rounded-2xl bg-white/40 px-4 py-1.5 text-sm font-medium shadow-[inset_0_-8px_10px_#8fdfff1f] backdrop-blur-sm transition-all duration-300 ease-out [--bg-size:300%] hover:shadow-[inset_0_-5px_10px_#8fdfff3f] dark:bg-black/40",
+    hoverScale: "hover:scale-[1.01]",
+    activeScale: "active:scale-[0.99]",
+  },
+  overlay: {
+    base: "absolute inset-0 block h-full w-full bg-gradient-to-r from-[#ffaa40]/50 via-[#9c40ff]/50 to-[#ffaa40]/50 bg-[length:var(--bg-size)_100%] p-[1px] [border-radius:inherit] ![mask-composite:subtract] [mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] animate-gradient motion-reduce:animate-none",
+    ariaHidden: "true" as const,
+  },
+  defaultAriaLabel: "Animated gradient text",
+  defaultRole: "group" as const,
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

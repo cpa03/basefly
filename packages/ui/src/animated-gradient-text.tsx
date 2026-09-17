@@ -1,28 +1,35 @@
-import type { ReactNode } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
+import { ANIMATED_GRADIENT_TEXT_TOKENS } from "@saasfly/common";
 
 import { cn } from "./utils/cn";
+
+export interface AnimatedGradientTextProps extends HTMLAttributes<HTMLDivElement> {
+  children: ReactNode;
+  className?: string;
+}
 
 function AnimatedGradientText({
   children,
   className,
-}: {
-  children: ReactNode;
-  className?: string;
-}) {
+  role = ANIMATED_GRADIENT_TEXT_TOKENS.defaultRole,
+  "aria-label": ariaLabel = ANIMATED_GRADIENT_TEXT_TOKENS.defaultAriaLabel,
+  ...props
+}: AnimatedGradientTextProps) {
   return (
     <div
+      role={role}
+      aria-label={ariaLabel}
       className={cn(
-        "group relative flex max-w-fit flex-row items-center justify-center rounded-2xl bg-white/40 px-4 py-1.5 text-sm font-medium shadow-[inset_0_-8px_10px_#8fdfff1f] backdrop-blur-sm transition-shadow duration-500 ease-out [--bg-size:300%] hover:shadow-[inset_0_-5px_10px_#8fdfff3f] dark:bg-black/40",
+        ANIMATED_GRADIENT_TEXT_TOKENS.container.base,
+        ANIMATED_GRADIENT_TEXT_TOKENS.container.hoverScale,
+        ANIMATED_GRADIENT_TEXT_TOKENS.container.activeScale,
         className,
       )}
+      {...props}
     >
       <div
-        aria-hidden="true"
-        className={cn(
-          "absolute inset-0 block h-full w-full bg-gradient-to-r from-[#ffaa40]/50 via-[#9c40ff]/50 to-[#ffaa40]/50 bg-[length:var(--bg-size)_100%] p-[1px] [border-radius:inherit] ![mask-composite:subtract] [mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)]",
-          // Use Tailwind's motion-reduce variant to disable animation for reduced motion preference
-          "animate-gradient motion-reduce:animate-none",
-        )}
+        aria-hidden={ANIMATED_GRADIENT_TEXT_TOKENS.overlay.ariaHidden}
+        className={cn(ANIMATED_GRADIENT_TEXT_TOKENS.overlay.base)}
       />
 
       {children}

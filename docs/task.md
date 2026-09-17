@@ -4,6 +4,38 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Centralized AnimatedGradientText styling and tokens under ANIMATED_GRADIENT_TEXT_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/animated-gradient-text.tsx`
+
+**Description**:
+Centralized AnimatedGradientText component layout, container styles, overlay gradient styles, animation properties, and default aria attributes under `ANIMATED_GRADIENT_TEXT_TOKENS` inside `packages/common/src/ui-tokens.ts` and updated `@saasfly/ui` component to reference them, eliminating hardcoded styles.
+
+**Success Criteria**:
+
+- [x] Defined `ANIMATED_GRADIENT_TEXT_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `ANIMATED_GRADIENT_TEXT_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/animated-gradient-text.tsx` to reference `ANIMATED_GRADIENT_TEXT_TOKENS`.
+
+#### Task: [STRENGTHEN] Enhanced AnimatedGradientText component with tactile spring scale micro-interactions and accessible default role and aria-label attributes
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `packages/ui/src/animated-gradient-text.tsx`, `packages/ui/src/animated-gradient-text.test.tsx`
+
+**Description**:
+Enhanced `AnimatedGradientText` component with tactile spring scale micro-interactions (`hover:scale-[1.01] active:scale-[0.99]`) and logical fallback `role="group"` and `aria-label` attributes for screen reader accessibility.
+
+**Success Criteria**:
+
+- [x] Implemented tactile scale transitions on AnimatedGradientText container.
+- [x] Implemented fallback `role="group"` and `aria-label` on AnimatedGradientText container.
+- [x] Added unit tests inside `packages/ui/src/animated-gradient-text.test.tsx` to verify transitions, token classes, and accessibility attributes.
+
 #### Task: [CONSOLIDATE] Centralized Marquee styling and tokens under MARQUEE_TOKENS
 
 - **Status**: ✅ Completed

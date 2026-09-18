@@ -3,16 +3,26 @@
 import React, { useRef } from "react";
 import { motion, MotionValue, useScroll, useTransform } from "framer-motion";
 
+import { CONTAINER_SCROLL_TOKENS } from "@saasfly/common";
+import { cn } from "@saasfly/ui";
+
 const RELATIVE_POSITION_STYLE = { position: "relative" as const };
 const PERSPECTIVE_STYLE = { perspective: "1000px" };
+
+export interface ContainerScrollProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  titleComponent: string | React.ReactNode;
+  children: React.ReactNode;
+}
 
 export const ContainerScroll = ({
   titleComponent,
   children,
-}: {
-  titleComponent: string | React.ReactNode;
-  children: React.ReactNode;
-}) => {
+  className,
+  role = CONTAINER_SCROLL_TOKENS.defaultRole,
+  "aria-label": ariaLabel = CONTAINER_SCROLL_TOKENS.defaultAriaLabel,
+  ...props
+}: ContainerScrollProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -40,11 +50,24 @@ export const ContainerScroll = ({
 
   return (
     <div
-      className="relative flex h-[60rem] items-center justify-center p-2 md:h-[80rem] md:px-20"
+      className={cn(
+        CONTAINER_SCROLL_TOKENS.container.base,
+        CONTAINER_SCROLL_TOKENS.container.hoverScale,
+        CONTAINER_SCROLL_TOKENS.container.activeScale,
+        CONTAINER_SCROLL_TOKENS.container.focusRing,
+        className,
+      )}
       ref={containerRef}
       style={RELATIVE_POSITION_STYLE}
+      role={role}
+      aria-label={ariaLabel}
+      tabIndex={0}
+      {...props}
     >
-      <div className="relative w-full py-10 md:py-10" style={PERSPECTIVE_STYLE}>
+      <div
+        className={CONTAINER_SCROLL_TOKENS.innerWrapper.base}
+        style={PERSPECTIVE_STYLE}
+      >
         <Header translate={translate} titleComponent={titleComponent} />
         <Card rotate={rotate} translate={translate} scale={scale}>
           {children}
@@ -57,16 +80,18 @@ export const ContainerScroll = ({
 export const Header = ({
   translate,
   titleComponent,
+  className,
 }: {
   translate: MotionValue<number>;
   titleComponent: string | React.ReactNode;
+  className?: string;
 }) => {
   return (
     <motion.div
       style={{
         translateY: translate,
       }}
-      className="div mx-auto max-w-5xl text-center"
+      className={cn(CONTAINER_SCROLL_TOKENS.header.base, className)}
     >
       {titleComponent}
     </motion.div>
@@ -77,11 +102,13 @@ export const Card = ({
   rotate,
   scale,
   children,
+  className,
 }: {
   rotate: MotionValue<number>;
   scale: MotionValue<number>;
   translate: MotionValue<number>;
   children: React.ReactNode;
+  className?: string;
 }) => {
   return (
     <motion.div
@@ -91,11 +118,9 @@ export const Card = ({
         boxShadow:
           "0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 233px 65px #00000003",
       }}
-      className="mx-auto -mt-12 h-[30rem] w-full max-w-5xl rounded-[30px] border-4 border-[#6C6C6C] bg-[#222222] p-2 shadow-2xl md:h-[40rem] md:p-6"
+      className={cn(CONTAINER_SCROLL_TOKENS.card.base, className)}
     >
-      <div className="h-full w-full overflow-hidden rounded-2xl bg-gray-100 dark:bg-zinc-900 md:rounded-2xl md:p-4">
-        {children}
-      </div>
+      <div className={CONTAINER_SCROLL_TOKENS.card.inner}>{children}</div>
     </motion.div>
   );
 };

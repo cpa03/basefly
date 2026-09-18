@@ -1075,6 +1075,33 @@ export const ANIMATED_GRADIENT_TEXT_TOKENS = {
   defaultRole: "group" as const,
 } as const;
 
+/**
+ * ContainerScroll design tokens
+ * Centralized layout, styling, transitions, micro-interactions, and accessibility for ContainerScroll component
+ */
+export const CONTAINER_SCROLL_TOKENS = {
+  container: {
+    base: "relative flex h-[60rem] items-center justify-center p-2 md:h-[80rem] md:px-20 transition-all duration-200 ease-out",
+    hoverScale: "hover:scale-[1.002]",
+    activeScale: "active:scale-[0.998]",
+    focusRing:
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  },
+  innerWrapper: {
+    base: "relative w-full py-10 md:py-10",
+  },
+  header: {
+    base: "div mx-auto max-w-5xl text-center",
+  },
+  card: {
+    base: "mx-auto -mt-12 h-[30rem] w-full max-w-5xl rounded-[30px] border-4 border-[#6C6C6C] bg-[#222222] p-2 shadow-2xl md:h-[40rem] md:p-6 transition-transform duration-200 ease-out",
+    inner:
+      "h-full w-full overflow-hidden rounded-2xl bg-gray-100 dark:bg-zinc-900 md:rounded-2xl md:p-4",
+  },
+  defaultAriaLabel: "Interactive scroll animation container",
+  defaultRole: "region" as const,
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

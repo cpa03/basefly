@@ -57,6 +57,39 @@ describe("ContainerScroll Component", () => {
     const inner = outer?.firstElementChild as HTMLElement;
     expect(inner).toHaveStyle("perspective: 1000px");
   });
+
+  it("should apply fallback role, aria-label, and scale transition token classes", () => {
+    const { container } = render(
+      <ContainerScroll titleComponent="Title">
+        <div>Scroll body</div>
+      </ContainerScroll>,
+    );
+
+    const outer = container.firstElementChild as HTMLElement;
+    expect(outer).toHaveAttribute("role", "region");
+    expect(outer).toHaveAttribute(
+      "aria-label",
+      "Interactive scroll animation container",
+    );
+    expect(outer.className).toContain("hover:scale-[1.002]");
+    expect(outer.className).toContain("active:scale-[0.998]");
+  });
+
+  it("should allow overriding role and aria-label", () => {
+    const { container } = render(
+      <ContainerScroll
+        titleComponent="Title"
+        role="group"
+        aria-label="Custom scroll section"
+      >
+        <div>Scroll body</div>
+      </ContainerScroll>,
+    );
+
+    const outer = container.firstElementChild as HTMLElement;
+    expect(outer).toHaveAttribute("role", "group");
+    expect(outer).toHaveAttribute("aria-label", "Custom scroll section");
+  });
 });
 
 describe("Header Component", () => {

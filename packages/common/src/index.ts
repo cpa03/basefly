@@ -385,6 +385,7 @@ export {
   METEORS_TOKENS,
   MARQUEE_TOKENS,
   ANIMATED_GRADIENT_TEXT_TOKENS,
+  CONTAINER_SCROLL_TOKENS,
  } from "./ui-tokens";
 export type {
   ButtonHeight,

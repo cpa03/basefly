@@ -4,6 +4,38 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Centralized ContainerScroll styling and tokens under CONTAINER_SCROLL_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/container-scroll-animation.tsx`
+
+**Description**:
+Centralized ContainerScroll component layout, container styles, inner wrapper, card styling, and default aria attributes under `CONTAINER_SCROLL_TOKENS` inside `packages/common/src/ui-tokens.ts` and updated `@saasfly/ui` component to reference them, eliminating hardcoded styles.
+
+**Success Criteria**:
+
+- [x] Defined `CONTAINER_SCROLL_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `CONTAINER_SCROLL_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/container-scroll-animation.tsx` to reference `CONTAINER_SCROLL_TOKENS`.
+
+#### Task: [STRENGTHEN] Enhanced ContainerScroll component with tactile spring scale micro-interactions and accessible default role and aria-label attributes
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `packages/ui/src/container-scroll-animation.tsx`, `packages/ui/src/container-scroll-animation.test.tsx`
+
+**Description**:
+Enhanced `ContainerScroll` component with tactile spring scale micro-interactions (`hover:scale-[1.002] active:scale-[0.998]`), focus-visible ring accessibility, and logical fallback `role="region"` and `aria-label` attributes for screen reader accessibility.
+
+**Success Criteria**:
+
+- [x] Implemented tactile scale transitions on ContainerScroll container.
+- [x] Implemented fallback `role="region"` and `aria-label` on ContainerScroll container.
+- [x] Added unit tests inside `packages/ui/src/container-scroll-animation.test.tsx` to verify transitions, token classes, and accessibility attributes.
+
 #### Task: [CONSOLIDATE] Centralized AnimatedGradientText styling and tokens under ANIMATED_GRADIENT_TEXT_TOKENS
 
 - **Status**: ✅ Completed

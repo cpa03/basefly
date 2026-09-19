@@ -1102,6 +1102,38 @@ export const CONTAINER_SCROLL_TOKENS = {
   defaultRole: "region" as const,
 } as const;
 
+/**
+ * FollowerPointer design tokens
+ * Centralized layout, styling, transitions, micro-interactions, and accessibility for FollowerPointerCard component
+ */
+export const FOLLOWER_POINTER_TOKENS = {
+  card: {
+    base: "relative transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+    cursor: "none",
+    hoverScale: "hover:scale-[1.01]",
+    activeScale: "active:scale-[0.99]",
+  },
+  pointerContainer: {
+    base: "absolute z-50 h-4 w-4 rounded-full",
+    pointerEvents: "none",
+  },
+  svg: "h-6 w-6 -translate-x-[12px] -translate-y-[10px] -rotate-[70deg] transform stroke-sky-600 text-sky-500",
+  titleBadge:
+    "min-w-max whitespace-nowrap rounded-full bg-neutral-200 px-2 py-2 text-xs text-white",
+  colors: [
+    "var(--sky-500)",
+    "var(--neutral-500)",
+    "var(--teal-500)",
+    "var(--green-500)",
+    "var(--blue-500)",
+    "var(--red-500)",
+    "var(--yellow-500)",
+  ] as const,
+  defaultAriaLabel: "Interactive follower pointer container",
+  defaultRole: "region" as const,
+  defaultTitle: "William Shakespeare",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

@@ -4,6 +4,38 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Centralized FollowerPointer styling and tokens under FOLLOWER_POINTER_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/following-pointer.tsx`
+
+**Description**:
+Centralized FollowerPointer card styling, cursor properties, SVG cursor styling, title badge styles, pointer color array, and default aria attributes under `FOLLOWER_POINTER_TOKENS` inside `packages/common/src/ui-tokens.ts` and updated `@saasfly/ui` component to reference them, eliminating hardcoded styles.
+
+**Success Criteria**:
+
+- [x] Defined `FOLLOWER_POINTER_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `FOLLOWER_POINTER_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/following-pointer.tsx` to reference `FOLLOWER_POINTER_TOKENS`.
+
+#### Task: [STRENGTHEN] Enhanced FollowerPointerCard with tactile spring micro-interactions and accessibility fallbacks
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `packages/ui/src/following-pointer.tsx`, `packages/ui/src/following-pointer.test.tsx`
+
+**Description**:
+Enhanced `FollowerPointerCard` component with tactile spring micro-interactions (`hover:scale-[1.01] active:scale-[0.99]`), focus-visible ring outlines, and logical fallback `role="region"` and `aria-label` attributes for screen reader accessibility.
+
+**Success Criteria**:
+
+- [x] Implemented tactile scale transitions on FollowerPointerCard.
+- [x] Implemented fallback `role="region"` and `aria-label` on FollowerPointerCard.
+- [x] Added unit tests inside `packages/ui/src/following-pointer.test.tsx` to verify transitions, token classes, and accessibility attributes.
+
 #### Task: [CONSOLIDATE] Centralized ContainerScroll styling and tokens under CONTAINER_SCROLL_TOKENS
 
 - **Status**: ✅ Completed

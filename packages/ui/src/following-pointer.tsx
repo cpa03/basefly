@@ -9,26 +9,22 @@ import {
   type MotionValue,
 } from "framer-motion";
 
-import { cn } from "./utils/cn";
+import { FOLLOWER_POINTER_TOKENS } from "@saasfly/common";
 
-const POINTER_COLORS = [
-  "var(--sky-500)",
-  "var(--neutral-500)",
-  "var(--teal-500)",
-  "var(--green-500)",
-  "var(--blue-500)",
-  "var(--red-500)",
-  "var(--yellow-500)",
-] as const;
+import { cn } from "./utils/cn";
 
 export const FollowerPointerCard = ({
   children,
   className,
   title,
+  "aria-label": ariaLabel,
+  role = FOLLOWER_POINTER_TOKENS.defaultRole,
 }: {
   children: React.ReactNode;
   className?: string;
   title?: string | React.ReactNode;
+  "aria-label"?: string;
+  role?: string;
 }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -63,10 +59,17 @@ export const FollowerPointerCard = ({
       onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       style={{
-        cursor: "none",
+        cursor: FOLLOWER_POINTER_TOKENS.card.cursor,
       }}
       ref={ref}
-      className={cn("relative", className)}
+      role={role}
+      aria-label={ariaLabel ?? FOLLOWER_POINTER_TOKENS.defaultAriaLabel}
+      className={cn(
+        FOLLOWER_POINTER_TOKENS.card.base,
+        FOLLOWER_POINTER_TOKENS.card.hoverScale,
+        FOLLOWER_POINTER_TOKENS.card.activeScale,
+        className,
+      )}
     >
       <AnimatePresence>
         {isInside && <FollowPointer x={x} y={y} title={title} />}
@@ -87,16 +90,17 @@ export const FollowPointer = ({
 }) => {
   const [pointerColor] = React.useState(
     () =>
-      POINTER_COLORS[Math.floor(Math.random() * POINTER_COLORS.length)] ??
-      POINTER_COLORS[0],
+      FOLLOWER_POINTER_TOKENS.colors[
+        Math.floor(Math.random() * FOLLOWER_POINTER_TOKENS.colors.length)
+      ] ?? FOLLOWER_POINTER_TOKENS.colors[0],
   );
   return (
     <motion.div
-      className="absolute z-50 h-4 w-4 rounded-full"
+      className={FOLLOWER_POINTER_TOKENS.pointerContainer.base}
       style={{
         top: y,
         left: x,
-        pointerEvents: "none",
+        pointerEvents: FOLLOWER_POINTER_TOKENS.pointerContainer.pointerEvents as React.CSSProperties["pointerEvents"],
       }}
       initial={{
         scale: 1,
@@ -116,10 +120,11 @@ export const FollowPointer = ({
         fill="currentColor"
         strokeWidth="1"
         viewBox="0 0 16 16"
-        className="h-6 w-6 -translate-x-[12px] -translate-y-[10px] -rotate-[70deg] transform stroke-sky-600 text-sky-500"
+        className={FOLLOWER_POINTER_TOKENS.svg}
         height="1em"
         width="1em"
         xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
       >
         <path d="M14.082 2.182a.5.5 0 0 1 .103.557L8.528 15.467a.5.5 0 0 1-.917-.007L5.57 10.694.803 8.652a.5.5 0 0 1-.006-.916l12.728-5.657a.5.5 0 0 1 .556.103z"></path>
       </svg>
@@ -139,11 +144,9 @@ export const FollowPointer = ({
           scale: 0.5,
           opacity: 0,
         }}
-        className={
-          "min-w-max whitespace-nowrap rounded-full bg-neutral-200 px-2 py-2 text-xs text-white"
-        }
+        className={FOLLOWER_POINTER_TOKENS.titleBadge}
       >
-        {title ?? "William Shakespeare"}
+        {title ?? FOLLOWER_POINTER_TOKENS.defaultTitle}
       </motion.div>
     </motion.div>
   );

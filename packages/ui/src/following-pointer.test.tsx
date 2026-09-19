@@ -15,7 +15,7 @@ describe("FollowerPointerCard Component", () => {
     expect(screen.getByText("Pointer card content")).toBeInTheDocument();
   });
 
-  it("should merge custom className into the card", () => {
+  it("should merge custom className into the card and apply token classes and accessibility attributes", () => {
     const { container } = render(
       <FollowerPointerCard className="custom-pointer-card">
         <div>Content</div>
@@ -24,6 +24,21 @@ describe("FollowerPointerCard Component", () => {
 
     const card = container.firstElementChild as HTMLElement;
     expect(card).toHaveClass("custom-pointer-card");
+    expect(card).toHaveClass("hover:scale-[1.01]");
+    expect(card).toHaveClass("active:scale-[0.99]");
+    expect(card).toHaveAttribute("role", "region");
+    expect(card).toHaveAttribute("aria-label", "Interactive follower pointer container");
+  });
+
+  it("should support explicit aria-label and role overrides", () => {
+    render(
+      <FollowerPointerCard aria-label="Custom follower pointer" role="group">
+        <div>Content</div>
+      </FollowerPointerCard>,
+    );
+
+    const card = screen.getByRole("group", { name: "Custom follower pointer" });
+    expect(card).toBeInTheDocument();
   });
 
   it("should apply a none cursor style", () => {

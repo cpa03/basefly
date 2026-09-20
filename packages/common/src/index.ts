@@ -387,6 +387,7 @@ export {
   ANIMATED_GRADIENT_TEXT_TOKENS,
   CONTAINER_SCROLL_TOKENS,
   FOLLOWER_POINTER_TOKENS,
+  TEXT_REVEAL_TOKENS,
  } from "./ui-tokens";
 export type {
   ButtonHeight,

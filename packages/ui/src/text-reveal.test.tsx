@@ -37,6 +37,21 @@ describe("TextRevealByWord Component", () => {
     expect(wrapper).toHaveClass("custom-reveal");
   });
 
+  it("should support custom accessibility role and aria-label", () => {
+    render(
+      <TextRevealByWord
+        text="Hello"
+        role="region"
+        aria-label="Custom text reveal animation"
+      />,
+    );
+
+    const region = screen.getByRole("region", {
+      name: "Custom text reveal animation",
+    });
+    expect(region).toBeInTheDocument();
+  });
+
   it("should render the paragraph with flex-wrap layout", () => {
     const { container } = render(<TextRevealByWord text="Hello" />);
 

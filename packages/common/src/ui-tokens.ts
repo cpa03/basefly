@@ -1134,6 +1134,29 @@ export const FOLLOWER_POINTER_TOKENS = {
   defaultTitle: "William Shakespeare",
 } as const;
 
+/**
+ * TextReveal design tokens
+ * Centralized layout, typography, animations, and micro-interactions for TextReveal component
+ */
+export const TEXT_REVEAL_TOKENS = {
+  container: {
+    base: "relative z-0 h-[200vh] transition-all duration-200 ease-out",
+    hoverScale: "hover:scale-[1.002]",
+    activeScale: "active:scale-[0.998]",
+  },
+  stickyWrapper:
+    "sticky top-0 mx-auto flex h-[50%] max-w-4xl items-center bg-transparent px-[1rem] py-[5rem]",
+  paragraph:
+    "flex flex-wrap p-5 text-2xl font-bold text-black/20 dark:text-white/20 md:p-8 md:text-3xl lg:p-10 lg:text-4xl xl:text-5xl",
+  word: {
+    container: "xl:lg-3 relative mx-1 lg:mx-2.5",
+    background: "absolute opacity-30",
+    animated: "text-black dark:text-white",
+  },
+  defaultAriaLabel: "Scroll triggered text reveal animation",
+  defaultRole: "region" as const,
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

@@ -20,6 +20,7 @@
 - [x] bug: Workspace health scan verified on 2026-08-18 — 2165 tests passing across 148 test files, 0 typescript errors, 0 lint warnings.
 - [x] bug: Workspace health scan verified on 2026-09-13 — 2153 tests passing across 148 test files, 0 typescript errors, 0 lint warnings.
 - [x] bug: Workspace health scan verified — 2155 tests passing across 148 test files, 0 typescript errors, 0 lint warnings.
+- [x] bug: Next.js 16 build conflict caused by duplicate `middleware.ts` and `proxy.ts` in `apps/nextjs/src` (fixed by removing obsolete `middleware.ts`).
 
 ## Verification Summary (2026-02-17)
 

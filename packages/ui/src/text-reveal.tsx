@@ -3,6 +3,8 @@
 import { FC, ReactNode, useMemo, useRef } from "react";
 import { motion, MotionValue, useScroll, useTransform } from "framer-motion";
 
+import { TEXT_REVEAL_TOKENS } from "@saasfly/common";
+
 import { cn } from "./utils/cn";
 
 const RELATIVE_POSITION_STYLE = { position: "relative" as const };
@@ -10,11 +12,15 @@ const RELATIVE_POSITION_STYLE = { position: "relative" as const };
 interface TextRevealByWordProps {
   text: string;
   className?: string;
+  "aria-label"?: string;
+  role?: string;
 }
 
 export const TextRevealByWord: FC<TextRevealByWordProps> = ({
   text,
   className,
+  "aria-label": ariaLabel = TEXT_REVEAL_TOKENS.defaultAriaLabel,
+  role = TEXT_REVEAL_TOKENS.defaultRole,
 }) => {
   const targetRef = useRef<HTMLDivElement | null>(null);
 
@@ -26,20 +32,18 @@ export const TextRevealByWord: FC<TextRevealByWordProps> = ({
   return (
     <div
       ref={targetRef}
-      className={cn("relative z-0 h-[200vh]", className)}
+      role={role}
+      aria-label={ariaLabel}
+      className={cn(
+        TEXT_REVEAL_TOKENS.container.base,
+        TEXT_REVEAL_TOKENS.container.hoverScale,
+        TEXT_REVEAL_TOKENS.container.activeScale,
+        className,
+      )}
       style={RELATIVE_POSITION_STYLE}
     >
-      <div
-        className={
-          "sticky top-0 mx-auto flex h-[50%] max-w-4xl items-center bg-transparent px-[1rem] py-[5rem]"
-        }
-      >
-        <p
-          ref={targetRef}
-          className={
-            "flex flex-wrap p-5 text-2xl font-bold text-black/20 dark:text-white/20 md:p-8 md:text-3xl lg:p-10 lg:text-4xl xl:text-5xl"
-          }
-        >
+      <div className={TEXT_REVEAL_TOKENS.stickyWrapper}>
+        <p ref={targetRef} className={TEXT_REVEAL_TOKENS.paragraph}>
           {words.map((word, i) => {
             const start = i / words.length;
             const end = start + 1 / words.length;
@@ -64,11 +68,11 @@ interface WordProps {
 const Word: FC<WordProps> = ({ children, progress, range }) => {
   const opacity = useTransform(progress, range, [0, 1]);
   return (
-    <span className="xl:lg-3 relative mx-1 lg:mx-2.5">
-      <span className={"absolute opacity-30"}>{children}</span>
+    <span className={TEXT_REVEAL_TOKENS.word.container}>
+      <span className={TEXT_REVEAL_TOKENS.word.background}>{children}</span>
       <motion.span
         style={{ opacity: opacity }}
-        className={"text-black dark:text-white"}
+        className={TEXT_REVEAL_TOKENS.word.animated}
       >
         {children}
       </motion.span>

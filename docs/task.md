@@ -3378,3 +3378,6 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [STRENGTHEN] Enhanced AlertDialogAction and AlertDialogCancel buttons with tactile spring micro-interactions (hover:scale-[1.02] active:scale-[0.98]) and logical aria-label fallbacks
 - [CONSOLIDATE] Centralized Meteors styling and tokens under METEORS_TOKENS inside @saasfly/common/src/ui-tokens.ts
 - [STRENGTHEN] Enhanced Meteors component with presentation role, aria-hidden accessibility properties, and unit test assertions
+- [x] bug: Next.js 16 build conflict caused by duplicate middleware.ts and proxy.ts in apps/nextjs/src
+- [CONSOLIDATE] Centralized TextReveal component styling and tokens under TEXT_REVEAL_TOKENS inside @saasfly/common/src/ui-tokens.ts
+- [STRENGTHEN] Enhanced TextReveal component with tactile spring scale micro-interactions (hover:scale-[1.002] active:scale-[0.998]), region role, default aria-label, and unit test assertions

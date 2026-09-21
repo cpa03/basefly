@@ -3381,3 +3381,5 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [x] bug: Next.js 16 build conflict caused by duplicate middleware.ts and proxy.ts in apps/nextjs/src
 - [CONSOLIDATE] Centralized TextReveal component styling and tokens under TEXT_REVEAL_TOKENS inside @saasfly/common/src/ui-tokens.ts
 - [STRENGTHEN] Enhanced TextReveal component with tactile spring scale micro-interactions (hover:scale-[1.002] active:scale-[0.998]), region role, default aria-label, and unit test assertions
+- [CONSOLIDATE] Centralized TextGenerateEffect component styling and tokens under TEXT_GENERATE_EFFECT_TOKENS
+- [STRENGTHEN] Enhanced TextGenerateEffect component with tactile spring scale micro-interactions (hover:scale-[1.002] active:scale-[0.998]), region role, default aria-label, focus-visible outline, and unit test assertions

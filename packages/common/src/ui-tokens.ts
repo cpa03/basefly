@@ -1157,6 +1157,24 @@ export const TEXT_REVEAL_TOKENS = {
   defaultRole: "region" as const,
 } as const;
 
+/**
+ * TextGenerateEffect design tokens
+ * Centralized layout, styling, typography, animations, micro-interactions, and accessibility for TextGenerateEffect component
+ */
+export const TEXT_GENERATE_EFFECT_TOKENS = {
+  container: {
+    base: "transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+    hoverScale: "hover:scale-[1.002]",
+    activeScale: "active:scale-[0.998]",
+  },
+  innerWrapper: "mt-0",
+  textContainer:
+    "max-w-[750px] text-center text-lg font-light text-foreground",
+  word: "text-black opacity-0 dark:text-white",
+  defaultAriaLabel: "Text generate animation",
+  defaultRole: "region" as const,
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

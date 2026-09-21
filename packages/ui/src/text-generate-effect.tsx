@@ -1,18 +1,26 @@
 "use client";
 
-import { useEffect, type ComponentType } from "react";
+import { useEffect } from "react";
 import dynamic from "next/dynamic";
 import { motion, stagger, useAnimate } from "framer-motion";
 
+import { TEXT_GENERATE_EFFECT_TOKENS } from "@saasfly/common";
+
 import { cn } from "./utils/cn";
+
+export interface TextGenerateEffectProps {
+  words: string;
+  className?: string;
+  "aria-label"?: string;
+  role?: string;
+}
 
 const TextGenerateEffectImpl = ({
   words,
   className,
-}: {
-  words: string;
-  className?: string;
-}) => {
+  "aria-label": ariaLabel,
+  role,
+}: TextGenerateEffectProps) => {
   const [scope, animate] = useAnimate();
   const wordsArray = words.split(" ");
 
@@ -38,7 +46,7 @@ const TextGenerateEffectImpl = ({
           return (
             <motion.span
               key={word + idx}
-              className="text-black opacity-0 dark:text-white"
+              className={TEXT_GENERATE_EFFECT_TOKENS.word}
             >
               {word}{" "}
             </motion.span>
@@ -49,9 +57,19 @@ const TextGenerateEffectImpl = ({
   };
 
   return (
-    <div className={cn("", className)}>
-      <div className="mt-0">
-        <div className="max-w-[750px] text-center text-lg font-light text-foreground">
+    <div
+      role={role ?? TEXT_GENERATE_EFFECT_TOKENS.defaultRole}
+      aria-label={ariaLabel ?? TEXT_GENERATE_EFFECT_TOKENS.defaultAriaLabel}
+      tabIndex={0}
+      className={cn(
+        TEXT_GENERATE_EFFECT_TOKENS.container.base,
+        TEXT_GENERATE_EFFECT_TOKENS.container.hoverScale,
+        TEXT_GENERATE_EFFECT_TOKENS.container.activeScale,
+        className,
+      )}
+    >
+      <div className={TEXT_GENERATE_EFFECT_TOKENS.innerWrapper}>
+        <div className={TEXT_GENERATE_EFFECT_TOKENS.textContainer}>
           {renderWords()}
         </div>
       </div>
@@ -59,14 +77,9 @@ const TextGenerateEffectImpl = ({
   );
 };
 
-const TypedDynamicComponent = dynamic(
+export const TextGenerateEffect = dynamic<TextGenerateEffectProps>(
   () => Promise.resolve(TextGenerateEffectImpl),
   {
     ssr: false,
   },
-) as ComponentType<{
-  words: string;
-  className?: string;
-}>;
-
-export const TextGenerateEffect = TypedDynamicComponent;
+);

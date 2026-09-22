@@ -54,4 +54,22 @@ describe("CardSkeleton Component", () => {
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
     expect(screen.queryByRole("link")).not.toBeInTheDocument();
   });
+
+  it("should apply default region role and aria-label for accessibility", () => {
+    render(<CardSkeleton />);
+
+    const regionElement = screen.getByRole("region");
+    expect(regionElement).toBeInTheDocument();
+    expect(regionElement).toHaveAttribute("aria-label", "Loading card content...");
+  });
+
+  it("should allow overriding role and aria-label props", () => {
+    render(
+      <CardSkeleton role="group" aria-label="Custom skeleton loading" />,
+    );
+
+    const groupElement = screen.getByRole("group");
+    expect(groupElement).toBeInTheDocument();
+    expect(groupElement).toHaveAttribute("aria-label", "Custom skeleton loading");
+  });
 });

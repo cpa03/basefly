@@ -1171,8 +1171,23 @@ export const TEXT_GENERATE_EFFECT_TOKENS = {
   textContainer:
     "max-w-[750px] text-center text-lg font-light text-foreground",
   word: "text-black opacity-0 dark:text-white",
+  initialOpacity: 0,
+  targetOpacity: 1,
+  animation: {
+    duration: 2,
+    staggerDelay: 0.1,
+  },
   defaultAriaLabel: "Text generate animation",
   defaultRole: "region" as const,
+} as const;
+
+/**
+ * CardSkeleton design tokens
+ * Centralized accessibility and aria parameters for CardSkeleton component
+ */
+export const CARD_SKELETON_TOKENS = {
+  defaultRole: "region" as const,
+  defaultAriaLabel: "Loading card content...",
 } as const;
 
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;

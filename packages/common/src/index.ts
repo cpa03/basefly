@@ -389,6 +389,7 @@ export {
   FOLLOWER_POINTER_TOKENS,
   TEXT_REVEAL_TOKENS,
   TEXT_GENERATE_EFFECT_TOKENS,
+  CARD_SKELETON_TOKENS,
  } from "./ui-tokens";
 export type {
   ButtonHeight,

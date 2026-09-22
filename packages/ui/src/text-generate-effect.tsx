@@ -29,11 +29,11 @@ const TextGenerateEffectImpl = ({
       void animate(
         "span",
         {
-          opacity: 1,
+          opacity: TEXT_GENERATE_EFFECT_TOKENS.targetOpacity,
         },
         {
-          duration: 2,
-          delay: stagger(0.1),
+          duration: TEXT_GENERATE_EFFECT_TOKENS.animation.duration,
+          delay: stagger(TEXT_GENERATE_EFFECT_TOKENS.animation.staggerDelay),
         },
       );
     }
@@ -47,6 +47,7 @@ const TextGenerateEffectImpl = ({
             <motion.span
               key={word + idx}
               className={TEXT_GENERATE_EFFECT_TOKENS.word}
+              style={{ opacity: TEXT_GENERATE_EFFECT_TOKENS.initialOpacity }}
             >
               {word}{" "}
             </motion.span>

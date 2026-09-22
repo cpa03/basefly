@@ -1,9 +1,24 @@
+import { CARD_SKELETON_TOKENS } from "@saasfly/common";
 import { Card, CardContent, CardFooter, CardHeader } from "@saasfly/ui/card";
 import { Skeleton } from "@saasfly/ui/skeleton";
 
-export function CardSkeleton() {
+export interface CardSkeletonProps {
+  className?: string;
+  role?: string;
+  "aria-label"?: string;
+}
+
+export function CardSkeleton({
+  className,
+  role,
+  "aria-label": ariaLabel,
+}: CardSkeletonProps = {}) {
   return (
-    <Card>
+    <Card
+      role={role ?? CARD_SKELETON_TOKENS.defaultRole}
+      aria-label={ariaLabel ?? CARD_SKELETON_TOKENS.defaultAriaLabel}
+      className={className}
+    >
       <CardHeader className="gap-2">
         <Skeleton className="h-5 w-1/5" />
         <Skeleton className="h-4 w-4/5" />

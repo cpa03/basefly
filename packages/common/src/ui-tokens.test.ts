@@ -9,6 +9,8 @@ import {
   INPUT_TOKENS,
   SWITCH_TOKENS,
   LABEL_TOKENS,
+  CARD_SKELETON_TOKENS,
+  TEXT_GENERATE_EFFECT_TOKENS,
   UI_ANIMATION,
   type BadgeSize,
   type ButtonHeight,
@@ -296,6 +298,24 @@ describe("ui-tokens.ts - LABEL_TOKENS", () => {
     expect(LABEL_TOKENS.base).toContain("peer-disabled:cursor-not-allowed");
     expect(LABEL_TOKENS.base).toContain("peer-disabled:opacity-70");
     expect(LABEL_TOKENS.base).toContain("transition-colors");
+  });
+});
+
+describe("ui-tokens.ts - CARD_SKELETON_TOKENS", () => {
+  it("should have default role and aria-label", () => {
+    expect(CARD_SKELETON_TOKENS.defaultRole).toBe("region");
+    expect(CARD_SKELETON_TOKENS.defaultAriaLabel).toBe("Loading card content...");
+  });
+});
+
+describe("ui-tokens.ts - TEXT_GENERATE_EFFECT_TOKENS", () => {
+  it("should have animation and opacity configuration", () => {
+    expect(TEXT_GENERATE_EFFECT_TOKENS.initialOpacity).toBe(0);
+    expect(TEXT_GENERATE_EFFECT_TOKENS.targetOpacity).toBe(1);
+    expect(TEXT_GENERATE_EFFECT_TOKENS.animation.duration).toBe(2);
+    expect(TEXT_GENERATE_EFFECT_TOKENS.animation.staggerDelay).toBe(0.1);
+    expect(TEXT_GENERATE_EFFECT_TOKENS.defaultRole).toBe("region");
+    expect(TEXT_GENERATE_EFFECT_TOKENS.defaultAriaLabel).toBe("Text generate animation");
   });
 });
 

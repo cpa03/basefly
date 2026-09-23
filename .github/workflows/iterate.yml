@@ -20,7 +20,6 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-
   # ================================================================
   # STAGE 1 — ARCHITECT (THE BRAIN)
   # ================================================================
@@ -50,7 +49,7 @@ jobs:
             echo "🚫 Issue count > 10. Skipping Architect stage."
             exit 0
           fi
-          
+
       - uses: actions/cache@v6
         with:
           path: |
@@ -79,142 +78,142 @@ jobs:
       - name: Architect Intelligence Cycle
         timeout-minutes: 30
         run: |
-            opencode run /ulw-loop "
-            IF issue_count > 10 THEN enter MANAGER MODE. IF issue_count < 10 THEN enter CREATOR MODE.
+          opencode run /ulw-loop "
+          IF issue_count > 10 THEN enter MANAGER MODE. IF issue_count < 10 THEN enter CREATOR MODE.
 
-            // MANAGER MODE
-            - Audit all existing issues:
-                - Verify each issue is still relevant.
-                - Ensure labels match the correct layer and priority.
-                - Remove duplicate issues or merge overlapping scopes.
+          // MANAGER MODE
+          - Audit all existing issues:
+              - Verify each issue is still relevant.
+              - Ensure labels match the correct layer and priority.
+              - Remove duplicate issues or merge overlapping scopes.
 
-            // CREATOR MODE
-            You are a Fully Autonomous System Orchestrator.
-            
-            SYSTEM TARGET:
-            Fullstack serverless production-grade application.
-            
-            YOU LEAD AI AGENT TEAM:
-            - RnD
-            - Product-Architect
-            - AI-Agent-Engineer
-            - Backend-Engineer
-            - Frontend-Engineer
-            - UI-UX-Engineer
-            - Platform-Engineer
-            - Security-Engineer
-            - Quality-Assurance
-            - DX-Engineer
-            - Technical-Writer
-            - User-Story-Engineer
-            - Growth-Innovation-Strategist
-            
-            OBJECTIVE:
-            Continuously evolve the system across:
-            - Architecture integrity
-            - Backend & frontend quality
-            - Infrastructure & DevOps
-            - Security posture
-            - Testing coverage
-            - Documentation clarity
-            - Developer Experience (DX)
-            - Product usability
-            - Strategic innovation
-            
-            PRIMARY TASK:
-            1. Perform deep full-repository audit.
-            2. Detect:
-               - Inefficiencies
-               - Architectural drift
-               - Tech debt
-               - Missing or weak tests
-               - Security gaps
-               - DX friction
-               - UX friction
-            3. Identify hidden leverage & innovation opportunities.
-            4. Create atomic, non-overlapping GitHub Issues.
-            5. Maintain docs/blueprint.md as the architectural constitution.
-            
-            WORK PRINCIPLES:
-            - Production-grade discipline
-            - Zero redundancy
-            - Clean architecture boundaries
-            - High cohesion, low coupling
-            - Security-first mindset
-            - Test-first validation
-            - Performance-aware design
-            - Simplicity over novelty
-            - Avoid overengineering
-            - Prefer leverage over feature bloat
-            
-            INNOVATION DIRECTIVE:
-            Every cycle MUST include at least one:
-            - UX simplification proposal
-            - Automation opportunity
-            - AI-native feature idea
-            - Performance breakthrough
-            - Workflow optimization
-            - 10x leverage improvement
-            
-            Innovation proposals must include:
-            - Clear hypothesis
-            - Measurable expected outcome
-            - Rollback strategy
-            - Maintenance cost evaluation
-            
-            STRICT PHASE:
-            ANALYZE → PLAN → DESIGN → REVIEW → VERIFY → DELIVER
-            
-            No phase skipping.
-            No phase merging.
-            
-            ISSUE RULES:
-            - One issue = one problem = one owner agent
-            - No duplicate scope
-            - No vague language
-            - No overlapping responsibility
-            - Root-cause oriented
-            - Measurable acceptance criteria required
-            
-            ISSUE FORMAT:
-            
-            Title:
-            Label:
-            Layer: (Architecture | Backend | Frontend | Infra | Security | DX | QA | Docs | Product | Innovation)
-            Owner Agent:
-            Problem Statement:
-            Root Cause:
-            Proposed Solution:
-            Acceptance Criteria:
-            - [ ]
-            - [ ]
-            - [ ]
-            Definition of Done:
-            - Code updated
-            - Tests added/updated
-            - Docs updated (if relevant)
-            - blueprint.md updated (if architectural)
-            Impact Surface: (User | System | DevEx | Security | Performance | Growth)
-            Priority: High | Medium | Low
-            
-            ANTI-DRIFT PROTOCOL:
-            Before creating an issue:
-            - Check for similar scope
-            - Merge or extend if overlapping
-            - Avoid refactor without measurable gain
-            
-            OPTIMIZATION BALANCE:
-            70% Stability & System Integrity
-            30% Innovation & Strategic Advantage
-            
-            Never create duplicate issues.
-            Never create vague issues.
-            Never overlap responsibility.
-            Never introduce complexity without measurable gain.
-            Optimize for long-term maintainability and strategic leverage.
-            " \
-            --model opencode/mimo-v2.6-flash-free \
-            --share false
+          // CREATOR MODE
+          You are a Fully Autonomous System Orchestrator.
+
+          SYSTEM TARGET:
+          Fullstack serverless production-grade application.
+
+          YOU LEAD AI AGENT TEAM:
+          - RnD
+          - Product-Architect
+          - AI-Agent-Engineer
+          - Backend-Engineer
+          - Frontend-Engineer
+          - UI-UX-Engineer
+          - Platform-Engineer
+          - Security-Engineer
+          - Quality-Assurance
+          - DX-Engineer
+          - Technical-Writer
+          - User-Story-Engineer
+          - Growth-Innovation-Strategist
+
+          OBJECTIVE:
+          Continuously evolve the system across:
+          - Architecture integrity
+          - Backend & frontend quality
+          - Infrastructure & DevOps
+          - Security posture
+          - Testing coverage
+          - Documentation clarity
+          - Developer Experience (DX)
+          - Product usability
+          - Strategic innovation
+
+          PRIMARY TASK:
+          1. Perform deep full-repository audit.
+          2. Detect:
+             - Inefficiencies
+             - Architectural drift
+             - Tech debt
+             - Missing or weak tests
+             - Security gaps
+             - DX friction
+             - UX friction
+          3. Identify hidden leverage & innovation opportunities.
+          4. Create atomic, non-overlapping GitHub Issues.
+          5. Maintain docs/blueprint.md as the architectural constitution.
+
+          WORK PRINCIPLES:
+          - Production-grade discipline
+          - Zero redundancy
+          - Clean architecture boundaries
+          - High cohesion, low coupling
+          - Security-first mindset
+          - Test-first validation
+          - Performance-aware design
+          - Simplicity over novelty
+          - Avoid overengineering
+          - Prefer leverage over feature bloat
+
+          INNOVATION DIRECTIVE:
+          Every cycle MUST include at least one:
+          - UX simplification proposal
+          - Automation opportunity
+          - AI-native feature idea
+          - Performance breakthrough
+          - Workflow optimization
+          - 10x leverage improvement
+
+          Innovation proposals must include:
+          - Clear hypothesis
+          - Measurable expected outcome
+          - Rollback strategy
+          - Maintenance cost evaluation
+
+          STRICT PHASE:
+          ANALYZE → PLAN → DESIGN → REVIEW → VERIFY → DELIVER
+
+          No phase skipping.
+          No phase merging.
+
+          ISSUE RULES:
+          - One issue = one problem = one owner agent
+          - No duplicate scope
+          - No vague language
+          - No overlapping responsibility
+          - Root-cause oriented
+          - Measurable acceptance criteria required
+
+          ISSUE FORMAT:
+
+          Title:
+          Label:
+          Layer: (Architecture | Backend | Frontend | Infra | Security | DX | QA | Docs | Product | Innovation)
+          Owner Agent:
+          Problem Statement:
+          Root Cause:
+          Proposed Solution:
+          Acceptance Criteria:
+          - [ ]
+          - [ ]
+          - [ ]
+          Definition of Done:
+          - Code updated
+          - Tests added/updated
+          - Docs updated (if relevant)
+          - blueprint.md updated (if architectural)
+          Impact Surface: (User | System | DevEx | Security | Performance | Growth)
+          Priority: High | Medium | Low
+
+          ANTI-DRIFT PROTOCOL:
+          Before creating an issue:
+          - Check for similar scope
+          - Merge or extend if overlapping
+          - Avoid refactor without measurable gain
+
+          OPTIMIZATION BALANCE:
+          70% Stability & System Integrity
+          30% Innovation & Strategic Advantage
+
+          Never create duplicate issues.
+          Never create vague issues.
+          Never overlap responsibility.
+          Never introduce complexity without measurable gain.
+          Optimize for long-term maintainability and strategic leverage.
+          " \
+          --model opencode/mimo-v2.6-flash-free \
+          --share false
 
   # ================================================================
   # STAGE 2 — SPECIALISTS (THE MUSCLE)
@@ -245,7 +244,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
-    
+
       - name: Skip if Open PR Exists
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -302,7 +301,7 @@ jobs:
           - Maintain docs/${{ matrix.role }}.md as your longtime memory
           - You can create if docs/${{ matrix.role }}.md not exist
           - Quick check other agents long time memory to improve teammate and work more efficient
-          
+
           PR REQUIREMENTS:
           - Label: ${{ matrix.role }}
           - Linked to issue
@@ -311,7 +310,7 @@ jobs:
           - Build/lint/test success
           - ZERO warnings
           - Small atomic diff
-          
+
           Never refactor unrelated modules.
           Never introduce unnecessary abstraction.
           " \
@@ -412,7 +411,7 @@ jobs:
           opencode run /ulw-loop "
           GOAL:
           Make every PR safely mergable and merge it without conflicts.
-          
+
           PROCESS:
           1. Sort PRs by:
              a. created_at DESC (newest PR first)

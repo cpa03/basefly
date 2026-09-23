@@ -1,6 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+
 import { GLOWING_EFFECT_TOKENS } from "@saasfly/common";
 
 import { GlowingEffect } from "./glowing-effect";
@@ -72,7 +73,10 @@ describe("GlowingEffect Component", () => {
 
     const element = getByRole(GLOWING_EFFECT_TOKENS.defaultRole);
     expect(element).toBeInTheDocument();
-    expect(element).toHaveAttribute("aria-label", GLOWING_EFFECT_TOKENS.defaultAriaLabel);
+    expect(element).toHaveAttribute(
+      "aria-label",
+      GLOWING_EFFECT_TOKENS.defaultAriaLabel,
+    );
   });
 
   it("should support custom role and aria-label overrides", () => {
@@ -81,7 +85,7 @@ describe("GlowingEffect Component", () => {
         disabled={false}
         role="group"
         aria-label="Custom glow effect"
-      />
+      />,
     );
 
     const element = getByRole("group");
@@ -93,7 +97,11 @@ describe("GlowingEffect Component", () => {
     const { container } = render(<GlowingEffect disabled={false} />);
 
     const gradientDiv = container.querySelector("div[style]");
-    expect(gradientDiv?.className).toContain(GLOWING_EFFECT_TOKENS.container.hoverScale);
-    expect(gradientDiv?.className).toContain(GLOWING_EFFECT_TOKENS.container.activeScale);
+    expect(gradientDiv?.className).toContain(
+      GLOWING_EFFECT_TOKENS.container.hoverScale,
+    );
+    expect(gradientDiv?.className).toContain(
+      GLOWING_EFFECT_TOKENS.container.activeScale,
+    );
   });
 });

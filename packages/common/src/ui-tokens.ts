@@ -1168,8 +1168,7 @@ export const TEXT_GENERATE_EFFECT_TOKENS = {
     activeScale: "active:scale-[0.998]",
   },
   innerWrapper: "mt-0",
-  textContainer:
-    "max-w-[750px] text-center text-lg font-light text-foreground",
+  textContainer: "max-w-[750px] text-center text-lg font-light text-foreground",
   word: "text-black opacity-0 dark:text-white",
   initialOpacity: 0,
   targetOpacity: 1,

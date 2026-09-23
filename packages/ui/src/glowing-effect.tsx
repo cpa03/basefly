@@ -2,6 +2,7 @@
 
 import { memo, useCallback, useEffect, useRef } from "react";
 import { animate } from "framer-motion";
+
 import { GLOWING_EFFECT_TOKENS } from "@saasfly/common";
 
 import { cn } from "./utils/cn";

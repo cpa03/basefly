@@ -4,6 +4,38 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Centralized GlowingEffect styling and tokens under GLOWING_EFFECT_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/glowing-effect.tsx`
+
+**Description**:
+Centralized GlowingEffect component styling, gradient properties, container layouts, disabled glow styling, and default aria attributes under `GLOWING_EFFECT_TOKENS` inside `packages/common/src/ui-tokens.ts` and updated `@saasfly/ui` component to reference them, eliminating hardcoded styles.
+
+**Success Criteria**:
+
+- [x] Defined `GLOWING_EFFECT_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `GLOWING_EFFECT_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/glowing-effect.tsx` to reference `GLOWING_EFFECT_TOKENS`.
+
+#### Task: [STRENGTHEN] Enhanced GlowingEffect component with tactile spring scale micro-interactions and accessible default role and aria-label attributes
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `packages/ui/src/glowing-effect.tsx`, `packages/ui/src/glowing-effect.test.tsx`
+
+**Description**:
+Enhanced `GlowingEffect` component with tactile spring scale micro-interactions (`hover:scale-[1.002] active:scale-[0.998]`), focus-visible ring accessibility, and logical fallback `role="region"` and `aria-label` attributes for screen reader accessibility.
+
+**Success Criteria**:
+
+- [x] Implemented tactile scale transitions on GlowingEffect container.
+- [x] Implemented fallback `role="region"` and `aria-label` on GlowingEffect container.
+- [x] Added unit tests inside `packages/ui/src/glowing-effect.test.tsx` to verify transitions, token classes, and accessibility attributes.
+
 #### Task: [CONSOLIDATE] Centralized FollowerPointer styling and tokens under FOLLOWER_POINTER_TOKENS
 
 - **Status**: ✅ Completed

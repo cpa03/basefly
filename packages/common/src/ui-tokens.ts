@@ -1168,8 +1168,7 @@ export const TEXT_GENERATE_EFFECT_TOKENS = {
     activeScale: "active:scale-[0.998]",
   },
   innerWrapper: "mt-0",
-  textContainer:
-    "max-w-[750px] text-center text-lg font-light text-foreground",
+  textContainer: "max-w-[750px] text-center text-lg font-light text-foreground",
   word: "text-black opacity-0 dark:text-white",
   initialOpacity: 0,
   targetOpacity: 1,
@@ -1188,6 +1187,43 @@ export const TEXT_GENERATE_EFFECT_TOKENS = {
 export const CARD_SKELETON_TOKENS = {
   defaultRole: "region" as const,
   defaultAriaLabel: "Loading card content...",
+} as const;
+
+/**
+ * GlowingEffect design tokens
+ * Centralized layout, styling, gradient properties, transitions, micro-interactions, and accessibility for GlowingEffect component
+ */
+export const GLOWING_EFFECT_TOKENS = {
+  container: {
+    base: "pointer-events-none absolute inset-0 rounded-[inherit] opacity-100 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+    hoverScale: "hover:scale-[1.002]",
+    activeScale: "active:scale-[0.998]",
+  },
+  glowContainer: "glow rounded-[inherit]",
+  disabledGlow:
+    "pointer-events-none absolute -inset-px hidden rounded-[inherit] border opacity-0 transition-opacity",
+  gradientDefaults: {
+    repeatingConicTimes: "5",
+    whiteGradient: `repeating-conic-gradient(
+      from 236.84deg at 50% 50%,
+      var(--black),
+      var(--black) calc(25% / var(--repeating-conic-gradient-times))
+    )`,
+    defaultGradient: `radial-gradient(circle, #dd7bbb 10%, #dd7bbb00 20%),
+      radial-gradient(circle at 40% 40%, #d79f1e 5%, #d79f1e00 15%),
+      radial-gradient(circle at 60% 60%, #5a922c 10%, #5a922c00 20%),
+      radial-gradient(circle at 40% 60%, #4c7894 10%, #4c789400 20%),
+      repeating-conic-gradient(
+        from 236.84deg at 50% 50%,
+        #dd7bbb 0%,
+        #d79f1e calc(25% / var(--repeating-conic-gradient-times)),
+        #5a922c calc(50% / var(--repeating-conic-gradient-times)),
+        #4c7894 calc(75% / var(--repeating-conic-gradient-times)),
+        #dd7bbb calc(100% / var(--repeating-conic-gradient-times))
+      )`,
+  },
+  defaultAriaLabel: "Glowing visual effect",
+  defaultRole: "region" as const,
 } as const;
 
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;

@@ -445,5 +445,5 @@ jobs:
              - Delete remote branch if policy allows
              - Log action
           " \
-          --model opencode/mimo-v2.5-free \
+          --model opencode/kimi-k2.5-free \
           --share false

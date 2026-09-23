@@ -2,10 +2,11 @@
 
 import { memo, useCallback, useEffect, useRef } from "react";
 import { animate } from "framer-motion";
+import { GLOWING_EFFECT_TOKENS } from "@saasfly/common";
 
 import { cn } from "./utils/cn";
 
-interface GlowingEffectProps {
+export interface GlowingEffectProps extends React.HTMLAttributes<HTMLDivElement> {
   blur?: number;
   inactiveZone?: number;
   proximity?: number;
@@ -16,7 +17,10 @@ interface GlowingEffectProps {
   disabled?: boolean;
   movementDuration?: number;
   borderWidth?: number;
+  role?: string;
+  "aria-label"?: string;
 }
+
 const GlowingEffect = memo(
   ({
     blur = 0,
@@ -29,6 +33,9 @@ const GlowingEffect = memo(
     movementDuration = 2,
     borderWidth = 1,
     disabled = true,
+    role = GLOWING_EFFECT_TOKENS.defaultRole,
+    "aria-label": ariaLabel = GLOWING_EFFECT_TOKENS.defaultAriaLabel,
+    ...props
   }: GlowingEffectProps) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const lastPosition = useRef({ x: 0, y: 0 });
@@ -126,7 +133,7 @@ const GlowingEffect = memo(
       <>
         <div
           className={cn(
-            "pointer-events-none absolute -inset-px hidden rounded-[inherit] border opacity-0 transition-opacity",
+            GLOWING_EFFECT_TOKENS.disabledGlow,
             glow && "opacity-100",
             variant === "white" && "border-white",
             disabled && "!block",
@@ -134,6 +141,8 @@ const GlowingEffect = memo(
         />
         <div
           ref={containerRef}
+          role={role}
+          aria-label={ariaLabel}
           style={
             {
               "--blur": `${blur}px`,
@@ -141,40 +150,28 @@ const GlowingEffect = memo(
               "--start": "0",
               "--active": "0",
               "--glowingeffect-border-width": `${borderWidth}px`,
-              "--repeating-conic-gradient-times": "5",
+              "--repeating-conic-gradient-times":
+                GLOWING_EFFECT_TOKENS.gradientDefaults.repeatingConicTimes,
               "--gradient":
                 variant === "white"
-                  ? `repeating-conic-gradient(
-                  from 236.84deg at 50% 50%,
-                  var(--black),
-                  var(--black) calc(25% / var(--repeating-conic-gradient-times))
-                )`
-                  : `radial-gradient(circle, #dd7bbb 10%, #dd7bbb00 20%),
-                radial-gradient(circle at 40% 40%, #d79f1e 5%, #d79f1e00 15%),
-                radial-gradient(circle at 60% 60%, #5a922c 10%, #5a922c00 20%), 
-                radial-gradient(circle at 40% 60%, #4c7894 10%, #4c789400 20%),
-                repeating-conic-gradient(
-                  from 236.84deg at 50% 50%,
-                  #dd7bbb 0%,
-                  #d79f1e calc(25% / var(--repeating-conic-gradient-times)),
-                  #5a922c calc(50% / var(--repeating-conic-gradient-times)), 
-                  #4c7894 calc(75% / var(--repeating-conic-gradient-times)),
-                  #dd7bbb calc(100% / var(--repeating-conic-gradient-times))
-                )`,
+                  ? GLOWING_EFFECT_TOKENS.gradientDefaults.whiteGradient
+                  : GLOWING_EFFECT_TOKENS.gradientDefaults.defaultGradient,
             } as React.CSSProperties
           }
           className={cn(
-            "pointer-events-none absolute inset-0 rounded-[inherit] opacity-100 transition-opacity",
+            GLOWING_EFFECT_TOKENS.container.base,
+            GLOWING_EFFECT_TOKENS.container.hoverScale,
+            GLOWING_EFFECT_TOKENS.container.activeScale,
             glow && "opacity-100",
             blur > 0 && "blur-[var(--blur)]",
             className,
             disabled && "!hidden",
           )}
+          {...props}
         >
           <div
             className={cn(
-              "glow",
-              "rounded-[inherit]",
+              GLOWING_EFFECT_TOKENS.glowContainer,
               'after:absolute after:inset-[calc(-1*var(--glowingeffect-border-width))] after:rounded-[inherit] after:content-[""]',
               "after:[border:var(--glowingeffect-border-width)_solid_transparent]",
               "after:[background-attachment:fixed] after:[background:var(--gradient)]",

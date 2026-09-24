@@ -23,7 +23,7 @@
 - [x] bug: Next.js 16 build conflict caused by duplicate `middleware.ts` and `proxy.ts` in `apps/nextjs/src` (fixed by removing obsolete `middleware.ts`).
 - [x] bug: Workspace health scan verified — 2160 tests passing across 148 test files, 0 typescript errors, 0 lint warnings, 0 check-deps errors.
 - [x] bug: Framer Motion opacity warning in TextGenerateEffect component ("undefined" is not an animatable value). Fixed by setting initial opacity token style on motion.span.
-- [x] bug: Workspace health scan verified — 2163 tests passing across 148 test files, 0 typescript errors, 0 lint warnings.
+- [x] bug: Workspace health scan verified — 2166 tests passing across 148 test files, 0 typescript errors, 0 lint warnings, 0 check-deps errors.
 
 ## Verification Summary (2026-02-17)
 

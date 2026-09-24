@@ -3,7 +3,8 @@
 import React, { useEffect, useMemo, useState, type ReactElement } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
-import { ANIMATION_TIMING } from "@saasfly/common";
+import { ANIMATION_TIMING, ANIMATED_LIST_TOKENS } from "@saasfly/common";
+import { cn } from "./utils/cn";
 
 export const AnimatedList = React.memo(
   ({
@@ -40,7 +41,11 @@ export const AnimatedList = React.memo(
     );
 
     return (
-      <div className={`flex flex-col items-center gap-4 ${className}`}>
+      <div
+        role={ANIMATED_LIST_TOKENS.defaultRole}
+        aria-label={ANIMATED_LIST_TOKENS.defaultAriaLabel}
+        className={cn(ANIMATED_LIST_TOKENS.container.base, className)}
+      >
         <AnimatePresence mode="popLayout">
           {itemsToShow.map((item) => (
             <AnimatedListItem
@@ -85,7 +90,15 @@ export function AnimatedListItem({
       };
 
   return (
-    <motion.div {...animations} layout className="mx-auto w-full">
+    <motion.div
+      {...animations}
+      layout
+      className={cn(
+        ANIMATED_LIST_TOKENS.item.base,
+        ANIMATED_LIST_TOKENS.item.hoverScale,
+        ANIMATED_LIST_TOKENS.item.activeScale,
+      )}
+    >
       {children}
     </motion.div>
   );

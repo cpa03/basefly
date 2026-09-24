@@ -2,16 +2,13 @@
 
 The Basefly API is built on tRPC (TypeScript Remote Procedure Call) and provides endpoints for managing Kubernetes clusters, customer subscriptions, and Stripe billing integration. All endpoints use a standardized error response format and implement resilience patterns including circuit breakers, retries, and timeouts.
 
-
 ## OpenAPI Documentation
-
 
 Machine-readable API specification available in OpenAPI 3.0 format:
 
 - **OpenAPI JSON**: `GET /api/docs`
 
 - **Usage**: Compatible with Swagger UI, ReDoc, Postman, and other API tools
-
 
 ```bash
 # Example: Fetch OpenAPI spec
@@ -70,6 +67,7 @@ interface ApiErrorResponse {
 | `BAD_REQUEST`           | 400         | Invalid request parameters                             |
 | `UNAUTHORIZED`          | 401         | Authentication required or failed                      |
 | `FORBIDDEN`             | 403         | User lacks permission for the resource                 |
+| `CSRF_ERROR`            | 403         | Request origin failed CSRF validation (see below)      |
 | `NOT_FOUND`             | 404         | Resource not found                                     |
 | `CONFLICT`              | 409         | Resource conflict (e.g., duplicate)                    |
 | `VALIDATION_ERROR`      | 400         | Input validation failed                                |
@@ -78,6 +76,44 @@ interface ApiErrorResponse {
 | `CIRCUIT_BREAKER_OPEN`  | 503         | Service temporarily unavailable (circuit breaker open) |
 | `INTERNAL_SERVER_ERROR` | 500         | Unexpected server error                                |
 | `SERVICE_UNAVAILABLE`   | 503         | Service unavailable                                    |
+
+## CSRF Protection
+
+State-changing tRPC mutations (`mutation` / POST) are protected against Cross-Site Request Forgery using **Origin/Referer verification** (per the [OWASP CSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html#verifying-origin-with-standard-headers)). No CSRF token is required for standard clients.
+
+### Rules
+
+| Request kind                                                       | Behavior                                                      |
+| ------------------------------------------------------------------ | ------------------------------------------------------------- |
+| Queries (`GET`)                                                    | Not checked — read-only                                       |
+| Mutation with `Origin` header matching the app origin or `Host`    | Allowed                                                       |
+| Mutation with `Origin` matching an entry in `CSRF_ALLOWED_ORIGINS` | Allowed (cross-origin API consumers)                          |
+| Mutation with missing `Origin` (curl, webhooks, server-to-server)  | Allowed — browsers always attach `Origin` on cross-site POSTs |
+| Mutation with mismatched or malformed `Origin`                     | Rejected with `CSRF_ERROR` (HTTP 403)                         |
+
+### Configuration
+
+| Environment variable   | Required    | Description                                                                                                                                   |
+| ---------------------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_APP_URL`  | Recommended | Canonical application origin used for Origin comparison. When unset, CSRF origin checks are skipped with a warning (dev safety net).          |
+| `CSRF_ALLOWED_ORIGINS` | Optional    | Comma-separated list of additional origins permitted to call state-changing endpoints from another site (e.g. `https://partner.example.com`). |
+
+### Error response
+
+```json
+{
+  "error": {
+    "code": "CSRF_ERROR",
+    "message": "CSRF validation failed: request origin does not match application origin"
+  }
+}
+```
+
+### Notes for API consumers
+
+- **Browsers**: same-origin fetch/XHR works automatically. Cross-origin browser calls must send an `Origin` listed in `CSRF_ALLOWED_ORIGINS`.
+- **Server-to-server** (Stripe webhooks, cron, curl): omit `Origin` or call from a trusted host — requests without `Origin` are allowed by design.
+- Implementation: `csrfProtection` middleware in `packages/api/src/trpc.ts` (tRPC) and `apps/nextjs/src/lib/csrf.ts` (route-level guard).
 
 ## Rate Limiting
 
@@ -91,22 +127,22 @@ Rate limiting is enforced for all API endpoints to protect against abuse and ens
 
 ### Rate Limits
 
-| Endpoint Type     | Limit               | Window     | Example Endpoints                                                                                     |
-| ----------------- | ------------------- | ---------- | ----------------------------------------------------------------------------------------------------- |
-| Read Operations   | 100 requests/minute | 60 seconds | `getClusters`, `userPlans`, `queryCustomer`, `mySubscription`, `hello`, `/api/docs`                     |
-| Write Operations | 20 requests/minute  | 60 seconds | `createCluster`, `updateCluster`, `deleteCluster`, `updateUserName`, `insertCustomer`                  |
-| Stripe Operations | 10 requests/minute  | 60 seconds | `createSession`, `/api/webhooks/stripe`                                                                |
+| Endpoint Type     | Limit               | Window     | Example Endpoints                                                                     |
+| ----------------- | ------------------- | ---------- | ------------------------------------------------------------------------------------- |
+| Read Operations   | 100 requests/minute | 60 seconds | `getClusters`, `userPlans`, `queryCustomer`, `mySubscription`, `hello`, `/api/docs`   |
+| Write Operations  | 20 requests/minute  | 60 seconds | `createCluster`, `updateCluster`, `deleteCluster`, `updateUserName`, `insertCustomer` |
+| Stripe Operations | 10 requests/minute  | 60 seconds | `createSession`, `/api/webhooks/stripe`                                               |
 
 ### Rate Limit Headers
 
 All rate-limited responses include the following HTTP headers:
 
-| Header                    | Description                                      |
-| ------------------------- | ------------------------------------------------ |
-| `X-RateLimit-Limit`      | Maximum requests allowed in the window          |
-| `X-RateLimit-Remaining`  | Remaining requests in current window             |
-| `X-RateLimit-Reset`       | Unix timestamp when the rate limit window resets |
-| `Retry-After`             | Seconds to wait before retrying (on 429 errors) |
+| Header                  | Description                                      |
+| ----------------------- | ------------------------------------------------ |
+| `X-RateLimit-Limit`     | Maximum requests allowed in the window           |
+| `X-RateLimit-Remaining` | Remaining requests in current window             |
+| `X-RateLimit-Reset`     | Unix timestamp when the rate limit window resets |
+| `Retry-After`           | Seconds to wait before retrying (on 429 errors)  |
 
 | Endpoint Type     | Limit               | Window     | Example Endpoints                                                                     |
 | ----------------- | ------------------- | ---------- | ------------------------------------------------------------------------------------- |

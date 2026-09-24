@@ -64,26 +64,29 @@ Full unit suite at selection time: **148 files / 2166 tests passed**.
 
 ## Action Log
 
-| Timestamp (UTC)   | Action                           | Target                              | Result                                                 |
-| ----------------- | -------------------------------- | ----------------------------------- | ------------------------------------------------------ |
-| 2026-09-24 ~12:20 | Detect DEFAULT_BRANCH            | `cpa03/basefly`                     | `main`                                                 |
-| 2026-09-24 ~12:20 | List open PRs                    | `gh pr list`                        | 0 open                                                 |
-| 2026-09-24 ~12:20 | List open issues                 | `gh issue list`                     | 82 open                                                |
-| 2026-09-24 ~12:21 | Enter Issue Manager Mode         | Phase 0 Step 0.2                    | Active                                                 |
-| 2026-09-24 ~12:22 | Probe issue label write          | #789 +label                         | **403** `issues` permission missing                    |
-| 2026-09-24 ~12:23 | Probe issue create/close/comment | #789 / new issue                    | **403**                                                |
-| 2026-09-24 ~12:23 | Probe git push (code)            | temp branch                         | **OK** (`contents: write`)                             |
-| 2026-09-24 ~12:24 | Probe workflow file push         | `.github/workflows/_perm-probe.yml` | **Rejected** — GitHub App lacks `workflows` permission |
-| 2026-09-24 ~12:25 | `pnpm install`                   | workspace                           | OK (engine warning: node 20 vs >=22)                   |
-| 2026-09-24 ~12:27 | Verify #496 tests                | 3 rate-limiter suites               | **98/98 pass**                                         |
-| 2026-09-24 ~12:27 | Verify typecheck/lint            | `@saasfly/api`, `@saasfly/common`   | exit 0                                                 |
-| 2026-09-24 ~12:28 | Full unit suite                  | `pnpm test`                         | **2166/2166 pass** (148 files)                         |
-| 2026-09-24 ~12:29 | P0/P1 residual gap scan          | #496–#581                           | Only #515 docs + #501 CI residual                      |
-| 2026-09-24 ~12:30 | Select repair target             | #515                                | Documentation AC fixable                               |
-| 2026-09-24 ~12:31 | Branch from `main`               | `fix/api-spec-csrf-docs-515`        | Created                                                |
-| 2026-09-24 ~12:32 | Edit `docs/api-spec.md`          | CSRF section + `CSRF_ERROR` row     | Applied                                                |
-| 2026-09-24 ~12:33 | Re-verify build/lint/test        | full suite                          | Pending after edit                                     |
-| 2026-09-24 ~12:34 | Push + PR linked to #515         | `fix/api-spec-csrf-docs-515`        | Pending                                                |
+| Timestamp (UTC)   | Action                           | Target                              | Result                                                                    |
+| ----------------- | -------------------------------- | ----------------------------------- | ------------------------------------------------------------------------- |
+| 2026-09-24 ~12:20 | Detect DEFAULT_BRANCH            | `cpa03/basefly`                     | `main`                                                                    |
+| 2026-09-24 ~12:20 | List open PRs                    | `gh pr list`                        | 0 open                                                                    |
+| 2026-09-24 ~12:20 | List open issues                 | `gh issue list`                     | 82 open                                                                   |
+| 2026-09-24 ~12:21 | Enter Issue Manager Mode         | Phase 0 Step 0.2                    | Active                                                                    |
+| 2026-09-24 ~12:22 | Probe issue label write          | #789 +label                         | **403** `issues` permission missing                                       |
+| 2026-09-24 ~12:23 | Probe issue create/close/comment | #789 / new issue                    | **403**                                                                   |
+| 2026-09-24 ~12:23 | Probe git push (code)            | temp branch                         | **OK** (`contents: write`)                                                |
+| 2026-09-24 ~12:24 | Probe workflow file push         | `.github/workflows/_perm-probe.yml` | **Rejected** — GitHub App lacks `workflows` permission                    |
+| 2026-09-24 ~12:25 | `pnpm install`                   | workspace                           | OK (engine warning: node 20 vs >=22)                                      |
+| 2026-09-24 ~12:27 | Verify #496 tests                | 3 rate-limiter suites               | **98/98 pass**                                                            |
+| 2026-09-24 ~12:27 | Verify typecheck/lint            | `@saasfly/api`, `@saasfly/common`   | exit 0                                                                    |
+| 2026-09-24 ~12:28 | Full unit suite                  | `pnpm test`                         | **2166/2166 pass** (148 files)                                            |
+| 2026-09-24 ~12:29 | P0/P1 residual gap scan          | #496–#581                           | Only #515 docs + #501 CI residual                                         |
+| 2026-09-24 ~12:30 | Select repair target             | #515                                | Documentation AC fixable                                                  |
+| 2026-09-24 ~12:31 | Branch from `main`               | `fix/api-spec-csrf-docs-515`        | Created                                                                   |
+| 2026-09-24 ~12:32 | Edit `docs/api-spec.md`          | CSRF section + `CSRF_ERROR` row     | Applied                                                                   |
+| 2026-09-24 ~12:33 | Re-verify build/lint/test        | full suite                          | Pending after edit                                                        |
+| 2026-09-24 ~12:34 | Push branch                      | `fix/api-spec-csrf-docs-515`        | OK (husky dx:quick passed)                                                |
+| 2026-09-24 ~12:39 | Create PR linked to #515         | PR #1503                            | **OPEN** — `docs` + `P1` labels applied; `Closes #515`                    |
+| 2026-09-24 ~12:39 | PR CI checks                     | run 36000399618                     | `action_required` (needs maintainer approval)                             |
+| 2026-09-24 ~12:39 | Vercel preview                   | dpl_2NYy1VY75ESYtus7jRZNR9DRjXJJ    | **fail** — pre-existing (docs-only diff, no Vercel credentials in runner) |
 
 ## Skills Used
 

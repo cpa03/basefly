@@ -3418,3 +3418,5 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [x] error: Uninitialised opacity on motion.span elements causes browser/test console warning in TextGenerateEffect - Fixed by setting style initialOpacity token
 - [CONSOLIDATE] Centralized CardSkeleton component styling and tokens under CARD_SKELETON_TOKENS inside @saasfly/common/src/ui-tokens.ts
 - [STRENGTHEN] Enhanced CardSkeleton component with region accessibility role, default aria-label, configurable props, and token assertions in ui-tokens.test.ts
+- [CONSOLIDATE] Centralized AnimatedList component styling and tokens under ANIMATED_LIST_TOKENS inside @saasfly/common/src/ui-tokens.ts
+- [STRENGTHEN] Enhanced AnimatedList component with region accessibility role, default aria-label, tactile spring-scale micro-interactions (hover:scale-[1.002] active:scale-[0.998]), and unit test assertions

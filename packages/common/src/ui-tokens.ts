@@ -1226,6 +1226,23 @@ export const GLOWING_EFFECT_TOKENS = {
   defaultRole: "region" as const,
 } as const;
 
+/**
+ * AnimatedList design tokens
+ * Centralized layout, styling, transitions, micro-interactions, and accessibility for AnimatedList component
+ */
+export const ANIMATED_LIST_TOKENS = {
+  container: {
+    base: "flex flex-col items-center gap-4",
+  },
+  item: {
+    base: "mx-auto w-full transition-transform duration-200 ease-out",
+    hoverScale: "hover:scale-[1.002]",
+    activeScale: "active:scale-[0.998]",
+  },
+  defaultAriaLabel: "Animated list sequence",
+  defaultRole: "region" as const,
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

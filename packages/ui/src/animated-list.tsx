@@ -3,7 +3,8 @@
 import React, { useEffect, useMemo, useState, type ReactElement } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
-import { ANIMATION_TIMING, ANIMATED_LIST_TOKENS } from "@saasfly/common";
+import { ANIMATED_LIST_TOKENS, ANIMATION_TIMING } from "@saasfly/common";
+
 import { cn } from "./utils/cn";
 
 export const AnimatedList = React.memo(

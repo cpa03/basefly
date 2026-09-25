@@ -185,20 +185,18 @@ pnpm run dev:web
 If you prefer Docker for local development:
 
 1. Set up environment variables:
-   ```bash
-   cp .env.example .env.local
-   ```
 
+```bash
+cp .env.example .env.local
 # Configure required environment variables (Clerk, Stripe, etc.)
-
 # Note: Database is handled by docker-compose
-
-````
+```
 
 2. Start the development environment:
+
 ```bash
 docker-compose up -d
-````
+```
 
 3. Access the application at [http://localhost:3000](http://localhost:3000)
    - PostgreSQL is available at localhost:5432 (credentials: postgres/postgres)

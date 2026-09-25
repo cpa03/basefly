@@ -118,4 +118,32 @@ describe("TypewriterEffect Component", () => {
     const hiddenChars = container.querySelectorAll(".hidden");
     expect(hiddenChars.length).toBeGreaterThan(0);
   });
+
+  it("should render default accessibility properties and micro-interaction classes", async () => {
+    const { container } = render(<TypewriterEffect words={words} />);
+
+    await screen.findByText("H");
+
+    const element = container.querySelector('[role="region"]');
+    expect(element).toBeInTheDocument();
+    expect(element).toHaveAttribute("aria-label", "Typewriter text animation");
+    expect(element).toHaveAttribute("tabIndex", "0");
+    expect(element).toHaveClass("hover:scale-[1.002]", "active:scale-[0.998]");
+  });
+
+  it("should support custom accessibility role and aria-label overrides", async () => {
+    const { container } = render(
+      <TypewriterEffect
+        words={words}
+        role="status"
+        aria-label="Custom typewriter"
+      />,
+    );
+
+    await screen.findByText("H");
+
+    const element = container.querySelector('[role="status"]');
+    expect(element).toBeInTheDocument();
+    expect(element).toHaveAttribute("aria-label", "Custom typewriter");
+  });
 });

@@ -1243,6 +1243,29 @@ export const ANIMATED_LIST_TOKENS = {
   defaultRole: "region" as const,
 } as const;
 
+/**
+ * TypewriterEffect design tokens
+ * Centralized layout, styling, typography, transitions, micro-interactions, and accessibility for TypewriterEffect component
+ */
+export const TYPEWRITER_EFFECT_TOKENS = {
+  container: {
+    base: "inline-block transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+    hoverScale: "hover:scale-[1.002]",
+    activeScale: "active:scale-[0.998]",
+  },
+  char: "hidden text-neutral-500 opacity-0",
+  cursor: {
+    base: "inline-block h-4 w-[4px] rounded-sm bg-blue-500 transition-colors duration-200",
+  },
+  animation: {
+    duration: 0.3,
+    staggerDelay: 0.1,
+    cursorDuration: 0.8,
+  },
+  defaultAriaLabel: "Typewriter text animation",
+  defaultRole: "region" as const,
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

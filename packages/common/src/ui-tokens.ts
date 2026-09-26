@@ -1266,6 +1266,33 @@ export const TYPEWRITER_EFFECT_TOKENS = {
   defaultRole: "region" as const,
 } as const;
 
+/**
+ * AnimatedTooltip design tokens
+ * Centralized layout, styling, typography, transitions, micro-interactions, and accessibility for AnimatedTooltip component
+ */
+export const ANIMATED_TOOLTIP_TOKENS = {
+  container: {
+    base: "group relative -mr-4 transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  },
+  tooltip: {
+    base: "absolute -left-1/2 -top-16 z-50 flex translate-x-1/2 flex-col items-center justify-center rounded-md bg-black px-4 py-2 text-xs shadow-xl",
+    nameText: "relative z-30 text-base font-bold text-white",
+    designationText: "text-xs text-white",
+    gradientPrimary:
+      "absolute inset-x-10 -bottom-px z-30 h-px w-[20%] bg-gradient-to-r from-transparent via-emerald-500 to-transparent",
+    gradientSecondary:
+      "absolute -bottom-px left-10 z-30 h-px w-[40%] bg-gradient-to-r from-transparent via-sky-500 to-transparent",
+  },
+  link: {
+    base: "rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  },
+  image: {
+    base: "relative !m-0 h-14 w-14 rounded-full border-2 border-white object-cover object-top !p-0 transition duration-500 focus-visible:z-30 group-hover:z-30 group-hover:scale-105",
+  },
+  defaultAriaLabel: "Team members animated tooltip",
+  defaultRole: "region" as const,
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

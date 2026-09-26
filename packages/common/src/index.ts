@@ -393,6 +393,7 @@ export {
   GLOWING_EFFECT_TOKENS,
   ANIMATED_LIST_TOKENS,
   TYPEWRITER_EFFECT_TOKENS,
+  ANIMATED_TOOLTIP_TOKENS,
 } from "./ui-tokens";
 export type {
   ButtonHeight,

@@ -4,6 +4,38 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Centralized AnimatedTooltip styling and tokens under ANIMATED_TOOLTIP_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/animated-tooltip.tsx`
+
+**Description**:
+Centralized AnimatedTooltip component styling, container layouts, tooltip box typography, gradient styling, and default aria attributes under `ANIMATED_TOOLTIP_TOKENS` inside `packages/common/src/ui-tokens.ts` and updated `@saasfly/ui` component to reference them, eliminating hardcoded styles.
+
+**Success Criteria**:
+
+- [x] Defined `ANIMATED_TOOLTIP_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `ANIMATED_TOOLTIP_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/animated-tooltip.tsx` to reference `ANIMATED_TOOLTIP_TOKENS`.
+
+#### Task: [STRENGTHEN] Enhanced AnimatedTooltip component with tactile spring scale micro-interactions and accessible default role and aria-label attributes
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `packages/ui/src/animated-tooltip.tsx`, `packages/ui/src/animated-tooltip.test.tsx`
+
+**Description**:
+Enhanced `AnimatedTooltip` component with tactile spring scale micro-interactions, focus-visible ring accessibility, and logical fallback `role="region"` and `aria-label` attributes for screen reader accessibility.
+
+**Success Criteria**:
+
+- [x] Implemented tactile scale transitions on AnimatedTooltip container.
+- [x] Implemented fallback `role="region"` and `aria-label` on AnimatedTooltip container.
+- [x] Added unit tests inside `packages/ui/src/animated-tooltip.test.tsx` to verify transitions, token classes, and accessibility attributes.
+
 #### Task: [CONSOLIDATE] Centralized GlowingEffect styling and tokens under GLOWING_EFFECT_TOKENS
 
 - **Status**: ✅ Completed

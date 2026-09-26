@@ -63,6 +63,11 @@ async function verifyClusterOwnership(
   return cluster;
 }
 
+/**
+ * Kubernetes cluster router with rate-limited endpoints.
+ * Uses "read" rate limit for cluster queries and "write" for mutations.
+ * Cluster access is scoped to the authenticated owner of each record.
+ */
 export const k8sRouter = createTRPCRouter({
   /**
    * Retrieves all active Kubernetes clusters for the authenticated user.

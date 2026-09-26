@@ -40,6 +40,11 @@ function isUniqueViolation(error: unknown, constraintName?: string): boolean {
   return false;
 }
 
+/**
+ * Customer router with rate-limited endpoints.
+ * Uses "write" rate limit for profile/customer mutations and "read" for lookups.
+ * Procedures require an authenticated session.
+ */
 export const customerRouter = createTRPCRouter({
   /**
    * Updates the authenticated user's display name.

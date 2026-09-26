@@ -25,6 +25,12 @@ import type { FailureResult, MutationResult, QueryResult } from "../response";
 import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 import { enhancedStripeCreateSessionSchema } from "./schemas";
 
+/**
+ * Public shape of a subscription plan as returned to clients.
+ *
+ * Prices are expressed in major currency units; a Stripe price ID is `null`
+ * for an interval that is not yet configured for the plan.
+ */
 export interface SubscriptionPlan {
   title: string;
   description: string;
@@ -40,6 +46,12 @@ export interface SubscriptionPlan {
   };
 }
 
+/**
+ * A {@link SubscriptionPlan} joined with the user's live Stripe state.
+ *
+ * Adds the customer's Stripe identifiers together with billing-period,
+ * paid/canceled and interval flags used by the billing UI.
+ */
 export type UserSubscriptionPlan = SubscriptionPlan &
   Pick<
     Customer,
@@ -50,6 +62,12 @@ export type UserSubscriptionPlan = SubscriptionPlan &
     interval: "month" | "year" | null;
     isCanceled?: boolean;
   };
+
+/**
+ * Stripe billing router with rate-limited endpoints.
+ * Uses the "stripe" rate limit for session creation and "read" for plan lookups.
+ * Procedures require an authenticated session.
+ */
 export const stripeRouter = createTRPCRouter({
   /**
    * Creates a Stripe checkout or billing portal session.

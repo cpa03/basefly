@@ -1,6 +1,7 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import { ANIMATED_TOOLTIP_TOKENS } from "@saasfly/common";
 
 import { AnimatedTooltip } from "./animated-tooltip";
 
@@ -81,5 +82,29 @@ describe("AnimatedTooltip Component", () => {
 
     expect(screen.getByText("Frontend Engineer")).toBeInTheDocument();
     expect(screen.queryByText("Backend Engineer")).not.toBeInTheDocument();
+  });
+
+  it("should apply region role and default aria-label for accessibility", () => {
+    render(<AnimatedTooltip items={items} />);
+
+    const container = screen.getByRole("region", {
+      name: ANIMATED_TOOLTIP_TOKENS.defaultAriaLabel,
+    });
+    expect(container).toBeInTheDocument();
+  });
+
+  it("should allow custom role, aria-label, and className props", () => {
+    render(
+      <AnimatedTooltip
+        items={items}
+        role="group"
+        aria-label="Custom team list"
+        className="custom-tooltip-class"
+      />,
+    );
+
+    const container = screen.getByRole("group", { name: "Custom team list" });
+    expect(container).toBeInTheDocument();
+    expect(container).toHaveClass("custom-tooltip-class");
   });
 });

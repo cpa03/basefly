@@ -17,9 +17,19 @@ import { createApiError, ErrorCode } from "../errors";
 import { logger } from "../logger";
 import { createRateLimitedProtectedProcedure, createTRPCRouter } from "../trpc";
 
-// Schema for mySubscription query - enforces no input parameters
+/**
+ * Input schema for the `mySubscription` query.
+ *
+ * The query takes no arguments, so the schema accepts only an empty object
+ * and is optional at the tRPC layer.
+ */
 export const mySubscriptionSchema = z.object({}).strict().optional();
 
+/**
+ * Auth router with a rate-limited endpoint.
+ * Uses the "read" rate limit for subscription lookups.
+ * Procedures require an authenticated session.
+ */
 export const authRouter = createTRPCRouter({
   /**
    * Retrieves the authenticated user's current subscription plan.

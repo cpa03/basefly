@@ -305,6 +305,25 @@ Validated: YAML parses, all 4 jobs intact (`architect`, `specialists`, `Fixer`, 
 
 All 3 `explore` spawns failed: `ProviderModelNotFoundError: Model not found: opencode/gpt-5-nano`. `.opencode` agent config should be checked (AGENTS.md documents `opencode/gpt-5-nano` for Explore). Investigation completed with direct tools; no findings were lost.
 
+### 7.5 Vercel preview deployment fails on EVERY pull request (systemic)
+
+Observed while gating merge of PR #1516:
+
+| PR                            | Vercel preview check |
+| ----------------------------- | -------------------- |
+| #1516 (this audit, docs-only) | ❌ fail              |
+| #1515 (merged)                | ❌ fail              |
+| #1514 (merged)                | ❌ fail              |
+| #1513 (merged)                | ❌ fail              |
+| #1512 (merged)                | ❌ fail              |
+
+- A **docs-only** PR cannot cause a build failure, and the identical failure occurs on every recent PR (including ones already merged) → **pre-existing/environmental**, not introduced by this branch.
+- Local verification of the same branch: `pnpm build` ✅ (Next.js production build completed), `pnpm lint` ✅ 9/9, `pnpm test` ✅ 2171/2171.
+- Root cause of the Vercel failure is **unconfirmed**: no `VERCEL_TOKEN` in this environment, so `vercel inspect --logs` is unavailable. **FAIL-SAFE: not guessing** — needs a human/bot with Vercel dashboard or token access.
+- Suspect areas (unverified): preview environment variables missing for `pnpm env:validate`/Next build, or Vercel project Node version vs `engines.node >= 22` (§5.2).
+
+**Consequence**: merge conditions ("all CI checks green") are **not met**, so PR #1516 was **left open** despite all other conditions passing (mergeable, no conflicts, no unresolved comments, build/lint/test green). **Recommended action**: inspect the Vercel deployment logs; if the failure is confirmed environmental and non-blocking, re-run or mark the check non-required, then merge #1516.
+
 ---
 
 ## 8. Blocked-actions manifest (execute when `issues: write` exists)
@@ -314,7 +333,8 @@ All 3 `explore` spawns failed: `ProviderModelNotFoundError: Model not found: ope
 3. Close as completed: #496, #480 (dup), #550, #551, #549, #501, #500, #515, #498, #581 (+ children), #720, #748, #719.
 4. File the consolidated pnpm issue (§5.1) and the Node 20-vs-22 mismatch issue (§5.2).
 5. Land Patch A (§7.1) + Patch B (§7.3) once workflow-write is available; then close #305.
+6. Investigate systemic Vercel preview failure (§7.5) — this currently blocks merging every PR, including #1516.
 
 ---
 
-**Final state**: **waiting for human review** — analysis complete, verification green (lint 9/9, tests 2171/2171), all GitHub mutations token-blocked; patches and manifests preserved above.
+**Final state**: **waiting for human review** — analysis complete, verification green (lint 9/9, tests 2171/2171, `pnpm build` ✅), all GitHub mutation paths token-blocked except PR creation; PR **#1516** open and `MERGEABLE` but held (Vercel check red on every PR, §7.5); patches and manifests preserved above.

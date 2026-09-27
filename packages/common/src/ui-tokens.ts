@@ -1293,6 +1293,38 @@ export const ANIMATED_TOOLTIP_TOKENS = {
   defaultRole: "region" as const,
 } as const;
 
+/**
+ * ColourfulText design tokens
+ * Centralized layout, styling, palette colors, transitions, and accessibility properties for ColourfulText component
+ */
+export const COLOURFUL_TEXT_TOKENS = {
+  colors: [
+    "rgb(131, 179, 32)",
+    "rgb(47, 195, 106)",
+    "rgb(42, 169, 210)",
+    "rgb(4, 112, 202)",
+    "rgb(107, 10, 255)",
+    "rgb(183, 0, 218)",
+    "rgb(218, 0, 171)",
+    "rgb(230, 64, 92)",
+    "rgb(232, 98, 63)",
+    "rgb(249, 129, 47)",
+  ] as const,
+  intervalMs: 5000,
+  charClass: "inline-block whitespace-pre font-sans tracking-tight",
+  container: {
+    base: "inline-flex items-center rounded-sm transition-all duration-200",
+    focusRing:
+      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  },
+  animation: {
+    duration: 0.5,
+    staggerDelay: 0.05,
+  },
+  defaultAriaLabel: "Colourful text",
+  defaultRole: "region" as const,
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

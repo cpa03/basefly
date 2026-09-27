@@ -3,15 +3,15 @@ import { describe, expect, it } from "vitest";
 import {
   BADGE_TOKENS,
   BUTTON_TOKENS,
+  CARD_SKELETON_TOKENS,
   CARD_TOKENS,
+  COLOURFUL_TEXT_TOKENS,
   DIALOG_TOKENS,
   FOCUS_TOKENS,
   INPUT_TOKENS,
-  SWITCH_TOKENS,
   LABEL_TOKENS,
-  CARD_SKELETON_TOKENS,
+  SWITCH_TOKENS,
   TEXT_GENERATE_EFFECT_TOKENS,
-  COLOURFUL_TEXT_TOKENS,
   UI_ANIMATION,
   type BadgeSize,
   type ButtonHeight,
@@ -305,7 +305,9 @@ describe("ui-tokens.ts - LABEL_TOKENS", () => {
 describe("ui-tokens.ts - CARD_SKELETON_TOKENS", () => {
   it("should have default role and aria-label", () => {
     expect(CARD_SKELETON_TOKENS.defaultRole).toBe("region");
-    expect(CARD_SKELETON_TOKENS.defaultAriaLabel).toBe("Loading card content...");
+    expect(CARD_SKELETON_TOKENS.defaultAriaLabel).toBe(
+      "Loading card content...",
+    );
   });
 });
 
@@ -316,7 +318,9 @@ describe("ui-tokens.ts - TEXT_GENERATE_EFFECT_TOKENS", () => {
     expect(TEXT_GENERATE_EFFECT_TOKENS.animation.duration).toBe(2);
     expect(TEXT_GENERATE_EFFECT_TOKENS.animation.staggerDelay).toBe(0.1);
     expect(TEXT_GENERATE_EFFECT_TOKENS.defaultRole).toBe("region");
-    expect(TEXT_GENERATE_EFFECT_TOKENS.defaultAriaLabel).toBe("Text generate animation");
+    expect(TEXT_GENERATE_EFFECT_TOKENS.defaultAriaLabel).toBe(
+      "Text generate animation",
+    );
   });
 });
 

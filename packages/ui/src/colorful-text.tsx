@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { motion, useReducedMotion } from "framer-motion";
+
 import { COLOURFUL_TEXT_TOKENS } from "@saasfly/common";
 
 import { cn } from "./utils/cn";
@@ -43,7 +44,10 @@ export function ColourfulText({
   return (
     <span
       role={role}
-      aria-label={ariaLabel ?? (text !== "" ? text : COLOURFUL_TEXT_TOKENS.defaultAriaLabel)}
+      aria-label={
+        ariaLabel ??
+        (text !== "" ? text : COLOURFUL_TEXT_TOKENS.defaultAriaLabel)
+      }
       tabIndex={0}
       className={cn(
         COLOURFUL_TEXT_TOKENS.container.base,

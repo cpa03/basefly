@@ -4,6 +4,37 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Centralized ColourfulText styling and tokens under COLOURFUL_TEXT_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/colorful-text.tsx`
+
+**Description**:
+Centralized ColourfulText component styling, color palette, transition timings, and default aria attributes under `COLOURFUL_TEXT_TOKENS` inside `packages/common/src/ui-tokens.ts` and updated `@saasfly/ui` component to reference them, eliminating hardcoded values.
+
+**Success Criteria**:
+
+- [x] Defined `COLOURFUL_TEXT_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `COLOURFUL_TEXT_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/colorful-text.tsx` to reference `COLOURFUL_TEXT_TOKENS`.
+
+#### Task: [STRENGTHEN] Enhanced ColourfulText component with focus-visible ring, keyboard navigation tabIndex, and default role and aria-label attributes
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Strengthening
+- **Files**: `packages/ui/src/colorful-text.tsx`, `packages/ui/src/colorful-text.test.tsx`
+
+**Description**:
+Strengthened ColourfulText component accessibility by wrapping character animations in a focusable region (`tabIndex={0}`), focus-visible ring styles (`focus-visible:ring-2`), and accessible fallbacks (`role="region"` and `aria-label`).
+
+**Success Criteria**:
+
+- [x] Added `tabIndex={0}`, focus-visible ring styling, and accessible fallbacks to `ColourfulText`.
+- [x] Verified unit tests in `packages/ui/src/colorful-text.test.tsx`.
+
 #### Task: [CONSOLIDATE] Centralized AnimatedTooltip styling and tokens under ANIMATED_TOOLTIP_TOKENS
 
 - **Status**: ✅ Completed

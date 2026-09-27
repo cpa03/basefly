@@ -2,22 +2,24 @@
 
 import * as React from "react";
 import { motion, useReducedMotion } from "framer-motion";
+import { COLOURFUL_TEXT_TOKENS } from "@saasfly/common";
 
-const COLORS = [
-  "rgb(131, 179, 32)",
-  "rgb(47, 195, 106)",
-  "rgb(42, 169, 210)",
-  "rgb(4, 112, 202)",
-  "rgb(107, 10, 255)",
-  "rgb(183, 0, 218)",
-  "rgb(218, 0, 171)",
-  "rgb(230, 64, 92)",
-  "rgb(232, 98, 63)",
-  "rgb(249, 129, 47)",
-] as const;
+import { cn } from "./utils/cn";
 
-export function ColourfulText({ text }: { text: string }) {
-  const colors = COLORS;
+export interface ColourfulTextProps {
+  text: string;
+  className?: string;
+  role?: string;
+  "aria-label"?: string;
+}
+
+export function ColourfulText({
+  text,
+  className,
+  role = COLOURFUL_TEXT_TOKENS.defaultRole,
+  "aria-label": ariaLabel,
+}: ColourfulTextProps) {
+  const colors = COLOURFUL_TEXT_TOKENS.colors;
   const shouldReduceMotion = useReducedMotion();
 
   const [currentColors, setCurrentColors] = React.useState<string[]>([
@@ -33,39 +35,52 @@ export function ColourfulText({ text }: { text: string }) {
       const shuffled = [...colors].sort(() => Math.random() - 0.5);
       setCurrentColors(shuffled);
       setCount((prev) => prev + 1);
-    }, 5000);
+    }, COLOURFUL_TEXT_TOKENS.intervalMs);
 
     return () => clearInterval(interval);
   }, [colors, shouldReduceMotion]);
 
-  return text.split("").map((char, index) => (
-    <motion.span
-      key={`${char}-${count}-${index}`}
-      initial={{
-        y: 0,
-      }}
-      animate={
-        shouldReduceMotion
-          ? { color: currentColors[index % currentColors.length] }
-          : {
-              color: currentColors[index % currentColors.length],
-              y: [0, -3, 0],
-              scale: [1, 1.01, 1],
-              filter: ["blur(0px)", "blur(5px)", "blur(0px)"],
-              opacity: [1, 0.8, 1],
-            }
-      }
-      transition={
-        shouldReduceMotion
-          ? {}
-          : {
-              duration: 0.5,
-              delay: index * 0.05,
-            }
-      }
-      className="inline-block whitespace-pre font-sans tracking-tight"
+  return (
+    <span
+      role={role}
+      aria-label={ariaLabel ?? (text !== "" ? text : COLOURFUL_TEXT_TOKENS.defaultAriaLabel)}
+      tabIndex={0}
+      className={cn(
+        COLOURFUL_TEXT_TOKENS.container.base,
+        COLOURFUL_TEXT_TOKENS.container.focusRing,
+        className,
+      )}
     >
-      {char}
-    </motion.span>
-  ));
+      {text.split("").map((char, index) => (
+        <motion.span
+          key={`${char}-${count}-${index}`}
+          initial={{
+            y: 0,
+          }}
+          animate={
+            shouldReduceMotion
+              ? { color: currentColors[index % currentColors.length] }
+              : {
+                  color: currentColors[index % currentColors.length],
+                  y: [0, -3, 0],
+                  scale: [1, 1.01, 1],
+                  filter: ["blur(0px)", "blur(5px)", "blur(0px)"],
+                  opacity: [1, 0.8, 1],
+                }
+          }
+          transition={
+            shouldReduceMotion
+              ? {}
+              : {
+                  duration: COLOURFUL_TEXT_TOKENS.animation.duration,
+                  delay: index * COLOURFUL_TEXT_TOKENS.animation.staggerDelay,
+                }
+          }
+          className={COLOURFUL_TEXT_TOKENS.charClass}
+        >
+          {char}
+        </motion.span>
+      ))}
+    </span>
+  );
 }

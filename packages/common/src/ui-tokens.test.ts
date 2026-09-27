@@ -11,6 +11,7 @@ import {
   LABEL_TOKENS,
   CARD_SKELETON_TOKENS,
   TEXT_GENERATE_EFFECT_TOKENS,
+  COLOURFUL_TEXT_TOKENS,
   UI_ANIMATION,
   type BadgeSize,
   type ButtonHeight,
@@ -316,6 +317,15 @@ describe("ui-tokens.ts - TEXT_GENERATE_EFFECT_TOKENS", () => {
     expect(TEXT_GENERATE_EFFECT_TOKENS.animation.staggerDelay).toBe(0.1);
     expect(TEXT_GENERATE_EFFECT_TOKENS.defaultRole).toBe("region");
     expect(TEXT_GENERATE_EFFECT_TOKENS.defaultAriaLabel).toBe("Text generate animation");
+  });
+});
+
+describe("ui-tokens.ts - COLOURFUL_TEXT_TOKENS", () => {
+  it("should have colors array and default parameters", () => {
+    expect(COLOURFUL_TEXT_TOKENS.colors.length).toBe(10);
+    expect(COLOURFUL_TEXT_TOKENS.intervalMs).toBe(5000);
+    expect(COLOURFUL_TEXT_TOKENS.defaultRole).toBe("region");
+    expect(COLOURFUL_TEXT_TOKENS.defaultAriaLabel).toBe("Colourful text");
   });
 });
 

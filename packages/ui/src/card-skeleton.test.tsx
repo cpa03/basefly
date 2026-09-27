@@ -60,16 +60,20 @@ describe("CardSkeleton Component", () => {
 
     const regionElement = screen.getByRole("region");
     expect(regionElement).toBeInTheDocument();
-    expect(regionElement).toHaveAttribute("aria-label", "Loading card content...");
+    expect(regionElement).toHaveAttribute(
+      "aria-label",
+      "Loading card content...",
+    );
   });
 
   it("should allow overriding role and aria-label props", () => {
-    render(
-      <CardSkeleton role="group" aria-label="Custom skeleton loading" />,
-    );
+    render(<CardSkeleton role="group" aria-label="Custom skeleton loading" />);
 
     const groupElement = screen.getByRole("group");
     expect(groupElement).toBeInTheDocument();
-    expect(groupElement).toHaveAttribute("aria-label", "Custom skeleton loading");
+    expect(groupElement).toHaveAttribute(
+      "aria-label",
+      "Custom skeleton loading",
+    );
   });
 });

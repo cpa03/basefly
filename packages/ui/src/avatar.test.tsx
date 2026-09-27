@@ -37,8 +37,13 @@ describe("Avatar Component", () => {
   });
 
   it("should use custom aria-label when provided", () => {
-    const { container } = render(<Avatar aria-label="Profile picture">Base</Avatar>);
-    expect(container.firstChild).toHaveAttribute("aria-label", "Profile picture");
+    const { container } = render(
+      <Avatar aria-label="Profile picture">Base</Avatar>,
+    );
+    expect(container.firstChild).toHaveAttribute(
+      "aria-label",
+      "Profile picture",
+    );
   });
 
   it("should apply custom className", () => {

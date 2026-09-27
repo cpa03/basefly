@@ -1,5 +1,5 @@
-import { notFound, redirect } from "next/navigation";
 import dynamic from "next/dynamic";
+import { notFound, redirect } from "next/navigation";
 
 import { authOptions, getCurrentUser, type User } from "@saasfly/auth";
 import { db, rlsTransaction } from "@saasfly/db";

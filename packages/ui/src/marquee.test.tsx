@@ -114,7 +114,11 @@ describe("Marquee Component", () => {
 
   it("should forward HTML attributes and allow overriding default aria-label and role", () => {
     const { container } = render(
-      <Marquee data-testid="marquee-root" role="complementary" aria-label="Test marquee">
+      <Marquee
+        data-testid="marquee-root"
+        role="complementary"
+        aria-label="Test marquee"
+      >
         <span>Item</span>
       </Marquee>,
     );

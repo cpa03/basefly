@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
+
 import { TOOLTIP_TOKENS } from "@saasfly/common";
 
 import { cn } from "./index";

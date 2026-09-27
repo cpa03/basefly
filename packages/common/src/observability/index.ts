@@ -23,7 +23,7 @@
  * @module @saasfly/common/observability
  */
 
-import { trace, SpanStatusCode, type Tracer } from "@opentelemetry/api";
+import { SpanStatusCode, trace, type Tracer } from "@opentelemetry/api";
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
 import { resourceFromAttributes } from "@opentelemetry/resources";
 import { NodeSDK } from "@opentelemetry/sdk-node";

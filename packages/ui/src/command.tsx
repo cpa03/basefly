@@ -128,10 +128,7 @@ const CommandShortcut = ({
   ...props
 }: React.HTMLAttributes<HTMLSpanElement>) => {
   return (
-    <span
-      className={cn(COMMAND_TOKENS.shortcut.base, className)}
-      {...props}
-    />
+    <span className={cn(COMMAND_TOKENS.shortcut.base, className)} {...props} />
   );
 };
 CommandShortcut.displayName = "CommandShortcut";

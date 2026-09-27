@@ -100,7 +100,8 @@ export const FollowPointer = ({
       style={{
         top: y,
         left: x,
-        pointerEvents: FOLLOWER_POINTER_TOKENS.pointerContainer.pointerEvents as React.CSSProperties["pointerEvents"],
+        pointerEvents: FOLLOWER_POINTER_TOKENS.pointerContainer
+          .pointerEvents as React.CSSProperties["pointerEvents"],
       }}
       initial={{
         scale: 1,

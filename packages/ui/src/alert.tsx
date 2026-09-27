@@ -24,14 +24,19 @@ const Alert = React.memo(
   React.forwardRef<
     HTMLDivElement,
     React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>
-  >(({ className, variant, role = ALERT_TOKENS.defaultRole, ...props }, ref) => (
-    <div
-      ref={ref}
-      role={role}
-      className={cn(alertVariants({ variant }), className)}
-      {...props}
-    />
-  )),
+  >(
+    (
+      { className, variant, role = ALERT_TOKENS.defaultRole, ...props },
+      ref,
+    ) => (
+      <div
+        ref={ref}
+        role={role}
+        className={cn(alertVariants({ variant }), className)}
+        {...props}
+      />
+    ),
+  ),
 );
 Alert.displayName = "Alert";
 
@@ -40,11 +45,7 @@ const AlertTitle = React.memo(
     HTMLParagraphElement,
     React.HTMLAttributes<HTMLHeadingElement>
   >(({ className, ...props }, ref) => (
-    <h5
-      ref={ref}
-      className={cn(ALERT_TOKENS.title, className)}
-      {...props}
-    >
+    <h5 ref={ref} className={cn(ALERT_TOKENS.title, className)} {...props}>
       {props.children}
     </h5>
   )),

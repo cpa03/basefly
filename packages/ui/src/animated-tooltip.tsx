@@ -11,6 +11,7 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
+
 import { ANIMATED_TOOLTIP_TOKENS } from "@saasfly/common";
 
 export interface AnimatedTooltipProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -77,12 +78,7 @@ export const AnimatedTooltip = ({
     : { opacity: 0, y: 20, scale: 0.6 };
 
   return (
-    <div
-      role={role}
-      aria-label={ariaLabel}
-      className={className}
-      {...props}
-    >
+    <div role={role} aria-label={ariaLabel} className={className} {...props}>
       {items.map((item) => (
         <div
           className={ANIMATED_TOOLTIP_TOKENS.container.base}
@@ -103,12 +99,18 @@ export const AnimatedTooltip = ({
                 }}
                 className={ANIMATED_TOOLTIP_TOKENS.tooltip.base}
               >
-                <div className={ANIMATED_TOOLTIP_TOKENS.tooltip.gradientPrimary} />
-                <div className={ANIMATED_TOOLTIP_TOKENS.tooltip.gradientSecondary} />
+                <div
+                  className={ANIMATED_TOOLTIP_TOKENS.tooltip.gradientPrimary}
+                />
+                <div
+                  className={ANIMATED_TOOLTIP_TOKENS.tooltip.gradientSecondary}
+                />
                 <div className={ANIMATED_TOOLTIP_TOKENS.tooltip.nameText}>
                   {item.name}
                 </div>
-                <div className={ANIMATED_TOOLTIP_TOKENS.tooltip.designationText}>
+                <div
+                  className={ANIMATED_TOOLTIP_TOKENS.tooltip.designationText}
+                >
                   {item.designation}
                 </div>
               </motion.div>

@@ -1,4 +1,5 @@
 import { MARQUEE_TOKENS } from "@saasfly/common";
+
 import { cn } from "./utils/cn";
 
 interface MarqueeProps extends React.HTMLAttributes<HTMLDivElement> {

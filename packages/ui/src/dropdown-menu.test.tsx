@@ -36,7 +36,9 @@ describe("DropdownMenu component", () => {
               Show Status Bar
             </DropdownMenuCheckboxItem>
             <DropdownMenuRadioGroup value="opt1">
-              <DropdownMenuRadioItem value="opt1">Option 1</DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="opt1">
+                Option 1
+              </DropdownMenuRadioItem>
             </DropdownMenuRadioGroup>
           </DropdownMenuGroup>
         </DropdownMenuContent>

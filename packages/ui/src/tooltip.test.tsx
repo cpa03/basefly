@@ -68,12 +68,16 @@ describe("Tooltip Component", () => {
     render(
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger aria-label="Custom trigger label">Hover me</TooltipTrigger>
+          <TooltipTrigger aria-label="Custom trigger label">
+            Hover me
+          </TooltipTrigger>
           <TooltipContent>Tooltip text</TooltipContent>
         </Tooltip>
       </TooltipProvider>,
     );
-    const trigger = screen.getByRole("button", { name: "Custom trigger label" });
+    const trigger = screen.getByRole("button", {
+      name: "Custom trigger label",
+    });
     expect(trigger).toHaveAttribute("aria-label", "Custom trigger label");
   });
 

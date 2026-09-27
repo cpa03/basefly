@@ -44,7 +44,9 @@ describe("AnimatedGradientText Component", () => {
     expect(root).toHaveClass("items-center");
     expect(root).toHaveClass("hover:scale-[1.01]");
     expect(root).toHaveClass("active:scale-[0.99]");
-    expect(getByRole("group", { name: "Animated gradient text" })).toBeInTheDocument();
+    expect(
+      getByRole("group", { name: "Animated gradient text" }),
+    ).toBeInTheDocument();
   });
 
   it("should support custom role and aria-label props", () => {

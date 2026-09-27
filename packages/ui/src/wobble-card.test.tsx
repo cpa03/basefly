@@ -76,8 +76,12 @@ describe("WobbleCard Component", () => {
     const region = screen.getByRole("region", { name: "Wobble card section" });
     expect(region).toBeInTheDocument();
 
-    render(<WobbleCard aria-label="Custom Section Label">Custom Content</WobbleCard>);
-    const customRegion = screen.getByRole("region", { name: "Custom Section Label" });
+    render(
+      <WobbleCard aria-label="Custom Section Label">Custom Content</WobbleCard>,
+    );
+    const customRegion = screen.getByRole("region", {
+      name: "Custom Section Label",
+    });
     expect(customRegion).toBeInTheDocument();
   });
 });

@@ -1,7 +1,8 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import { SCROLL_AREA_TOKENS } from "@saasfly/common";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+
+import { SCROLL_AREA_TOKENS } from "@saasfly/common";
 
 import { ScrollArea, ScrollBar } from "./scroll-area";
 

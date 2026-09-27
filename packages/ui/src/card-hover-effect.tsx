@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
+
 import { HOVER_EFFECT_CARD_TOKENS } from "@saasfly/common";
 
 import { cn } from "./utils/cn";
@@ -21,12 +22,7 @@ export const HoverEffect = ({
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <div
-      className={cn(
-        HOVER_EFFECT_CARD_TOKENS.grid,
-        className,
-      )}
-    >
+    <div className={cn(HOVER_EFFECT_CARD_TOKENS.grid, className)}>
       {items.map((item, idx) => (
         <Link
           href={item?.link}
@@ -75,14 +71,11 @@ export const Card = ({
   children: React.ReactNode;
 }) => {
   return (
-    <div
-      className={cn(
-        HOVER_EFFECT_CARD_TOKENS.card.base,
-        className,
-      )}
-    >
+    <div className={cn(HOVER_EFFECT_CARD_TOKENS.card.base, className)}>
       <div className={HOVER_EFFECT_CARD_TOKENS.card.contentWrapper}>
-        <div className={HOVER_EFFECT_CARD_TOKENS.card.innerPadding}>{children}</div>
+        <div className={HOVER_EFFECT_CARD_TOKENS.card.innerPadding}>
+          {children}
+        </div>
       </div>
     </div>
   );
@@ -108,12 +101,7 @@ export const CardDescription = ({
   children: React.ReactNode;
 }) => {
   return (
-    <p
-      className={cn(
-        HOVER_EFFECT_CARD_TOKENS.description,
-        className,
-      )}
-    >
+    <p className={cn(HOVER_EFFECT_CARD_TOKENS.description, className)}>
       {children}
     </p>
   );

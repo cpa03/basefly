@@ -128,7 +128,7 @@ const Button = React.memo(
           ref={ref}
           disabled={isLoading ?? props.disabled}
           aria-busy={isLoading}
-          aria-disabled={(isLoading || props.disabled) ? "true" : undefined}
+          aria-disabled={isLoading || props.disabled ? "true" : undefined}
           onClick={handleClick}
           {...props}
         >

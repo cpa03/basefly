@@ -27,7 +27,10 @@ describe("FollowerPointerCard Component", () => {
     expect(card).toHaveClass("hover:scale-[1.01]");
     expect(card).toHaveClass("active:scale-[0.99]");
     expect(card).toHaveAttribute("role", "region");
-    expect(card).toHaveAttribute("aria-label", "Interactive follower pointer container");
+    expect(card).toHaveAttribute(
+      "aria-label",
+      "Interactive follower pointer container",
+    );
   });
 
   it("should support explicit aria-label and role overrides", () => {

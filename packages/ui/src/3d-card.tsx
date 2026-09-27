@@ -88,9 +88,7 @@ export const CardBody = ({
   className?: string;
 }) => {
   return (
-    <div className={cn(CARD_3D_TOKENS.body.base, className)}>
-      {children}
-    </div>
+    <div className={cn(CARD_3D_TOKENS.body.base, className)}>{children}</div>
   );
 };
 

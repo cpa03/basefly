@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import { TABLE_TOKENS } from "@saasfly/common";
 
 import { cn } from "./utils/cn";
@@ -8,11 +9,7 @@ const Table = React.forwardRef<
   React.HTMLAttributes<HTMLTableElement>
 >(({ className, ...props }, ref) => (
   <div className={TABLE_TOKENS.wrapper}>
-    <table
-      ref={ref}
-      className={cn(TABLE_TOKENS.table, className)}
-      {...props}
-    />
+    <table ref={ref} className={cn(TABLE_TOKENS.table, className)} {...props} />
   </div>
 ));
 Table.displayName = "Table";
@@ -29,11 +26,7 @@ const TableBody = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <tbody
-    ref={ref}
-    className={cn(TABLE_TOKENS.body, className)}
-    {...props}
-  />
+  <tbody ref={ref} className={cn(TABLE_TOKENS.body, className)} {...props} />
 ));
 TableBody.displayName = "TableBody";
 
@@ -41,11 +34,7 @@ const TableFooter = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <tfoot
-    ref={ref}
-    className={cn(TABLE_TOKENS.footer, className)}
-    {...props}
-  />
+  <tfoot ref={ref} className={cn(TABLE_TOKENS.footer, className)} {...props} />
 ));
 TableFooter.displayName = "TableFooter";
 
@@ -71,11 +60,7 @@ const TableHead = React.forwardRef<
   HTMLTableCellElement,
   React.ThHTMLAttributes<HTMLTableCellElement>
 >(({ className, ...props }, ref) => (
-  <th
-    ref={ref}
-    className={cn(TABLE_TOKENS.head, className)}
-    {...props}
-  />
+  <th ref={ref} className={cn(TABLE_TOKENS.head, className)} {...props} />
 ));
 TableHead.displayName = "TableHead";
 
@@ -83,11 +68,7 @@ const TableCell = React.forwardRef<
   HTMLTableCellElement,
   React.TdHTMLAttributes<HTMLTableCellElement>
 >(({ className, ...props }, ref) => (
-  <td
-    ref={ref}
-    className={cn(TABLE_TOKENS.cell, className)}
-    {...props}
-  />
+  <td ref={ref} className={cn(TABLE_TOKENS.cell, className)} {...props} />
 ));
 TableCell.displayName = "TableCell";
 

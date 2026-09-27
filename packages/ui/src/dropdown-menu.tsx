@@ -50,10 +50,7 @@ const DropdownMenuSubContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DropdownMenuPrimitive.SubContent
     ref={ref}
-    className={cn(
-      DROPDOWN_MENU_TOKENS.subContent.base,
-      className,
-    )}
+    className={cn(DROPDOWN_MENU_TOKENS.subContent.base, className)}
     {...props}
   />
 ));
@@ -69,10 +66,7 @@ const DropdownMenuContent = React.memo(
       <DropdownMenuPrimitive.Content
         ref={ref}
         sideOffset={sideOffset}
-        className={cn(
-          DROPDOWN_MENU_TOKENS.content.base,
-          className,
-        )}
+        className={cn(DROPDOWN_MENU_TOKENS.content.base, className)}
         {...props}
       />
     </DropdownMenuPrimitive.Portal>

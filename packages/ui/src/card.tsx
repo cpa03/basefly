@@ -56,11 +56,7 @@ const CardTitle = React.memo(
     HTMLParagraphElement,
     React.HTMLAttributes<HTMLHeadingElement>
   >(({ className, ...props }, ref) => (
-    <h3
-      ref={ref}
-      className={cn(CARD_TOKENS.title.base, className)}
-      {...props}
-    >
+    <h3 ref={ref} className={cn(CARD_TOKENS.title.base, className)} {...props}>
       {props.children}
     </h3>
   )),
@@ -84,7 +80,11 @@ CardDescription.displayName = "CardDescription";
 const CardContent = React.memo(
   React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
     ({ className, ...props }, ref) => (
-      <div ref={ref} className={cn(CARD_TOKENS.content.base, className)} {...props} />
+      <div
+        ref={ref}
+        className={cn(CARD_TOKENS.content.base, className)}
+        {...props}
+      />
     ),
   ),
 );

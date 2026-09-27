@@ -3,7 +3,11 @@
 import * as React from "react";
 import { Check, Copy } from "lucide-react";
 
-import { ANIMATION, COPY_BUTTON_TOKENS, FEEDBACK_TIMING } from "@saasfly/common";
+import {
+  ANIMATION,
+  COPY_BUTTON_TOKENS,
+  FEEDBACK_TIMING,
+} from "@saasfly/common";
 
 import {
   Tooltip,

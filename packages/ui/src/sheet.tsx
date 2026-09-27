@@ -2,9 +2,10 @@
 
 import * as React from "react";
 import * as SheetPrimitive from "@radix-ui/react-dialog";
-import { SHEET_TOKENS } from "@saasfly/common";
 import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
+
+import { SHEET_TOKENS } from "@saasfly/common";
 
 import { cn } from "./utils/cn";
 
@@ -49,90 +50,89 @@ const SheetOverlay = React.forwardRef<
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName;
 
 const sheetVariants = cva(SHEET_TOKENS.content.base, {
-    variants: {
-      position: {
-        top: "animate-in slide-in-from-top w-full duration-300",
-        bottom: "animate-in slide-in-from-bottom w-full duration-300",
-        left: "animate-in slide-in-from-left h-full duration-300",
-        right: "animate-in slide-in-from-right h-full duration-300",
-      },
-      size: {
-        content: "",
-        default: "",
-        sm: "",
-        lg: "",
-        xl: "",
-        full: "",
-      },
+  variants: {
+    position: {
+      top: "animate-in slide-in-from-top w-full duration-300",
+      bottom: "animate-in slide-in-from-bottom w-full duration-300",
+      left: "animate-in slide-in-from-left h-full duration-300",
+      right: "animate-in slide-in-from-right h-full duration-300",
     },
-    compoundVariants: [
-      {
-        position: ["top", "bottom"],
-        size: "content",
-        class: "max-h-screen",
-      },
-      {
-        position: ["top", "bottom"],
-        size: "default",
-        class: "h-1/3",
-      },
-      {
-        position: ["top", "bottom"],
-        size: "sm",
-        class: "h-1/4",
-      },
-      {
-        position: ["top", "bottom"],
-        size: "lg",
-        class: "h-1/2",
-      },
-      {
-        position: ["top", "bottom"],
-        size: "xl",
-        class: "h-5/6",
-      },
-      {
-        position: ["top", "bottom"],
-        size: "full",
-        class: "h-screen",
-      },
-      {
-        position: ["right", "left"],
-        size: "content",
-        class: "max-w-screen",
-      },
-      {
-        position: ["right", "left"],
-        size: "default",
-        class: "w-1/3",
-      },
-      {
-        position: ["right", "left"],
-        size: "sm",
-        class: "w-1/4",
-      },
-      {
-        position: ["right", "left"],
-        size: "lg",
-        class: "w-1/2",
-      },
-      {
-        position: ["right", "left"],
-        size: "xl",
-        class: "w-5/6",
-      },
-      {
-        position: ["right", "left"],
-        size: "full",
-        class: "w-screen",
-      },
-    ],
-    defaultVariants: {
-      position: "right",
-      size: "default",
+    size: {
+      content: "",
+      default: "",
+      sm: "",
+      lg: "",
+      xl: "",
+      full: "",
     },
   },
-);
+  compoundVariants: [
+    {
+      position: ["top", "bottom"],
+      size: "content",
+      class: "max-h-screen",
+    },
+    {
+      position: ["top", "bottom"],
+      size: "default",
+      class: "h-1/3",
+    },
+    {
+      position: ["top", "bottom"],
+      size: "sm",
+      class: "h-1/4",
+    },
+    {
+      position: ["top", "bottom"],
+      size: "lg",
+      class: "h-1/2",
+    },
+    {
+      position: ["top", "bottom"],
+      size: "xl",
+      class: "h-5/6",
+    },
+    {
+      position: ["top", "bottom"],
+      size: "full",
+      class: "h-screen",
+    },
+    {
+      position: ["right", "left"],
+      size: "content",
+      class: "max-w-screen",
+    },
+    {
+      position: ["right", "left"],
+      size: "default",
+      class: "w-1/3",
+    },
+    {
+      position: ["right", "left"],
+      size: "sm",
+      class: "w-1/4",
+    },
+    {
+      position: ["right", "left"],
+      size: "lg",
+      class: "w-1/2",
+    },
+    {
+      position: ["right", "left"],
+      size: "xl",
+      class: "w-5/6",
+    },
+    {
+      position: ["right", "left"],
+      size: "full",
+      class: "w-screen",
+    },
+  ],
+  defaultVariants: {
+    position: "right",
+    size: "default",
+  },
+});
 
 export interface SheetContentProps
   extends

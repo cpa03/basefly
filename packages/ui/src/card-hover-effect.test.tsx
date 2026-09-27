@@ -1,7 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import { Card, CardDescription, CardTitle, HoverEffect } from "./card-hover-effect";
+import {
+  Card,
+  CardDescription,
+  CardTitle,
+  HoverEffect,
+} from "./card-hover-effect";
 
 describe("HoverEffect Card", () => {
   const sampleItems = [

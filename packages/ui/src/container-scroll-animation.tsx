@@ -9,8 +9,7 @@ import { cn } from "@saasfly/ui";
 const RELATIVE_POSITION_STYLE = { position: "relative" as const };
 const PERSPECTIVE_STYLE = { perspective: "1000px" };
 
-export interface ContainerScrollProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface ContainerScrollProps extends React.HTMLAttributes<HTMLDivElement> {
   titleComponent: string | React.ReactNode;
   children: React.ReactNode;
 }

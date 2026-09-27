@@ -1,4 +1,5 @@
 import type { HTMLAttributes, ReactNode } from "react";
+
 import { ANIMATED_GRADIENT_TEXT_TOKENS } from "@saasfly/common";
 
 import { cn } from "./utils/cn";

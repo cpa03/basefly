@@ -1,6 +1,7 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+
 import { ANIMATED_TOOLTIP_TOKENS } from "@saasfly/common";
 
 import { AnimatedTooltip } from "./animated-tooltip";

@@ -3483,3 +3483,5 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [STRENGTHEN] Enhanced CardSkeleton component with region accessibility role, default aria-label, configurable props, and token assertions in ui-tokens.test.ts
 - [CONSOLIDATE] Centralized AnimatedList component styling and tokens under ANIMATED_LIST_TOKENS inside @saasfly/common/src/ui-tokens.ts
 - [STRENGTHEN] Enhanced AnimatedList component with region accessibility role, default aria-label, tactile spring-scale micro-interactions (hover:scale-[1.002] active:scale-[0.998]), and unit test assertions
+- [CONSOLIDATE] Centralized BackgroundLines styling and tokens under BACKGROUND_LINES_TOKENS inside @saasfly/common/src/ui-tokens.ts
+- [STRENGTHEN] Enhanced BackgroundLines component with focus-visible ring accessibility, tabIndex={0}, default role="region", fallback aria-label, tactile spring-scale micro-interactions (hover:scale-[1.002] active:scale-[0.998]), and unit test assertions

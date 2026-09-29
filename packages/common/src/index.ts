@@ -395,6 +395,7 @@ export {
   TYPEWRITER_EFFECT_TOKENS,
   ANIMATED_TOOLTIP_TOKENS,
   COLOURFUL_TEXT_TOKENS,
+  BACKGROUND_LINES_TOKENS,
 } from "./ui-tokens";
 export type {
   ButtonHeight,

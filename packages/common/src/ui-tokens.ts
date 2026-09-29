@@ -1325,6 +1325,29 @@ export const COLOURFUL_TEXT_TOKENS = {
   defaultRole: "region" as const,
 } as const;
 
+/**
+ * BackgroundLines design tokens
+ * Centralized layout, styling, transitions, micro-interactions, and accessibility for BackgroundLines component
+ */
+export const BACKGROUND_LINES_TOKENS = {
+  container: {
+    base: "relative h-[20rem] w-full bg-background md:h-screen transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+    hoverScale: "hover:scale-[1.002]",
+    activeScale: "active:scale-[0.998]",
+  },
+  svg: {
+    base: "absolute inset-0 h-full w-full",
+    strokeWidth: "2.3",
+    viewBox: "0 0 1440 900",
+    initialOpacity: 0,
+    animateOpacity: 1,
+    transitionDuration: 1,
+  },
+  defaultDuration: 10,
+  defaultAriaLabel: "Animated background lines",
+  defaultRole: "region" as const,
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

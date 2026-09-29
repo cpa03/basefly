@@ -3,22 +3,38 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 
+import { BACKGROUND_LINES_TOKENS } from "@saasfly/common";
+
 import { cn } from "./utils/cn";
 
-export const BackgroundLines = ({
-  children,
-  className,
-  svgOptions,
-}: {
+export interface BackgroundLinesProps {
   children: React.ReactNode;
   className?: string;
   svgOptions?: {
     duration?: number;
   };
-}) => {
+  "aria-label"?: string;
+  role?: string;
+}
+
+export const BackgroundLines = ({
+  children,
+  className,
+  svgOptions,
+  "aria-label": ariaLabel,
+  role,
+}: BackgroundLinesProps) => {
   return (
     <div
-      className={cn("h-[20rem] w-full bg-background md:h-screen", className)}
+      tabIndex={0}
+      role={role ?? BACKGROUND_LINES_TOKENS.defaultRole}
+      aria-label={ariaLabel ?? BACKGROUND_LINES_TOKENS.defaultAriaLabel}
+      className={cn(
+        BACKGROUND_LINES_TOKENS.container.base,
+        BACKGROUND_LINES_TOKENS.container.hoverScale,
+        BACKGROUND_LINES_TOKENS.container.activeScale,
+        className,
+      )}
     >
       <SVG svgOptions={svgOptions} />
       {children}
@@ -105,27 +121,28 @@ const SVG = ({
 
   return (
     <motion.svg
-      viewBox="0 0 1440 900"
+      viewBox={BACKGROUND_LINES_TOKENS.svg.viewBox}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       focusable="false"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-      className="absolute inset-0 h-full w-full"
+      initial={{ opacity: BACKGROUND_LINES_TOKENS.svg.initialOpacity }}
+      animate={{ opacity: BACKGROUND_LINES_TOKENS.svg.animateOpacity }}
+      transition={{ duration: BACKGROUND_LINES_TOKENS.svg.transitionDuration }}
+      className={BACKGROUND_LINES_TOKENS.svg.base}
     >
       {paths.map((path, idx) => (
         <motion.path
           d={path}
           stroke={colors[idx]}
-          strokeWidth="2.3"
+          strokeWidth={BACKGROUND_LINES_TOKENS.svg.strokeWidth}
           strokeLinecap="round"
           variants={pathVariants}
           initial="initial"
           animate="animate"
           transition={{
-            duration: svgOptions?.duration ?? 10,
+            duration:
+              svgOptions?.duration ?? BACKGROUND_LINES_TOKENS.defaultDuration,
             ease: "linear",
             repeat: Infinity,
             repeatType: "loop",
@@ -141,13 +158,14 @@ const SVG = ({
         <motion.path
           d={path}
           stroke={colors[idx]}
-          strokeWidth="2.3"
+          strokeWidth={BACKGROUND_LINES_TOKENS.svg.strokeWidth}
           strokeLinecap="round"
           variants={pathVariants}
           initial="initial"
           animate="animate"
           transition={{
-            duration: svgOptions?.duration ?? 10,
+            duration:
+              svgOptions?.duration ?? BACKGROUND_LINES_TOKENS.defaultDuration,
             ease: "linear",
             repeat: Infinity,
             repeatType: "loop",

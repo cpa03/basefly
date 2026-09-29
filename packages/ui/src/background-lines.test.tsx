@@ -79,4 +79,32 @@ describe("BackgroundLines Component", () => {
     expect(svg).toHaveAttribute("aria-hidden", "true");
     expect(svg).toHaveAttribute("focusable", "false");
   });
+
+  it("should render default role, aria-label, and focus/hover micro-interaction tokens", () => {
+    render(
+      <BackgroundLines>
+        <span>Content</span>
+      </BackgroundLines>,
+    );
+
+    const region = screen.getByRole("region", {
+      name: "Animated background lines",
+    });
+    expect(region).toBeInTheDocument();
+    expect(region).toHaveAttribute("tabIndex", "0");
+    expect(region.className).toContain("hover:scale-[1.002]");
+    expect(region.className).toContain("active:scale-[0.998]");
+    expect(region.className).toContain("focus-visible:ring-2");
+  });
+
+  it("should support custom role and aria-label", () => {
+    render(
+      <BackgroundLines role="banner" aria-label="Hero background">
+        <span>Content</span>
+      </BackgroundLines>,
+    );
+
+    const banner = screen.getByRole("banner", { name: "Hero background" });
+    expect(banner).toBeInTheDocument();
+  });
 });

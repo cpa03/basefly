@@ -141,7 +141,8 @@ const SVG = ({
           initial="initial"
           animate="animate"
           transition={{
-            duration: svgOptions?.duration ?? BACKGROUND_LINES_TOKENS.defaultDuration,
+            duration:
+              svgOptions?.duration ?? BACKGROUND_LINES_TOKENS.defaultDuration,
             ease: "linear",
             repeat: Infinity,
             repeatType: "loop",
@@ -163,7 +164,8 @@ const SVG = ({
           initial="initial"
           animate="animate"
           transition={{
-            duration: svgOptions?.duration ?? BACKGROUND_LINES_TOKENS.defaultDuration,
+            duration:
+              svgOptions?.duration ?? BACKGROUND_LINES_TOKENS.defaultDuration,
             ease: "linear",
             repeat: Infinity,
             repeatType: "loop",

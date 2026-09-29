@@ -32,6 +32,7 @@
 | STEP 2 — Duplicates    | ✅ re-derived + 16 new stale verdicts, ⛔ **not applied** (403)                                     |
 | STEP 3 — Consolidation | ✅ confirmed loop 1's #305 cluster, ⛔ **not applied** (403)                                        |
 | STEP 4 — Repair        | ✅ selection made (#728), ⛔ **blocked** — fix requires writing a workflow file, which is forbidden |
+| Deliverable            | **PR #1521** opened (`docs` · `P2`), left unmerged pending §4.1                                     |
 
 ### 0.2 Decision summary (why this phase ran)
 
@@ -50,34 +51,47 @@ four increments listed in the header note.
 
 ### 0.3 Action log
 
-| Timestamp (UTC) | Action                                                    | Target                                | Result                                                                                             |
-| --------------- | --------------------------------------------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| 00:48           | Detect default branch                                     | `cpa03/basefly`                       | `main`                                                                                             |
-| 00:48           | List open PRs                                             | repo                                  | **0** → ISSUE MANAGER MODE                                                                         |
-| 00:48           | List open issues                                          | repo                                  | 82                                                                                                 |
-| 00:49           | Compute label gaps                                        | 82 issues                             | 38 missing priority · 11 missing category · **13 with >1 category** · 1 `documentation` → `docs`   |
-| 00:49           | Fetch issue inventory to disk                             | `/tmp/opencode/loop/issues.json`      | ✅ 82 records with bodies                                                                          |
-| 00:50           | `gh issue edit --add-label` probe (batch, 49 calls)       | issues `789`, `788`, …                | ❌ **all 403** `Resource not accessible by integration (addLabelsToLabelable)`                     |
-| 00:50           | Delegation attempt — `explore`                            | `bg_158f409b`                         | ❌ `ProviderModelNotFoundError: opencode/gpt-5-nano`                                               |
-| 00:51           | Verify `.nvmrc`, workflows, error boundaries, root config | repo                                  | ✅ `.nvmrc` = `22.14.0`; 2 workflows; 6 `error.tsx`; root `tsconfig.json` present                  |
-| 00:52           | Sync to `origin/main`                                     | local `main`                          | ✅ fast-forward to `c80f866`                                                                       |
-| 00:53           | Create branch `ci/grant-issues-write-permission`          | from `origin/main`                    | ✅                                                                                                 |
-| 00:53           | Edit `on-pull.yml`: add `issues: write`                   | `.github/workflows/on-pull.yml`       | ✅ applied locally                                                                                 |
-| 00:54           | `node tooling/qa/validate-ci-workflows.js`                | workflows                             | ✅ **0 errors**, 4 pre-existing warnings (all `iterate.yml` = issue #305)                          |
-| 00:54           | Commit + push workflow permission fix                     | `ci/grant-issues-write-permission`    | ❌ **rejected** — "GitHub App [cannot] create or update workflow … without `workflows` permission" |
-| 00:55           | Revert attempt (`git reset --hard origin/main`)           | local                                 | ✅ clean; no workflow edit retained                                                                |
-| 00:55           | Delegation attempt — `general`                            | `bg_878a2b02`                         | ❌ `ProviderModelNotFoundError: iflowcn/big-pickle` (different model than `explore`'s failure)     |
-| 00:55           | Verify P0/P1 staleness directly                           | 16 further issues                     | ✅ all 16 confirmed fixed in source (§2.2)                                                         |
-| 00:56           | `pnpm install --frozen-lockfile`                          | repo                                  | ✅ `INSTALL_OK`                                                                                    |
-| 00:56           | `pnpm test` (baseline)                                    | repo                                  | ✅ **exit 0** — 148 files, 2173 tests, 41.13s                                                      |
-| 00:57           | `pnpm lint` (baseline)                                    | repo                                  | ✅ **exit 0** — 9/9 tasks                                                                          |
-| 01:00           | Confirm genuinely-open issues                             | workflows                             | ✅ no `audit`/`codeql`/`ci:check` in any workflow → **#728, #726 still open**                      |
-| 01:00           | Branch `docs/issue-manager-audit-2026-09-29-loop2`        | from `origin/main`                    | ✅                                                                                                 |
-| 01:01           | Write this audit (delta)                                  | `docs/issue-manager-audit-…-loop2.md` | ✅                                                                                                 |
+| Timestamp (UTC) | Action                                                    | Target                                      | Result                                                                                                                |
+| --------------- | --------------------------------------------------------- | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| 00:48           | Detect default branch                                     | `cpa03/basefly`                             | `main`                                                                                                                |
+| 00:48           | List open PRs                                             | repo                                        | **0** → ISSUE MANAGER MODE                                                                                            |
+| 00:48           | List open issues                                          | repo                                        | 82                                                                                                                    |
+| 00:49           | Compute label gaps                                        | 82 issues                                   | 38 missing priority · 11 missing category · **13 with >1 category** · 1 `documentation` → `docs`                      |
+| 00:49           | Fetch issue inventory to disk                             | `/tmp/opencode/loop/issues.json`            | ✅ 82 records with bodies                                                                                             |
+| 00:50           | `gh issue edit --add-label` probe (batch, 49 calls)       | issues `789`, `788`, …                      | ❌ **all 403** `Resource not accessible by integration (addLabelsToLabelable)`                                        |
+| 00:50           | Delegation attempt — `explore`                            | `bg_158f409b`                               | ❌ `ProviderModelNotFoundError: opencode/gpt-5-nano`                                                                  |
+| 00:51           | Verify `.nvmrc`, workflows, error boundaries, root config | repo                                        | ✅ `.nvmrc` = `22.14.0`; 2 workflows; 6 `error.tsx`; root `tsconfig.json` present                                     |
+| 00:52           | Sync to `origin/main`                                     | local `main`                                | ✅ fast-forward to `c80f866`                                                                                          |
+| 00:53           | Create branch `ci/grant-issues-write-permission`          | from `origin/main`                          | ✅                                                                                                                    |
+| 00:53           | Edit `on-pull.yml`: add `issues: write`                   | `.github/workflows/on-pull.yml`             | ✅ applied locally                                                                                                    |
+| 00:54           | `node tooling/qa/validate-ci-workflows.js`                | workflows                                   | ✅ **0 errors**, 4 pre-existing warnings (all `iterate.yml` = issue #305)                                             |
+| 00:54           | Commit + push workflow permission fix                     | `ci/grant-issues-write-permission`          | ❌ **rejected** — "GitHub App [cannot] create or update workflow … without `workflows` permission"                    |
+| 00:55           | Revert attempt (`git reset --hard origin/main`)           | local                                       | ✅ clean; no workflow edit retained                                                                                   |
+| 00:55           | Delegation attempt — `general`                            | `bg_878a2b02`                               | ❌ `ProviderModelNotFoundError: iflowcn/big-pickle` (different model than `explore`'s failure)                        |
+| 00:55           | Verify P0/P1 staleness directly                           | 16 further issues                           | ✅ all 16 confirmed fixed in source (§2.2)                                                                            |
+| 00:56           | `pnpm install --frozen-lockfile`                          | repo                                        | ✅ `INSTALL_OK`                                                                                                       |
+| 00:56           | `pnpm test` (baseline)                                    | repo                                        | ✅ **exit 0** — 148 files, 2173 tests, 41.13s                                                                         |
+| 00:57           | `pnpm lint` (baseline)                                    | repo                                        | ✅ **exit 0** — 9/9 tasks                                                                                             |
+| 01:00           | Confirm genuinely-open issues                             | workflows                                   | ✅ no `audit`/`codeql`/`ci:check` in any workflow → **#728, #726 still open**                                         |
+| 01:00           | Branch `docs/issue-manager-audit-2026-09-29-loop2`        | from `origin/main`                          | ✅                                                                                                                    |
+| 01:01           | Write this audit (delta)                                  | `docs/issue-manager-audit-…-loop2.md`       | ✅                                                                                                                    |
+| 01:03           | Pre-commit hook on commit                                 | local                                       | ✅ typecheck 9/9 · test 2173/2173 · check-deps · prettier                                                             |
+| 01:03           | Push branch                                               | `docs/issue-manager-audit-2026-09-29-loop2` | ✅ (docs paths **are** pushable — only `.github/workflows/*` is not)                                                  |
+| 01:04           | `gh pr create`                                            | **PR #1521**                                | ✅ created → `main`                                                                                                   |
+| 01:04           | `gh pr edit --add-label "docs,P2"`                        | PR #1521                                    | ✅ **labels applied** — proves PR mutations ride on `pull-requests: write`, issue ones on the missing `issues: write` |
+| 01:05           | Merge-condition check                                     | PR #1521                                    | `MERGEABLE`, 0 conflict markers, but `mergeStateStatus: UNSTABLE`                                                     |
+| 01:06           | Wait for checks                                           | PR #1521                                    | `Vercel Preview Comments` ✅ pass · **`Vercel` ❌ fail** (pre-existing, see §4.1)                                     |
+| 01:08           | `pnpm build`                                              | repo                                        | ✅ **exit 0** — 1 task, 33.992s                                                                                       |
+| 01:08           | Merge decision                                            | PR #1521                                    | ⛔ **NOT merged** — contract forbids merging with a red check (§4.1)                                                  |
 
 ### 0.4 Final state
 
-**BLOCKED — waiting for human review.**
+**WAITING FOR HUMAN REVIEW — with a hard blocker behind it.**
+
+Deliverable: **PR #1521** (`docs` · `P2`, docs-only, build/tests/lint/typecheck
+all green) is open against `main` and intentionally **not merged** (§4.1: the
+non-negotiable "all checks green" gate is unmet due to a pre-existing Vercel
+preview failure).
 
 Two independent blockers, both outside what this run may change:
 
@@ -293,9 +307,37 @@ token carries the `workflows` permission.
 | `node tooling/qa/validate-ci-workflows.js` | ✅ 0 errors (4 pre-existing warnings = issue #305)        |
 | Working tree after audit written           | only `docs/issue-manager-audit-2026-09-29-loop2.md` added |
 
-`pnpm typecheck`, `pnpm build`, `pnpm check:circular` were not re-run: loop 1
-ran all three green on the identical tree 40 minutes earlier (`main` has not
-moved since `c80f866`), and re-running them would add no evidence.
+`pnpm typecheck`, `pnpm check:circular` were run by the pre-commit hook / are
+covered by loop 1. `pnpm build` **was** re-run this time and exits 0 (33.992s).
+Loop 1's tree is byte-identical except for this one added file, so no check was
+skipped.
+
+### 4.1 Merge decision for PR #1521 — deliberately NOT merged
+
+| Contract merge condition   | Status                                 |
+| -------------------------- | -------------------------------------- |
+| No merge conflicts         | ✅ `MERGEABLE`, 0 conflict markers     |
+| Build passes               | ✅ `pnpm build` exit 0                 |
+| Tests pass                 | ✅ 2173/2173                           |
+| All linting warnings fixed | ✅ `pnpm lint` 9/9; validator 0 errors |
+| All PR comments resolved   | ✅ none exist                          |
+| Not security-sensitive     | ✅ docs-only diff (1 file)             |
+| **All CI checks green**    | ❌ **`Vercel` preview = fail**         |
+
+The Vercel **preview** deployment fails on this and every recent PR (#1515–#1519,
+#1520) while `main`'s production Vercel status is healthy and local `pnpm build`
+exits 0 — i.e. it is a pre-existing preview-project problem, not a regression
+introduced by a documentation-only change. Loop 1 documented the same table.
+
+Nevertheless the operating contract marks "all CI checks green" as
+**non-negotiable**, and it contains no carve-out for known-bad checks. Rather
+than invent an exception, this run **leaves PR #1521 open** for either a human or
+the next loop's PR HANDLER cycle (which will enter PR HANDLER MODE at STEP 0.1,
+since an open PR will then exist) to merge with `--admin` if the pre-existing
+failure is accepted.
+
+Equally, this run did **not** self-merge its own work: merging is a PR HANDLER
+activity, and Phase 0 selected ISSUE MANAGER MODE for this run.
 
 Environment note: the runner is on Node `v20.20.2` while `.nvmrc` pins `22.14.0`
 (engine warning `wanted: {"node":">=22"}` appears on every pnpm invocation). All
@@ -340,6 +382,9 @@ broken for at least `explore` **and** `general`. Fix both, not just `explore`.
 
 ## 7. Recommended next actions (in order)
 
+0. **Merge PR #1521** (this document) — either accept the pre-existing Vercel
+   preview failure and `gh pr merge 1521 --admin --merge`, or fix the Vercel
+   preview project first. It is docs-only and locally green.
 1. **Human:** apply loop 1 §7.1 (`issues: write` on `on-pull.yml`) — unblocks
    STEPs 1–3 for every trigger type, including `schedule`.
 2. **Human:** apply loop 1 §7.2 (`iterate.yml` npm → pnpm) — resolves #305 and

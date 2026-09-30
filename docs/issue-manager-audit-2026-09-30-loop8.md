@@ -2,17 +2,17 @@
 
 ## §0 Run Metadata
 
-| Field | Value |
-|---|---|
-| Evaluation date | 2026-09-30 (UTC), run window ≈07:31–08:00 |
-| State machine | Phase 0 → **ISSUE MANAGER MODE** (all other phases stopped) |
-| DEFAULT_BRANCH | `main` (detected: `origin/HEAD` unset → verified via `gh api repos/.../default_branch` + `git rev-parse HEAD origin/main` equality at `eb47cc8`) |
-| Phase 0.1 open PRs | **0** → PR HANDLER MODE not entered |
-| Phase 0.2 open issues | **82** → **ISSUE MANAGER MODE** |
-| Active phase at end | ISSUE MANAGER MODE (STEP 4 → FAIL-SAFE stop) |
-| Final state | **BLOCKED** (issue-side writes 403; unblock paths platform-gated, re-confirmed) |
-| Skills used | `github-workflow-automation` (workflow permission model, queue/automation patterns), `openx-basefly` (agent/model inventory + repo conventions) |
-| Subagents | **4 spawn attempts, all failed at launch** → analysis performed directly by orchestrator (details §6.3) |
+| Field                 | Value                                                                                                                                            |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Evaluation date       | 2026-09-30 (UTC), run window ≈07:31–08:00                                                                                                        |
+| State machine         | Phase 0 → **ISSUE MANAGER MODE** (all other phases stopped)                                                                                      |
+| DEFAULT_BRANCH        | `main` (detected: `origin/HEAD` unset → verified via `gh api repos/.../default_branch` + `git rev-parse HEAD origin/main` equality at `eb47cc8`) |
+| Phase 0.1 open PRs    | **0** → PR HANDLER MODE not entered                                                                                                              |
+| Phase 0.2 open issues | **82** → **ISSUE MANAGER MODE**                                                                                                                  |
+| Active phase at end   | ISSUE MANAGER MODE (STEP 4 → FAIL-SAFE stop)                                                                                                     |
+| Final state           | **BLOCKED** (issue-side writes 403; unblock paths platform-gated, re-confirmed)                                                                  |
+| Skills used           | `github-workflow-automation` (workflow permission model, queue/automation patterns), `openx-basefly` (agent/model inventory + repo conventions)  |
+| Subagents             | **4 spawn attempts, all failed at launch** → analysis performed directly by orchestrator (details §6.3)                                          |
 
 ### Decision summary (why this phase ran)
 
@@ -31,14 +31,14 @@ Label system (mandatory): exactly one category from `bug|enhancement|feature|doc
 
 **Independent recompute this run (GraphQL, all 82 open issues):**
 
-| State | Count | Loop-7 count | Delta |
-|---|---|---|---|
-| Fully compliant | **33** | 33 | — |
-| Need remediation | **49** | 49 | — |
-| — missing category | 12 | 12 | — |
-| — multi-category | 13 | 13 | — |
-| — missing priority | 38 | 38 | — |
-| — multi-priority | 0 | 0 | — |
+| State              | Count  | Loop-7 count | Delta |
+| ------------------ | ------ | ------------ | ----- |
+| Fully compliant    | **33** | 33           | —     |
+| Need remediation   | **49** | 49           | —     |
+| — missing category | 12     | 12           | —     |
+| — multi-category   | 13     | 13           | —     |
+| — missing priority | 38     | 38           | —     |
+| — multi-priority   | 0      | 0            | —     |
 
 Applying labels is **403-blocked** (§5). **The executable remediation payload from loop 7 §1.2 is adopted unchanged as the canonical apply script** (its judgments differ marginally from loop 6 in ~8 rows; loop 7 is the latest merged decision — no flip-flopping):
 
@@ -64,14 +64,14 @@ MULTI=(713:test 688:security 584:ci 581:test 551:test 550:test 549:test 523:refa
 
 ## §2 STEP 2 — Duplicate Detection (re-verified this run)
 
-| Cluster | Canonical | Duplicates | Shared subject | Re-verification 2026-09-30 ≈07:48 |
-|---|---|---|---|---|
-| D1 | **#496** (P0) | #480 (P1) | Redis-backed distributed rate limiter | ✅ confirmed stale: `packages/api/src/distributed-rate-limiter.ts` + `trpc.ts:435,439` `checkAsync`; all routers wired (§4) |
-| D2 | **#305** | #584, #595, #670, #744 | pnpm instead of npm in GitHub Actions | ✅ **still genuinely open**: `iterate.yml:72` and `:342` still `npm ci \|\| true` |
-| D3 | **#501** (P1) | #628, #724 | Playwright E2E for critical journeys | ✅ confirmed stale: `tests/e2e/*.spec.ts` × **11** |
-| D4 | **#631** | #725 | API-router test coverage (k8s/customer/stripe) | ✅ confirmed stale: router `*.test.ts` files present |
-| D5 | **#720** | #748 | `.nvmrc` node-version correctness | ✅ confirmed stale: `.nvmrc` = `22.14.0` |
-| D6 | **#719** | #634 (partial) | Root/TS-configuration completeness | ✅ confirmed stale: root `tsconfig.json` exists |
+| Cluster | Canonical     | Duplicates             | Shared subject                                 | Re-verification 2026-09-30 ≈07:48                                                                                           |
+| ------- | ------------- | ---------------------- | ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| D1      | **#496** (P0) | #480 (P1)              | Redis-backed distributed rate limiter          | ✅ confirmed stale: `packages/api/src/distributed-rate-limiter.ts` + `trpc.ts:435,439` `checkAsync`; all routers wired (§4) |
+| D2      | **#305**      | #584, #595, #670, #744 | pnpm instead of npm in GitHub Actions          | ✅ **still genuinely open**: `iterate.yml:72` and `:342` still `npm ci \|\| true`                                           |
+| D3      | **#501** (P1) | #628, #724             | Playwright E2E for critical journeys           | ✅ confirmed stale: `tests/e2e/*.spec.ts` × **11**                                                                          |
+| D4      | **#631**      | #725                   | API-router test coverage (k8s/customer/stripe) | ✅ confirmed stale: router `*.test.ts` files present                                                                        |
+| D5      | **#720**      | #748                   | `.nvmrc` node-version correctness              | ✅ confirmed stale: `.nvmrc` = `22.14.0`                                                                                    |
+| D6      | **#719**      | #634 (partial)         | Root/TS-configuration completeness             | ✅ confirmed stale: root `tsconfig.json` exists                                                                             |
 
 Recommended actions (all **403-blocked**, recorded for execution):
 
@@ -86,14 +86,14 @@ Recommended actions (all **403-blocked**, recorded for execution):
 
 Loop-7 groups **G1–G6 adopted unchanged** (nothing changed since 01:58 UTC merge; 0 issues closed in between):
 
-| Group | Members | Proposed consolidated title |
-|---|---|---|
-| G1 (test program) | #581 ⊃ #549, #550, #551, #500, #501 — plus #713, #725, #787, #788, #628, #724, #729, #754 | `[Testing] Test-coverage program: packages/common, packages/db, apps/nextjs UI, Stripe webhook idempotency` |
-| G2 (barrel exports) | #687, #523 | `[DX] Barrel-export audit: add missing index.ts + tree-shaking optimization` |
-| G3 (API docs) | #731, #749, #503 | `[Docs] Auto-generate + document tRPC API surface (JSDoc → generated reference)` |
-| G4 (bundle performance) | #723, #751, #753, #729, #708 | `[Performance] Bundle-size program: code splitting, analyzer, regression gate` |
-| G5 (sensitive-data logging) | #632, #786 | `[Security] Sensitive-data-in-logs audit (Stripe webhook + error paths)` |
-| G6 (TS config/strictness) | #634, #719 | `[DX] TypeScript strictness enforcement across packages` |
+| Group                       | Members                                                                                   | Proposed consolidated title                                                                                 |
+| --------------------------- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| G1 (test program)           | #581 ⊃ #549, #550, #551, #500, #501 — plus #713, #725, #787, #788, #628, #724, #729, #754 | `[Testing] Test-coverage program: packages/common, packages/db, apps/nextjs UI, Stripe webhook idempotency` |
+| G2 (barrel exports)         | #687, #523                                                                                | `[DX] Barrel-export audit: add missing index.ts + tree-shaking optimization`                                |
+| G3 (API docs)               | #731, #749, #503                                                                          | `[Docs] Auto-generate + document tRPC API surface (JSDoc → generated reference)`                            |
+| G4 (bundle performance)     | #723, #751, #753, #729, #708                                                              | `[Performance] Bundle-size program: code splitting, analyzer, regression gate`                              |
+| G5 (sensitive-data logging) | #632, #786                                                                                | `[Security] Sensitive-data-in-logs audit (Stripe webhook + error paths)`                                    |
+| G6 (TS config/strictness)   | #634, #719                                                                                | `[DX] TypeScript strictness enforcement across packages`                                                    |
 
 Issue creation for consolidated groups is **403-blocked** (§5).
 
@@ -103,22 +103,22 @@ Issue creation for consolidated groups is **403-blocked** (§5).
 
 ### 4.1 Selection
 
-| Issue | Labels | Title |
-|---|---|---|
+| Issue    | Labels                      | Title                                                                        |
+| -------- | --------------------------- | ---------------------------------------------------------------------------- |
 | **#496** | `enhancement, P0, security` | [P0][Security] Replace in-memory rate limiter with distributed store (Redis) |
 
 `#496` is the **only P0** in the repository → selected by the P0/P1 rule.
 
 ### 4.2 First-hand acceptance-criteria verification (all 6 ACs met on `main`)
 
-| #496 Acceptance Criterion | Evidence (verified this run) | Result |
-|---|---|---|
-| Redis-backed rate limiter implemented | `packages/api/src/distributed-rate-limiter.ts` — `DistributedRateLimiter` (sliding window over `ioredis` zsets), `SyncRateLimiter` wrapper | ✅ |
-| Rate limits consistent across all instances | tRPC `rateLimit` middleware → `await limiter.checkAsync()` (`trpc.ts:435-439`); Stripe webhook + docs routes also `checkAsync`; Redis path active when `IS_REDIS_CONFIGURED && !IS_EDGE` | ✅ |
-| Configuration via environment variables | `REDIS_URL` (`packages/common/src/config/env.ts:57`), `RATE_LIMIT_{READ,WRITE,STRIPE}_{MAX_REQUESTS,WINDOW_MS}` (`resilience.ts:112-128`), `.env.example:121-130` | ✅ |
-| Graceful degradation when Redis unavailable | `distributed-rate-limiter.ts:188-194,239-247` → in-memory fallback + `logger.warn` | ✅ |
-| Unit tests for rate limiter | `distributed-rate-limiter.test.ts`, `distributed-rate-limiter-sync.test.ts`, `rate-limiter.test.ts` | ✅ |
-| Documentation for setup/configuration | **`docs/redis-setup.md`** (linked from `docs/README.md`) + `.env.example` comments | ✅ |
+| #496 Acceptance Criterion                   | Evidence (verified this run)                                                                                                                                                             | Result |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| Redis-backed rate limiter implemented       | `packages/api/src/distributed-rate-limiter.ts` — `DistributedRateLimiter` (sliding window over `ioredis` zsets), `SyncRateLimiter` wrapper                                               | ✅     |
+| Rate limits consistent across all instances | tRPC `rateLimit` middleware → `await limiter.checkAsync()` (`trpc.ts:435-439`); Stripe webhook + docs routes also `checkAsync`; Redis path active when `IS_REDIS_CONFIGURED && !IS_EDGE` | ✅     |
+| Configuration via environment variables     | `REDIS_URL` (`packages/common/src/config/env.ts:57`), `RATE_LIMIT_{READ,WRITE,STRIPE}_{MAX_REQUESTS,WINDOW_MS}` (`resilience.ts:112-128`), `.env.example:121-130`                        | ✅     |
+| Graceful degradation when Redis unavailable | `distributed-rate-limiter.ts:188-194,239-247` → in-memory fallback + `logger.warn`                                                                                                       | ✅     |
+| Unit tests for rate limiter                 | `distributed-rate-limiter.test.ts`, `distributed-rate-limiter-sync.test.ts`, `rate-limiter.test.ts`                                                                                      | ✅     |
+| Documentation for setup/configuration       | **`docs/redis-setup.md`** (linked from `docs/README.md`) + `.env.example` comments                                                                                                       | ✅     |
 
 **Verdict**: the P0 code change is complete **including its documentation AC**. The remaining repair action is **administrative closure** of #496 (and duplicate #480) → blocked (§5).
 
@@ -151,21 +151,21 @@ This run did **not** re-attempt the identical push (same token, same gate — re
 
 ## §5 Capability Matrix (first-hand, loop 8)
 
-| Verb | Target | Result |
-|---|---|---|
-| Read issues (GraphQL, with bodies) | repo | ✅ |
-| Read issues (`gh issue list` / `gh issue view`) | repo | ✅ |
-| Read issues (**REST** `GET /repos/.../issues?state=open`) | repo | ⚠️ returns **`[]`** — see §6.1 |
-| Read labels / workflows / actions inventory | repo | ✅ |
-| Create repo label (`POST .../labels`, probe) | repo | ✅ (probe `probe-perm-test` created **and deleted**; `GET` → `Not Found`, zero residue) |
-| Delete repo label (probe cleanup) | repo | ✅ |
-| `git push` non-workflow file | branch | ✅ (evidenced by merged PRs #1524–#1526) |
-| Create/label/edit PR | new PR | ✅ (loop-7 PR #1526 labeled `docs,P2`) |
-| Label / comment / close / edit issue | any issue | ❌ **403** (REST + GraphQL, 6 verbs probed) |
-| Create issue | repo | ❌ **403** |
-| Push `.github/workflows/*` | branch | ❌ rejected (`workflows` scope — not grantable to Actions token) |
-| Workflow dispatch / repo settings | repo | ❌ 403 |
-| Spawn subagents | `explore`/`oracle`/`ultrabrain`/`general` | ❌ **all 4 models missing at provider** (§6.3) |
+| Verb                                                      | Target                                    | Result                                                                                  |
+| --------------------------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------- |
+| Read issues (GraphQL, with bodies)                        | repo                                      | ✅                                                                                      |
+| Read issues (`gh issue list` / `gh issue view`)           | repo                                      | ✅                                                                                      |
+| Read issues (**REST** `GET /repos/.../issues?state=open`) | repo                                      | ⚠️ returns **`[]`** — see §6.1                                                          |
+| Read labels / workflows / actions inventory               | repo                                      | ✅                                                                                      |
+| Create repo label (`POST .../labels`, probe)              | repo                                      | ✅ (probe `probe-perm-test` created **and deleted**; `GET` → `Not Found`, zero residue) |
+| Delete repo label (probe cleanup)                         | repo                                      | ✅                                                                                      |
+| `git push` non-workflow file                              | branch                                    | ✅ (evidenced by merged PRs #1524–#1526)                                                |
+| Create/label/edit PR                                      | new PR                                    | ✅ (loop-7 PR #1526 labeled `docs,P2`)                                                  |
+| Label / comment / close / edit issue                      | any issue                                 | ❌ **403** (REST + GraphQL, 6 verbs probed)                                             |
+| Create issue                                              | repo                                      | ❌ **403**                                                                              |
+| Push `.github/workflows/*`                                | branch                                    | ❌ rejected (`workflows` scope — not grantable to Actions token)                        |
+| Workflow dispatch / repo settings                         | repo                                      | ❌ 403                                                                                  |
+| Spawn subagents                                           | `explore`/`oracle`/`ultrabrain`/`general` | ❌ **all 4 models missing at provider** (§6.3)                                          |
 
 No destructive actions performed this run. Probe incident check: **no existing PR/issue artifacts were modified** (all write probes targeted only 403-failing issue verbs or throwaway repo label).
 
@@ -183,7 +183,7 @@ No destructive actions performed this run. Probe incident check: **no existing P
 ### 6.2 🟠 NEW — Loop-7 verdict on #722 corrected: startup env validation EXISTS (was marked "OPEN (likely real)")
 
 - **Category**: `chore` (issue hygiene) — **Priority**: `P2` (closure) / reclassifies a `security` `P1`
-- **Evidence**: `apps/nextjs/src/env.mjs` — `createEnv` from `@t3-oss/env-nextjs` + zod schema (POSTGRES_URL, STRIPE_*, CLERK_SECRET_KEY, ADMIN_EMAIL, NEXT_PUBLIC_*); `packages/auth/env.mjs` — `createEnv` from `@t3-oss/env-core`; **both imported by `apps/nextjs/next.config.mjs:2-3`** → validation executes at Next config load = startup/build, before any DB/external connection.
+- **Evidence**: `apps/nextjs/src/env.mjs` — `createEnv` from `@t3-oss/env-nextjs` + zod schema (POSTGRES*URL, STRIPE*_, CLERK*SECRET_KEY, ADMIN_EMAIL, NEXT_PUBLIC*_); `packages/auth/env.mjs` — `createEnv` from `@t3-oss/env-core`; **both imported by `apps/nextjs/next.config.mjs:2-3`** → validation executes at Next config load = startup/build, before any DB/external connection.
 - **Why loop 7 missed it**: their grep targeted `createEnv|t3-env|@t3-oss` in `*.ts` — the validators are `.mjs`.
 - **Impact**: #722 should be re-verified and closed as fixed; carrying it as `security/P1` mis-ranks the backlog.
 
@@ -192,12 +192,12 @@ No destructive actions performed this run. Probe incident check: **no existing P
 - **Category**: `bug` (or `ci`) — **Priority**: `P1` (extends loop-7 §8.1)
 - **Evidence (this run, consecutive failures ≤1 s each):**
 
-  | Attempt | Agent/category | Missing model ID |
-  |---|---|---|
-  | `bg_59c17a6b` | `ultrabrain` | `opencode/kimi-k2.5-free` |
-  | `bg_ef28e7c4` | `oracle` | `opencode/glm-4.7-free` |
-  | `bg_4aba619c` | `explore` | `opencode/gpt-5-nano` |
-  | `bg_09234fa2` | `general` (built-in default) | `iflowcn/big-pickle` |
+  | Attempt       | Agent/category               | Missing model ID          |
+  | ------------- | ---------------------------- | ------------------------- |
+  | `bg_59c17a6b` | `ultrabrain`                 | `opencode/kimi-k2.5-free` |
+  | `bg_ef28e7c4` | `oracle`                     | `opencode/glm-4.7-free`   |
+  | `bg_4aba619c` | `explore`                    | `opencode/gpt-5-nano`     |
+  | `bg_09234fa2` | `general` (built-in default) | `iflowcn/big-pickle`      |
 
 - **Provider inventory** (`opencode models`, this run): `opencode/ling-3.0-flash-fin-free`, `opencode/longcat-2.5-preview-free`, `opencode/mimo-v2.6-flash-free`, `opencode/muse-spark-1.3-contributor-free`, `opencode/nemotron-3-ultra-free`, `opencode/nemotron-3.5-lightning-free`, `opencode/space-bunny-free`. **None** of the configured agent IDs exist.
 - **Impact**: the operating contract's MANDATORY ORCHESTRATION step cannot execute (4th consecutive loop). `.omo/omo.jsonc`, `.opencode/skills/openx-basefly/SKILL.md`, and `AGENTS.md` all document the same stale IDs — config, skill, and docs agree with each other but all disagree with the provider.
@@ -205,13 +205,13 @@ No destructive actions performed this run. Probe incident check: **no existing P
 
 ### 6.4 Carry-forward (loop-7 §8, still valid, still 403-blocked to file)
 
-| # | Finding | Category/Priority |
-|---|---|---|
-| 8.2 | `on-pull.yml` lacks `issues: write` (root cause of every blocked loop) | `ci`/`P0` |
-| 8.3 | `parallel` (iterate.yml) disabled while being the only issue-capable workflow | `ci`/`P1` |
-| 8.4 | 49/82 issues violate the mandatory label contract (§1 payload ready) | `chore`/`P1` |
-| 8.5 | ~20 verified-stale issues remain open (§2 clusters) | `chore`/`P2` |
-| 8.6 | Genuine open work confirmed: #305 (+dups, fix unshippable), #728, #498 (ADMIN_EMAIL fallback removal unsafe to ship speculatively), #500 (partial) | mixed |
+| #   | Finding                                                                                                                                            | Category/Priority |
+| --- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| 8.2 | `on-pull.yml` lacks `issues: write` (root cause of every blocked loop)                                                                             | `ci`/`P0`         |
+| 8.3 | `parallel` (iterate.yml) disabled while being the only issue-capable workflow                                                                      | `ci`/`P1`         |
+| 8.4 | 49/82 issues violate the mandatory label contract (§1 payload ready)                                                                               | `chore`/`P1`      |
+| 8.5 | ~20 verified-stale issues remain open (§2 clusters)                                                                                                | `chore`/`P2`      |
+| 8.6 | Genuine open work confirmed: #305 (+dups, fix unshippable), #728, #498 (ADMIN_EMAIL fallback removal unsafe to ship speculatively), #500 (partial) | mixed             |
 
 ### 6.5 Working-tree disclosure (not shipped)
 
@@ -222,27 +222,27 @@ No destructive actions performed this run. Probe incident check: **no existing P
 
 ## §7 Action Log (UTC, 2026-09-30, approximate minute precision)
 
-| Time | Action | Target | Result |
-|---|---|---|---|
-| ≈07:31 | Phase 0.1 open-PR query | `gh pr list` | 0 open → skip PR mode |
-| ≈07:31 | Phase 0.2 open-issue query | `gh issue list` / GraphQL | 82 open → **ISSUE MANAGER MODE** |
-| ≈07:31 | DEFAULT_BRANCH detection | `gh api` + git | `main` @ `eb47cc8` (local == remote) |
-| ≈07:32 | Skill load | `github-workflow-automation` | ✅ branch/permission patterns applied |
-| ≈07:33 | Issue dataset fetch | GraphQL (REST returned `[]` — logged as §6.1) | 82 nodes with bodies |
-| ≈07:33 | Subagent spawn #1 | `ultrabrain` `bg_59c17a6b` | ❌ `ProviderModelNotFoundError: opencode/kimi-k2.5-free` |
-| ≈07:34 | STEP 1 apply attempt | 63 label ops (38 pri + 12 cat + 13 de-dup) | ❌ all **403** (GraphQL `addLabelsToLabelable`) |
-| ≈07:35 | Permission probes | repo label create/delete, issue comment/PATCH/create | labels ✅ (probe created+deleted, zero residue); issue verbs ❌ 403 |
-| ≈07:36 | Subagent spawns #2/#3 | `oracle` `bg_ef28e7c4`, `explore` `bg_4aba619c` | ❌ both `ProviderModelNotFoundError` |
-| ≈07:37 | Root-cause identified | `GITHUB_WORKFLOW=pull`, `on-pull.yml` permissions | missing `issues: write` (matches loops 6/7) |
-| ≈07:40 | Subagent spawn #4 | `general` `bg_09234fa2` | ❌ `ProviderModelNotFoundError: iflowcn/big-pickle` |
-| ≈07:41 | STEP 4 evidence | `rate-limiter.ts`, `distributed-rate-limiter.ts`, `trpc.ts:435-439` | #496 code-complete confirmed |
-| ≈07:44 | STEP 4 AC sweep | consumers, `docs/redis-setup.md`, `.env.example`, tests | **6/6 ACs met** |
-| ≈07:45 | Adopt loop-7 analysis | `docs/issue-manager-audit-2026-09-30-loop7.md` | D1–D6, G1–G6, §1.2 payload adopted |
-| ≈07:48 | Freshness spot-checks | `iterate.yml`, actions inventory, REST re-probe, counts | npm-ci lines intact; `parallel` disabled; REST `0`; 0 PRs / 82 issues |
-| ≈07:50 | **#722 verdict correction** | `apps/nextjs/src/env.mjs` + `next.config.mjs:2-3` | loop-7 "OPEN" → **STALE (fixed)** (§6.2) |
-| ≈07:52 | Model inventory | `opencode models` | 7 free models; all configured IDs absent (§6.3) |
-| ≈07:55 | Skill load | `openx-basefly` | ✅ confirmed skill docs carry same stale model IDs |
-| ≈07:58 | Deliverable | `docs/issue-manager-audit-2026-09-30-loop8.md` | written → branch → PR |
+| Time   | Action                      | Target                                                              | Result                                                                |
+| ------ | --------------------------- | ------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| ≈07:31 | Phase 0.1 open-PR query     | `gh pr list`                                                        | 0 open → skip PR mode                                                 |
+| ≈07:31 | Phase 0.2 open-issue query  | `gh issue list` / GraphQL                                           | 82 open → **ISSUE MANAGER MODE**                                      |
+| ≈07:31 | DEFAULT_BRANCH detection    | `gh api` + git                                                      | `main` @ `eb47cc8` (local == remote)                                  |
+| ≈07:32 | Skill load                  | `github-workflow-automation`                                        | ✅ branch/permission patterns applied                                 |
+| ≈07:33 | Issue dataset fetch         | GraphQL (REST returned `[]` — logged as §6.1)                       | 82 nodes with bodies                                                  |
+| ≈07:33 | Subagent spawn #1           | `ultrabrain` `bg_59c17a6b`                                          | ❌ `ProviderModelNotFoundError: opencode/kimi-k2.5-free`              |
+| ≈07:34 | STEP 1 apply attempt        | 63 label ops (38 pri + 12 cat + 13 de-dup)                          | ❌ all **403** (GraphQL `addLabelsToLabelable`)                       |
+| ≈07:35 | Permission probes           | repo label create/delete, issue comment/PATCH/create                | labels ✅ (probe created+deleted, zero residue); issue verbs ❌ 403   |
+| ≈07:36 | Subagent spawns #2/#3       | `oracle` `bg_ef28e7c4`, `explore` `bg_4aba619c`                     | ❌ both `ProviderModelNotFoundError`                                  |
+| ≈07:37 | Root-cause identified       | `GITHUB_WORKFLOW=pull`, `on-pull.yml` permissions                   | missing `issues: write` (matches loops 6/7)                           |
+| ≈07:40 | Subagent spawn #4           | `general` `bg_09234fa2`                                             | ❌ `ProviderModelNotFoundError: iflowcn/big-pickle`                   |
+| ≈07:41 | STEP 4 evidence             | `rate-limiter.ts`, `distributed-rate-limiter.ts`, `trpc.ts:435-439` | #496 code-complete confirmed                                          |
+| ≈07:44 | STEP 4 AC sweep             | consumers, `docs/redis-setup.md`, `.env.example`, tests             | **6/6 ACs met**                                                       |
+| ≈07:45 | Adopt loop-7 analysis       | `docs/issue-manager-audit-2026-09-30-loop7.md`                      | D1–D6, G1–G6, §1.2 payload adopted                                    |
+| ≈07:48 | Freshness spot-checks       | `iterate.yml`, actions inventory, REST re-probe, counts             | npm-ci lines intact; `parallel` disabled; REST `0`; 0 PRs / 82 issues |
+| ≈07:50 | **#722 verdict correction** | `apps/nextjs/src/env.mjs` + `next.config.mjs:2-3`                   | loop-7 "OPEN" → **STALE (fixed)** (§6.2)                              |
+| ≈07:52 | Model inventory             | `opencode models`                                                   | 7 free models; all configured IDs absent (§6.3)                       |
+| ≈07:55 | Skill load                  | `openx-basefly`                                                     | ✅ confirmed skill docs carry same stale model IDs                    |
+| ≈07:58 | Deliverable                 | `docs/issue-manager-audit-2026-09-30-loop8.md`                      | written → branch → PR                                                 |
 
 **Subagent report**: 4 spawn attempts (`bg_59c17a6b`, `bg_ef28e7c4`, `bg_4aba619c`, `bg_09234fa2`) — duplicate clustering, rate-limiter discovery — **all failed at launch** with `ProviderModelNotFoundError` for 4 distinct model IDs (§6.3). All analysis in this document was produced directly by the orchestrator; **no result here depends on a failed subagent**.
 
@@ -265,9 +265,9 @@ No destructive actions performed this run. Probe incident check: **no existing P
 # .github/workflows/on-pull.yml
 permissions:
   contents: write
-  issues: write        # ← add this line
+  issues: write # ← add this line
   pull-requests: write
-  actions: write       # ← optional: enables dispatching `parallel`
+  actions: write # ← optional: enables dispatching `parallel`
 ```
 
 Merge from a PAT/admin checkout. The next loop can then execute §1 (normalize 49 issues), §2 (close ~12 verified-stale duplicates incl. the P0 pair #496/#480), §3 (create 6 consolidated issues), and §6 (file the findings above — starting with the `P0` `issues: write` root cause and the `P1` REST-list quirk).

@@ -4,6 +4,24 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Centralized InfiniteMovingCards design tokens under INFINITE_MOVING_CARDS_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation / UX Improvement
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/infinite-moving-cards.tsx`, `packages/ui/src/infinite-moving-cards.test.tsx`
+
+**Description**:
+Centralized InfiniteMovingCards layout, track configurations, speed durations, item card styling, and default accessibility properties under `INFINITE_MOVING_CARDS_TOKENS` in `@saasfly/common` and updated `@saasfly/ui` component with tactile spring micro-interactions (`hover:scale-[1.01] active:scale-[0.99]`), focus-visible ring accessibility, and fallback `role="region"` and `aria-label` attributes.
+
+**Success Criteria**:
+
+- [x] Defined `INFINITE_MOVING_CARDS_TOKENS` in `packages/common/src/ui-tokens.ts`.
+- [x] Exported `INFINITE_MOVING_CARDS_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/infinite-moving-cards.tsx` to reference `INFINITE_MOVING_CARDS_TOKENS`.
+- [x] Implemented tactile scale transitions and accessibility fallbacks.
+- [x] Added unit tests in `packages/ui/src/infinite-moving-cards.test.tsx`.
+
 #### Task: [CONSOLIDATE] Centralized ColourfulText styling and tokens under COLOURFUL_TEXT_TOKENS
 
 - **Status**: ✅ Completed

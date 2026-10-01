@@ -7,8 +7,7 @@ import { INFINITE_MOVING_CARDS_TOKENS } from "@saasfly/common";
 
 import { cn } from "./utils/cn";
 
-export interface InfiniteMovingCardsProps
-  extends React.ComponentPropsWithoutRef<"div"> {
+export interface InfiniteMovingCardsProps extends React.ComponentPropsWithoutRef<"div"> {
   items: {
     quote: string;
     name: string;

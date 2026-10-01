@@ -1348,6 +1348,38 @@ export const BACKGROUND_LINES_TOKENS = {
   defaultRole: "region" as const,
 } as const;
 
+/**
+ * InfiniteMovingCards design tokens
+ * Centralized layout, styling, transitions, speeds, micro-interactions, and accessibility for InfiniteMovingCards component
+ */
+export const INFINITE_MOVING_CARDS_TOKENS = {
+  container: {
+    base: "scroller relative z-20 max-w-7xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)] transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  },
+  scroller: {
+    base: "flex w-max min-w-full shrink-0 flex-nowrap gap-4 py-4",
+    animate: "animate-scroll",
+    pauseOnHover: "hover:[animation-play-state:paused]",
+    motionReduce: "motion-reduce:animate-none",
+  },
+  card: {
+    base: "relative w-[350px] max-w-full flex-shrink-0 rounded-2xl border border-b-0 border-slate-700 px-8 py-6 md:w-[450px] transition-all duration-200 ease-out",
+    hoverScale: "hover:scale-[1.01]",
+    activeScale: "active:scale-[0.99]",
+    gradient: "linear-gradient(180deg, var(--slate-800), var(--slate-900))",
+  },
+  quote: "relative z-20 text-sm font-normal leading-[1.6] text-gray-100",
+  author: "text-sm font-normal leading-[1.6] text-gray-400",
+  title: "text-sm font-normal leading-[1.6] text-gray-400",
+  speeds: {
+    fast: "20s",
+    normal: "40s",
+    slow: "80s",
+  },
+  defaultAriaLabel: "Infinite scrolling testimonials",
+  defaultRole: "region" as const,
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

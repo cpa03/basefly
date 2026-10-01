@@ -2,6 +2,8 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
+import { INFINITE_MOVING_CARDS_TOKENS } from "@saasfly/common";
+
 import { InfiniteMovingCards } from "./infinite-moving-cards";
 
 const items = [
@@ -90,5 +92,38 @@ describe("InfiniteMovingCards Component", () => {
 
     const scroller = container.querySelector(".scroller");
     expect(scroller).toHaveClass("custom-scroller");
+  });
+
+  it("should render default role, fallback aria-label, and tabIndex on root container", () => {
+    render(<InfiniteMovingCards items={items} />);
+
+    const region = screen.getByRole("region", {
+      name: INFINITE_MOVING_CARDS_TOKENS.defaultAriaLabel,
+    });
+    expect(region).toBeInTheDocument();
+    expect(region).toHaveAttribute("tabindex", "0");
+  });
+
+  it("should allow custom role and aria-label overrides", () => {
+    render(
+      <InfiniteMovingCards
+        items={items}
+        role="group"
+        aria-label="Custom Testimonials"
+      />,
+    );
+
+    const group = screen.getByRole("group", {
+      name: "Custom Testimonials",
+    });
+    expect(group).toBeInTheDocument();
+  });
+
+  it("should apply tactile hover/active scale token classes to card items", () => {
+    const { container } = render(<InfiniteMovingCards items={items} />);
+
+    const listItems = container.querySelectorAll("li");
+    expect(listItems[0]).toHaveClass("hover:scale-[1.01]");
+    expect(listItems[0]).toHaveClass("active:scale-[0.99]");
   });
 });

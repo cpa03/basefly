@@ -4,113 +4,113 @@
   "[opencode]": {
     "agents": {
       "sisyphus": {
-        "model": "opencode/kimi-k2.5-free",
+        "model": "opencode/mimo-v2.6-flash-free",
         "temperature": 0.7,
-        "description": "Main orchestrator agent - handles complex tasks and coordination"
+        "description": "Main orchestrator agent - handles complex tasks and coordination",
       },
       "oracle": {
-        "model": "opencode/glm-4.7-free",
+        "model": "opencode/nemotron-3-ultra-free",
         "temperature": 0.5,
-        "description": "Architecture and debugging specialist"
+        "description": "Architecture and debugging specialist",
       },
       "librarian": {
-        "model": "opencode/glm-4.7-free",
+        "model": "opencode/nemotron-3-ultra-free",
         "temperature": 0.3,
-        "description": "Documentation and codebase research"
+        "description": "Documentation and codebase research",
       },
       "explore": {
-        "model": "opencode/gpt-5-nano",
+        "model": "opencode/muse-spark-1.3-contributor-free",
         "temperature": 0.2,
-        "description": "Fast codebase exploration and grep operations"
+        "description": "Fast codebase exploration and grep operations",
       },
       "multimodal-looker": {
-        "model": "opencode/minimax-m2.1-free",
+        "model": "opencode/space-bunny-free",
         "temperature": 0.5,
-        "description": "Visual understanding and UI/UX tasks"
+        "description": "Visual understanding and UI/UX tasks",
       },
       "metis": {
-        "model": "opencode/glm-4.7-free",
+        "model": "opencode/nemotron-3-ultra-free",
         "temperature": 0.3,
-        "description": "Pre-planning consultant - analyzes requests to identify hidden intentions, ambiguities, and AI failure points"
+        "description": "Pre-planning consultant - analyzes requests to identify hidden intentions, ambiguities, and AI failure points",
       },
       "momus": {
-        "model": "opencode/glm-4.7-free",
+        "model": "opencode/nemotron-3-ultra-free",
         "temperature": 0.2,
-        "description": "Expert reviewer - evaluates work plans for clarity, verifiability, and completeness"
+        "description": "Expert reviewer - evaluates work plans for clarity, verifiability, and completeness",
       },
       "plan": {
-        "model": "opencode/kimi-k2.5-free",
+        "model": "opencode/mimo-v2.6-flash-free",
         "temperature": 0.4,
-        "description": "Planning agent - creates detailed work breakdowns and task orchestration"
-      }
+        "description": "Planning agent - creates detailed work breakdowns and task orchestration",
+      },
     },
     "categories": {
       "quick": {
-        "model": "opencode/gpt-5-nano",
+        "model": "opencode/muse-spark-1.3-contributor-free",
         "temperature": 0.2,
-        "description": "Trivial tasks - single file changes, typo fixes, simple modifications"
+        "description": "Trivial tasks - single file changes, typo fixes, simple modifications",
       },
       "visual-engineering": {
-        "model": "opencode/minimax-m2.1-free",
+        "model": "opencode/space-bunny-free",
         "temperature": 0.5,
-        "description": "Frontend, UI/UX, design, styling, animation"
+        "description": "Frontend, UI/UX, design, styling, animation",
       },
       "business-logic": {
-        "model": "opencode/kimi-k2.5-free",
+        "model": "opencode/mimo-v2.6-flash-free",
         "temperature": 0.6,
-        "description": "General business logic tasks"
+        "description": "General business logic tasks",
       },
       "research": {
-        "model": "opencode/glm-4.7-free",
+        "model": "opencode/nemotron-3-ultra-free",
         "temperature": 0.3,
-        "description": "Documentation lookup, research, best practices"
+        "description": "Documentation lookup, research, best practices",
       },
       "ultrabrain": {
-        "model": "opencode/kimi-k2.5-free",
+        "model": "opencode/mimo-v2.6-flash-free",
         "temperature": 0.5,
-        "description": "Hard logic-heavy tasks requiring deep reasoning"
+        "description": "Hard logic-heavy tasks requiring deep reasoning",
       },
-      "deep": {
-        "model": "opencode/glm-4.7-free",
+      "deep-low": {
+        "model": "opencode/nemotron-3-ultra-free",
         "temperature": 0.4,
-        "description": "Goal-oriented autonomous problem-solving"
+        "description": "Goal-oriented autonomous problem-solving",
       },
       "artistry": {
-        "model": "opencode/kimi-k2.5-free",
+        "model": "opencode/mimo-v2.6-flash-free",
         "temperature": 0.7,
-        "description": "Unconventional creative approaches"
+        "description": "Unconventional creative approaches",
       },
       "writing": {
-        "model": "opencode/glm-4.7-free",
+        "model": "opencode/nemotron-3-ultra-free",
         "temperature": 0.4,
-        "description": "Documentation, prose, technical writing"
+        "description": "Documentation, prose, technical writing",
       },
       "unspecified-low": {
-        "model": "opencode/gpt-5-nano",
+        "model": "opencode/muse-spark-1.3-contributor-free",
         "temperature": 0.3,
-        "description": "Tasks that don't fit other categories, low effort required"
+        "description": "Tasks that don't fit other categories, low effort required",
       },
       "unspecified-high": {
-        "model": "opencode/kimi-k2.5-free",
+        "model": "opencode/mimo-v2.6-flash-free",
         "temperature": 0.5,
-        "description": "Tasks that don't fit other categories, high effort required"
+        "description": "Tasks that don't fit other categories, high effort required",
       },
       "plan": {
-        "model": "opencode/kimi-k2.5-free",
+        "model": "opencode/mimo-v2.6-flash-free",
         "temperature": 0.4,
-        "description": "Planning and task orchestration"
-      }
+        "description": "Planning and task orchestration",
+      },
     },
     "skills": {
       "sources": [
         {
           "path": ".opencode/skills",
-          "recursive": true
+          "recursive": true,
         },
         {
           "path": ".opencode/superpowers/skills",
-          "recursive": true
-        }
+          "recursive": true,
+        },
       ],
       "enable": [
         "using-superpowers",
@@ -127,32 +127,33 @@
         "dispatching-parallel-agents",
         "github-workflow-automation",
         "verification-before-completion",
-        "ai-agent-engineer"
-      ]
+        "ai-agent-engineer",
+      ],
     },
     "mcp": {
       "servers": [
         {
           "name": "websearch",
-          "enabled": true
+          "enabled": true,
         },
         {
           "name": "context7",
-          "enabled": true
+          "enabled": true,
         },
         {
           "name": "github-search",
-          "enabled": true
-        }
-      ]
+          "enabled": true,
+        },
+      ],
     },
     "experimental": {
       "aggressive_truncation": true,
-      "auto_resume": true
-    }
+      "auto_resume": true,
+    },
   },
   "_migrations": [
     "2026-07-opencode-config-unification",
-    "2026-08-reasoning-unification"
-  ]
+    "2026-08-reasoning-unification",
+    "2026-09-category-deep-split",
+  ],
 }

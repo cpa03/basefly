@@ -11,11 +11,11 @@ OpenX Basefly is a comprehensive agent harness configuration for the basefly pro
 
 ## Available Agents
 
-- **Sisyphus** (opencode/kimi-k2.5-free): Main orchestrator for complex tasks
-- **Oracle** (opencode/glm-4.7-free): Architecture and debugging specialist  
-- **Librarian** (opencode/glm-4.7-free): Documentation and codebase research
-- **Explore** (opencode/gpt-5-nano): Fast codebase exploration
-- **Multimodal Looker** (opencode/minimax-m2.1-free): Visual/UI/UX tasks
+- **Sisyphus** (opencode/mimo-v2.6-flash-free): Main orchestrator for complex tasks
+- **Oracle** (opencode/nemotron-3-ultra-free): Architecture and debugging specialist
+- **Librarian** (opencode/nemotron-3-ultra-free): Documentation and codebase research
+- **Explore** (opencode/muse-spark-1.3-contributor-free): Fast codebase exploration
+- **Multimodal Looker** (opencode/space-bunny-free): Visual/UI/UX tasks
 
 ## Quick Commands
 
@@ -26,6 +26,7 @@ OpenX Basefly is a comprehensive agent harness configuration for the basefly pro
 ## Integrated Skills
 
 ### From Superpowers
+
 - brainstorming - Design refinement before implementation
 - writing-plans - Detailed implementation planning
 - executing-plans - Batch execution with checkpoints
@@ -37,16 +38,17 @@ OpenX Basefly is a comprehensive agent harness configuration for the basefly pro
 - subagent-driven-development - Fast iteration with review
 
 ### From Agent-Skill
+
 - github-workflow-automation - GitHub Actions workflow management
 - planning - Project planning utilities
 - skill-creator - Create new skills following best practices
 
 ## Model Categories
 
-- **quick**: opencode/gpt-5-nano (fast/cheap tasks)
-- **visual-engineering**: opencode/minimax-m2.1-free (UI/UX)
-- **business-logic**: opencode/kimi-k2.5-free (complex logic)
-- **research**: opencode/glm-4.7-free (documentation search)
+- **quick**: opencode/muse-spark-1.3-contributor-free (fast/cheap tasks)
+- **visual-engineering**: opencode/space-bunny-free (UI/UX)
+- **business-logic**: opencode/mimo-v2.6-flash-free (complex logic)
+- **research**: opencode/nemotron-3-ultra-free (documentation search)
 
 ## MCP Servers
 

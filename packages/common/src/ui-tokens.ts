@@ -1380,6 +1380,33 @@ export const INFINITE_MOVING_CARDS_TOKENS = {
   defaultRole: "region" as const,
 } as const;
 
+/**
+ * ShakeWrapper design tokens
+ * Centralized layout, styling, micro-interactions, and accessibility for ShakeWrapper component
+ *
+ * Note: `transform` is deliberately not CSS-transitioned here. The shake animation is
+ * driven by Framer Motion inline transforms, and a CSS transition on `transform` would
+ * smear it. Hover micro-scale is applied via Framer Motion (whileHover) in the animated
+ * path instead of Tailwind scale utilities, which the inline transform would override.
+ * The shake animation uses ANIMATION.shake.transition; hover uses its own fast transition
+ * via per-value override (see ShakeWrapper component).
+ *
+ * `container.base` focus-ring utilities engage only when the wrapper itself is
+ * focusable: ShakeWrapper deliberately sets no default `tabIndex` (an extra tab
+ * stop per form field is an accessibility anti-pattern), so they become active
+ * only if a consumer supplies `tabIndex`.
+ */
+export const SHAKE_WRAPPER_TOKENS = {
+  container: {
+    base: "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  },
+  motion: {
+    hoverScale: 1.002,
+    hoverTransition: { duration: 0.15, ease: "easeOut" as const },
+  },
+  defaultRole: "group" as const,
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

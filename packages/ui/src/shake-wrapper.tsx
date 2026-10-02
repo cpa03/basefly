@@ -3,7 +3,7 @@
 import * as React from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
-import { ANIMATION } from "@saasfly/common";
+import { ANIMATION, SHAKE_WRAPPER_TOKENS } from "@saasfly/common";
 
 import { cn } from "./utils/cn";
 
@@ -51,7 +51,19 @@ interface ShakeWrapperProps extends Omit<
  * ```
  */
 const ShakeWrapper = React.forwardRef<HTMLDivElement, ShakeWrapperProps>(
-  ({ className, shake = false, onShakeComplete, children, ...props }, ref) => {
+  (
+    {
+      className,
+      shake = false,
+      onShakeComplete,
+      children,
+      // No fallback label: a fixed name would label every FormItem field identically (un-overridable via FormItem's API).
+      "aria-label": ariaLabel,
+      role = SHAKE_WRAPPER_TOKENS.defaultRole,
+      ...props
+    },
+    ref,
+  ) => {
     const shouldReduceMotion = useReducedMotion();
     const [isShaking, setIsShaking] = React.useState(false);
 
@@ -67,10 +79,20 @@ const ShakeWrapper = React.forwardRef<HTMLDivElement, ShakeWrapperProps>(
       }
     }, [shake, shouldReduceMotion, onShakeComplete]);
 
+    // Single shared class assembly for both render paths (deduplicated).
+    const wrapperClassName = cn(SHAKE_WRAPPER_TOKENS.container.base, className);
+    const wrapperProps = {
+      ref,
+      role,
+      "aria-label": ariaLabel,
+      className: wrapperClassName,
+    };
+
     // If reduced motion is preferred, render without animation
+    // Reduced motion: intentionally no hover/tap micro-scale (motion preference wins over micro-interaction parity).
     if (shouldReduceMotion) {
       return (
-        <div ref={ref} className={className} {...props}>
+        <div {...wrapperProps} {...props}>
           {children}
         </div>
       );
@@ -78,8 +100,7 @@ const ShakeWrapper = React.forwardRef<HTMLDivElement, ShakeWrapperProps>(
 
     return (
       <motion.div
-        ref={ref}
-        className={cn(className)}
+        {...wrapperProps}
         animate={
           isShaking
             ? {
@@ -87,7 +108,11 @@ const ShakeWrapper = React.forwardRef<HTMLDivElement, ShakeWrapperProps>(
               }
             : { x: 0 }
         }
-        transition={ANIMATION.shake.transition}
+        whileHover={{ scale: SHAKE_WRAPPER_TOKENS.motion.hoverScale }}
+        transition={{
+          ...ANIMATION.shake.transition,
+          scale: SHAKE_WRAPPER_TOKENS.motion.hoverTransition,
+        }}
         {...props}
       >
         {children}

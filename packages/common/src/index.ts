@@ -397,6 +397,7 @@ export {
   COLOURFUL_TEXT_TOKENS,
   BACKGROUND_LINES_TOKENS,
   INFINITE_MOVING_CARDS_TOKENS,
+  SHAKE_WRAPPER_TOKENS,
 } from "./ui-tokens";
 export type {
   ButtonHeight,

@@ -133,8 +133,9 @@ describe("ShakeWrapper Component", () => {
     for (const tokenClass of SHAKE_WRAPPER_TOKENS.container.base.split(" ")) {
       expect(wrapper).toHaveClass(tokenClass);
     }
-    // The wrapper is not focusable by default (no extra tab stop per form field);
-    // these classes engage only when a consumer supplies tabIndex (asserted below).
+    // Wiring check: the component must apply every class in container.base.
+    // Variant engagement itself cannot be asserted here (jsdom does not
+    // evaluate :focus-visible); non-focusability by default is asserted next.
     expect(wrapper).not.toHaveAttribute("tabindex");
   });
 
@@ -192,6 +193,15 @@ describe("ShakeWrapper Component", () => {
       );
       const wrapper = container.querySelector("div");
       expect(wrapper).toHaveAttribute("tabindex", "0");
+    });
+
+    it("should forward a caller-supplied aria-label in reduced motion mode", () => {
+      const { container } = render(
+        <ShakeWrapper aria-label="Shake me">Content</ShakeWrapper>,
+      );
+
+      const wrapper = container.querySelector("div");
+      expect(wrapper).toHaveAttribute("aria-label", "Shake me");
     });
   });
 

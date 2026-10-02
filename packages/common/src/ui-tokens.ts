@@ -1386,9 +1386,10 @@ export const INFINITE_MOVING_CARDS_TOKENS = {
  *
  * Note: `transform` is deliberately not CSS-transitioned here. The shake animation is
  * driven by Framer Motion inline transforms, and a CSS transition on `transform` would
- * smear it. Hover/active micro-scales are applied via Framer Motion (whileHover/whileTap)
- * in the animated path instead of Tailwind scale utilities, which the inline transform
- * would override anyway.
+ * smear it. Hover micro-scale is applied via Framer Motion (whileHover) in the animated
+ * path instead of Tailwind scale utilities, which the inline transform would override.
+ * The shake animation uses ANIMATION.shake.transition; hover uses its own fast transition
+ * via per-value override (see ShakeWrapper component).
  */
 export const SHAKE_WRAPPER_TOKENS = {
   container: {
@@ -1396,11 +1397,10 @@ export const SHAKE_WRAPPER_TOKENS = {
   },
   motion: {
     hoverScale: 1.002,
-    activeScale: 0.998,
+    hoverTransition: { duration: 0.15, ease: "easeOut" as const },
   },
-  defaultTabIndex: 0,
   defaultAriaLabel: "Form validation shake container",
-  defaultRole: "region" as const,
+  defaultRole: "group" as const,
 } as const;
 
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;

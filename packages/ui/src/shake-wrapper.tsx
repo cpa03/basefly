@@ -84,11 +84,11 @@ const ShakeWrapper = React.forwardRef<HTMLDivElement, ShakeWrapperProps>(
       ref,
       role,
       "aria-label": ariaLabel,
-      tabIndex: SHAKE_WRAPPER_TOKENS.defaultTabIndex,
       className: wrapperClassName,
     };
 
     // If reduced motion is preferred, render without animation
+    // Reduced motion: intentionally no hover/tap micro-scale (motion preference wins over micro-interaction parity).
     if (shouldReduceMotion) {
       return (
         <div {...wrapperProps} {...props}>
@@ -108,8 +108,10 @@ const ShakeWrapper = React.forwardRef<HTMLDivElement, ShakeWrapperProps>(
             : { x: 0 }
         }
         whileHover={{ scale: SHAKE_WRAPPER_TOKENS.motion.hoverScale }}
-        whileTap={{ scale: SHAKE_WRAPPER_TOKENS.motion.activeScale }}
-        transition={ANIMATION.shake.transition}
+        transition={{
+          ...ANIMATION.shake.transition,
+          scale: SHAKE_WRAPPER_TOKENS.motion.hoverTransition,
+        }}
         {...props}
       >
         {children}

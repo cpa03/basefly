@@ -78,12 +78,16 @@ describe("ShakeWrapper Component", () => {
     expect(region).toBeInTheDocument();
   });
 
-  it("should apply centralized token classes for base and scale transitions", () => {
+  it("should apply centralized token classes for focus base and default tabIndex", () => {
     const { container } = render(<ShakeWrapper>Content</ShakeWrapper>);
 
     const wrapper = container.querySelector("div");
-    expect(wrapper).toHaveClass("transition-all");
-    expect(wrapper).toHaveClass("hover:scale-[1.002]");
-    expect(wrapper).toHaveClass("active:scale-[0.998]");
+    for (const tokenClass of SHAKE_WRAPPER_TOKENS.container.base.split(" ")) {
+      expect(wrapper).toHaveClass(tokenClass);
+    }
+    expect(wrapper).toHaveAttribute(
+      "tabindex",
+      String(SHAKE_WRAPPER_TOKENS.defaultTabIndex),
+    );
   });
 });

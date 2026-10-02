@@ -34,10 +34,6 @@ interface ShakeWrapperProps extends Omit<
   shake?: boolean;
   /** Callback when shake animation completes */
   onShakeComplete?: () => void;
-  /** Accessibility label */
-  "aria-label"?: string;
-  /** Accessibility role */
-  role?: string;
 }
 
 /**
@@ -82,21 +78,20 @@ const ShakeWrapper = React.forwardRef<HTMLDivElement, ShakeWrapperProps>(
       }
     }, [shake, shouldReduceMotion, onShakeComplete]);
 
+    // Single shared class assembly for both render paths (deduplicated).
+    const wrapperClassName = cn(SHAKE_WRAPPER_TOKENS.container.base, className);
+    const wrapperProps = {
+      ref,
+      role,
+      "aria-label": ariaLabel,
+      tabIndex: SHAKE_WRAPPER_TOKENS.defaultTabIndex,
+      className: wrapperClassName,
+    };
+
     // If reduced motion is preferred, render without animation
     if (shouldReduceMotion) {
       return (
-        <div
-          ref={ref}
-          role={role}
-          aria-label={ariaLabel}
-          className={cn(
-            SHAKE_WRAPPER_TOKENS.container.base,
-            SHAKE_WRAPPER_TOKENS.container.hoverScale,
-            SHAKE_WRAPPER_TOKENS.container.activeScale,
-            className,
-          )}
-          {...props}
-        >
+        <div {...wrapperProps} {...props}>
           {children}
         </div>
       );
@@ -104,15 +99,7 @@ const ShakeWrapper = React.forwardRef<HTMLDivElement, ShakeWrapperProps>(
 
     return (
       <motion.div
-        ref={ref}
-        role={role}
-        aria-label={ariaLabel}
-        className={cn(
-          SHAKE_WRAPPER_TOKENS.container.base,
-          SHAKE_WRAPPER_TOKENS.container.hoverScale,
-          SHAKE_WRAPPER_TOKENS.container.activeScale,
-          className,
-        )}
+        {...wrapperProps}
         animate={
           isShaking
             ? {
@@ -120,6 +107,8 @@ const ShakeWrapper = React.forwardRef<HTMLDivElement, ShakeWrapperProps>(
               }
             : { x: 0 }
         }
+        whileHover={{ scale: SHAKE_WRAPPER_TOKENS.motion.hoverScale }}
+        whileTap={{ scale: SHAKE_WRAPPER_TOKENS.motion.activeScale }}
         transition={ANIMATION.shake.transition}
         {...props}
       >

@@ -1382,14 +1382,23 @@ export const INFINITE_MOVING_CARDS_TOKENS = {
 
 /**
  * ShakeWrapper design tokens
- * Centralized layout, styling, transitions, micro-interactions, and accessibility for ShakeWrapper component
+ * Centralized layout, styling, micro-interactions, and accessibility for ShakeWrapper component
+ *
+ * Note: `transform` is deliberately not CSS-transitioned here. The shake animation is
+ * driven by Framer Motion inline transforms, and a CSS transition on `transform` would
+ * smear it. Hover/active micro-scales are applied via Framer Motion (whileHover/whileTap)
+ * in the animated path instead of Tailwind scale utilities, which the inline transform
+ * would override anyway.
  */
 export const SHAKE_WRAPPER_TOKENS = {
   container: {
-    base: "transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-    hoverScale: "hover:scale-[1.002]",
-    activeScale: "active:scale-[0.998]",
+    base: "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
   },
+  motion: {
+    hoverScale: 1.002,
+    activeScale: 0.998,
+  },
+  defaultTabIndex: 0,
   defaultAriaLabel: "Form validation shake container",
   defaultRole: "region" as const,
 } as const;

@@ -3,7 +3,7 @@
 import * as React from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
-import { ANIMATION } from "@saasfly/common";
+import { ANIMATION, SHAKE_WRAPPER_TOKENS } from "@saasfly/common";
 
 import { cn } from "./utils/cn";
 
@@ -34,6 +34,10 @@ interface ShakeWrapperProps extends Omit<
   shake?: boolean;
   /** Callback when shake animation completes */
   onShakeComplete?: () => void;
+  /** Accessibility label */
+  "aria-label"?: string;
+  /** Accessibility role */
+  role?: string;
 }
 
 /**
@@ -51,7 +55,18 @@ interface ShakeWrapperProps extends Omit<
  * ```
  */
 const ShakeWrapper = React.forwardRef<HTMLDivElement, ShakeWrapperProps>(
-  ({ className, shake = false, onShakeComplete, children, ...props }, ref) => {
+  (
+    {
+      className,
+      shake = false,
+      onShakeComplete,
+      children,
+      "aria-label": ariaLabel = SHAKE_WRAPPER_TOKENS.defaultAriaLabel,
+      role = SHAKE_WRAPPER_TOKENS.defaultRole,
+      ...props
+    },
+    ref,
+  ) => {
     const shouldReduceMotion = useReducedMotion();
     const [isShaking, setIsShaking] = React.useState(false);
 
@@ -70,7 +85,18 @@ const ShakeWrapper = React.forwardRef<HTMLDivElement, ShakeWrapperProps>(
     // If reduced motion is preferred, render without animation
     if (shouldReduceMotion) {
       return (
-        <div ref={ref} className={className} {...props}>
+        <div
+          ref={ref}
+          role={role}
+          aria-label={ariaLabel}
+          className={cn(
+            SHAKE_WRAPPER_TOKENS.container.base,
+            SHAKE_WRAPPER_TOKENS.container.hoverScale,
+            SHAKE_WRAPPER_TOKENS.container.activeScale,
+            className,
+          )}
+          {...props}
+        >
           {children}
         </div>
       );
@@ -79,7 +105,14 @@ const ShakeWrapper = React.forwardRef<HTMLDivElement, ShakeWrapperProps>(
     return (
       <motion.div
         ref={ref}
-        className={cn(className)}
+        role={role}
+        aria-label={ariaLabel}
+        className={cn(
+          SHAKE_WRAPPER_TOKENS.container.base,
+          SHAKE_WRAPPER_TOKENS.container.hoverScale,
+          SHAKE_WRAPPER_TOKENS.container.activeScale,
+          className,
+        )}
         animate={
           isShaking
             ? {

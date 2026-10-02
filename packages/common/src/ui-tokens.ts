@@ -1380,6 +1380,20 @@ export const INFINITE_MOVING_CARDS_TOKENS = {
   defaultRole: "region" as const,
 } as const;
 
+/**
+ * ShakeWrapper design tokens
+ * Centralized layout, styling, transitions, micro-interactions, and accessibility for ShakeWrapper component
+ */
+export const SHAKE_WRAPPER_TOKENS = {
+  container: {
+    base: "transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+    hoverScale: "hover:scale-[1.002]",
+    activeScale: "active:scale-[0.998]",
+  },
+  defaultAriaLabel: "Form validation shake container",
+  defaultRole: "region" as const,
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

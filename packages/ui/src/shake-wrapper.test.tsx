@@ -2,6 +2,8 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { SHAKE_WRAPPER_TOKENS } from "@saasfly/common";
+
 import { ShakeWrapper } from "./shake-wrapper";
 
 describe("ShakeWrapper Component", () => {
@@ -65,5 +67,23 @@ describe("ShakeWrapper Component", () => {
 
     const wrapper = container.querySelector("div");
     expect(wrapper).toHaveClass("custom-shake");
+  });
+
+  it("should apply default accessibility role and aria-label", () => {
+    render(<ShakeWrapper>Content</ShakeWrapper>);
+
+    const region = screen.getByRole(SHAKE_WRAPPER_TOKENS.defaultRole, {
+      name: SHAKE_WRAPPER_TOKENS.defaultAriaLabel,
+    });
+    expect(region).toBeInTheDocument();
+  });
+
+  it("should apply centralized token classes for base and scale transitions", () => {
+    const { container } = render(<ShakeWrapper>Content</ShakeWrapper>);
+
+    const wrapper = container.querySelector("div");
+    expect(wrapper).toHaveClass("transition-all");
+    expect(wrapper).toHaveClass("hover:scale-[1.002]");
+    expect(wrapper).toHaveClass("active:scale-[0.998]");
   });
 });

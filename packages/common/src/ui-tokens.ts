@@ -1390,6 +1390,11 @@ export const INFINITE_MOVING_CARDS_TOKENS = {
  * path instead of Tailwind scale utilities, which the inline transform would override.
  * The shake animation uses ANIMATION.shake.transition; hover uses its own fast transition
  * via per-value override (see ShakeWrapper component).
+ *
+ * `container.base` focus-ring utilities engage only when the wrapper itself is
+ * focusable: ShakeWrapper deliberately sets no default `tabIndex` (an extra tab
+ * stop per form field is an accessibility anti-pattern), so they become active
+ * only if a consumer supplies `tabIndex`.
  */
 export const SHAKE_WRAPPER_TOKENS = {
   container: {
@@ -1399,7 +1404,6 @@ export const SHAKE_WRAPPER_TOKENS = {
     hoverScale: 1.002,
     hoverTransition: { duration: 0.15, ease: "easeOut" as const },
   },
-  defaultAriaLabel: "Form validation shake container",
   defaultRole: "group" as const,
 } as const;
 

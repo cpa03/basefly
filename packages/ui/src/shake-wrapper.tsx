@@ -57,7 +57,8 @@ const ShakeWrapper = React.forwardRef<HTMLDivElement, ShakeWrapperProps>(
       shake = false,
       onShakeComplete,
       children,
-      "aria-label": ariaLabel = SHAKE_WRAPPER_TOKENS.defaultAriaLabel,
+      // No fallback label: a fixed name would label every FormItem field identically (un-overridable via FormItem's API).
+      "aria-label": ariaLabel,
       role = SHAKE_WRAPPER_TOKENS.defaultRole,
       ...props
     },

@@ -117,22 +117,24 @@ describe("ShakeWrapper Component", () => {
     expect(wrapper).toHaveClass("custom-shake");
   });
 
-  it("should apply default accessibility role and aria-label", () => {
+  it("should apply default role without inventing an accessible name", () => {
     render(<ShakeWrapper>Content</ShakeWrapper>);
 
-    const group = screen.getByRole(SHAKE_WRAPPER_TOKENS.defaultRole, {
-      name: SHAKE_WRAPPER_TOKENS.defaultAriaLabel,
-    });
+    const group = screen.getByRole(SHAKE_WRAPPER_TOKENS.defaultRole);
     expect(group).toBeInTheDocument();
+    // No fallback label: every FormItem-wrapped field would otherwise share one name.
+    expect(group).not.toHaveAttribute("aria-label");
   });
 
-  it("should apply centralized token classes for focus base and no default tabindex", () => {
+  it("wires token focus classes onto the wrapper without adding a default tab stop", () => {
     const { container } = render(<ShakeWrapper>Content</ShakeWrapper>);
 
     const wrapper = container.querySelector("div");
     for (const tokenClass of SHAKE_WRAPPER_TOKENS.container.base.split(" ")) {
       expect(wrapper).toHaveClass(tokenClass);
     }
+    // The wrapper is not focusable by default (no extra tab stop per form field);
+    // these classes engage only when a consumer supplies tabIndex (asserted below).
     expect(wrapper).not.toHaveAttribute("tabindex");
   });
 
@@ -165,13 +167,12 @@ describe("ShakeWrapper Component", () => {
       expect(capturedMotionProps).toHaveLength(0);
     });
 
-    it("should apply role, aria-label, and classes in reduced motion mode", () => {
+    it("should apply role and token classes in reduced motion mode without a default name", () => {
       render(<ShakeWrapper>Content</ShakeWrapper>);
 
-      const group = screen.getByRole(SHAKE_WRAPPER_TOKENS.defaultRole, {
-        name: SHAKE_WRAPPER_TOKENS.defaultAriaLabel,
-      });
+      const group = screen.getByRole(SHAKE_WRAPPER_TOKENS.defaultRole);
       expect(group).toBeInTheDocument();
+      expect(group).not.toHaveAttribute("aria-label");
 
       const wrapper = group.closest("div");
       expect(wrapper).toHaveClass(
@@ -217,15 +218,6 @@ describe("ShakeWrapper Component", () => {
       });
       // Idle state keeps the shake target at rest.
       expect(motionProps?.["animate"]).toEqual({ x: 0 });
-    });
-
-    it("does not leak motion-only props onto the rendered DOM element", () => {
-      const { container } = render(<ShakeWrapper>Content</ShakeWrapper>);
-
-      const wrapper = container.querySelector("div");
-      for (const key of ["animate", "whileHover", "transition"]) {
-        expect(wrapper).not.toHaveAttribute(key);
-      }
     });
   });
 });

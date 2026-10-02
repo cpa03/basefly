@@ -2,23 +2,60 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { SHAKE_WRAPPER_TOKENS } from "@saasfly/common";
-
-const useReducedMotionMock = vi.fn(() => false);
-vi.mock("framer-motion", async (importOriginal) => {
-  const actual = await importOriginal<Record<string, unknown>>();
-  return {
-    ...actual,
-    useReducedMotion: vi.fn(() => useReducedMotionMock()),
-  };
-});
+import { ANIMATION, SHAKE_WRAPPER_TOKENS } from "@saasfly/common";
 
 import { ShakeWrapper } from "./shake-wrapper";
+
+const { useReducedMotionMock, capturedMotionProps } = vi.hoisted(() => ({
+  useReducedMotionMock: vi.fn(() => false),
+  capturedMotionProps: [] as Record<string, unknown>[],
+}));
+
+vi.mock("framer-motion", async (importOriginal) => {
+  const actual = await importOriginal<Record<string, unknown>>();
+  const ReactModule = await import("react");
+
+  // Motion-only props that must not leak onto the rendered DOM element.
+  const motionOnlyKeys = [
+    "animate",
+    "whileHover",
+    "whileTap",
+    "transition",
+    "initial",
+    "exit",
+    "variants",
+  ];
+
+  const MotionDiv = ReactModule.forwardRef<
+    HTMLDivElement,
+    Record<string, unknown>
+  >((props, ref) => {
+    // Capture the exact props ShakeWrapper passes to motion.div so tests can
+    // assert gesture/transition wiring that is not visible in the DOM.
+    capturedMotionProps.push(props);
+    const domProps: Record<string, unknown> = { ...props };
+    for (const key of motionOnlyKeys) {
+      delete domProps[key];
+    }
+    return ReactModule.createElement("div", {
+      ...domProps,
+      ref,
+    } as React.HTMLAttributes<HTMLDivElement>);
+  });
+  MotionDiv.displayName = "MockMotionDiv";
+
+  return {
+    ...actual,
+    motion: { div: MotionDiv },
+    useReducedMotion: useReducedMotionMock,
+  };
+});
 
 describe("ShakeWrapper Component", () => {
   beforeEach(() => {
     vi.useFakeTimers();
     useReducedMotionMock.mockReturnValue(false);
+    capturedMotionProps.length = 0;
   });
 
   afterEach(() => {
@@ -44,6 +81,7 @@ describe("ShakeWrapper Component", () => {
     const wrapper = container.querySelector("div");
     expect(wrapper).toBeInTheDocument();
     expect(wrapper?.textContent).toBe("Content");
+    expect(capturedMotionProps).toHaveLength(1);
   });
 
   it("should not call onShakeComplete when shake is false", () => {
@@ -99,7 +137,9 @@ describe("ShakeWrapper Component", () => {
   });
 
   it("should not have tabindex by default but accept consumer-supplied tabIndex", () => {
-    const { container: containerDefault } = render(<ShakeWrapper>Content</ShakeWrapper>);
+    const { container: containerDefault } = render(
+      <ShakeWrapper>Content</ShakeWrapper>,
+    );
     const wrapperDefault = containerDefault.querySelector("div");
     expect(wrapperDefault).not.toHaveAttribute("tabindex");
 
@@ -121,6 +161,8 @@ describe("ShakeWrapper Component", () => {
       const wrapper = container.querySelector("div");
       expect(wrapper).toBeInTheDocument();
       expect(wrapper?.textContent).toBe("Content");
+      // Reduced motion renders no framer-motion element at all.
+      expect(capturedMotionProps).toHaveLength(0);
     });
 
     it("should apply role, aria-label, and classes in reduced motion mode", () => {
@@ -132,7 +174,9 @@ describe("ShakeWrapper Component", () => {
       expect(group).toBeInTheDocument();
 
       const wrapper = group.closest("div");
-      expect(wrapper).toHaveClass(...SHAKE_WRAPPER_TOKENS.container.base.split(" "));
+      expect(wrapper).toHaveClass(
+        ...SHAKE_WRAPPER_TOKENS.container.base.split(" "),
+      );
     });
 
     it("should not have tabindex by default in reduced motion mode", () => {
@@ -142,33 +186,46 @@ describe("ShakeWrapper Component", () => {
     });
 
     it("should accept consumer-supplied tabIndex in reduced motion mode", () => {
-      const { container } = render(<ShakeWrapper tabIndex={0}>Content</ShakeWrapper>);
+      const { container } = render(
+        <ShakeWrapper tabIndex={0}>Content</ShakeWrapper>,
+      );
       const wrapper = container.querySelector("div");
       expect(wrapper).toHaveAttribute("tabindex", "0");
     });
   });
 
   describe("motion branch gesture props", () => {
-    it("should use hoverScale from tokens for whileHover", () => {
-      const { container } = render(<ShakeWrapper>Content</ShakeWrapper>);
+    it("wires whileHover scale from tokens and defines no whileTap gesture", () => {
+      render(<ShakeWrapper>Content</ShakeWrapper>);
 
-      const wrapper = container.querySelector("div");
-      // framer-motion applies whileHover styles via data attributes or inline styles
-      // The motion.div receives the whileHover prop with the token value
-      // We verify the component renders without error and the token is wired
-      expect(wrapper).toBeInTheDocument();
-      // The hover scale value is passed to framer-motion's whileHover prop
-      // which is not directly DOM-assertable, but the component structure is correct
+      expect(capturedMotionProps).toHaveLength(1);
+      const [motionProps] = capturedMotionProps;
+      expect(motionProps?.["whileHover"]).toEqual({
+        scale: SHAKE_WRAPPER_TOKENS.motion.hoverScale,
+      });
+      expect(motionProps).not.toHaveProperty("whileTap");
     });
 
-    it("should use fast hoverTransition from tokens (not shake transition) for scale", () => {
+    it("keeps shake x timing while giving the hover scale its own fast transition", () => {
+      render(<ShakeWrapper>Content</ShakeWrapper>);
+
+      const [motionProps] = capturedMotionProps;
+      expect(motionProps?.["transition"]).toEqual({
+        duration: ANIMATION.shake.transition.duration,
+        ease: ANIMATION.shake.transition.ease,
+        scale: SHAKE_WRAPPER_TOKENS.motion.hoverTransition,
+      });
+      // Idle state keeps the shake target at rest.
+      expect(motionProps?.["animate"]).toEqual({ x: 0 });
+    });
+
+    it("does not leak motion-only props onto the rendered DOM element", () => {
       const { container } = render(<ShakeWrapper>Content</ShakeWrapper>);
 
       const wrapper = container.querySelector("div");
-      expect(wrapper).toBeInTheDocument();
-      // The per-value transition override ensures scale uses hoverTransition (0.15s easeOut)
-      // while x animation uses shake.transition (0.4s easeInOut)
-      // This is verified by the component rendering correctly with the token structure
+      for (const key of ["animate", "whileHover", "transition"]) {
+        expect(wrapper).not.toHaveAttribute(key);
+      }
     });
   });
 });

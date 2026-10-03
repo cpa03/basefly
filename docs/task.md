@@ -3505,3 +3505,5 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [STRENGTHEN] Enhanced BackgroundLines component with focus-visible ring accessibility, tabIndex={0}, default role="region", fallback aria-label, tactile spring-scale micro-interactions (hover:scale-[1.002] active:scale-[0.998]), and unit test assertions
 - [CONSOLIDATE] Centralized ShakeWrapper design tokens under SHAKE_WRAPPER_TOKENS inside @saasfly/common/src/ui-tokens.ts
 - [STRENGTHEN] Enhanced ShakeWrapper component with default role="group", tokenized focus-ring styling, tactile hover-scale micro-interaction, and unit test assertions
+- [CONSOLIDATE] Centralized Card component design tokens and default accessibility fallbacks under CARD_TOKENS
+- [STRENGTHEN] Enhanced Card component with default role="region" and aria-label="Card container" fallbacks, focus-visible ring styles, and unit test coverage

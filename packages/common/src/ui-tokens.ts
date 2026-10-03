@@ -125,7 +125,11 @@ export const INPUT_TOKENS = {
  */
 export const CARD_TOKENS = {
   /** Root card container styling */
-  base: "rounded-lg border bg-card text-card-foreground shadow-sm",
+  base: "rounded-lg border bg-card text-card-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+
+  /** Default fallback role and aria-label */
+  defaultRole: "region" as const,
+  defaultAriaLabel: "Card container",
 
   /** Interactive state styling and spring micro-interactions */
   interactive: {

@@ -55,6 +55,23 @@ describe("Card Component", () => {
     render(<Card data-testid="test-card">Attr</Card>);
     expect(screen.getByTestId("test-card")).toBeInTheDocument();
   });
+
+  it("should provide default region role and aria-label accessibility fallbacks", () => {
+    render(<Card>Accessible Card</Card>);
+    const region = screen.getByRole("region", { name: "Card container" });
+    expect(region).toBeInTheDocument();
+  });
+
+  it("should allow custom role and aria-label overrides", () => {
+    render(
+      <Card role="article" aria-label="Custom Article Card">
+        Custom Accessibility
+      </Card>,
+    );
+    expect(
+      screen.getByRole("article", { name: "Custom Article Card" }),
+    ).toBeInTheDocument();
+  });
 });
 
 describe("CardHeader", () => {

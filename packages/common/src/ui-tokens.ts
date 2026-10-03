@@ -9,6 +9,17 @@
 import { ANIMATION } from "./animation";
 
 /**
+ * Shared default focus-ring utility set, exported from the `@saasfly/common`
+ * root. Referenced by `INPUT_TOKENS.focusRing.default` and `CARD_TOKENS.base`
+ * so those two consumers cannot drift apart. Other tokens still declare their
+ * own focus-ring strings inline (some intentionally differ, e.g. by adding
+ * `focus-visible:ring-offset-background`); migrating them is tracked separately
+ * and is not implied by this constant.
+ */
+export const FOCUS_RING_DEFAULT =
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
+
+/**
  * Button design tokens
  * Centralized sizing, timing, and effects for button components
  */
@@ -92,8 +103,7 @@ export const INPUT_TOKENS = {
 
   /** Focus ring configuration */
   focusRing: {
-    default:
-      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+    default: FOCUS_RING_DEFAULT,
     error: "focus-visible:ring-red-500",
     success: "focus-visible:ring-green-500",
   },
@@ -124,10 +134,31 @@ export const INPUT_TOKENS = {
  * Centralized sizing, styling, sub-component classes, and micro-UX transitions for card components
  */
 export const CARD_TOKENS = {
-  /** Root card container styling */
-  base: "rounded-lg border bg-card text-card-foreground shadow-sm",
+  /**
+   * Root card container styling.
+   *
+   * INVARIANT: `base` is the single focus-ring source for ALL cards, not only
+   * interactive ones — it unconditionally applies FOCUS_RING_DEFAULT
+   * (focus-visible ring geometry shared with INPUT_TOKENS.focusRing.default).
+   * Because `base` is merged into every card (interactive and plain alike),
+   * a plain card made focusable (e.g. consumer supplies tabIndex) loses the UA
+   * outline and gains the shared ring; the ring therefore engages only when
+   * the consumer makes the card focusable, since a plain div cannot receive
+   * focus. There is deliberately no per-variant focus token: adding one would
+   * reintroduce a second focus-ring source and let the two drift apart.
+   */
+  base: `rounded-lg border bg-card text-card-foreground shadow-sm ${FOCUS_RING_DEFAULT}`,
 
-  /** Interactive state styling and spring micro-interactions */
+  /**
+   * Default non-landmark grouping role (mirrors SHAKE_WRAPPER_TOKENS.defaultRole):
+   * a region landmark on every card would pollute screen-reader landmark
+   * navigation and nest landmarks for nested cards. Pass role="none" to opt
+   * out, or any explicit role to override. No aria-label is defaulted — an
+   * unnamed group is valid and a fixed name would label every card identically.
+   */
+  defaultRole: "group" as const,
+
+  /** Interactive state styling and spring micro-interactions (focus ring lives in `base`) */
   interactive: {
     cursor: "cursor-pointer",
     transition: "transition-all duration-200 ease-out",
@@ -135,8 +166,6 @@ export const CARD_TOKENS = {
     hoverScale: "hover:scale-[1.005]",
     activeScale: "active:scale-[0.995]",
     hoverShadow: "motion-safe:hover:shadow-md",
-    focusRing:
-      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
   },
 
   /** Sub-component styling tokens */

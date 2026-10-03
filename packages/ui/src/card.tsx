@@ -15,9 +15,18 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const Card = React.memo(
   React.forwardRef<HTMLDivElement, CardProps>(
-    ({ className, interactive = false, ...props }, ref) => (
+    (
+      {
+        className,
+        interactive = false,
+        role = CARD_TOKENS.defaultRole,
+        ...props
+      },
+      ref,
+    ) => (
       <div
         ref={ref}
+        role={role}
         className={cn(
           CARD_TOKENS.base,
           interactive && [
@@ -27,7 +36,6 @@ const Card = React.memo(
             CARD_TOKENS.interactive.hoverScale,
             CARD_TOKENS.interactive.activeScale,
             CARD_TOKENS.interactive.hoverShadow,
-            CARD_TOKENS.interactive.focusRing,
           ],
           className,
         )}

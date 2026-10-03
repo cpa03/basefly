@@ -24,6 +24,21 @@ describe("Card Component", () => {
     expect(card).toHaveClass("border");
     expect(card).toHaveClass("bg-card");
     expect(card).toHaveClass("shadow-sm");
+    expect(card).toHaveClass("focus-visible:outline-none");
+    expect(card).toHaveClass("focus-visible:ring-2");
+    expect(card).toHaveClass("focus-visible:ring-ring");
+    expect(card).toHaveClass("focus-visible:ring-offset-2");
+  });
+
+  it("should apply focus-ring classes to a non-interactive focusable card", () => {
+    const { container } = render(<Card tabIndex={0}>Keyboard reachable</Card>);
+    const card = container.firstChild as HTMLElement;
+    expect(card).toHaveAttribute("tabindex", "0");
+    expect(card).toHaveClass("focus-visible:outline-none");
+    expect(card).toHaveClass("focus-visible:ring-2");
+    expect(card).toHaveClass("focus-visible:ring-ring");
+    expect(card).toHaveClass("focus-visible:ring-offset-2");
+    expect(card).not.toHaveClass("cursor-pointer");
   });
 
   it("should apply custom className", () => {
@@ -54,6 +69,30 @@ describe("Card Component", () => {
   it("should forward additional HTML attributes", () => {
     render(<Card data-testid="test-card">Attr</Card>);
     expect(screen.getByTestId("test-card")).toBeInTheDocument();
+  });
+
+  it("should default to a non-landmark group role without a fixed aria-label", () => {
+    render(<Card>Accessible Card</Card>);
+    const group = screen.getByRole("group");
+    expect(group).toBeInTheDocument();
+    expect(group).not.toHaveAttribute("aria-label");
+  });
+
+  it("should allow opting out of the default role with role none", () => {
+    const { container } = render(<Card role="none">Plain Card</Card>);
+    const card = container.firstChild as HTMLElement;
+    expect(card).toHaveAttribute("role", "none");
+  });
+
+  it("should allow custom role and aria-label overrides", () => {
+    render(
+      <Card role="article" aria-label="Custom Article Card">
+        Custom Accessibility
+      </Card>,
+    );
+    expect(
+      screen.getByRole("article", { name: "Custom Article Card" }),
+    ).toBeInTheDocument();
   });
 });
 

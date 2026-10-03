@@ -30,6 +30,17 @@ describe("Card Component", () => {
     expect(card).toHaveClass("focus-visible:ring-offset-2");
   });
 
+  it("should apply focus-ring classes to a non-interactive focusable card", () => {
+    const { container } = render(<Card tabIndex={0}>Keyboard reachable</Card>);
+    const card = container.firstChild as HTMLElement;
+    expect(card).toHaveAttribute("tabindex", "0");
+    expect(card).toHaveClass("focus-visible:outline-none");
+    expect(card).toHaveClass("focus-visible:ring-2");
+    expect(card).toHaveClass("focus-visible:ring-ring");
+    expect(card).toHaveClass("focus-visible:ring-offset-2");
+    expect(card).not.toHaveClass("cursor-pointer");
+  });
+
   it("should apply custom className", () => {
     const { container } = render(<Card className="custom-test-class">X</Card>);
     expect(container.firstChild).toHaveClass("custom-test-class");

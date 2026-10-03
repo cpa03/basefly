@@ -9,6 +9,15 @@
 import { ANIMATION } from "./animation";
 
 /**
+ * Single source of truth for the default focus-ring utility set.
+ * Every focusable primitive (form controls via INPUT_TOKENS.focusRing.default,
+ * cards via CARD_TOKENS.base) references this constant so the ring geometry
+ * stays identical across the design system and cannot drift per call site.
+ */
+export const FOCUS_RING_DEFAULT =
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";
+
+/**
  * Button design tokens
  * Centralized sizing, timing, and effects for button components
  */
@@ -92,8 +101,7 @@ export const INPUT_TOKENS = {
 
   /** Focus ring configuration */
   focusRing: {
-    default:
-      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+    default: FOCUS_RING_DEFAULT,
     error: "focus-visible:ring-red-500",
     success: "focus-visible:ring-green-500",
   },
@@ -126,12 +134,18 @@ export const INPUT_TOKENS = {
 export const CARD_TOKENS = {
   /**
    * Root card container styling.
-   * The focus ring is the single focus-ring source for cards (see also
-   * INPUT_TOKENS.focusRing.default for form controls); it engages only when
-   * the consumer makes the card focusable (e.g. supplies tabIndex) because
-   * a plain div cannot receive focus.
+   *
+   * INVARIANT: `base` is the single focus-ring source for ALL cards, not only
+   * interactive ones — it unconditionally applies FOCUS_RING_DEFAULT
+   * (focus-visible ring geometry shared with INPUT_TOKENS.focusRing.default).
+   * Because `base` is merged into every card (interactive and plain alike),
+   * a plain card made focusable (e.g. consumer supplies tabIndex) loses the UA
+   * outline and gains the shared ring; the ring therefore engages only when
+   * the consumer makes the card focusable, since a plain div cannot receive
+   * focus. There is deliberately no per-variant focus token: adding one would
+   * reintroduce a second focus-ring source and let the two drift apart.
    */
-  base: "rounded-lg border bg-card text-card-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  base: `rounded-lg border bg-card text-card-foreground shadow-sm ${FOCUS_RING_DEFAULT}`,
 
   /**
    * Default non-landmark grouping role (mirrors SHAKE_WRAPPER_TOKENS.defaultRole):
@@ -142,7 +156,7 @@ export const CARD_TOKENS = {
    */
   defaultRole: "group" as const,
 
-  /** Interactive state styling and spring micro-interactions */
+  /** Interactive state styling and spring micro-interactions (focus ring lives in `base`) */
   interactive: {
     cursor: "cursor-pointer",
     transition: "transition-all duration-200 ease-out",
@@ -150,7 +164,6 @@ export const CARD_TOKENS = {
     hoverScale: "hover:scale-[1.005]",
     activeScale: "active:scale-[0.995]",
     hoverShadow: "motion-safe:hover:shadow-md",
-    // focusRing removed: base already applies the focus ring unconditionally.
   },
 
   /** Sub-component styling tokens */

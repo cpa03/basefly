@@ -9,10 +9,12 @@
 import { ANIMATION } from "./animation";
 
 /**
- * Single source of truth for the default focus-ring utility set.
- * Every focusable primitive (form controls via INPUT_TOKENS.focusRing.default,
- * cards via CARD_TOKENS.base) references this constant so the ring geometry
- * stays identical across the design system and cannot drift per call site.
+ * Shared default focus-ring utility set, exported from the `@saasfly/common`
+ * root. Referenced by `INPUT_TOKENS.focusRing.default` and `CARD_TOKENS.base`
+ * so those two consumers cannot drift apart. Other tokens still declare their
+ * own focus-ring strings inline (some intentionally differ, e.g. by adding
+ * `focus-visible:ring-offset-background`); migrating them is tracked separately
+ * and is not implied by this constant.
  */
 export const FOCUS_RING_DEFAULT =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2";

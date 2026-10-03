@@ -124,12 +124,23 @@ export const INPUT_TOKENS = {
  * Centralized sizing, styling, sub-component classes, and micro-UX transitions for card components
  */
 export const CARD_TOKENS = {
-  /** Root card container styling */
+  /**
+   * Root card container styling.
+   * The focus ring is the single focus-ring source for cards (see also
+   * INPUT_TOKENS.focusRing.default for form controls); it engages only when
+   * the consumer makes the card focusable (e.g. supplies tabIndex) because
+   * a plain div cannot receive focus.
+   */
   base: "rounded-lg border bg-card text-card-foreground shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
 
-  /** Default fallback role and aria-label */
-  defaultRole: "region" as const,
-  defaultAriaLabel: "Card container",
+  /**
+   * Default non-landmark grouping role (mirrors SHAKE_WRAPPER_TOKENS.defaultRole):
+   * a region landmark on every card would pollute screen-reader landmark
+   * navigation and nest landmarks for nested cards. Pass role="none" to opt
+   * out, or any explicit role to override. No aria-label is defaulted — an
+   * unnamed group is valid and a fixed name would label every card identically.
+   */
+  defaultRole: "group" as const,
 
   /** Interactive state styling and spring micro-interactions */
   interactive: {
@@ -139,8 +150,7 @@ export const CARD_TOKENS = {
     hoverScale: "hover:scale-[1.005]",
     activeScale: "active:scale-[0.995]",
     hoverShadow: "motion-safe:hover:shadow-md",
-    focusRing:
-      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+    // focusRing removed: base already applies the focus ring unconditionally.
   },
 
   /** Sub-component styling tokens */

@@ -3506,4 +3506,4 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [CONSOLIDATE] Centralized ShakeWrapper design tokens under SHAKE_WRAPPER_TOKENS inside @saasfly/common/src/ui-tokens.ts
 - [STRENGTHEN] Enhanced ShakeWrapper component with default role="group", tokenized focus-ring styling, tactile hover-scale micro-interaction, and unit test assertions
 - [CONSOLIDATE] Centralized Card component design tokens and default accessibility fallbacks under CARD_TOKENS
-- [STRENGTHEN] Enhanced Card component with default role="region" and aria-label="Card container" fallbacks, focus-visible ring styles, and unit test coverage
+- [STRENGTHEN] Enhanced Card component with default non-landmark role="group" fallback (opt out via role="none"), single-source focus-visible ring styling in base tokens, and unit test coverage

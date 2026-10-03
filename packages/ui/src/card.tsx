@@ -20,7 +20,6 @@ const Card = React.memo(
         className,
         interactive = false,
         role = CARD_TOKENS.defaultRole,
-        "aria-label": ariaLabel = CARD_TOKENS.defaultAriaLabel,
         ...props
       },
       ref,
@@ -28,7 +27,6 @@ const Card = React.memo(
       <div
         ref={ref}
         role={role}
-        aria-label={ariaLabel}
         className={cn(
           CARD_TOKENS.base,
           interactive && [
@@ -38,7 +36,6 @@ const Card = React.memo(
             CARD_TOKENS.interactive.hoverScale,
             CARD_TOKENS.interactive.activeScale,
             CARD_TOKENS.interactive.hoverShadow,
-            CARD_TOKENS.interactive.focusRing,
           ],
           className,
         )}

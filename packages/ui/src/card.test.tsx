@@ -24,6 +24,10 @@ describe("Card Component", () => {
     expect(card).toHaveClass("border");
     expect(card).toHaveClass("bg-card");
     expect(card).toHaveClass("shadow-sm");
+    expect(card).toHaveClass("focus-visible:outline-none");
+    expect(card).toHaveClass("focus-visible:ring-2");
+    expect(card).toHaveClass("focus-visible:ring-ring");
+    expect(card).toHaveClass("focus-visible:ring-offset-2");
   });
 
   it("should apply custom className", () => {
@@ -56,10 +60,17 @@ describe("Card Component", () => {
     expect(screen.getByTestId("test-card")).toBeInTheDocument();
   });
 
-  it("should provide default region role and aria-label accessibility fallbacks", () => {
+  it("should default to a non-landmark group role without a fixed aria-label", () => {
     render(<Card>Accessible Card</Card>);
-    const region = screen.getByRole("region", { name: "Card container" });
-    expect(region).toBeInTheDocument();
+    const group = screen.getByRole("group");
+    expect(group).toBeInTheDocument();
+    expect(group).not.toHaveAttribute("aria-label");
+  });
+
+  it("should allow opting out of the default role with role none", () => {
+    const { container } = render(<Card role="none">Plain Card</Card>);
+    const card = container.firstChild as HTMLElement;
+    expect(card).toHaveAttribute("role", "none");
   });
 
   it("should allow custom role and aria-label overrides", () => {

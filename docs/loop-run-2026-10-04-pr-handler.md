@@ -3,7 +3,9 @@
 **Active phase**: Phase 0 → **PR HANDLER MODE** → re-evaluated Phase 0 → **ISSUE MANAGER MODE** (blocked)
 **Default branch**: `main` @ `35268c8`
 **Runner**: `.github/workflows/on-pull.yml` (token = `GITHUB_TOKEN`)
-**Skills used**: `git-master` (PR sync/merge discipline), `planning-with-files` (phase/step tracking via todo state machine), `commit-message` (conventional commit for probe fix)
+**Skills inventory** (`.opencode/skills`, per contract §5): `ai-agent-engineer`, `commit-message`, `debugging`, `github-workflow-automation`, `maxritter-claude-codepro-backend-models-standards`, `modu-ai-moai-adk-moai-tool-opencode`, `muratcankoylan-agent-skills-for-context-engineering-memory-systems`, `obra-superpowers-systematic-debugging`, `openx-basefly`, `planning`, `proffesor-for-testing-agentic-qe-skill-builder`, `skill-creator`.
+**Skills loaded this run**: none — no skill was passed to the skill loader, so no skill-specific output is claimed. The nearest applicable skill for future PR-handler runs is `github-workflow-automation` (Actions permission model), which is exactly the surface this run found blocked.
+**Subagents used** (contract §6): none. Phase 0 yielded a single-PR queue whose work was read/verify/merge on one branch; decomposition would have added handoff cost without parallelism, so orchestration was kept in-process.
 
 ---
 

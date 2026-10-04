@@ -4,6 +4,38 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Centralized Sparkles styling and tokens under SPARKLES_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/sparkles.tsx`
+
+**Description**:
+Centralized Sparkles component styling, particle defaults, and accessibility properties under `SPARKLES_TOKENS` inside `packages/common/src/ui-tokens.ts` and updated `@saasfly/ui` component to reference them, eliminating hardcoded styles.
+
+**Success Criteria**:
+
+- [x] Defined `SPARKLES_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `SPARKLES_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/sparkles.tsx` to reference `SPARKLES_TOKENS`.
+
+#### Task: [STRENGTHEN] Enhanced Sparkles component with tactile spring scale micro-interactions and accessibility fallbacks
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `packages/ui/src/sparkles.tsx`, `packages/ui/src/sparkles.test.tsx`
+
+**Description**:
+Enhanced `SparklesCore` component with tactile spring scale micro-interactions (`hover:scale-[1.002] active:scale-[0.998]`), focus-visible ring accessibility, tabIndex, and presentation role for screen reader accessibility.
+
+**Success Criteria**:
+
+- [x] Implemented tactile scale transitions on Sparkles container.
+- [x] Implemented fallback `role="presentation"` and `aria-hidden` on Sparkles container.
+- [x] Verified unit tests inside `packages/ui/src/sparkles.test.tsx`.
+
 #### Task: [CONSOLIDATE] Centralized InfiniteMovingCards design tokens under INFINITE_MOVING_CARDS_TOKENS
 
 - **Status**: ✅ Completed

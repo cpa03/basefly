@@ -1436,6 +1436,22 @@ export const SHAKE_WRAPPER_TOKENS = {
   defaultRole: "group" as const,
 } as const;
 
+/**
+ * Sparkles design tokens
+ * Centralized layout, styling, micro-interactions, and accessibility for Sparkles component
+ */
+export const SPARKLES_TOKENS = {
+  container: {
+    base: "opacity-0 transition-transform duration-200 ease-out hover:scale-[1.002] active:scale-[0.998] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  },
+  particles: {
+    base: "h-full w-full",
+  },
+  defaultRole: "presentation" as const,
+  ariaHidden: "true" as const,
+  defaultId: "tsparticles",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

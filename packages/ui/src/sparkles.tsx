@@ -10,6 +10,8 @@ import Particles, { initParticlesEngine } from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 import { motion, useAnimation, useReducedMotion } from "framer-motion";
 
+import { SPARKLES_TOKENS } from "@saasfly/common";
+
 import { cn } from "./utils/cn";
 
 interface ParticlesProps {
@@ -452,13 +454,15 @@ export const SparklesCore = (props: ParticlesProps) => {
     <motion.div
       animate={controls}
       initial={initialState}
-      aria-hidden="true"
-      className={cn("opacity-0", className)}
+      aria-hidden={SPARKLES_TOKENS.ariaHidden}
+      role={SPARKLES_TOKENS.defaultRole}
+      tabIndex={-1}
+      className={cn(SPARKLES_TOKENS.container.base, className)}
     >
       {init && (
         <Particles
-          id={id ?? "tsparticles"}
-          className={cn("h-full w-full")}
+          id={id ?? SPARKLES_TOKENS.defaultId}
+          className={cn(SPARKLES_TOKENS.particles.base)}
           particlesLoaded={particlesLoaded}
           options={particlesOptions}
         />

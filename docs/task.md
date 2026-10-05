@@ -9,15 +9,16 @@
 - **Status**: ✅ Completed
 - **Priority**: High
 - **Type**: UX Improvement
-- **Files**: `apps/nextjs/src/components/main-nav.tsx`, `apps/nextjs/src/components/__tests__/navbar.test.tsx`
+- **Files**: `apps/nextjs/src/components/main-nav.tsx`, `apps/nextjs/src/components/__tests__/main-nav.test.tsx`
 
 **Description**:
-Enhanced `MainNav` mobile menu toggle button with tactile spring scale micro-interactions (`hover:scale-[1.03] active:scale-[0.97] transition-transform duration-150 ease-in-out`) to provide clear visual feedback during mobile menu toggling.
+Enhanced `MainNav` mobile menu toggle button with tactile spring scale micro-interactions (`hover:scale-[1.03] active:scale-[0.97] transition-transform duration-150 ease-in-out`), gated behind `prefers-reduced-motion` (`motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100`) to provide clear visual feedback during mobile menu toggling without motion for sensitive users.
 
 **Success Criteria**:
 
 - [x] Implemented tactile scale transitions on MainNav mobile menu button.
-- [x] Verified unit tests inside `apps/nextjs/src/components/__tests__/navbar.test.tsx`.
+- [x] Gated the scale animation behind `prefers-reduced-motion`.
+- [x] Verified unit tests inside `apps/nextjs/src/components/__tests__/main-nav.test.tsx`.
 
 #### Task: [CONSOLIDATE] Centralized Sparkles styling and tokens under SPARKLES_TOKENS
 

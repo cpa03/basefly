@@ -56,7 +56,7 @@ export const MainNav = React.memo(function MainNav({
       </div>
 
       <button
-        className="flex items-center space-x-2 rounded-md px-2 py-1 transition-transform duration-150 ease-in-out hover:scale-[1.03] active:scale-[0.97] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:hidden"
+        className="flex items-center space-x-2 rounded-md px-2 py-1 transition-transform duration-150 ease-in-out hover:scale-[1.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.97] motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100 md:hidden"
         onClick={toggle}
         aria-label={
           isOpen ? UI_LABELS.closeMobileMenu : UI_LABELS.openMobileMenu

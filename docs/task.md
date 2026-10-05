@@ -4,6 +4,21 @@
 
 ### High Priority Tasks
 
+#### Task: [STRENGTHEN] Enhanced MainNav mobile menu button with tactile spring scale micro-interactions
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `apps/nextjs/src/components/main-nav.tsx`, `apps/nextjs/src/components/__tests__/navbar.test.tsx`
+
+**Description**:
+Enhanced `MainNav` mobile menu toggle button with tactile spring scale micro-interactions (`hover:scale-[1.03] active:scale-[0.97] transition-transform duration-150 ease-in-out`) to provide clear visual feedback during mobile menu toggling.
+
+**Success Criteria**:
+
+- [x] Implemented tactile scale transitions on MainNav mobile menu button.
+- [x] Verified unit tests inside `apps/nextjs/src/components/__tests__/navbar.test.tsx`.
+
 #### Task: [CONSOLIDATE] Centralized Sparkles styling and tokens under SPARKLES_TOKENS
 
 - **Status**: ✅ Completed

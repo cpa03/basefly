@@ -63,7 +63,7 @@ REDIS_URL="redis://localhost:6379"
 
 ### 3.2 Docker Compose (local development)
 
-For local development with Docker, add a Redis service to `docker-compose.yml` and pass `REDIS_URL` to the app service:
+The repository's `docker-compose.yml` already ships with a Redis service and passes `REDIS_URL` to the app service, so `docker-compose up -d` starts a fully distributed rate-limiting environment out of the box. For reference (or for a custom compose file), the required wiring is:
 
 ```yaml
 services:

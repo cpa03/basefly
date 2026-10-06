@@ -400,6 +400,7 @@ export {
   INFINITE_MOVING_CARDS_TOKENS,
   SHAKE_WRAPPER_TOKENS,
   SPARKLES_TOKENS,
+  BLOG_CARD_TOKENS,
 } from "./ui-tokens";
 export type {
   ButtonHeight,

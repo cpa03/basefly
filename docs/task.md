@@ -4,6 +4,22 @@
 
 ### High Priority Tasks
 
+#### Task: [STRENGTHEN] BlogCard component micro-UX and centralized design tokens
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement / Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `apps/nextjs/src/components/blog-card.tsx`, `apps/nextjs/src/components/__tests__/blog-card.test.tsx`
+
+**Description**:
+Enhanced `XBlogArticle` (`BlogCard`) component with centralized `BLOG_CARD_TOKENS` from `@saasfly/common`, tactile spring scale micro-interactions (`hover:scale-[1.01] active:scale-[0.99]`), focus-visible ring styles, and configurable `role`, `aria-label`, and `tabIndex` accessibility properties.
+
+**Success Criteria**:
+
+- [x] Centralized `BLOG_CARD_TOKENS` in `packages/common/src/ui-tokens.ts` and exported from `@saasfly/common`.
+- [x] Refactored `apps/nextjs/src/components/blog-card.tsx` to reference `BLOG_CARD_TOKENS`.
+- [x] Added unit tests in `apps/nextjs/src/components/__tests__/blog-card.test.tsx`.
+
 #### Task: [STRENGTHEN] Enhanced MainNav mobile menu button with tactile spring scale micro-interactions
 
 - **Status**: ✅ Completed

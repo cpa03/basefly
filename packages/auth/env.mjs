@@ -25,4 +25,10 @@ export const env = createEnv({
     ADMIN_EMAIL: process.env.ADMIN_EMAIL,
     IS_DEBUG: process.env.IS_DEBUG,
   },
+  onValidationError: (error) => {
+    if (process.env.NODE_ENV !== "test") {
+      console.error("❌ Invalid environment variables:", error);
+    }
+    throw new Error("Invalid environment variables");
+  },
 });

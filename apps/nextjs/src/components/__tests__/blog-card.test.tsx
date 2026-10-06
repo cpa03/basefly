@@ -2,8 +2,8 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
-import type * as UiModule from "@saasfly/ui";
 import { BLOG_CARD_TOKENS, UI_LABELS } from "@saasfly/common";
+import type * as UiModule from "@saasfly/ui";
 
 import { XBlogArticle } from "../blog-card";
 
@@ -52,10 +52,7 @@ describe("XBlogArticle (BlogCard)", () => {
 
     const article = screen.getByRole("article");
     expect(article).toBeInTheDocument();
-    expect(article).toHaveAttribute(
-      "aria-label",
-      "Custom blog article label",
-    );
+    expect(article).toHaveAttribute("aria-label", "Custom blog article label");
     expect(article).toHaveClass("custom-blog-card");
   });
 

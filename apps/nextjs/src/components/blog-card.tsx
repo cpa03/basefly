@@ -1,13 +1,29 @@
 import React from "react";
 import Image from "next/image";
 
-import { EXTERNAL_URLS, UI_LABELS } from "@saasfly/common";
-import { TRANSITION_PRESETS } from "@saasfly/common/config/ui";
-import { FollowerPointerCard } from "@saasfly/ui/following-pointer";
+import { BLOG_CARD_TOKENS, EXTERNAL_URLS, UI_LABELS } from "@saasfly/common";
+import { FollowerPointerCard } from "@saasfly/ui";
 
-export const XBlogArticle = React.memo(function XBlogArticle() {
+export interface BlogCardProps {
+  className?: string;
+  role?: string;
+  "aria-label"?: string;
+  tabIndex?: number;
+}
+
+export const XBlogArticle = React.memo(function XBlogArticle({
+  className = "",
+  role = BLOG_CARD_TOKENS.defaultRole,
+  "aria-label": ariaLabel = BLOG_CARD_TOKENS.defaultAriaLabel,
+  tabIndex = 0,
+}: BlogCardProps) {
   return (
-    <div className="w-full max-w-xs sm:max-w-sm md:w-80">
+    <div
+      className={`${BLOG_CARD_TOKENS.container.base} ${className}`.trim()}
+      role={role}
+      aria-label={ariaLabel}
+      tabIndex={tabIndex}
+    >
       <FollowerPointerCard
         title={
           <TitleComponent
@@ -16,31 +32,31 @@ export const XBlogArticle = React.memo(function XBlogArticle() {
           />
         }
       >
-        <div
-          className={`group relative h-full overflow-hidden rounded-2xl border border-zinc-100 bg-white transition ${TRANSITION_PRESETS.container} hover:shadow-xl`}
-        >
-          <div className="aspect-w-16 aspect-h-10 xl:aspect-w-16 xl:aspect-h-10 relative w-full overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-100">
+        <div className={BLOG_CARD_TOKENS.card.base}>
+          <div className={BLOG_CARD_TOKENS.imageWrapper.base}>
             <Image
               src={blogContent.image}
               alt={blogContent.title}
               width={640}
               height={400}
               sizes="(max-width: 640px) 100vw, 320px"
-              className={`transform object-cover transition ${TRANSITION_PRESETS.container} group-hover:scale-95 group-hover:rounded-2xl`}
+              className={BLOG_CARD_TOKENS.image.base}
             />
           </div>
-          <div className="p-4">
-            <h2 className="my-4 text-lg font-bold text-zinc-700">
+          <div className={BLOG_CARD_TOKENS.content.base}>
+            <h2 className={BLOG_CARD_TOKENS.content.title}>
               {blogContent.title}
             </h2>
-            <h2 className="my-4 text-sm font-normal text-zinc-500">
+            <h2 className={BLOG_CARD_TOKENS.content.description}>
               {blogContent.description}
             </h2>
-            <div className="mt-10 flex flex-row items-center justify-between">
-              <span className="text-sm text-gray-500">{blogContent.date}</span>
+            <div className={BLOG_CARD_TOKENS.content.footer}>
+              <span className={BLOG_CARD_TOKENS.content.date}>
+                {blogContent.date}
+              </span>
               <button
                 type="button"
-                className={`relative z-10 rounded-xl bg-black px-6 py-2 text-xs font-bold text-white transition-all ${TRANSITION_PRESETS.container} hover:scale-105 hover:bg-zinc-800 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 active:scale-95`}
+                className={BLOG_CARD_TOKENS.button.base}
                 aria-label={`Read article: ${blogContent.title}`}
               >
                 {UI_LABELS.readMore}

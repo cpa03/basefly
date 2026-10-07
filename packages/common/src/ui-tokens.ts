@@ -1455,6 +1455,37 @@ export const SPARKLES_TOKENS = {
   defaultId: "tsparticles",
 } as const;
 
+/**
+ * BlogCard design tokens
+ * Centralized layout, styling, transitions, micro-interactions, and accessibility for BlogCard component
+ */
+export const BLOG_CARD_TOKENS = {
+  container: {
+    base: "w-full max-w-xs sm:max-w-sm md:w-80",
+  },
+  card: {
+    base: "group relative h-full overflow-hidden rounded-2xl border border-zinc-100 bg-white transition-all duration-200 ease-out hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  },
+  imageWrapper: {
+    base: "aspect-w-16 aspect-h-10 xl:aspect-w-16 xl:aspect-h-10 relative w-full overflow-hidden rounded-tl-lg rounded-tr-lg bg-gray-100",
+  },
+  image: {
+    base: "transform object-cover transition-all duration-200 ease-out group-hover:scale-95 group-hover:rounded-2xl",
+  },
+  content: {
+    base: "p-4",
+    title: "my-4 text-lg font-bold text-zinc-700",
+    description: "my-4 text-sm font-normal text-zinc-500",
+    footer: "mt-10 flex flex-row items-center justify-between",
+    date: "text-sm text-gray-500",
+  },
+  button: {
+    base: "relative z-10 rounded-xl bg-black px-6 py-2 text-xs font-bold text-white transition-all duration-200 ease-out hover:scale-105 hover:bg-zinc-800 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-zinc-500 focus:ring-offset-2 active:scale-95",
+  },
+  defaultAriaLabel: "Featured blog article",
+  defaultRole: "region" as const,
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

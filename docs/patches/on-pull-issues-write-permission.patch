@@ -1,0 +1,26 @@
+From 8a1fcb95c27e23d77e115468fdf8de6c5c339cb4 Mon Sep 17 00:00:00 2001
+From: "github-actions[bot]"
+ <41898282+github-actions[bot]@users.noreply.github.com>
+Date: Wed, 7 Oct 2026 07:51:02 +0000
+Subject: [PATCH] ci: add issues: write permission to on-pull.yml
+ (issue-manager unblock)
+
+---
+ .github/workflows/on-pull.yml | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/.github/workflows/on-pull.yml b/.github/workflows/on-pull.yml
+index 708e8c3..b2f2522 100644
+--- a/.github/workflows/on-pull.yml
++++ b/.github/workflows/on-pull.yml
+@@ -8,6 +8,7 @@ on:
+ 
+ permissions:
+   contents: write
++  issues: write
+   pull-requests: write
+   actions: read
+   repository-projects: write
+-- 
+2.55.0
+

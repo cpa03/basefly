@@ -42,7 +42,7 @@ export const TypewriterEffectImpl = ({
         "span",
         {
           display: "inline-block",
-          opacity: 1,
+          opacity: TYPEWRITER_EFFECT_TOKENS.targetOpacity,
           width: "fit-content",
         },
         {
@@ -61,7 +61,7 @@ export const TypewriterEffectImpl = ({
           <React.Fragment key={`word-${idx}`}>
             {word.text.map((char, index) => (
               <motion.span
-                initial={{}}
+                initial={{ opacity: TYPEWRITER_EFFECT_TOKENS.initialOpacity }}
                 key={`char-${index}`}
                 className={cn(TYPEWRITER_EFFECT_TOKENS.char, word.className)}
               >
@@ -82,6 +82,7 @@ export const TypewriterEffectImpl = ({
       tabIndex={0}
       className={cn(
         TYPEWRITER_EFFECT_TOKENS.container.base,
+        TYPEWRITER_EFFECT_TOKENS.container.focusRing,
         TYPEWRITER_EFFECT_TOKENS.container.hoverScale,
         TYPEWRITER_EFFECT_TOKENS.container.activeScale,
         className,

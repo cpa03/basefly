@@ -119,7 +119,7 @@ describe("TypewriterEffect Component", () => {
     expect(hiddenChars.length).toBeGreaterThan(0);
   });
 
-  it("should render default accessibility properties and micro-interaction classes", async () => {
+  it("should render default accessibility properties, focus ring, and micro-interaction classes", async () => {
     const { container } = render(<TypewriterEffect words={words} />);
 
     await screen.findByText("H");
@@ -128,7 +128,13 @@ describe("TypewriterEffect Component", () => {
     expect(element).toBeInTheDocument();
     expect(element).toHaveAttribute("aria-label", "Typewriter text animation");
     expect(element).toHaveAttribute("tabIndex", "0");
-    expect(element).toHaveClass("hover:scale-[1.002]", "active:scale-[0.998]");
+    expect(element).toHaveClass(
+      "focus-visible:ring-2",
+      "focus-visible:ring-ring",
+      "focus-visible:ring-offset-2",
+      "hover:scale-[1.002]",
+      "active:scale-[0.998]",
+    );
   });
 
   it("should support custom accessibility role and aria-label overrides", async () => {

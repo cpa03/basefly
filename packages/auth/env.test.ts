@@ -25,10 +25,12 @@ function setRequiredServerVars(): void {
 beforeEach(() => {
   vi.resetModules();
   process.env = { ...originalEnv };
+  vi.spyOn(console, "error").mockImplementation(() => {});
 });
 
 afterEach(() => {
   process.env = originalEnv;
+  vi.restoreAllMocks();
   vi.unstubAllGlobals();
 });
 

@@ -1278,11 +1278,14 @@ export const ANIMATED_LIST_TOKENS = {
  */
 export const TYPEWRITER_EFFECT_TOKENS = {
   container: {
-    base: "inline-block transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+    base: "inline-block transition-all duration-200 ease-out",
+    focusRing: FOCUS_RING_DEFAULT,
     hoverScale: "hover:scale-[1.002]",
     activeScale: "active:scale-[0.998]",
   },
   char: "hidden text-neutral-500 opacity-0",
+  initialOpacity: 0,
+  targetOpacity: 1,
   cursor: {
     base: "inline-block h-4 w-[4px] rounded-sm bg-blue-500 transition-colors duration-200",
   },

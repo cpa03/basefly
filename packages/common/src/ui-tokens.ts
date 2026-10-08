@@ -681,7 +681,10 @@ export const TABLE_TOKENS = {
  */
 export const SKELETON_TOKENS = {
   /** Base container layout and styling */
-  base: "relative overflow-hidden rounded-md bg-muted",
+  base: "relative overflow-hidden rounded-md bg-muted transition-transform duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+  /** Tactile spring micro-interactions */
+  hoverScale: "hover:scale-[1.002]",
+  activeScale: "active:scale-[0.998]",
   /** Shimmer animation configuration */
   shimmer: {
     base: "motion-safe:animate-shimmer motion-reduce:animate-none",

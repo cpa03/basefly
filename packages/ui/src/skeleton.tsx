@@ -49,6 +49,8 @@ function Skeleton({
       role={role}
       className={cn(
         SKELETON_TOKENS.base,
+        SKELETON_TOKENS.hoverScale,
+        SKELETON_TOKENS.activeScale,
         shimmer && [
           SKELETON_TOKENS.shimmer.base,
           SKELETON_TOKENS.shimmer.overlay,

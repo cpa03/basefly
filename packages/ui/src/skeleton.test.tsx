@@ -48,4 +48,12 @@ describe("Skeleton", () => {
     const skeleton = container.firstChild as HTMLElement;
     expect(skeleton.className).toContain("rounded-md");
   });
+
+  it("should include focus-visible ring accessibility and hover/active scale classes", () => {
+    const { container } = render(<Skeleton />);
+    const skeleton = container.firstChild as HTMLElement;
+    expect(skeleton.className).toContain("focus-visible:ring-2");
+    expect(skeleton.className).toContain("hover:scale-[1.002]");
+    expect(skeleton.className).toContain("active:scale-[0.998]");
+  });
 });

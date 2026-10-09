@@ -53,7 +53,9 @@ describe("Toast Component", () => {
         <ToastViewport />
       </ToastProvider>,
     );
-    expect(screen.getByLabelText("Close notification custom")).toBeInTheDocument();
+    expect(
+      screen.getByLabelText("Close notification custom"),
+    ).toBeInTheDocument();
   });
 
   it("should render the action element", () => {

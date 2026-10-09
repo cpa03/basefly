@@ -121,3 +121,53 @@ limited — retry in 24 hours` ×54; only `success` states are turbo-ignore skip
    so future loops can merge deterministically instead of re-blocking.
 
 **Final state: waiting for human review.**
+
+---
+
+# Re-run loop — 2026-10-09 (after `main` advanced to `b9a5a40`)
+
+## Active phase
+
+**Phase 0 → PR HANDLER MODE** (same 2 open PRs; Phases 1–3 stopped per state machine).
+
+## Decision summary
+
+Both PRs re-synced with the new `main` head (`b9a5a40`) and re-verified from scratch:
+every PR-attributable gate green on both synced trees. The same two infrastructure
+blockers (`Vercel` systemic failure + `pull` approval gate) recurred on both new heads,
+so **merges withheld again**. Fail-safe issue creation still blocked (403); this section
+is its preservation fallback.
+
+## Action log (UTC)
+
+| Time  | Action                                    | Target                                                       | Result                                                                                       |
+| ----- | ----------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
+| 00:43 | Phase 0 entry decision                    | repo                                                         | 2 open PRs → **PR HANDLER MODE**; latest = #1550                                             |
+| 00:43 | Sync #1550                                | `agent-16301971587706242818` + `main`                        | merged `b9a5a40` → `adee433`, **0 conflicts**                                                |
+| 00:44 | Full local gates (#1550 `adee433`)        | typecheck / lint / test / build / prettier                   | ✅ 9/9 · 9/9 · **2201 tests** · 0 · 0                                                        |
+| 00:48 | Push sync to PR branch                    | #1550                                                        | ✅ `dddd477..adee433`                                                                        |
+| 00:49 | Vercel deployment on new head             | `dpl_EhRwRvEWZrkqBcF7eFz9GEpG8h6D`                           | ❌ failure — "Deployment has failed"; local `turbo build --filter=@saasfly/nextjs` ✅ exit 0 |
+| 00:50 | Approve / rerun `pull` run                | `37866595115`                                                | ❌ HTTP 403 both APIs                                                                        |
+| 00:51 | Vercel logs + secrets                     | `vercel inspect --logs`, `gh secret list`                    | ❌ no credentials / 403 — root cause **not guessed**                                         |
+| 00:52 | Duplicate check + fail-safe `createIssue` | issues search (`ci`/`P0`), Issues API                        | no duplicate found; ❌ createIssue **HTTP 403**                                              |
+| 00:52 | Verification report                       | #1550                                                        | ✅ comment `6072037832`                                                                      |
+| 00:53 | Sync #1548                                | `test/725-rls-transaction-rollback` + `main`                 | merged `b9a5a40` → `e46aaa1`, **0 conflicts**                                                |
+| 00:55 | Full local gates (#1548 `e46aaa1`)        | typecheck / lint / test / build / circular / deps / prettier | ✅ 9/9 · 9/9 · **2205 tests** · 0 · 0 · 0 · 0                                                |
+| 00:55 | Push sync to PR branch                    | #1548                                                        | ✅ `5730573..e46aaa1`                                                                        |
+| 00:58 | Vercel + `pull` on new head               | `dpl_4DDgFJ7yXGNQVAYn1xfADS95xHvc`, run `37867422264`        | ❌ failure / `action_required`                                                               |
+| 00:59 | Verification report                       | #1548                                                        | ✅ comment `6072116637`                                                                      |
+| 01:00 | This audit section committed              | `docs/pr-handler-audit-2026-10-09.md`                        | this section                                                                                 |
+
+## Merge-condition evaluation (re-run)
+
+| Condition                     | PR #1550 (`adee433`)                          | PR #1548 (`e46aaa1`)                          |
+| ----------------------------- | --------------------------------------------- | --------------------------------------------- |
+| No conflicts                  | ✅                                            | ✅                                            |
+| Build / tests / lint / format | ✅ (2201 tests)                               | ✅ (2205 tests)                               |
+| Comments/threads resolved     | ✅ 0 review threads                           | ✅ 0 review threads                           |
+| No unreviewed security change | ✅ UI-only                                    | ✅ test-only                                  |
+| Label contract                | ✅ `enhancement` + `P3`                       | ✅ `test` + `P2`                              |
+| **All checks green**          | ❌ `Vercel` failure; `pull` `action_required` | ❌ `Vercel` failure; `pull` `action_required` |
+
+**Final state: waiting for human review.** (Required human actions unchanged — see
+"Required human action to unblock" above.)

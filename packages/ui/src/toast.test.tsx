@@ -27,7 +27,7 @@ describe("Toast Component", () => {
     expect(screen.getByText("Toast description")).toBeInTheDocument();
   });
 
-  it("should render a close button with an accessible label", () => {
+  it("should render a close button with an accessible label and tactile hover scale micro-interactions", () => {
     render(
       <ToastProvider>
         <Toast open>
@@ -37,7 +37,23 @@ describe("Toast Component", () => {
         <ToastViewport />
       </ToastProvider>,
     );
-    expect(screen.getByLabelText("Dismiss notification")).toBeInTheDocument();
+    const closeBtn = screen.getByLabelText("Dismiss notification");
+    expect(closeBtn).toBeInTheDocument();
+    expect(closeBtn).toHaveClass("hover:scale-110");
+    expect(closeBtn).toHaveClass("active:scale-95");
+  });
+
+  it("should allow custom aria-label on ToastClose", () => {
+    render(
+      <ToastProvider>
+        <Toast open>
+          <ToastTitle>Toast title</ToastTitle>
+          <ToastClose aria-label="Close notification custom" />
+        </Toast>
+        <ToastViewport />
+      </ToastProvider>,
+    );
+    expect(screen.getByLabelText("Close notification custom")).toBeInTheDocument();
   });
 
   it("should render the action element", () => {

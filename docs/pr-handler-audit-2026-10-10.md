@@ -94,3 +94,66 @@ Verification comments: #1550 `6093180639`, #1548 `6093180760`.
 
 **Final state: waiting for human review** (2 PRs held on the two infra blockers above;
 1 PR merged this run).
+
+---
+
+# Loop 4 — 2026-10-10 (re-run, ~23:15–23:30 UTC)
+
+**Phase:** 0 → PR HANDLER MODE (2 open PRs; #1550 latest by `createdAt`, processed
+first; #1548 second). Phases 1–3 stopped. `DEFAULT_BRANCH=main` = `df6b14d`.
+
+## Sync status (both PRs, no writes needed)
+
+| PR    | Head      | vs `main`         | Mergeable       | Conflicts |
+| ----- | --------- | ----------------- | --------------- | --------- |
+| #1550 | `1de4980` | 0 behind / 6 ahead | `MERGEABLE`     | 0         |
+| #1548 | `d33b61a` | 0 behind / 8 ahead | `MERGEABLE`     | 0         |
+
+`origin/main` unchanged (`df6b14d`) all loop → no re-merge performed on either branch.
+
+## Fresh local gates (independent re-runs, isolated worktrees) — ALL GREEN
+
+| Gate                                | #1550 `1de4980`          | #1548 `d33b61a`          |
+| ----------------------------------- | ------------------------ | ------------------------ |
+| `pnpm install --frozen-lockfile`    | ✅ 0                     | ✅ 0                     |
+| `pnpm typecheck`                    | ✅ 9/9                   | ✅ 9/9                   |
+| `pnpm lint`                         | ✅ 9/9, 0 errors         | ✅ 9/9, 0 errors         |
+| `pnpm test`                         | ✅ **2201/2201**         | ✅ **2205/2205**         |
+| `pnpm build` (incl. `env:validate`) | ✅ 0, 58/58 pages        | ✅ 0, 58/58 pages        |
+| `pnpm check:circular`/`check-deps`  | ✅ 0                     | n/a (unchanged)          |
+| `prettier --check` (changed files)  | ✅ pass (5 files)        | ✅ pass (1 file)         |
+| `eslint --max-warnings=0`           | ✅ 0 (4 ts/tsx files)    | ✅ 0 (1 file)            |
+| Review threads unresolved           | 0                        | 0                        |
+| Label contract                      | ✅ `enhancement` + `P3`  | ✅ `test` + `P2`         |
+
+## CI blockers (re-confirmed, unchanged)
+
+- `Vercel` ❌ `failure` on **both PR heads and on `main` `df6b14d` itself**
+  (systemic; status `updated_at` 2026-10-10T09:12Z; identical buildCommand passes
+  locally on both trees). `VERCEL_TOKEN` absent → logs unreachable → root cause
+  **not guessed** (fail-safe rule).
+- `pull` runs `38040464096` (#1550) / `38040795802` (#1548) = `action_required`;
+  approve → 403, rerun → 403, check-suite rerequest → 404.
+
+## Dependency vulnerability gate (`pnpm audit --prod`, on #1548 tree)
+
+10 advisories / 16 paths — **4 high · 10 moderate · 2 low**, byte-identical to `main`
+(`braces`, `source-map-js`, `next` ≤16.3.7, `postcss-selector-parser`, `fast-copy`).
+Pre-existing; #1548 changes no dependencies → not PR-attributable; not fixed here per
+minimal-change constraint. (Same count as loop-3 re-run.)
+
+## Fail-safe issue creation
+
+`gh issue create` (ci/P0, body preserved above in `docs/pr-handler-audit-2026-10-09.md`)
+→ **HTTP 403 `Resource not accessible by integration`** (GraphQL). No duplicate exists
+(searched all states). 4th consecutive loop without `issues:write`.
+
+## Decisions & verification comments
+
+- **#1550 → merge withheld** (contract: never merge unless all CI checks green).
+  Report: `6103245836`.
+- **#1548 → merge withheld** (same two infra blockers).
+  Report: `6103270112`.
+
+**Final state: waiting for human review** — required human actions unchanged (see
+"Required human action" above).

@@ -171,3 +171,39 @@ is its preservation fallback.
 
 **Final state: waiting for human review.** (Required human actions unchanged — see
 "Required human action to unblock" above.)
+
+---
+
+# Loop 2026-10-09 23:45 UTC (re-run)
+
+**Phase:** 0 → **PR HANDLER MODE** (2 open PRs; latest = #1550). `DEFAULT_BRANCH=main` = `e00a824` (unchanged since 07:05 loop; both PR heads unchanged: `ad8f746` / `6dff3d4`, `MERGEABLE`, 0 conflicts → no re-merge needed).
+
+## Action log
+
+| Time (UTC) | Action                              | Target                      | Result                                                                    |
+| ---------- | ----------------------------------- | --------------------------- | ------------------------------------------------------------------------- |
+| 23:37      | Phase 0 entry decision              | repo                        | 2 open PRs → **PR HANDLER MODE**; all lower phases stopped                |
+| 23:37      | Sync + state re-check               | #1550, #1548, `origin/main` | no drift since 14:04 loop; heads `ad8f746` / `6dff3d4`                    |
+| 23:38      | Approve API probe                   | run `37868032260`           | ❌ HTTP 403 (`Resource not accessible by integration`)                    |
+| 23:38      | Vercel status on `main` `e00a824`   | commit status API           | ❌ `failure` (`dpl_Cn8hVPtU5R68LjydsjiMem5yaVTB`) — systemic confirmed    |
+| 23:39      | Duplicate check for fail-safe issue | `gh search issues`          | no duplicate exists                                                       |
+| 23:40      | Review threads                      | GraphQL, both PRs           | ✅ 0 unresolved each                                                      |
+| 23:40      | Fail-safe `createIssue` retry       | Issues API                  | ❌ GraphQL 403 — body preserved in this doc                               |
+| 23:38–45   | Fresh gates (#1550 `ad8f746`)       | isolated worktree           | ✅ install · typecheck · lint (0 warn) · **2201 tests** · build · prettier |
+| 23:40–52   | Fresh gates (#1548 `6dff3d4`)       | isolated worktree           | ✅ install · typecheck · lint (0 warn) · **2205 tests** · build · prettier |
+| 23:45      | Final gate re-check                 | both PRs                    | `Vercel=FAILURE`, `pull=action_required` unchanged                        |
+| 23:45      | Verification reports                | #1550, #1548                | ✅ comments `6091192511` / `6091193350`                                   |
+| 23:46      | This audit section committed        | `docs/pr-handler-audit-2026-10-09.md` | this section                                                       |
+
+## Merge-condition evaluation
+
+| Condition                     | PR #1550 (`ad8f746`)                          | PR #1548 (`6dff3d4`)                          |
+| ----------------------------- | --------------------------------------------- | --------------------------------------------- |
+| No conflicts                  | ✅ 0 behind / 4 ahead of `main`               | ✅ 0 behind / 6 ahead                          |
+| Build / tests / lint / format | ✅ fresh 23:45 run, 2201 tests                | ✅ fresh 23:45 run, 2205 tests                 |
+| Comments/threads resolved     | ✅ 0 review threads                           | ✅ 0 review threads                            |
+| No unreviewed security change | ✅ UI tokens/tests/docs only                  | ✅ test-only                                   |
+| Label contract                | ✅ `enhancement` + `P3`                       | ✅ `test` + `P2`                               |
+| **All checks green**          | ❌ `Vercel` failure; `pull` `action_required` | ❌ `Vercel` failure; `pull` `action_required` |
+
+**Final state: waiting for human review.** Required human action unchanged: repair/acknowledge the systemic `Vercel` check, approve `pull` runs (or grant `actions:write`), grant `issues:write`, or explicitly confirm red Vercel is non-blocking. Not merged per the absolute constraint "never merge unless all CI checks are green"; `--auto` not set (branch protection unverifiable via 403).

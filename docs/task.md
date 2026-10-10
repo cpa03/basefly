@@ -3577,3 +3577,5 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [STRENGTHEN] Enhanced TypewriterEffect with focus-visible ring accessibility and character animation initial opacity tokens, verified in packages/ui/src/typewriter-effect.test.tsx.
 - [CONSOLIDATE] Centralized Skeleton micro-UX design tokens under SKELETON_TOKENS inside packages/common/src/ui-tokens.ts.
 - [STRENGTHEN] Enhanced Skeleton component with tactile spring scale micro-interactions (hover:scale-[1.002] active:scale-[0.998]) and focus-visible ring accessibility, verified in packages/ui/src/skeleton.test.tsx.
+- [CONSOLIDATE] Centralized Toast component styling and design tokens under TOAST_TOKENS inside packages/common/src/ui-tokens.ts.
+- [STRENGTHEN] Enhanced ToastClose and ToastAction components with tactile spring scale micro-interactions (hover:scale-110 active:scale-95 and hover:scale-[1.02] active:scale-[0.98]) and accessible aria-label fallbacks, verified in packages/ui/src/toast.test.tsx.

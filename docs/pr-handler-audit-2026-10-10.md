@@ -104,27 +104,27 @@ first; #1548 second). Phases 1–3 stopped. `DEFAULT_BRANCH=main` = `df6b14d`.
 
 ## Sync status (both PRs, no writes needed)
 
-| PR    | Head      | vs `main`          | Mergeable   | Conflicts |
-| ----- | --------- | ------------------ | ----------- | --------- |
-| #1550 | `1de4980` | 0 behind / 6 ahead | `MERGEABLE` | 0         |
-| #1548 | `d33b61a` | 0 behind / 8 ahead | `MERGEABLE` | 0         |
+| PR    | Head      | vs `main`         | Mergeable       | Conflicts |
+| ----- | --------- | ----------------- | --------------- | --------- |
+| #1550 | `1de4980` | 0 behind / 6 ahead | `MERGEABLE`     | 0         |
+| #1548 | `d33b61a` | 0 behind / 8 ahead | `MERGEABLE`     | 0         |
 
 `origin/main` unchanged (`df6b14d`) all loop → no re-merge performed on either branch.
 
 ## Fresh local gates (independent re-runs, isolated worktrees) — ALL GREEN
 
-| Gate                                | #1550 `1de4980`         | #1548 `d33b61a`   |
-| ----------------------------------- | ----------------------- | ----------------- |
-| `pnpm install --frozen-lockfile`    | ✅ 0                    | ✅ 0              |
-| `pnpm typecheck`                    | ✅ 9/9                  | ✅ 9/9            |
-| `pnpm lint`                         | ✅ 9/9, 0 errors        | ✅ 9/9, 0 errors  |
-| `pnpm test`                         | ✅ **2201/2201**        | ✅ **2205/2205**  |
-| `pnpm build` (incl. `env:validate`) | ✅ 0, 58/58 pages       | ✅ 0, 58/58 pages |
-| `pnpm check:circular`/`check-deps`  | ✅ 0                    | n/a (unchanged)   |
-| `prettier --check` (changed files)  | ✅ pass (5 files)       | ✅ pass (1 file)  |
-| `eslint --max-warnings=0`           | ✅ 0 (4 ts/tsx files)   | ✅ 0 (1 file)     |
-| Review threads unresolved           | 0                       | 0                 |
-| Label contract                      | ✅ `enhancement` + `P3` | ✅ `test` + `P2`  |
+| Gate                                | #1550 `1de4980`          | #1548 `d33b61a`          |
+| ----------------------------------- | ------------------------ | ------------------------ |
+| `pnpm install --frozen-lockfile`    | ✅ 0                     | ✅ 0                     |
+| `pnpm typecheck`                    | ✅ 9/9                   | ✅ 9/9                   |
+| `pnpm lint`                         | ✅ 9/9, 0 errors         | ✅ 9/9, 0 errors         |
+| `pnpm test`                         | ✅ **2201/2201**         | ✅ **2205/2205**         |
+| `pnpm build` (incl. `env:validate`) | ✅ 0, 58/58 pages        | ✅ 0, 58/58 pages        |
+| `pnpm check:circular`/`check-deps`  | ✅ 0                     | n/a (unchanged)          |
+| `prettier --check` (changed files)  | ✅ pass (5 files)        | ✅ pass (1 file)         |
+| `eslint --max-warnings=0`           | ✅ 0 (4 ts/tsx files)    | ✅ 0 (1 file)            |
+| Review threads unresolved           | 0                        | 0                        |
+| Label contract                      | ✅ `enhancement` + `P3`  | ✅ `test` + `P2`         |
 
 ## CI blockers (re-confirmed, unchanged)
 

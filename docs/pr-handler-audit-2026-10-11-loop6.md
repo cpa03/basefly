@@ -62,24 +62,24 @@ absent). No duplicate exists (open-issue search for "Vercel deployment check" /
 
 ## Action log (UTC)
 
-| Time  | Action                                  | Target                                 | Result                                                                                       |
-| ----- | --------------------------------------- | -------------------------------------- | -------------------------------------------------------------------------------------------- |
-| 14:25 | Phase 0 entry decision                  | repo                                   | 2 open PRs (#1550 latest, #1548) → **PR HANDLER MODE**; all lower phases stopped              |
-| 14:26 | Fetch + ancestry check                  | #1550 vs `origin/main`                 | `main` NOT ancestor (1 behind / 8 ahead) — sync required this loop                            |
-| 14:27 | Systemic proof (deployments API)        | `main` `562a9b4` + `a52343a`           | `Vercel: failure` on both — incl. Production deploy of `main` itself → not PR-attributable    |
-| 14:31 | Sync PR #1550                           | merge `origin/main` → push             | head `86a87ca` → `f73c3d4`, **0 conflicts**, 0 behind / 9 ahead                               |
-| 14:31 | Sync PR #1548                           | merge `origin/main` → push             | head `3118474` → `ef11e93`, **0 conflicts**, 0 behind / 10 ahead                              |
-| 14:33 | Local gates PR #1550 (Node 22.23.3)     | install · typecheck · lint · test · build | ✅ 0 · 9/9 · 9/9 · **2201/2201** · 0                                                        |
-| 14:33 | Local gates PR #1548 (Node 22.23.3)     | install · typecheck · lint · test · build | ✅ 0 · 9/9 · 9/9 · **2205/2205** · 0                                                        |
-| 14:42 | Prettier check (changed files)          | #1550                                  | ❌ `packages/common/src/ui-tokens.ts` line-wrap violation                                     |
-| 14:42 | Prettier check (changed files)          | #1548                                  | ✅ clean                                                                                      |
-| 14:42 | Fix + verify + push                     | #1550 `ui-tokens.ts`                   | `prettier --write`; hooks re-ran typecheck 9/9 + tests 2201/2201 ✅; pushed `9a0eedc`        |
-| 14:43 | Post-fix lint                           | eslint `--max-warnings=0` both PRs     | ✅ 0 warnings                                                                                 |
-| 14:43 | Review threads + labels                 | both PRs                               | 0 unresolved threads; labels `enhancement`+`P3` / `test`+`P2` ✅                              |
-| 14:44 | CI blockers re-confirm                  | `gh pr checks` + status API            | `Vercel` fail on both heads **and on `main`**; `pull` PR runs `action_required` (403 approve) |
-| 14:45 | Fail-safe issue creation (retry)        | `gh issue create`                      | ❌ 403 `issues:write` absent; no duplicate; body preserved above                              |
-| 14:46 | Decision                                | PR #1550, PR #1548                     | **Merge withheld** — contract requires all CI checks green; 2 infrastructure blockers        |
-| 14:47 | Verification reports                    | PR #1550, PR #1548                     | ✅ comments posted                                                                            |
+| Time  | Action                              | Target                                    | Result                                                                                        |
+| ----- | ----------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------- |
+| 14:25 | Phase 0 entry decision              | repo                                      | 2 open PRs (#1550 latest, #1548) → **PR HANDLER MODE**; all lower phases stopped              |
+| 14:26 | Fetch + ancestry check              | #1550 vs `origin/main`                    | `main` NOT ancestor (1 behind / 8 ahead) — sync required this loop                            |
+| 14:27 | Systemic proof (deployments API)    | `main` `562a9b4` + `a52343a`              | `Vercel: failure` on both — incl. Production deploy of `main` itself → not PR-attributable    |
+| 14:31 | Sync PR #1550                       | merge `origin/main` → push                | head `86a87ca` → `f73c3d4`, **0 conflicts**, 0 behind / 9 ahead                               |
+| 14:31 | Sync PR #1548                       | merge `origin/main` → push                | head `3118474` → `ef11e93`, **0 conflicts**, 0 behind / 10 ahead                              |
+| 14:33 | Local gates PR #1550 (Node 22.23.3) | install · typecheck · lint · test · build | ✅ 0 · 9/9 · 9/9 · **2201/2201** · 0                                                          |
+| 14:33 | Local gates PR #1548 (Node 22.23.3) | install · typecheck · lint · test · build | ✅ 0 · 9/9 · 9/9 · **2205/2205** · 0                                                          |
+| 14:42 | Prettier check (changed files)      | #1550                                     | ❌ `packages/common/src/ui-tokens.ts` line-wrap violation                                     |
+| 14:42 | Prettier check (changed files)      | #1548                                     | ✅ clean                                                                                      |
+| 14:42 | Fix + verify + push                 | #1550 `ui-tokens.ts`                      | `prettier --write`; hooks re-ran typecheck 9/9 + tests 2201/2201 ✅; pushed `9a0eedc`         |
+| 14:43 | Post-fix lint                       | eslint `--max-warnings=0` both PRs        | ✅ 0 warnings                                                                                 |
+| 14:43 | Review threads + labels             | both PRs                                  | 0 unresolved threads; labels `enhancement`+`P3` / `test`+`P2` ✅                              |
+| 14:44 | CI blockers re-confirm              | `gh pr checks` + status API               | `Vercel` fail on both heads **and on `main`**; `pull` PR runs `action_required` (403 approve) |
+| 14:45 | Fail-safe issue creation (retry)    | `gh issue create`                         | ❌ 403 `issues:write` absent; no duplicate; body preserved above                              |
+| 14:46 | Decision                            | PR #1550, PR #1548                        | **Merge withheld** — contract requires all CI checks green; 2 infrastructure blockers         |
+| 14:47 | Verification reports                | PR #1550, PR #1548                        | ✅ comments posted                                                                            |
 
 ## Final state
 

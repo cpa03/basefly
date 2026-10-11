@@ -81,12 +81,42 @@ absent). No duplicate exists (open-issue search for "Vercel deployment check" /
 | 14:46 | Decision                            | PR #1550, PR #1548                        | **Merge withheld** — contract requires all CI checks green; 2 infrastructure blockers         |
 | 14:47 | Verification reports                | PR #1550, PR #1548                        | ✅ comments posted                                                                            |
 
+## Addendum — PR #1550 closed by concurrent agent (14:47:21Z)
+
+After this loop's verification comments were prepared (and before the #1550
+report comment landed at 14:48:07Z), **PR #1550 was closed at 14:47:21Z by
+`github-actions[bot]`**. Investigation:
+
+- The closer was **not** this session. It was the concurrently running
+  **scheduled `pull` workflow run `38147072946`** (started 14:24:49Z, still
+  `in_progress` at audit time) — the hourly cron of `on-pull.yml`, which
+  executes the *same* `/ulw-loop` autonomous agent contract as this session
+  under the shared `oc-agent` concurrency group.
+- This loop's two pushes triggered `pull_request` runs `38147867023`
+  (head `f73c3d4`) and `38148369571` (head `9a0eedc`), both concluding
+  **`failure`** (previously these runs were `action_required`; this time they
+  executed and failed). Run logs are 404-unreachable. The concurrent agent
+  likely mapped those infra failures onto the contract's "build/test fails →
+  CLOSE the PR" branch.
+- At close time the branch `agent-16301971587706242818` was fully synced
+  (`9a0eedc`, 0 conflicts) with **all local gates green** (2201/2201 tests,
+  build/lint/typecheck/prettier/eslint clean). The close is therefore
+  **not supported by the PR's actual content state**.
+- **Not reopened** by this session — fail-safe rule: reopening could
+  open/close-loop against the hourly scheduled agent; a human must decide.
+  Branch was **not** deleted (contract: never delete on failed merge). A
+  post-close explanatory comment was posted on #1550.
+
 ## Final state
 
-**waiting for human review.** Every PR-attributable gate passes on both PRs
-(synced, built, tested, linted, formatted). The only remaining blockers are
-repository infrastructure outside both PRs' scope: the systemic `Vercel`
-deployment failure (red on `main`'s own Production deploys; logs unreachable
-without `VERCEL_TOKEN`) and `pull` workflow runs stuck at `action_required`
-(approve API → 403 for `github-actions[bot]`). Contract forbids merging with
-non-green CI checks; fail-safe forbids guessing a root cause without logs.
+**waiting for human review.** Open PR remaining: **#1548** (synced `ef11e93`,
+all local gates green: 2205/2205 tests). PR #1550: **closed (not merged)** by
+the concurrent scheduled agent at 14:47:21Z — reopen is safe from a content
+standpoint (branch intact at `9a0eedc`) but was deliberately not attempted.
+
+Blockers unchanged and outside both PRs' scope: systemic `Vercel` deployment
+failure (red on `main`'s own Production deploys; logs unreachable without
+`VERCEL_TOKEN`), `pull` workflow failures/`action_required` states
+(approve/rerun APIs → 403 for `github-actions[bot]`), and no `issues:write`
+for fail-safe issue creation. Contract forbids merging with non-green CI
+checks; fail-safe forbids guessing root causes without logs.

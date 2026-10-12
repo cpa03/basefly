@@ -1,4 +1,4 @@
-import type { Kysely } from "kysely";
+import { sql, type Kysely } from "kysely";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { DB } from "./prisma/types";
@@ -242,5 +242,177 @@ describe("createRlsHelper", () => {
     const callback = vi.fn().mockRejectedValue(new Error("Query error"));
 
     await expect(helper.query(callback)).rejects.toThrow("Query error");
+  });
+});
+
+/**
+ * Rollback safety for rlsTransaction (refs #725).
+ *
+ * Kysely issues ROLLBACK whenever the callback passed to
+ * `transaction().execute()` rejects, and COMMIT when it resolves. These
+ * tests pin the wrapper contract that makes that possible: failures must
+ * propagate out of `rlsTransaction` unchanged (never swallowed, never
+ * converted into a successful resolution), and the RLS session variable
+ * must be established inside the transaction *before* user code runs.
+ */
+describe("rlsTransaction rollback safety (refs #725)", () => {
+  let mockTrx: Kysely<DB>;
+  let executeMock: ReturnType<typeof vi.fn>;
+  let mockDb: Kysely<DB>;
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockSqlExecute.mockResolvedValue(undefined);
+
+    mockTrx = {} as unknown as Kysely<DB>;
+    executeMock = vi.fn(
+      async (callback: (trx: Kysely<DB>) => Promise<unknown>) =>
+        callback(mockTrx),
+    );
+    mockDb = {
+      transaction: vi.fn().mockReturnValue({ execute: executeMock }),
+    } as unknown as Kysely<DB>;
+  });
+
+  it("propagates the original callback error unchanged so the transaction rolls back", async () => {
+    const callbackError = new Error("unique_violation");
+    const callback = vi.fn().mockRejectedValue(callbackError);
+
+    // A rejected execute() is Kysely's ROLLBACK signal; identity matters
+    // (no wrapping, no silent success) or callers lose the failure.
+    await expect(
+      rlsTransaction(mockDb, "user_rollback", callback),
+    ).rejects.toBe(callbackError);
+
+    expect(executeMock).toHaveBeenCalledTimes(1);
+    expect(callback).toHaveBeenCalledWith(mockTrx);
+  });
+
+  it("propagates a transaction-layer connection failure unchanged", async () => {
+    const connectionError = new Error("connection terminated unexpectedly");
+    executeMock.mockRejectedValueOnce(connectionError);
+
+    await expect(
+      rlsTransaction(mockDb, "user_connection", vi.fn()),
+    ).rejects.toBe(connectionError);
+  });
+
+  it("sets the RLS session variable inside the transaction before user code runs", async () => {
+    const executionOrder: string[] = [];
+    mockSqlExecute.mockImplementation(async () => {
+      executionOrder.push("set-session");
+    });
+    const callback = vi.fn(async () => {
+      executionOrder.push("callback");
+      return "done";
+    });
+
+    const result = await rlsTransaction(mockDb, "user_order", callback);
+
+    expect(result).toBe("done");
+    expect(executionOrder).toEqual(["set-session", "callback"]);
+    // SET LOCAL must run on the transaction handle, not the outer
+    // connection, so the tenant id dies with the transaction.
+    expect(mockSqlExecute).toHaveBeenCalledWith(mockTrx);
+  });
+});
+
+/**
+ * Concurrency isolation for rlsTransaction (refs #725).
+ *
+ * Concurrent transactions must never share a transaction handle or leak
+ * another tenant's `app.current_user_id`, and one tenant's failure must
+ * not reject a sibling transaction's promise.
+ */
+describe("rlsTransaction concurrency isolation (refs #725)", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockSqlExecute.mockResolvedValue(undefined);
+  });
+
+  it("keeps concurrent transactions bound to their own tenant context", async () => {
+    const trxA = {} as unknown as Kysely<DB>;
+    const trxB = {} as unknown as Kysely<DB>;
+    const availableTransactions = [trxA, trxB];
+    const usedTransactions: Kysely<DB>[] = [];
+
+    const mockDb = {
+      transaction: vi.fn().mockImplementation(() => ({
+        execute: vi.fn(
+          async (callback: (trx: Kysely<DB>) => Promise<unknown>) => {
+            const trx =
+              availableTransactions.shift() ?? ({} as unknown as Kysely<DB>);
+            usedTransactions.push(trx);
+            return await callback(trx);
+          },
+        ),
+      })),
+    } as unknown as Kysely<DB>;
+
+    const slowTenant = rlsTransaction(mockDb, "tenant_a", async (trx) => {
+      // Yield so the sibling transaction starts before this one finishes.
+      await new Promise((resolve) => setTimeout(resolve, 25));
+      return { trx, result: "a" };
+    });
+    const fastTenant = rlsTransaction(mockDb, "tenant_b", async (trx) => {
+      return { trx, result: "b" };
+    });
+
+    const [slowOutcome, fastOutcome] = await Promise.all([
+      slowTenant,
+      fastTenant,
+    ]);
+
+    expect(usedTransactions).toEqual([trxA, trxB]);
+    expect(slowOutcome.trx).toBe(trxA);
+    expect(fastOutcome.trx).toBe(trxB);
+    expect(slowOutcome.result).toBe("a");
+    expect(fastOutcome.result).toBe("b");
+
+    const boundTenantIds = (vi.mocked(sql).mock.calls as unknown[][]).map(
+      (call) => String(call[1]),
+    );
+    expect(boundTenantIds).toEqual(["tenant_a", "tenant_b"]);
+    expect(mockDb.transaction).toHaveBeenCalledTimes(2);
+  });
+
+  it("does not let a failing concurrent transaction reject its sibling", async () => {
+    const siblingError = new Error("sibling statement failed");
+    let transactionCount = 0;
+    const mockDb = {
+      transaction: vi.fn().mockImplementation(() => {
+        transactionCount += 1;
+        const trx = {} as unknown as Kysely<DB>;
+        return {
+          execute: vi.fn(
+            async (callback: (trx: Kysely<DB>) => Promise<unknown>) =>
+              await callback(trx),
+          ),
+        };
+      }),
+    } as unknown as Kysely<DB>;
+
+    const healthy = rlsTransaction(mockDb, "tenant_healthy", async () => {
+      await new Promise((resolve) => setTimeout(resolve, 15));
+      return "healthy-result";
+    });
+    const failing = rlsTransaction(mockDb, "tenant_failing", async () => {
+      throw siblingError;
+    });
+
+    const [healthyResult, failingResult] = await Promise.allSettled([
+      healthy,
+      failing,
+    ]);
+
+    expect(healthyResult).toEqual({
+      status: "fulfilled",
+      value: "healthy-result",
+    });
+    expect(failingResult.status).toBe("rejected");
+    if (failingResult.status === "rejected") {
+      expect(failingResult.reason).toBe(siblingError);
+    }
+    expect(transactionCount).toBe(2);
   });
 });

@@ -1,6 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { useForm } from "react-hook-form";
+import { FORM_TOKENS } from "@saasfly/common";
 import { describe, expect, it } from "vitest";
 
 import {
@@ -56,11 +57,13 @@ function TestForm({ showError = false }: { showError?: boolean }) {
 }
 
 describe("Form Component", () => {
-  it("should render label, control, and description", () => {
+  it("should render label, control, and description with FORM_TOKENS classes", () => {
     render(<TestForm />);
     expect(screen.getByText("Name")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Enter your name")).toBeInTheDocument();
-    expect(screen.getByText("Your display name")).toBeInTheDocument();
+    const description = screen.getByText("Your display name");
+    expect(description).toBeInTheDocument();
+    expect(description).toHaveClass(FORM_TOKENS.description.base);
   });
 
   it("should associate the label with the control via htmlFor/id", () => {
@@ -82,10 +85,10 @@ describe("Form Component", () => {
     expect(input).toHaveAttribute("aria-invalid", "true");
   });
 
-  it("should mark the label as destructive when the field has an error", async () => {
+  it("should mark the label as destructive when the field has an error using FORM_TOKENS", async () => {
     render(<TestForm showError />);
     await screen.findByText("Name is required");
-    expect(screen.getByText("Name")).toHaveClass("text-destructive");
+    expect(screen.getByText("Name")).toHaveClass(FORM_TOKENS.label.error);
   });
 
   it("should render children passed to FormMessage when there is no error", () => {
@@ -141,7 +144,6 @@ describe("Form Component", () => {
     }
     render(<MessageForm />);
     const message = await screen.findByText("Too short");
-    expect(message).toHaveClass("text-destructive");
-    expect(message).toHaveClass("text-sm");
+    expect(message).toHaveClass(FORM_TOKENS.message.base);
   });
 });

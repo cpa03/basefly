@@ -3579,3 +3579,5 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [STRENGTHEN] Enhanced Skeleton component with tactile spring scale micro-interactions (hover:scale-[1.002] active:scale-[0.998]) and focus-visible ring accessibility, verified in packages/ui/src/skeleton.test.tsx.
 - [CONSOLIDATE] Centralized Button base layout, focus ring, and variant color design tokens under BUTTON_TOKENS inside packages/common/src/ui-tokens.ts.
 - [STRENGTHEN] Refactored packages/ui/src/button-variants.ts to consume BUTTON_TOKENS.base and BUTTON_TOKENS.variants from @saasfly/common, eliminating hardcoded variant strings and enhancing accessibility consistency.
+- [CONSOLIDATE] Centralized SkipLink styling and design tokens under SKIP_LINK_TOKENS inside packages/common/src/ui-tokens.ts.
+- [STRENGTHEN] Refactored apps/nextjs/src/components/skip-link.tsx to consume SKIP_LINK_TOKENS from @saasfly/common and incorporated tactile spring scale micro-interactions (focus:scale-[1.02] active:scale-[0.98]) for keyboard navigation feedback.

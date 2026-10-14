@@ -2,18 +2,19 @@
 
 import * as React from "react";
 
+import { SKIP_LINK_TOKENS } from "@saasfly/common";
 import { Z_INDEX } from "@saasfly/common/config/ui";
 import { cn } from "@saasfly/ui";
 
 interface SkipLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   /**
    * The ID of the main content element to skip to
-   * @default "main-content"
+   * @default SKIP_LINK_TOKENS.defaultTargetId ("main-content")
    */
   targetId?: string;
   /**
    * The text displayed for the skip link
-   * @default "Skip to main content"
+   * @default SKIP_LINK_TOKENS.defaultText ("Skip to main content")
    */
   children?: React.ReactNode;
 }
@@ -40,8 +41,8 @@ interface SkipLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
 const SkipLink = React.forwardRef<HTMLAnchorElement, SkipLinkProps>(
   (
     {
-      targetId = "main-content",
-      children = "Skip to main content",
+      targetId = SKIP_LINK_TOKENS.defaultTargetId,
+      children = SKIP_LINK_TOKENS.defaultText,
       className,
       ...props
     },
@@ -73,14 +74,11 @@ const SkipLink = React.forwardRef<HTMLAnchorElement, SkipLinkProps>(
         href={`#${targetId}`}
         onClick={handleClick}
         className={cn(
-          "sr-only",
-          "focus:not-sr-only focus:fixed focus:left-4 focus:top-4",
+          SKIP_LINK_TOKENS.base,
           Z_INDEX.skipLink,
-          "focus:flex focus:items-center focus:rounded-md focus:bg-primary focus:px-4 focus:py-3",
-          "focus:text-sm focus:font-medium focus:text-primary-foreground focus:shadow-lg",
-          "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
-          "focus:border-2 focus:border-primary-foreground/20",
-          "motion-safe:transition-all motion-safe:duration-200 motion-safe:ease-out",
+          SKIP_LINK_TOKENS.animations.focusScale,
+          SKIP_LINK_TOKENS.animations.activeScale,
+          SKIP_LINK_TOKENS.animations.transition,
           className,
         )}
         {...props}

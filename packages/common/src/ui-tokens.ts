@@ -1508,6 +1508,24 @@ export const BLOG_CARD_TOKENS = {
   defaultRole: "region" as const,
 } as const;
 
+/**
+ * SkipLink design tokens
+ * Centralized styling, positioning, focus state, and micro-UX transitions for SkipLink accessibility component
+ */
+export const SKIP_LINK_TOKENS = {
+  /** Default screen-reader classes and focus state layout */
+  base: "sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:flex focus:items-center focus:rounded-md focus:bg-primary focus:px-4 focus:py-3 focus:text-sm focus:font-medium focus:text-primary-foreground focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:border-2 focus:border-primary-foreground/20",
+  /** Tactile spring scale micro-interactions on focus and active states */
+  animations: {
+    focusScale: "focus:scale-[1.02]",
+    activeScale: "active:scale-[0.98]",
+    transition:
+      "transition-transform duration-150 ease-in-out motion-reduce:transition-none motion-reduce:focus:scale-100 motion-reduce:active:scale-100",
+  },
+  defaultTargetId: "main-content",
+  defaultText: "Skip to main content",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

@@ -2,9 +2,19 @@ import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
+import { SKIP_LINK_TOKENS } from "@saasfly/common";
+
 import { SkipLink } from "../skip-link";
 
 describe("SkipLink", () => {
+  it("includes SKIP_LINK_TOKENS classes and tactile scale transitions", () => {
+    render(<SkipLink />);
+
+    const link = screen.getByText(SKIP_LINK_TOKENS.defaultText);
+    expect(link.className).toContain("sr-only");
+    expect(link.className).toContain(SKIP_LINK_TOKENS.animations.focusScale);
+    expect(link.className).toContain(SKIP_LINK_TOKENS.animations.activeScale);
+  });
   it("renders with default text and target", () => {
     render(<SkipLink />);
 

@@ -12,6 +12,7 @@ import {
   LABEL_TOKENS,
   SWITCH_TOKENS,
   TEXT_GENERATE_EFFECT_TOKENS,
+  TOAST_TOKENS,
   UI_ANIMATION,
   type BadgeSize,
   type ButtonHeight,
@@ -330,6 +331,18 @@ describe("ui-tokens.ts - COLOURFUL_TEXT_TOKENS", () => {
     expect(COLOURFUL_TEXT_TOKENS.intervalMs).toBe(5000);
     expect(COLOURFUL_TEXT_TOKENS.defaultRole).toBe("region");
     expect(COLOURFUL_TEXT_TOKENS.defaultAriaLabel).toBe("Colourful text");
+  });
+});
+
+describe("ui-tokens.ts - TOAST_TOKENS", () => {
+  it("should have viewport, toast, action, and close token definitions", () => {
+    expect(TOAST_TOKENS.viewport.base).toContain("fixed top-0");
+    expect(TOAST_TOKENS.toast.variants.default).toBe("bg-background border");
+    expect(TOAST_TOKENS.action.base).toContain("hover:scale-[1.02]");
+    expect(TOAST_TOKENS.action.base).toContain("active:scale-[0.98]");
+    expect(TOAST_TOKENS.close.base).toContain("hover:scale-110");
+    expect(TOAST_TOKENS.close.base).toContain("active:scale-95");
+    expect(TOAST_TOKENS.close.defaultAriaLabel).toBe("Dismiss notification");
   });
 });
 

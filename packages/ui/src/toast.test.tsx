@@ -27,7 +27,7 @@ describe("Toast Component", () => {
     expect(screen.getByText("Toast description")).toBeInTheDocument();
   });
 
-  it("should render a close button with an accessible label", () => {
+  it("should render a close button with an accessible label and micro-interaction classes", () => {
     render(
       <ToastProvider>
         <Toast open>
@@ -37,10 +37,13 @@ describe("Toast Component", () => {
         <ToastViewport />
       </ToastProvider>,
     );
-    expect(screen.getByLabelText("Dismiss notification")).toBeInTheDocument();
+    const closeBtn = screen.getByLabelText("Dismiss notification");
+    expect(closeBtn).toBeInTheDocument();
+    expect(closeBtn).toHaveClass("hover:scale-110");
+    expect(closeBtn).toHaveClass("active:scale-95");
   });
 
-  it("should render the action element", () => {
+  it("should render the action element with tactile micro-interaction scale classes", () => {
     render(
       <ToastProvider>
         <Toast open>
@@ -50,7 +53,10 @@ describe("Toast Component", () => {
         <ToastViewport />
       </ToastProvider>,
     );
-    expect(screen.getByText("Undo")).toBeInTheDocument();
+    const actionBtn = screen.getByText("Undo");
+    expect(actionBtn).toBeInTheDocument();
+    expect(actionBtn).toHaveClass("hover:scale-[1.02]");
+    expect(actionBtn).toHaveClass("active:scale-[0.98]");
   });
 
   it("should apply the default variant classes", () => {

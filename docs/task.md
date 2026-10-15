@@ -3581,6 +3581,8 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [STRENGTHEN] Refactored packages/ui/src/button-variants.ts to consume BUTTON_TOKENS.base and BUTTON_TOKENS.variants from @saasfly/common, eliminating hardcoded variant strings and enhancing accessibility consistency.
 - [CONSOLIDATE] Centralized SkipLink styling and design tokens under SKIP_LINK_TOKENS inside packages/common/src/ui-tokens.ts.
 - [STRENGTHEN] Refactored apps/nextjs/src/components/skip-link.tsx to consume SKIP_LINK_TOKENS from @saasfly/common and incorporated tactile spring scale micro-interactions (focus:scale-[1.02] active:scale-[0.98]) for keyboard navigation feedback.
+- [CONSOLIDATE] Centralized Toast styling and design tokens under TOAST_TOKENS inside packages/common/src/ui-tokens.ts.
+- [STRENGTHEN] Refactored packages/ui/src/toast.tsx to consume TOAST_TOKENS from @saasfly/common and incorporated tactile spring scale micro-interactions for ToastClose and ToastAction.
 
 ## PR Handler Audit — 2026-10-14 (loop 13)
 

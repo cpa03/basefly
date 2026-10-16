@@ -12,6 +12,8 @@ import {
   type FieldValues,
 } from "react-hook-form";
 
+import { FORM_TOKENS } from "@saasfly/common";
+
 import { Label } from "./label";
 import { ShakeWrapper } from "./shake-wrapper";
 import { cn } from "./utils/cn";
@@ -93,7 +95,11 @@ const FormItem = React.forwardRef<
         shake={shouldShake}
         onShakeComplete={() => setShouldShake(false)}
       >
-        <div ref={ref} className={cn("space-y-2", className)} {...props} />
+        <div
+          ref={ref}
+          className={cn(FORM_TOKENS.item.base, className)}
+          {...props}
+        />
       </ShakeWrapper>
     </FormItemContext.Provider>
   );
@@ -109,7 +115,7 @@ const FormLabel = React.forwardRef<
   return (
     <Label
       ref={ref}
-      className={cn(error && "text-destructive", className)}
+      className={cn(error && FORM_TOKENS.label.error, className)}
       htmlFor={formItemId}
       {...props}
     />
@@ -150,7 +156,7 @@ const FormDescription = React.forwardRef<
     <p
       ref={ref}
       id={formDescriptionId}
-      className={cn("text-sm text-muted-foreground", className)}
+      className={cn(FORM_TOKENS.description.base, className)}
       {...props}
     />
   );
@@ -172,7 +178,7 @@ const FormMessage = React.forwardRef<
     <p
       ref={ref}
       id={formMessageId}
-      className={cn("text-sm font-medium text-destructive", className)}
+      className={cn(FORM_TOKENS.message.base, className)}
       {...props}
     >
       {body}

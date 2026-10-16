@@ -341,6 +341,22 @@ Enhanced `CommandItem` with tactile spring scale micro-interactions (`hover:scal
 - [x] Implemented fallback `aria-label` on CommandInput.
 - [x] Verified unit tests inside `packages/ui/src/command.test.tsx` to verify transitions, token classes, and accessibility.
 
+#### Task: [CONSOLIDATE] Centralized Form styling and tokens under FORM_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/form.tsx`
+
+**Description**:
+Centralized Form component styling and tokens under `FORM_TOKENS` inside `packages/common/src/ui-tokens.ts` and updated `@saasfly/ui` Form component to reference them, eliminating hardcoded styles.
+
+**Success Criteria**:
+
+- [x] Defined `FORM_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `FORM_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/form.tsx` to reference `FORM_TOKENS` across all subcomponents.
+
 #### Task: [CONSOLIDATE] Centralized Alert styling and tokens under ALERT_TOKENS
 
 - **Status**: ✅ Completed

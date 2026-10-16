@@ -1556,6 +1556,25 @@ export const TOAST_TOKENS = {
   },
 } as const;
 
+/**
+ * Form design tokens
+ * Centralized layout, typography, error states, and transitions for Form components
+ */
+export const FORM_TOKENS = {
+  item: {
+    base: "space-y-2",
+  },
+  label: {
+    error: "text-destructive transition-colors duration-150 ease-in-out",
+  },
+  description: {
+    base: "text-sm text-muted-foreground",
+  },
+  message: {
+    base: "text-sm font-medium text-destructive transition-opacity duration-150 ease-in-out",
+  },
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

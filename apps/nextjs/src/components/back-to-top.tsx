@@ -143,7 +143,7 @@ const BackToTop = React.forwardRef<HTMLButtonElement, BackToTopProps>(
                 // Visual styling
                 "rounded-full shadow-lg",
                 "border bg-background/80 backdrop-blur-sm",
-                "hover:bg-background hover:shadow-xl hover:scale-110 active:scale-95",
+                "hover:scale-110 hover:bg-background hover:shadow-xl active:scale-95",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                 // Animation
                 "transition-all",

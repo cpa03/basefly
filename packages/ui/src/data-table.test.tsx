@@ -53,10 +53,14 @@ describe("DataTable Component", () => {
     expect(rows).toHaveLength(3);
   });
 
-  it("should apply the wrapper border class", () => {
+  it("should apply the wrapper border class, accessibility attributes, and token micro-interactions", () => {
     const { container } = renderDataTable(columns, data);
     const wrapper = container.firstChild as HTMLElement;
     expect(wrapper).toHaveClass("rounded-md");
     expect(wrapper).toHaveClass("border");
+    expect(wrapper).toHaveAttribute("role", "region");
+    expect(wrapper).toHaveAttribute("aria-label", "Data table");
+    expect(wrapper).toHaveClass("hover:scale-[1.001]");
+    expect(wrapper).toHaveClass("active:scale-[0.999]");
   });
 });

@@ -673,6 +673,38 @@ Enhanced `Button` component in `@saasfly/ui` to explicitly convey `aria-disabled
 - [x] Implemented `aria-disabled` logic in `Button` component.
 - [x] Added unit test assertions inside `packages/ui/src/button.test.tsx` to verify `aria-disabled` states.
 
+#### Task: [CONSOLIDATE] Centralized DataTable component styling and tokens under DATA_TABLE_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `packages/ui/src/data-table.tsx`
+
+**Description**:
+Centralized DataTable component styling, container layouts, tactile spring micro-interactions, and default aria attributes under `DATA_TABLE_TOKENS` inside `packages/common/src/ui-tokens.ts` and updated `@saasfly/ui` component to reference them, eliminating hardcoded styles.
+
+**Success Criteria**:
+
+- [x] Defined `DATA_TABLE_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `DATA_TABLE_TOKENS` from `@saasfly/common`.
+- [x] Refactored `packages/ui/src/data-table.tsx` to reference `DATA_TABLE_TOKENS`.
+
+#### Task: [STRENGTHEN] Enhanced DataTable component with focus-visible outline, landmark accessibility, and tactile spring scale micro-interactions
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement / Accessibility
+- **Files**: `packages/ui/src/data-table.tsx`, `packages/ui/src/data-table.test.tsx`
+
+**Description**:
+Enhanced `DataTable` component with tactile spring scale micro-interactions (`hover:scale-[1.001] active:scale-[0.999]`), focus-visible ring outline accessibility (`focus-visible:ring-2`), and logical fallback `role="region"` and `aria-label="Data table"` for screen reader accessibility.
+
+**Success Criteria**:
+
+- [x] Implemented tactile scale transitions on DataTable container.
+- [x] Implemented fallback `role="region"` and `aria-label` on DataTable container.
+- [x] Added unit tests inside `packages/ui/src/data-table.test.tsx` to verify transitions, token classes, and accessibility attributes.
+
 #### Task: [STRENGTHEN] Enhanced SelectTrigger component with a tactile, spring scale micro-interaction
 
 - **Status**: ✅ Completed

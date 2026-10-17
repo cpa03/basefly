@@ -8,6 +8,9 @@ import {
   type ColumnDef,
 } from "@tanstack/react-table";
 
+import { DATA_TABLE_TOKENS } from "@saasfly/common";
+
+import { cn } from "./utils/cn";
 import { DataTableEmpty } from "./data-table-empty";
 import {
   Table,
@@ -21,11 +24,19 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  className?: string;
+  role?: string;
+  "aria-label"?: string;
+  tabIndex?: number;
 }
 
 export const DataTable = React.memo(function DataTable<TData, TValue>({
   columns,
   data,
+  className,
+  role = DATA_TABLE_TOKENS.defaultRole,
+  "aria-label": ariaLabel = DATA_TABLE_TOKENS.defaultAriaLabel,
+  tabIndex = 0,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -34,7 +45,17 @@ export const DataTable = React.memo(function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="rounded-md border">
+    <div
+      role={role}
+      aria-label={ariaLabel}
+      tabIndex={tabIndex}
+      className={cn(
+        DATA_TABLE_TOKENS.container.base,
+        DATA_TABLE_TOKENS.container.hoverScale,
+        DATA_TABLE_TOKENS.container.activeScale,
+        className,
+      )}
+    >
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

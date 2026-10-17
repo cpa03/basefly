@@ -664,6 +664,20 @@ export const COPY_BUTTON_TOKENS = {
 } as const;
 
 /**
+ * DataTable design tokens
+ * Centralized layout, styling, transitions, micro-interactions, and accessibility for DataTable component
+ */
+export const DATA_TABLE_TOKENS = {
+  container: {
+    base: "relative w-full overflow-hidden rounded-md border bg-card text-card-foreground shadow-sm transition-all duration-200 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+    hoverScale: "hover:scale-[1.001]",
+    activeScale: "active:scale-[0.999]",
+  },
+  defaultAriaLabel: "Data table",
+  defaultRole: "region" as const,
+} as const;
+
+/**
  * Table design tokens
  * Centralized layout, styling, micro-UX transitions, and accessibility for Table component
  */

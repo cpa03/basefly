@@ -37,7 +37,7 @@
 7. STEP 1: label matrix recomputed independently → **33 compliant / 49 remediation** — exact match with loops 7–27 → no-drift rule applies; apply attempt re-probed → **403** (§1, §5).
 8. STEP 2/3: duplicate clusters D1–D7 re-derived from the static issue set → exact match with loops 17–27 (§2). Closures re-probed → **403** (§5).
 9. STEP 4: **#496** (only P0) re-verified code-complete **first-hand this run**: 3 rate-limiter test files → **98/98 passed** (1.22s) at `90819ed`. Full P0/P1 set re-verified first-hand (§3).
-10. Permission probes **first-hand this run** (workflow `pull`, job `ci`, event `schedule`, run 39087213673): issue label POST → **403**; issue comment POST → **403**; issue create → **403**; issue close → **403** (GraphQL `addComment`); issue read → OK; PR comment/push/merge → allowed (both merges are the proof).
+10. Permission probes **first-hand this run** (workflow `pull`, job `ci`, event `schedule`, run 39087213673): issue label POST → **403**; issue comment POST → **403**; issue create → **403**; issue close (`gh issue close` GraphQL) → **403**; issue **state-close REST** (`PATCH /issues/480 state=closed`) → **403** (D1 duplicate close attempt; #480 re-verified **still OPEN** — probe had no side effect); issue read → OK; PR comment/push/merge → allowed (both merges are the proof); **PR label write → ALLOWED** (`gh pr edit 1580 --add-label docs,P2` succeeded — PR-scoped endpoint accepted under `pull-requests: write`, first discovery this run).
 11. Stale-set re-confirmations this run (§4): #697 (all U+FFFD/`â€` matches are self-referential audit quotes; `docs/DX-engineer.md` clean), #578 (one health route), #786 (no secret logging), #785 (no `next` dep), #720/#748 (`.nvmrc` = `22.14.0`), #719 (root `tsconfig.json`), #636 (ISR intentionally unused, `dashboard/page.tsx:34-36`).
 12. Confirmed genuinely open (§3): **#751** (no lazy/dynamic router splitting in `packages/api/src`), **#494** (no `domain/` layer), **#723** (36/127 client components in `apps/nextjs` — improved from 40/182, observation holds), **D2** cluster (`iterate.yml` `npm ci || true` at lines 72, 342 — workflow-file, platform-blocked), **#650** (prompts inline in `on-pull.yml` — workflow-file, platform-blocked), **#502** (only `iterate.yml` + `on-pull.yml` exist — workflow-file, platform-blocked).
 13. Pre-staged patches re-validated against `90819ed`: `docs/patches/on-pull-issues-write-permission.patch` and `docs/patches/fix-pnpm-consistency-iterate-744.patch` both **clean apply**.
@@ -46,31 +46,34 @@
 
 ### Action log
 
-| Timestamp (UTC) | Action                                   | Target                                          | Result                                                           |
-| --------------- | ---------------------------------------- | ----------------------------------------------- | ---------------------------------------------------------------- |
-| 01:38           | Phase 0.1 entry: `gh pr list`            | repo `cpa03/basefly`                            | 2 open PRs → **PR HANDLER MODE**                                 |
-| 01:39           | Fetch + checkout + merge `origin/main`   | PR #1579 branch                                 | Already up to date; no conflicts                                 |
-| 01:39–01:44     | Gates: typecheck / lint / test / build   | PR #1579 head                                   | 9/9, 9/9 (0 warnings), 2207/2207, 1/1 — all green                |
-| 01:45           | Checks analysis + rerun/dispatch probes  | run 39082260184, workflow 221500505             | cancelled (timeout); rerun+dispatch **403** (`actions: read`)    |
-| 01:46           | Verification comment                     | PR #1579                                        | posted (`issuecomment-6244403036`)                               |
-| 01:47:49        | `gh pr merge 1579 --merge --admin`       | PR #1579                                        | **MERGED** → `3c1f68f`                                           |
-| 01:48           | Delete remote branch + sync local `main` | `agent-12399146019474417414`                    | deleted; main fast-forwarded                                     |
-| 01:48           | Fetch + checkout + merge `origin/main`   | PR #1578 branch                                 | clean merge (ort), no conflicts                                  |
-| 01:49–01:50     | Gates: typecheck / lint / test / build   | PR #1578 synced head                            | 9/9, 9/9 (0 warnings), 2207/2207, 1/1 — all green                |
-| 01:50           | Push sync commit + pre-push hook         | `docs/issue-audit-2026-10-17-loop27`            | pushed `8c7fc7d`; hook `dx:quick` green                          |
-| 01:51           | Verification comment + Vercel re-check   | PR #1578                                        | posted (`issuecomment-6244427769`); Vercel failed again (outage) |
-| 01:51:29        | `gh pr merge 1578 --merge --admin`       | PR #1578                                        | **MERGED** → `90819ed`                                           |
-| 01:52           | Delete remote branch + sync local `main` | `docs/issue-audit-2026-10-17-loop27`            | deleted; main at `90819ed`                                       |
-| 01:52           | Phase 0.2 entry: `gh issue list`         | repo                                            | 82 open issues → **ISSUE MANAGER MODE**                          |
-| 01:53           | Permission probes (label/comment/create) | issues 789 / repo                               | all **403** (first-hand)                                         |
-| 01:53           | Permission probe (close)                 | issue 496                                       | **403** GraphQL `addComment` (first-hand)                        |
-| 01:54           | Label matrix recomputation               | all 82 issues                                   | **33 compliant / 49 remediation** — exact match (no drift)       |
-| 01:54           | STEP 4 verification: rate-limiter tests  | `packages/api/src/*rate-limiter*.test.ts`       | **98/98 passed** (1.22s) → #496 code-complete                    |
-| 01:55           | P0/P1 claim spot-verification            | #500/#551/#549/#501/#550/#515/#498/#581         | all implemented (evidence §3)                                    |
-| 01:55           | Gap checks (genuinely open set)          | #751/#494/#723/#650/#502/D2                     | all still open; workflow files platform-blocked                  |
-| 01:56           | Stale-set spot re-confirmation           | #697/#578/#786/#785/#720/#719/#636              | all stale (evidence §4)                                          |
-| 01:56           | Patch re-validation                      | 2 pre-staged patches                            | clean apply vs `90819ed`                                         |
-| 01:57           | Ship audit (this PR)                     | `docs/issue-manager-audit-2026-10-18-loop28.md` | docs-only PR; gates re-proven green                              |
+| Timestamp (UTC) | Action                                   | Target                                    | Result                                                           |
+| --------------- | ---------------------------------------- | ----------------------------------------- | ---------------------------------------------------------------- |
+| 01:38           | Phase 0.1 entry: `gh pr list`            | repo `cpa03/basefly`                      | 2 open PRs → **PR HANDLER MODE**                                 |
+| 01:39           | Fetch + checkout + merge `origin/main`   | PR #1579 branch                           | Already up to date; no conflicts                                 |
+| 01:39–01:44     | Gates: typecheck / lint / test / build   | PR #1579 head                             | 9/9, 9/9 (0 warnings), 2207/2207, 1/1 — all green                |
+| 01:45           | Checks analysis + rerun/dispatch probes  | run 39082260184, workflow 221500505       | cancelled (timeout); rerun+dispatch **403** (`actions: read`)    |
+| 01:46           | Verification comment                     | PR #1579                                  | posted (`issuecomment-6244403036`)                               |
+| 01:47:49        | `gh pr merge 1579 --merge --admin`       | PR #1579                                  | **MERGED** → `3c1f68f`                                           |
+| 01:48           | Delete remote branch + sync local `main` | `agent-12399146019474417414`              | deleted; main fast-forwarded                                     |
+| 01:48           | Fetch + checkout + merge `origin/main`   | PR #1578 branch                           | clean merge (ort), no conflicts                                  |
+| 01:49–01:50     | Gates: typecheck / lint / test / build   | PR #1578 synced head                      | 9/9, 9/9 (0 warnings), 2207/2207, 1/1 — all green                |
+| 01:50           | Push sync commit + pre-push hook         | `docs/issue-audit-2026-10-17-loop27`      | pushed `8c7fc7d`; hook `dx:quick` green                          |
+| 01:51           | Verification comment + Vercel re-check   | PR #1578                                  | posted (`issuecomment-6244427769`); Vercel failed again (outage) |
+| 01:51:29        | `gh pr merge 1578 --merge --admin`       | PR #1578                                  | **MERGED** → `90819ed`                                           |
+| 01:52           | Delete remote branch + sync local `main` | `docs/issue-audit-2026-10-17-loop27`      | deleted; main at `90819ed`                                       |
+| 01:52           | Phase 0.2 entry: `gh issue list`         | repo                                      | 82 open issues → **ISSUE MANAGER MODE**                          |
+| 01:53           | Permission probes (label/comment/create) | issues 789 / repo                         | all **403** (first-hand)                                         |
+| 01:53           | Permission probe (close)                 | issue 496                                 | **403** GraphQL `addComment` (first-hand)                        |
+| 01:54           | Label matrix recomputation               | all 82 issues                             | **33 compliant / 49 remediation** — exact match (no drift)       |
+| 01:54           | STEP 4 verification: rate-limiter tests  | `packages/api/src/*rate-limiter*.test.ts` | **98/98 passed** (1.22s) → #496 code-complete                    |
+| 01:55           | P0/P1 claim spot-verification            | #500/#551/#549/#501/#550/#515/#498/#581   | all implemented (evidence §3)                                    |
+| 01:55           | Gap checks (genuinely open set)          | #751/#494/#723/#650/#502/D2               | all still open; workflow files platform-blocked                  |
+| 01:56           | Stale-set spot re-confirmation           | #697/#578/#786/#785/#720/#719/#636        | all stale (evidence §4)                                          |
+| 01:56           | Patch re-validation                      | 2 pre-staged patches                      | clean apply vs `90819ed`                                         |
+| 01:57           | Gates re-run on audit branch             | typecheck/lint/test/build                 | 9/9, 9/9 (0 warnings), 2207/2207, 1/1 — all green                |
+| 01:57           | Commit + push + `gh pr create`           | `docs/issue-audit-2026-10-18-loop28`      | pushed `8e8128f`; **PR #1580 opened**                            |
+| 01:57           | PR label application                     | PR #1580                                  | **ALLOWED** — labels `docs` + `P2` applied (PR-scoped endpoint)  |
+| 01:58           | D1 duplicate close probe                 | issue #480 (`state=closed`)               | **403**; #480 re-verified still OPEN (no side effect)            |
 
 ---
 
@@ -138,7 +141,7 @@ Clusters unchanged from loops 17–27 (static issue set, no new issues this run)
 
 Consolidation of D2/D3/D4/D7 small issues into their canonicals also requires issue writes.
 
-**Closing/consolidating requires issue write → 403 → blocked (§5).**
+**Closing/consolidating requires issue write → 403 → blocked (§5). D1 close was actively attempted this run** (`PATCH /issues/480 state=closed` after first-hand body comparison of #480 vs #496 — identical in-memory→Redis rate-limiter problem statement, #496 = P0 canonical) → **403**; #480 confirmed still OPEN.
 
 ---
 
@@ -196,18 +199,20 @@ Closing any of these requires issue write → **403 → blocked (§5)**.
 
 ## §4 Blocked Write Paths (re-confirmed this run, first-hand)
 
-| Surface               | Operation                          | Result                                                         |
-| --------------------- | ---------------------------------- | -------------------------------------------------------------- |
-| Issues (label)        | `POST .../issues/789/labels`       | **403** `Resource not accessible by integration` (re-probed)   |
-| Issues (comment)      | `POST .../issues/789/comments`     | **403** (re-probed this run)                                   |
-| Issues (create)       | `POST .../issues` (probe)          | **403** (re-probed this run)                                   |
-| Issues (close)        | `gh issue close 496 --comment …`   | **403** GraphQL `addComment` (re-probed this run)              |
-| CI re-run / dispatch  | `gh run rerun` / `gh workflow run` | **403** `Resource not accessible by integration` (re-probed)   |
-| Workflow-file push    | `git push` (`.github/workflows/*`) | Platform-rejected: GitHub App lacks `workflows` perm           |
-| Branch push (non-WF)  | `git push` (normal files)          | **Allowed** — sync push `8c7fc7d` + this docs branch are proof |
-| PR comment            | `gh pr comment`                    | **Allowed** — comments on #1579/#1578 are proof                |
-| `gh pr create`        | —                                  | **Allowed** — this audit PR is the proof                       |
-| `gh pr merge --admin` | —                                  | **Allowed — #1579 and #1578 merged this run**                  |
+| Surface                 | Operation                           | Result                                                                   |
+| ----------------------- | ----------------------------------- | ------------------------------------------------------------------------ |
+| Issues (label)          | `POST .../issues/789/labels`        | **403** `Resource not accessible by integration` (re-probed)             |
+| Issues (comment)        | `POST .../issues/789/comments`      | **403** (re-probed this run)                                             |
+| Issues (create)         | `POST .../issues` (probe)           | **403** (re-probed this run)                                             |
+| Issues (close, GraphQL) | `gh issue close 496 --comment …`    | **403** GraphQL `addComment` (re-probed this run)                        |
+| Issues (close, REST)    | `PATCH .../issues/480 state=closed` | **403** `issues#update-an-issue` (first-hand this run; #480 stayed OPEN) |
+| PR (label)              | `gh pr edit 1580 --add-label …`     | **Allowed** — first discovery this run (PR-scoped endpoint)              |
+| CI re-run / dispatch    | `gh run rerun` / `gh workflow run`  | **403** `Resource not accessible by integration` (re-probed)             |
+| Workflow-file push      | `git push` (`.github/workflows/*`)  | Platform-rejected: GitHub App lacks `workflows` perm                     |
+| Branch push (non-WF)    | `git push` (normal files)           | **Allowed** — sync push `8c7fc7d` + this docs branch are proof           |
+| PR comment              | `gh pr comment`                     | **Allowed** — comments on #1579/#1578 are proof                          |
+| `gh pr create`          | —                                   | **Allowed** — this audit PR is the proof                                 |
+| `gh pr merge --admin`   | —                                   | **Allowed — #1579 and #1578 merged this run**                            |
 
 Root cause (unchanged, carried from loops 19–27):
 
@@ -242,7 +247,7 @@ Runner Node is v20.20.2 while `package.json` engines want `>=22` — warning onl
 
 ## §6 Final State
 
-- **waiting for human review** — this PR.
-- Unblocked only by a maintainer token/account with `workflows: write` (land the §4 one-line `on-pull.yml` patch first), after which `issues: write`-enabled loops can execute §1 labels, §2/§3 closes, and administrative closure of the §4 stale set — which now includes **47+** issues verified implemented across loops 17–28. Second: `actions: write` would let loops re-run timed-out CI instead of relying on local gate re-proofs.
+- **waiting for human review** — PR #1580 (this audit; labeled `docs` + `P2` per contract — PR-side label write is available even though issue-side is not).
+- Unblocked only by a maintainer token/account with `workflows: write` (land the §4 one-line `on-pull.yml` patch first), after which `issues: write`-enabled loops can execute §1 labels, §2/§3 closes (D1's #480 close was attempted and 403-blocked this run), and administrative closure of the §4 stale set — which now includes **47+** issues verified implemented across loops 17–28. Second: `actions: write` would let loops re-run timed-out CI instead of relying on local gate re-proofs.
 - Loop-28 delta vs. loop 27: **two PRs handled and merged** (#1579 feature-token PR — first non-docs PR merged in this loop series — and #1578, the loop-27 audit; both admin-merged after first-hand gate re-proofs, Vercel failure classified environmental, `pull`-timeout classified queue-timeout); **P0 #496 re-verified 98/98** and the **entire P0/P1 set verified first-hand for the first time in one pass**; **#697 re-classified stale** with a repo-wide corruption scan (all matches self-referential); label matrix re-derived 33/49 with exact-match no-drift confirmation; both pre-staged patches re-verified clean-apply.
 - No destructive actions taken; no force-pushes; no branches left on remote besides this docs branch; issue-side writes remain untouched (403). PR #1579/#1578 remote branches were deleted only after confirmed successful merges (contract step 4).

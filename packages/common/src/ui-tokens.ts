@@ -278,6 +278,9 @@ export const DIALOG_TOKENS = {
  * Status badge design tokens
  */
 export const BADGE_TOKENS = {
+  /** Focus ring configuration */
+  focusRing: FOCUS_RING_DEFAULT,
+
   /** Size variants */
   sizes: {
     sm: {

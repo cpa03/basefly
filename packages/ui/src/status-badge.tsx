@@ -96,6 +96,7 @@ export function StatusBadge({
       className={cn(
         "inline-flex cursor-pointer items-center font-medium transition-colors",
         BADGE_TOKENS.radius,
+        BADGE_TOKENS.focusRing,
         config.bgColor,
         config.textColor,
         styles.container,

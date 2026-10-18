@@ -720,6 +720,22 @@ Enhanced `SelectTrigger` component with a tactile, spring scale micro-interactio
 - [x] Implemented tactile scale transitions inside `SelectTrigger`.
 - [x] Added unit tests inside `packages/ui/src/select.test.tsx` to verify transitions, states, and token classes.
 
+#### Task: [STRENGTHEN] Enhanced StatusBadge with centralized focus-visible ring accessibility token
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement / Accessibility
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/ui/src/status-badge.tsx`, `packages/ui/src/status-badge.test.tsx`
+
+**Description**:
+Added `focusRing` design token to `BADGE_TOKENS` in `@saasfly/common` and applied it to `StatusBadge` in `@saasfly/ui` to guarantee keyboard `focus-visible` ring outline accessibility.
+
+**Success Criteria**:
+
+- [x] Added `focusRing: FOCUS_RING_DEFAULT` to `BADGE_TOKENS` in `packages/common/src/ui-tokens.ts`.
+- [x] Applied `BADGE_TOKENS.focusRing` to `StatusBadge` in `packages/ui/src/status-badge.tsx`.
+- [x] Verified 11/11 unit tests in `packages/ui/src/status-badge.test.tsx`.
+
 ---
 
 #### Task: [x] Full Workspace Validation Scan

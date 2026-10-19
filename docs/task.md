@@ -4,6 +4,22 @@
 
 ### High Priority Tasks
 
+#### Task: [STRENGTHEN] Enhanced ModeToggle with tactile spring scale micro-interaction
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement
+- **Files**: `apps/nextjs/src/components/mode-toggle.tsx`, `apps/nextjs/src/components/__tests__/main-nav.test.tsx`
+
+**Description**:
+Enhanced `ModeToggle` component with tactile spring scale micro-interactions (`hover:scale-105 active:scale-95 transition-transform duration-150 ease-in-out`) on the button trigger while utilizing centralized theme constants `THEME_STRINGS` and `THEMES` from `@saasfly/common`.
+
+**Success Criteria**:
+
+- [x] Added spring-scale hover and active micro-interaction classes to `ModeToggle` trigger button.
+- [x] Verified usage of `THEME_STRINGS` and `THEMES` design constants from `@saasfly/common`.
+- [x] Verified unit tests passing across component and workspace suites.
+
 #### Task: [STRENGTHEN] BlogCard component micro-UX and centralized design tokens
 
 - **Status**: ✅ Completed

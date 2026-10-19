@@ -96,7 +96,7 @@ export function ModeToggle() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="relative h-8 w-8 px-0"
+                className="relative h-8 w-8 px-0 transition-transform duration-150 ease-in-out hover:scale-105 active:scale-95"
                 aria-label={
                   mounted
                     ? `Toggle theme (current: ${theme ?? "system"})`

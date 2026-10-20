@@ -12,6 +12,7 @@ export const THEME_STRINGS = {
 export const MARKETING_FALLBACKS = {
   title: "Ship your apps to the world easier with ",
   subtitle: "Your complete All-in-One solution for building SaaS services.",
+  wordReveal: "Saasfly will change the way you build SaaS apps.",
 } as const;
 
 export const PAGE_METADATA = {

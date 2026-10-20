@@ -116,6 +116,10 @@ export default defineConfig({
         "./packages/ui/src/use-toast.tsx",
       ),
       "@saasfly/ui/toast": resolve(__dirname, "./packages/ui/src/toast.tsx"),
+      "@saasfly/ui/text-reveal": resolve(
+        __dirname,
+        "./packages/ui/src/text-reveal.tsx",
+      ),
       "@saasfly/ui": resolve(__dirname, "./packages/ui"),
       "@saasfly/common/config/resilience": resolve(
         __dirname,

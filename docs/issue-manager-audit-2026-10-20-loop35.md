@@ -29,6 +29,7 @@
 10. **LOOP-35 DELTA — Node engine skew observed**: runner executes Node **v20.20.2** (`setup-node node-version: 20` in `on-pull.yml`) while `package.json` `engines` wants `>=22` and `.nvmrc` = `22.14.0` → every pnpm invocation emits `WARN Unsupported engine`. All gates still pass; fixing the skew requires a workflow-file edit (platform-blocked, §6) — recorded as observation only.
 11. **LOOP-35 DELTA — pre-commit hooks verified live**: the probe commit triggered husky → `lint-staged` + `dx:quick` (typecheck 9/9 + lint 9/9) + `check-deps`, all green in-hook. Evidence for #630's hook infrastructure (AC3 runtime budget still unproven).
 12. **Gates all green (first-hand)**: install **7.2s** · typecheck **9/9** · lint **9/9** · test **2209/2209** (152 files) · build **1/1** · size budgets **green** (JS 621.98/800 kB, CSS 20.13/120 kB, Media 260.03/300 kB) · `check:circular` **exit 0 — "No circular dependency found!"** · `check-deps` **exit 0**.
+13. **LOOP-35 DELTA — PR-side label writes WORK**: `gh pr edit 1591 --add-label docs` and `--add-label P3` both **succeeded** (labels verified on the PR). Only **issue-side** label/close/create is 403 — PR labels are governed by the `pull-requests: write` grant, issue labels by the missing `issues: write` grant. Mandatory PR label contract satisfied.
 
 ### Action log
 
@@ -58,6 +59,9 @@
 | 09:09           | Cluster spot re-checks (first-hand)        | D1/D3/D5/N1/N6/N7 evidence                        | titles identical (D1) · 11 e2e specs ✓ · k8s+auth tests ✓ · 28 common tests ✓ · Docker/devcontainer ✓        |
 | 09:09           | Pre-commit hook observation                | probe commit `c7be614`                            | husky ran `lint-staged` + `dx:quick` (9/9) + `check-deps` — **all green in-hook**                            |
 | 09:10           | Create audit branch + write this file      | `chore/issue-manager-audit-2026-10-20-loop35`     | created from `498d139` (= `origin/main` at entry)                                                            |
+| 09:11           | Commit audit (hooks re-ran green)          | `11b21d8`                                         | husky: typecheck 9/9 + test 2209/2209 + check-deps + prettier                                                |
+| 09:11           | Push branch + create PR                    | **PR #1591**                                      | pushed from synced `main`; PR created (docs + P3)                                                            |
+| 09:12           | PR label writes                            | `gh pr edit 1591 --add-label docs, P3`            | **SUCCESS** — PR-side writes work; only issue-side is 403 (§4)                                               |
 
 ---
 
@@ -233,6 +237,7 @@ pnpm audit         → 20 vulnerabilities: 2 critical | 4 high | 12 moderate | 2
 | Issues (label, REST)    | `POST …/issues/789/labels`                | **403** `Resource not accessible by integration` (re-probed)                                |
 | Issues (create)         | `gh issue create` (FAIL-SAFE tracker)     | **403** GraphQL `createIssue` (re-probed this run)                                          |
 | Workflow files (push)   | push branch touching `.github/workflows/` | **`[remote rejected]`** GitHub App lacks `workflows` permission (re-probed this run, §0 #9) |
+| PRs (label) — CONTRAST  | `gh pr edit 1591 --add-label docs, P3`    | **SUCCESS** — `pull-requests: write` is granted; only issue-side operations are blocked     |
 
 **Root cause (first-hand):** the run's workflow `.github/workflows/on-pull.yml` grants `contents: write, pull-requests: write, actions: read, repository-projects: write, id-token: write` — **no `issues: write`**. (`iterate.yml` already declares `issues: write`, but this hourly run executes under `on-pull.yml`, name `pull`, `schedule` trigger.) Granting it requires editing `on-pull.yml`, which the token cannot push (workflow-file protection).
 

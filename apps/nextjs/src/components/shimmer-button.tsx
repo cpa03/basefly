@@ -3,8 +3,7 @@ import React, { type CSSProperties } from "react";
 import { SHIMMER_BUTTON_TOKENS, VISUAL_EFFECTS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 
-interface ShimmerButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ShimmerButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   shimmerColor?: string;
   shimmerSize?: string;
   borderRadius?: string;

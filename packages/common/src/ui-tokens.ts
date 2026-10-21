@@ -1592,6 +1592,24 @@ export const FORM_TOKENS = {
   },
 } as const;
 
+/**
+ * ShimmerButton design tokens
+ * Centralized layout, styling, transitions, micro-interactions, and accessibility for ShimmerButton component
+ */
+export const SHIMMER_BUTTON_TOKENS = {
+  /** Focus ring configuration */
+  focusRing: FOCUS_RING_DEFAULT,
+
+  /** Base button layout and styling */
+  base: `group relative flex cursor-pointer overflow-hidden whitespace-nowrap px-6 py-4 text-white [background:var(--bg)] [border-radius:var(--radius)] dark:text-black transition-all ${ANIMATION.transition.medium} ${ANIMATION.scale.default} active:scale-[0.98] ${FOCUS_RING_DEFAULT}`,
+
+  /** Default border radius */
+  defaultRadius: "100px",
+
+  /** Spread angle for shimmer animation */
+  defaultSpread: "90deg",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

@@ -405,6 +405,7 @@ export {
   SKIP_LINK_TOKENS,
   TOAST_TOKENS,
   FORM_TOKENS,
+  SHIMMER_BUTTON_TOKENS,
 } from "./ui-tokens";
 export type {
   ButtonHeight,

@@ -4,6 +4,38 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Centralized ShimmerButton design tokens under SHIMMER_BUTTON_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `apps/nextjs/src/components/shimmer-button.tsx`
+
+**Description**:
+Centralized ShimmerButton layout, border radius, spread angle, active scale micro-interaction, and focus ring accessibility tokens under `SHIMMER_BUTTON_TOKENS` inside `packages/common/src/ui-tokens.ts` and updated `apps/nextjs/src/components/shimmer-button.tsx` to reference them.
+
+**Success Criteria**:
+
+- [x] Defined `SHIMMER_BUTTON_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `SHIMMER_BUTTON_TOKENS` from `@saasfly/common`.
+- [x] Refactored `apps/nextjs/src/components/shimmer-button.tsx` to reference `SHIMMER_BUTTON_TOKENS`.
+
+#### Task: [STRENGTHEN] Enhanced ShimmerButton component with keyboard focus-visible ring accessibility and active scale micro-interactions
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement / Accessibility
+- **Files**: `apps/nextjs/src/components/shimmer-button.tsx`, `apps/nextjs/src/components/__tests__/shimmer-button.test.tsx`
+
+**Description**:
+Enhanced `ShimmerButton` component with keyboard focus-visible ring accessibility (`FOCUS_RING_DEFAULT`), tactile active scale micro-interaction (`active:scale-[0.98]`), and fallback accessible name rendering.
+
+**Success Criteria**:
+
+- [x] Added `FOCUS_RING_DEFAULT` focus-visible ring styling to ShimmerButton.
+- [x] Added tactile active spring scale micro-interaction to ShimmerButton.
+- [x] Added unit tests in `apps/nextjs/src/components/__tests__/shimmer-button.test.tsx`.
+
 #### Task: [STRENGTHEN] Enhanced ModeToggle with tactile spring scale micro-interaction
 
 - **Status**: ✅ Completed

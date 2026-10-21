@@ -1,6 +1,6 @@
 import React, { type CSSProperties } from "react";
 
-import { ANIMATION, VISUAL_EFFECTS } from "@saasfly/common";
+import { SHIMMER_BUTTON_TOKENS, VISUAL_EFFECTS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 
 interface ShimmerButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -18,7 +18,7 @@ const ShimmerButton = ({
   shimmerColor = VISUAL_EFFECTS.shimmer.color,
   shimmerSize = VISUAL_EFFECTS.shimmer.size,
   shimmerDuration = VISUAL_EFFECTS.shimmer.duration,
-  borderRadius = "100px",
+  borderRadius = SHIMMER_BUTTON_TOKENS.defaultRadius,
   background = VISUAL_EFFECTS.shimmer.background,
   hoverShadow = VISUAL_EFFECTS.shadows.buttonHover,
   className,
@@ -30,10 +30,10 @@ const ShimmerButton = ({
 
   return (
     <button
-      aria-label={accessibleNameFromTextContent}
+      aria-label={props["aria-label"] ?? accessibleNameFromTextContent}
       style={
         {
-          "--spread": "90deg",
+          "--spread": SHIMMER_BUTTON_TOKENS.defaultSpread,
           "--shimmer-color": shimmerColor,
           "--radius": borderRadius,
           "--speed": shimmerDuration,
@@ -43,8 +43,8 @@ const ShimmerButton = ({
         } as CSSProperties
       }
       className={cn(
-        "group relative flex cursor-pointer overflow-hidden whitespace-nowrap px-6 py-4 text-white [background:var(--bg)] [border-radius:var(--radius)] dark:text-black",
-        `transition-all ${ANIMATION.transition.medium} ${ANIMATION.scale.default} hover:shadow-[var(--hover-shadow)]`,
+        SHIMMER_BUTTON_TOKENS.base,
+        "hover:shadow-[var(--hover-shadow)]",
         className,
       )}
       {...props}

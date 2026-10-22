@@ -99,11 +99,11 @@ describe("Table Component", () => {
     expect(td).toHaveClass("align-middle");
   });
 
-  it("should apply disabled styles and spring scale classes to a row", () => {
+  it("should apply focus-visible ring styles, disabled styles, and spring scale classes to a row", () => {
     const { container } = render(
       <Table>
         <TableBody>
-          <TableRow disabled>
+          <TableRow disabled tabIndex={0}>
             <TableCell>Disabled</TableCell>
           </TableRow>
         </TableBody>
@@ -112,6 +112,7 @@ describe("Table Component", () => {
     const tr = container.querySelector("tr");
     expect(tr).toHaveClass("hover:scale-[1.002]");
     expect(tr).toHaveClass("active:scale-[0.998]");
+    expect(tr).toHaveClass("focus-visible:ring-2");
     expect(tr).toHaveClass("pointer-events-none");
     expect(tr).toHaveClass("opacity-80");
   });

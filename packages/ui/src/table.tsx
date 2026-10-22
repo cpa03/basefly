@@ -48,6 +48,7 @@ const TableRow = React.forwardRef<
       TABLE_TOKENS.row.base,
       TABLE_TOKENS.row.hoverScale,
       TABLE_TOKENS.row.activeScale,
+      TABLE_TOKENS.row.focusRing,
       disabled && TABLE_TOKENS.row.disabled,
       className,
     )}

@@ -701,6 +701,7 @@ export const TABLE_TOKENS = {
     disabled: "pointer-events-none text-muted-foreground opacity-80",
     hoverScale: "hover:scale-[1.002]",
     activeScale: "active:scale-[0.998]",
+    focusRing: FOCUS_RING_DEFAULT,
   },
   /** Header cell styling */
   head: "h-12 px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0",

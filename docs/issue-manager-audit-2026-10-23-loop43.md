@@ -27,38 +27,41 @@
 8.  **Vulnerability baseline: FIRST DOWNWARD DELTA after three consecutive rises (loop-43 NEW)**: `pnpm audit --prod` → **30** vulnerabilities (was 31 in loop 42); `pnpm audit` → **44** (was 45). Criticals unchanged (prod 5, full 7). Tree is code-identical since loop 38 → movement reflects advisory-database churn, not dependency change (§5.1).
 9.  **Vercel systemic failure re-confirmed**: `Vercel` deployment status = `failure` on all of #1600/#1601/#1602 **before** their merges (§5.3).
 10. **FAIL-SAFE**: durable capture = this audit + PR (issue creation itself is on the blocked surface).
-11. **Probe hygiene**: no probe branches created this run (issue-surface permissions characterized via two direct 403 probes); workspace on `docs/issue-manager-audit-2026-10-23-loop43` branched from current `main`. Uncommitted worktree entries are harness/cache artifacts only (`node_modules/.cache/.prettiercache` cache churn, `.omo/run-continuation/*.json` from the failed explore task) — **no source changes**, all commits are explicit-path.
+11. **Probe hygiene**: no probe branches created this run (issue-surface permissions characterized via two direct 403 probes); workspace on `docs/issue-manager-audit-2026-10-23-loop43` branched from current `main`. Worktree tracked files **restored clean** at run end (§5.5); only untracked harness artifacts remain (`.omo/run-continuation/*.json` from the failed explore task) — all commits are explicit-path.
 
 ### Action log
 
-| Timestamp (UTC) | Action                                     | Target                                              | Result                                                                                                  |
-| --------------- | ------------------------------------------ | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| 18:01           | Phase 0.1 entry: `gh pr list --state open` | repo `cpa03/basefly`                                | **0 open PRs** → Phase 0.2                                                                              |
-| 18:01           | Phase 0.2 entry: `gh issue list`           | repo                                                | **82 open issues → ISSUE MANAGER MODE**                                                                 |
-| 18:01           | Runner introspection                       | `env \| grep ^GITHUB_`                              | workflow `pull` (on-pull.yml), job `ci`, event `schedule` → explains token permission set               |
-| 18:01           | Issue-set digest                           | sorted issue-number sha256                          | 82 numbers, `84696e81…` — **match loops 33–42** → no drift                                              |
-| 18:02           | STEP 1 label matrix (scripted)             | category/priority partition                         | **33 compliant / 24 missing-pri / 1 missing-cat / 11 missing-both / 13 multi-cat / 0 multi-pri**        |
-| 18:02           | Token identity                             | `gh auth status`                                    | `github-actions[bot]`; `GITHUB_TOKEN` (`ghs_…`)                                                         |
-| 18:02           | Workspace install                          | `pnpm install --frozen-lockfile`                    | **7.5s**                                                                                                |
-| 18:02           | Subagent spawn                             | `explore` bg `bg_f3cecbf4`                          | **FAILED** `ProviderModelNotFoundError: opencode/muse-spark-1.3-contributor-free` → first-hand fallback |
-| 18:02           | Workflow inventory                         | `gh workflow list --all`                            | `parallel` = **disabled_manually**; `pull` + Dependabot active (unchanged from loop 42)                 |
-| 18:03           | STEP 1 label probe                         | `gh issue edit 789 --add-label P3`                  | **403** `Resource not accessible by integration (addLabelsToLabelable)`                                 |
-| 18:03           | Vulnerability baseline                     | `pnpm audit --prod` / `pnpm audit`                  | **30 prod** (was 31) / **44 full** (was 45) — **first downward delta** (§5.1)                           |
-| 18:03           | STEP 4 selection                           | P0 **#496**                                         | only P0 on board → selected per contract                                                                |
-| 18:03           | STEP 4 verification: rate-limiter tests    | 3 `*rate-limiter*.test.ts` files                    | **98/98 passed** (1.28s) → #496 code-complete                                                           |
-| 18:03           | STEP 4 repair attempt                      | `gh issue close 496 --comment …`                    | **403** `Resource not accessible by integration (addComment)` → FAIL-SAFE (§4)                          |
-| 18:03           | STEP 2/3 cluster re-verification           | D1–D7 evidence files                                | All carried verdicts re-confirmed first-hand (§2.1)                                                     |
-| 18:04           | STEP 2/3 continued                         | N-clusters + stale-set files                        | All carried verdicts re-confirmed first-hand (§2.2, §3.2)                                               |
-| 18:04           | STEP 2 duplicate-close attempt             | `gh issue close 480 --comment …`                    | **403** `Resource not accessible by integration (addComment)` → blocked                                 |
-| 18:04           | Vercel status check                        | statuses on #1600/#1601/#1602 head SHAs             | `failure` on all 3, each **before** its merge → systemic, §5.3                                          |
-| 18:04           | Final state re-check                       | `gh pr list` / `gh issue list`                      | 0 open PRs / 82 open issues — no drift introduced during run                                            |
-| 18:06           | Commit audit (pre-commit gate)             | branch `docs/issue-manager-audit-2026-10-23-loop43` | **green**: typecheck + full suite **2218/2218** (154 files, 45.0s) + `check-deps` + prettier            |
-| 18:07           | Branch push (PR-surface contrast)          | `origin/docs/issue-manager-audit-2026-10-23-loop43` | **SUCCESS** (`contents: write`)                                                                         |
-| 18:08           | PR creation                                | **PR #1603**                                        | Created; sole comment = Vercel status bot (deployment `Error`, 18:09:44Z)                               |
-| 18:08           | PR label application                       | `gh pr edit 1603 --add-label docs,P3`               | **SUCCESS** (`pull-requests: write`) — contract labels applied                                          |
-| 18:11           | PR checks observation                      | `gh pr checks 1603`                                 | `Vercel Preview Comments` **pass**; `Vercel` **fail** (head `c7cd982`) — 4/4 PRs systemic (§5.3)        |
-| 18:11           | Merge preconditions                        | `gh pr view 1603`                                   | `MERGEABLE`, labels `docs,P3`, 0 human review comments; blocking gates green (2218/2218 pre-commit)     |
-| 18:12           | Merge decision                             | PR #1603                                            | merge `--admin` per contract clause — Vercel failure proven systemic/non-attributable (§5.3)            |
+| Timestamp (UTC) | Action                                     | Target                                              | Result                                                                                                   |
+| --------------- | ------------------------------------------ | --------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| 18:01           | Phase 0.1 entry: `gh pr list --state open` | repo `cpa03/basefly`                                | **0 open PRs** → Phase 0.2                                                                               |
+| 18:01           | Phase 0.2 entry: `gh issue list`           | repo                                                | **82 open issues → ISSUE MANAGER MODE**                                                                  |
+| 18:01           | Runner introspection                       | `env \| grep ^GITHUB_`                              | workflow `pull` (on-pull.yml), job `ci`, event `schedule` → explains token permission set                |
+| 18:01           | Issue-set digest                           | sorted issue-number sha256                          | 82 numbers, `84696e81…` — **match loops 33–42** → no drift                                               |
+| 18:02           | STEP 1 label matrix (scripted)             | category/priority partition                         | **33 compliant / 24 missing-pri / 1 missing-cat / 11 missing-both / 13 multi-cat / 0 multi-pri**         |
+| 18:02           | Token identity                             | `gh auth status`                                    | `github-actions[bot]`; `GITHUB_TOKEN` (`ghs_…`)                                                          |
+| 18:02           | Workspace install                          | `pnpm install --frozen-lockfile`                    | **7.5s**                                                                                                 |
+| 18:02           | Subagent spawn                             | `explore` bg `bg_f3cecbf4`                          | **FAILED** `ProviderModelNotFoundError: opencode/muse-spark-1.3-contributor-free` → first-hand fallback  |
+| 18:02           | Workflow inventory                         | `gh workflow list --all`                            | `parallel` = **disabled_manually**; `pull` + Dependabot active (unchanged from loop 42)                  |
+| 18:03           | STEP 1 label probe                         | `gh issue edit 789 --add-label P3`                  | **403** `Resource not accessible by integration (addLabelsToLabelable)`                                  |
+| 18:03           | Vulnerability baseline                     | `pnpm audit --prod` / `pnpm audit`                  | **30 prod** (was 31) / **44 full** (was 45) — **first downward delta** (§5.1)                            |
+| 18:03           | STEP 4 selection                           | P0 **#496**                                         | only P0 on board → selected per contract                                                                 |
+| 18:03           | STEP 4 verification: rate-limiter tests    | 3 `*rate-limiter*.test.ts` files                    | **98/98 passed** (1.28s) → #496 code-complete                                                            |
+| 18:03           | STEP 4 repair attempt                      | `gh issue close 496 --comment …`                    | **403** `Resource not accessible by integration (addComment)` → FAIL-SAFE (§4)                           |
+| 18:03           | STEP 2/3 cluster re-verification           | D1–D7 evidence files                                | All carried verdicts re-confirmed first-hand (§2.1)                                                      |
+| 18:04           | STEP 2/3 continued                         | N-clusters + stale-set files                        | All carried verdicts re-confirmed first-hand (§2.2, §3.2)                                                |
+| 18:04           | STEP 2 duplicate-close attempt             | `gh issue close 480 --comment …`                    | **403** `Resource not accessible by integration (addComment)` → blocked                                  |
+| 18:04           | Vercel status check                        | statuses on #1600/#1601/#1602 head SHAs             | `failure` on all 3, each **before** its merge → systemic, §5.3                                           |
+| 18:04           | Final state re-check                       | `gh pr list` / `gh issue list`                      | 0 open PRs / 82 open issues — no drift introduced during run                                             |
+| 18:06           | Commit audit (pre-commit gate)             | branch `docs/issue-manager-audit-2026-10-23-loop43` | **green**: typecheck + full suite **2218/2218** (154 files, 45.0s) + `check-deps` + prettier             |
+| 18:07           | Branch push (PR-surface contrast)          | `origin/docs/issue-manager-audit-2026-10-23-loop43` | **SUCCESS** (`contents: write`)                                                                          |
+| 18:08           | PR creation                                | **PR #1603**                                        | Created; sole comment = Vercel status bot (deployment `Error`, 18:09:44Z)                                |
+| 18:08           | PR label application                       | `gh pr edit 1603 --add-label docs,P3`               | **SUCCESS** (`pull-requests: write`) — contract labels applied                                           |
+| 18:11           | PR checks observation                      | `gh pr checks 1603`                                 | `Vercel Preview Comments` **pass**; `Vercel` **fail** (head `c7cd982`) — 4/4 PRs systemic (§5.3)         |
+| 18:11           | Merge preconditions                        | `gh pr view 1603`                                   | `MERGEABLE`, labels `docs,P3`, 0 human review comments; blocking gates green (2218/2218 pre-commit)      |
+| 18:12           | Merge decision                             | PR #1603                                            | merge `--admin` per contract clause — Vercel failure proven systemic/non-attributable (§5.3)             |
+| 18:14           | Evidence commit + push (PR #1603)          | `6b3b7f7`                                           | **SUCCESS**; pre-commit gate green on both commits (2218/2218 + typecheck + check-deps + prettier)       |
+| 18:16           | Final-head checks                          | `gh pr checks 1603` (head `6b3b7f7`)                | `Vercel` **fail** again; `Vercel Preview Comments` **pass** → systemic confirmed on both heads           |
+| 18:17           | Worktree hygiene                           | tracked prettier-cache file (§5.5)                  | Content restored from `HEAD` via byte-exact path → only untracked `.omo/run-continuation/*.json` remains |
 
 ---
 
@@ -244,7 +247,11 @@ Re-checked first-hand: `Vercel` deployment status = `failure` on #1600 (17:54:10
 
 ### §5.4 PR-surface permission contrast (carried, re-tested this run)
 
-Issue-surface writes 403 (both label and comment/close paths, first-hand §4), while PR-surface operations (`git push` of this audit branch, `gh pr create`, `gh pr edit --add-label`) succeed under `pull-requests: write` — recorded after PR creation in the amended action-log rows above.
+Issue-surface writes 403 (both label and comment/close paths, first-hand §4), while PR-surface operations (`git push` of this audit branch, `gh pr create`, `gh pr edit --add-label`) succeed under `pull-requests: write` — recorded in the action-log rows above (18:07–18:08, first-hand this run).
+
+### §5.5 Tracked prettier-cache file with literal quote characters in its filename (NEW)
+
+The repository tracks a build artifact whose **path contains literal single-quote characters**: `git ls-files` reports `'node_modules/.cache/.prettiercache'` (quotes are part of the filename, not display quoting). Consequences observed first-hand this run: plain-pathspec commands (`git checkout -- node_modules/.cache/.prettiercache`, `git ls-files --error-unmatch <plain path>`, `git show HEAD:<plain path>`) all fail with "not known to git" while `git status` keeps reporting the file as modified after every lint-staged/prettier run — making the worktree appear permanently dirty and confusing clean-tree verification. Restored this run via byte-exact path extraction (`git ls-files -z` + `git show HEAD:<raw path>`). Recommendation: `git rm` the file (it is a regenerable cache) or at least untrack it via `.gitignore` — a one-command human fix (§6 item 7).
 
 ---
 
@@ -256,3 +263,4 @@ Issue-surface writes 403 (both label and comment/close paths, first-hand §4), w
 4.  **Review the vulnerability baseline** (§3.5 — **30 prod / 44 full**, first decrease after three consecutive rises; prod criticals 5) — security-sensitive, outside STEP 4 scope. Open a dedicated dependency-refresh issue/PR.
 5.  **Refresh agent model IDs** (§5.2) — `muse-spark-1.3-contributor-free` retired; `explore`/`librarian` delegation fails every run until `AGENTS.md`/`.opencode/` mappings are updated.
 6.  **Repair the Vercel preview integration** (§5.3) — every PR carries a red `Vercel` deployment status from the `donis-projects-f77cd16a` namespace; re-connect the project or refresh its tokens.
+7.  **Untrack the quote-named prettier cache** (§5.5) — `git rm` the `'node_modules/.cache/.prettiercache'` file (literal quotes in the filename) so worktree cleanliness checks stop reporting phantom modifications.

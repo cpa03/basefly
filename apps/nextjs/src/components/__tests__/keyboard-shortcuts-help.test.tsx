@@ -16,7 +16,9 @@ describe("KeyboardShortcutsHelp", () => {
 
     expect(screen.getByText("Keyboard Shortcuts")).toBeInTheDocument();
     expect(
-      screen.getByText("Press any of the following keys to quickly navigate and interact with the app."),
+      screen.getByText(
+        "Press any of the following keys to quickly navigate and interact with the app.",
+      ),
     ).toBeInTheDocument();
   });
 
@@ -66,12 +68,8 @@ describe("KeyboardShortcutsHelp", () => {
 
     const shortcutDescription = screen.getByText("Show keyboard shortcuts");
     const shortcutItemContainer = shortcutDescription.parentElement;
-    expect(shortcutItemContainer?.className).toContain(
-      "hover:scale-[1.01]",
-    );
-    expect(shortcutItemContainer?.className).toContain(
-      "active:scale-[0.99]",
-    );
+    expect(shortcutItemContainer?.className).toContain("hover:scale-[1.01]");
+    expect(shortcutItemContainer?.className).toContain("active:scale-[0.99]");
 
     const kbdElement = screen.getAllByText("Ctrl")[0];
     expect(kbdElement?.className).toContain("active:scale-95");

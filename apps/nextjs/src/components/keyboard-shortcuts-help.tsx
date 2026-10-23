@@ -77,9 +77,7 @@ function ShortcutItem({ shortcut }: { shortcut: KeyboardShortcut }) {
       <div className="flex items-center gap-1">
         {shortcut.keys.map((key, index) => (
           <React.Fragment key={`${shortcut.id}-${key}-${index}`}>
-            <kbd className={cn(KEYBOARD_SHORTCUTS_TOKENS.kbd.base)}>
-              {key}
-            </kbd>
+            <kbd className={cn(KEYBOARD_SHORTCUTS_TOKENS.kbd.base)}>{key}</kbd>
             {index < shortcut.keys.length - 1 && (
               <span className="mx-0.5 text-xs text-muted-foreground">+</span>
             )}
@@ -182,7 +180,9 @@ function KeyboardShortcutsHelp() {
             <Key className="h-5 w-5 text-primary" aria-hidden="true" />
             Keyboard Shortcuts
           </DialogTitle>
-          <DialogDescription id={KEYBOARD_SHORTCUTS_TOKENS.defaultAriaDescription}>
+          <DialogDescription
+            id={KEYBOARD_SHORTCUTS_TOKENS.defaultAriaDescription}
+          >
             Press any of the following keys to quickly navigate and interact
             with the app.
           </DialogDescription>

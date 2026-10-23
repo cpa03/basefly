@@ -406,6 +406,7 @@ export {
   TOAST_TOKENS,
   FORM_TOKENS,
   SHIMMER_BUTTON_TOKENS,
+  KEYBOARD_SHORTCUTS_TOKENS,
 } from "./ui-tokens";
 export type {
   ButtonHeight,

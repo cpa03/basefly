@@ -4,6 +4,38 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Centralized KeyboardShortcuts design tokens under KEYBOARD_SHORTCUTS_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `apps/nextjs/src/components/keyboard-shortcuts-help.tsx`
+
+**Description**:
+Centralized KeyboardShortcutsHelp layout, item container, keyboard badge styling, category headers, and default accessibility descriptions under `KEYBOARD_SHORTCUTS_TOKENS` in `@saasfly/common` and updated `apps/nextjs/src/components/keyboard-shortcuts-help.tsx` to reference them.
+
+**Success Criteria**:
+
+- [x] Defined `KEYBOARD_SHORTCUTS_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `KEYBOARD_SHORTCUTS_TOKENS` from `@saasfly/common`.
+- [x] Refactored `apps/nextjs/src/components/keyboard-shortcuts-help.tsx` to reference `KEYBOARD_SHORTCUTS_TOKENS`.
+
+#### Task: [STRENGTHEN] Enhanced KeyboardShortcutsHelp component with focus-visible ring accessibility and active scale micro-interactions
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement / Accessibility
+- **Files**: `apps/nextjs/src/components/keyboard-shortcuts-help.tsx`, `apps/nextjs/src/components/__tests__/keyboard-shortcuts-help.test.tsx`
+
+**Description**:
+Enhanced `KeyboardShortcutsHelp` component items and key badges with focus-visible ring accessibility (`FOCUS_RING_DEFAULT`), tactile spring-scale micro-interactions (`hover:scale-[1.01] active:scale-[0.99]`), and comprehensive unit tests.
+
+**Success Criteria**:
+
+- [x] Added `FOCUS_RING_DEFAULT` focus-visible ring styling to keyboard badges.
+- [x] Added tactile spring scale micro-interactions to shortcut items.
+- [x] Added unit tests in `apps/nextjs/src/components/__tests__/keyboard-shortcuts-help.test.tsx`.
+
 #### Task: [CONSOLIDATE] Centralized ShimmerButton design tokens under SHIMMER_BUTTON_TOKENS
 
 - **Status**: ✅ Completed

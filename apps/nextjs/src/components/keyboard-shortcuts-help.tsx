@@ -2,7 +2,7 @@
 
 import * as React from "react";
 
-import { ANIMATION } from "@saasfly/common";
+import { KEYBOARD_SHORTCUTS_TOKENS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import {
   Dialog,
@@ -72,30 +72,12 @@ const DEFAULT_SHORTCUTS: KeyboardShortcut[] = [
  */
 function ShortcutItem({ shortcut }: { shortcut: KeyboardShortcut }) {
   return (
-    <div
-      className={cn(
-        "flex items-center justify-between py-2.5",
-        "border-b border-border last:border-b-0",
-        "transition-colors hover:bg-accent/50",
-        "-mx-2 rounded-sm px-2",
-      )}
-    >
+    <div className={cn(KEYBOARD_SHORTCUTS_TOKENS.item.base)}>
       <span className="text-sm text-foreground">{shortcut.description}</span>
       <div className="flex items-center gap-1">
         {shortcut.keys.map((key, index) => (
           <React.Fragment key={`${shortcut.id}-${key}-${index}`}>
-            <kbd
-              className={cn(
-                "inline-flex items-center justify-center",
-                "h-6 min-w-[1.5rem] px-1.5",
-                "rounded border bg-muted",
-                "text-xs font-medium text-muted-foreground",
-                "shadow-sm",
-                "transition-transform active:scale-95",
-              )}
-            >
-              {key}
-            </kbd>
+            <kbd className={cn(KEYBOARD_SHORTCUTS_TOKENS.kbd.base)}>{key}</kbd>
             {index < shortcut.keys.length - 1 && (
               <span className="mx-0.5 text-xs text-muted-foreground">+</span>
             )}
@@ -188,18 +170,19 @@ function KeyboardShortcutsHelp() {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent
         className={cn(
-          "max-w-md sm:max-w-lg",
-          "motion-safe:transition-all",
-          ANIMATION.duration.normal,
+          KEYBOARD_SHORTCUTS_TOKENS.dialogContent.base,
+          KEYBOARD_SHORTCUTS_TOKENS.dialogContent.animationDuration,
         )}
-        aria-describedby="keyboard-shortcuts-description"
+        aria-describedby={KEYBOARD_SHORTCUTS_TOKENS.defaultAriaDescription}
       >
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Key className="h-5 w-5 text-primary" aria-hidden="true" />
             Keyboard Shortcuts
           </DialogTitle>
-          <DialogDescription id="keyboard-shortcuts-description">
+          <DialogDescription
+            id={KEYBOARD_SHORTCUTS_TOKENS.defaultAriaDescription}
+          >
             Press any of the following keys to quickly navigate and interact
             with the app.
           </DialogDescription>
@@ -208,11 +191,7 @@ function KeyboardShortcutsHelp() {
         <div className="mt-4 space-y-4">
           {Object.entries(groupedShortcuts).map(([category, shortcuts]) => (
             <div key={category}>
-              <h3
-                className={cn(
-                  "mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground",
-                )}
-              >
+              <h3 className={cn(KEYBOARD_SHORTCUTS_TOKENS.categoryTitle)}>
                 {category}
               </h3>
               <div className="space-y-0.5">
@@ -224,12 +203,7 @@ function KeyboardShortcutsHelp() {
           ))}
         </div>
 
-        <div
-          className={cn(
-            "mt-4 border-t border-border pt-4",
-            "flex items-center justify-between text-xs text-muted-foreground",
-          )}
-        >
+        <div className={cn(KEYBOARD_SHORTCUTS_TOKENS.footer)}>
           <span>
             Press{" "}
             <kbd className="rounded border bg-muted px-1.5 py-0.5 text-xs">

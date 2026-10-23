@@ -1611,6 +1611,28 @@ export const SHIMMER_BUTTON_TOKENS = {
   defaultSpread: "90deg",
 } as const;
 
+/**
+ * KeyboardShortcuts design tokens
+ * Centralized layout, styling, transitions, micro-interactions, and accessibility for KeyboardShortcutsHelp component
+ */
+export const KEYBOARD_SHORTCUTS_TOKENS = {
+  dialogContent: {
+    base: "max-w-md sm:max-w-lg motion-safe:transition-all",
+    animationDuration: ANIMATION.duration.normal,
+  },
+  item: {
+    base: "flex items-center justify-between py-2.5 border-b border-border last:border-b-0 transition-all duration-150 ease-out hover:bg-accent/50 -mx-2 rounded-sm px-2 hover:scale-[1.01] active:scale-[0.99]",
+  },
+  kbd: {
+    base: `inline-flex items-center justify-center h-6 min-w-[1.5rem] px-1.5 rounded border bg-muted text-xs font-medium text-muted-foreground shadow-sm transition-all duration-150 ease-out active:scale-95 ${FOCUS_RING_DEFAULT}`,
+  },
+  categoryTitle:
+    "mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground",
+  footer:
+    "mt-4 border-t border-border pt-4 flex items-center justify-between text-xs text-muted-foreground",
+  defaultAriaDescription: "keyboard-shortcuts-description",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

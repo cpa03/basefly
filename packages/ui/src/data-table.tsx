@@ -10,7 +10,6 @@ import {
 
 import { DATA_TABLE_TOKENS } from "@saasfly/common";
 
-import { cn } from "./utils/cn";
 import { DataTableEmpty } from "./data-table-empty";
 import {
   Table,
@@ -20,6 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "./table";
+import { cn } from "./utils/cn";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

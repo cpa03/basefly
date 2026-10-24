@@ -800,6 +800,22 @@ Enhanced `SelectTrigger` component with a tactile, spring scale micro-interactio
 - [x] Implemented tactile scale transitions inside `SelectTrigger`.
 - [x] Added unit tests inside `packages/ui/src/select.test.tsx` to verify transitions, states, and token classes.
 
+#### Task: [STRENGTHEN] Enhanced LocaleChange trigger button with tactile spring scale micro-interaction and comprehensive unit tests
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement / Testing
+- **Files**: `apps/nextjs/src/components/locale-change.tsx`, `apps/nextjs/src/components/__tests__/locale-change.test.tsx`
+
+**Description**:
+Enhanced `LocaleChange` trigger button with tactile spring scale micro-interactions (`hover:scale-105 active:scale-95 transition-transform duration-150 ease-in-out`) and added unit test suite verifying rendering, accessibility attributes, and interactive scale classes.
+
+**Success Criteria**:
+
+- [x] Implemented spring scale hover and active transitions on `LocaleChange` trigger button.
+- [x] Created unit test suite in `apps/nextjs/src/components/__tests__/locale-change.test.tsx`.
+- [x] Verified unit tests passing across component and workspace suites.
+
 #### Task: [STRENGTHEN] Enhanced StatusBadge with centralized focus-visible ring accessibility token
 
 - **Status**: ✅ Completed

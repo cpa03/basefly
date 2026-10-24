@@ -84,7 +84,7 @@ const LocaleChangeBase = ({ url, currentLocale }: LocaleChangeProps) => {
         <Button
           variant="ghost"
           size="sm"
-          className="group h-8 w-8 px-0 transition-all hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          className="group h-8 w-8 px-0 transition-transform duration-150 ease-in-out hover:scale-105 hover:bg-muted/50 active:scale-95 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           aria-label={`Change language. Current: ${currentLocale ? localeMap[currentLocale as keyof typeof localeMap] : "unknown"}`}
         >
           <Languages

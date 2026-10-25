@@ -10,6 +10,8 @@ interface UserAvatarProps extends AvatarProps {
     name?: string | null;
     image?: string | null;
   };
+  // Explicit: AvatarProps is error-typed here (@radix-ui/react-avatar unresolvable from this package).
+  className?: string;
 }
 
 export function UserAvatar({
@@ -22,17 +24,12 @@ export function UserAvatar({
   const fallbackBase: string = AVATAR_TOKENS.fallback.base;
 
   return (
-    <Avatar
-      className={cn(
-        hoverScale,
-        activeScale,
-        className,
-      )}
-      {...props}
-    >
+    <Avatar className={cn(hoverScale, activeScale, className)} {...props}>
       {user.image ? (
         <AvatarImage
-          alt={user.name ? `${user.name}'s avatar` : AVATAR_TOKENS.defaultAriaLabel}
+          alt={
+            user.name ? `${user.name}'s avatar` : AVATAR_TOKENS.defaultAriaLabel
+          }
           src={user.image}
         />
       ) : (

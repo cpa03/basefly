@@ -153,7 +153,7 @@
       "eslint --fix --cache --cache-location 'node_modules/.cache/.eslintcache'"
     ],
     "*.{json,md,css,scss}": [
-      "prettier --write --cache --cache-location='node_modules/.cache/.prettiercache'"
+      "prettier --write --cache --cache-location=node_modules/.cache/.prettiercache"
     ]
   }
 }

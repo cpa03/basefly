@@ -1633,6 +1633,17 @@ export const KEYBOARD_SHORTCUTS_TOKENS = {
   defaultAriaDescription: "keyboard-shortcuts-description",
 } as const;
 
+/**
+ * GitHubStar design tokens
+ * Centralized layout, styling, transitions, tactile spring scale micro-interactions, and accessibility for GitHubStar component
+ */
+export const GITHUB_STAR_TOKENS = {
+  container: {
+    base: `inline-flex h-9 items-center gap-1.5 rounded-full border border-input px-3 text-sm font-medium transition-all duration-150 ease-out hover:bg-accent hover:text-accent-foreground hover:scale-[1.03] active:scale-[0.97] ${FOCUS_RING_DEFAULT}`,
+  },
+  iconSize: "h-4 w-4",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

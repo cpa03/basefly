@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { ICON_SIZES, TRANSITION_PRESETS } from "@saasfly/common";
+import { GITHUB_STAR_TOKENS } from "@saasfly/common";
 import { GitHub } from "@saasfly/ui/icons";
 
 import { siteConfig } from "~/config/site";
@@ -12,11 +12,10 @@ export function GitHubStar() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`Star ${siteConfig.github.owner}/${siteConfig.github.repo} on GitHub`}
+      className="inline-block rounded-full"
     >
-      <div
-        className={`inline-flex h-9 items-center gap-1.5 rounded-full border border-input px-3 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${TRANSITION_PRESETS.container}`}
-      >
-        <GitHub className={ICON_SIZES.sm} />
+      <div className={GITHUB_STAR_TOKENS.container.base}>
+        <GitHub className={GITHUB_STAR_TOKENS.iconSize} />
         <span>{siteConfig.github.stars}</span>
       </div>
     </Link>

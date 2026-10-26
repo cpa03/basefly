@@ -407,6 +407,7 @@ export {
   FORM_TOKENS,
   SHIMMER_BUTTON_TOKENS,
   KEYBOARD_SHORTCUTS_TOKENS,
+  GITHUB_STAR_TOKENS,
 } from "./ui-tokens";
 export type {
   ButtonHeight,

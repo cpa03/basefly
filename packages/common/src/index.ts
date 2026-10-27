@@ -408,6 +408,7 @@ export {
   SHIMMER_BUTTON_TOKENS,
   KEYBOARD_SHORTCUTS_TOKENS,
   GITHUB_STAR_TOKENS,
+  EMPTY_PLACEHOLDER_TOKENS,
 } from "./ui-tokens";
 export type {
   ButtonHeight,

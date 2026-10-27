@@ -54,7 +54,7 @@ describe("EmptyPlaceholder", () => {
     expect(container).toHaveAttribute("aria-label", "No content available");
   });
 
-  it("applies custom className", () => {
+  it("applies custom className and spring scale micro-interaction classes", () => {
     const { container } = render(
       <EmptyPlaceholder className="custom-class">
         <span>Content</span>
@@ -63,6 +63,8 @@ describe("EmptyPlaceholder", () => {
 
     const div = container.firstChild as HTMLElement;
     expect(div.className).toContain("custom-class");
+    expect(div.className).toContain("hover:scale-[1.002]");
+    expect(div.className).toContain("active:scale-[0.998]");
   });
 
   it("passes additional props to the container", () => {

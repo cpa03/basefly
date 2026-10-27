@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { ANIMATION } from "@saasfly/common";
+import { EMPTY_PLACEHOLDER_TOKENS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 import { Help as HelpCircle } from "@saasfly/ui/icons";
 import * as Icons from "@saasfly/ui/icons";
@@ -13,19 +13,18 @@ type EmptyPlaceholderProps = React.HTMLAttributes<HTMLDivElement>;
 export function EmptyPlaceholder({
   className,
   children,
+  role = EMPTY_PLACEHOLDER_TOKENS.defaultRole,
+  "aria-label": ariaLabel = EMPTY_PLACEHOLDER_TOKENS.defaultAriaLabel,
   ...props
 }: EmptyPlaceholderProps) {
   return (
     <div
-      role="status"
-      aria-label="No content available"
-      className={cn(
-        `group flex min-h-[400px] flex-col items-center justify-center rounded-md border border-dashed p-8 text-center transition-all animate-in fade-in-50 ${ANIMATION.duration.medium} ${ANIMATION.easing.default} hover:border-primary/50 hover:bg-muted/30 hover:shadow-sm`,
-        className,
-      )}
+      role={role}
+      aria-label={ariaLabel}
+      className={cn(EMPTY_PLACEHOLDER_TOKENS.container.base, className)}
       {...props}
     >
-      <div className="mx-auto flex max-w-[420px] flex-col items-center justify-center text-center">
+      <div className={EMPTY_PLACEHOLDER_TOKENS.container.contentWrapper}>
         {children}
       </div>
     </div>
@@ -45,14 +44,9 @@ EmptyPlaceholder.Icon = function EmptyPlaceHolderIcon({
   const Icon = Icons[name] || HelpCircle;
 
   return (
-    <div
-      className={`flex h-20 w-20 items-center justify-center rounded-full bg-muted transition-transform ${ANIMATION.duration.medium} ${ANIMATION.easing.default} group-hover:scale-110 group-hover:bg-muted/80`}
-    >
+    <div className={EMPTY_PLACEHOLDER_TOKENS.iconWrapper.base}>
       <Icon
-        className={cn(
-          `h-10 w-10 transition-colors ${ANIMATION.duration.medium} group-hover:text-primary`,
-          className,
-        )}
+        className={cn(EMPTY_PLACEHOLDER_TOKENS.iconWrapper.icon, className)}
       />
     </div>
   );
@@ -68,7 +62,10 @@ EmptyPlaceholder.Title = function EmptyPlaceholderTitle({
   ...props
 }: EmptyPlacholderTitleProps) {
   return (
-    <h2 className={cn("mt-6 text-xl font-semibold", className)} {...props}>
+    <h2
+      className={cn(EMPTY_PLACEHOLDER_TOKENS.title, className)}
+      {...props}
+    >
       {children}
     </h2>
   );
@@ -83,10 +80,7 @@ EmptyPlaceholder.Description = function EmptyPlaceholderDescription({
 }: EmptyPlacholderDescriptionProps) {
   return (
     <p
-      className={cn(
-        "mb-8 mt-2 text-center text-sm font-normal leading-6 text-muted-foreground",
-        className,
-      )}
+      className={cn(EMPTY_PLACEHOLDER_TOKENS.description, className)}
       {...props}
     />
   );

@@ -1644,6 +1644,25 @@ export const GITHUB_STAR_TOKENS = {
   iconSize: "h-4 w-4",
 } as const;
 
+/**
+ * EmptyPlaceholder design tokens
+ * Centralized layout, styling, micro-UX transitions, and accessibility for EmptyPlaceholder components
+ */
+export const EMPTY_PLACEHOLDER_TOKENS = {
+  container: {
+    base: `group flex min-h-[400px] flex-col items-center justify-center rounded-md border border-dashed p-8 text-center transition-all duration-200 ease-out hover:border-primary/50 hover:bg-muted/30 hover:shadow-sm hover:scale-[1.002] active:scale-[0.998] ${FOCUS_RING_DEFAULT}`,
+    contentWrapper: "mx-auto flex max-w-[420px] flex-col items-center justify-center text-center",
+  },
+  iconWrapper: {
+    base: "flex h-20 w-20 items-center justify-center rounded-full bg-muted transition-transform duration-200 ease-out group-hover:scale-110 group-hover:bg-muted/80",
+    icon: "h-10 w-10 transition-colors duration-200 group-hover:text-primary",
+  },
+  title: "mt-6 text-xl font-semibold",
+  description: "mb-8 mt-2 text-center text-sm font-normal leading-6 text-muted-foreground",
+  defaultRole: "status",
+  defaultAriaLabel: "No content available",
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

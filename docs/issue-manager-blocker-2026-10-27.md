@@ -7,6 +7,52 @@
 
 ---
 
+## 0. Addendum (2026-10-27, later same day) — Blocker Re-verified; §5 Assessment Corrected
+
+A subsequent hourly run (`on-pull.yml` schedule, run 4962) re-entered Issue Manager Mode and independently re-verified the permission blocker, then discovered a material correction to §5 below.
+
+### 0.1 Blocker re-verification (unchanged)
+
+| Probe                                        | Result                                                                                          |
+| -------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `gh issue edit 789 --add-label P3` (GraphQL) | ❌ `Resource not accessible by integration`                                                     |
+| `gh issue comment 789 --body "…"` (GraphQL)  | ❌ `Resource not accessible by integration`                                                     |
+| `gh issue close 789`                         | ❌ fails (same integration restriction)                                                         |
+| `POST /repos/…/issues/789/labels` (REST)     | ❌ HTTP 403 `Resource not accessible by integration`                                            |
+| Push branch modifying `.github/workflows/*`  | ❌ `refusing to allow a GitHub App to create or update workflow … without workflows permission` |
+| Push branch with non-workflow file           | ✅ succeeds (`contents: write` works for code)                                                  |
+
+The workflow-token self-heal path (add `issues: write` to `on-pull.yml` and push) remains **impossible**: GitHub Apps cannot push workflow-file changes without the `workflows` permission, which this token does not have. Human or PAT-with-`workflows`-scope action is still required.
+
+### 0.2 Correction to §5: Issue #496 is ALREADY IMPLEMENTED
+
+§5 below states that Repair Mode targeted **#496 [P0] Replace in-memory rate limiter with distributed store (Redis)** and was not started because the change "exceeds minimal, atomic changes."
+
+**That assessment was wrong.** The work described in #496 is already present and wired into `main`:
+
+| Acceptance criterion (from #496 body)       | Status in `main`                                                                                                                               |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| Redis-backed rate limiter implemented       | ✅ `packages/api/src/distributed-rate-limiter.ts` — `DistributedRateLimiter` (ioredis, ZSET sliding window)                                    |
+| Rate limits consistent across instances     | ✅ Shared Redis sorted-set state; global counters                                                                                              |
+| Configuration via environment variables     | ✅ `REDIS_URL` in `.env.example`; `IS_REDIS_CONFIGURED` / `RATE_LIMIT_*` in `@saasfly/common`                                                  |
+| Graceful degradation when Redis unavailable | ✅ `InMemoryRateLimiter` fallback + `logger.warn` on Redis init/check failure                                                                  |
+| Unit tests for rate limiter                 | ✅ `distributed-rate-limiter.test.ts`, `distributed-rate-limiter-sync.test.ts`, `rate-limiter.test.ts` — **98/98 passing** (verified this run) |
+| Documentation for setup/configuration       | ✅ `docs/redis-setup.md`, `docs/caching.md`                                                                                                    |
+
+Wiring evidence: `packages/api/src/trpc.ts` imports `getLimiter` / `getIdentifier` from `./distributed-rate-limiter` (lines 15–19) and the `rateLimit` middleware calls `await limiter.checkAsync(identifier)` (line 439), which routes through `DistributedRateLimiter` when `REDIS_URL` is set and the runtime is not Edge.
+
+**Conclusion:** #496 (and its near-duplicate #480) are **stale issues**, not unfinished work. The correct Repair Mode outcome for the P0 is to **close them as completed** — an action this loop cannot perform because of the same `issues: write` blocker.
+
+### 0.3 Implication for the next unblocked run
+
+Once `issues: write` is restored:
+
+1. Close **#496** and **#480** with a completion comment referencing `distributed-rate-limiter.ts` and `docs/redis-setup.md` (do **not** re-implement).
+2. Proceed with §3 (label normalization) and §4 (duplicate closures) as originally planned.
+3. Re-survey remaining P0/P1 issues for genuine Repair Mode candidates — none of the currently-open P0 items require new Redis work.
+
+---
+
 ## 1. Completed Work This Loop
 
 ### PR Handler Mode — SUCCESS
@@ -193,6 +239,8 @@ Semantic clusters found across the 82 open issues. Canonical issue recommendatio
 ---
 
 ## 5. Repair Mode (Step 4) — NOT STARTED
+
+> **Superseded by §0.2 above.** #496 is already implemented in `main` (98/98 rate-limiter tests pass). The only remaining action is closing the stale issue, which is blocked by the same `issues: write` permission gap. The text below is retained for historical context.
 
 Per contract, Repair Mode targets the highest-priority issue: **#496 [P0] Replace in-memory rate limiter with distributed store (Redis)**.
 

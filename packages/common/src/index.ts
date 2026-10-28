@@ -409,6 +409,7 @@ export {
   KEYBOARD_SHORTCUTS_TOKENS,
   GITHUB_STAR_TOKENS,
   EMPTY_PLACEHOLDER_TOKENS,
+  SITE_FOOTER_TOKENS,
 } from "./ui-tokens";
 export type {
   ButtonHeight,

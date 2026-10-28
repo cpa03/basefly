@@ -1,7 +1,7 @@
 import * as React from "react";
 import Image from "next/image";
 
-import { ASSETS } from "@saasfly/common";
+import { ASSETS, SITE_FOOTER_TOKENS } from "@saasfly/common";
 import { cn } from "@saasfly/ui";
 
 import { ModeToggle } from "~/components/mode-toggle";
@@ -11,34 +11,41 @@ function getCopyrightText(
 ): string | undefined {
   const currentYear = new Date().getFullYear();
   const copyrightTemplate =
-    typeof dict.copyright === "string" ? dict.copyright : "";
+    typeof dict?.copyright === "string" ? dict.copyright : "";
   return copyrightTemplate?.replace("${currentYear}", String(currentYear));
 }
 
 export function SiteFooter({
   className,
   dict,
+  role = SITE_FOOTER_TOKENS.footer.defaultRole,
+  "aria-label": ariaLabel = SITE_FOOTER_TOKENS.footer.defaultAriaLabel,
 }: {
   className?: string;
-  params: {
+  params?: {
     lang: string;
   };
-
-  dict: Record<string, string | Record<string, string>>;
+  dict?: Record<string, string | Record<string, string>>;
+  role?: string;
+  "aria-label"?: string;
 }): React.JSX.Element {
   return (
-    <footer className={cn(className)}>
-      <div className="container flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">
-        <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+    <footer
+      className={cn(SITE_FOOTER_TOKENS.footer.base, className)}
+      role={role}
+      aria-label={ariaLabel}
+    >
+      <div className={SITE_FOOTER_TOKENS.container}>
+        <div className={SITE_FOOTER_TOKENS.branding.wrapper}>
           <Image
             src={ASSETS.logo}
-            width="36"
-            height="36"
-            sizes="36px"
+            width={Number(SITE_FOOTER_TOKENS.branding.logoSize)}
+            height={Number(SITE_FOOTER_TOKENS.branding.logoSize)}
+            sizes={`${SITE_FOOTER_TOKENS.branding.logoSize}px`}
             alt="Basefly logo"
           />
-          <p className="text-center text-sm leading-loose md:text-left">
-            {getCopyrightText(dict)}
+          <p className={SITE_FOOTER_TOKENS.branding.copyrightText}>
+            {getCopyrightText(dict ?? {})}
           </p>
         </div>
         <ModeToggle />

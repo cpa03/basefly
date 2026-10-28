@@ -1663,6 +1663,24 @@ export const EMPTY_PLACEHOLDER_TOKENS = {
   defaultAriaLabel: "No content available",
 } as const;
 
+/**
+ * SiteFooter design tokens
+ * Centralized layout, styling, transitions, and accessibility for SiteFooter component
+ */
+export const SITE_FOOTER_TOKENS = {
+  footer: {
+    base: "w-full border-t border-border bg-background transition-colors duration-200",
+    defaultRole: "contentinfo" as const,
+    defaultAriaLabel: "Site footer",
+  },
+  container: "container flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0",
+  branding: {
+    wrapper: "flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0 transition-transform duration-150 ease-out hover:scale-[1.01]",
+    logoSize: "36",
+    copyrightText: "text-center text-sm leading-loose text-muted-foreground md:text-left",
+  },
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

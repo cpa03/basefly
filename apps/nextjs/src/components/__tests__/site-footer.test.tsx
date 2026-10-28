@@ -83,9 +83,7 @@ describe("SiteFooter", () => {
       `© ${currentYear} Basefly. All rights reserved.`,
     );
     expect(copyright).toBeInTheDocument();
-    expect(copyright).toHaveClass(
-      SITE_FOOTER_TOKENS.branding.copyrightText,
-    );
+    expect(copyright).toHaveClass(SITE_FOOTER_TOKENS.branding.copyrightText);
   });
 
   it("renders ModeToggle component", () => {

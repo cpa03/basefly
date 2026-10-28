@@ -4,6 +4,38 @@
 
 ### High Priority Tasks
 
+#### Task: [CONSOLIDATE] Centralized SiteFooter design tokens under SITE_FOOTER_TOKENS
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: Consolidation
+- **Files**: `packages/common/src/ui-tokens.ts`, `packages/common/src/index.ts`, `apps/nextjs/src/components/site-footer.tsx`
+
+**Description**:
+Centralized SiteFooter layout, container, logo size, copyright text styling, and default accessibility attributes (`defaultRole`, `defaultAriaLabel`) under `SITE_FOOTER_TOKENS` inside `packages/common/src/ui-tokens.ts` and updated `apps/nextjs/src/components/site-footer.tsx` to reference them.
+
+**Success Criteria**:
+
+- [x] Defined `SITE_FOOTER_TOKENS` inside `packages/common/src/ui-tokens.ts`.
+- [x] Exported `SITE_FOOTER_TOKENS` from `@saasfly/common`.
+- [x] Refactored `apps/nextjs/src/components/site-footer.tsx` to reference `SITE_FOOTER_TOKENS`.
+
+#### Task: [STRENGTHEN] Enhanced SiteFooter component with tactile spring scale micro-interaction and landmark accessibility attributes
+
+- **Status**: ✅ Completed
+- **Priority**: High
+- **Type**: UX Improvement / Accessibility
+- **Files**: `apps/nextjs/src/components/site-footer.tsx`, `apps/nextjs/src/components/__tests__/site-footer.test.tsx`
+
+**Description**:
+Enhanced `SiteFooter` component branding section with a tactile spring scale micro-interaction (`hover:scale-[1.01]`), smooth color/scale transitions, and landmark accessibility attributes (`role="contentinfo"`, `aria-label="Site footer"`).
+
+**Success Criteria**:
+
+- [x] Added spring-scale hover micro-interaction to branding wrapper.
+- [x] Added `role="contentinfo"` and default `aria-label` attributes to footer element.
+- [x] Added unit tests in `apps/nextjs/src/components/__tests__/site-footer.test.tsx`.
+
 #### Task: [CONSOLIDATE] Centralized UserAvatar design tokens and fallback styling under AVATAR_TOKENS
 
 - **Status**: ✅ Completed
@@ -3784,4 +3816,4 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 ## PR Handler Audit — 2026-10-14 (loop 13)
 
 - [AUDIT] PR #1557 "Centralize SkipLink design tokens and implement tactile micro-UX" — MERGED at 9351956 via `gh pr merge --admin --merge`. Branch `agent-4989726599598720847` was already 0 behind / 1 ahead of main (no rebase needed, MERGEABLE). Labels normalized to `refactor` + `P3`. Local gates all green: typecheck 9/9, lint 9/9 (zero warnings), tests 2206/2206 (incl. new SkipLink token test), `pnpm build` success. Systemic CI blockers persist: Vercel preview deploy fails (environmental, not code — local prod build passed) and `pull` workflow `On-Pull` step hung >25min; both are repo-wide infra issues, not PR regressions. Remote branch deleted after successful merge. No linked issues to close.
-[ ] error: Unresolved linting errors in CMZ self-heal scan
+  [ ] error: Unresolved linting errors in CMZ self-heal scan

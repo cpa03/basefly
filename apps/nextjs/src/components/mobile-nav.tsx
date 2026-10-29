@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 
+import { MOBILE_NAV_TOKENS } from "@saasfly/common";
 import { Z_INDEX } from "@saasfly/common/config/ui";
 import { cn } from "@saasfly/ui";
 import { Logo } from "@saasfly/ui/icons";
@@ -23,30 +24,28 @@ export function MobileNav({ items, children, menuItemClick }: MobileNavProps) {
   return (
     <section
       id="mobile-navigation"
-      role="dialog"
+      role={MOBILE_NAV_TOKENS.section.defaultRole}
       aria-modal="true"
-      aria-label="Mobile navigation menu"
+      aria-label={MOBILE_NAV_TOKENS.section.defaultAriaLabel}
       className={cn(
-        "fixed inset-0 top-16",
+        MOBILE_NAV_TOKENS.section.base,
         Z_INDEX.modal,
-        "grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto p-6 pb-32 shadow-md animate-in slide-in-from-bottom-80 md:hidden",
       )}
     >
-      <div className="relative z-20 grid gap-6 rounded-md bg-popover p-4 text-popover-foreground shadow-md">
-        <Link href="/" className="flex items-center space-x-2">
+      <div className={MOBILE_NAV_TOKENS.wrapper}>
+        <Link href="/" className={MOBILE_NAV_TOKENS.brandLink.base}>
           <Logo />
           <span className="font-bold">{siteConfig.name}</span>
         </Link>
-        <nav className="text-sm" aria-label="Main navigation">
-          <ul className="grid grid-flow-row auto-rows-max">
+        <nav className={MOBILE_NAV_TOKENS.nav.base} aria-label={MOBILE_NAV_TOKENS.nav.defaultAriaLabel}>
+          <ul className={MOBILE_NAV_TOKENS.list}>
             {items.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.disabled ? "#" : item.href}
                   className={cn(
-                    "flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline",
-                    item.disabled &&
-                      "pointer-events-none cursor-not-allowed opacity-60",
+                    MOBILE_NAV_TOKENS.itemLink.base,
+                    item.disabled && MOBILE_NAV_TOKENS.itemLink.disabled,
                   )}
                   onClick={
                     item.disabled ? (e) => e.preventDefault() : menuItemClick

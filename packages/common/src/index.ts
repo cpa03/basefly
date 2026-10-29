@@ -410,6 +410,7 @@ export {
   GITHUB_STAR_TOKENS,
   EMPTY_PLACEHOLDER_TOKENS,
   SITE_FOOTER_TOKENS,
+  MOBILE_NAV_TOKENS,
 } from "./ui-tokens";
 export type {
   ButtonHeight,

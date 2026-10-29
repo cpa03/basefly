@@ -1686,6 +1686,32 @@ export const SITE_FOOTER_TOKENS = {
   },
 } as const;
 
+/**
+ * MobileNav design tokens
+ * Centralized layout, styling, transitions, spring micro-interactions, and accessibility for MobileNav component
+ */
+export const MOBILE_NAV_TOKENS = {
+  section: {
+    base: "fixed inset-0 top-16 grid h-[calc(100vh-4rem)] grid-flow-row auto-rows-max overflow-auto p-6 pb-32 shadow-md animate-in slide-in-from-bottom-80 md:hidden",
+    defaultRole: "dialog" as const,
+    defaultAriaLabel: "Mobile navigation menu",
+  },
+  wrapper:
+    "relative z-20 grid gap-6 rounded-md bg-popover p-4 text-popover-foreground shadow-md",
+  brandLink: {
+    base: "flex items-center space-x-2 transition-transform duration-150 ease-in-out hover:scale-[1.02] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-md",
+  },
+  nav: {
+    base: "text-sm",
+    defaultAriaLabel: "Main navigation",
+  },
+  list: "grid grid-flow-row auto-rows-max",
+  itemLink: {
+    base: "flex w-full items-center rounded-md p-2 text-sm font-medium hover:underline transition-transform duration-150 ease-in-out hover:scale-[1.01] active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+    disabled: "pointer-events-none cursor-not-allowed opacity-60",
+  },
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

@@ -12,20 +12,15 @@ export const Meteors = ({
   className?: string;
 }) => {
   const meteorCount = number ?? METEORS_TOKENS.defaultCount;
-  const meteorStylesRef = React.useRef<
+  const [meteorStyles] = React.useState<
     { left: string; animationDelay: string; animationDuration: string }[]
-  >([]);
-
-  if (meteorStylesRef.current.length !== meteorCount) {
-    /* eslint-disable react-hooks/purity -- Initialize random styles once per meteor count */
-    meteorStylesRef.current = Array.from({ length: meteorCount }, () => ({
+  >(() =>
+    Array.from({ length: meteorCount }, () => ({
       left: Math.floor(Math.random() * (400 - -400) + -400) + "px",
       animationDelay: Math.random() * (0.8 - 0.2) + 0.2 + "s",
       animationDuration: Math.floor(Math.random() * (10 - 2) + 2) + "s",
-    }));
-    /* eslint-enable react-hooks/purity */
-  }
-  const meteorStyles = meteorStylesRef.current;
+    })),
+  );
 
   return (
     <>

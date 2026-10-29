@@ -106,18 +106,14 @@ const SVG = ({
     "#604483",
   ];
 
-  const randomDelaysRef = React.useRef<
+  const [randomDelays] = React.useState<
     { delay: number; repeatDelay: number }[]
-  >([]);
-  if (randomDelaysRef.current.length === 0) {
-    /* eslint-disable react-hooks/purity -- Initialize random delays once on first render */
-    randomDelaysRef.current = paths.map(() => ({
+  >(() =>
+    paths.map(() => ({
       delay: Math.floor(Math.random() * 10),
       repeatDelay: Math.floor(Math.random() * 10 + 2),
-    }));
-    /* eslint-enable react-hooks/purity */
-  }
-  const randomDelays = randomDelaysRef.current;
+    })),
+  );
 
   return (
     <motion.svg

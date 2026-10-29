@@ -11,10 +11,6 @@ import tailwindcssAnimate from "tailwindcss-animate";
 import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette";
 import createPlugin from "tailwindcss/plugin";
 
-// Tailwind plugin internals use dynamic type patterns not expressible in TS
-/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument */
-type AnyCssInJs = any;
-
 const addVariablesForColors = createPlugin((api) => {
   const allColors = flattenColorPalette(api.theme("colors")) as Record<
     string,
@@ -24,9 +20,9 @@ const addVariablesForColors = createPlugin((api) => {
     Object.entries(allColors).map(([key, val]) => [`--${key}`, val]),
   );
 
-  api.addBase({ ":root": newVars } as AnyCssInJs);
+  type AddBaseArg = Parameters<typeof api.addBase>[0];
+  api.addBase({ ":root": newVars } as unknown as AddBaseArg);
 });
-/* eslint-enable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument */
 
 export default {
   darkMode: "class",

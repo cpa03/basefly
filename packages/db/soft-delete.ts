@@ -61,7 +61,7 @@ const createRestoreData = () => ({ deletedAt: null });
  * const clusters = await clusterService.findAllActive(userId);
  * ```
  */
-/* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return -- Kysely dynamic table/column generics (updateTable(this.tableName) etc.) erase to `any`; properly typing every dynamic access would require per-table wrapper types far beyond this module's scope. */
 export class SoftDeleteService<T extends keyof DB> {
   constructor(private tableName: T) {}
 

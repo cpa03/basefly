@@ -74,6 +74,9 @@ export const InfiniteMovingCards = ({
         );
       }
 
+      // Enable the CSS animation only after mount + DOM duplication so the
+      // scroller starts from the correct position; a render-time flip would
+      // animate before the duplicated nodes exist.
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setStart(true);
     }

@@ -166,9 +166,11 @@ export function getIdentifier(
 
   if (req) {
     const forwarded = req.headers.get("x-forwarded-for");
+    // First X-Forwarded-For entry, then X-Real-IP; empty values fall through.
     const ip =
-      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing -- intentional truthy check: empty string should fall through
-      forwarded?.split(",")[0] || req.headers.get("x-real-ip") || "unknown";
+      [forwarded?.split(",")[0], req.headers.get("x-real-ip")].find(
+        (candidate) => candidate != null && candidate !== "",
+      ) ?? "unknown";
     return `ip:${ip}`;
   }
 

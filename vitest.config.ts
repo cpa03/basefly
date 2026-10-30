@@ -80,6 +80,10 @@ export default defineConfig({
       // (Vite uses prefix matching — first match wins)
       "@saasfly/auth": resolve(__dirname, "./packages/auth"),
       "@saasfly/db": resolve(__dirname, "./packages/db"),
+      "@saasfly/ui/accordion": resolve(
+        __dirname,
+        "./packages/ui/src/accordion.tsx",
+      ),
       "@saasfly/ui/icons": resolve(__dirname, "./packages/ui/src/icons.tsx"),
       "@saasfly/ui/card": resolve(__dirname, "./packages/ui/src/card.tsx"),
       "@saasfly/ui/skeleton": resolve(

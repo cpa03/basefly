@@ -240,3 +240,42 @@ Close as duplicate → keep canonical. Merge bodies before closing so no detail 
 Everything that _can_ ship has been shipped: analysis, maps, verification, and this audit document via PR.
 
 **Waiting for human review**: apply §3 labels, execute §6 closures, bulk-close §2, land the #305 patch (10-29 audit §4), and grant the two permissions to unblock future loops.
+
+---
+
+## 10. Addendum — Later Re-Entry Same Day (Loop 57, ~14:46 UTC)
+
+A subsequent scheduled run re-entered Issue Manager Mode (0 open PRs, 82 open issues — no drift since loop 56) and produced **new, first-hand evidence** that upgrades three claims above:
+
+### 10.1 Blockers re-verified first-hand
+
+| Probe                                      | Result                                                                                                                      |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
+| `gh issue edit --add-label` (39 issues)    | ❌ 403 `Resource not accessible by integration` — label map (§3) still unappliable                                          |
+| `gh issue comment`                         | ❌ 403 same                                                                                                                 |
+| `git push` code/docs branch                | ✅ allowed                                                                                                                  |
+| **`git push` of `iterate.yml` fix branch** | ❌ **first-hand rejection**: `refusing to allow a GitHub App to create or update workflow … without 'workflows' permission` |
+
+The #305 fix was re-authored on a branch off `origin/main` (12+/2-, YAML parses, `npm ci` count → 0, mirrors `on-pull.yml`) and the push was **actually attempted this run** — rejected. The local branch was deleted (remote ref never created).
+
+### 10.2 Three "prior audits" evidence claims upgraded to concrete verification
+
+| Issue    | Prior evidence                 | This run's concrete evidence                                                                             |
+| -------- | ------------------------------ | -------------------------------------------------------------------------------------------------------- |
+| **#515** | "CSRF middleware present"      | `apps/nextjs/src/lib/csrf.ts` + `csrf.test.ts`; wired in `proxy.ts` and edge tRPC route                  |
+| **#498** | "Role-based checks in trpc.ts" | `packages/api/src/rbac.ts` exports `requireRole(Role)` (line 349) applied via `protectedProcedure.use()` |
+| **#755** | "prior audit verified index"   | `schema.prisma` `Customer` has `@@index([authUserId, plan, stripeCurrentPeriodEnd])` (line 44)           |
+
+### 10.3 CI re-verified green (independent of loop 56)
+
+```
+pnpm install --frozen-lockfile  → OK
+pnpm typecheck                  → 9/9 successful
+pnpm lint                       → 9/9 successful
+pnpm test                       → 160 files, 2241/2241 passed
+pre-commit hook (fix branch)    → typecheck 9/9 + 2241/2241 + lint-staged OK
+```
+
+### 10.4 Conclusion
+
+Unchanged: **blocked** on `issues: write` (§3/§6/§2 execution) and `workflows: write` (#305). No P0/P1 issue requires code work — repair-mode target #496 remains fully shipped. No new issues or PRs were created (issue API write is denied; a duplicate audit file was deliberately avoided — this addendum extends the existing loop-56 document instead).

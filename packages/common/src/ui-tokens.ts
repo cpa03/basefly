@@ -1712,6 +1712,52 @@ export const MOBILE_NAV_TOKENS = {
   },
 } as const;
 
+/**
+ * Header design tokens
+ * Centralized layout, styling, and accessibility for DashboardHeader component
+ */
+export const HEADER_TOKENS = {
+  container: {
+    base: "flex items-center justify-between px-2 transition-all duration-200 ease-out",
+    defaultRole: "banner" as const,
+    defaultAriaLabel: "Dashboard header",
+  },
+  heading: "font-heading text-3xl md:text-4xl tracking-tight text-foreground",
+  text: "text-lg text-muted-foreground mt-1",
+  actions: {
+    base: "flex items-center gap-2 transition-transform duration-150 ease-in-out hover:scale-[1.01] active:scale-[0.99]",
+  },
+} as const;
+
+/**
+ * Questions FAQ design tokens
+ * Centralized layout, styling, content strings, and accessibility for Questions FAQ component
+ */
+export const QUESTIONS_TOKENS = {
+  container: "w-full transition-all duration-200 ease-out",
+  defaultAriaLabel: "Frequently asked questions",
+  items: [
+    {
+      id: "item-1",
+      question: "About Saasfly",
+      answer:
+        "Nextify Limited’s team of experienced developers has invested years into refining our software development methodologies. We’re proud to present our starter kit, a culmination of best practices and proven tools extracted from countless successful projects. This extensively tested kit is more than just code, it’s a cornerstone of our daily operations, consistently helping us deliver exceptional results for our clients. While informed by our unique experiences, the kit’s solutions are meticulously chosen to address common challenges and fit a wide range of scenarios. We believe it offers a streamlined and efficient framework for building SaaS products, empowering you to achieve your project goals.",
+    },
+    {
+      id: "item-2",
+      question: "Why Next.js?",
+      answer:
+        "Next.js is a powerful and versatile framework that offers a wide range of benefits for building web applications. It is known for its excellent performance, strong developer experience, and comprehensive feature set.",
+    },
+    {
+      id: "item-3",
+      question: "Is this starter for you?",
+      answer:
+        "If you’re embarking on the development of a SaaS service and are in search of a solid foundation, meticulously crafted architecture, and an enriching developer experience, then this starter kit stands as a prime resource to consider. It encompasses a holistic collection of best practices and tools, each thoroughly vetted and demonstrated to be effective across numerous projects. Even if you’re uncertain about whether a starter kit fits your project’s needs, this resource still holds significant value. By delving into the starter kit, you have the opportunity to garner inspiration from its array of solutions to common challenges encountered by developers. This exploration can serve as a pathway to identifying commendable practices and devising robust solutions tailored to your specific development process. In summary, whether you opt to leverage this starter kit in its entirety or merely extract certain ideas from it, we are confident it provides indispensable insights and tools for anyone aiming to create a high-caliber SaaS service.",
+    },
+  ],
+} as const;
+
 export type ButtonHeight = keyof typeof BUTTON_TOKENS.heights;
 export type ButtonPadding = keyof typeof BUTTON_TOKENS.padding;
 export type InputHeight = keyof typeof INPUT_TOKENS.heights;

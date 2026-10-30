@@ -1,24 +1,35 @@
 import React from "react";
+import { HEADER_TOKENS } from "@saasfly/common";
 
 interface DashboardHeaderProps {
   heading: string;
   text?: string;
   children?: React.ReactNode;
+  className?: string;
+  role?: string;
+  "aria-label"?: string;
 }
 
 export const DashboardHeader = React.memo(function DashboardHeader({
   heading,
   text,
   children,
+  className = "",
+  role = HEADER_TOKENS.container.defaultRole,
+  "aria-label": ariaLabel = HEADER_TOKENS.container.defaultAriaLabel,
 }: DashboardHeaderProps): React.JSX.Element {
   return (
-    <div className="flex items-center justify-between px-2">
+    <header
+      role={role}
+      aria-label={ariaLabel}
+      className={`${HEADER_TOKENS.container.base} ${className}`.trim()}
+    >
       <div className="grid gap-1">
-        <h1 className="font-heading text-3xl md:text-4xl">{heading}</h1>
-        {text && <p className="text-lg text-muted-foreground">{text}</p>}
+        <h1 className={HEADER_TOKENS.heading}>{heading}</h1>
+        {text && <p className={HEADER_TOKENS.text}>{text}</p>}
       </div>
-      {children}
-    </div>
+      {children && <div className={HEADER_TOKENS.actions.base}>{children}</div>}
+    </header>
   );
 });
 

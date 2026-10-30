@@ -3808,6 +3808,10 @@ Consolidate animation patterns across Radix UI components by centralizing animat
 - [STRENGTHEN] Refactored packages/ui/src/toast.tsx to consume TOAST_TOKENS from @saasfly/common and incorporated tactile spring scale micro-interactions for ToastClose and ToastAction.
 - [CONSOLIDATE] Centralized MobileNav layout, styling, transitions, spring micro-interactions, and accessibility attributes under MOBILE_NAV_TOKENS inside packages/common/src/ui-tokens.ts.
 - [STRENGTHEN] Refactored apps/nextjs/src/components/mobile-nav.tsx to consume MOBILE_NAV_TOKENS from @saasfly/common and added unit test coverage in apps/nextjs/src/components/__tests__/mobile-nav.test.tsx.
+- [CONSOLIDATE] Centralized DashboardHeader layout, styling, and default accessibility attributes under HEADER_TOKENS inside packages/common/src/ui-tokens.ts.
+- [STRENGTHEN] Refactored apps/nextjs/src/components/header.tsx to consume HEADER_TOKENS from @saasfly/common with banner landmark role and added unit test coverage in apps/nextjs/src/components/__tests__/header.test.tsx.
+- [CONSOLIDATE] Centralized Questions FAQ accordion layout, content strings, and default accessibility attributes under QUESTIONS_TOKENS inside packages/common/src/ui-tokens.ts.
+- [STRENGTHEN] Refactored apps/nextjs/src/components/questions.tsx to consume QUESTIONS_TOKENS from @saasfly/common and added unit test coverage in apps/nextjs/src/components/__tests__/questions.test.tsx.
 
 ## PR Handler Audit — 2026-10-15 (loop 18)
 

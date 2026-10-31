@@ -142,3 +142,83 @@ None — all work was direct tool execution (label API calls blocked, so no para
 3. Close duplicate clusters in §4 with cross-reference comments.
 4. Close stale #720 / #748 (.nvmrc already valid).
 5. Re-run Phase 0 — if issue count drops and no P0 remains, proceed to Phase 1 (audit) or next-highest repair (#498 P1 RBAC, #515 P1 CSRF, #500/#501 P1 tests).
+
+---
+
+## 8. Addendum — Later Re-Entry Same Day (on-pull loop 2, ~09:10 UTC)
+
+A subsequent scheduled run under the same `on-pull.yml` workflow re-entered
+ISSUE MANAGER MODE (0 open PRs, 82 open issues — no drift) and produced
+**first-hand evidence that contradicts §1 above**: the `issues: write` fix
+claimed to be "Included in this PR" **did not land**.
+
+### 8.1 The claimed fix never shipped
+
+| Claim (§1)                                                                | Reality (verified this run)                                                                                                                                                                                       |
+| ------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "Fix: add `issues: write` to the permissions block. Included in this PR." | **Not merged.** PR #1634 (`docs: add issue triage report 2026-10-31`) touched only `docs/issue-triage-2026-10-31.md` — **no workflow file changed**.                                                              |
+| —                                                                         | `main @ c492a2d` `.github/workflows/on-pull.yml` permissions block is still `contents: write`, `pull-requests: write`, `actions: read`, `repository-projects: write`, `id-token: write` — **no `issues: write`**. |
+| —                                                                         | Git history confirms the bot cannot touch workflows: `caab1f5 chore: restore workflow files to remote state (no workflows write permission)`.                                                                     |
+
+**Root cause (first-hand)**: this run's token inherits permissions from
+`on-pull.yml`, confirmed via `GITHUB_WORKFLOW_REF=cpa03/basefly/.github/workflows/on-pull.yml@refs/heads/main`
+and `GITHUB_EVENT_NAME=schedule`. Every issue mutation re-probed this run and
+re-failed with `403 Resource not accessible by integration`.
+
+> Note: `iterate.yml` _does_ declare `issues: write`, but this loop is not
+> triggered by `iterate.yml`, so that grant does not apply to this token.
+
+### 8.2 P0 #496 — re-verified resolved (fresh, first-hand)
+
+Re-verified against `main @ c492a2d` by direct code read + test execution this
+run (not copied from prior audits):
+
+| Acceptance Criterion                        | Status | First-hand evidence this run                                                                                     |
+| ------------------------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------- |
+| Redis-backed rate limiter implemented       | ✅     | `packages/api/src/distributed-rate-limiter.ts` — `DistributedRateLimiter` (ioredis ZSET sliding window)          |
+| Rate limits consistent across all instances | ✅     | `ZREMRANGEBYSCORE`/`ZCARD`/`ZADD`/`EXPIRE` pipeline, shared Redis state                                          |
+| Configuration via environment variables     | ✅     | `REDIS_URL`, `IS_REDIS_CONFIGURED`, `RATE_LIMIT_DEFAULTS` in `packages/common/src/config/env.ts`; `.env.example` |
+| Graceful degradation when Redis unavailable | ✅     | `InMemoryRateLimiter` fallback + `logger.warn` on connect failure                                                |
+| Unit tests for rate limiter                 | ✅     | **98/98 passed** this run (3 files)                                                                              |
+| Documentation for setup/configuration       | ✅     | `docs/redis-setup.md` (cites #496)                                                                               |
+
+**Wired into tRPC**: `packages/api/src/trpc.ts` imports `getLimiter`/
+`getIdentifier` from `./distributed-rate-limiter`; the `rateLimit` middleware
+calls `await limiter.checkAsync(identifier)`.
+
+**Repair-mode decision**: #496 is fully shipped. Creating a PR to "fix" it
+would be a duplicate/speculative change, which the operating contract forbids.
+No code change made. Closure remains the only outstanding action — blocked by
+§8.1.
+
+### 8.3 CI re-verified green (independent evidence, this run)
+
+```
+pnpm install --frozen-lockfile  → OK (7.6s)
+pnpm typecheck                  → 9/9 successful
+pnpm lint                       → 9/9 successful
+pnpm test                       → 160 files, 2241/2241 passed
+rate-limiter subset             → 3 files, 98/98 passed
+```
+
+### 8.4 Permission matrix (re-probed first-hand this run)
+
+| Operation                                  | Result                                       |
+| ------------------------------------------ | -------------------------------------------- |
+| `gh issue edit` / comment / close / create | ❌ 403 — no `issues: write` on `on-pull.yml` |
+| push `.github/workflows/*`                 | ❌ rejected — no `workflows` permission      |
+| push ordinary code/docs branch             | ✅ allowed                                   |
+| `gh pr create`                             | ✅ allowed                                   |
+
+### 8.5 Final state
+
+**blocked** — 4th consecutive day. Two permissions gate _all_ autonomous issue
+hygiene and CI-file repairs. **Single highest-leverage fix for the repo owner**:
+add `issues: write` to the `permissions:` block of
+`.github/workflows/on-pull.yml` (this loop's trigger). That one line unblocks
+the label map (§3) and every duplicate/stale closure (§4, §7) that have been
+prepared and re-verified across four consecutive runs.
+
+Everything shippable this run has shipped: fresh verification (§8.2–§8.3) and
+this addendum, via PR. No issues were mutated (API denied) and no speculative
+code changes were made.

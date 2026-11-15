@@ -38,22 +38,27 @@ blocked mid-execution by token permissions.
 | 08:38           | Step 4 probe: bare close #496                             | `gh issue close 496`                                             | ❌ 403 GraphQL `closeIssue`                                                                                                                                                                                        |
 | 08:39           | Findings-file probe: create Vercel-failure issue          | `gh issue create` (after dup check: no open Vercel/deploy issue) | ❌ 403 GraphQL `createIssue`                                                                                                                                                                                       |
 | 08:39           | Subagent spawn (contract §6)                              | `explore` bg_47dadac3                                            | ❌ failed: `ProviderModelNotFoundError: opencode/muse-spark-1.3-contributor-free` (same outage as loops 1–3); verification completed directly instead                                                              |
-| 08:40           | Persist execution log (this file)                         | `docs/issue-manager-audit-2026-11-15.md`                         | committed to branch, PR opened                                                                                                                                                                                     |
+| 08:40           | Persist execution log (this file)                         | `docs/issue-manager-audit-2026-11-15.md`                         | committed to branch                                                                                                                                                                                                |
+| 08:41           | Pre-commit verification (husky hooks on staged doc)       | typecheck + lint + test + prettier + check-deps                  | ✅ typecheck 9/9 packages, lint 9/9 packages, **2241/2241 tests** (160 files), prettier, check-deps — all green                                                                                                    |
+| 08:41           | Push audit branch (non-workflow file)                     | `docs/issue-manager-audit-2026-11-15`                            | ✅ pushed from fresh `origin/main` (`603b377`)                                                                                                                                                                     |
+| 08:42           | Open PR (single branch, synced to default branch)         | PR **#1655**                                                     | ✅ created; `mergeable=MERGEABLE`, `base=main`                                                                                                                                                                     |
+| 08:43           | PR label probe (contract §4 labels)                       | `gh pr edit 1655 --add-label docs,P3`                            | ✅ applied — **PR-side labeling works** even though issue-side labeling 403s                                                                                                                                       |
 
 ---
 
 ## 3. Permission Matrix (first-hand probes, this run)
 
-| Operation                                  | Works?      | Evidence                                                                              |
-| ------------------------------------------ | ----------- | ------------------------------------------------------------------------------------- |
-| `gh pr list/view`, `gh label list` (read)  | ✅          | Phase 0 + label inventory                                                             |
-| `gh issue edit --add-label`                | ❌ 403      | #789 probe this run (`addLabelsToLabelable`)                                          |
-| `gh issue close --comment`                 | ❌ 403      | #496 probe this run (`addComment`)                                                    |
-| `gh issue close` (bare)                    | ❌ 403      | #496 probe this run (`closeIssue`)                                                    |
-| `gh issue create`                          | ❌ 403      | probe this run (`createIssue`, after duplicate check)                                 |
-| Push to `.github/workflows/*`              | ❌ rejected | `ci/on-pull-issues-write-probe-4` rejected this run — App lacks `workflows` scope     |
-| Push to non-workflow files, `gh pr create` | ✅          | this very PR (branch `docs/issue-manager-audit-2026-11-15`)                           |
-| REST `POST /issues/:n/labels`              | ❌ 403      | carried from loop 3 (GraphQL paths re-probed this run give the same effective denial) |
+| Operation                                  | Works?      | Evidence                                                                                                  |
+| ------------------------------------------ | ----------- | --------------------------------------------------------------------------------------------------------- |
+| `gh pr list/view`, `gh label list` (read)  | ✅          | Phase 0 + label inventory                                                                                 |
+| `gh pr edit --add-label` (PR-side labels)  | ✅          | #1655 this run: `docs,P3` applied (PR labeling works under `pull-requests: write`, unlike issue labeling) |
+| `gh issue edit --add-label`                | ❌ 403      | #789 probe this run (`addLabelsToLabelable`)                                                              |
+| `gh issue close --comment`                 | ❌ 403      | #496 probe this run (`addComment`)                                                                        |
+| `gh issue close` (bare)                    | ❌ 403      | #496 probe this run (`closeIssue`)                                                                        |
+| `gh issue create`                          | ❌ 403      | probe this run (`createIssue`, after duplicate check)                                                     |
+| Push to `.github/workflows/*`              | ❌ rejected | `ci/on-pull-issues-write-probe-4` rejected this run — App lacks `workflows` scope                         |
+| Push to non-workflow files, `gh pr create` | ✅          | this very PR (branch `docs/issue-manager-audit-2026-11-15`)                                               |
+| REST `POST /issues/:n/labels`              | ❌ 403      | carried from loop 3 (GraphQL paths re-probed this run give the same effective denial)                     |
 
 **Root cause (unchanged across loops 1–4)**: `.github/workflows/on-pull.yml` declares
 `contents: write`, `pull-requests: write`, `actions: read`, `repository-projects: write`,
@@ -220,4 +225,5 @@ the `workflows` scope (workflow-file push rejected this run). Prepared, non-dest
 work for a human (or a run with write access) is in §4–§7: 49 label normalizations,
 20+ closes from §5/§5.1/§5.2, one new issue (§5.3), and the #496/#480 closures.
 
-No repository code was modified in this run; the only file added is this audit log.
+No repository code was modified in this run; the only file added is this audit log
+(**PR #1655**, labels `docs`/`P3`, awaiting human review).

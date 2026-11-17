@@ -10,10 +10,10 @@
 
 ## 1. Active Phase & Decision Summary
 
-| Order | Phase                            | Why it ran                                                                                                      | Outcome                                              |
-| ----- | -------------------------------- | --------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| 1     | Phase 0 → **ISSUE MANAGER MODE** | 0 open PRs at entry (`gh pr list --state open` → empty); **82 open issues**                                     | Steps 1–4 executed to the limit of token permissions |
-| 2     | Fail-safe stop                   | All issue-mutation GraphQL paths return 403; workflow-file push expected rejected (App lacks `workflows` scope) | Final state: **blocked (needs human)**               |
+| Order | Phase                            | Why it ran                                                                                                   | Outcome                                                    |
+| ----- | -------------------------------- | ------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------- |
+| 1     | Phase 0 → **ISSUE MANAGER MODE** | 0 open PRs at entry (`gh pr list --state open` → empty); **82 open issues**                                  | Steps 1–4 executed to the limit of token permissions       |
+| 2     | Fail-safe stop                   | All issue-mutation GraphQL paths return 403; workflow-file push rejected (App lacks `workflows` scope, 10th) | Final state: **blocked (needs human)**; PR #1660 delivered |
 
 Phase 1 (audit), Phase 2 (hardening), Phase 3 (expansion) were **NOT** activated — a phase transition requires the active phase to fully complete first, and ISSUE MANAGER MODE cannot complete Steps 1–4 issue mutations under this token.
 
@@ -24,7 +24,7 @@ Phase 1 (audit), Phase 2 (hardening), Phase 3 (expansion) were **NOT** activated
 - Rate-limiter subset re-run: **98/98 passed** (3 files, 1.28s).
 - Step 1 delta recomputed from live dump: **49** issues need label action — identical to loops 1–N (no drift).
 - Step 2/3 clusters re-derived (§5) — closures prepared, not applied (403).
-- Genuinely open code defect re-confirmed: `.github/workflows/iterate.yml:72` and `:342` still `npm ci || true` (canonical **#305** cluster) — **cannot ship**: push to `.github/workflows/*` rejected by GitHub App without `workflows` scope (prior loops: 9 consecutive rejections).
+- Genuinely open code defect re-confirmed: `.github/workflows/iterate.yml:72` and `:342` still `npm ci || true` (canonical **#305** cluster) — fix prepared on local branch `ci/iterate-pnpm-305` (pnpm setup + `pnpm install --frozen-lockfile` + cache key → `pnpm-lock.yaml`); **push rejected** (10th consecutive): "refusing to allow a GitHub App to create or update workflow … without `workflows` permission". Local branch discarded.
 
 Repair mode (Step 4) selected **#496 (P0)**; it is shipped, so its only correct action is closure — blocked by 403. No legitimate code change remains among labeled P0/P1.
 
@@ -33,7 +33,7 @@ Repair mode (Step 4) selected **#496 (P0)**; it is shipped, so its only correct 
 ## 2. Action Log
 
 | Timestamp (UTC) | Action                                         | Target                                                      | Result                                                                                                 |
-| --------------- | ---------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | --- | ------------------------------------------------------ |
+| --------------- | ---------------------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | 18:47           | Phase 0.1: list open PRs                       | repo                                                        | **0 open PRs**                                                                                         |
 | 18:47           | Phase 0.2: list open issues + labels           | repo                                                        | **82 open issues** → ISSUE MANAGER MODE                                                                |
 | 18:47           | Skill inventory (contract §5)                  | `.opencode/skills/`                                         | 14 skills present; `github-workflow-automation` loaded (§8)                                            |
@@ -43,24 +43,25 @@ Repair mode (Step 4) selected **#496 (P0)**; it is shipped, so its only correct 
 | 18:49           | Permission probe: create                       | `gh issue create`                                           | ❌ 403 GraphQL `createIssue`                                                                           |
 | 18:50           | Permission inventory                           | `gh auth status`, `gh api repos/…`                          | token = `github-actions[bot]`; `admin/maintain/pull/push/triage` all **false**; `GITHUB_WORKFLOW=pull` |
 | 18:51           | Shipped-sweep: P0/P1 + security/DX high-signal | greps over current `main`                                   | all cited items shipped — §6.1                                                                         |
-| 18:52           | Open-gap check: `iterate.yml` npm→pnpm         | `.github/workflows/iterate.yml:72,342`                      | ❌ still `npm ci                                                                                       |     | true`; fix prepared, push App-blocked (workflow scope) |
+| 18:52           | Open-gap check: `iterate.yml` npm→pnpm         | `.github/workflows/iterate.yml:72,342`                      | still npm-instead-of-pnpm; fix prepared on local branch                                                |
 | 18:58           | Step 4: rate-limiter tests (fresh)             | `distributed-rate-limiter*.test.ts`, `rate-limiter.test.ts` | ✅ **98/98 passed** (3 files, 1.28s)                                                                   |
-| 18:58           | Step 4 probe: close #496                       | `gh issue close 496`                                        | ❌ expected 403 (same `addComment`/`closeIssue` class as prior loops; probe via comment path)          |
-| 18:59           | Persist execution log (this file)              | `docs/issue-manager-audit-2026-11-17.md`                    | committed on branch `docs/issue-manager-audit-2026-11-17`, PR opened (§9)                              |
+| 18:58           | Step 4 probe: close #496                       | `gh issue close 496`                                        | ❌ expected 403 (same issue-write class as label/comment/create probes)                                |
+| 18:59           | Persist execution log (this file)              | `docs/issue-manager-audit-2026-11-17.md`                    | committed on branch, PR **#1660** opened (§9)                                                          |
+| 19:05           | Unblock attempt: pnpm fix push                 | branch `ci/iterate-pnpm-305` → `iterate.yml`                | ❌ **rejected** — App lacks `workflows` scope (10th consecutive); local branch discarded               |
 
 ---
 
 ## 3. Permission Matrix (first-hand probes, this run)
 
-| Operation                                        | Works?      | Evidence                                                                                                      |
-| ------------------------------------------------ | ----------- | ------------------------------------------------------------------------------------------------------------- |
-| `gh pr list/view/create`, `gh label list` (read) | ✅          | Phase 0 + label inventory                                                                                     |
-| Push to non-workflow files + `gh pr create`      | ✅          | this very PR (branch `docs/issue-manager-audit-2026-11-17`)                                                   |
-| Pre-commit hooks (typecheck/lint/test)           | ✅          | run on this run's commit (see §9)                                                                             |
-| `gh issue edit --add-label`                      | ❌ 403      | #789 probe this run (`addLabelsToLabelable`)                                                                  |
-| `gh issue comment`                               | ❌ 403      | #789 probe this run (`addComment`)                                                                            |
-| `gh issue create`                                | ❌ 403      | probe this run (`createIssue`)                                                                                |
-| Push to `.github/workflows/*`                    | ❌ rejected | prior loops 1–N: App lacks `workflows` scope (not re-attempted this run to avoid noise; root cause unchanged) |
+| Operation                                        | Works?      | Evidence                                                                                |
+| ------------------------------------------------ | ----------- | --------------------------------------------------------------------------------------- |
+| `gh pr list/view/create`, `gh label list` (read) | ✅          | Phase 0 + label inventory                                                               |
+| Push to non-workflow files + `gh pr create`      | ✅          | this very PR (branch `docs/issue-manager-audit-2026-11-17`)                             |
+| Pre-commit hooks (typecheck/lint/test)           | ✅          | run on this run's commit (see §9)                                                       |
+| `gh issue edit --add-label`                      | ❌ 403      | #789 probe this run (`addLabelsToLabelable`)                                            |
+| `gh issue comment`                               | ❌ 403      | #789 probe this run (`addComment`)                                                      |
+| `gh issue create`                                | ❌ 403      | probe this run (`createIssue`)                                                          |
+| Push to `.github/workflows/*`                    | ❌ rejected | `ci/iterate-pnpm-305` rejected this run (10th consecutive): App lacks `workflows` scope |
 
 **Root cause (unchanged)**: run executes under `GITHUB_WORKFLOW=pull` (`.github/workflows/on-pull.yml`, `schedule`). That workflow declares `contents: write`, `pull-requests: write`, `actions: read`, `repository-projects: write`, `id-token: write` — **but not `issues: write`** (contrast: `iterate.yml` already declares it at lines 11–16). Additionally the GitHub App installation must grant the `workflows` scope for workflow-file edits, so the loop cannot amend its own workflow. Both unblock steps are human-only (§7.1).
 
@@ -249,7 +250,7 @@ Labeled **P0/P1** issues exist → select highest-priority: **#496 [P0][Security
 ### 7.1 Required human actions
 
 1. **Add `issues: write`** to the `permissions:` block of `.github/workflows/on-pull.yml` (line ~9; `iterate.yml` already has it). This alone unblocks Steps 1–4 mutations on the next scheduled run.
-2. **Grant the GitHub App the `workflows` scope** (org/repo → Settings → GitHub Apps → App installation → Actions: Read & Write / Workflows). Required so future runs can self-amend workflows (prior loops: 9+ consecutive rejections).
+2. **Grant the GitHub App the `workflows` scope** (org/repo → Settings → GitHub Apps → App installation → Actions: Read & Write / Workflows). Required so future runs can self-amend workflows (10th consecutive rejection this run on `ci/iterate-pnpm-305`).
 3. Optional: fix or dismiss the failing **`Vercel`** commit status on `main`.
 
 ### 7.2 After unblock, next run should
@@ -274,14 +275,16 @@ Labeled **P0/P1** issues exist → select highest-priority: **#496 [P0][Security
 
 ## 9. Verification for This PR
 
-- Branch cut from `origin/main` (synced before edit, contract §2).
+- **PR #1660** — branch `docs/issue-manager-audit-2026-11-17` cut from `origin/main` (synced before edit, contract §2).
 - `pnpm install --frozen-lockfile` ✅ (v10.28.2; preinstall package-manager guard passed).
 - Rate-limiter subset (Step 4 evidence): **98/98 passed** (3 files, 1.28s).
-- Pre-commit hooks on commit: typecheck + lint + test + prettier + check-deps (husky) — see CI check on the PR.
-- PR labels (contract §4): `docs`, `P3` — applied PR-side (works under `pull-requests: write`).
+- Pre-commit hooks on commit: typecheck 9/9, **tests 2241/2241**, check-deps, prettier ✅.
+- Pre-push hook: typecheck + lint ✅ (9/9 packages each).
+- PR labels (contract §4): `docs`, `P3` — applied; PR `mergeable: MERGEABLE`; check `Vercel Preview Comments` = SUCCESS.
+- Branch hygiene: exactly **one** branch for this PR; no other PR opened (contract §2).
 
 ---
 
 ## 10. Final State
 
-**blocked (needs human)** — reason: `GITHUB_TOKEN` lacks `issues: write` (label / comment / create all 403 this run) and the GitHub App lacks `workflows` scope (cannot self-heal `on-pull.yml` or fix `iterate.yml` npm→pnpm). All analysis for Steps 1–4 is complete and persisted above; zero drift on label delta (49) vs prior loops. Phases 1–3 not activated (ISSUE MANAGER MODE incomplete).
+**blocked (needs human)** — reason: `GITHUB_TOKEN` lacks `issues: write` (label / comment / create all 403 this run) and the GitHub App lacks `workflows` scope (10th consecutive rejection; cannot self-heal `on-pull.yml` or ship the prepared `iterate.yml` npm→pnpm fix). Deliverable that did land: **PR #1660** (this audit doc, labels `docs`/`P3`, mergeable, checks green so far). All analysis for Steps 1–4 is complete and persisted above; zero drift on label delta (49) vs prior loops. Phases 1–3 not activated (ISSUE MANAGER MODE incomplete).

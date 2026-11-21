@@ -183,9 +183,19 @@ describe("requireRole middleware", () => {
       Record<string, unknown>,
       string,
     ][];
-    expect(
-      warnCalls.some(([meta]) => meta.reason === "insufficient_role"),
-    ).toBe(true);
+    const denialCall = warnCalls.find(
+      ([meta]) => meta.reason === "insufficient_role",
+    );
+
+    expect(denialCall).toBeDefined();
+    expect(denialCall?.[0]).toMatchObject({
+      audit: true,
+      security: true,
+      action: "role_access_denied",
+      requiredRole: Role.ADMIN,
+      userId: "user-123",
+      requestId: "req-123",
+    });
   });
 
   it("should handle database errors by denying access with FORBIDDEN", async () => {

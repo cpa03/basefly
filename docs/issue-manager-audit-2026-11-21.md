@@ -138,7 +138,8 @@ New findings that would normally become issues (Phase 1 output) **could not be c
 2. **Playwright E2E not run in CI** (gap in #501) + workflow-file pushes rejected by repo ruleset → maintainer action needed. Category `ci`, suggested **P1**.
 3. **`apps/nextjs` prettier drift** (6 files) breaks `pnpm format` on `main`. Category `chore`, suggested **P2**.
 4. **~70 stale open issues verified/likely resolved** (§5–§7 evidence) → mass-closure sweep once labels/comments are writable.
+5. **Vercel preview deployment check fails on every recent PR** (#1663–#1667, including PRs already merged to `main`) → environmental/project-config issue, not PR-specific; PR HANDLER MODE must not treat it as a regression of a candidate PR without verifying. Category `ci`, suggested **P2**.
 
 ## 10. Final State
 
-**waiting for human review** — PR [#1667](https://github.com/cpa03/basefly/pull/1667) open (mergeable, all local checks green; merge is PR HANDLER MODE's job on the next run). Issue-tracker mutations remain **blocked** until the workflow grants `issues: write`.
+**waiting for human review** — PR [#1667](https://github.com/cpa03/basefly/pull/1667) (labels `security`/`P1`) and PR [#1668](https://github.com/cpa03/basefly/pull/1668) (labels `docs`/`P3`) are open and mergeable; all locally runnable checks green (typecheck, lint, 2241 tests, build). The Vercel preview check is red on both — pre-existing on `main` (fails for #1663–#1666 alike, see §9.5). Merge is PR HANDLER MODE's job on the next run. Issue-tracker mutations remain **blocked** until the workflow grants `issues: write`.

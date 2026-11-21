@@ -45,11 +45,11 @@ Therefore STEP 1–3 **issue mutations (label, comment, close) are BLOCKED** by 
 | 03:01           | Edit                                 | `packages/api/src/rbac.test.ts`                                    | denial audit payload assertions                                                     |
 | 03:01           | Verify                               | targeted tests (rbac, admin)                                       | 15/15 pass                                                                          |
 | 03:02           | Verify                               | `pnpm typecheck` / `pnpm lint` / `pnpm test`                       | 0 / 0 / 2241 pass                                                                   |
-| 03:03           | Verify                               | `pnpm format`                                                      | pre-existing `apps/nextjs` drift (6 files, fails on main); own files prettier-clean |
-| 03:04           | Commit + push                        | `8be7eb4` → `fix/issue-498-role-audit-logging`                     | push OK (no workflow files touched)                                                 |
-| 03:05           | Create PR                            | [#1667](https://github.com/cpa03/basefly/pull/1667) (`Fixes #498`) | open, labels `security` + `P1`, MERGEABLE                                           |
-| 03:06           | Verify                               | `pnpm build`                                                       | **exit 0**                                                                          |
-| 03:07           | Write                                | `docs/issue-manager-audit-2026-11-21.md`                           | this file                                                                           |
+| 03:01           | Verify                               | `pnpm format`                                                      | pre-existing `apps/nextjs` drift (6 files, fails on main); own files prettier-clean |
+| 03:02           | Commit + push                        | `8be7eb4` → `fix/issue-498-role-audit-logging`                     | push OK (no workflow files touched)                                                 |
+| 03:03           | Create PR                            | [#1667](https://github.com/cpa03/basefly/pull/1667) (`Fixes #498`) | open, labels `security` + `P1`, MERGEABLE                                           |
+| 03:04           | Verify                               | `pnpm build`                                                       | **exit 0**                                                                          |
+| 03:04           | Write                                | `docs/issue-manager-audit-2026-11-21.md`                           | this file                                                                           |
 
 ## 4. STEP 1 — Normalization Plan (BLOCKED — apply when `issues: write` exists)
 

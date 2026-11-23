@@ -62,10 +62,7 @@ EmptyPlaceholder.Title = function EmptyPlaceholderTitle({
   ...props
 }: EmptyPlacholderTitleProps) {
   return (
-    <h2
-      className={cn(EMPTY_PLACEHOLDER_TOKENS.title, className)}
-      {...props}
-    >
+    <h2 className={cn(EMPTY_PLACEHOLDER_TOKENS.title, className)} {...props}>
       {children}
     </h2>
   );

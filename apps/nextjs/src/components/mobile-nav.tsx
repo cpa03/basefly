@@ -27,17 +27,17 @@ export function MobileNav({ items, children, menuItemClick }: MobileNavProps) {
       role={MOBILE_NAV_TOKENS.section.defaultRole}
       aria-modal="true"
       aria-label={MOBILE_NAV_TOKENS.section.defaultAriaLabel}
-      className={cn(
-        MOBILE_NAV_TOKENS.section.base,
-        Z_INDEX.modal,
-      )}
+      className={cn(MOBILE_NAV_TOKENS.section.base, Z_INDEX.modal)}
     >
       <div className={MOBILE_NAV_TOKENS.wrapper}>
         <Link href="/" className={MOBILE_NAV_TOKENS.brandLink.base}>
           <Logo />
           <span className="font-bold">{siteConfig.name}</span>
         </Link>
-        <nav className={MOBILE_NAV_TOKENS.nav.base} aria-label={MOBILE_NAV_TOKENS.nav.defaultAriaLabel}>
+        <nav
+          className={MOBILE_NAV_TOKENS.nav.base}
+          aria-label={MOBILE_NAV_TOKENS.nav.defaultAriaLabel}
+        >
           <ul className={MOBILE_NAV_TOKENS.list}>
             {items.map((item) => (
               <li key={item.href}>

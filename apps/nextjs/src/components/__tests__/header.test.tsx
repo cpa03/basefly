@@ -6,7 +6,9 @@ import { DashboardHeader } from "../header";
 describe("DashboardHeader Component", () => {
   it("renders heading correctly", () => {
     render(<DashboardHeader heading="Dashboard Overview" />);
-    expect(screen.getByRole("heading", { name: "Dashboard Overview" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Dashboard Overview" }),
+    ).toBeInTheDocument();
   });
 
   it("renders subtext when provided", () => {
@@ -16,7 +18,9 @@ describe("DashboardHeader Component", () => {
         text="Manage your account preferences"
       />,
     );
-    expect(screen.getByText("Manage your account preferences")).toBeInTheDocument();
+    expect(
+      screen.getByText("Manage your account preferences"),
+    ).toBeInTheDocument();
   });
 
   it("renders children action elements when provided", () => {
@@ -25,7 +29,9 @@ describe("DashboardHeader Component", () => {
         <button>Create New Project</button>
       </DashboardHeader>,
     );
-    expect(screen.getByRole("button", { name: "Create New Project" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Create New Project" }),
+    ).toBeInTheDocument();
   });
 
   it("supports landmark role and accessible aria-label attributes", () => {

@@ -25,7 +25,9 @@ describe("Questions Component", () => {
 
   it("applies aria-label attribute for accessibility", () => {
     const { container } = render(<Questions />);
-    const accordionElement = container.querySelector('[aria-label="Frequently asked questions"]');
+    const accordionElement = container.querySelector(
+      '[aria-label="Frequently asked questions"]',
+    );
     expect(accordionElement).toBeInTheDocument();
   });
 });

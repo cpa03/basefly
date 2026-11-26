@@ -78,8 +78,12 @@ governed this artifact.
 2. **Drift check at a new HEAD**: `main` advanced `e3346bf` → `3c107ec` (docs-only
    PR #1681). Label delta re-computed from live API: **49 rows, identical set**.
    P0 #496 evidence re-spot-checked: **still 6/6 shipped**.
-3. **PR-label capability observed degraded**: PR #1681 merged with an empty labels
-   array; label-at-creation probe recorded with this run's PR.
+3. **PR-label capability works (issue-label does not)**: `gh pr create --label docs
+--label P3` on PR #1682 **succeeded** — labels `docs`/`P3` applied — while every
+   `gh issue edit --add-label` / REST issue-label probe remains 403. PR #1681 (prior
+   run) merged with an empty labels array only because that run did not pass
+   `--label`. Label-normalization of _PRs_ is therefore unblocked; _issue_ labeling
+   still requires unblock Option A/B/C.
 4. **Rejection counter reconciled**: prior audits disagree (17th per 11-26, 18th
    per 11-23). This run records the event without advancing a disputed total.
 
@@ -126,23 +130,23 @@ before PR creation, per merge conditions.)
 
 ## Permission matrix (this token, this run)
 
-| Capability needed by state machine | Probe                                             | Result                                     |
-| ---------------------------------- | ------------------------------------------------- | ------------------------------------------ |
-| Read issues / PRs / workflows      | `gh issue list`, `gh pr list`, `gh workflow list` | ✅ OK                                      |
-| Label issue (GraphQL)              | `gh issue edit 789 --add-label P2`                | ❌ 403 `addLabelsToLabelable`              |
-| Label issue (REST)                 | `POST repos/…/issues/789/labels`                  | ❌ 403                                     |
-| Comment on issue                   | `gh issue comment 789`                            | ❌ 403 `addComment`                        |
-| Create issue (fail-safe)           | `gh issue create --title … --label chore`         | ❌ 403 `createIssue`                       |
-| Close issue (GraphQL)              | `gh issue close 496 --reason completed`           | ❌ 403 `closeIssue`                        |
-| Close issue (REST)                 | `PATCH /repos/…/issues/496` state=closed          | ❌ 403                                     |
-| Enable disabled workflow           | `gh workflow enable parallel`                     | ❌ 403                                     |
-| Dispatch disabled workflow (name)  | `gh workflow run parallel`                        | ❌ not found (disabled)                    |
-| Dispatch disabled workflow (ID)    | `POST …/workflows/231322818/dispatches`           | ❌ 403                                     |
-| Push workflow file (git)           | `probe/workflow-push-20261126-loop2`              | ❌ canonical App rejection (no remote ref) |
-| Push non-workflow branch           | this audit branch                                 | ✅ OK                                      |
-| Create PR                          | `gh pr create`                                    | ✅ (this docs PR)                          |
-| Add labels to PR                   | `gh pr create --label docs --label P3`            | (recorded at PR creation)                  |
-| Merge PR (admin)                   | `gh pr merge --admin`                             | ✅ (used prior runs)                       |
+| Capability needed by state machine | Probe                                             | Result                                                        |
+| ---------------------------------- | ------------------------------------------------- | ------------------------------------------------------------- |
+| Read issues / PRs / workflows      | `gh issue list`, `gh pr list`, `gh workflow list` | ✅ OK                                                         |
+| Label issue (GraphQL)              | `gh issue edit 789 --add-label P2`                | ❌ 403 `addLabelsToLabelable`                                 |
+| Label issue (REST)                 | `POST repos/…/issues/789/labels`                  | ❌ 403                                                        |
+| Comment on issue                   | `gh issue comment 789`                            | ❌ 403 `addComment`                                           |
+| Create issue (fail-safe)           | `gh issue create --title … --label chore`         | ❌ 403 `createIssue`                                          |
+| Close issue (GraphQL)              | `gh issue close 496 --reason completed`           | ❌ 403 `closeIssue`                                           |
+| Close issue (REST)                 | `PATCH /repos/…/issues/496` state=closed          | ❌ 403                                                        |
+| Enable disabled workflow           | `gh workflow enable parallel`                     | ❌ 403                                                        |
+| Dispatch disabled workflow (name)  | `gh workflow run parallel`                        | ❌ not found (disabled)                                       |
+| Dispatch disabled workflow (ID)    | `POST …/workflows/231322818/dispatches`           | ❌ 403                                                        |
+| Push workflow file (git)           | `probe/workflow-push-20261126-loop2`              | ❌ canonical App rejection (no remote ref)                    |
+| Push non-workflow branch           | this audit branch                                 | ✅ OK                                                         |
+| Create PR                          | `gh pr create`                                    | ✅ (this docs PR)                                             |
+| Add labels to PR                   | `gh pr create --label docs --label P3` (PR #1682) | ✅ **labels applied** (new finding — issue labels remain 403) |
+| Merge PR (admin)                   | `gh pr merge --admin`                             | ✅ (used prior runs)                                          |
 
 ## Final state
 

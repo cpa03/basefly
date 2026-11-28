@@ -82,6 +82,10 @@ files at `ac78357` (fifth consecutive loop with the same standing blocker):
 | 02:26Z          | Step 4 acceptance re-verification    | P0 #496 (8 checks)                                                     | **6/6 shipped** + wiring + dependency confirmed; no repair code needed                                                        |
 | 02:27Z          | Record findings                      | this document                                                          | committed via this run's single documentation PR                                                                              |
 | 02:27–02:33Z    | Verification suite                   | install→typecheck→lint→format→test→build                               | see suite table below                                                                                                         |
+| 02:33Z          | PR created + labeled                 | PR #1684 (`docs`, `P3`)                                                | created, `MERGEABLE`; **PR label write succeeds** (unlike issue labels — new observation this run)                            |
+| 02:34Z          | CI observation                       | `pull` run 46098640158; Vercel preview                                 | `pull` = `action_required` (0 jobs; approve endpoint 403); Vercel **fail** — pre-existing (identical on merged #1681/#1683)   |
+| 02:37Z          | Merge PR                             | `gh pr merge 1684 --merge --admin`                                     | **MERGED** — `1d827af`; merged with pre-existing Vercel-red + CI-unapprovable state, documented in PR body                    |
+| 02:39Z          | Fix suite-table placeholders         | this document (same branch)                                            | follow-up PR from the **same branch** (one-branch rule)                                                                       |
 
 ## Steps 1–4 status (unchanged — prepared-but-blocked)
 
@@ -160,17 +164,19 @@ left behind.
 
 ## Verification suite (this run)
 
-| Command                          | Result    |
-| -------------------------------- | --------- |
-| `pnpm install --frozen-lockfile` | see below |
-| `pnpm typecheck`                 | see below |
-| `pnpm lint`                      | see below |
-| `pnpm format`                    | see below |
-| `pnpm test`                      | see below |
-| `pnpm build`                     | see below |
+Run on this run's working tree (one added markdown file) before PR creation:
 
-(Run on this run's working tree — one added markdown file — before PR creation;
-results recorded in the PR description.)
+| Command                          | Result                                  |
+| -------------------------------- | --------------------------------------- |
+| `pnpm install --frozen-lockfile` | EXIT 0                                  |
+| `pnpm typecheck`                 | 9/9 turbo tasks, EXIT 0                 |
+| `pnpm lint`                      | 9/9 turbo tasks, EXIT 0                 |
+| `pnpm format`                    | 10/10 turbo tasks, EXIT 0               |
+| `pnpm test`                      | 160 files, **2241/2241 passed**, 0 FAIL |
+| `pnpm build`                     | 1 successful, EXIT 0 (35.2s)            |
+
+Pre-commit hooks (lint-staged) re-ran typecheck 9/9, tests 2241/2241, and prettier
+on the staged markdown at push time — all green.
 
 ## Final state
 
